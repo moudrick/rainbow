@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<project name="Rainbow">
+	<!-- *********************************************** -->
+	<!-- **  Verbose merge example                    ** -->
+	<!-- *********************************************** -->
+
+	<!-- logged merging -->
+	<!-- //TODO: cross merging -->
+	<!-- //TODO: in-place merging -->
+
+	<target name="merge.verbose.545" >
+		<property name="this.merge.base.branch" value="RainbowDotNet2/devint/trunk/" />
+		<property name="this.merge.base.rev"    value="545"                          />
+		<property name="this.merge.to.rev"      value="HEAD"                         />
+		<property name="this.merge.to.branch"   value="sandboxes/MGF/trunk/"         />
+		<call target="merge.verbose" />
+	</target>
+
+	<!-- https://forgesvn1.novell.com/svn/rainbow/sandboxes/yannicksmits/branches/devint_trunk_568 -->
+	<target name="merge.verbose.568" >
+		<property name="this.merge.base.branch" value="sandboxes/yannicksmits/branches/devint_trunk_568/" />
+		<property name="this.merge.base.rev"    value="568"                                              />
+		<property name="this.merge.to.rev"      value="575"                                              />
+		<property name="this.merge.to.branch"   value="RainbowDotNet2/devint/trunk/"                     />
+		<call target="merge.verbose" />
+	</target>
+
+	<target name="merge.verbose">
+		<property name="this.base.url" value="https://forgesvn1.novell.com/svn/rainbow/" />
+		<property name="this.merge.base.branch.encoded" value="${string::replace(this.merge.base.branch, '/', '$')}" />
+		<property name="this.merge.to.branch.encoded" value="${string::replace(this.merge.to.branch, '/', '$')}" />
+		<property name="this.mergeLabel" value="${this.merge.base.branch.encoded}@${this.merge.base.rev}-2-${this.merge.to.branch.encoded}"  />
+
+		<call target="branch.diff.to.merge" />
+		<call target="branch.to.revert" />
+		<call target="branch.diff.before.merge" />
+		<call target="branch.merge" />
+		<call target="branch.diff.after.merge" />
+		<call target="branch.diff.merged" />
+	</target>
+
+	<target name="branch.diff.to.merge">
+		<exec verbose="true" program="svn" output=".${this.mergeLabel}.toMerge.diff" 
+			commandline="-r ${this.merge.base.rev}:${this.merge.to.rev} diff ${this.merge.base.branch}" />
+	</target>
+
+	<target name="branch.to.revert">
+		<exec verbose="true" program="svn" output=".${this.mergeLabel}.revert.log" 
+			commandline="-R revert ${this.merge.to.branch}" />
+	</target>
+
+	<target name="branch.diff.before.merge">
+		<exec verbose="true" program="svn" output=".${this.mergeLabel}.before.merge.diff" 
+			commandline="diff ${this.merge.to.branch}" />
+	</target>
+
+	<target name="branch.merge">
+		<!-- exec verbose="true" program="svn" output=".${this.mergeLabel}.merge.log" 
+			commandline="merge ${this.base.url}${this.merge.base.branch}@${this.merge.base.rev} ${this.base.url}${this.merge.base.branch}@${this.merge.to.rev} ${this.merge.to.branch}" / -->
+		<exec verbose="true" program="svn" output=".${this.mergeLabel}.merge.log" 
+			commandline="merge ${this.merge.to.branch}@${this.merge.base.rev} ${this.merge.base.branch}@${this.merge.to.rev} ${this.merge.to.branch}" />
+	</target>
+ 
+	<target name="branch.diff.merged">
+		<exec verbose="true" program="svn" output=".${this.mergeLabel}.merged.diff" 
+			commandline=" diff --old=${this.base.url}${this.merge.base.branch}@${this.merge.base.rev} --new=${this.merge.to.branch}" />
+	</target>
+
+	<target name="branch.diff.after.merge">
+		<exec verbose="true" program="svn" output=".${this.mergeLabel}.after.merge.diff" 
+			commandline="diff ${this.merge.to.branch}" />
+	</target>
+</project>

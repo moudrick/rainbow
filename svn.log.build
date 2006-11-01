@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<project name="Rainbow">
+	<!-- *********************************************** -->
+	<!-- **  log automation                           ** -->
+	<!-- *********************************************** -->
+	<echo message="${this::echo-property('svn.log.relPath')}" />
+
+	<target name="svn.log" >
+		<echo message="${this::echo-property('par.revStart')}" />
+		<echo message="${this::echo-property('par.revEnd')}" />
+
+		<property name="svn.log.verbose" value="" if="${not property::exists('svn.log.verbose')}"/>
+		<exec verbose="true" program="svn" 
+			commandline="-r ${par.revStart}:${par.revEnd} ${svn.log.verbose} log ${svn.log.relPath}" 
+			output=".svn.log.${par.revStart}-${par.revEnd}.${svn.log.verbose}.${string::replace(svn.log.relPath, '/', '$')}.txt" />
+	</target>
+
+	<target name="svn.log.HEAD:0">
+		<property name="par.revStart" value="HEAD" />
+		<property name="par.revEnd" value="0" />
+		<call target="svn.log"/>
+	</target>
+
+	<target name="svn.log.HEAD:BASE">
+		<property name="par.revStart" value="HEAD" />
+		<property name="par.revEnd" value="BASE" />
+		<call target="svn.log"/>
+	</target>
+
+	<target name="svn.log.-v.HEAD:0">
+		<property name="svn.log.verbose" value="-v"/>
+		<call target="svn.log.HEAD:0"/>
+	</target>
+
+	<target name="svn.log.-v.HEAD:BASE">
+		<property name="svn.log.verbose" value="-v"/>
+		<call target="svn.log.HEAD:BASE"/>
+	</target>
+</project>
