@@ -1,0 +1,54 @@
+Rainbow Portal Alpha 3.1 Developer Preview 
+
+Changes : Fixed some Modules and did more QA on install/common tasks
+
+Install Instructions : 
+
+    Extract
+    Point IIS ( with 2.0 configured) to your directory
+    Change web.config connection string value [ in connectionStrings section]
+    Browse to site
+
+      [ We will soon automate this process]
+
+
+Note : This is an Alpha Release and should by no means be
+       deployed into production as this is a Preview.  If
+       the user of this Rainbow ALPHA 3.1 deploys in production,
+       the Rainbow portal team nor its community will be 
+       held liable for issues or downtime.  This software is for developers
+       and CMS website owners who would like to see what
+       is in store for Rainbow 2.0.
+
+Known Issues:
+
+   Some modules might not be wired and not work.  This can be easily fixed
+and please alert the support staff.
+
+Open Thread : http://community.rainbowportal.net/forums/1390/ShowThread.aspx#1390
+
+New Feature List
+
+By Jonathan Minond & Eric Ramseur [ XHTML Traditional ]
+
+
+ASP.NET 2.0
+
+   Patial Classes [ Most to all classes associated with aspx]
+   XHTML Traditional Output
+   Http Compression [ on by default in web.config]
+   URL Rewrite
+   More Framework Refactoring and added functionality
+   Bug fixes
+
+VS 2005 
+
+   ASP.NET 2.0 Publish Site
+   Precompile Website for better performance 
+        [Note : When deploying, use compilation debug ="false"]
+   Add from IIS
+
+
+By Eric Ramseur
+
+Release, QA , PM , DOX , Testing
