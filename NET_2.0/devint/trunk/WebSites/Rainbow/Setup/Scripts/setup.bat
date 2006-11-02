@@ -41,7 +41,7 @@
 @set ASPNET_ACCOUNT=%COMPUTERNAME%\ASPNET
 @set OUTPUT_FILE=aspnetusr_bat.sql
 
-@echo use Rainbow>%OUTPUT_FILE%
+@echo use [Rainbow]>%OUTPUT_FILE%
 @echo exec sp_grantlogin '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
 @echo exec sp_addrolemember 'db_owner', '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
 @echo exec sp_grantdbaccess '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
@@ -65,7 +65,7 @@
 @setlocal
 @set ASPNET_ACCOUNT=%COMPUTERNAME%\ASPNET
 @set OUTPUT_FILE=webserverusr.sql
-@echo use Rainbow>%OUTPUT_FILE%
+@echo use [Rainbow]>%OUTPUT_FILE%
 @echo exec sp_grantlogin 'NT AUTHORITY\NETWORK SERVICE'>>%OUTPUT_FILE%
 @echo exec sp_addrolemember 'db_owner', 'NT AUTHORITY\NETWORK SERVICE'>>%OUTPUT_FILE%
 @echo exec sp_grantdbaccess 'NT AUTHORITY\NETWORK SERVICE'>>%OUTPUT_FILE%
