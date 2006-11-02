@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Rainbow.Modules.AddTab</name>
+    </assembly>
+    <members>
+        <member name="T:Rainbow.DesktopModules.AddModule.AddPage">
+            <summary>
+            This module has been built by John Mandia (www.whitelightsolutions.com)
+            It allows administrators to give permission to selected roles to add modules to pages
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.tabParentLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.tabVisibleLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.PermissionDropDown">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.tabTitleLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.TabTitleTextBox">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.AddTabButton">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.lblErrorNotAllowed">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.parentTabDropDown">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.lbl_ShowMobile">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.cb_ShowMobile">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.lbl_MobileTabName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.tb_MobileTabName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.Literal1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.rbl_JumpToTab">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.AddModule.AddPage.moduleError">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.AddModule.AddPage.Page_Load(System.Object,System.EventArgs)">
+            <summary>
+            The Page_Load event handler on this User Control is used to
+            load all the modules that are currently on this tab
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.AddModule.AddPage.LoadAddPageModule">
+            <summary>
+            Bind data and load miscellanous data
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.AddModule.AddPage.BindData">
+            <summary>
+            The BindData helper method is used to update the tab's
+            layout panes with the current configuration information
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.AddModule.AddPage.AddTabButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            The AddTabButton_Click server event handler 
+            on this page is used to add a new portal module 
+            into the tab
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.AddModule.AddPage.#ctor">
+            <summary>
+            Public constructor. Sets base settings for module.
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.AddModule.AddPage.OnInit(System.EventArgs)">
+            <summary>
+            Raises OnInitEvent
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.AddModule.AddPage.InitializeComponent">
+            <summary>
+            Initializes the component.
+            </summary>
+        </member>
+        <member name="P:Rainbow.DesktopModules.AddModule.AddPage.GuidID">
+            <summary>
+            Gets the GUID for this module.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Rainbow.DesktopModules.AddModule.AddPage.AdminModule">
+            <summary>
+            Marks This Module To Be An Admin Module
+            </summary>
+        </member>
+    </members>
+</doc>

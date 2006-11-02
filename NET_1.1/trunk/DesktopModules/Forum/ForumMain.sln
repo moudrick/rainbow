@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForumMain", "http://localhost/rainbow/DesktopModules/Forum/ForumMain.csproj", "{555357E5-A150-4C4D-BC81-97F4AE19086A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{555357E5-A150-4C4D-BC81-97F4AE19086A}.Debug.ActiveCfg = Debug|.NET
+		{555357E5-A150-4C4D-BC81-97F4AE19086A}.Debug.Build.0 = Debug|.NET
+		{555357E5-A150-4C4D-BC81-97F4AE19086A}.Release.ActiveCfg = Release|.NET
+		{555357E5-A150-4C4D-BC81-97F4AE19086A}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

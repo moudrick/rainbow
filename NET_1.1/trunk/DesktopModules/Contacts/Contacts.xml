@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Rainbow.Modules.Contacts</name>
+    </assembly>
+    <members>
+        <member name="T:Rainbow.DesktopModules.Contacts">
+            <summary>
+            Contacts module
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.Contacts.myDataGrid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.Contacts.myDataView">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.Contacts.sortField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.Contacts.sortDirection">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Contacts.Page_Load(System.Object,System.EventArgs)">
+            <summary>
+            The Page_Load event handler on this User Control is used to
+            obtain a DataReader of contact information from the Contacts
+            table, and then databind the results to a DataGrid
+            server control.  It uses the Rainbow.ContactsDB()
+            data component to encapsulate all data functionality.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Contacts.BindGrid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Contacts.#ctor">
+            <summary>
+            Construcotor - set module settings
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Contacts.SearchSqlSelect(System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Searchable module implementation
+            </summary>
+            <param name="portalID">The portal ID</param>
+            <param name="userID">ID of the user is searching</param>
+            <param name="searchString">The text to search</param>
+            <param name="searchField">The fields where perfoming the search</param>
+            <returns>The SELECT sql to perform a search on the current module</returns>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Contacts.Install(System.Collections.IDictionary)">
+            <summary>
+            
+            </summary>
+            <param name="stateSaver"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Contacts.Uninstall(System.Collections.IDictionary)">
+            <summary>
+            
+            </summary>
+            <param name="stateSaver"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Contacts.OnInit(System.EventArgs)">
+            <summary>
+            Raises Init event
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Rainbow.DesktopModules.Contacts.GuidID">
+            <summary>
+            GuidID
+            </summary>
+        </member>
+        <member name="P:Rainbow.DesktopModules.Contacts.Searchable">
+            <summary>
+            Searchable module
+            </summary>
+        </member>
+        <member name="T:Rainbow.DesktopModules.ContactsDB">
+            <summary>
+            Class that encapsulates all data logic necessary to add/query/delete
+            contacts within the Portal database.
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.ContactsDB.GetContacts(System.Int32,Rainbow.Configuration.WorkFlowVersion)">
+            <summary>
+            The GetContacts method returns a DataSet containing all of the
+            contacts for a specific portal module from the contacts
+            database.
+            
+            NOTE: A DataSet is returned from this method to allow this method to support
+            both desktop and mobile Web UI.
+            </summary>
+            <param name="moduleID"></param>
+            <param name="version"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rainbow.DesktopModules.ContactsDB.GetSingleContact(System.Int32,Rainbow.Configuration.WorkFlowVersion)">
+            <summary>
+            The GetSingleContact method returns a SqlDataReader containing details
+            about a specific contact from the Contacts database table.
+            </summary>
+            <param name="itemID"></param>
+            <param name="version"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rainbow.DesktopModules.ContactsDB.DeleteContact(System.Int32)">
+            <summary>
+            The DeleteContact method deletes the specified contact from
+            the Contacts database table.
+            </summary>
+            <param name="itemID"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.ContactsDB.AddContact(System.Int32,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            The AddContact method adds a new contact to the Contacts
+            database table, and returns the ItemID value as a result.
+            </summary>
+            <param name="moduleID"></param>
+            <param name="itemID"></param>
+            <param name="userName"></param>
+            <param name="name"></param>
+            <param name="role"></param>
+            <param name="email"></param>
+            <param name="contact1"></param>
+            <param name="contact2"></param>
+            <param name="Fax"></param>
+            <param name="Address"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rainbow.DesktopModules.ContactsDB.UpdateContact(System.Int32,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            The UpdateContact method updates the specified contact within
+            the Contacts database table.
+            </summary>
+            <param name="moduleID"></param>
+            <param name="itemID"></param>
+            <param name="userName"></param>
+            <param name="name"></param>
+            <param name="role"></param>
+            <param name="email"></param>
+            <param name="contact1"></param>
+            <param name="contact2"></param>
+            <param name="Fax"></param>
+            <param name="Address"></param>
+        </member>
+        <member name="T:Rainbow.DesktopModules.ContactsEdit">
+            <summary>
+            Page for editing contacts
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.NameField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.RequiredName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.RoleField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.EmailField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.Contact1Field">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.Contact2Field">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.FaxField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.AddressField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.CreatedDate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.CreatedBy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.CreatedLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.OnLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.Literal1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.Literal2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.Literal3">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.Literal4">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.Literal5">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.Literal6">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.Literal7">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.Literal8">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.ContactsEdit.ValidEmail">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.ContactsEdit.Page_Load(System.Object,System.EventArgs)">
+            <summary>
+            The Page_Load event on this Page is used to obtain the ModuleID
+            and ItemID of the contact to edit.
+            
+            It then uses the Rainbow.ContactsDB() data component
+            to populate the page's edit controls with the contact details.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.ContactsEdit.OnUpdate(System.EventArgs)">
+            <summary>
+            The UpdateBtn_Click event handler on this Page is used to either
+            create or update a contact.  It  uses the Rainbow.ContactsDB()
+            data component to encapsulate all data functionality.
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.ContactsEdit.OnDelete(System.EventArgs)">
+            <summary>
+            The DeleteBtn_Click event handler on this Page is used to delete an
+            a contact.  It  uses the Rainbow.ContactsDB()
+            data component to encapsulate all data functionality.
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.ContactsEdit.OnInit(System.EventArgs)">
+            <summary>
+            Raises OnInitEvent
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.ContactsEdit.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Rainbow.DesktopModules.ContactsEdit.AllowedModules">
+            <summary>
+            Set the module guids with free access to this page
+            </summary>
+        </member>
+    </members>
+</doc>
