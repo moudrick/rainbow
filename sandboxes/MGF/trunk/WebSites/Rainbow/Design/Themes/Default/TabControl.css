@@ -31,22 +31,17 @@
 	vertical-align: middle;
 	height: auto;
 	float: left;
-    overflow: hidden;
-    border: 2px outset;
-    cursor: pointer;
-    cursor: hand;
+	border: 2px outset;
+	cursor: default;
 }
 .tabSelected
 {
 	margin: 0;
 	padding: 2px;
 	color: Black;
-    font-weight: bold;
-    vertical-align: middle;
-    float: left;
-    border: 2px inset;
-    border-bottom: 4px solid whitesmoke;
-    background: whitesmoke;
-    overflow:hidden;
-    cursor: default;
+	font-size: 12px;
+	font-weight: bold;
+	vertical-align: middle;
+	float: left;
+	border: 2px inset;
 }

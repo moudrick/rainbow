@@ -13,6 +13,7 @@ using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using System.Collections.Generic;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
+using Rainbow.Framework.Providers.RainbowSiteMapProvider;
 
 namespace Rainbow.Admin
 {
@@ -141,10 +142,11 @@ namespace Rainbow.Admin
             int NewPageID =
                 new PagesDB().AddPage(portalSettings.PortalID, Int32.Parse(parentPage.SelectedItem.Value), tabName.Text,
                                       990000, authorizedRoles, showMobile.Checked, mobilePageName.Text);
+            //Clear SiteMaps Cache
+            RainbowSiteMapProvider.ClearAllRainbowSiteMapCaches();
 
             // Update custom settings in the database
             EditTable.UpdateControls();
-
             return NewPageID;
         }
 

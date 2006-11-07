@@ -8,6 +8,7 @@ using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
+using Rainbow.Framework.Providers.RainbowSiteMapProvider;
 
 namespace Rainbow.Content.Web.Modules {
     /// <summary>
@@ -167,7 +168,9 @@ namespace Rainbow.Content.Web.Modules {
 
                     // Reset the order numbers for the tabs within the list  
                     OrderPages();
-
+                    
+                    //Clear SiteMaps Cache
+                    RainbowSiteMapProvider.ClearAllRainbowSiteMapCaches();
 
                     // Redirect to edit page
                     // 3_aug_2004 Cory Isakson added returntabid so that PageLayout could return to the tab it was called from.

@@ -118,8 +118,13 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
 			}
 		}
 
-		
-		public override SiteMapNode BuildSiteMap() {
+
+        /// <summary>
+        /// Loads the site map information from rb_Pages table and builds the site map information 
+        /// in memory.
+        /// </summary>
+        /// <returns>The root System.Web.SiteMapNode of the site map navigation structure.</returns>
+        public override SiteMapNode BuildSiteMap() {
 			lock (_lock) {
 				// Return immediately if this method has been called before
 				if (_root != null) {
@@ -183,6 +188,12 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
 			}
 		}
 
+             
+
+        /// <summary>
+        /// Returns the root node.
+        /// </summary>
+        /// <returns>The root node.</returns>
 		protected override SiteMapNode GetRootNodeCore () {
 			lock (_lock) {
 				BuildSiteMap();
@@ -240,7 +251,8 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
 			return node;        
 		}
 
-		private SiteMapNode GetParentNodeFromDataReader(DbDataReader reader) {
+		
+        private SiteMapNode GetParentNodeFromDataReader(DbDataReader reader) {
 			// Make sure the parent ID is present
 			if (reader.IsDBNull(_indexParentPageID)) {
 				return _nodes[_rootNodeID];
@@ -270,11 +282,31 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
 		}
 
 
+        /// <summary>
+        /// Removes all elements in the collections of child and parent site map nodes
+        /// that the System.Web.StaticSiteMapProvider tracks as part of its state.
+        /// </summary>
+        public override void ClearCache() {
+            this.Clear();
+        }
+
+        
+        /// <summary>
+        /// Removes all elements in the collections of child and parent site map nodes
+        /// that the System.Web.StaticSiteMapProvider tracks as part of its state.
+        /// </summary>
+        protected override void Clear() {
+            base.Clear();
+            _nodes.Clear();
+            _root = null;
+        }
+
+
 		private string BuildSiteMap_Query() {
 			string s = @"
 				SELECT	[PageID], [ParentPageID], [PageOrder], [PortalID], [PageName],
 						[AuthorizedRoles], [PageLayout], [PageDescription]
-				FROM  [rb_Pages] 
+				FROM  [dbo].[rb_Pages] 
 				WHERE [PortalID] = " + PortalID + @" 
 				ORDER BY [PageOrder]
 			";
@@ -315,4 +347,5 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
 }
 		
 		
+
 

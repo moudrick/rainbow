@@ -23,7 +23,7 @@
 	border-width:3px;
 	border-style:solid;
 	border-color:#A2A2A2 Gray Gray #A2A2A2;
-	display:inline;
+	display:block;
 	background:#D2D2D2;
 	color:Black;
 	font-size:1em;
@@ -33,7 +33,7 @@
 	cursor: pointer;
 }
 a.CommandButton:link,a.commandButton:link,a.commandbutton:link,a.Commandbutton:link{
-	display:inline;
+	display:block;
 	color:Black;
 	background:#D2D2D2;
 	text-decoration:none;

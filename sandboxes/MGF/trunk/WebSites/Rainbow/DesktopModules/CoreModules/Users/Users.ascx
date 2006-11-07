@@ -42,7 +42,7 @@
                 </tr>
                 <tr>
                     <td valign="top">
-                        <atlas:UpdatePanel ID="AllUsersUpdatePanel" runat="server">
+                        <asp:UpdatePanel ID="AllUsersUpdatePanel" runat="server">
                             <ContentTemplate>
                                 <asp:GridView ID="allUsers" runat="server" AllowPaging="True" AllowSorting="True"
                                     AutoGenerateColumns="false" CellPadding="4" DataKeyNames="Email" EnableSortingAndPagingCallbacks="false"
@@ -82,7 +82,7 @@
                                     <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                                 </asp:GridView>
                             </ContentTemplate>
-                        </atlas:UpdatePanel>
+                        </asp:UpdatePanel>
                     </td>
                 </tr>
             </table>

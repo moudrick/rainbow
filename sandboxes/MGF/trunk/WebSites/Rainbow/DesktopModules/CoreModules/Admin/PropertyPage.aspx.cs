@@ -32,6 +32,24 @@ namespace Rainbow.Content.Web.Modules
         protected override void OnInit(EventArgs e)
         {
             this.PlaceHolderButtons.EnableViewState = false;
+            this.PlaceholderButtons2.EnableViewState = false;
+
+            //Controls must be created here
+            updateButton = new LinkButton();
+            updateButton.CssClass = "CommandButton";
+
+            PlaceHolderButtons.Controls.Add(updateButton);
+
+            // jminond added to top of property page so no need to scroll for save
+            LinkButton update2 = new LinkButton();
+            update2.CssClass = "CommandButton";
+            update2.TextKey = "Apply";
+            update2.Text = "Apply";
+            update2.Click += new EventHandler(UpdateButton_Click);
+            PlaceholderButtons2.Controls.Add(update2);
+
+//			PlaceHolderButtons.Controls.Add(new LiteralControl("&nbsp;"));
+//			PlaceholderButtons2.Controls.Add(new LiteralControl("&nbsp;"));
 
             saveAndCloseButton = new LinkButton();
             saveAndCloseButton.TextKey = "SAVE_AND_CLOSE";
@@ -39,7 +57,52 @@ namespace Rainbow.Content.Web.Modules
             saveAndCloseButton.CssClass = "CommandButton";
             PlaceHolderButtons.Controls.Add(saveAndCloseButton);
 
+            // jminond added to top of property page so no need to scroll for save
+            LinkButton saveAndCloseButton2 = new LinkButton();
+            saveAndCloseButton2.TextKey = "SAVE_AND_CLOSE";
+            saveAndCloseButton2.Text = "Save and close";
+            saveAndCloseButton2.CssClass = "CommandButton";
+            saveAndCloseButton2.Click += new EventHandler(this.saveAndCloseButton_Click);
+            PlaceholderButtons2.Controls.Add(saveAndCloseButton2);
+
             this.saveAndCloseButton.Click += new EventHandler(this.saveAndCloseButton_Click);
+
+//			PlaceHolderButtons.Controls.Add(new LiteralControl("&nbsp;"));
+//			PlaceholderButtons2.Controls.Add(new LiteralControl("&nbsp;"));
+
+            // Removed by Mario Endara <mario@softworks.com.uy> (2004/11/04)
+//			if (Rainbow.Security.PortalSecurity.IsInRoles("Admins"))
+//			{
+            adminPropertiesButton = new HyperLink();
+            adminPropertiesButton.TextKey = "MODULESETTINGS_BASE_SETTINGS";
+            adminPropertiesButton.Text = "Edit base settings";
+            adminPropertiesButton.CssClass = "CommandButton";
+            adminPropertiesButton.NavigateUrl =
+                HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Admin/ModuleSettings.aspx", PageID, ModuleID);
+
+            PlaceHolderButtons.Controls.Add(adminPropertiesButton);
+
+            // jminond added to top of property page so no need to scroll for save
+            HyperLink adminPropertiesButton2 = new HyperLink();
+            adminPropertiesButton2.TextKey = "MODULESETTINGS_BASE_SETTINGS";
+            adminPropertiesButton2.Text = "Edit base settings";
+            adminPropertiesButton2.CssClass = "CommandButton";
+            adminPropertiesButton2.NavigateUrl =
+                HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Admin/ModuleSettings.aspx", PageID, ModuleID);
+
+            PlaceholderButtons2.Controls.Add(adminPropertiesButton2);
+
+//			PlaceHolderButtons.Controls.Add(new LiteralControl("&nbsp;"));
+//			PlaceholderButtons2.Controls.Add(new LiteralControl("&nbsp;"));
+//			}
+
+            // jminond added to top of property page so no need to scroll for save
+            LinkButton cancel2 = new LinkButton();
+            cancel2.CssClass = "CommandButton";
+            cancel2.TextKey = "Cancel";
+            cancel2.Text = "Cancel";
+            cancel2.Click += new EventHandler(CancelButton_Click);
+            PlaceholderButtons2.Controls.Add(cancel2);
 
             cancelButton = new LinkButton();
             cancelButton.CssClass = "CommandButton";

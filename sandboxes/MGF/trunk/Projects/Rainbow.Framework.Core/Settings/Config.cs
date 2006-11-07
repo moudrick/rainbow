@@ -283,26 +283,17 @@ namespace Rainbow.Framework.Settings
 			}
 		}
 
-        /// <summary>
-        /// Returns a new SqlConnection object using current ConnectionString
-        /// </summary>
-        public static SqlConnection SqlConnectionString
-        {
-            get
-            {
-                SqlConnection myConnection = new SqlConnection();
-                try
-                {
-                    myConnection.ConnectionString = ConnectionString;
-                }
-                catch (System.ArgumentException) //connectionstring not well formed
-                {
-                    //redirect to installer
-                    HttpContext.Current.Response.Redirect(InstallerRedirect);
-                }
-                return myConnection;
-            }
-        }
+		/// <summary>
+		/// Returns a new SqlConnection object using current ConnectionString
+		/// </summary>
+		public static SqlConnection SqlConnectionString
+		{
+			get
+			{
+				SqlConnection myConnection = new SqlConnection(ConnectionString);
+				return myConnection;
+			}
+		}
 
 
 		/// <summary>
@@ -500,15 +491,6 @@ namespace Rainbow.Framework.Settings
 		{
 			get { return GetString("DatabaseUpdateRedirect", "~/Setup/Update.aspx", false); }
 		}
-
-        /// <summary>
-        /// URL for redirect to Installer page
-        /// <br/>
-        /// Default value: "~/Setup/Update.aspx"</summary>
-        public static string InstallerRedirect
-        {
-            get { return GetString("InstallerRedirect", "~/Installer/default.aspx", false); }
-        }
 
 		/// <summary>
 		/// HTTP Status code to use when redirecting to Database Error Page

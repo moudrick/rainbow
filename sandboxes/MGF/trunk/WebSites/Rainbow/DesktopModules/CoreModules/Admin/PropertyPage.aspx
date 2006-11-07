@@ -22,16 +22,19 @@
                                         <rbfwebui:localize id="Literal1" runat="server" text="Module settings" textkey="MODULESETTINGS_SETTINGS">
                                         </rbfwebui:localize>
                                     </td>
+                                    <td align="right">
+                                        <asp:placeholder id="PlaceholderButtons2" runat="server"></asp:placeholder>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td colspan="2">
                                         <hr noshade="noshade" size="1" />
                                         <rbfwebui:settingstable id="EditTable" runat="server">
                                         </rbfwebui:settingstable>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td colspan="2">
                                         <asp:placeholder id="PlaceHolderButtons" runat="server"></asp:placeholder>
                                     </td>
                                 </tr>

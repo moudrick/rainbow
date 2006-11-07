@@ -172,18 +172,6 @@ namespace Rainbow.Tests {
             }
         }
 
-        [Test]
-        public void UserIsOnlineTimeWindowTest() {
-            try {
-                int userIsOnlineTimeWindow = Membership.UserIsOnlineTimeWindow;
-                Assert.AreEqual( userIsOnlineTimeWindow, 30 );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving UserIsOnlineTimeWindow property", ex );
-            }
-        }
-
         #endregion
 
         #region Membership provider methods

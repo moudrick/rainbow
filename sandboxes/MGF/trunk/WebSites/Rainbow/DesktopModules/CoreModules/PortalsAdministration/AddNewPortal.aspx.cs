@@ -11,6 +11,7 @@ using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
+using Rainbow.Framework.Providers.RainbowSiteMapProvider;
 
 namespace Rainbow.AdminAll
 {
@@ -290,6 +291,9 @@ namespace Rainbow.AdminAll
                 templateTabs.Add(tab);
             }
             myReader.Close();
+
+            //Clear SiteMaps Cache
+            RainbowSiteMapProvider.ClearAllRainbowSiteMapCaches();
 
             // now I have to get them again to set up the ParentID for each Tab
             myReader = GetTabsByPortal(templateID, myConnection);

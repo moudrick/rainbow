@@ -63,9 +63,9 @@ namespace Rainbow.Framework.Web.UI {
         protected LinkButton cancelButton;
 
         /// <summary>
-        /// Atlas script manager
+        /// MS Ajax script manager
         /// </summary>
-        protected ScriptManager atlasScriptMgr;
+        protected ScriptManager ajaxScriptMgr;
 
         #endregion
 
@@ -101,9 +101,9 @@ namespace Rainbow.Framework.Web.UI {
         /// <summary>
         /// Returns the <code>ScriptManager</code> control.
         /// </summary>
-        public ScriptManager AtlasScriptManager {
+        public ScriptManager AjaxScriptManager {
             get {
-                return atlasScriptMgr;
+                return ajaxScriptMgr;
             }
         }
 
@@ -158,7 +158,7 @@ namespace Rainbow.Framework.Web.UI {
 
             //if (cancelButton != null)
             Control myControl = null;
-
+            
             if ( cancelButton != null || ( myControl = Page.FindControl( "cancelButton" ) ) != null )
 
             //if ((myControl=Page.FindControl("cancelButton")) != null)
@@ -208,6 +208,13 @@ namespace Rainbow.Framework.Web.UI {
                 }
             }
             ModuleGuidInCookie();
+
+            if ( this.Form != null ) {
+                ajaxScriptMgr = new ScriptManager();
+                ajaxScriptMgr.ID = "ScriptMgr";
+                this.Form.Controls.AddAt( 0, ajaxScriptMgr );  // BETA1: must be before any UpdatePanels (any MS Ajax control?)
+            }
+
             base.OnInit( e );
         }
 
@@ -1133,19 +1140,5 @@ namespace Rainbow.Framework.Web.UI {
 
         #endregion
 
-        /// <summary>
-        /// Called by the ASP.NET page framework to notify server controls that use composition-based implementation to 
-        /// create any child controls they contain in preparation for posting back or rendering.
-        /// </summary>
-        protected override void CreateChildControls() {
-            base.CreateChildControls();
-
-            atlasScriptMgr = new ScriptManager();
-            atlasScriptMgr.ID = "ScriptMgr";
-            atlasScriptMgr.EnablePartialRendering = true;
-            atlasScriptMgr.EnableScriptComponents = true;
-
-            this.Controls.Add( atlasScriptMgr );
-        }
     }
 }

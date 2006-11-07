@@ -14,7 +14,6 @@
 	color: Black;
 	background: whitesmoke;
 	border: 1px solid #CFD4E6;
-	border-top: 0;
 }
 .tabGroup
 {
@@ -26,16 +25,14 @@
 {
 	margin: 0px 0px 0px 0px;
 	padding: 3px 3px 3px 3px;
-	background: transparent;
+	background: silver;/*transparent;*/
 	font-size: 11px;
 	font-weight: bold;
 	vertical-align: middle;
 	height: auto;
 	float: left;
-    overflow: hidden;
-    border: 2px outset;
-    cursor: pointer;
-    cursor: hand;
+	border: 2px outset;
+	cursor: default;
 }
 .tabSelected
 {
@@ -43,14 +40,11 @@
 	padding: 2px;
 	color: Black;
 	font-size: 12px;
-    font-weight: bold;
-    vertical-align: middle;
-    float: left;
-    border: 2px inset;
-    border-bottom: 4px solid whitesmoke;
-    background: whitesmoke;
-    overflow:hidden;
-    cursor: default;
+	font-weight: bold;
+	background:whitesmoke;
+	vertical-align: middle;
+	float: left;
+	border: 2px inset;
 }
 /*************************************/
 

@@ -59,9 +59,6 @@ namespace Rainbow.Content.Web.Modules
             {
                 portalList.DataBind();
             }
-            EditBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Edit", "Edit.gif").ImageUrl;
-            DeleteBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl;
-            DeleteBtn.Attributes.Add("onclick", "return confirmDelete();");
         }
 
         /// <summary>
@@ -137,14 +134,6 @@ namespace Rainbow.Content.Web.Modules
                                                           "PortalID=" + p.ID + "&mID=" + ModuleID.ToString()));
             }
             base.OnEdit();
-        }
-        protected void EditBtn_Click(object sender, ImageClickEventArgs e)
-        {
-            OnEdit();
-        }
-        protected void DeleteBtn_Click(object sender, ImageClickEventArgs e)
-        {
-            OnDelete();
         }
     }
 }

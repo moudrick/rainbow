@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" exclude-result-prefixes="rainbow" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:rainbow="urn:rainbow">
-	<xsl:output method="xml" version="1.0" omit-xml-declaration="yes" indent="no"/>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:rainbow="urn:rainbow">
+	<xsl:output method="html" version="4.0" indent="no"/>
 	<xsl:param name="ClientScriptLocation"/>
 	<xsl:param name="Orientation"/>
 	<xsl:param name="ActivePageId">1</xsl:param>
@@ -45,20 +45,18 @@
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:choose>
+							<xsl:when test="@ID=$ActivePageId">
+								<xsl:attribute name="class"><xsl:text>MenuItemSelected</xsl:text></xsl:attribute>
+							</xsl:when>
 							<xsl:when test=".//MenuItem">
 								<xsl:choose>
-									<xsl:when test="@ID=$ActivePageId">
-										<xsl:attribute name="name"><xsl:text>daddy</xsl:text></xsl:attribute>
+									<xsl:when test=".//MenuItem[@ID=$ActivePageId]">
 										<xsl:attribute name="class"><xsl:text>daddy MenuItemSelected</xsl:text></xsl:attribute>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:attribute name="name"><xsl:text>daddy</xsl:text></xsl:attribute>
 										<xsl:attribute name="class"><xsl:text>daddy</xsl:text></xsl:attribute>
 									</xsl:otherwise>
 								</xsl:choose>
-							</xsl:when>
-							<xsl:when test="@ID=$ActivePageId">
-								<xsl:attribute name="class"><xsl:text>MenuItemSelected</xsl:text></xsl:attribute>
 							</xsl:when>
 						</xsl:choose>
 						<xsl:value-of select="@PageName"/>

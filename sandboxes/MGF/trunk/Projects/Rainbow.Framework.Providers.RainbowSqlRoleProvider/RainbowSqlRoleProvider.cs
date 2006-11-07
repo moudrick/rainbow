@@ -824,7 +824,11 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         private RainbowRole GetRoleFromReader( SqlDataReader reader ) {
             Guid roleId = reader.GetGuid( 0 );
             string roleName = reader.GetString( 1 );
-            string roleDescription = reader.IsDBNull( 2 ) ? string.Empty : reader.GetString( 2 );
+
+            string roleDescription =  string.Empty;
+            if ( !reader.IsDBNull( 2 ) ) {
+                roleDescription = reader.GetString( 2 );
+            }
 
             return new RainbowRole( roleId, roleName, roleDescription );
         }

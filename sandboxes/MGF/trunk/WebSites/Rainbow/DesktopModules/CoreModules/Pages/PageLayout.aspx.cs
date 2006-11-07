@@ -18,6 +18,7 @@ using History=Rainbow.Framework.History;
 using ImageButton=System.Web.UI.WebControls.ImageButton;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
 using System.Collections.Generic;
+using Rainbow.Framework.Providers.RainbowSiteMapProvider;
 
 namespace Rainbow.Admin
 {
@@ -394,6 +395,9 @@ namespace Rainbow.Admin
                     // made in all languages and not get a error if user change the tab parent.
                     // jviladiu@portalServices.net (05/10/2004)
                     CurrentCache.RemoveAll("_PageNavigationSettings_");
+                    // Clear RainbowSiteMapCache
+                    RainbowSiteMapProvider.ClearAllRainbowSiteMapCaches();
+                    
 
                     // redirect back to the admin page
                     // int adminIndex = portalSettings.DesktopPages.Count-1;        

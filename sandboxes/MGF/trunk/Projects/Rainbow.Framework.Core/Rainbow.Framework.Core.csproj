@@ -50,9 +50,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.Atlas, Version=2.0.50727.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Microsoft.Web.Atlas.dll</HintPath>
+      <HintPath>..\..\Libs\Microsoft.Web.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Security, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
       <SpecificVersion>False</SpecificVersion>
@@ -85,15 +85,9 @@
     <Compile Include="BLL\Base\BLLBase.cs" />
     <Compile Include="BLL\GeneralModuleDefinition.cs" />
     <Compile Include="BLL\MergeEngine.cs" />
-    <Compile Include="BLL\UserConfig\UserDesktop.cs" />
-    <Compile Include="BLL\UserConfig\UserModuleSettings.cs" />
-    <Compile Include="BLL\User\SingletonUserLayout.cs" />
-    <Compile Include="BLL\User\UserLayout.cs" />
-    <Compile Include="BLL\User\UserWindowMgmt.cs" />
     <Compile Include="BLL\Utils\BagHolder.cs" />
     <Compile Include="BLL\Utils\CookieUtil.cs" />
     <Compile Include="BLL\Utils\GlobalResources.cs" />
-    <Compile Include="BLL\Utils\WindowStateEnum.cs" />
     <Compile Include="Configuration\Items\PagesBox.cs" />
     <Compile Include="Configuration\Items\SettingItem.cs" />
     <Compile Include="Configuration\Items\SettingItemGroups.cs" />
