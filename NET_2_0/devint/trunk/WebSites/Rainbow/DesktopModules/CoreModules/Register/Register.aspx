@@ -11,14 +11,14 @@
     <form id="Form1" runat="server">
         <div id="zenpanes" class="zen-main">
             <div class="rb_DefaultPortalHeader">
-                <portal:banner id="Banner1" runat="server" showtabs="false" />
+                <portal:banner id="Banner1" runat="server" />
             </div>
             <div class="div_ev_Table">
                 <table border="0" cellpadding="0" cellspacing="0" width="90%">
                     <tr>
                         <td>
                             <!-- Start Register control -->
-                            <asp:placeholder id="register" runat="server"></asp:placeholder>
+                            <asp:placeholder id="register" runat="server" />
                             <!-- End Register control -->
                         </td>
                     </tr>
