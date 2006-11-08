@@ -47,7 +47,7 @@ public partial class SignInLoginView : PortalModuleControl {
             loginControl.RememberMeText = General.GetString( "REMEMBER_LOGIN", "Remember Login" );
             loginControl.TextLayout = LoginTextLayout.TextOnTop;
             loginControl.TitleText = string.Empty;
-            loginControl.PasswordRecoveryUrl = 
+            //loginControl.PasswordRecoveryUrl = 
         }
     }
 
