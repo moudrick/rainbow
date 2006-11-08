@@ -20,7 +20,7 @@ Current way to add register module (still ok)
 - Your custom page must be control named Register<....>.ascx (start with Register word)
 - Your control must implement IEditUserProfile interface
 - Your control may or may not be compiled with Rainbow (it can be in its own dll)
-- On Portalsettings select you control from the menu.
+- On Portalsettings select your control from the menu.
 
 Using custom settings:
 - You must register your control as a standard module
