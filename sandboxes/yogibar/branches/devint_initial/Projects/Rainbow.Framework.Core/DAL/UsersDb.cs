@@ -381,16 +381,16 @@ namespace Rainbow.Framework.Users.Data {
             }
 
             RainbowUser user = MembershipProvider.GetUser( userID, true ) as RainbowUser;
-            user.Email = email;
             user.Name = name;
             user.Company = company;
             user.Address = address;
-            user.Zip = zip;
             user.City = city;
+            user.Zip = zip;            
             user.CountryID = countryID;
             user.StateID = stateID;
-            user.Fax = fax;
             user.Phone = phone;
+            user.Fax = fax;
+            user.Email = email;            
             user.SendNewsletter = sendNewsletter;
 
             MembershipProvider.UpdateUser( user );
@@ -418,20 +418,19 @@ namespace Rainbow.Framework.Users.Data {
                                string fax, string password, string email, bool sendNewsletter ) {
 
             RainbowUser user = MembershipProvider.GetUser( userID, true ) as RainbowUser;
-            user.Email = email;
-            user.Email = email;
             user.Name = name;
             user.Company = company;
             user.Address = address;
-            user.Zip = zip;
             user.City = city;
+            user.Zip = zip;
             user.CountryID = countryID;
             user.StateID = stateID;
-            user.Fax = fax;
             user.Phone = phone;
+            user.Fax = fax;            
+            user.Email = email;
             user.SendNewsletter = sendNewsletter;
-
-            MembershipProvider.ChangePassword( CurrentPortalSettings.PortalAlias, user.UserName, user.GetPassword(), password );
+            
+            MembershipProvider.ChangePassword( CurrentPortalSettings.PortalAlias, user.UserName, user.GetPassword(), password );            
             MembershipProvider.UpdateUser( user );
         }
 
@@ -456,17 +455,16 @@ namespace Rainbow.Framework.Users.Data {
                                string fax, string email, bool sendNewsletter ) {
 
             RainbowUser user = MembershipProvider.GetUser( userID, true ) as RainbowUser;
-
-            user.Email = email;
             user.Name = name;
             user.Company = company;
-            user.Address = address;
-            user.Zip = zip;
+            user.Address = address;            
             user.City = city;
+            user.Zip = zip;
             user.CountryID = countryID;
             user.StateID = stateID;
-            user.Fax = fax;
             user.Phone = phone;
+            user.Fax = fax;
+            user.Email = email;            
             user.SendNewsletter = sendNewsletter;
 
             MembershipProvider.UpdateUser( user );
@@ -477,7 +475,7 @@ namespace Rainbow.Framework.Users.Data {
         /// </summary>
         /// <param name="userID">The user ID.</param>
         /// <param name="CheckedEmail">The checked email.</param>
-        public void UpdateUserCheckEmail( int userID, bool CheckedEmail ) {
+      public void UpdateUserCheckEmail( int userID, bool CheckedEmail ) {
             MembershipUser user = Membership.GetUser( userID );
             user.IsApproved = CheckedEmail;
 
@@ -489,7 +487,7 @@ namespace Rainbow.Framework.Users.Data {
         /// </summary>
         /// <param name="userID">The user ID.</param>
         /// <param name="password">The password.</param>
-        public void UpdateUserSetPassword( int userID, string password ) {
+      public void UpdateUserSetPassword( int userID, string password ) {
             MembershipUser user = Membership.GetUser( userID );
             user.ChangePassword( user.GetPassword(), password );
 
