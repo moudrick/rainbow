@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE project [ 
-	<!ENTITY configurationNamespaces '
-				<namespaces>
-					<namespace prefix="x" uri="${xmlNamespace}" />
-				</namespaces>
+  <!ENTITY configurationNamespaces '
+        <namespaces>
+          <namespace prefix="x" uri="${xmlNamespace}" />
+        </namespaces>
 '
 >
 ]>
 <project name="Rainbow">
-	<!-- ***************************************** -->
+  <!-- ***************************************** -->
   <!-- **  Required incoming parameters       ** -->
   <!-- ***************************************** -->
   <echo message="in.branch=${in.branch}" />                  <!-- "sandboxes/MGF/trunk/" -->
