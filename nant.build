@@ -47,7 +47,7 @@
 	<property name="this.webPrecompiledDir" value="PrecompiledWeb" />
 
 	<property name="this.netFramework" value="net-2.0" />
-	<property name="this.netFrameworkPath" value="${framework::get-framework-directory(this.netFramework)}" />
+	<property name="this.netFrameworkPath" value="${framework::get-framework-directory(this.netFramework)}"  />
 
 	<property name="const.dbUid" value="rainbow" /> <!-- TODO: make in readonly -->
 	<property name="const.dbPwd" value="rainbow_" /> <!-- TODO: make in readonly -->
@@ -135,16 +135,16 @@
 	</target>
 
 	<target name="this.setProperties2000">
-		<property name="this.relativeApplicationPath" value="${this.webProjectDir}" />
-		<property name="this.virtDirName" value="${this.branch.encoded}" /> <!-- value="Rainbow2.0" -->
-		<property name="this.dbInstance" value="(local)" />
+    <property name="this.virtDirName" value="${this.branch.encoded}" />
+    <property name="this.relativeApplicationPath" value="${this.webProjectDir}" />
+    <property name="this.dbInstance" value="(local)" />
 		<call target="this.setTrustedConnectionString" />
 	</target>
 
 	<target name="this.setProperties2005">
-		<property name="this.relativeApplicationPath" value="${this.webPrecompiledDir}/${this.virtDirName}/" />
-		<property name="this.virtDirName" value="${this.webPrecompiledDir}/${this.branch.encoded}" /> <!-- value="PrecompiledWeb" -->
-		<property name="this.dbInstance" value="(local)\SQLEXPRESS" />
+    <property name="this.virtDirName" value="${this.webPrecompiledDir}/${this.branch.encoded}" />
+    <property name="this.relativeApplicationPath" value="${this.virtDirName}/" />
+    <property name="this.dbInstance" value="(local)\SQLEXPRESS" />
 		<call target="this.setTrustedConnectionString" />
 	</target>
 
@@ -190,8 +190,9 @@
 		<foreach item="String" property="configuration" in="Release" delim=";"> <!-- ;Debug -->
 			<exec program="msbuild.exe" basedir="${this.netFrameworkPath}" workingdir="${this.branch}">
 				<arg value="${this.solution.name}" />
-				<arg value="/p:Configuration=${configuration}" />
-				<arg value="/t:${this.msbuild.targets}" />
+				<arg value="/property:Configuration=${configuration};Platform=Mixed Platforms" />
+				<arg value="/target:${this.msbuild.targets}" />
+				<arg value="/verbosity:quiet" />
 			</exec>
 		</foreach>
 	</target>
