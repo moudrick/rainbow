@@ -62,11 +62,6 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         protected LinkButton cancelButton;
 
-        /// <summary>
-        /// MS Ajax script manager
-        /// </summary>
-        protected ScriptManager ajaxScriptMgr;
-
         #endregion
 
         private ResourceSet userCultureSet = null;
@@ -98,12 +93,10 @@ namespace Rainbow.Framework.Web.UI {
             }
         }
 
-        /// <summary>
-        /// Returns the <code>ScriptManager</code> control.
-        /// </summary>
+        private ScriptManager ajaxScriptManager = new ScriptManager();
         public ScriptManager AjaxScriptManager {
             get {
-                return ajaxScriptMgr;
+                return ajaxScriptManager;
             }
         }
 
@@ -209,12 +202,6 @@ namespace Rainbow.Framework.Web.UI {
             }
             ModuleGuidInCookie();
 
-            if ( this.Form != null ) {
-                ajaxScriptMgr = new ScriptManager();
-                ajaxScriptMgr.ID = "ScriptMgr";
-                this.Form.Controls.AddAt( 0, ajaxScriptMgr );  // BETA1: must be before any UpdatePanels (any MS Ajax control?)
-            }
-
             base.OnInit( e );
         }
 
@@ -227,6 +214,7 @@ namespace Rainbow.Framework.Web.UI {
             // add CurrentTheme CSS
             RegisterCssFile( CurrentTheme.Name, CurrentTheme.CssFile );
 
+            //TODO: this cookie will never exist
             if ( Request.Cookies["Rainbow_" + portalSettings.PortalAlias] != null ) {
                 if ( !Config.ForceExpire ) {
                     //jminond - option to kill cookie after certain time always
@@ -240,6 +228,28 @@ namespace Rainbow.Framework.Web.UI {
                 if ( Request.UrlReferrer != null )
                     UrlReferrer = Request.UrlReferrer.ToString();
             }
+
+
+            if ( ScriptManager.GetCurrent( this ) == null ) {
+                //AjaxScriptManager = new ScriptManager();
+                AjaxScriptManager.EnablePartialRendering = true;
+
+                foreach ( Control c in Controls ) {
+                    if ( c is HtmlGenericControl ) {
+                        HtmlGenericControl genericControl = ( HtmlGenericControl )c;
+
+                        if ( genericControl.TagName.ToLower() == "body" ) {
+                            foreach ( Control bodyControl in genericControl.Controls ) {
+                                if ( bodyControl is HtmlForm ) {
+                                    bodyControl.Controls.AddAt( 0, AjaxScriptManager );
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
             base.OnLoad( e );
         }
 
