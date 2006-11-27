@@ -402,23 +402,7 @@
       <remove verb="*" path="*.asmx"/>
       <add verb="*" path="*.asmx" validate="false" type="Microsoft.Web.Script.Services.ScriptHandlerFactory, Microsoft.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
       <add verb="GET" path="ScriptResource.axd" type="Microsoft.Web.Handlers.ScriptResourceHandler" validate="false"/>
-      <!--
-          The MultiRequestHandler enables multiple requests to be handled in one
-          roundtrip to the server. Its use requires Full Trust.
-      -->
-      <add verb="*" path="atlasbatchcall.axd" type="Microsoft.Web.Services.MultiRequestHandler" validate="false"/>
-      <add verb="*" path="atlasglob.axd" type="Microsoft.Web.Globalization.GlobalizationHandler" validate="false"/>
-      <!--
-          The IFrameHandler enables a limited form of cross-domain calls to 'Atlas' web services.
-          This should only be enabled if you need this functionality and you're willing to expose
-          the data publicly on the Internet.
-          To use it, you will also need to add the attribute [WebOperation(true, ResponseFormatMode.Json, true)]
-          on the methods that you want to be called cross-domain.
-          This attribute is by default on any DataService's GetData method.
-          
-      <add verb="*" path="iframecall.axd" type="Microsoft.Web.Services.IFrameHandler" validate="false"/>
-      -->
-      <add verb="*" path="*.asbx" type="Microsoft.Web.Services.ScriptHandlerFactory" validate="false"/>
+
       <add verb="GET" path="FtbWebResource.axd" type="FreeTextBoxControls.AssemblyResourceHandler, FreeTextBox" />
       <add path="UploadDialog.aspx" verb="*" type="StaticDust.Web.UploadHandler, StaticDust.Web.UI.Controls.UploadDialog" validate="false" />
     </httpHandlers>

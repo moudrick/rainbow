@@ -93,13 +93,6 @@ namespace Rainbow.Framework.Web.UI {
             }
         }
 
-        private ScriptManager ajaxScriptManager = new ScriptManager();
-        public ScriptManager AjaxScriptManager {
-            get {
-                return ajaxScriptManager;
-            }
-        }
-
         #region Events
 
         /// <summary>
@@ -231,8 +224,12 @@ namespace Rainbow.Framework.Web.UI {
 
 
             if ( ScriptManager.GetCurrent( this ) == null ) {
-                //AjaxScriptManager = new ScriptManager();
-                AjaxScriptManager.EnablePartialRendering = true;
+                ScriptManager scriptManager = new ScriptManager();
+                scriptManager.EnablePartialRendering = true;
+
+                scriptManager.Scripts.Add( new ScriptReference( "Microsoft.Web.Resources.ScriptLibrary.PreviewScript.js", "Microsoft.Web.Preview" ) );
+                scriptManager.Scripts.Add( new ScriptReference( "Microsoft.Web.Resources.ScriptLibrary.PreviewGlitz.js", "Microsoft.Web.Preview" ) );
+                scriptManager.Scripts.Add( new ScriptReference( "Microsoft.Web.Resources.ScriptLibrary.PreviewDragDrop.js", "Microsoft.Web.Preview" ) );
 
                 foreach ( Control c in Controls ) {
                     if ( c is HtmlGenericControl ) {
@@ -241,7 +238,7 @@ namespace Rainbow.Framework.Web.UI {
                         if ( genericControl.TagName.ToLower() == "body" ) {
                             foreach ( Control bodyControl in genericControl.Controls ) {
                                 if ( bodyControl is HtmlForm ) {
-                                    bodyControl.Controls.AddAt( 0, AjaxScriptManager );
+                                    bodyControl.Controls.AddAt( 0, scriptManager );
                                 }
                             }
                             break;
