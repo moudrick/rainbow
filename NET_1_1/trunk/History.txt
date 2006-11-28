@@ -3,9 +3,9 @@ Releases HISTORY - SVN Test
 
 RAINBOW PORTAL
 Main portal - http://www.rainbowportal.net
-Google SVN (Not currently being used) - https://rainbow.googlecode.com/svn/NET_1_1/
-Sourceforge SVN - http://https://svn.sourceforge.net/svnroot/rainbowportal 
-Community Forums - http://community.rainbowportal.net 
+Sourceforge CVS (Not currently being used) - http://sourceforge.net/projects/rainbowportal/
+SVN checkout - http://www.internet-rs.com:8080/repos  
+Support Forums - http://forums.rainbowportal.net 
 Bug Tracker: http://support.rainbowportal.net 
 
 NOTE: All dates are in International format day/month/year!
@@ -27,12 +27,17 @@ Report any problems to the Yahoo Group: rainbowportal
   It is not recommended to switch access login
 
 *****************************************************
+
+1.6.0.1880h - 28/11/2006
+- ENH: Upgraded FreeTextBox to 3.1.6.35504.
+- FIX: Upgrade resolved Firefox hang FTB issues.
+
 1.6.0.1880g - 23/11/2006
-by danijel kecman
+by Danijel Kecman
 - FIX: Added YAF/Rainbow forum module (in DesktopModules/YAF directory - see in YAF dir for install_rainbow.txt). 
 
 1.6.0.1880f - 24/06/2006
-by danijel kecman
+by Danijel Kecman
 - FIX: On empty password update profile password not properly handled
 
 1.6.0.1880e - 15/01/2006
@@ -49,7 +54,7 @@ by Joerg Szepan
        See Rainbow-Language-Tools-Read-me.txt for more information.
 
 1.6.0.1880c - 16/12/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Cache invalidation due to inconsistent keys
        Thanks to James Steward
 
@@ -85,7 +90,7 @@ by Manu
 - FIX: Now clean install works also on SQL 2005 (april CPT - VSTUDIO 2005 beta2)
 
 1.6.0.1879c - 18/10/2005
-by danijel kecman
+by Danijel Kecman
 - ENH: Updated FTB to version 3.1.0
 - FIX: With FTP 3.1.0 resolved issue apply link on text does not work in firefox
 - FIX: Root FreeTextBox in HtmlEditorDataType
@@ -128,7 +133,7 @@ by Hongwei Shen
   for them.
 
 1.6.0.1878e - 06/10/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Removed StripHTML from SearchHelper
 
 1.6.0.1878d - 06/10/2005
@@ -146,12 +151,12 @@ by Hongwei Shen
        those themes. I am very sure it is caused by zen theme's css setting.
 
 1.6.0.1878b - 05/10/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Portal Search module: Strip HTML tags for abstract.
 - FIX: SendThoughts now support UTF-8 in Subject and Body
 
 1.6.0.1878a - 05/10/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Resolved issue http://support.rainbowportal.net/jira/browse/RBP-722
  
 1.6.0.1878 - 04/10/2005
@@ -163,12 +168,12 @@ by Manu
 - FIX: Installed updated articles (installer never called)
 
 1.6.0.1877f - 04/10/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Minor fixes in csproj files for missing resx files
 - FIX: Emptied trash from _Rainbow/Documents directory
 
 1.6.0.1877e - 03/10/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Sync for MarinaTeq.Rainbow.Zen.dll and xslt ZenNavigation support files
 - FIX: Removed link to missing resx for LanguageSwitcher in Rainbow.duemetri.net.csproj
 
@@ -351,7 +356,7 @@ by Rob Siera
 - ENH: Filemanager: multiple extentions download finaly implemented
 
 1.5.0.1871h - 24/07/2005
-by danijel kecman
+by Danijel Kecman
 - ADD: Added Weather module based on Weather.com Web Service
 
 1.5.0.1871g - 23/07/2005 
@@ -409,19 +414,19 @@ by Rob Siera
 - FIX: Incorrect positioning of ControlTitleAfterControl producing invalid HTML
 
 1.5.0.1807f - 27/06/2005
-by danijel kecman
+by Danijel Kecman
 -ENH: Added icons for various file types in TreeIcons\icons\file_icons
 
 1.5.0.1807e - 23/06/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Fixed error in clean install in 1.1.7.1111Z.sql and install.xml for references to gone ThemeCacheManager
 
 1.5.0.1807d - 23/06/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Applied MaxLength for Passwords fields in Register.ascx and RegisterFull.ascx to 39 in length.
 
 1.5.0.1807c - 22/06/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Renamed Rainbow.Modules.SecureDocuments.csproj to SecureDocuments.csproj
 
 1.5.0.1807b - 21/06/2005
@@ -430,7 +435,7 @@ by José Viladiu
 - FIX: Replace references to ErrorHandler by new ErrorHandler.Publish method in modules
 
 1.5.0.1807a - 20/06/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Fixed references to Esperantus, Rainbow and Rainbow.Settings in Rainbow.Modules.MagicUrls.csproj
 - FIX: Added "EncryptPassword" key to web.config
 
@@ -487,7 +492,7 @@ by manu
 - FIX: Signin showing title again...
 
 1.5.0.1806 - 19/06/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Password upgrade work properly
 - ENH: Added support for plain and hashed password version via key in web.config "EncryptPassword" which if "true" upgrade db passwords to hash+salt.
 
@@ -507,11 +512,11 @@ by manu
 - FIX: Recycler installed by default as part of update process.
 
 1.5.0.1804a - 12/06/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: When new password is send to user, signin direct url generates double // after domain name http://domain//desktopmodules/...
 
 1.5.0.1804 - 12/06/2005
-by danijel kecman
+by Danijel Kecman
 - ENH: Hash+Salt for password. Password not plaint text in db anymore. Implemented Reset Password instead of Send Password. Existing password in db are upgraded to hash+salt during first logon.
 
 1.5.0.1803 - 11/06/2005
@@ -523,11 +528,11 @@ by John Bowen
 - ENH: Added support for Custom Module Settings at the User level.  (http://support.rainbowportal.net/confluence/x/3AU)
 
 1.5.0.1801b - 09/06/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: PortalSearch now works with Unicode. Resolved issue RBP-701.
 
 1.5.0.1801a - 09/06/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Removed files from Tabs module misplaced to the root of DesktopModules
 
 1.5.0.1801 - 06/06/2005
@@ -609,7 +614,7 @@ by José Viladiu
 - FIX: Remove ascx.resx files from solutions and svn
 
 1.5.0.1800b - 09/05/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Tabs solution removed from Rainbow.ModulesAll.sln
 - FIX: Missing resource reference from Rainbow.Modules.PortalsAdministration.csproj
 
@@ -687,7 +692,7 @@ by Manu
 - FIX: Minor fix on FolderDataType to log errors
 
 1.5.0.1792g - 27/03/2005
-by danijel kecman
+by Danijel Kecman
 - FIX: Articles and PostBack issue
 
 1.5.0.1792f - 18/03/2005
@@ -2342,7 +2347,7 @@ by Manu
 - FIX: Now theme images not provided are picked form Theme\Default theme
   This allows you to have lighter themes and you never need to copy default images.
   See Light theme for an example.
-- ENH: New language by danijel kecmanijel kecman, translation for serbian language 
+- ENH: New language by Danijel Kecmanijel kecman, translation for serbian language 
        in both versions, latin and cyril
 
 1.4.0.1771d - 23/08/2004
