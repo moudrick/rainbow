@@ -1,0 +1,32 @@
+If you are upgrading from an earlier version, make sure you have a
+backup of your existing database and files. At the minimum make sure
+you don't overwrite your Web.config file. The existing Web.config
+should work, but you might want to compare it with the new one and
+see what has been added (or removed). After upgrading you should
+open install/default.aspx and your database should be automatically
+updated.
+
+1. Unzip to a folder available from your web server.
+
+2. Modify the Web.config file you just unzipped. You must modify
+   connstr to valid values. The database pointed 
+   to by <connstr> can be an already existing database, or you can 
+   create a new database to install to.
+
+3. If YetAnotherForum.net isn't installed at the root of your web
+   server, make sure the files in the bin directory of the zip file
+   is copied to /bin on your web server. Also you'll need to add the
+   <root> element to the web.config to point to the correct URL.
+   Example: If you have install the forum in the directory "/forum/yaf/"
+   you will need to add <root>/forum/yaf/</root> to web.config.
+
+4. Open the file <YAFroot>install/default.aspx on your web site. If you
+   are testing on your local computer, under a directory called
+   YetAnotherForum.Net, the address should be:
+   http://localhost/yetanotherforum.net/install/
+
+5. Follow the directions and log in with the administration account
+   you created during the setup.
+
+If you have any questions, I'll be happy to help.
+support@yetanotherforum.net
