@@ -1,0 +1,163 @@
+***Level: INFO
+2006-11-29 11:11:37,953
+Appl.Uptime: 2033890 ms
+Logger: Rainbow
+Application Started: code version 1879
+Code version: 1879
+http://localhost/rainbow/Default.aspx
+***Level: FATAL
+2006-11-29 11:11:39,890
+Appl.Uptime: 2035828 ms
+Logger: Rainbow
+errorGUID: 800d33b45d36436c9218422b72ea72f8
+Code version: 1879
+http://localhost/rainbow/Default.aspx
+Rainbow.Configuration.CodeVersionException: Database version: 1880 Code version: 1879
+   at Rainbow.Global.Application_BeginRequest(Object sender, EventArgs e)
+   at System.Web.SyncEventExecutionStep.System.Web.HttpApplication+IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+***Level: INFO
+2006-11-29 11:14:01,546
+Appl.Uptime: 2177484 ms
+Logger: Rainbow
+Application Ended
+Code version: 0
+not available
+***Level: INFO
+2006-11-29 11:15:37,312
+Appl.Uptime: 2273250 ms
+Logger: Rainbow
+Application Started: code version 1879
+Code version: 1879
+http://localhost/rainbow/get_aspx_ver.aspx
+***Level: FATAL
+2006-11-29 11:15:38,937
+Appl.Uptime: 2274875 ms
+Logger: Rainbow
+errorGUID: 221131f5da1c427e8b9a57eb004cf766
+Code version: 1879
+http://localhost/rainbow/get_aspx_ver.aspx
+Rainbow.Configuration.CodeVersionException: Database version: 1880 Code version: 1879
+   at Rainbow.Global.Application_BeginRequest(Object sender, EventArgs e)
+   at System.Web.SyncEventExecutionStep.System.Web.HttpApplication+IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+***Level: INFO
+2006-11-29 11:17:13,187
+Appl.Uptime: 2369125 ms
+Logger: Rainbow
+Application Ended
+Code version: 0
+not available
+***Level: INFO
+2006-11-29 11:19:29,578
+Appl.Uptime: 2505515 ms
+Logger: Rainbow
+Application Started: code version 1880
+Code version: 1880
+http://localhost/rainbow/Default.aspx
+***Level: INFO
+2006-11-29 11:19:41,703
+Appl.Uptime: 2517640 ms
+Logger: Rainbow
+Application Ended
+Code version: 0
+not available
+***Level: INFO
+2006-11-29 11:19:57,109
+Appl.Uptime: 2533046 ms
+Logger: Rainbow
+Application Started: code version 1880
+Code version: 1880
+http://localhost/Rainbow/site/forum/291/forum.aspx
+***Level: FATAL
+2006-11-29 11:20:03,734
+Appl.Uptime: 2539671 ms
+Logger: Rainbow
+errorGUID: 36559f9fbb944049894d81f57b3a3eb6
+Code version: 1880
+http://localhost/Rainbow/DesktopDefault.aspx?forum&PageID=291
+System.Web.HttpUnhandledException: Exception of type System.Web.HttpUnhandledException was thrown. ---> System.Web.HttpException: The virtual path '/DesktopModules/Forum/pages/forum.ascx' maps to another application, which is not allowed.
+   at System.Web.HttpRequest.MapPath(String virtualPath, String baseVirtualDir, Boolean allowCrossAppMapping)
+   at System.Web.UI.TemplateControlParser.CompileAndGetParserCacheItem(String virtualPath, String inputFile, HttpContext context)
+   at System.Web.UI.TemplateControlParser.GetCompiledType(String virtualPath, String inputFile, HttpContext context)
+   at System.Web.UI.UserControlParser.GetCompiledUserControlType(String virtualPath, String inputFile, HttpContext context)
+   at System.Web.UI.TemplateControl.LoadControl(String virtualPath)
+   at yaf.Forum.Forum_Load(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.AddedControl(Control control, Int32 index)
+   at System.Web.UI.ControlCollection.Add(Control child)
+   at Rainbow.UI.WebControls.ZenLayout.CreateControlHierarchy()
+   at Rainbow.UI.WebControls.ZenLayout.CreateChildControls()
+   at System.Web.UI.Control.EnsureChildControls()
+   at System.Web.UI.Control.PreRenderRecursiveInternal()
+   at System.Web.UI.Control.PreRenderRecursiveInternal()
+   at System.Web.UI.Control.PreRenderRecursiveInternal()
+   at System.Web.UI.Control.PreRenderRecursiveInternal()
+   at System.Web.UI.Control.PreRenderRecursiveInternal()
+   at System.Web.UI.Control.PreRenderRecursiveInternal()
+   at System.Web.UI.Page.ProcessRequestMain()
+   --- End of inner exception stack trace ---
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain()
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at System.Web.CallHandlerExecutionStep.System.Web.HttpApplication+IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+***Level: INFO
+2006-11-29 11:20:40,281
+Appl.Uptime: 2576218 ms
+Logger: Rainbow
+Application Ended
+Code version: 0
+not available
+***Level: INFO
+2006-11-29 11:20:53,765
+Appl.Uptime: 2589703 ms
+Logger: Rainbow
+Application Started: code version 1880
+Code version: 1880
+http://localhost/Rainbow/site/forum/291/forum.aspx
+***Level: INFO
+2006-11-29 11:23:54,875
+Appl.Uptime: 2770812 ms
+Logger: Rainbow
+Application Ended
+Code version: 0
+not available
+***Level: INFO
+2006-11-29 11:24:08,281
+Appl.Uptime: 2784218 ms
+Logger: Rainbow
+Application Started: code version 1880
+Code version: 1880
+http://localhost/Rainbow/DesktopModules/YAF/install/Default.aspx
+***Level: INFO
+2006-11-29 11:31:37,812
+Appl.Uptime: 3233750 ms
+Logger: Rainbow
+Application Ended
+Code version: 0
+not available
+***Level: INFO
+2006-11-29 11:31:55,781
+Appl.Uptime: 3251718 ms
+Logger: Rainbow
+Application Started: code version 1880
+Code version: 1880
+http://localhost/Rainbow/site/forum/291/forum.aspx
+***Level: INFO
+2006-11-29 11:49:00,781
+Appl.Uptime: 4276718 ms
+Logger: Rainbow
+Application Ended
+Code version: 0
+not available
