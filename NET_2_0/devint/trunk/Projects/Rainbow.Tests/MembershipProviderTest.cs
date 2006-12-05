@@ -173,6 +173,7 @@ namespace Rainbow.Tests {
         }
 
         [Test]
+        [Ignore("//TODO: [moudrick] possibly this test should be removed or rewritten")]
         public void UserIsOnlineTimeWindowTest() {
             try {
                 int userIsOnlineTimeWindow = Membership.UserIsOnlineTimeWindow;
