@@ -49,8 +49,8 @@
   <property name="this.netFramework" value="net-2.0" />
   <property name="this.netFrameworkPath" value="${framework::get-framework-directory(this.netFramework)}"  />
 
-  <property name="const.dbUid" value="rainbow" /> <!-- TODO: make in readonly -->
-  <property name="const.dbPwd" value="rainbow_" /> <!-- TODO: make in readonly -->
+  <property name="const.dbUid" value="rainbow" readonly="true" />
+  <property name="const.dbPwd" value="rainbow_" readonly="true" />
 
   <!-- ***************************************** -->
   <!-- **  Public action sequence targets     ** -->
@@ -72,6 +72,14 @@
     <call target="this.fixup.webProjectDirSql2000" />
     <call target="this.fixup.webPrecompiledDirSql2005" />
 
+    <call target="this.tests.run" />
+  </target>
+
+  <target name="main.tests" >
+    <call target="this.config.update" />
+    <call target="this.prepare.webProjectDirSql2000" />
+    <call target="this.tests.prepare" />
+    <call target="this.rebuild" />
     <call target="this.tests.run" />
   </target>
 
@@ -300,9 +308,29 @@ http://localhost/${this.webPrecompiledDir}/${this.branch.encoded}/
     <property name="this.tests.dbInstance" value="(local)" />
     <property name="this.tests.dbInstance" value="(local)\SQLEXPRESS" />
     <property name="this.tests.databaseName" value="rbtests_${this.databaseName}" />
-    <property name="this.tests.databaseName" value="Rainbow2.0-dev_test" /> <!-- TODO: customize it in -->
     <property name="this.tests.sqlConnectionString" value="server=${this.tests.dbInstance};database=${this.tests.databaseName};uid=rainbow;pwd=rainbow_" />
-    <!-- TODO: implement creation -->
+
+    <!-- killQuery -->
+    <property name="sql.instanceLevelQuery" 
+      value="USE [master]; DECLARE @sql VARCHAR(8000); SET @sql = ''; SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '${this.tests.databaseName}'; EXEC(@sql)"/>
+    <call target="sql.instanceLevelOsql" />
+
+    <!-- dropQuery -->
+    <property name="sql.instanceLevelQuery" value="USE [master]; IF EXISTS (SELECT name FROM sys.databases WHERE name = N'${this.tests.databaseName}') DROP DATABASE [${this.tests.databaseName}]"/>
+    <call target="sql.instanceLevelOsql" />
+
+    <!-- createQuery -->
+    <property name="sql.instanceLevelQuery" value="USE [master]; CREATE DATABASE [${this.tests.databaseName}]"/>
+    <call target="sql.instanceLevelOsql" />
+
+    <!-- grantQuery -->
+    <property name="sql.instanceLevelQuery" value="USE [${this.tests.databaseName}]; CREATE USER [${const.dbUid}] FOR LOGIN [${const.dbUid}]; EXEC sp_addrolemember N'db_owner', N'${const.dbUid}';" />
+    <call target="sql.instanceLevelOsql" />
+  </target>
+
+  <target name="sql.instanceLevelOsql">
+    <echo message="${this::echo-property('sql.instanceLevelQuery')}" />
+    <exec verbose="true" program="osql" commandline="-S ${this.tests.dbInstance} -n -b -E -Q &quot;${sql.instanceLevelQuery}&quot;" />
   </target>
 
   <target name="this.tests.updateConfig">
@@ -320,8 +348,10 @@ http://localhost/${this.webPrecompiledDir}/${this.branch.encoded}/
   </target>
 
   <target name="this.tests.run">
-    <nunit2>
-
+    <nunit2 haltonfailure="false" failonerror="false">
+      <formatter type="Xml" usefile="true" extension=".xml" outputdir="${this.branch}" />
+      <formatter type="Plain" usefile="false" />
+      <test assemblyname="${this.branch}Projects\Rainbow.Tests\bin\Rainbow.Tests.dll" />
     </nunit2>
   </target>
 
