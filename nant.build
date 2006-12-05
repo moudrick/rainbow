@@ -348,39 +348,11 @@ http://localhost/${this.webPrecompiledDir}/${this.branch.encoded}/
   </target>
 
   <target name="this.tests.run">
-    <nunit2 haltonfailure="false" failonerror="false">
+    <nunit2 haltonfailure="true" failonerror="true">
       <formatter type="Xml" usefile="true" extension=".xml" outputdir="${this.branch}" />
       <formatter type="Plain" usefile="false" />
       <test assemblyname="${this.branch}Projects\Rainbow.Tests\bin\Rainbow.Tests.dll" />
     </nunit2>
-  </target>
-
-
-  <!-- *********************************************** -->
-  <!-- **  Custom action targets for branches       ** -->
-  <!-- *********************************************** -->
-
-  <target name="custom.MGF.trunk">
-<description>
-REMOVE THIS NODE FROM THE WEB.CONFIG
-        &lt;add name="AbtourSqlMembershipProvider" type="Abtour.Providers.MembershipProvider.AbtourSqlMembershipProvider, Abtour.P
-oviders.MembershipProvider" connectionStringName="Providers.ConnectionString" enablePasswordRetrieval="true" enablePasswordRese
-="true" requiresQuestionAndAnswer="false" applicationName="Rainbow" requiresUniqueEmail="true" passwordFormat="Clear" maxInvali
-PasswordAttempts="5" minRequiredPasswordLength="5" minRequiredNonalphanumericCharacters="0" passwordAttemptWindow="10" password
-trengthRegularExpression="" /&gt;
-</description>
-<description>
-Add the following XML transform
-***** SANDBOXES\MGF\TRUNK\WEBSITES\RAINBOW\web.config
-        &lt;databases&gt;
-          &lt;add name="Rainbow2.0-dev" connectionStringName="ConnectionString" /&gt;
-        &lt;/databases&gt;
-***** WEB.CONFIG
-        &lt;databases&gt;
-          &lt;add name="sandboxes$MGF$trunk$" connectionStringName="ConnectionString" /&gt;
-        &lt;/databases&gt;
-*****
-</description>
   </target>
 
   <!-- *********************************************** -->
