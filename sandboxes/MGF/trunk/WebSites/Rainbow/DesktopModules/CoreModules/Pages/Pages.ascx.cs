@@ -27,33 +27,27 @@ namespace Rainbow.Content.Web.Modules {
             get { return true; }
         }
 
-        /// <summary>
-        /// The Page_Load server event handler on this user control
-        /// is used to populate the current tab settings from the database
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load( object sender, EventArgs e ) {
+        protected override void OnLoad( EventArgs e ) {
+            base.OnLoad( e );
+
             portalPages = new PagesDB().GetPagesFlat( portalSettings.PortalID );
-            // Warning --> This method is used because the new not work
+            tabList.DataBind();
+
+            // Set the ImageUrl for controls from current Theme
+            upBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Up", "Up.gif" ).ImageUrl;
+            downBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Down", "Down.gif" ).ImageUrl;
+            DeleteBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Delete", "Delete.gif" ).ImageUrl;
+            EditBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Edit", "Edit.gif" ).ImageUrl;
 
             // If this is the first visit to the page, bind the tab data to the page listbox
             if ( !Page.IsPostBack ) {
-                // Set the ImageUrl for controls from current Theme
-                upBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Up", "Up.gif" ).ImageUrl;
-                downBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Down", "Down.gif" ).ImageUrl;
-                DeleteBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Delete", "Delete.gif" ).ImageUrl;
-                EditBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Edit", "Edit.gif" ).ImageUrl;
-                
-
-                tabList.DataBind();
 
                 // 2/27/2003 Start - Ender Malkoc
                 // After up or down button when the page is refreshed, 
                 // select the previously selected tab from the list.
-                if ( Request.Params["selectedtabID"] != null ) {
+                if ( Request.Params[ "selectedtabID" ] != null ) {
                     try {
-                        int tabIndex = Int32.Parse( Request.Params["selectedtabID"] );
+                        int tabIndex = Int32.Parse( Request.Params[ "selectedtabID" ] );
                         SelectPage( tabIndex );
                     }
                     catch {
@@ -78,7 +72,6 @@ namespace Rainbow.Content.Web.Modules {
             PageVersion.Order = 10;
             _baseSettings.Add( "TAB_VERSION", PageVersion );
         }
-
 
         /// <summary>
         /// The UpDown_Click server event handler on this page is
@@ -130,7 +123,7 @@ namespace Rainbow.Content.Web.Modules {
 
                     OrderPages();
 
-                    Response.Redirect( HttpUrlBuilder.BuildUrl( "~/DesktopDefault.aspx", PageID, "SelectedPageID=" + t.ID ) );
+                    Response.Redirect( HttpUrlBuilder.BuildUrl( PageID ) );
                 }
                 catch ( SqlException ) {
                     Controls.Add(
@@ -142,7 +135,16 @@ namespace Rainbow.Content.Web.Modules {
         }
 
         protected void EditBtn_Click( object sender, ImageClickEventArgs e ) {
-            this.OnUpdate( e );
+            // Redirect to edit page of currently selected tab
+            if ( tabList.SelectedIndex > -1 ) {
+                // Redirect to module settings page
+                PageItem t = ( PageItem )portalPages[ tabList.SelectedIndex ];
+
+                // added mID by Mario Endara <mario@softworks.com.uy> to support security check (2004/11/09)
+                Response.Redirect(
+                    HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Pages/PageLayout.aspx", t.ID,
+                                            "mID=" + ModuleID.ToString() + "&returntabid=" + Page.PageID ) );
+            }
         }
         
         /// <summary>
@@ -185,23 +187,6 @@ namespace Rainbow.Content.Web.Modules {
                         HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Pages/AddPage.aspx",
                                                 "mID=" + ModuleID.ToString() + "&returntabid=" + Page.PageID ) );
                 }
-            }
-        }
-
-        /// <summary>
-        /// The EditBtn_Click server event handler is used to edit
-        /// the selected tab within the portal
-        /// </summary>
-        protected override void OnEdit() {
-            // Redirect to edit page of currently selected tab
-            if ( tabList.SelectedIndex > -1 ) {
-                // Redirect to module settings page
-                PageItem t = ( PageItem )portalPages[tabList.SelectedIndex];
-
-                // added mID by Mario Endara <mario@softworks.com.uy> to support security check (2004/11/09)
-                Response.Redirect(
-                    HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Pages/PageLayout.aspx", t.ID,
-                                            "mID=" + ModuleID.ToString() + "&returntabid=" + Page.PageID ) );
             }
         }
 
@@ -275,19 +260,6 @@ namespace Rainbow.Content.Web.Modules {
         public override void Uninstall( IDictionary stateSaver ) {
             //Cannot be uninstalled
             throw new Exception( "This is an essential module that can be unistalled" );
-        }
-
-        #endregion
-
-        #region Web Form Designer generated code
-
-        /// <summary>
-        /// Raises OnInit Event
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnInit( EventArgs e ) {
-            this.Load += new EventHandler( this.Page_Load );
-            base.OnInit( e );
         }
 
         #endregion
