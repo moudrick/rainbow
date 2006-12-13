@@ -613,8 +613,6 @@
     <rewrites>
       <add name="RainbowUrl" provider="RainbowUrlRewritingProvider" rewriteUrlParameter="ExcludeFromClientQueryString" ignoreCase="true"
            handlerFlag="site" handlerSplitter="__" pageIdNoSplitter="true" friendlyPageName="DesktopDefault.aspx"  />
-      <add name="Rule1" virtualUrl="^~/i/(.*)" rewriteUrlParameter="ExcludeFromClientQueryString" 
-           destinationUrl="~/Portals/_Abtour/Images/$1" ignoreCase="true" />
     </rewrites>
   </urlrewritingnet>
 </configuration>
