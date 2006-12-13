@@ -25,9 +25,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Providers
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Providers.RainbowSqlSiteMapProvider", "Projects\Rainbow.Framework.Providers.RainbowSqlSiteMapProvider\Rainbow.Framework.Providers.RainbowSqlSiteMapProvider.csproj", "{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "http://localhost/Rainbow2.0-MGF/", "http://localhost/Rainbow2.0-MGF", "{8CFD7FE8-17FD-4AD8-9BC8-8A2E20A4D9E9}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "http://localhost/Rainbow2.0-MGF/", "http://localhost/Rainbow2.0-MGF", "{9B739E34-3300-41C7-93B7-7562BD5E1981}"
 	ProjectSection(WebsiteProperties) = preProject
-		ProjectReferences = "{552CCD6F-0A37-4366-9E3E-22B2A0221584}|Rainbow.Framework.Core.dll;{2C0213D4-00E2-4AD6-B82A-0D42ADAB3FAA}|Rainbow.Framework.Providers.RainbowSqlRoleProvider.dll;{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF}|Rainbow.Framework.Providers.RainbowSqlSiteMapProvider.dll;{D3A33CF8-2AEB-4E6E-AC2E-01C676F33616}|Rainbow.Framework.dll;{38DA41AC-51C1-4E4D-9610-5370309C2C1E}|Rainbow.Framework.Web.UI.WebControls.dll;{2F8EA798-5AD7-44BA-A062-8B5721D9CFD1}|Rainbow.Framework.Providers.RainbowSqlMembershipProvider.dll;"
+		ProjectReferences = "{552CCD6F-0A37-4366-9E3E-22B2A0221584}|Rainbow.Framework.Core.dll;{D3A33CF8-2AEB-4E6E-AC2E-01C676F33616}|Rainbow.Framework.dll;{10F33732-1ACA-492A-A737-DF8314CE7499}|Rainbow.UrlRewriting.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/Rainbow2.0-MGF"
 		Debug.AspNetCompiler.PhysicalPath = "WebSites\Rainbow\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Rainbow2.0-MGF\"
@@ -44,6 +44,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "http://localhost/Rainbow2.0
 		Release.AspNetCompiler.Debug = "False"
 		SlnRelativePath = "WebSites\Rainbow\"
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.UrlRewriting", "Projects\Rainbow.Framework.UrlRewriting\Rainbow.Framework.UrlRewriting.csproj", "{10F33732-1ACA-492A-A737-DF8314CE7499}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,16 +177,26 @@ Global
 		{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{8CFD7FE8-17FD-4AD8-9BC8-8A2E20A4D9E9}.Debug|.NET.ActiveCfg = Debug|.NET
-		{8CFD7FE8-17FD-4AD8-9BC8-8A2E20A4D9E9}.Debug|.NET.Build.0 = Debug|.NET
-		{8CFD7FE8-17FD-4AD8-9BC8-8A2E20A4D9E9}.Debug|Any CPU.ActiveCfg = Debug|.NET
-		{8CFD7FE8-17FD-4AD8-9BC8-8A2E20A4D9E9}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
-		{8CFD7FE8-17FD-4AD8-9BC8-8A2E20A4D9E9}.Debug|Mixed Platforms.Build.0 = Debug|.NET
-		{8CFD7FE8-17FD-4AD8-9BC8-8A2E20A4D9E9}.Release|.NET.ActiveCfg = Debug|.NET
-		{8CFD7FE8-17FD-4AD8-9BC8-8A2E20A4D9E9}.Release|.NET.Build.0 = Debug|.NET
-		{8CFD7FE8-17FD-4AD8-9BC8-8A2E20A4D9E9}.Release|Any CPU.ActiveCfg = Debug|.NET
-		{8CFD7FE8-17FD-4AD8-9BC8-8A2E20A4D9E9}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
-		{8CFD7FE8-17FD-4AD8-9BC8-8A2E20A4D9E9}.Release|Mixed Platforms.Build.0 = Debug|.NET
+		{9B739E34-3300-41C7-93B7-7562BD5E1981}.Debug|.NET.ActiveCfg = Debug|.NET
+		{9B739E34-3300-41C7-93B7-7562BD5E1981}.Debug|.NET.Build.0 = Debug|.NET
+		{9B739E34-3300-41C7-93B7-7562BD5E1981}.Debug|Any CPU.ActiveCfg = Debug|.NET
+		{9B739E34-3300-41C7-93B7-7562BD5E1981}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
+		{9B739E34-3300-41C7-93B7-7562BD5E1981}.Debug|Mixed Platforms.Build.0 = Debug|.NET
+		{9B739E34-3300-41C7-93B7-7562BD5E1981}.Release|.NET.ActiveCfg = Debug|.NET
+		{9B739E34-3300-41C7-93B7-7562BD5E1981}.Release|.NET.Build.0 = Debug|.NET
+		{9B739E34-3300-41C7-93B7-7562BD5E1981}.Release|Any CPU.ActiveCfg = Debug|.NET
+		{9B739E34-3300-41C7-93B7-7562BD5E1981}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
+		{9B739E34-3300-41C7-93B7-7562BD5E1981}.Release|Mixed Platforms.Build.0 = Debug|.NET
+		{10F33732-1ACA-492A-A737-DF8314CE7499}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{10F33732-1ACA-492A-A737-DF8314CE7499}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10F33732-1ACA-492A-A737-DF8314CE7499}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10F33732-1ACA-492A-A737-DF8314CE7499}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{10F33732-1ACA-492A-A737-DF8314CE7499}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{10F33732-1ACA-492A-A737-DF8314CE7499}.Release|.NET.ActiveCfg = Release|Any CPU
+		{10F33732-1ACA-492A-A737-DF8314CE7499}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10F33732-1ACA-492A-A737-DF8314CE7499}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10F33732-1ACA-492A-A737-DF8314CE7499}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{10F33732-1ACA-492A-A737-DF8314CE7499}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

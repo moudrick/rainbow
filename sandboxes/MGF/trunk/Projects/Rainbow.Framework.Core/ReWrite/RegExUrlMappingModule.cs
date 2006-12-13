@@ -16,7 +16,7 @@ namespace Rainbow.Framework.ReWrite
         public override void Rewrite(string requestedPath, HttpApplication app)
         {
             RegExUrlMappingConfigHandler config =
-                ((RegExUrlMappingConfigHandler) (ConfigurationManager.GetSection("system.web/RegExUrlMapping")));
+                ((RegExUrlMappingConfigHandler) (ConfigurationManager.GetSection("RegExUrlMapping")));
 
             string pathOld;
 
@@ -24,9 +24,9 @@ namespace Rainbow.Framework.ReWrite
 
             if (config.Enabled())
             {
-                pathOld = app.Request.RawUrl;
+                pathOld = app.Request.Url.ToString();
 
-                string requestedPage = app.Request.RawUrl.ToLower();
+                string requestedPage = app.Request.Url.ToString().ToLower();
 
                 if (requestedPage.IndexOf("?") > -1)
                 {
@@ -68,7 +68,8 @@ namespace Rainbow.Framework.ReWrite
                     {
                         if (pathOld.IndexOf("?") > -1)
                         {
-                            pathNew += pathOld.Substring(pathOld.Length - pathOld.IndexOf("?"), pathOld.Length);
+                            //pathNew += pathOld.Substring(pathOld.Length - pathOld.IndexOf("?"), pathOld.Length);
+                            pathNew += pathOld.Substring( pathOld.IndexOf( "?" ) );
                         }
                     }
 

@@ -8,12 +8,13 @@
     <section name="BankGateways" type="System.Configuration.NameValueSectionHandler, System, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, Custom=null" requirePermission="false" />
     <section name="ShippingObjects" type="System.Configuration.NameValueSectionHandler, System, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, Custom=null" requirePermission="false" />
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" requirePermission="false" />
-    <section name="RegExUrlMapping" type="Rainbow.Framework.ReWrite.RegExUrlMappingConfigHandler" />
     <sectionGroup name="providers">
       <section name="log" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework.Core" requirePermission="false" />
       <section name="urlBuilder" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework.Core" requirePermission="false" />
       <section name="geographic" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework.Core" requirePermission="false"/>
     </sectionGroup>
+    <section name="urlrewritingnet" restartOnExternalChanges="true" requirePermission ="false" 
+         type="UrlRewritingNet.Configuration.UrlRewriteSection, UrlRewritingNet.UrlRewriter" />
     <sectionGroup name="microsoft.web" type="Microsoft.Web.Configuration.MicrosoftWebSectionGroup, Microsoft.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <sectionGroup name="scripting" type="Microsoft.Web.Configuration.ScriptingSectionGroup, Microsoft.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
         <sectionGroup name="webServices" type="Microsoft.Web.Configuration.ScriptingWebServicesSectionGroup, Microsoft.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -46,13 +47,6 @@
       </excludedPaths>
     </httpCompress>
   </blowery.web>
-  <RegExUrlMapping enabled="true">
-    <!-- The first one is a trick, to exit the checking immediatly for performance  -->
-    <add url="~/(.*)default\.aspx" mappedUrl="~/$1default.aspx" />
-    <!-- 
-    <add url="~/(.*).aspx" mappedUrl="~/Default.aspx?&amp;=chris"/>
-    -->
-  </RegExUrlMapping>
   <connectionStrings>
     <clear />
     <!-- 
@@ -152,6 +146,14 @@
     <add key="DefaultDOCTYPE" value="&lt;!DOCTYPE HTML PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd' &gt;" />
     <add key="PortalSettingCaching" value="0" />
     <add key="ModuleOverrideCache" value="0" />
+
+    <add key="HandlerDefaultSplitter" value="__" />
+    <add key="HandlerFlag" value="site"  />
+    <add key="UseAlias" value="false" />
+    <add key="LangInURL" value="false" />
+    <add key="FriendlyPageName" value="Default.aspx" />
+    <add key="PageIdNoSplitter" value="false" />
+    
   </appSettings>
   <system.web>
     <anonymousIdentification enabled="true" />
@@ -352,10 +354,8 @@
     <httpModules>
       <add name="WebResourceCompression" type="Microsoft.Web.Handlers.WebResourceCompressionModule, Microsoft.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
       <add name="ScriptModule" type="Microsoft.Web.UI.ScriptModule, Microsoft.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
+      <add name="UrlRewriteModule" type="UrlRewritingNet.Web.UrlRewriteModule, UrlRewritingNet.UrlRewriter" />
       <!--<add name="CompressionModule" type="blowery.Web.HttpCompress.HttpModule, blowery.web.HttpCompress"/>-->
-      <!-- 
-      <add type="Rainbow.Framework.ReWrite.RegExUrlMappingModule" name="Rainbow.Framework.Core"/>
-      -->
     </httpModules>
     <!-- Session state -->
     <sessionState mode="InProc" />
@@ -606,4 +606,15 @@
       </providers>
     </geographic>
   </providers>
+  <urlrewritingnet xmlns="http://www.urlrewriting.net/schemas/config/2006/07" >
+    <providers>
+      <add name="RainbowUrlRewritingProvider" type="Rainbow.Framework.UrlRewriting.RainbowUrlRewritingProvider, Rainbow.Framework.UrlRewriting"/>
+    </providers>
+    <rewrites>
+      <add name="RainbowUrl" provider="RainbowUrlRewritingProvider" rewriteUrlParameter="ExcludeFromClientQueryString" ignoreCase="true"
+           handlerFlag="site" handlerSplitter="__" pageIdNoSplitter="true" friendlyPageName="DesktopDefault.aspx"  />
+      <add name="Rule1" virtualUrl="^~/i/(.*)" rewriteUrlParameter="ExcludeFromClientQueryString" 
+           destinationUrl="~/Portals/_Abtour/Images/$1" ignoreCase="true" />
+    </rewrites>
+  </urlrewritingnet>
 </configuration>

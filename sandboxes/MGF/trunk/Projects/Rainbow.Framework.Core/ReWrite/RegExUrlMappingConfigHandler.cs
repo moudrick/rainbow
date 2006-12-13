@@ -51,11 +51,12 @@ namespace Rainbow.Framework.ReWrite
 
             foreach (XmlNode x in _Section.ChildNodes)
             {
-                oReg = new Regex(x.Attributes.GetNamedItem("url").Value.ToLower());
+                if ( x.NodeType == XmlNodeType.Element ) {
+                    oReg = new Regex( x.Attributes.GetNamedItem( "url" ).Value.ToLower() );
 
-                if (oReg.Match(url).Success)
-                {
-                    return oReg.Replace(url, x.Attributes.GetNamedItem("mappedUrl").Value.ToLower());
+                    if ( oReg.Match( url ).Success ) {
+                        return oReg.Replace( url, x.Attributes.GetNamedItem( "mappedUrl" ).Value.ToLower() );
+                    }
                 }
             }
 
