@@ -6,6 +6,7 @@ using System.Xml;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
+using System.Collections.Generic;
 
 namespace Rainbow.Framework.Site.Data
 {
@@ -667,8 +668,7 @@ namespace Rainbow.Framework.Site.Data
         /// <returns>
         /// A System.Data.SqlClient.SqlDataReader value...
         /// </returns>
-        // TODO --> [Obsolete("Replace me")]
-        public SqlDataReader GetPagesParent(int portalID, int pageID)
+        public IList<PageItem> GetPagesParent(int portalID, int pageID)
         {
             // Create Instance of Connection and Command Object
             SqlConnection myConnection = Config.SqlConnectionString;
@@ -684,8 +684,17 @@ namespace Rainbow.Framework.Site.Data
             myCommand.Parameters.Add(parameterPageID);
             // Execute the command
             myConnection.Open();
-            SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            // Return the datareader 
+            SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
+
+            IList<PageItem> result = new List<PageItem>();
+
+            while ( dr.Read() ) {
+                PageItem item = new PageItem();
+                item.ID = Convert.ToInt32( dr[ "PageID" ] );
+                item.Name = ( string )dr[ "PageName" ];
+                result.Add( item );
+            }
+
             return result;
         }
     }
