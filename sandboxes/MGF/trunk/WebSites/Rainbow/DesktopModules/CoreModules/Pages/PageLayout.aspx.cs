@@ -52,32 +52,44 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
-        {
+        protected override void OnLoad( EventArgs e ) {
+            base.OnLoad( e );
+
+            //Confirm delete
+            if ( !( ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) ) {
+                string[] s = { "CONFIRM_DELETE" };
+                ClientScript.RegisterClientScriptBlock( this.GetType(), "confirmDelete",
+                                                       PortalSettings.GetStringResource(
+                                                           "CONFIRM_DELETE_SCRIPT", s ) );
+            }
+
+            LeftDeleteBtn.Attributes.Add( "OnClick", "return confirmDelete()" );
+            RightDeleteBtn.Attributes.Add( "OnClick", "return confirmDelete()" );
+            ContentDeleteBtn.Attributes.Add( "OnClick", "return confirmDelete()" );
+
             // If first visit to the page, update all entries
-            if (!Page.IsPostBack)
-            {
+            if ( !Page.IsPostBack ) {
                 msgError.Visible = false;
 
                 // Set images for buttons from current theme
-                LeftUpBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Up", "Up.gif").ImageUrl;
-                LeftRightBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Right", "Right.gif").ImageUrl;
-                LeftDownBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Down", "Down.gif").ImageUrl;
-                LeftEditBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Edit", "Edit.gif").ImageUrl;
-                LeftDeleteBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl;
+                LeftUpBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Up", "Up.gif" ).ImageUrl;
+                LeftRightBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Right", "Right.gif" ).ImageUrl;
+                LeftDownBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Down", "Down.gif" ).ImageUrl;
+                LeftEditBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Edit", "Edit.gif" ).ImageUrl;
+                LeftDeleteBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Delete", "Delete.gif" ).ImageUrl;
 
-                ContentUpBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Up", "Up.gif").ImageUrl;
-                ContentLeftBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Left", "Left.gif").ImageUrl;
-                ContentRightBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Right", "Right.gif").ImageUrl;
-                ContentDownBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Down", "Down.gif").ImageUrl;
-                ContentEditBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Edit", "Edit.gif").ImageUrl;
-                ContentDeleteBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl;
+                ContentUpBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Up", "Up.gif" ).ImageUrl;
+                ContentLeftBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Left", "Left.gif" ).ImageUrl;
+                ContentRightBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Right", "Right.gif" ).ImageUrl;
+                ContentDownBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Down", "Down.gif" ).ImageUrl;
+                ContentEditBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Edit", "Edit.gif" ).ImageUrl;
+                ContentDeleteBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Delete", "Delete.gif" ).ImageUrl;
 
-                RightUpBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Up", "Up.gif").ImageUrl;
-                RightLeftBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Left", "Left.gif").ImageUrl;
-                RightDownBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Down", "Down.gif").ImageUrl;
-                RightEditBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Edit", "Edit.gif").ImageUrl;
-                RightDeleteBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl;
+                RightUpBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Up", "Up.gif" ).ImageUrl;
+                RightLeftBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Left", "Left.gif" ).ImageUrl;
+                RightDownBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Down", "Down.gif" ).ImageUrl;
+                RightEditBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Edit", "Edit.gif" ).ImageUrl;
+                RightDeleteBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Delete", "Delete.gif" ).ImageUrl;
 
                 BindData();
 
@@ -86,26 +98,23 @@ namespace Rainbow.Admin
                 // 2/27/2003 Start - Ender Malkoc
                 // After up or down button when the page is refreshed, select the previously selected
                 // tab from the list.
-                if (Request.Params["selectedmodid"] != null)
-                {
-                    try
-                    {
-                        int modIndex = Int32.Parse(Request.Params["selectedmodid"]);
-                        SelectModule(leftPane, GetModules("LeftPane"), modIndex);
-                        SelectModule(contentPane, GetModules("ContentPane"), modIndex);
-                        SelectModule(rightPane, GetModules("RightPane"), modIndex);
+                if ( Request.Params[ "selectedmodid" ] != null ) {
+                    try {
+                        int modIndex = Int32.Parse( Request.Params[ "selectedmodid" ] );
+                        SelectModule( leftPane, GetModules( "LeftPane" ), modIndex );
+                        SelectModule( contentPane, GetModules( "ContentPane" ), modIndex );
+                        SelectModule( rightPane, GetModules( "RightPane" ), modIndex );
                     }
-                    catch (Exception ex)
-                    {
-                        ErrorHandler.Publish(LogLevel.Error,
+                    catch ( Exception ex ) {
+                        ErrorHandler.Publish( LogLevel.Error,
                                              "After up or down button when the page is refreshed, select the previously selected tab from the list.",
-                                             ex);
+                                             ex );
                     }
                 }
                 // 2/27/2003 end - Ender Malkoc
             }
             // Binds custom settings to table
-            EditTable.DataSource = new SortedList(pageSettings);
+            EditTable.DataSource = new SortedList( pageSettings );
             EditTable.DataBind();
         }
 
@@ -207,7 +216,7 @@ namespace Rainbow.Admin
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         [History("bja@reedtek.com", "2003/05/16", "Added extra parameter for collpasable window")]
         [History("john.mandia@whitelightsolutions.com", "2003/05/24", "Added extra parameter for ShowEverywhere")]
-        private void AddModuleToPane_Click(Object sender, EventArgs e)
+        protected void AddModuleToPane_Click(Object sender, EventArgs e)
         {
             // All new modules go to the end of the contentpane
             ModuleItem m = new ModuleItem();
@@ -258,7 +267,7 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.Web.UI.ImageClickEventArgs"/> instance containing the event data.</param>
-        private void UpDown_Click(Object sender, ImageClickEventArgs e)
+        protected void UpDown_Click(Object sender, ImageClickEventArgs e)
         {
             string cmd = ((ImageButton) sender).CommandName;
             string pane = ((ImageButton) sender).CommandArgument;
@@ -321,7 +330,7 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.Web.UI.ImageClickEventArgs"/> instance containing the event data.</param>
-        private void RightLeft_Click(Object sender, ImageClickEventArgs e)
+        protected void RightLeft_Click(Object sender, ImageClickEventArgs e)
         {
             string sourcePane = ((ImageButton) sender).Attributes["sourcepane"];
             string targetPane = ((ImageButton) sender).Attributes["targetpane"];
@@ -432,7 +441,7 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void PageSettings_Change(Object sender, EventArgs e)
+        protected void PageSettings_Change(Object sender, EventArgs e)
         {
             // Ensure that settings are saved
             SavePageData();
@@ -468,7 +477,7 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.Web.UI.ImageClickEventArgs"/> instance containing the event data.</param>
-        private void EditBtn_Click(Object sender, ImageClickEventArgs e)
+        protected void EditBtn_Click(Object sender, ImageClickEventArgs e)
         {
             string pane = ((ImageButton) sender).CommandArgument;
             ListBox _listbox = (ListBox) Page.FindControl(pane);
@@ -497,7 +506,7 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.Web.UI.ImageClickEventArgs"/> instance containing the event data.</param>
-        private void DeleteBtn_Click(Object sender, ImageClickEventArgs e)
+        protected void DeleteBtn_Click(Object sender, ImageClickEventArgs e)
         {
             string pane = ((ImageButton) sender).CommandArgument;
             ListBox _listbox = (ListBox) Page.FindControl(pane);
@@ -533,22 +542,24 @@ namespace Rainbow.Admin
         /// layout panes with the current configuration information
         /// </summary>
         private void BindData() {
-            PageSettings tab = portalSettings.ActivePage;
+            PageSettings page = portalSettings.ActivePage;
 
             // Populate Page Names, etc.
-            tabName.Text = tab.PageName;
-            mobilePageName.Text = tab.MobilePageName;
-            showMobile.Checked = tab.ShowMobile;
+            tabName.Text = page.PageName;
+            mobilePageName.Text = page.MobilePageName;
+            showMobile.Checked = page.ShowMobile;
 
             // Populate the "ParentPage" Data
             PagesDB t = new PagesDB();
-            SqlDataReader dr = t.GetPagesParent( portalSettings.PortalID, PageID );
-            parentPage.DataSource = dr;
+            IList<PageItem> items = t.GetPagesParent( portalSettings.PortalID, PageID );
+            parentPage.DataSource = items;
             parentPage.DataBind();
-            dr.Close(); //by Manu, fixed bug 807858
 
-            if ( parentPage.Items.FindByValue( tab.ParentPageID.ToString() ) != null )
-                parentPage.Items.FindByValue( tab.ParentPageID.ToString() ).Selected = true;
+            if ( parentPage.Items.FindByValue( page.ParentPageID.ToString() ) != null ) {
+                //parentPage.Items.FindByValue( tab.ParentPageID.ToString() ).Selected = true;
+
+                parentPage.SelectedValue = page.ParentPageID.ToString();
+            }
 
             // Translate
             if ( parentPage.Items.FindByText( " ROOT_LEVEL" ) != null )
@@ -563,33 +574,12 @@ namespace Rainbow.Admin
             // Clear existing items in checkboxlist
             authRoles.Items.Clear();
 
-            ListItem allItem = new ListItem();
-            allItem.Text = "All Users";
-
-            if ( tab.AuthorizedRoles.LastIndexOf( "All Users" ) > -1 ) {
-                allItem.Selected = true;
-            }
-
-            authRoles.Items.Add( allItem );
-
-            // Authenticated user role added
-            // 15 nov 2002 - by manudea
-            ListItem authItem = new ListItem();
-            authItem.Text = "Authenticated Users";
-
-            if ( tab.AuthorizedRoles.LastIndexOf( "Authenticated Users" ) > -1 ) {
-                authItem.Selected = true;
-            }
-
-            authRoles.Items.Add( authItem );
-            // end authenticated user role added
-
             foreach ( RainbowRole role in roles ) {
                 ListItem item = new ListItem();
                 item.Text = role.Name;
                 item.Value = role.Id.ToString();
 
-                if ( ( tab.AuthorizedRoles.LastIndexOf( item.Text ) ) > -1 )
+                if ( ( page.AuthorizedRoles.LastIndexOf( item.Text ) ) > -1 )
                     item.Selected = true;
 
                 authRoles.Items.Add( item );
@@ -680,60 +670,9 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:Rainbow.Framework.Web.UI.WebControls.SettingsTableEventArgs"/> instance containing the event data.</param>
-        private void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
+        protected void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
         {
             PageSettings.UpdatePageSettings(PageID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
-
-        #region Web Form Designer generated code
-
-        /// <summary>
-        /// Raises the Init event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data.</param>
-        protected override void OnInit(EventArgs e)
-        {
-            this.tabName.TextChanged += new EventHandler(this.PageSettings_Change);
-            this.authRoles.SelectedIndexChanged += new EventHandler(this.PageSettings_Change);
-            this.showMobile.CheckedChanged += new EventHandler(this.PageSettings_Change);
-            this.mobilePageName.TextChanged += new EventHandler(this.PageSettings_Change);
-            this.AddModuleBtn.Click += new EventHandler(this.AddModuleToPane_Click);
-            this.LeftUpBtn.Click += new ImageClickEventHandler(this.UpDown_Click);
-            this.LeftRightBtn.Click += new ImageClickEventHandler(this.RightLeft_Click);
-            this.LeftDownBtn.Click += new ImageClickEventHandler(this.UpDown_Click);
-            this.LeftEditBtn.Click += new ImageClickEventHandler(this.EditBtn_Click);
-            this.LeftDeleteBtn.Click += new ImageClickEventHandler(this.DeleteBtn_Click);
-            this.ContentUpBtn.Click += new ImageClickEventHandler(this.UpDown_Click);
-            this.ContentLeftBtn.Click += new ImageClickEventHandler(this.RightLeft_Click);
-            this.ContentRightBtn.Click += new ImageClickEventHandler(this.RightLeft_Click);
-            this.ContentDownBtn.Click += new ImageClickEventHandler(this.UpDown_Click);
-            this.ContentEditBtn.Click += new ImageClickEventHandler(this.EditBtn_Click);
-            this.ContentDeleteBtn.Click += new ImageClickEventHandler(this.DeleteBtn_Click);
-            this.RightUpBtn.Click += new ImageClickEventHandler(this.UpDown_Click);
-            this.RightLeftBtn.Click += new ImageClickEventHandler(this.RightLeft_Click);
-            this.RightDownBtn.Click += new ImageClickEventHandler(this.UpDown_Click);
-            this.RightEditBtn.Click += new ImageClickEventHandler(this.EditBtn_Click);
-            this.RightDeleteBtn.Click += new ImageClickEventHandler(this.DeleteBtn_Click);
-            this.EditTable.UpdateControl +=
-                new Rainbow.Framework.Web.UI.WebControls.UpdateControlEventHandler(this.EditTable_UpdateControl);
-            this.Load += new EventHandler(this.Page_Load);
-
-            //Confirm delete
-            if (!(ClientScript.IsClientScriptBlockRegistered("confirmDelete")))
-            {
-                string[] s = {"CONFIRM_DELETE"};
-                ClientScript.RegisterClientScriptBlock(this.GetType(), "confirmDelete",
-                                                       PortalSettings.GetStringResource(
-                                                           "CONFIRM_DELETE_SCRIPT", s));
-            }
-
-            LeftDeleteBtn.Attributes.Add("OnClick", "return confirmDelete()");
-            RightDeleteBtn.Attributes.Add("OnClick", "return confirmDelete()");
-            ContentDeleteBtn.Attributes.Add("OnClick", "return confirmDelete()");
-
-            base.OnInit(e);
-        }
-
-        #endregion
     }
 }

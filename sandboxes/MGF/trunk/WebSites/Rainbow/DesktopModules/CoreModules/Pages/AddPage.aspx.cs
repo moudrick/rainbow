@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Data.SqlClient;
 using System.Security.Principal;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -164,10 +163,14 @@ namespace Rainbow.Admin
 
             // Populate the "ParentPage" Data
             PagesDB t = new PagesDB();
-            SqlDataReader dr = t.GetPagesParent( portalSettings.PortalID, PageID );
-            parentPage.DataSource = dr;
+            IList<PageItem> items = t.GetPagesParent( portalSettings.PortalID, PageID );
+            parentPage.DataSource = items;
             parentPage.DataBind();
-            dr.Close(); //by Manu, fixed bug 807858
+
+            // Translate
+            if ( parentPage.Items.FindByText( " ROOT_LEVEL" ) != null )
+                parentPage.Items.FindByText( " ROOT_LEVEL" ).Text =
+                    General.GetString( "ROOT_LEVEL", "Root Level", parentPage );
 
             // Populate checkbox list with all security roles for this portal
             // and "check" the ones already configured for this tab
@@ -176,27 +179,6 @@ namespace Rainbow.Admin
 
             // Clear existing items in checkboxlist
             authRoles.Items.Clear();
-
-            ListItem allItem = new ListItem();
-            allItem.Text = "All Users";
-
-            if ( tab.AuthorizedRoles.LastIndexOf( "All Users" ) > -1 ) {
-                allItem.Selected = true;
-            }
-
-            authRoles.Items.Add( allItem );
-
-            // Authenticated user role added
-            // 15 nov 2002 - by manudea
-            ListItem authItem = new ListItem();
-            authItem.Text = "Authenticated Users";
-
-            if ( tab.AuthorizedRoles.LastIndexOf( "Authenticated Users" ) > -1 ) {
-                authItem.Selected = true;
-            }
-
-            authRoles.Items.Add( authItem );
-            // end authenticated user role added
 
             foreach ( RainbowRole role in roles ) {
                 ListItem item = new ListItem();

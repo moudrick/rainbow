@@ -22,8 +22,8 @@
                                     <table cellpadding="0" cellspacing="0" width="100%">
                                         <tr>
                                             <td align="left" class="Head">
-                                                <rbfwebui:localize id="tab_name" runat="server" text="Page Layouts" textkey="AM_TABNAME">
-                                                </rbfwebui:localize></td>
+                                                <rbfwebui:localize id="tab_name" runat="server" text="Page Layouts" textkey="AM_TABNAME" />
+                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -39,7 +39,7 @@
                                     </rbfwebui:localize></td>
                                 <td colspan="3">
                                     <asp:textbox id="tabName" runat="server" cssclass="NormalTextBox" maxlength="50"
-                                        width="300"></asp:textbox></td>
+                                        width="300" OnTextChanged="PageSettings_Change" /></td>
                             </tr>
                             <tr>
                                 <td class="Normal" nowrap="nowrap">
@@ -48,8 +48,7 @@
                                 </td>
                                 <td colspan="3">
                                     <asp:checkboxlist id="authRoles" runat="server" cssclass="Normal" repeatcolumns="2"
-                                        width="300">
-                                    </asp:checkboxlist>
+                                        width="300" OnSelectedIndexChanged="PageSettings_Change" />
                                 </td>
                             </tr>
                             <tr>
@@ -57,8 +56,8 @@
                                     <rbfwebui:localize id="tab_parent" runat="server" text="Parent Page" textkey="TAB_PARENT">
                                     </rbfwebui:localize></td>
                                 <td colspan="3">
-                                    <asp:dropdownlist id="parentPage" runat="server" cssclass="NormalTextBox" datatextfield="PageName"
-                                        datavaluefield="PageID" width="300px">
+                                    <asp:dropdownlist id="parentPage" runat="server" cssclass="NormalTextBox" width="300px" 
+                                        DataTextField="Name" DataValueField="ID">
                                     </asp:dropdownlist><rbfwebui:label id="lblErrorNotAllowed" runat="server" cssclass="Error"
                                         enableviewstate="False" textkey="ERROR_NOT_ALLOWED_PARENT" visible="False">Not allowed to choose that parent</rbfwebui:label></td>
                             </tr>
@@ -75,14 +74,14 @@
                                     <rbfwebui:localize id="show_mobile" runat="server" text="Show to mobile users" textkey="AM_SHOWMOBILE">
                                     </rbfwebui:localize></td>
                                 <td colspan="3">
-                                    <asp:checkbox id="showMobile" runat="server" cssclass="Normal" /></td>
+                                    <asp:checkbox id="showMobile" runat="server" cssclass="Normal" OnCheckedChanged="PageSettings_Change" /></td>
                             </tr>
                             <tr>
                                 <td class="Normal" nowrap="nowrap">
                                     <rbfwebui:localize id="mobiletab" runat="server" text="Mobile Page Name" textkey="AM_MOBILETAB">
                                     </rbfwebui:localize></td>
                                 <td colspan="3">
-                                    <asp:textbox id="mobilePageName" runat="server" cssclass="NormalTextBox" width="300"></asp:textbox></td>
+                                    <asp:textbox id="mobilePageName" runat="server" cssclass="NormalTextBox" width="300" OnTextChanged="PageSettings_Change" /></td>
                             </tr>
                             <tr>
                                 <td colspan="4">
@@ -147,7 +146,7 @@
                                 </td>
                                 <td colspan="3">
                                     <rbfwebui:linkbutton id="AddModuleBtn" runat="server" cssclass="CommandButton" text="Add to 'Organize Modules' Below"
-                                        textkey="AM_ADDMODULEBELOW"></rbfwebui:linkbutton></td>
+                                        textkey="AM_ADDMODULEBELOW" OnClick="AddModuleToPane_Click" /></td>
                             </tr>
                             <tr>
                                 <td>
@@ -177,20 +176,20 @@
                                                                 datatextfield="Title" datavaluefield="ID" rows="8" width="110"></asp:listbox></td>
                                                         <td nowrap="nowrap" valign="top">
                                                             <rbfwebui:imagebutton id="LeftUpBtn" runat="server" commandargument="leftPane" commandname="up"
-                                                                text="Move Up" textkey="MOVEUP" /><br/>
+                                                                text="Move Up" textkey="MOVEUP" OnClick="UpDown_Click" /><br/>
                                                             <rbfwebui:imagebutton id="LeftRightBtn" runat="server" commandname="right" sourcepane="leftPane"
-                                                                targetpane="contentPane" text="Move Right" textkey="MOVERIGHT" /><br/>
+                                                                targetpane="contentPane" text="Move Right" textkey="MOVERIGHT" OnClick="RightLeft_Click" /><br/>
                                                             <rbfwebui:imagebutton id="LeftDownBtn" runat="server" commandargument="leftPane"
-                                                                commandname="down" text="Move Down" textkey="MOVEDOWN" />&nbsp;&nbsp;
+                                                                commandname="down" text="Move Down" textkey="MOVEDOWN" OnClick="UpDown_Click" />&nbsp;&nbsp;
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td nowrap="nowrap" valign="bottom">
                                                             <rbfwebui:imagebutton id="LeftEditBtn" runat="server" commandargument="leftPane"
-                                                                commandname="edit" text="Edit" textkey="EDIT" /><br/>
+                                                                commandname="edit" text="Edit" textkey="EDIT" OnClick="EditBtn_Click" /><br/>
                                                             <br/>
                                                             <rbfwebui:imagebutton id="LeftDeleteBtn" runat="server" commandargument="leftPane"
-                                                                commandname="delete" text="Delete" textkey="DELETE" /></td>
+                                                                commandname="delete" text="Delete" textkey="DELETE" OnClick="DeleteBtn_Click"/></td>
                                                     </tr>
                                                 </table>
                                             </td>
@@ -214,22 +213,22 @@
                                                                 datatextfield="Title" datavaluefield="ID" rows="8" width="170"></asp:listbox></td>
                                                         <td nowrap="nowrap" valign="top">
                                                             <rbfwebui:imagebutton id="ContentUpBtn" runat="server" commandargument="contentPane"
-                                                                commandname="up" text="Move Up" textkey="MOVEUP" /><br/>
+                                                                commandname="up" text="Move Up" textkey="MOVEUP" OnClick="UpDown_Click" /><br/>
                                                             <rbfwebui:imagebutton id="ContentLeftBtn" runat="server" sourcepane="contentPane"
-                                                                targetpane="leftPane" text="Move Left" textkey="MOVELEFT" /><br/>
+                                                                targetpane="leftPane" text="Move Left" textkey="MOVELEFT" OnClick="RightLeft_Click" /><br/>
                                                             <rbfwebui:imagebutton id="ContentRightBtn" runat="server" sourcepane="contentPane"
-                                                                targetpane="rightPane" text="Move Right" textkey="MOVERIGHT" /><br/>
+                                                                targetpane="rightPane" text="Move Right" textkey="MOVERIGHT"  OnClick="RightLeft_Click" /><br/>
                                                             <rbfwebui:imagebutton id="ContentDownBtn" runat="server" commandargument="contentPane"
-                                                                commandname="down" text="Move Down" textkey="MOVEDOWN" />&nbsp;&nbsp;
+                                                                commandname="down" text="Move Down" textkey="MOVEDOWN" OnClick="UpDown_Click"/>&nbsp;&nbsp;
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td nowrap="nowrap" valign="bottom">
                                                             <rbfwebui:imagebutton id="ContentEditBtn" runat="server" commandargument="contentPane"
-                                                                commandname="edit" text="Edit" textkey="EDIT" /><br/>
+                                                                commandname="edit" text="Edit" textkey="EDIT" OnClick="EditBtn_Click" /><br/>
                                                             <br/>
                                                             <rbfwebui:imagebutton id="ContentDeleteBtn" runat="server" commandargument="contentPane"
-                                                                commandname="delete" text="Delete" textkey="DELETE" /></td>
+                                                                commandname="delete" text="Delete" textkey="DELETE" OnClick="DeleteBtn_Click" /></td>
                                                     </tr>
                                                 </table>
                                             </td>
@@ -253,19 +252,19 @@
                                                                 datatextfield="Title" datavaluefield="ID" rows="8" width="110"></asp:listbox></td>
                                                         <td nowrap="nowrap" valign="top">
                                                             <rbfwebui:imagebutton id="RightUpBtn" runat="server" commandargument="rightPane"
-                                                                commandname="up" text="Move Up" textkey="MOVEUP" /><br/>
+                                                                commandname="up" text="Move Up" textkey="MOVEUP" OnClick="UpDown_Click" /><br/>
                                                             <rbfwebui:imagebutton id="RightLeftBtn" runat="server" sourcepane="rightPane" targetpane="contentPane"
-                                                                text="Move Left" textkey="MOVELEFT" /><br/>
+                                                                text="Move Left" textkey="MOVELEFT" OnClick="RightLeft_Click" /><br/>
                                                             <rbfwebui:imagebutton id="RightDownBtn" runat="server" commandargument="rightPane"
-                                                                commandname="down" text="Move Down" textkey="MOVEDOWN" /></td>
+                                                                commandname="down" text="Move Down" textkey="MOVEDOWN" OnClick="UpDown_Click" /></td>
                                                     </tr>
                                                     <tr>
                                                         <td nowrap="nowrap" valign="bottom">
                                                             <rbfwebui:imagebutton id="RightEditBtn" runat="server" commandargument="rightPane"
-                                                                commandname="edit" text="Edit" textkey="EDIT" /><br/>
+                                                                commandname="edit" text="Edit" textkey="EDIT" OnClick="EditBtn_Click" /><br/>
                                                             <br/>
                                                             <rbfwebui:imagebutton id="RightDeleteBtn" runat="server" commandargument="rightPane"
-                                                                commandname="delete" text="Delete" textkey="DELETE" /></td>
+                                                                commandname="delete" text="Delete" textkey="DELETE" OnClick="DeleteBtn_Click"/></td>
                                                     </tr>
                                                 </table>
                                             </td>
@@ -283,7 +282,7 @@
                             <tr>
                                 <td colspan="4">
                                     <hr noshade="noshade" size="1" />
-                                    <rbfwebui:settingstable id="EditTable" runat="server" />
+                                    <rbfwebui:settingstable id="EditTable" runat="server" OnUpdateControl="EditTable_UpdateControl" />
                                 </td>
                             </tr>
                             <tr>

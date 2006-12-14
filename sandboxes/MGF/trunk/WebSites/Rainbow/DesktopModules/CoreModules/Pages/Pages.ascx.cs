@@ -123,7 +123,7 @@ namespace Rainbow.Content.Web.Modules {
 
                     OrderPages();
 
-                    Response.Redirect( HttpUrlBuilder.BuildUrl( PageID ) );
+                    Response.Redirect( HttpUrlBuilder.BuildUrl( "~/DesktopDefault.aspx", PageID, "SelectedPageID=" + t.ID ) );
                 }
                 catch ( SqlException ) {
                     Controls.Add(
