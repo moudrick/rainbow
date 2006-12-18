@@ -18,14 +18,6 @@ namespace Rainbow.Admin
 {
     public partial class AddPage : EditItemPage
     {
-        protected ArrayList leftList;
-        protected ArrayList contentList;
-        protected Localize organizemodule;
-
-        protected ArrayList rightList;
-        protected Localize addmodule;
-        protected Localize module_type;
-        protected DropDownList moduleType;
 
         #region Page_Load
 
