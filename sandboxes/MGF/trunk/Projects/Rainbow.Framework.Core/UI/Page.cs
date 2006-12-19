@@ -16,7 +16,6 @@ using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Path = Rainbow.Framework.Settings.Path;
 using Rainbow.Framework.Web.UI.WebControls;
-using Microsoft.Web.UI;
 
 namespace Rainbow.Framework.Web.UI {
     // TODO: this class needs a better write-up ;-)
@@ -223,29 +222,29 @@ namespace Rainbow.Framework.Web.UI {
             }
 
 
-            if ( ScriptManager.GetCurrent( this ) == null ) {
-                ScriptManager scriptManager = new ScriptManager();
-                scriptManager.EnablePartialRendering = true;
+            //if ( ScriptManager.GetCurrent( this ) == null ) {
+            //    ScriptManager scriptManager = new ScriptManager();
+            //    //scriptManager.EnablePartialRendering = true;
 
-                scriptManager.Scripts.Add( new ScriptReference( "Microsoft.Web.Resources.ScriptLibrary.PreviewScript.js", "Microsoft.Web.Preview" ) );
-                scriptManager.Scripts.Add( new ScriptReference( "Microsoft.Web.Resources.ScriptLibrary.PreviewGlitz.js", "Microsoft.Web.Preview" ) );
-                scriptManager.Scripts.Add( new ScriptReference( "Microsoft.Web.Resources.ScriptLibrary.PreviewDragDrop.js", "Microsoft.Web.Preview" ) );
+            //    scriptManager.Scripts.Add( new ScriptReference( "PreviewScript.js", "Microsoft.Web.Preview" ) );
+            //    scriptManager.Scripts.Add( new ScriptReference( "PreviewGlitz.js", "Microsoft.Web.Preview" ) );
+            //    scriptManager.Scripts.Add( new ScriptReference( "PreviewDragDrop.js", "Microsoft.Web.Preview" ) );
 
-                foreach ( Control c in Controls ) {
-                    if ( c is HtmlGenericControl ) {
-                        HtmlGenericControl genericControl = ( HtmlGenericControl )c;
+            //    foreach ( Control c in Controls ) {
+            //        if ( c is HtmlGenericControl ) {
+            //            HtmlGenericControl genericControl = ( HtmlGenericControl )c;
 
-                        if ( genericControl.TagName.ToLower() == "body" ) {
-                            foreach ( Control bodyControl in genericControl.Controls ) {
-                                if ( bodyControl is HtmlForm ) {
-                                    bodyControl.Controls.AddAt( 0, scriptManager );
-                                }
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
+            //            if ( genericControl.TagName.ToLower() == "body" ) {
+            //                foreach ( Control bodyControl in genericControl.Controls ) {
+            //                    if ( bodyControl is HtmlForm ) {
+            //                        bodyControl.Controls.AddAt( 0, scriptManager );
+            //                    }
+            //                }
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
 
             base.OnLoad( e );
         }

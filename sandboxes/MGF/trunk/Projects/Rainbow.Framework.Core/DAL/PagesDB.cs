@@ -509,58 +509,6 @@ namespace Rainbow.Framework.Site.Data
             return t_order;
         }
 
-        //		/// <summary>
-        //		///     
-        //		/// </summary>
-        //		/// <param name="portalID" type="int">
-        //		/// </param>
-        //		/// <returns>
-        //		///     A System.Collections.ArrayList value...
-        //		/// </returns>
-        //		public ArrayList GetPagesFlat(int portalID) 
-        //		{
-        //
-        //			// Create Instance of Connection and Command Object
-        //			using (SqlConnection myConnection = Config.SqlConnectionString) 
-        //			{
-        //
-        //				using (SqlCommand myCommand = new SqlCommand("rb_GetPageTree", myConnection))
-        //				{
-        //					// Mark the Command as a SPROC
-        //					myCommand.CommandType = CommandType.StoredProcedure;
-        //					// Add Parameters to SPROC
-        //					SqlParameter parameterPortalID = new SqlParameter(strPortalID, SqlDbType.Int, 4);
-        //					parameterPortalID.Value = portalID;
-        //					myCommand.Parameters.Add(parameterPortalID);
-        //					// Execute the command
-        //					myConnection.Open();
-        //					SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-        //					ArrayList DesktopTabs = new ArrayList();
-        //
-        //					// Read the resultset
-        //					try
-        //					{
-        //
-        //						while(result.Read()) 
-        //						{
-        //							PageItem tabItem = new PageItem();
-        //							tabItem.ID = (int) result["TabID"];
-        //							tabItem.Name = (string) result["TabName"];
-        //							tabItem.Order = (int) result["TabOrder"];
-        //							tabItem.NestLevel = (int) result["LevelNo"];
-        //							DesktopTabs.Add(tabItem);
-        //						}
-        //					}
-        //
-        //					finally
-        //					{
-        //						result.Close(); //by Manu, fixed bug 807858
-        //					}
-        //					return DesktopTabs;
-        //				}
-        //			}
-        //		}
-
         /// <summary>
         /// Gets the pages flat.
         /// </summary>
