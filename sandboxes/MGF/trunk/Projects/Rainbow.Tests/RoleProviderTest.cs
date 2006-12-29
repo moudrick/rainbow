@@ -236,7 +236,7 @@ namespace Rainbow.Tests {
         }
 
         [Test]
-        public void RoleExistsTest2() {
+        public void RoleExistsTestInvalidRoleName() {
             try {
                 RainbowRoleProvider provider = Roles.Provider as RainbowRoleProvider;
 

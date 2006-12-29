@@ -199,8 +199,13 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
 
         public override bool RoleExists( string roleName ) {
             try {
-                RainbowRole role = GetRoleByName( ApplicationName, roleName );
-                return RoleExists( ApplicationName, role.Id );
+                IList<RainbowRole> allRoles = GetAllRoles( ApplicationName );
+                foreach ( RainbowRole role in allRoles ) {
+                    if ( role.Name.Equals( roleName ) ) {
+                        return true;
+                    }
+                }
+                return false;
             }
             catch {
                 return false;
