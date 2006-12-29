@@ -383,8 +383,8 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
         /// </summary>
         protected void Application_Start()
         {
-
-            System.Data.SqlClient.SqlDependency.Start(System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            // SqlSiteMapProvider still doesn't use cache dependencies
+            //System.Data.SqlClient.SqlDependency.Start(System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             
             //HttpContext context = ContextReader.Current;
             HttpContext context = HttpContext.Current;
