@@ -67,7 +67,7 @@ namespace Rainbow.Framework.Security {
             if ( useNTLM && role == HttpContext.Current.User.Identity.Name )
                 return true;
             else {
-                return Roles.IsUserInRole( role );
+                return HttpContext.Current.User.IsInRole( role );
             }
         }
 
