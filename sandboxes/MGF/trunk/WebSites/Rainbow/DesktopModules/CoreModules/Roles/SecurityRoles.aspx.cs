@@ -9,6 +9,7 @@ using Rainbow.Framework.Web.UI;
 using History = Rainbow.Framework.History;
 using System.Web.Security;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
+using Rainbow.Framework.Providers.RainbowMembershipProvider;
 
 namespace Rainbow.Content.Web.Modules {
     /// <summary>
@@ -92,12 +93,14 @@ namespace Rainbow.Content.Web.Modules {
         /// <param name="e">The <see cref="T:System.Web.UI.WebControls.DataListCommandEventArgs"/> instance containing the event data.</param>
         protected void usersInRole_ItemCommand( object sender, DataListCommandEventArgs e ) {
             UsersDB users = new UsersDB();
-            string[] keys = ( string[] )usersInRole.DataSource;
-            Guid userID = new Guid( keys[ e.Item.ItemIndex ] );
+
+            Label lblUserEmail = (Label)e.Item.FindControl("lblUserEmail");
+
+            RainbowUser user = ( RainbowUser )Membership.GetUser( lblUserEmail.Text );
 
             if ( e.CommandName == "delete" ) {
                 // update database
-                users.DeleteUserRole( roleId, userID );
+                users.DeleteUserRole( roleId, user.ProviderUserKey );
 
                 // Ensure that item is not editable
                 usersInRole.EditItemIndex = -1;

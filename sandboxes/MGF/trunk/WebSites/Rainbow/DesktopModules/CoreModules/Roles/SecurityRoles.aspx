@@ -56,7 +56,7 @@
                                     &#160;&#160;
                                     <rbfwebui:ImageButton ID="Imagebutton1" runat="server" AlternateText="Remove this user from role"
                                         CommandName="delete" ImageUrl='<%# CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl %>' />
-                                    <rbfwebui:Label ID="Label1" runat="server" CssClass="Normal" Text='<%# Container.DataItem %>'>
+                                    <rbfwebui:Label ID="lblUserEmail" runat="server" CssClass="Normal" Text='<%# Container.DataItem %>'>
                                     </rbfwebui:Label>
                                 </ItemTemplate>
                             </asp:DataList>
