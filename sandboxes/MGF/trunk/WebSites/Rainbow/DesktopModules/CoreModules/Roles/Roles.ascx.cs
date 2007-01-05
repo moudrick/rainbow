@@ -178,6 +178,20 @@ namespace Rainbow.Content.Web.Modules {
 
             IList<RainbowRole> roles = users.GetPortalRoles( portalSettings.PortalAlias );
 
+            // remove "All Users", "Authenticated Users" and "Unauthenticated Users" pseudo-roles
+            RainbowRole pseudoRole = new RainbowRole( RainbowRoleProvider.AllUsersGuid, "All users" );
+            if ( roles.Contains( pseudoRole ) ) {
+                roles.Remove( pseudoRole );
+            }
+            pseudoRole = new RainbowRole( RainbowRoleProvider.AuthenticatedUsersGuid, "Authenticated users" );
+            if ( roles.Contains( pseudoRole ) ) {
+                roles.Remove( pseudoRole );
+            }
+            pseudoRole = new RainbowRole( RainbowRoleProvider.UnauthenticatedUsersGuid, "Unauthenticated users" );
+            if ( roles.Contains( pseudoRole ) ) {
+                roles.Remove( pseudoRole );
+            }
+            
             rolesList.DataSource = roles;
             rolesList.DataBind();
         }
