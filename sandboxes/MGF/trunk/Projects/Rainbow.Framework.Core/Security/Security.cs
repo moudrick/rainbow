@@ -47,6 +47,7 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// 	<c>true</c> if [is in role] [the specified role]; otherwise, <c>false</c>.
         /// </returns>
+        [Obsolete("We should start using Roles.IsUserInRole instead of this method")]
         public static bool IsInRole( string role ) {
             // Check if integrated windows authentication is used ?
             bool useNTLM = HttpContext.Current.User is WindowsPrincipal;
@@ -65,8 +66,9 @@ namespace Rainbow.Framework.Security {
             // Allow giving access to users 
             if ( useNTLM && role == HttpContext.Current.User.Identity.Name )
                 return true;
-            else
-                return HttpContext.Current.User.IsInRole( role );
+            else {
+                return Roles.IsUserInRole( role );
+            }
         }
 
         /// <summary>
