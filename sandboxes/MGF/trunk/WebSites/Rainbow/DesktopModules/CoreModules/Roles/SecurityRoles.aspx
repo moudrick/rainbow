@@ -1,17 +1,18 @@
-<%@ page autoeventwireup="false" codefile="SecurityRoles.aspx.cs" inherits="Rainbow.Content.Web.Modules.SecurityRoles"
-    language="c#" %>
+<%@ Page AutoEventWireup="false" CodeFile="SecurityRoles.aspx.cs" Inherits="Rainbow.Content.Web.Modules.SecurityRoles"
+    Language="c#" %>
 
-<%@ register src="~/Design/DesktopLayouts/DesktopPortalBanner.ascx" tagname="Banner"
-    tagprefix="portal" %>
-<%@ register src="~/Design/DesktopLayouts/DesktopFooter.ascx" tagname="Footer" tagprefix="foot" %>
+<%@ Register Src="~/Design/DesktopLayouts/DesktopPortalBanner.ascx" TagName="Banner"
+    TagPrefix="portal" %>
+<%@ Register Src="~/Design/DesktopLayouts/DesktopFooter.ascx" TagName="Footer" TagPrefix="foot" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head id="Head1" runat="server"><title></title>
+<head id="Head1" runat="server">
+    <title></title>
 </head>
 <body id="Body1" runat="server">
     <form id="Form1" runat="server">
         <div id="zenpanes" class="zen-main">
             <div class="rb_DefaultPortalHeader">
-                <portal:banner id="Banner1" runat="server" showtabs="false" />
+                <portal:Banner ID="Banner1" runat="server" showtabs="false" />
             </div>
             <div class="div_ev_Table">
                 <table border="0" cellpadding="2" cellspacing="2" width="98%">
@@ -29,38 +30,19 @@
                                     </td>
                                 </tr>
                             </table>
-                            <rbfwebui:label id="Message" runat="server" cssclass="NormalRed">
-                            </rbfwebui:label>
+                            <rbfwebui:Label ID="Message" runat="server" CssClass="NormalRed">
+                            </rbfwebui:Label>
                         </td>
                     </tr>
                     <tr>
-                        <td width="11">
-                            &nbsp;
-                        </td>
                         <td>
-                            <table cellpadding="0" cellspacing="0" width="100%">
-                                <tr>
-                                    <td>
-                                        <asp:textbox id="windowsUserName" runat="server" cssclass="NormalTextBox" text="DOMAIN\username"
-                                            visible="False">
-                                        </asp:textbox>
-                                    </td>
-                                    <td class="Normal" nowrap="nowrap">
-                                        <rbfwebui:linkbutton id="addNew" runat="server" cssclass="CommandButton" textkey="ROLE_ADD_NEW_USER"
-                                            visible="False">Create new user and add to role</rbfwebui:linkbutton>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <asp:dropdownlist id="allUsers" runat="server" cssclass="NormalTextBox" datatextfield="Email"
-                                            datavaluefield="ProviderUserKey">
-                                        </asp:dropdownlist>
-                                    </td>
-                                    <td nowrap="nowrap">
-                                        <rbfwebui:linkbutton id="addExisting" runat="server" cssclass="CommandButton" textkey="ROLE_ADD_USER">Add existing user to role</rbfwebui:linkbutton>
-                                    </td>
-                                </tr>
-                            </table>
+                            <asp:DropDownList ID="allUsers" runat="server" CssClass="NormalTextBox" DataTextField="Email"
+                                DataValueField="ProviderUserKey">
+                            </asp:DropDownList>
+                        </td>
+                        <td nowrap="nowrap">
+                            <rbfwebui:LinkButton ID="addExisting" runat="server" CssClass="CommandButton" 
+                                TextKey="ROLE_ADD_USER" Text="Add existing user to role" OnClick="AddUser_Click" />
                         </td>
                     </tr>
                     <tr valign="top">
@@ -68,16 +50,16 @@
                             &nbsp;
                         </td>
                         <td nowrap="nowrap">
-                            <asp:datalist id="usersInRole" runat="server" repeatcolumns="2">
-                                <itemstyle width="225" />
-                                <itemtemplate>
+                            <asp:DataList ID="usersInRole" runat="server" RepeatColumns="2" OnItemCommand="usersInRole_ItemCommand">
+                                <ItemStyle Width="225" />
+                                <ItemTemplate>
                                     &#160;&#160;
-                                    <rbfwebui:imagebutton id="Imagebutton1" runat="server" alternatetext="Remove this user from role"
-                                        commandname="delete" imageurl='<%# CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl %>' />
-                                    <rbfwebui:label id="Label1" runat="server" cssclass="Normal" text='<%# Container.DataItem %>'>
-                                    </rbfwebui:label>
-                                </itemtemplate>
-                            </asp:datalist>
+                                    <rbfwebui:ImageButton ID="Imagebutton1" runat="server" AlternateText="Remove this user from role"
+                                        CommandName="delete" ImageUrl='<%# CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl %>' />
+                                    <rbfwebui:Label ID="Label1" runat="server" CssClass="Normal" Text='<%# Container.DataItem %>'>
+                                    </rbfwebui:Label>
+                                </ItemTemplate>
+                            </asp:DataList>
                         </td>
                     </tr>
                     <tr>
@@ -87,13 +69,14 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <rbfwebui:linkbutton id="saveBtn" runat="server" cssclass="CommandButton" textkey="ROLE_SAVE_CHANGES">Save Role Changes</rbfwebui:linkbutton>
+                            <rbfwebui:LinkButton ID="saveBtn" runat="server" CssClass="CommandButton" 
+                                TextKey="ROLE_SAVE_CHANGES" Text="Save Role Changes" OnClick="Save_Click" />
                         </td>
                     </tr>
                 </table>
             </div>
             <div class="rb_AlternatePortalFooter">
-                <foot:footer id="Footer" runat="server" />
+                <foot:Footer ID="Footer" runat="server" />
             </div>
         </div>
     </form>

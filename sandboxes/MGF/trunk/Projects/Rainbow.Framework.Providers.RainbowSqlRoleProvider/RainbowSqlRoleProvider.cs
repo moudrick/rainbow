@@ -787,6 +787,42 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
             }
         }
 
+        public override RainbowRole GetRoleById( Guid roleId ) {
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "SELECT RoleId, RoleName, Description FROM aspnet_Roles WHERE RoleId=@RoleId";
+            cmd.Parameters.Add( "@RoleId", SqlDbType.UniqueIdentifier ).Value = roleId;
+
+            cmd.Connection = new SqlConnection( connectionString );
+
+            SqlDataReader reader = null;
+            try {
+                cmd.Connection.Open();
+
+                using ( reader = cmd.ExecuteReader() ) {
+
+                    if ( reader.Read() ) {
+
+                        return GetRoleFromReader( reader );
+                    }
+                    else {
+                        throw new RainbowRoleProviderException( "Role doesn't exist" );
+                    }
+                }
+            }
+            catch ( SqlException e ) {
+                if ( WriteExceptionsToEventLog ) {
+                    WriteToEventLog( e, "GetRoleById" );
+                }
+
+                throw new RainbowRoleProviderException( "Error executing method GetRoleById", e );
+            }
+            finally {
+                if ( reader != null ) {
+                    reader.Close();
+                }
+                cmd.Connection.Close();
+            }
+        }
 
         #endregion
 

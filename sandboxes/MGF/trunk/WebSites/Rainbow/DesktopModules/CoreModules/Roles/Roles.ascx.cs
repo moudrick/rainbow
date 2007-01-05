@@ -151,15 +151,17 @@ namespace Rainbow.Content.Web.Modules {
                 BindData();
             }
             else if ( e.CommandName == "members" ) {
-                // Save role name changes first
-                string _roleName = ( ( TextBox )e.Item.FindControl( "roleName" ) ).Text;
-                users.UpdateRole( selectedRole.Id, _roleName, portalSettings.PortalAlias );
+
+                string _roleId = ( ( System.Web.UI.WebControls.Label )e.Item.FindControl( "roleId" ) ).Text;
+
+                // Role names shouldn't be editable, it's not supported by the Roles Provider API
+                //// Save role name changes first
+                //users.UpdateRole( selectedRole.Id, _roleName, portalSettings.PortalAlias );
 
                 // redirect to edit page
                 Response.Redirect(
                     HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Roles/SecurityRoles.aspx", PageID,
-                                            "mID=" + ModuleID.ToString() + "&rolename=" +
-                                            _roleName ) );
+                                            "mID=" + ModuleID.ToString() + "&roleID=" + _roleId ) );
             }
             // reset the enable state of the add
             // set add button -- bja

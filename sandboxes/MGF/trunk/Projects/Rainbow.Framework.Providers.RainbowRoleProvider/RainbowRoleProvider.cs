@@ -141,6 +141,13 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         /// <exception cref="ProviderException">GetRole throws a ProviderException if the role doesn't exist</exception>
         public abstract RainbowRole GetRoleByName( string portalAlias, string roleName );
 
+        /// <summary>
+        /// Retrieves a <code>RainbowRole</code> given a role id
+        /// </summary>
+        /// <param name="roleId">A role id</param>
+        /// <returns>A <code>RainbowRole</code></returns>
+        /// <exception cref="ProviderException">GetRole throws a ProviderException if the role doesn't exist</exception>
+        public abstract RainbowRole GetRoleById( Guid roleId );
     }
 
 }
