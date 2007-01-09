@@ -606,6 +606,14 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         }
 
         public override bool IsUserInRole( string portalAlias, Guid userId, Guid roleId ) {
+
+            if ( roleId.Equals( AllUsersGuid ) || roleId.Equals( AuthenticatedUsersGuid ) ) {
+                return true;
+            }
+            else if ( roleId.Equals( UnauthenticatedUsersGuid ) ) {
+                return false;
+            }
+            
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = "aspnet_UsersInRoles_IsUserInRole";
             cmd.CommandType = CommandType.StoredProcedure;
