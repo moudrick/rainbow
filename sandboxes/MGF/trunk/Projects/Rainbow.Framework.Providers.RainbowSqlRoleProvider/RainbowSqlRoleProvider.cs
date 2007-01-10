@@ -441,9 +441,9 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         public override IList<RainbowRole> GetAllRoles( string portalAlias ) {
 
             IList<RainbowRole> result = new List<RainbowRole>();
-            result.Insert( 0, new RainbowRole( AllUsersGuid, "All users", "All users" ) );
-            result.Insert( 1, new RainbowRole( AuthenticatedUsersGuid, "Authenticated users", "Authenticated users" ) );
-            result.Insert( 2, new RainbowRole( UnauthenticatedUsersGuid, "Unauthenticated users", "Unauthenticated users" ) );
+            result.Insert( 0, new RainbowRole( AllUsersGuid, AllUsersRoleName, AllUsersRoleName ) );
+            result.Insert( 1, new RainbowRole( AuthenticatedUsersGuid, AuthenticatedUsersRoleName, AuthenticatedUsersRoleName ) );
+            result.Insert( 2, new RainbowRole( UnauthenticatedUsersGuid, UnauthenticatedUsersRoleName, UnauthenticatedUsersRoleName ) );
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = "aspnet_Roles_GetAllRoles";
