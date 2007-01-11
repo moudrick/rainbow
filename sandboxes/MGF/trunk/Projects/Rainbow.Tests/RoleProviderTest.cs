@@ -41,9 +41,9 @@ namespace Rainbow.Tests {
             try {
                 string[] roles = Roles.GetAllRoles();
                 Assert.AreEqual( 4, roles.Length );
-                Assert.AreEqual( "All users", roles[ 0 ] );
-                Assert.AreEqual( "Authenticated users", roles[ 1 ] );
-                Assert.AreEqual( "Unauthenticated users", roles[ 2 ] );
+                Assert.AreEqual( "All Users", roles[ 0 ] );
+                Assert.AreEqual( "Authenticated Users", roles[ 1 ] );
+                Assert.AreEqual( "Unauthenticated Users", roles[ 2 ] );
                 Assert.AreEqual( "Admins", roles[ 3 ] );
             }
             catch ( Exception ex ) {
@@ -59,9 +59,9 @@ namespace Rainbow.Tests {
 
                 IList<RainbowRole> roles = provider.GetAllRoles( Roles.ApplicationName );
                 Assert.AreEqual( 4, roles.Count );
-                Assert.AreEqual( "All users", roles[ 0 ].Name );
-                Assert.AreEqual( "Authenticated users", roles[ 1 ].Name );
-                Assert.AreEqual( "Unauthenticated users", roles[ 2 ].Name );
+                Assert.AreEqual( "All Users", roles[ 0 ].Name );
+                Assert.AreEqual( "Authenticated Users", roles[ 1 ].Name );
+                Assert.AreEqual( "Unauthenticated Users", roles[ 2 ].Name );
                 Assert.AreEqual( "Admins", roles[ 3 ].Name );
             }
             catch ( Exception ex ) {
