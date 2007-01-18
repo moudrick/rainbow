@@ -473,35 +473,38 @@ namespace Rainbow.Framework.Security {
 
                 // Use security system to set the UserID within a client-side Cookie
                 FormsAuthentication.SetAuthCookie( usr.ToString(), persistent );
+                //FormsAuthenticationTicket ticket = new FormsAuthenticationTicket( 1, usr.ToString(),
+                //    DateTime.Now, DateTime.Now.AddMinutes( 30 ), // value of time out property
+                //    persistent, string.Empty, FormsAuthentication.FormsCookiePath );
 
                 // Rainbow Security cookie Required if we are sharing a single domain 
                 // with portal Alias in the URL
 
                 // Set a cookie to persist authentication for each portal 
                 // so user can be reauthenticated 
-                //// automatically if they chose to Remember Login					
-                //HttpCookie hck = HttpContext.Current.Response.Cookies[ "Rainbow_" + portalSettings.PortalAlias.ToLower() ];
-                //hck.Value = usr.ToString(); //Fill all data: name + email + id
-                //hck.Path = "/";
+                // automatically if they chose to Remember Login	
+                HttpCookie hck = new HttpCookie( "Rainbow_" + portalSettings.PortalAlias.ToLower(), usr.ToString() );
+                hck.Value = usr.ToString(); //Fill all data: name + email + id
+                hck.Path = "/";
 
-                //if ( persistent ) // Keep the cookie?
-                //{
-                //    hck.Expires = DateTime.Now.AddYears( 50 );
-                //}
-                //else {
-                //    //jminond - option to kill cookie after certain time always
-                //    // jes1111
-                //    //					if(ConfigurationSettings.AppSettings["CookieExpire"] != null)
-                //    //					{
-                //    //						int minuteAdd = int.Parse(ConfigurationSettings.AppSettings["CookieExpire"]);
-                //    int minuteAdd = Config.CookieExpire;
+                if ( persistent ) // Keep the cookie?
+                {
+                    hck.Expires = DateTime.Now.AddYears( 1 );
+                }
+                else {
+                    //jminond - option to kill cookie after certain time always
+                    // jes1111
+                    //					if(ConfigurationSettings.AppSettings["CookieExpire"] != null)
+                    //					{
+                    //						int minuteAdd = int.Parse(ConfigurationSettings.AppSettings["CookieExpire"]);
+                    int minuteAdd = Config.CookieExpire;
 
-                //    DateTime time = DateTime.Now;
-                //    TimeSpan span = new TimeSpan( 0, 0, minuteAdd, 0, 0 );
+                    DateTime time = DateTime.Now;
+                    TimeSpan span = new TimeSpan( 0, 0, minuteAdd, 0, 0 );
 
-                //    hck.Expires = time.Add( span );
-                //    //					}
-                //}
+                    hck.Expires = time.Add( span );
+                }
+                HttpContext.Current.Response.Cookies.Set( hck );
 
 
                 if ( redirectPage == null || redirectPage.Length == 0 ) {
@@ -531,7 +534,12 @@ namespace Rainbow.Framework.Security {
             DateTime time = DateTime.Now;
             TimeSpan span = new TimeSpan( 0, 0, minuteAdd, 0, 0 );
 
-            HttpContext.Current.Response.Cookies[ "Rainbow_" + portalSettings.PortalAlias ].Expires = time.Add( span );
+            HttpCookie hck = HttpContext.Current.Response.Cookies[ "Rainbow_" + portalSettings.PortalAlias ];
+
+            // don't update cookie expiration date if it will be less than the actual value (persistent cookie)
+            if ( hck.Expires < time.Add( span ) ) {
+                hck.Expires = time.Add( span );
+            }
 
             return;
         }
@@ -583,10 +591,11 @@ namespace Rainbow.Framework.Security {
                 PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ strPortalSettings ];
 
                 // Invalidate Portal Alias Cookie security
-                HttpCookie xhck = HttpContext.Current.Response.Cookies[ "Rainbow_" + portalSettings.PortalAlias.ToLower() ];
-                xhck.Value = null;
-                xhck.Expires = new DateTime( 1999, 10, 12 );
-                xhck.Path = "/";
+                //HttpCookie xhck = HttpContext.Current.Response.Cookies[ "Rainbow_" + portalSettings.PortalAlias.ToLower() ];
+                //xhck.Value = null;
+                //xhck.Expires = new DateTime( 1999, 10, 12 );
+                //xhck.Path = "/";
+                HttpContext.Current.Response.Cookies.Remove( "Rainbow_" + portalSettings.PortalAlias.ToLower() );
             }
 
             // [START]  bja@reedtek.com remove user window information

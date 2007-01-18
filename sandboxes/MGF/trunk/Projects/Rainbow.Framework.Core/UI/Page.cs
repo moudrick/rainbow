@@ -206,15 +206,6 @@ namespace Rainbow.Framework.Web.UI {
             // add CurrentTheme CSS
             RegisterCssFile( CurrentTheme.Name, CurrentTheme.CssFile );
 
-            //TODO: this cookie will never exist
-            if ( Request.Cookies["Rainbow_" + portalSettings.PortalAlias] != null ) {
-                if ( !Config.ForceExpire ) {
-                    //jminond - option to kill cookie after certain time always
-                    int minuteAdd = Config.CookieExpire;
-                    PortalSecurity.ExtendCookie( portalSettings, minuteAdd );
-                }
-            }
-
             // Stores referring URL in viewstate
             if ( !Page.IsPostBack ) {
                 if ( Request.UrlReferrer != null )

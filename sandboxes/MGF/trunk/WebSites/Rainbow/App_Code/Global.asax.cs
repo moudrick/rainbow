@@ -20,6 +20,7 @@ using Rainbow.Framework.Site.Configuration;
 using History=Rainbow.Framework.History;
 using Path=System.IO.Path;
 using Reader=Rainbow.Context.Reader;
+using System.Configuration;
 
 namespace Rainbow
 {
@@ -364,6 +365,79 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                 context.Response.Cookies["refreshed"].Expires = DateTime.Now.AddMinutes(1);
             }
         } // end of Application_BeginRequest
+
+        protected void Application_AuthenticateRequest( Object sender, EventArgs e ) {
+            // john.mandia@whitelightsolutions.com: Check. If it's a fresh db then then is no portalSettings instance. 
+            if ( HttpContext.Current.Items[ "PortalSettings" ] != null && !Request.RawUrl.EndsWith( "/Setup/Update.aspx" ) ) {
+                // Obtain PortalSettings from Current Context
+                PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ "PortalSettings" ];
+
+                //jminond - option to kill cookie after certain time always
+                int minuteAdd;
+
+                if ( ConfigurationManager.AppSettings[ "CookieExpire" ] != null ) {
+                    minuteAdd = int.Parse( ConfigurationManager.AppSettings[ "CookieExpire" ] );
+                }
+                else {
+                    minuteAdd = 60; // set to previous default in minutes
+                }
+
+                // Auto-login a user who has a portal Alias login cookie
+                // Try to authenticate the user with the cookie value
+
+                if ( ( !Request.IsAuthenticated ) && ( Request.Cookies[ "Rainbow_" + portalSettings.PortalAlias ] != null ) ) {
+                    if ( Request.Cookies[ "Rainbow_" + portalSettings.PortalAlias ].Expires > DateTime.Now ) {
+                        string user;
+                        user = Request.Cookies[ "Rainbow_" + portalSettings.PortalAlias.ToLower() ].Value;
+
+                        // Create the FormsAuthentication cookie
+                        FormsAuthentication.SetAuthCookie( user, true );
+
+                        // Create a FormsAuthentication ticket.
+                        FormsAuthenticationTicket cTicket = new FormsAuthenticationTicket
+                            (
+                            1,                              // version
+                            user,							// user name
+                            DateTime.Now,                   // issue time
+                            DateTime.Now.AddMinutes( minuteAdd ),       // expires every hour
+                            false,                          // don't persist cookie
+                            string.Empty								// roles
+                            );
+
+                        // Set the current User Security to the FormsAuthenticated User
+                        //Context.User = new GenericPrincipal(new FormsIdentity(cTicket), null);
+                        Context.User = new RainbowPrincipal( new FormsIdentity( cTicket ), null );
+
+
+                    }
+                }
+                else {
+                    // jminond if user asked to persist, he should have a cookie
+                    if ( ( Request.IsAuthenticated ) && ( Request.Cookies[ "Rainbow_" + portalSettings.PortalAlias ] == null ) ) {
+                        PortalSecurity.KillSession();
+                    }
+                }
+            }
+        }
+
+        protected void Application_PostAuthenticateRequest( Object sender, EventArgs e ) {
+            PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ "PortalSettings" ];
+
+            //jminond - option to kill cookie after certain time always
+            int minuteAdd;
+
+            if ( ConfigurationManager.AppSettings[ "CookieExpire" ] != null ) {
+                minuteAdd = int.Parse( ConfigurationManager.AppSettings[ "CookieExpire" ] );
+            }
+            else {
+                minuteAdd = 60; // set to previous default in minutes
+            }
+
+            if ( !Config.ForceExpire && ( Request.Cookies[ "Rainbow_" + portalSettings.PortalAlias ] == null ) ) {
+                //jminond - option to kill cookie after certain time always
+                PortalSecurity.ExtendCookie( portalSettings, minuteAdd );
+            }
+        }
 
         /// <summary>
         /// Handler for unhandled exceptions
