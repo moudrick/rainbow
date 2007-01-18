@@ -591,11 +591,11 @@ namespace Rainbow.Framework.Security {
                 PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ strPortalSettings ];
 
                 // Invalidate Portal Alias Cookie security
-                //HttpCookie xhck = HttpContext.Current.Response.Cookies[ "Rainbow_" + portalSettings.PortalAlias.ToLower() ];
-                //xhck.Value = null;
-                //xhck.Expires = new DateTime( 1999, 10, 12 );
-                //xhck.Path = "/";
-                HttpContext.Current.Response.Cookies.Remove( "Rainbow_" + portalSettings.PortalAlias.ToLower() );
+                HttpCookie xhck = HttpContext.Current.Response.Cookies[ "Rainbow_" + portalSettings.PortalAlias.ToLower() ];
+                xhck.Value = null;
+                xhck.Expires = new DateTime( 1999, 10, 12 );
+                xhck.Path = "/";
+                //HttpContext.Current.Response.Cookies.Remove( "Rainbow_" + portalSettings.PortalAlias.ToLower() );
             }
 
             // [START]  bja@reedtek.com remove user window information
