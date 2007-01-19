@@ -83,7 +83,7 @@ FCKConfig.ToolbarSets["Basic"] = [
 
 FCKConfig.ToolbarSets["Medium"] = [
 	['Source', 'FontName','FontSize', 'TextColor'],
-	['Bold','Italic', 'Underline','-','OrderedList','UnorderedList','-','Link','Unlink','-','About']
+	['Bold','Italic', 'Underline','-','OrderedList','UnorderedList','-','Link','Unlink','-','Print','-','About']
 ] ;
 
 FCKConfig.ContextMenu = ['Generic','Link','Anchor','Image','Select','Textarea','Checkbox','Radio','TextField','HiddenField','ImageButton','Button','BulletedList','NumberedList','TableCell','Table','Form'] ;
