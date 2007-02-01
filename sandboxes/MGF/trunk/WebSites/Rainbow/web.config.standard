@@ -200,7 +200,7 @@
     </profile>
     <siteMap enabled="true" defaultProvider="RainbowSqlSiteMapProvider">
       <providers>
-        <add name="RainbowSqlSiteMapProvider" type="Rainbow.Framework.Providers.RainbowSiteMapProvider.RainbowSqlSiteMapProvider" securityTrimmingEnabled="true" connectionStringName="ConnectionString" description="Rainbow SQL Server site map provider" sqlCacheDependency="Rainbow2.0-dev:rb_Pages" />
+        <add name="RainbowSqlSiteMapProvider" type="Rainbow.Framework.Providers.RainbowSiteMapProvider.RainbowSqlSiteMapProvider" securityTrimmingEnabled="true" connectionStringName="ConnectionString" description="Rainbow SQL Server site map provider"/>
       </providers>
     </siteMap>
     <caching>
