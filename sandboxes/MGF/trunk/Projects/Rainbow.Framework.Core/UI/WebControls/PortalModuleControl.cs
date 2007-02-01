@@ -24,7 +24,8 @@ using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Path=Rainbow.Framework.Settings.Path;
 
-namespace Rainbow.Framework.Web.UI.WebControls {
+namespace Rainbow.Framework.Web.UI.WebControls
+{
     /// <summary>
     /// The PortalModuleControl class defines a custom 
     /// base class inherited by all
@@ -45,11 +46,12 @@ namespace Rainbow.Framework.Web.UI.WebControls {
     // history from old DesktopModuleTitle class
     [History( "Nicholas Smeaton", "2004/07/24", "Added support for arrow buttons to move modules" )]
     [History( "jviladiu@portalServices.net", "2004/07/13", "Corrections in workflow buttons" )]
-    [History( "gman3001", "2004/04/08", "Added support for custom buttons in the title bar, and set all undefined title bar buttons to 'rb_mod_title_btn' css-class.")]
+    [History( "gman3001", "2004/04/08", "Added support for custom buttons in the title bar, and set all undefined title bar buttons to 'rb_mod_title_btn' css-class." )]
     [History( "Pekka Ylenius", "2004/11/28", "When '?' in ulr then '&' is needed not '?'" )]
     [History( "Hongwei Shen", "2005/09/8", "Fix the publishing problem and RevertToProduction button problem" )]
     [History( "Hongwei Shen", "2005/09/12", "Fix topic setting order problem(add module specific settings group base)" )]
-    public class PortalModuleControl : UserControl, ISearchable, IInstaller {
+    public class PortalModuleControl : UserControl, ISearchable, IInstaller
+    {
         #region Private field variables
 
         private ModuleSettings _moduleConfiguration;
@@ -117,7 +119,8 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// <summary>
         /// Dafault contructor, initializes default settings
         /// </summary>
-        public PortalModuleControl() {
+        public PortalModuleControl()
+        {
             int _groupOrderBase;
             SettingItemGroup _Group;
 
@@ -152,7 +155,8 @@ namespace Rainbow.Framework.Web.UI.WebControls {
                 _portalSettings = ( PortalSettings )HttpContext.Current.Items[ "PortalSettings" ];
                 // end addition: Jes1111
 
-                if ( _portalSettings != null ) {
+                if ( _portalSettings != null )
+                {
                     //fix by The Bitland Prince
                     _portalID = _portalSettings.PortalID;
 
@@ -160,10 +164,12 @@ namespace Rainbow.Framework.Web.UI.WebControls {
                     if ( _portalSettings.CustomSettings.ContainsKey( "SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES" ) &&
                         _portalSettings.CustomSettings[ "SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES" ].ToString().Length != 0 &&
                         bool.Parse( _portalSettings.CustomSettings[ "SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES" ].ToString() )
-                        ) {
+                        )
+                    {
                         ArrayList _tempList = new ArrayList( new ThemeManager( _portalSettings.PortalPath ).GetThemes() );
                         ArrayList _themeList = new ArrayList();
-                        foreach ( ThemeItem _item in _tempList ) {
+                        foreach ( ThemeItem _item in _tempList )
+                        {
                             if ( _item.Name.ToLower().StartsWith( "module" ) )
                                 _themeList.Add( _item );
                         }
@@ -335,9 +341,11 @@ namespace Rainbow.Framework.Web.UI.WebControls {
 
             //Localized module title
             int counter = _groupOrderBase + 11;
-            foreach ( CultureInfo c in cultureList ) {
+            foreach ( CultureInfo c in cultureList )
+            {
                 //Ignore invariant
-                if ( c != CultureInfo.InvariantCulture && !_baseSettings.ContainsKey( c.Name ) ) {
+                if ( c != CultureInfo.InvariantCulture && !_baseSettings.ContainsKey( c.Name ) )
+                {
                     SettingItem LocalizedTitle = new SettingItem( new StringDataType() );
                     LocalizedTitle.Order = counter;
                     LocalizedTitle.Group = _Group;
@@ -349,7 +357,8 @@ namespace Rainbow.Framework.Web.UI.WebControls {
             }
 
             // SEARCH
-            if ( Searchable ) {
+            if ( Searchable )
+            {
                 _groupOrderBase = ( int )SettingItemGroup.MODULE_SPECIAL_SETTINGS;
                 _Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
 
@@ -386,9 +395,12 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// Module custom settings
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public Hashtable Settings {
-            get {
-                if ( _settings == null ) {
+        public Hashtable Settings
+        {
+            get
+            {
+                if ( _settings == null )
+                {
                     _settings = ModuleSettings.GetModuleSettings( ModuleID, _baseSettings );
                 }
                 return _settings;
@@ -399,7 +411,8 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// Module base settings defined by control creator
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public Hashtable BaseSettings {
+        public Hashtable BaseSettings
+        {
             get { return _baseSettings; }
         }
 
@@ -407,7 +420,8 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// Override on derivates classes.
         /// Return the path of the add control if available.
         /// </summary>
-        public virtual string AddModuleControl {
+        public virtual string AddModuleControl
+        {
             get { return string.Empty; }
         }
 
@@ -415,16 +429,20 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// Override on derivates classes.
         /// Return the path of the edit control if available.
         /// </summary>
-        public virtual string EditModuleControl {
+        public virtual string EditModuleControl
+        {
             get { return string.Empty; }
         }
 
         /// <summary>
         /// unique key for module caching
         /// </summary>
-        public string ModuleCacheKey {
-            get {
-                if ( HttpContext.Current != null ) {
+        public string ModuleCacheKey
+        {
+            get
+            {
+                if ( HttpContext.Current != null )
+                {
                     // Change 8/April/2003 Jes1111
                     // changes to Language behaviour require addition of culture names to cache key
                     // Jes1111 2003/04/24 - Added PortalAlias to cachekey
@@ -444,7 +462,8 @@ namespace Rainbow.Framework.Web.UI.WebControls {
 
                     return sb.ToString();
                 }
-                else {
+                else
+                {
                     return null;
                 }
             }
@@ -454,12 +473,16 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// The current ID of the module. Is unique for all portals.
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public int ModuleID {
-            get {
-                try {
+        public int ModuleID
+        {
+            get
+            {
+                try
+                {
                     return _moduleConfiguration.ModuleID;
                 }
-                catch {
+                catch
+                {
                     return -1;
                 }
             }
@@ -477,15 +500,19 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// The ID of the orginal module (will be different to ModuleID when using shortcut module)
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public int OriginalModuleID {
-            get {
-                try {
+        public int OriginalModuleID
+        {
+            get
+            {
+                try
+                {
                     if ( _originalModuleID == -1 )
                         return ModuleID;
                     else
                         return _originalModuleID;
                 }
-                catch {
+                catch
+                {
                     return -1;
                 }
             }
@@ -496,8 +523,10 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// Configuration
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public ModuleSettings ModuleConfiguration {
-            get {
+        public ModuleSettings ModuleConfiguration
+        {
+            get
+            {
                 if ( HttpContext.Current != null && _moduleConfiguration != null )
                     return _moduleConfiguration;
                 else
@@ -510,8 +539,10 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// GUID of module (mandatory)
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public virtual Guid GuidID {
-            get {
+        public virtual Guid GuidID
+        {
+            get
+            {
                 //1.1.8.1324 - 24/01/2003
                 throw new NotImplementedException( "You must implement a unique GUID for your module" );
             }
@@ -521,7 +552,8 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// ClassName (Used for Get/Save: not implemented)
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public virtual string ClassName {
+        public virtual string ClassName
+        {
             get { return string.Empty; }
         }
 
@@ -534,12 +566,14 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// Performs FlushCache actions that are common to all Pages<br/>
         /// Can be overridden
         /// </summary>
-        protected virtual void OnFlushCache() {
+        protected virtual void OnFlushCache()
+        {
             if ( FlushCache != null )
                 FlushCache( this, new EventArgs() ); //Invokes the delegates
 
             // remove module output from cache, if it's there
-            if ( HttpContext.Current != null ) {
+            if ( HttpContext.Current != null )
+            {
                 Context.Cache.Remove( ModuleCacheKey );
                 Debug.WriteLine( "************* Remove " + ModuleCacheKey );
             }
@@ -559,7 +593,8 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// Can be overridden
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnUpdate( EventArgs e ) {
+        protected virtual void OnUpdate( EventArgs e )
+        {
             if ( Update != null )
                 Update( this, e ); //Invokes the delegates
 
@@ -573,7 +608,8 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// <summary>
         /// On Delete
         /// </summary>
-        protected virtual void OnDelete() {
+        protected virtual void OnDelete()
+        {
             WorkFlowDB.SetLastModified( ModuleID, MailHelper.GetCurrentUserEmailAddress() );
         }
 
@@ -582,7 +618,8 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// <summary>
         /// On Version Swap
         /// </summary>
-        protected virtual void OnVersionSwap() {
+        protected virtual void OnVersionSwap()
+        {
         }
 
         // Change by Geert.Audenaert@Syntegra.Com
@@ -591,23 +628,28 @@ namespace Rainbow.Framework.Web.UI.WebControls {
         /// 
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnLoad( EventArgs e ) {
+        protected override void OnLoad( EventArgs e )
+        {
             #region check workflow version
 
             // First Check if the version is specified
             string version = null;
-            try {
+            try
+            {
                 version = Page.Request.QueryString[ "wversion" + ModuleConfiguration.ModuleID.ToString() ];
             }
-            catch ( NullReferenceException ) {
+            catch ( NullReferenceException )
+            {
                 //string message = ex.Message;
             }
 
-            if ( version != null ) {
+            if ( version != null )
+            {
                 WorkFlowVersion requestedVersion = version == "Staging"
                                                        ? WorkFlowVersion.Staging
                                                        : WorkFlowVersion.Production;
-                if ( requestedVersion != Version ) {
+                if ( requestedVersion != Version )
+                {
                     Version = requestedVersion;
                     OnVersionSwap();
                 }
@@ -647,7 +689,8 @@ end of modification
 
             #region set cacheable in ModuleConfiguration
 
-            if ( ModuleConfiguration != null ) {
+            if ( ModuleConfiguration != null )
+            {
                 if ( Cacheable )
                     ModuleConfiguration.Cacheable = true;
                 else
@@ -683,18 +726,23 @@ end of modification
         /// Raises OnInit event.
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnInit( EventArgs e ) {
+        protected override void OnInit( EventArgs e )
+        {
             Controls.AddAt( 0, _headerPlaceHolder );
 
-            if ( DeleteBtn != null ) {
+            if ( DeleteBtn != null )
+            {
                 // Assign current permissions to Delete button
-                if ( IsDeleteable == false ) {
+                if ( IsDeleteable == false )
+                {
                     DeleteBtn.Visible = false;
                 }
-                else {
+                else
+                {
                     DeleteBtn.Visible = true;
 
-                    if ( !( Page.ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) ) {
+                    if ( !( Page.ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) )
+                    {
                         string[] s = { "CONFIRM_DELETE" };
                         Page.ClientScript.RegisterClientScriptBlock( GetType(), "confirmDelete",
                                                                     PortalSettings.GetStringResource(
@@ -713,12 +761,15 @@ end of modification
                 }
             }
 
-            if ( EditBtn != null ) {
+            if ( EditBtn != null )
+            {
                 // Assign current permissions to Edit button
-                if ( IsEditable == false ) {
+                if ( IsEditable == false )
+                {
                     EditBtn.Visible = false;
                 }
-                else {
+                else
+                {
                     EditBtn.Visible = true;
                     EditBtn.Click += new ImageClickEventHandler( EditBtn_Click );
                     EditBtn.AlternateText = General.GetString( "Edit" );
@@ -726,7 +777,8 @@ end of modification
                 }
             }
 
-            if ( updateButton != null ) {
+            if ( updateButton != null )
+            {
                 updateButton.Click += new EventHandler( UpdateBtn_Click );
                 updateButton.Text = General.GetString( "UPDATE" );
                 //updateButton.CssClass = "CommandButton"; // Jes1111 - set in .ascx
@@ -741,22 +793,26 @@ end of modification
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UpdateBtn_Click( Object sender, EventArgs e ) {
+        private void UpdateBtn_Click( Object sender, EventArgs e )
+        {
             OnUpdate( e );
         }
 
-        private void EditBtn_Click( Object sender, ImageClickEventArgs e ) {
+        private void EditBtn_Click( Object sender, ImageClickEventArgs e )
+        {
             OnEdit();
         }
 
-        private void DeleteBtn_Click( Object sender, ImageClickEventArgs e ) {
+        private void DeleteBtn_Click( Object sender, ImageClickEventArgs e )
+        {
             OnDelete();
         }
 
         /// <summary>
         /// On Edit
         /// </summary>
-        protected virtual void OnEdit() {
+        protected virtual void OnEdit()
+        {
             WorkFlowDB.SetLastModified( ModuleID, MailHelper.GetCurrentUserEmailAddress() );
         }
 
@@ -774,7 +830,8 @@ end of modification
         /// Override on derivates class.
         /// Return true if the module is an Admin Module.
         /// </summary>
-        public virtual bool AdminModule {
+        public virtual bool AdminModule
+        {
             get { return false; }
         }
 
@@ -782,7 +839,8 @@ end of modification
         /// Override on derivates classes.
         /// Return true if the module is Searchable.
         /// </summary>
-        public virtual bool Searchable {
+        public virtual bool Searchable
+        {
             get { return false; }
         }
 
@@ -791,7 +849,8 @@ end of modification
         /// Override on derived class.
         /// Return true if the module is Cacheable.
         /// </summary>
-        public virtual bool Cacheable {
+        public virtual bool Cacheable
+        {
             get { return _cacheable; }
             set { _cacheable = value; }
         }
@@ -801,7 +860,8 @@ end of modification
         /// Override on derived class.
         /// Return true if the module supports print in pop-up window.
         /// </summary>
-        public bool SupportsPrint {
+        public bool SupportsPrint
+        {
             get { return _supportsPrint; }
             set { _supportsPrint = value; }
         }
@@ -811,8 +871,10 @@ end of modification
         /// collpasable (minimized/maximized/closed)
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool SupportCollapsable {
-            get {
+        public bool SupportCollapsable
+        {
+            get
+            {
                 if ( _moduleConfiguration == null )
                     return _supportsCollapseable;
                 else
@@ -826,7 +888,8 @@ end of modification
         /// This property indicates whether the module supports a Back button
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool SupportsBack {
+        public bool SupportsBack
+        {
             get { return _supportsBack; }
             set { _supportsBack = value; }
         }
@@ -835,7 +898,8 @@ end of modification
         /// This property indicates if the module supports email
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool SupportsEmail {
+        public bool SupportsEmail
+        {
             get { return _supportsEmail; }
             set { _supportsEmail = value; }
         }
@@ -844,8 +908,10 @@ end of modification
         /// This property indicates if the specified module supports arrows to move modules
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool SupportsArrows {
-            get {
+        public bool SupportsArrows
+        {
+            get
+            {
                 bool returnValue = _supportsArrows;
 
                 if ( portalSettings.CustomSettings[ "SITESETTINGS_SHOW_MODULE_ARROWS" ] != null )
@@ -864,8 +930,10 @@ end of modification
         /// This property indicates if the specified module workflow is enabled.
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool SupportsWorkflow {
-            get {
+        public bool SupportsWorkflow
+        {
+            get
+            {
                 if ( _moduleConfiguration == null )
                     return _supportsWorkflow;
                 else
@@ -889,11 +957,14 @@ end of modification
         /// This property indicates if the specified module supports help
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool SupportsHelp {
-            get {
+        public bool SupportsHelp
+        {
+            get
+            {
                 if ( ( Settings[ "MODULESETTINGS_SHOW_HELP_BUTTON" ] == null ||
                      bool.Parse( Settings[ "MODULESETTINGS_SHOW_HELP_BUTTON" ].ToString() ) ) &&
-                    ( ModuleConfiguration.DesktopSrc.Length != 0 ) ) {
+                    ( ModuleConfiguration.DesktopSrc.Length != 0 ) )
+                {
                     string aux = Path.ApplicationRoot + "/rb_documentation/Rainbow/" +
                                  ModuleConfiguration.DesktopSrc.Replace( ".", "_" ).ToString();
                     return Directory.Exists( HttpContext.Current.Server.MapPath( aux ) );
@@ -910,13 +981,17 @@ end of modification
         /// <summary>
         /// Stores current portal settings 
         /// </summary>
-        public PortalSettings portalSettings {
-            get {
+        public PortalSettings portalSettings
+        {
+            get
+            {
                 if ( Page != null )
                     return ( ( Page )Page ).portalSettings;
-                else {
+                else
+                {
                     // Obtain PortalSettings from Current Context
-                    if ( HttpContext.Current != null ) {
+                    if ( HttpContext.Current != null )
+                    {
                         return ( PortalSettings )HttpContext.Current.Items[ "PortalSettings" ];
                     }
                     return null;
@@ -928,7 +1003,8 @@ end of modification
         /// ID of portal in which module is instantiated
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public int PortalID {
+        public int PortalID
+        {
             get { return _portalID; }
             set { _portalID = value; }
         }
@@ -940,8 +1016,10 @@ end of modification
         /// <summary>
         /// Returns the current page
         /// </summary>
-        public new Page Page {
-            get {
+        public new Page Page
+        {
+            get
+            {
                 if ( base.Page is Page )
                     return ( Page )base.Page;
                 else
@@ -958,9 +1036,12 @@ end of modification
         /// <summary>
         /// Stores current linked module ID if applicable
         /// </summary>
-        public int PageID {
-            get {
-                if ( _tabID == 0 ) {
+        public int PageID
+        {
+            get
+            {
+                if ( _tabID == 0 )
+                {
                     Trace.Warn( "Request.Params['PageID'] = " + Request.Params[ "PageID" ] );
                     // Determine PageID if specified
                     if ( HttpContext.Current != null && Request.Params[ "PageID" ] != null )
@@ -975,8 +1056,10 @@ end of modification
         /// <summary>
         /// Stores current tab settings 
         /// </summary>
-        public Hashtable pageSettings {
-            get {
+        public Hashtable pageSettings
+        {
+            get
+            {
                 if ( Page != null )
                     return ( ( Page )Page ).pageSettings;
                 else
@@ -992,7 +1075,8 @@ end of modification
         /// Return true if module has inner control of type title
         /// </summary>
         /// <remarks>Left here for backward compatibility until it proves redundant</remarks>
-        protected bool HasTitle {
+        protected bool HasTitle
+        {
             get { return true; }
         }
 
@@ -1001,7 +1085,8 @@ end of modification
         /// <summary>
         /// Inner Title control. Now only used for backward compatibility 
         /// </summary>
-        public virtual DesktopModuleTitle ModuleTitle {
+        public virtual DesktopModuleTitle ModuleTitle
+        {
             get { return _ModuleTitle; }
             set { _ModuleTitle = value; }
         }
@@ -1010,15 +1095,18 @@ end of modification
         /// Switch to turn on/off the display of Title text.
         /// </summary>
         /// <remarks>Note: won't turn off the display of Buttons like it used to! You can now have buttons displayed with no title text showing</remarks>
-        public virtual bool ShowTitle {
-            get {
+        public virtual bool ShowTitle
+        {
+            get
+            {
                 if ( HttpContext.Current != null ) // if it is not design time
                 {
                     return ( bool.Parse( Settings[ "MODULESETTINGS_SHOW_TITLE" ].ToString() ) );
                 }
                 return false;
             }
-            set {
+            set
+            {
                 if ( HttpContext.Current != null ) // if it is not design time
                 {
                     Settings[ "MODULESETTINGS_SHOW_TITLE" ] = value.ToString();
@@ -1029,15 +1117,18 @@ end of modification
         /// <summary>
         /// Switch to turn on/off the display of the module title text (not the buttons) in the print pop-up.
         /// </summary>
-        public virtual bool ShowTitlePrint {
-            get {
+        public virtual bool ShowTitlePrint
+        {
+            get
+            {
                 if ( HttpContext.Current != null ) // if it is not design time
                 {
                     return ( bool.Parse( Settings[ "MODULESETTINGS_SHOW_TITLE_PRINT" ].ToString() ) );
                 }
                 return false;
             }
-            set {
+            set
+            {
                 if ( HttpContext.Current != null ) // if it is not design time
                 {
                     Settings[ "MODULESETTINGS_SHOW_TITLE_PRINT" ] = value.ToString();
@@ -1050,19 +1141,23 @@ end of modification
         /// <summary>
         /// The module title as it will be displayed on the page. Handles cultures automatically.
         /// </summary>
-        public virtual string TitleText {
-            get {
+        public virtual string TitleText
+        {
+            get
+            {
                 if ( HttpContext.Current != null && titleText == string.Empty )
                 // if it is not design time (and not overriden - Jes1111)
                 {
                     if ( portalSettings.PortalContentLanguage != CultureInfo.InvariantCulture &&
                         Settings[ "MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name ] != null &&
                         Settings[ "MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name ].ToString().Length >
-                        0 ) {
+                        0 )
+                    {
                         titleText =
                             Settings[ "MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name ].ToString();
                     }
-                    else {
+                    else
+                    {
                         if ( ModuleConfiguration != null )
                             titleText = ModuleConfiguration.ModuleTitle;
                         else
@@ -1081,8 +1176,10 @@ end of modification
         /// <summary>
         /// Text for Edit Link
         /// </summary>
-        public string EditText {
-            get {
+        public string EditText
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.EditText.Length != 0 )
                     editText = ModuleTitle.EditText;
                 return editText;
@@ -1093,8 +1190,10 @@ end of modification
         /// <summary>
         /// Url for Edit Link
         /// </summary>
-        public string EditUrl {
-            get {
+        public string EditUrl
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.EditUrl.Length != 0 )
                     editUrl = ModuleTitle.EditUrl;
                 return editUrl;
@@ -1105,8 +1204,10 @@ end of modification
         /// <summary>
         /// Target frame/page for Edit Link
         /// </summary>
-        public string EditTarget {
-            get {
+        public string EditTarget
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.EditTarget.Length != 0 )
                     editUrl = ModuleTitle.EditTarget;
                 return editTarget;
@@ -1121,8 +1222,10 @@ end of modification
         /// <summary>
         /// Text for Add Link
         /// </summary>
-        public string AddText {
-            get {
+        public string AddText
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.AddText.Length != 0 )
                     addText = ModuleTitle.AddText;
                 return addText;
@@ -1134,8 +1237,10 @@ end of modification
         /// Url for Add Link
         /// </summary>
         /// <value>The add URL.</value>
-        public string AddUrl {
-            get {
+        public string AddUrl
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.AddUrl.Length != 0 )
                     addUrl = ModuleTitle.AddUrl;
                 return addUrl;
@@ -1146,8 +1251,10 @@ end of modification
         /// <summary>
         /// Target frame/page for Add Link
         /// </summary>
-        public string AddTarget {
-            get {
+        public string AddTarget
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.AddTarget.Length != 0 )
                     addTarget = ModuleTitle.AddTarget;
                 return addTarget;
@@ -1162,8 +1269,10 @@ end of modification
         /// <summary>
         /// Text for Properties Link
         /// </summary>
-        public string PropertiesText {
-            get {
+        public string PropertiesText
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.PropertiesText.Length != 0 )
                     propertiesText = ModuleTitle.PropertiesText;
                 return propertiesText;
@@ -1174,8 +1283,10 @@ end of modification
         /// <summary>
         /// Url for Properties Link
         /// </summary>
-        public string PropertiesUrl {
-            get {
+        public string PropertiesUrl
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.PropertiesUrl.Length != 0 )
                     propertiesUrl = ModuleTitle.PropertiesUrl;
                 return propertiesUrl;
@@ -1186,8 +1297,10 @@ end of modification
         /// <summary>
         /// Target frame/page for Properties Link
         /// </summary>
-        public string PropertiesTarget {
-            get {
+        public string PropertiesTarget
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.PropertiesTarget.Length != 0 )
                     propertiesTarget = ModuleTitle.PropertiesTarget;
                 return propertiesTarget;
@@ -1202,8 +1315,10 @@ end of modification
         /// <summary>
         /// Text for Security Link
         /// </summary>
-        public string SecurityText {
-            get {
+        public string SecurityText
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.SecurityText.Length != 0 )
                     securityText = ModuleTitle.SecurityText;
                 return securityText;
@@ -1214,8 +1329,10 @@ end of modification
         /// <summary>
         /// Url for Security Link
         /// </summary>
-        public string SecurityUrl {
-            get {
+        public string SecurityUrl
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.SecurityUrl.Length != 0 )
                     securityUrl = ModuleTitle.SecurityUrl;
                 return securityUrl;
@@ -1226,8 +1343,10 @@ end of modification
         /// <summary>
         /// Target frame/page for Security Link
         /// </summary>
-        public string SecurityTarget {
-            get {
+        public string SecurityTarget
+        {
+            get
+            {
                 if ( ModuleTitle != null && ModuleTitle.SecurityTarget.Length != 0 )
                     securityTarget = ModuleTitle.SecurityTarget;
                 return securityTarget;
@@ -1244,8 +1363,10 @@ end of modification
         /// <summary>
         /// Determines how ModuleButtons are rendered: as TextOnly, TextAndImage or ImageOnly. ImageOnly is the 'classic' Rainbow style.
         /// </summary>
-        public ModuleButton.RenderOptions ButtonsRenderAs {
-            get {
+        public ModuleButton.RenderOptions ButtonsRenderAs
+        {
+            get
+            {
                 if ( HttpContext.Current != null ) // if it is not design time
                 {
                     if ( Settings[ "MODULESETTINGS_BUTTON_DISPLAY" ] != null &&
@@ -1263,11 +1384,15 @@ end of modification
         /// <summary>
         /// Module Properties button
         /// </summary>
-        public ModuleButton PropertiesButton {
-            get {
-                if ( propertiesButton == null && HttpContext.Current != null ) {
+        public ModuleButton PropertiesButton
+        {
+            get
+            {
+                if ( propertiesButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanProperties ) {
+                    if ( CanProperties )
+                    {
                         // create the button
                         propertiesButton = new ModuleButton();
                         propertiesButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1295,11 +1420,15 @@ end of modification
         /// <summary>
         /// Module Security button
         /// </summary>
-        public ModuleButton SecurityButton {
-            get {
-                if ( securityButton == null && HttpContext.Current != null ) {
+        public ModuleButton SecurityButton
+        {
+            get
+            {
+                if ( securityButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanSecurity ) {
+                    if ( CanSecurity )
+                    {
                         // create the button
                         securityButton = new ModuleButton();
                         securityButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1325,11 +1454,15 @@ end of modification
         /// <summary>
         /// "Delete this Module" button
         /// </summary>
-        public ModuleButton DeleteModuleButton {
-            get {
-                if ( deleteModuleButton == null && HttpContext.Current != null ) {
+        public ModuleButton DeleteModuleButton
+        {
+            get
+            {
+                if ( deleteModuleButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanDeleteModule ) {
+                    if ( CanDeleteModule )
+                    {
                         // create the button
                         deleteModuleButton = new ModuleButton();
                         deleteModuleButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1341,7 +1474,8 @@ end of modification
                         // TODO: This JavaScript Function Is used for different controls and should be in one place
                         // (it's also overweight considering that Javascript has a standard confirm() function - Jes1111)
                         if ( Page.Request.Browser.EcmaScriptVersion.Major >= 1 &&
-                            !( Page.ClientScript.IsClientScriptBlockRegistered( this.Page.GetType(), "confirmDelete" ) ) ) {
+                            !( Page.ClientScript.IsClientScriptBlockRegistered( this.Page.GetType(), "confirmDelete" ) ) )
+                        {
                             string[] s = { "CONFIRM_DELETE" };
                             Page.ClientScript.RegisterClientScriptBlock( this.Page.GetType(), "confirmDelete",
                                                                         PortalSettings.GetStringResource(
@@ -1366,11 +1500,15 @@ end of modification
         /// <summary>
         /// Module button that will launch the module help in a pop-up window
         /// </summary>
-        public ModuleButton HelpButton {
-            get {
-                if ( helpButton == null && HttpContext.Current != null ) {
+        public ModuleButton HelpButton
+        {
+            get
+            {
+                if ( helpButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanHelp ) {
+                    if ( CanHelp )
+                    {
                         // build the HRef
                         string aux = ModuleConfiguration.DesktopSrc.Replace( ".", "_" ).ToString();
                         int fileNameStart = aux.LastIndexOf( "/" );
@@ -1407,11 +1545,15 @@ end of modification
         /// <summary>
         /// Module Up button
         /// </summary>
-        public ModuleButton UpButton {
-            get {
-                if ( upButton == null && HttpContext.Current != null ) {
+        public ModuleButton UpButton
+        {
+            get
+            {
+                if ( upButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanArrows && ModuleConfiguration.ModuleOrder != 1 ) {
+                    if ( CanArrows && ModuleConfiguration.ModuleOrder != 1 )
+                    {
                         // create the button
                         upButton = new ModuleButton();
                         upButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1433,14 +1575,19 @@ end of modification
         /// <summary>
         /// Module Down button
         /// </summary>
-        public ModuleButton DownButton {
-            get {
-                if ( downButton == null && HttpContext.Current != null ) {
+        public ModuleButton DownButton
+        {
+            get
+            {
+                if ( downButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanArrows ) {
+                    if ( CanArrows )
+                    {
                         ArrayList sourceList = GetModules( ModuleConfiguration.PaneName.ToLower() );
                         ModuleItem m = ( ModuleItem )sourceList[ sourceList.Count - 1 ];
-                        if ( ModuleConfiguration.ModuleOrder != m.Order ) {
+                        if ( ModuleConfiguration.ModuleOrder != m.Order )
+                        {
                             // create the button
                             downButton = new ModuleButton();
                             downButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1463,11 +1610,15 @@ end of modification
         /// <summary>
         /// Module Left button
         /// </summary>
-        public ModuleButton LeftButton {
-            get {
-                if ( leftButton == null && HttpContext.Current != null ) {
+        public ModuleButton LeftButton
+        {
+            get
+            {
+                if ( leftButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanArrows && ModuleConfiguration.PaneName.ToLower() != "leftpane" ) {
+                    if ( CanArrows && ModuleConfiguration.PaneName.ToLower() != "leftpane" )
+                    {
                         string leftButtonTargetPane = "contentpane";
                         if ( ModuleConfiguration.PaneName.ToLower() == "contentpane" )
                             leftButtonTargetPane = "leftpane";
@@ -1495,11 +1646,15 @@ end of modification
         /// <summary>
         /// Module Right button
         /// </summary>
-        public ModuleButton RightButton {
-            get {
-                if ( rightButton == null && HttpContext.Current != null ) {
+        public ModuleButton RightButton
+        {
+            get
+            {
+                if ( rightButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanArrows && ModuleConfiguration.PaneName.ToLower() != "rightpane" ) {
+                    if ( CanArrows && ModuleConfiguration.PaneName.ToLower() != "rightpane" )
+                    {
                         string rightButtonTargetPane = "contentpane";
                         if ( ModuleConfiguration.PaneName.ToLower() == "contentpane" )
                             rightButtonTargetPane = "rightpane";
@@ -1527,11 +1682,15 @@ end of modification
         /// <summary>
         /// Module ReadyToApprove button
         /// </summary>
-        public ModuleButton ReadyToApproveButton {
-            get {
-                if ( readyToApproveButton == null && HttpContext.Current != null ) {
+        public ModuleButton ReadyToApproveButton
+        {
+            get
+            {
+                if ( readyToApproveButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanRequestApproval ) {
+                    if ( CanRequestApproval )
+                    {
                         // create the button
                         readyToApproveButton = new ModuleButton();
                         readyToApproveButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1554,11 +1713,15 @@ end of modification
         /// <summary>
         /// Module Revert button
         /// </summary>
-        public ModuleButton RevertButton {
-            get {
-                if ( revertButton == null && HttpContext.Current != null ) {
+        public ModuleButton RevertButton
+        {
+            get
+            {
+                if ( revertButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanRequestApproval ) {
+                    if ( CanRequestApproval )
+                    {
                         // create the button
                         revertButton = new ModuleButton();
                         revertButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1579,11 +1742,15 @@ end of modification
         /// <summary>
         /// Module Approve button
         /// </summary>
-        public ModuleButton ApproveButton {
-            get {
-                if ( approveButton == null && HttpContext.Current != null ) {
+        public ModuleButton ApproveButton
+        {
+            get
+            {
+                if ( approveButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanApproveReject ) {
+                    if ( CanApproveReject )
+                    {
                         // create the button
                         approveButton = new ModuleButton();
                         approveButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1605,11 +1772,15 @@ end of modification
         /// <summary>
         /// Module Reject button
         /// </summary>
-        public ModuleButton RejectButton {
-            get {
-                if ( rejectButton == null && HttpContext.Current != null ) {
+        public ModuleButton RejectButton
+        {
+            get
+            {
+                if ( rejectButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanApproveReject ) {
+                    if ( CanApproveReject )
+                    {
                         // create the button
                         rejectButton = new ModuleButton();
                         rejectButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1631,11 +1802,15 @@ end of modification
         /// <summary>
         /// Module Version button
         /// </summary>
-        public ModuleButton PublishButton {
-            get {
-                if ( publishButton == null && HttpContext.Current != null ) {
+        public ModuleButton PublishButton
+        {
+            get
+            {
+                if ( publishButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanPublish ) {
+                    if ( CanPublish )
+                    {
                         // create the button
                         publishButton = new ModuleButton();
                         publishButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1658,21 +1833,27 @@ end of modification
         /// <summary>
         /// Module Version button
         /// </summary>
-        public ModuleButton VersionButton {
-            get {
-                if ( _versionButton == null && HttpContext.Current != null ) {
+        public ModuleButton VersionButton
+        {
+            get
+            {
+                if ( _versionButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanVersion ) {
+                    if ( CanVersion )
+                    {
                         // create the button
                         _versionButton = new ModuleButton();
                         _versionButton.Group = ModuleButton.ButtonGroup.Admin;
-                        if ( Version == WorkFlowVersion.Staging ) {
+                        if ( Version == WorkFlowVersion.Staging )
+                        {
                             _versionButton.TranslationKey = ProductionVersionText;
                             _versionButton.EnglishName = "To production version";
                             _versionButton.Image =
                                 CurrentTheme.GetImage( "Buttons_VersionToProduction", "VersionToProduction.gif" );
                         }
-                        else {
+                        else
+                        {
                             _versionButton.TranslationKey = StagingVersionText;
                             _versionButton.EnglishName = "To staging version";
                             _versionButton.Image =
@@ -1692,11 +1873,15 @@ end of modification
         /// <summary>
         /// Module edit button
         /// </summary>
-        public ModuleButton EditButton {
-            get {
-                if ( editButton == null && HttpContext.Current != null ) {
+        public ModuleButton EditButton
+        {
+            get
+            {
+                if ( editButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanEdit ) {
+                    if ( CanEdit )
+                    {
                         // create the button
                         editButton = new ModuleButton();
                         editButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1721,11 +1906,15 @@ end of modification
         /// <summary>
         /// Module Add button
         /// </summary>
-        public ModuleButton AddButton {
-            get {
-                if ( addButton == null && HttpContext.Current != null ) {
+        public ModuleButton AddButton
+        {
+            get
+            {
+                if ( addButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanAdd ) {
+                    if ( CanAdd )
+                    {
                         // create the button
                         addButton = new ModuleButton();
                         addButton.Group = ModuleButton.ButtonGroup.Admin;
@@ -1750,11 +1939,15 @@ end of modification
         /// <summary>
         /// Module button that will return to previous tab
         /// </summary>
-        public ModuleButton BackButton {
-            get {
-                if ( backButton == null && HttpContext.Current != null ) {
+        public ModuleButton BackButton
+        {
+            get
+            {
+                if ( backButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanBack ) {
+                    if ( CanBack )
+                    {
                         // create the button
                         backButton = new ModuleButton();
                         backButton.Group = ModuleButton.ButtonGroup.User;
@@ -1774,17 +1967,22 @@ end of modification
         /// <summary>
         /// Module button that will launch the module in a pop-up window suitable for printing
         /// </summary>
-        public ModuleButton PrintButton {
-            get {
-                if ( printButton == null && HttpContext.Current != null ) {
+        public ModuleButton PrintButton
+        {
+            get
+            {
+                if ( printButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanPrint ) {
+                    if ( CanPrint )
+                    {
                         // build the HRef
                         StringBuilder _url = new StringBuilder();
                         _url.Append( Path.ApplicationRoot );
                         _url.Append( "/app_support/print.aspx?" );
                         _url.Append( Request.QueryString.ToString() );
-                        if ( !( Request.QueryString.ToString().ToLower().IndexOf( "mid=" ) > 0 ) ) {
+                        if ( !( Request.QueryString.ToString().ToLower().IndexOf( "mid=" ) > 0 ) )
+                        {
                             _url.Append( "&mID=" );
                             _url.Append( ModuleID.ToString() );
                         }
@@ -1815,11 +2013,15 @@ end of modification
         /// Module button that will launch a pop-up window to allow the module contents to be emailed
         /// </summary>
         /// <remarks>Not implemented yet.</remarks>
-        public ModuleButton EmailButton {
-            get {
-                if ( emailButton == null && HttpContext.Current != null ) {
+        public ModuleButton EmailButton
+        {
+            get
+            {
+                if ( emailButton == null && HttpContext.Current != null )
+                {
                     // check authority
-                    if ( CanEmail ) {
+                    if ( CanEmail )
+                    {
                         // not implemented
                         //					javaScript = "EmailWindow=window.open('" 
                         //						+ HttpUrlBuilder.BuildUrl("email.aspx","src=" + portalModule.ModuleCacheKey + "content") 
@@ -1900,18 +2102,23 @@ end of modification
         /// View permission
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool IsViewable {
-            get {
+        public bool IsViewable
+        {
+            get
+            {
                 if ( _moduleConfiguration == null || _moduleConfiguration.AuthorizedViewRoles == null )
                     return false;
 
                 // Perform tri-state switch check to avoid having to perform a security
                 // role lookup on every property access (instead caching the result)
-                if ( _canView == 0 ) {
-                    if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedViewRoles ) ) {
+                if ( _canView == 0 )
+                {
+                    if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedViewRoles ) )
+                    {
                         _canView = 1;
                     }
-                    else {
+                    else
+                    {
                         _canView = 2;
                     }
                 }
@@ -1923,25 +2130,32 @@ end of modification
         /// Add permission
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool IsAddable {
-            get {
+        public bool IsAddable
+        {
+            get
+            {
                 if ( _moduleConfiguration == null || _moduleConfiguration.AuthorizedAddRoles == null )
                     return false;
 
                 // Perform tri-state switch check to avoid having to perform a security
                 // role lookup on every property access (instead caching the result)
-                if ( _canAdd == 0 ) {
+                if ( _canAdd == 0 )
+                {
                     // Change by Geert.Audenaert@Syntegra.Com
                     // Date: 7/2/2003
-                    if ( SupportsWorkflow && Version == WorkFlowVersion.Production ) {
+                    if ( SupportsWorkflow && Version == WorkFlowVersion.Production )
+                    {
                         _canAdd = 2;
                     }
-                    else {
+                    else
+                    {
                         // End Change Geert.Audenaert@Syntegra.Com
-                        if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedAddRoles ) ) {
+                        if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedAddRoles ) )
+                        {
                             _canAdd = 1;
                         }
-                        else {
+                        else
+                        {
                             _canAdd = 2;
                         }
                         // Change by Geert.Audenaert@Syntegra.Com
@@ -1957,26 +2171,33 @@ end of modification
         /// Edit permission
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool IsEditable {
-            get {
+        public bool IsEditable
+        {
+            get
+            {
                 if ( _moduleConfiguration == null || _moduleConfiguration.AuthorizedEditRoles == null )
                     return false;
 
                 // Perform tri-state switch check to avoid having to perform a security
                 // role lookup on every property access (instead caching the result)
-                if ( _canEdit == 0 ) {
+                if ( _canEdit == 0 )
+                {
                     // Change by Geert.Audenaert@Syntegra.Com
                     // Date: 7/2/2003
-                    if ( SupportsWorkflow && Version == WorkFlowVersion.Production ) {
+                    if ( SupportsWorkflow && Version == WorkFlowVersion.Production )
+                    {
                         _canEdit = 2;
                     }
-                    else {
+                    else
+                    {
                         // End Change Geert.Audenaert@Syntegra.Com
                         //						if (portalSettings.AlwaysShowEditButton == true || PortalSecurity.IsInRoles(_moduleConfiguration.AuthorizedEditRoles))
-                        if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedEditRoles ) ) {
+                        if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedEditRoles ) )
+                        {
                             _canEdit = 1;
                         }
-                        else {
+                        else
+                        {
                             _canEdit = 2;
                         }
                         // Change by Geert.Audenaert@Syntegra.Com
@@ -1992,25 +2213,32 @@ end of modification
         /// Delete permission
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool IsDeleteable {
-            get {
+        public bool IsDeleteable
+        {
+            get
+            {
                 if ( _moduleConfiguration == null || _moduleConfiguration.AuthorizedDeleteRoles == null )
                     return false;
 
                 // Perform tri-state switch check to avoid having to perform a security
                 // role lookup on every property access (instead caching the result)
-                if ( _canDelete == 0 ) {
+                if ( _canDelete == 0 )
+                {
                     // Change by Geert.Audenaert@Syntegra.Com
                     // Date: 7/2/2003
-                    if ( SupportsWorkflow && Version == WorkFlowVersion.Production ) {
+                    if ( SupportsWorkflow && Version == WorkFlowVersion.Production )
+                    {
                         _canDelete = 2;
                     }
-                    else {
+                    else
+                    {
                         // End Change Geert.Audenaert@Syntegra.Com
-                        if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedDeleteRoles ) ) {
+                        if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedDeleteRoles ) )
+                        {
                             _canDelete = 1;
                         }
-                        else {
+                        else
+                        {
                             _canDelete = 2;
                         }
                         // Change by Geert.Audenaert@Syntegra.Com
@@ -2026,18 +2254,23 @@ end of modification
         /// Edit properties permission
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool ArePropertiesEditable {
-            get {
+        public bool ArePropertiesEditable
+        {
+            get
+            {
                 if ( _moduleConfiguration == null || _moduleConfiguration.AuthorizedPropertiesRoles == null )
                     return false;
 
                 // Perform tri-state switch check to avoid having to perform a security
                 // role lookup on every property access (instead caching the result)
-                if ( _canProperties == 0 ) {
-                    if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedPropertiesRoles ) ) {
+                if ( _canProperties == 0 )
+                {
+                    if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedPropertiesRoles ) )
+                    {
                         _canProperties = 1;
                     }
-                    else {
+                    else
+                    {
                         _canProperties = 2;
                     }
                 }
@@ -2049,15 +2282,20 @@ end of modification
         /// Minimize permission
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanMinimized {
-            get {
+        public bool CanMinimized
+        {
+            get
+            {
                 // Perform tri-state switch check to avoid having to perform a security
                 // role lookup on every property access (instead caching the result)
-                if ( _canMin == 0 ) {
-                    if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedViewRoles ) ) {
+                if ( _canMin == 0 )
+                {
+                    if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedViewRoles ) )
+                    {
                         _canMin = 1;
                     }
-                    else {
+                    else
+                    {
                         _canMin = 2;
                     }
                 }
@@ -2069,15 +2307,20 @@ end of modification
         /// Close permission
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanClose {
-            get {
+        public bool CanClose
+        {
+            get
+            {
                 // Perform tri-state switch check to avoid having to perform a security
                 // role lookup on every property access (instead caching the result)
-                if ( _canClose == 0 ) {
-                    if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedDeleteRoles ) ) {
+                if ( _canClose == 0 )
+                {
+                    if ( PortalSecurity.IsInRoles( _moduleConfiguration.AuthorizedDeleteRoles ) )
+                    {
                         _canClose = 1;
                     }
-                    else {
+                    else
+                    {
                         _canClose = 2;
                     }
                 }
@@ -2089,8 +2332,10 @@ end of modification
         /// Print permission
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanPrint {
-            get {
+        public bool CanPrint
+        {
+            get
+            {
                 if ( SupportsPrint && Settings[ "MODULESETTINGS_SHOW_PRINT_BUTTION" ] != null &&
                     bool.Parse( Settings[ "MODULESETTINGS_SHOW_PRINT_BUTTION" ].ToString() ) )
                     return true;
@@ -2103,8 +2348,10 @@ end of modification
         /// Permission for DeleteModuleButton
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanDeleteModule {
-            get {
+        public bool CanDeleteModule
+        {
+            get
+            {
                 if ( PortalSecurity.IsInRoles( ModuleConfiguration.AuthorizedDeleteModuleRoles ) &&
                     portalSettings.ActivePage.PageID == ModuleConfiguration.PageID )
                     return true;
@@ -2117,8 +2364,10 @@ end of modification
         /// Permission for HelpButton
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanHelp {
-            get {
+        public bool CanHelp
+        {
+            get
+            {
                 if ( SupportsHelp &&
                     ( ( PortalSecurity.IsInRoles( ModuleConfiguration.AuthorizedEditRoles ) ) ||
                      ( PortalSecurity.IsInRoles( ModuleConfiguration.AuthorizedAddRoles ) ) ||
@@ -2136,9 +2385,12 @@ end of modification
         /// Permission for BackButton
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanBack {
-            get {
-                if ( SupportsBack && ShowBack && Request.UrlReferrer != null ) {
+        public bool CanBack
+        {
+            get
+            {
+                if ( SupportsBack && ShowBack && Request.UrlReferrer != null )
+                {
                     return true;
                 }
                 else
@@ -2150,10 +2402,13 @@ end of modification
         /// Permission for EmailButton
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanEmail {
-            get {
+        public bool CanEmail
+        {
+            get
+            {
                 if ( SupportsEmail && Settings[ "ShowEmailButton" ] != null &&
-                    bool.Parse( Settings[ "ShowEmailButton" ].ToString() ) ) {
+                    bool.Parse( Settings[ "ShowEmailButton" ].ToString() ) )
+                {
                     return true;
                 }
                 else
@@ -2165,18 +2420,23 @@ end of modification
         /// Permission for EditButton
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanEdit {
-            get {
+        public bool CanEdit
+        {
+            get
+            {
                 if ( ModuleConfiguration == null || portalSettings.ActivePage.PageID != ModuleConfiguration.PageID )
                     return false;
 
-                if ( ( SupportsWorkflow && Version == WorkFlowVersion.Staging ) || !SupportsWorkflow ) {
+                if ( ( SupportsWorkflow && Version == WorkFlowVersion.Staging ) || !SupportsWorkflow )
+                {
                     if ( ( PortalSecurity.IsInRoles( ModuleConfiguration.AuthorizedEditRoles ) ) && ( EditUrl != null ) &&
                         ( EditUrl.Length != 0 ) &&
-                        ( WorkflowStatus == WorkflowState.Original || WorkflowStatus == WorkflowState.Working ) ) {
+                        ( WorkflowStatus == WorkflowState.Original || WorkflowStatus == WorkflowState.Working ) )
+                    {
                         return true;
                     }
-                    else {
+                    else
+                    {
                         return false;
                     }
                 }
@@ -2189,18 +2449,23 @@ end of modification
         /// Permission for AddButton
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanAdd {
-            get {
+        public bool CanAdd
+        {
+            get
+            {
                 if ( ModuleConfiguration == null || portalSettings.ActivePage.PageID != ModuleConfiguration.PageID )
                     return false;
 
-                if ( ( SupportsWorkflow && Version == WorkFlowVersion.Staging ) || !SupportsWorkflow ) {
+                if ( ( SupportsWorkflow && Version == WorkFlowVersion.Staging ) || !SupportsWorkflow )
+                {
                     if ( ( PortalSecurity.IsInRoles( ModuleConfiguration.AuthorizedAddRoles ) ) && ( AddUrl != null ) &&
                         ( AddUrl.Length != 0 ) &&
-                        ( WorkflowStatus == WorkflowState.Original || WorkflowStatus == WorkflowState.Working ) ) {
+                        ( WorkflowStatus == WorkflowState.Original || WorkflowStatus == WorkflowState.Working ) )
+                    {
                         return true;
                     }
-                    else {
+                    else
+                    {
                         return false;
                     }
                 }
@@ -2213,8 +2478,10 @@ end of modification
         /// Permission for Version Button
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanVersion {
-            get {
+        public bool CanVersion
+        {
+            get
+            {
                 if ( ModuleConfiguration == null )
                     return false;
 
@@ -2235,8 +2502,10 @@ end of modification
         /// Permission for Publish Button
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanPublish {
-            get {
+        public bool CanPublish
+        {
+            get
+            {
                 if ( ModuleConfiguration == null )
                     return false;
 
@@ -2253,8 +2522,10 @@ end of modification
         /// Permission for Approve/Reject Buttons
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanApproveReject {
-            get {
+        public bool CanApproveReject
+        {
+            get
+            {
                 if ( ModuleConfiguration == null )
                     return false;
 
@@ -2271,8 +2542,10 @@ end of modification
         /// Permission for ReadyToApprove and Revert Buttons
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanRequestApproval {
-            get {
+        public bool CanRequestApproval
+        {
+            get
+            {
                 if ( ModuleConfiguration == null )
                     return false;
 
@@ -2291,8 +2564,10 @@ end of modification
         /// Permission for Arrow Buttons (Up/Down/Left/Right)
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanArrows {
-            get {
+        public bool CanArrows
+        {
+            get
+            {
                 if ( ModuleConfiguration == null || ModuleID == 0 )
                     return false;
 
@@ -2308,8 +2583,10 @@ end of modification
         /// Permission for Security Button
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanSecurity {
-            get {
+        public bool CanSecurity
+        {
+            get
+            {
                 if ( ModuleConfiguration == null )
                     return false;
 
@@ -2326,8 +2603,10 @@ end of modification
         /// Permission for Properties Button
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public bool CanProperties {
-            get {
+        public bool CanProperties
+        {
+            get
+            {
                 if ( ModuleConfiguration == null )
                     return false;
 
@@ -2345,7 +2624,8 @@ end of modification
         /// <summary>
         /// Can be set from module code to indicate whether module should display Back button
         /// </summary>
-        public bool ShowBack {
+        public bool ShowBack
+        {
             get { return _showBack; }
             set { _showBack = value; }
         }
@@ -2359,7 +2639,8 @@ end of modification
         /// <summary>
         /// Text for version Link for swapping to production version
         /// </summary>
-        public string ProductionVersionText {
+        public string ProductionVersionText
+        {
             get { return productionVersionText; }
             set { productionVersionText = value; }
         }
@@ -2369,7 +2650,8 @@ end of modification
         /// <summary>
         /// Text for version Link for swapping to staging version
         /// </summary>
-        public string StagingVersionText {
+        public string StagingVersionText
+        {
             get { return stagingVersionText; }
             set { stagingVersionText = value; }
         }
@@ -2379,7 +2661,8 @@ end of modification
         /// <summary>
         /// Text for publish link
         /// </summary>
-        public string PublishText {
+        public string PublishText
+        {
             get { return publishText; }
             set { publishText = value; }
         }
@@ -2389,7 +2672,8 @@ end of modification
         /// <summary>
         /// 
         /// </summary>
-        public string RevertText {
+        public string RevertText
+        {
             get { return revertText; }
             set { revertText = value; }
         }
@@ -2399,7 +2683,8 @@ end of modification
         /// <summary>
         /// Text for request approval link
         /// </summary>
-        public string ReadyToApproveText {
+        public string ReadyToApproveText
+        {
             get { return readyToApproveText; }
             set { readyToApproveText = value; }
         }
@@ -2409,7 +2694,8 @@ end of modification
         /// <summary>
         /// Text for approve link
         /// </summary>
-        public string ApproveText {
+        public string ApproveText
+        {
             get { return approveText; }
             set { approveText = value; }
         }
@@ -2419,7 +2705,8 @@ end of modification
         /// <summary>
         /// Text for reject link
         /// </summary>
-        public string RejectText {
+        public string RejectText
+        {
             get { return rejectText; }
             set { rejectText = value; }
         }
@@ -2427,7 +2714,8 @@ end of modification
         /// <summary>
         /// Publish staging to production
         /// </summary>
-        protected virtual void Publish() {
+        protected virtual void Publish()
+        {
             // Publish module
             WorkFlowDB.Publish( ModuleConfiguration.ModuleID );
 
@@ -2442,8 +2730,10 @@ end of modification
         /// This property indicates the staging content state
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public WorkflowState WorkflowStatus {
-            get {
+        public WorkflowState WorkflowStatus
+        {
+            get
+            {
                 if ( SupportsWorkflow )
                     return _moduleConfiguration.WorkflowStatus;
                 else
@@ -2461,15 +2751,19 @@ end of modification
         /// production content or staging content
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public WorkFlowVersion Version {
-            get {
+        public WorkFlowVersion Version
+        {
+            get
+            {
                 if ( !SupportsWorkflow )
                     return WorkFlowVersion.Staging;
                 else
                     return _version;
             }
-            set {
-                if ( value == WorkFlowVersion.Staging ) {
+            set
+            {
+                if ( value == WorkFlowVersion.Staging )
+                {
                     if (
                         !
                         ( PortalSecurity.IsInRoles( ModuleConfiguration.AuthorizedAddRoles ) ||
@@ -2488,7 +2782,8 @@ end of modification
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void RevertToProductionContent( object sender, EventArgs e ) {
+        protected void RevertToProductionContent( object sender, EventArgs e )
+        {
             // Revert
             WorkFlowDB.Revert( ModuleID );
             // Refresh current screen
@@ -2503,7 +2798,8 @@ end of modification
             // start of modification
             int i = 0;
             int totalKeys = Page.Request.QueryString.Keys.Count;
-            foreach ( string key in Page.Request.QueryString.Keys ) {
+            foreach ( string key in Page.Request.QueryString.Keys )
+            {
                 querystring += key + "=" + Context.Server.UrlEncode( Page.Request.QueryString[ key ] );
                 if ( i < totalKeys - 1 )
                     querystring += '&';
@@ -2523,14 +2819,17 @@ end of modification
         /// This function constructs the NavigateUrl for the SwapVersions hyperlink
         /// </summary>
         /// <returns>string</returns>
-        private string GetOtherVersionUrl() {
+        private string GetOtherVersionUrl()
+        {
             string url = Page.Request.Path;
             string querystring;
             ArrayList qs = new ArrayList();
 
-            foreach ( string var in Page.Request.QueryString.Keys ) {
+            foreach ( string var in Page.Request.QueryString.Keys )
+            {
                 //Added null check by manu
-                if ( var != null && !( var.StartsWith( "wversion" ) || var.StartsWith( "wpublish" ) ) ) {
+                if ( var != null && !( var.StartsWith( "wversion" ) || var.StartsWith( "wpublish" ) ) )
+                {
                     qs.Add( var + "=" + Page.Server.UrlEncode( Page.Request.QueryString[ var ] ) );
                 }
             }
@@ -2549,13 +2848,16 @@ end of modification
         /// This function constructs the NavigateUrl for the Publish hyperlink
         /// </summary>
         /// <returns>string</returns>
-        private string GetPublishUrl() {
+        private string GetPublishUrl()
+        {
             string url = Page.Request.Path;
             string querystring;
             ArrayList qs = new ArrayList();
-            foreach ( string var in Page.Request.QueryString.Keys ) {
+            foreach ( string var in Page.Request.QueryString.Keys )
+            {
                 //Added null check by manu
-                if ( var != null && !( var.StartsWith( "wversion" ) || var.StartsWith( "wpublish" ) ) ) {
+                if ( var != null && !( var.StartsWith( "wversion" ) || var.StartsWith( "wpublish" ) ) )
+                {
                     qs.Add( var + "=" + Page.Server.UrlEncode( Page.Request.QueryString[ var ] ) );
                 }
             }
@@ -2574,7 +2876,8 @@ end of modification
 
         // added by Hongwei Shen to handle the publish button click
         // server event (hongwei.shen@gmail.com) 8/9/2005
-        private void publishButton_ServerClick( Object sender, EventArgs e ) {
+        private void publishButton_ServerClick( Object sender, EventArgs e )
+        {
             Publish();
             // redirect to the same page to pick up changes
             Page.Response.Redirect( GetPublishUrl() );
@@ -2594,7 +2897,8 @@ end of modification
         /// <param name="searchString">The text to search</param>
         /// <param name="searchField">The fields where perfoming the search</param>
         /// <returns>The SELECT sql to perform a search on the current module</returns>
-        public virtual string SearchSqlSelect( int portalID, int userID, string searchString, string searchField ) {
+        public virtual string SearchSqlSelect( int portalID, int userID, string searchString, string searchField )
+        {
             return string.Empty;
         }
 
@@ -2606,10 +2910,12 @@ end of modification
         /// Returns the "Last Modified" string, or an empty string if option is not active.
         /// </summary>
         /// <returns></returns>
-        public string GetLastModified() {
+        public string GetLastModified()
+        {
             // CHANGE by david.verberckmoes@syntegra.com on june, 2 2003
             if ( bool.Parse( ( ( SettingItem )portalSettings.CustomSettings[ "SITESETTINGS_SHOW_MODIFIED_BY" ] ).Value ) &&
-                bool.Parse( ( ( SettingItem )Settings[ "MODULESETTINGS_SHOW_MODIFIED_BY" ] ).Value ) ) {
+                bool.Parse( ( ( SettingItem )Settings[ "MODULESETTINGS_SHOW_MODIFIED_BY" ] ).Value ) )
+            {
                 // Get stuff from database
                 string Email = string.Empty;
                 DateTime TimeStamp = DateTime.MinValue;
@@ -2621,11 +2927,13 @@ end of modification
 
                 // Check if email address is valid
                 EmailAddressList eal = new EmailAddressList();
-                try {
+                try
+                {
                     eal.Add( Email );
                     Email = "<a href=\"mailto:" + Email + "\">" + Email + "</a>";
                 }
-                catch {
+                catch
+                {
                 }
 
                 // Construct the rest of the html
@@ -2634,7 +2942,8 @@ end of modification
                     "&#160;" + General.GetString( "LMB_ON" ) + "&#160;" + TimeStamp.ToLongDateString() + " " +
                     TimeStamp.ToShortTimeString() + "</span>";
             }
-            else {
+            else
+            {
                 return string.Empty;
             }
             // END CHANGE by david.verberckmoes@syntegra.com on june, 2 2003
@@ -2648,14 +2957,16 @@ end of modification
         /// function for module moving
         /// </summary>
         /// <param name="list"></param>
-        private void OrderModules( ArrayList list ) {
+        private void OrderModules( ArrayList list )
+        {
             int i = 1;
 
             // sort the arraylist
             list.Sort();
 
             // renumber the order
-            foreach ( ModuleItem m in list ) {
+            foreach ( ModuleItem m in list )
+            {
                 // number the items 1, 3, 5, etc. to provide an empty order
                 // number when moving items up and down in the list.
                 m.Order = i;
@@ -2669,12 +2980,15 @@ end of modification
         /// </summary>
         /// <param name="pane"></param>
         /// <returns></returns>
-        private ArrayList GetModules( string pane ) {
+        private ArrayList GetModules( string pane )
+        {
             ArrayList paneModules = new ArrayList();
 
             // get the portal setting at the Tab level and not from this class as it is not refreshed
-            foreach ( ModuleSettings _module in ( ( Page )Page ).portalSettings.ActivePage.Modules ) {
-                if ( portalSettings.ActivePage.PageID == _module.PageID && _module.PaneName.ToLower() == pane.ToLower() ) {
+            foreach ( ModuleSettings _module in ( ( Page )Page ).portalSettings.ActivePage.Modules )
+            {
+                if ( portalSettings.ActivePage.PageID == _module.PageID && _module.PaneName.ToLower() == pane.ToLower() )
+                {
                     ModuleItem m = new ModuleItem();
                     m.Title = _module.ModuleTitle;
                     m.ID = _module.ModuleID;
@@ -2694,39 +3008,49 @@ end of modification
         /// <param name="url"></param>
         /// <param name="moduleID"></param>
         /// <returns></returns>
-        private string AppendModuleID( string url, int moduleID ) {
+        private string AppendModuleID( string url, int moduleID )
+        {
             // tiptopweb, sometimes the home page does not have parameters 
             // so we test for both & and ?
 
             int selectedModIDPos = url.IndexOf( "&selectedmodid" );
             int selectedModIDPos2 = url.IndexOf( "?selectedmodid" );
-            if ( selectedModIDPos >= 0 ) {
+            if ( selectedModIDPos >= 0 )
+            {
                 int selectedModIDEndPos = url.IndexOf( "&", selectedModIDPos + 1 );
-                if ( selectedModIDEndPos >= 0 ) {
+                if ( selectedModIDEndPos >= 0 )
+                {
                     return
                         url.Substring( 0, selectedModIDPos ) + "&selectedmodid=" + moduleID +
                         url.Substring( selectedModIDEndPos );
                 }
-                else {
+                else
+                {
                     return url.Substring( 0, selectedModIDPos ) + "&selectedmodid=" + moduleID;
                 }
             }
-            else if ( selectedModIDPos2 >= 0 ) {
+            else if ( selectedModIDPos2 >= 0 )
+            {
                 int selectedModIDEndPos2 = url.IndexOf( "?", selectedModIDPos2 + 1 );
-                if ( selectedModIDEndPos2 >= 0 ) {
+                if ( selectedModIDEndPos2 >= 0 )
+                {
                     return
                         url.Substring( 0, selectedModIDPos2 ) + "?selectedmodid=" + moduleID +
                         url.Substring( selectedModIDEndPos2 );
                 }
-                else {
+                else
+                {
                     return url.Substring( 0, selectedModIDPos2 ) + "?selectedmodid=" + moduleID;
                 }
             }
-            else {
-                if ( url.IndexOf( "?" ) >= 0 ) {
+            else
+            {
+                if ( url.IndexOf( "?" ) >= 0 )
+                {
                     return url + "&selectedmodid=" + moduleID;
                 }
-                else {
+                else
+                {
                     return url + "?selectedmodid=" + moduleID;
                 }
             }
@@ -2738,7 +3062,8 @@ end of modification
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RightLeft_Click( Object sender, EventArgs e ) {
+        private void RightLeft_Click( Object sender, EventArgs e )
+        {
             string sourcePane = ( ( ModuleButton )sender ).Attributes[ "sourcepane" ];
             string targetPane = ( ( ModuleButton )sender ).Attributes[ "targetpane" ];
 
@@ -2780,7 +3105,8 @@ end of modification
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UpDown_Click( Object sender, EventArgs e ) {
+        private void UpDown_Click( Object sender, EventArgs e )
+        {
             int delta;
 
             //			string cmd = ((ModuleButton)sender).CommandName;
@@ -2798,7 +3124,8 @@ end of modification
             else
                 delta = -3;
 
-            foreach ( ModuleItem item in modules ) {
+            foreach ( ModuleItem item in modules )
+            {
                 if ( item.ID == ModuleID )
                     item.Order += delta;
             }
@@ -2825,11 +3152,13 @@ end of modification
         /// <summary>
         /// Set the close button attributes to prompt user before removing. 
         /// </summary>
-        private void setDeleteAttributes( ref LinkButton delBtn ) {
+        private void setDeleteAttributes( ref LinkButton delBtn )
+        {
             // make sure javascript is valid and we have not already
             // added the function
             if ( Page.Request.Browser.EcmaScriptVersion.Major >= 1 &&
-                !( Page.ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) ) {
+                !( Page.ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) )
+            {
                 string[] s = { "CONFIRM_DELETE" };
                 Page.ClientScript.RegisterClientScriptBlock( GetType(), "confirmDelete",
                                                             PortalSettings.GetStringResource(
@@ -2854,7 +3183,8 @@ end of modification
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DeleteModuleButton_Click( Object sender, EventArgs e ) {
+        private void DeleteModuleButton_Click( Object sender, EventArgs e )
+        {
             ModulesDB admin = new ModulesDB();
 
             //admin.DeleteModule(this.ModuleID);
@@ -2873,14 +3203,17 @@ end of modification
         /// only if current culture matches this setting.
         /// Colon separated list
         /// </summary>
-        public virtual string Cultures {
-            get {
+        public virtual string Cultures
+        {
+            get
+            {
                 if ( HttpContext.Current != null )
                     return Settings[ "MODULESETTINGS_CULTURE" ].ToString();
                 else
                     return Thread.CurrentThread.CurrentUICulture.Name;
             }
-            set {
+            set
+            {
                 if ( HttpContext.Current != null )
                     Settings[ "MODULESETTINGS_CULTURE" ] = value;
             }
@@ -2896,23 +3229,31 @@ end of modification
         /// <summary>
         /// Will return module content as an object, if called.
         /// </summary>
-        public object Content {
-            get {
-                if ( HttpContext.Current != null ) {
-                    if ( _content != null ) {
+        public object Content
+        {
+            get
+            {
+                if ( HttpContext.Current != null )
+                {
+                    if ( _content != null )
+                    {
                         return _content;
                     }
-                    else {
-                        try {
+                    else
+                    {
+                        try
+                        {
                             _content = GetContent();
                             return _content;
                         }
-                        catch {
+                        catch
+                        {
                             return "error"; // TODO: change this
                         }
                     }
                 }
-                else {
+                else
+                {
                     return "Module Content PlaceHolder";
                 }
             }
@@ -2923,7 +3264,8 @@ end of modification
         /// Used by Content to fetch module content, by raising Init and Load events on the module.
         /// </summary>
         /// <returns></returns>
-        public virtual object GetContent() {
+        public virtual object GetContent()
+        {
             OnInit( null );
             OnLoad( null );
             return Content;
@@ -2939,7 +3281,8 @@ end of modification
         /// </summary>
         /// <paramref name="isBeginTag">Specifies whether to output the container's begin(true) or end(false) tag.</paramref>
         /// <returns>The literal control containing this tag</returns>
-        private LiteralControl BuildModuleContentContainer( bool isBeginTag ) {
+        private LiteralControl BuildModuleContentContainer( bool isBeginTag )
+        {
             LiteralControl modContainer = new LiteralControl();
             int width = ( Settings[ "MODULESETTINGS_CONTENT_WIDTH" ] != null )
                             ? Int32.Parse( Settings[ "MODULESETTINGS_CONTENT_WIDTH" ].ToString() )
@@ -2950,7 +3293,8 @@ end of modification
             bool scrolling = ( Settings[ "MODULESETTINGS_CONTENT_SCROLLING" ] != null )
                                  ? bool.Parse( Settings[ "MODULESETTINGS_CONTENT_SCROLLING" ].ToString() )
                                  : false;
-            if ( isBeginTag ) {
+            if ( isBeginTag )
+            {
                 string StartContentSizing = "<div class='modulePadding moduleScrollBars' id='modcont_" + ClientID + "' ";
                 StartContentSizing += " style='POSITION: static; ";
                 if ( !_isPrint && width > 0 )
@@ -2962,13 +3306,16 @@ end of modification
                 StartContentSizing += "'>";
                 modContainer.Text = StartContentSizing;
             }
-            else {
+            else
+            {
                 if ( Page.Request.Browser.EcmaScriptVersion.Major >= 1 && !_isPrint &&
-                    ( width > 0 || height > 0 || ( width > 0 && scrolling ) || ( height > 0 && scrolling ) ) ) {
+                    ( width > 0 || height > 0 || ( width > 0 && scrolling ) || ( height > 0 && scrolling ) ) )
+                {
                     // Register a client side script that will properly resize the content area of the module
                     // to compensate for different height and width settings, as well as, the browser's tendency
                     // to stretch the middle module width even when a specific width setting is specified.
-                    if ( !Page.ClientScript.IsClientScriptBlockRegistered( "autoSizeModules" ) ) {
+                    if ( !Page.ClientScript.IsClientScriptBlockRegistered( "autoSizeModules" ) )
+                    {
                         string src = Path.ApplicationRootPath( "aspnet_client/Rainbow_scripts/autoResizeModule.js" );
                         Page.ClientScript.RegisterClientScriptBlock( GetType(), "autoSizeModules",
                                                                     "<script language=javascript src='" + src +
@@ -2991,8 +3338,10 @@ end of modification
         /// <paramref name="moduleControl">The literal control element to parse and modify.</paramref>
         /// <paramref name="isBeginTag">Specifies whether the moduleElement parameter is for the element's begin(true) or end(false) tag.</paramref>
         /// <returns></returns>
-        private void ProcessModuleStrecthing( Control moduleControl, bool isBeginTag ) {
-            if ( moduleControl is LiteralControl && moduleControl != null ) {
+        private void ProcessModuleStrecthing( Control moduleControl, bool isBeginTag )
+        {
+            if ( moduleControl is LiteralControl && moduleControl != null )
+            {
                 LiteralControl moduleElement = ( LiteralControl )moduleControl;
                 bool isStretched = ( Settings[ "MODULESETTINGS_WIDTH_STRETCHING" ] != null &&
                                     bool.Parse( Settings[ "MODULESETTINGS_WIDTH_STRETCHING" ].ToString() ) == true );
@@ -3002,12 +3351,14 @@ end of modification
                 //if not, then surround this table with another table that has an empty cell after the cell that contains the module's HTML,
                 //in order to use up any space in the window that the module has not been defined for.
                 //if, no width specified for module then the module will be at least 50% width of area remaining, or expand to hold its contents.
-                if ( isBeginTag ) {
+                if ( isBeginTag )
+                {
                     MatchCollection mc;
                     Regex r = new Regex( "<table[^>]*>" );
                     mc = r.Matches( tmp.ToLower() );
                     //Only concerned with first match
-                    if ( mc.Count > 0 ) {
+                    if ( mc.Count > 0 )
+                    {
                         string TMatch = mc[ 0 ].Value;
                         int TIndx = mc[ 0 ].Index;
 
@@ -3016,7 +3367,8 @@ end of modification
                         //find a width attribute in this match(if exists remove it)
                         Regex r1 = new Regex( "width=((['\"][^'\"]*['\"])|([0-9]+))" );
                         mc = r1.Matches( TMatch );
-                        if ( mc.Count > 0 ) {
+                        if ( mc.Count > 0 )
+                        {
                             int WIndx = mc[ 0 ].Index;
                             int WLength = mc[ 0 ].Value.Length;
                             tmp = tmp.Substring( 0, WIndx + TIndx ) + tmp.Substring( WIndx + TIndx + WLength );
@@ -3025,7 +3377,8 @@ end of modification
                         //find a style attribute in this match(if exists)
                         Regex r2 = new Regex( "style=['\"][^'\"]*['\"]" );
                         mc = r2.Matches( TMatch );
-                        if ( mc.Count > 0 ) {
+                        if ( mc.Count > 0 )
+                        {
                             int SIndx = mc[ 0 ].Index;
                             // jminond- variable not in use
                             //int SLength = mc[0].Value.Length;
@@ -3033,7 +3386,8 @@ end of modification
                             //Next find a width style property(if exists) and modify it
                             Regex r3 = new Regex( "width:[^;'\"]+[;'\"]" );
                             mc = r3.Matches( mc[ 0 ].Value );
-                            if ( mc.Count > 0 ) {
+                            if ( mc.Count > 0 )
+                            {
                                 int SwIndx = mc[ 0 ].Index;
                                 int SwLength = mc[ 0 ].Value.Length - 1;
                                 if ( isStretched )
@@ -3073,15 +3427,18 @@ end of modification
         /// property to not apply theme on specific controls.
         /// </summary>
         /// <value><c>true</c> if [apply theme]; otherwise, <c>false</c>.</value>
-        public virtual bool ApplyTheme {
-            get {
+        public virtual bool ApplyTheme
+        {
+            get
+            {
                 if ( HttpContext.Current != null ) // if it is not design time
                 {
                     return ( bool.Parse( Settings[ "MODULESETTINGS_APPLY_THEME" ].ToString() ) );
                 }
                 return true;
             }
-            set {
+            set
+            {
                 if ( HttpContext.Current != null ) // if it is not design time
                 {
                     Settings[ "MODULESETTINGS_APPLY_THEME" ] = value.ToString();
@@ -3093,7 +3450,8 @@ end of modification
         /// <summary>
         /// Localises Theme types: 'Default' and 'Alt'
         /// </summary>
-        public enum ThemeList : int {
+        public enum ThemeList : int
+        {
             /// <summary>
             /// 
             /// </summary>
@@ -3134,8 +3492,10 @@ end of modification
         /// <summary>
         /// Makes the decisions about what needs to be built and calls the appropriate method
         /// </summary>
-        protected virtual void BuildControlHierarchy() {
-            if ( NamingContainer.ToString().EndsWith( "ASP.print_aspx" ) ) {
+        protected virtual void BuildControlHierarchy()
+        {
+            if ( NamingContainer.ToString().EndsWith( "ASP.print_aspx" ) )
+            {
                 _isPrint = true;
                 _buildButtons = false;
                 if ( !ShowTitlePrint )
@@ -3144,7 +3504,8 @@ end of modification
             //else if ( SupportCollapsable && UserDesktop.isMinimized( ModuleID ) ) {
             //    _buildBody = false;
             //}
-            else if ( !ShowTitle ) {
+            else if ( !ShowTitle )
+            {
                 _buildTitle = false;
             }
 
@@ -3248,9 +3609,12 @@ end of modification
 
         }
 
-        private void HtmRenderButtons( PlaceHolder placeHolder ) {
-            if ( _buildButtons ) {
-                foreach ( Control _button in this.ButtonList ) {
+        private void HtmRenderButtons( PlaceHolder placeHolder )
+        {
+            if ( _buildButtons )
+            {
+                foreach ( Control _button in this.ButtonList )
+                {
                     placeHolder.Controls.Add( CurrentTheme.GetLiteralControl( "TitleBeforeButton" ) );
                     placeHolder.Controls.Add( _button );
                     placeHolder.Controls.Add( CurrentTheme.GetLiteralControl( "TitleAfterButton" ) );
@@ -3261,7 +3625,8 @@ end of modification
         /// <summary>
         /// Builds the shortcut.
         /// </summary>
-        protected virtual void BuildShortcut() {
+        protected virtual void BuildShortcut()
+        {
             // do nothing - just passes the target contents through. The theme will be applied
             // to the containing shortcut module.
         }
@@ -3269,7 +3634,8 @@ end of modification
         /// <summary>
         /// Method builds "no theme" version of module. Now obeys ShowTitle and GetLastModified.
         /// </summary>
-        protected virtual void BuildNoTheme() {
+        protected virtual void BuildNoTheme()
+        {
             Table t = new Table();
             t.Attributes.Add( "width", "100%" );
             t.CssClass = "TitleNoTheme";
@@ -3277,7 +3643,8 @@ end of modification
             t.Controls.Add( tr );
             TableCell tc;
 
-            if ( _buildTitle ) {
+            if ( _buildTitle )
+            {
                 tc = new TableCell();
                 tc.Attributes.Add( "width", "100%" );
                 tc.CssClass = "TitleNoTheme";
@@ -3285,8 +3652,10 @@ end of modification
                 tr.Controls.Add( tc );
             }
 
-            if ( _buildButtons ) {
-                foreach ( Control _button in ButtonList ) {
+            if ( _buildButtons )
+            {
+                foreach ( Control _button in ButtonList )
+                {
                     tc = new TableCell();
                     tc.Controls.Add( _button ); //Add Button
                     tr.Controls.Add( tc );
@@ -3296,12 +3665,14 @@ end of modification
             if ( _buildTitle || _buildButtons )
                 _header.Controls.Add( t );
 
-            if ( !_buildBody ) {
+            if ( !_buildBody )
+            {
                 //for ( int i = 1 ; i < this.Controls.Count - 1 ; i++ ) // Jes1111 - was missing last control
                 for ( int i = 1; i < Controls.Count; i++ )
                     Controls[ i ].Visible = false;
             }
-            else {
+            else
+            {
                 _footer.Controls.Add( new LiteralControl( GetLastModified() ) );
             }
         }
@@ -3309,10 +3680,12 @@ end of modification
         /// <summary>
         /// Builds the "with theme" versions of the module, with optional Title, Buttons and Body.
         /// </summary>
-        protected virtual void Build() {
+        protected virtual void Build()
+        {
             if ( !_buildTitle && !_buildButtons )
                 _header.Controls.Add( CurrentTheme.GetLiteralControl( "ControlNoTitleStart" ) );
-            else {
+            else
+            {
                 _header.Controls.Add( CurrentTheme.GetLiteralControl( "ControlTitleStart" ) );
 
                 _header.Controls.Add( CurrentTheme.GetLiteralControl( "TitleStart" ) );
@@ -3322,8 +3695,10 @@ end of modification
 
                 _header.Controls.Add( CurrentTheme.GetLiteralControl( "TitleMiddle" ) );
 
-                if ( _buildButtons ) {
-                    foreach ( Control _button in ButtonList ) {
+                if ( _buildButtons )
+                {
+                    foreach ( Control _button in ButtonList )
+                    {
                         _header.Controls.Add( CurrentTheme.GetLiteralControl( "TitleBeforeButton" ) );
                         _header.Controls.Add( _button );
                         _header.Controls.Add( CurrentTheme.GetLiteralControl( "TitleAfterButton" ) );
@@ -3333,11 +3708,13 @@ end of modification
                 _header.Controls.Add( CurrentTheme.GetLiteralControl( "TitleEnd" ) );
             }
 
-            if ( !_buildBody ) {
+            if ( !_buildBody )
+            {
                 for ( int i = 1; i < Controls.Count; i++ )
                     Controls[ i ].Visible = false;
             }
-            else {
+            else
+            {
                 _footer.Controls.Add( new LiteralControl( GetLastModified() ) );
             }
 
@@ -3349,7 +3726,8 @@ end of modification
             // changed Jes1111: https://sourceforge.net/tracker/index.php?func=detail&aid=1034935&group_id=66837&atid=515929
             if ( !_buildTitle && !_buildButtons )
                 _footer.Controls.Add( CurrentTheme.GetLiteralControl( "ControlNoTitleEnd" ) );
-            else {
+            else
+            {
                 _header.Controls.Add( CurrentTheme.GetLiteralControl( "ControlTitleBeforeControl" ) );
                 //Changed Rob Siera: Incorrect positioning of ControlTitleAfterControl
                 //this._footer.Controls.AddAt(0, CurrentTheme.GetLiteralControl("ControlTitleAfterControl"));
@@ -3362,7 +3740,8 @@ end of modification
             if ( _buildBody )
                 _header.Controls.Add( BuildModuleContentContainer( true ) );
 
-            if ( !_isPrint && _header.Controls.Count > 0 && _footer.Controls.Count > 0 ) {
+            if ( !_isPrint && _header.Controls.Count > 0 && _footer.Controls.Count > 0 )
+            {
                 //Process the first header control as the module's outer most begin tag element
                 ProcessModuleStrecthing( _header.Controls[ 0 ], true );
                 //Process the last footer control as the module's outer most end tag element
@@ -3374,7 +3753,8 @@ end of modification
         /// <summary>
         /// The Zen version of Build(). Parses XML Zen Module Layout.
         /// </summary>
-        protected virtual void ZenBuild() {
+        protected virtual void ZenBuild()
+        {
             XmlTextReader _xtr = null;
             XmlTextReader _xtr2 = null;
             NameTable _nt = new NameTable();
@@ -3388,22 +3768,30 @@ end of modification
             LiteralControl _frag;
             string _loopFrag = string.Empty;
 
-            try {
+            try
+            {
                 _xtr = new XmlTextReader( CurrentTheme.GetThemePart( "ModuleLayout" ), XmlNodeType.Document, _context );
 
-                while ( _xtr.Read() ) {
+                while ( _xtr.Read() )
+                {
                     _frag = new LiteralControl();
-                    switch ( _xtr.Prefix ) {
-                        case "if": {
+                    switch ( _xtr.Prefix )
+                    {
+                        case "if":
+                            {
                                 if ( _xtr.NodeType == XmlNodeType.Element && !ZenEvaluate( _xtr.LocalName ) )
                                     _xtr.Skip();
                                 break;
                             }
 
-                        case "loop": {
-                                if ( _xtr.NodeType == XmlNodeType.Element ) {
-                                    switch ( _xtr.LocalName ) {
-                                        case "Buttons": {
+                        case "loop":
+                            {
+                                if ( _xtr.NodeType == XmlNodeType.Element )
+                                {
+                                    switch ( _xtr.LocalName )
+                                    {
+                                        case "Buttons":
+                                            {
                                                 //   Menu btnMenu = new Menu();
                                                 // btnMenu.Orientation = Orientation.Vertical;
                                                 //btnMenu.StaticDisplayLevels = 1;
@@ -3426,7 +3814,8 @@ end of modification
                                                 //rootNode.Selected = true;
 
                                                 _loopFrag = _xtr.ReadInnerXml();
-                                                foreach ( Control c in ButtonList ) {
+                                                foreach ( Control c in ButtonList )
+                                                {
                                                     //  ModuleButton mb = (ModuleButton)c;
                                                     /*
                                                     MenuItem MenuItem = new MenuItem(mb.EnglishName);
@@ -3448,11 +3837,15 @@ end of modification
 
                                                     /* */
                                                     _xtr2 = new XmlTextReader( _loopFrag, XmlNodeType.Document, _context );
-                                                    while ( _xtr2.Read() ) {
+                                                    while ( _xtr2.Read() )
+                                                    {
                                                         _frag = new LiteralControl();
-                                                        switch ( _xtr2.Prefix ) {
-                                                            case "content": {
-                                                                    switch ( _xtr2.LocalName ) {
+                                                        switch ( _xtr2.Prefix )
+                                                        {
+                                                            case "content":
+                                                                {
+                                                                    switch ( _xtr2.LocalName )
+                                                                    {
                                                                         case "Button":
                                                                             //																if ( this.CurrentTheme.Name.ToLower().Equals("zen-zero") && c is ModuleButton )
                                                                             //																	((ModuleButton)c).RenderAs = ModuleButton.RenderOptions.TextOnly;
@@ -3467,12 +3860,16 @@ end of modification
                                                                     break;
                                                                 }
                                                             case "":
-                                                            default: {
-                                                                    if ( _xtr2.NodeType == XmlNodeType.Element ) {
+                                                            default:
+                                                                {
+                                                                    if ( _xtr2.NodeType == XmlNodeType.Element )
+                                                                    {
                                                                         _fragText = new StringBuilder( "<" );
                                                                         _fragText.Append( _xtr2.LocalName );
-                                                                        while ( _xtr2.MoveToNextAttribute() ) {
-                                                                            if ( _xtr2.LocalName != "xmlns" ) {
+                                                                        while ( _xtr2.MoveToNextAttribute() )
+                                                                        {
+                                                                            if ( _xtr2.LocalName != "xmlns" )
+                                                                            {
                                                                                 _fragText.Append( " " );
                                                                                 _fragText.Append( _xtr.LocalName );
                                                                                 _fragText.Append( "=\"" );
@@ -3487,7 +3884,8 @@ end of modification
                                                                         else
                                                                             _footer.Controls.Add( _frag );
                                                                     }
-                                                                    else if ( _xtr2.NodeType == XmlNodeType.EndElement ) {
+                                                                    else if ( _xtr2.NodeType == XmlNodeType.EndElement )
+                                                                    {
                                                                         _frag.Text =
                                                                             string.Format( "</{0}>", _xtr2.LocalName );
                                                                         if ( _beforeContent )
@@ -3516,8 +3914,10 @@ end of modification
                                 break;
                             }
 
-                        case "content": {
-                                switch ( _xtr.LocalName ) {
+                        case "content":
+                            {
+                                switch ( _xtr.LocalName )
+                                {
                                     case "ModuleContent":
                                         _beforeContent = false;
                                         break;
@@ -3542,11 +3942,14 @@ end of modification
                             }
 
                         case "":
-                        default: {
-                                if ( _xtr.NodeType == XmlNodeType.Element ) {
+                        default:
+                            {
+                                if ( _xtr.NodeType == XmlNodeType.Element )
+                                {
                                     _fragText = new StringBuilder( "<" );
                                     _fragText.Append( _xtr.LocalName );
-                                    while ( _xtr.MoveToNextAttribute() ) {
+                                    while ( _xtr.MoveToNextAttribute() )
+                                    {
                                         _fragText.Append( " " );
                                         _fragText.Append( _xtr.LocalName );
                                         _fragText.Append( "=\"" );
@@ -3560,7 +3963,8 @@ end of modification
                                     else
                                         _footer.Controls.Add( _frag );
                                 }
-                                else if ( _xtr.NodeType == XmlNodeType.EndElement ) {
+                                else if ( _xtr.NodeType == XmlNodeType.EndElement )
+                                {
                                     _frag.Text = string.Format( "</{0}>", _xtr.LocalName );
                                     if ( _beforeContent )
                                         _header.Controls.Add( _frag );
@@ -3572,11 +3976,13 @@ end of modification
                     }
                 }
             }
-            catch ( Exception ex ) {
+            catch ( Exception ex )
+            {
                 ErrorHandler.Publish( LogLevel.Fatal, "Fatal error in ZenBuildControlHierarchy(): " + ex.Message );
                 throw new Exception( "Fatal error in ZenBuildControlHierarchy(): " + ex.Message );
             }
-            finally {
+            finally
+            {
                 if ( _xtr != null )
                     _xtr.Close();
             }
@@ -3587,10 +3993,12 @@ end of modification
         /// </summary>
         /// <param name="condition">The condition.</param>
         /// <returns></returns>
-        private bool ZenEvaluate( string condition ) {
+        private bool ZenEvaluate( string condition )
+        {
             bool _returnVal = false;
 
-            switch ( condition ) {
+            switch ( condition )
+            {
                 case "Title":
                     if ( _buildTitle )
                         _returnVal = true;
@@ -3602,13 +4010,15 @@ end of modification
                     break;
                 case "Body":
                 case "Footer":
-                    if ( !_buildBody ) {
+                    if ( !_buildBody )
+                    {
                         _returnVal = false;
                         //for ( int i = 1 ; i < this.Controls.Count - 1 ; i++ ) // Jes1111 - was missing last control
                         for ( int i = 1; i < Controls.Count; i++ )
                             Controls[ i ].Visible = false;
                     }
-                    else {
+                    else
+                    {
                         _returnVal = true;
                     }
                     break;
@@ -3632,7 +4042,8 @@ end of modification
         /// <summary>
         /// Sets the CurrentTheme - allowing custom Theme per module
         /// </summary>
-        protected virtual void SetupTheme() {
+        protected virtual void SetupTheme()
+        {
             // changed: Jes1111 - 2004-08-05 - supports custom theme per module
             // (better to do this in OnLoad than in RenderChildren, which is too late)
             string themeName;
@@ -3647,26 +4058,30 @@ end of modification
                 portalSettings.CustomSettings[ "SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES" ].ToString().Length != 0 &&
                 bool.Parse( portalSettings.CustomSettings[ "SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES" ].ToString() ) &&
                 Settings.ContainsKey( "MODULESETTINGS_MODULE_THEME" ) &&
-                Settings[ "MODULESETTINGS_MODULE_THEME" ].ToString().Trim().Length > 0 ) {
+                Settings[ "MODULESETTINGS_MODULE_THEME" ].ToString().Trim().Length > 0 )
+            {
                 // substitute custom theme for this module
                 ThemeManager _tm = new ThemeManager( portalSettings.PortalPath );
                 _tm.Load( Settings[ "MODULESETTINGS_MODULE_THEME" ].ToString() );
                 CurrentTheme = _tm.CurrentTheme;
                 // get CSS file, add ModuleID to each line and add resulting string to CssImportList
-                try {
+                try
+                {
                     CssHelper cssHelper = new CssHelper();
                     string selectorPrefix = string.Concat( "#mID", ModuleID );
                     string cssFileName = Page.Server.MapPath( CurrentTheme.CssFile );
                     ( ( Page )Page ).RegisterCssImport( ModuleID.ToString(), cssHelper.ParseCss( cssFileName, selectorPrefix ) );
                 }
-                catch ( Exception ex ) {
+                catch ( Exception ex )
+                {
                     ErrorHandler.Publish( LogLevel.Error,
                                          "Failed to load custom theme '" + CurrentTheme.CssFile + "' for ModuleID " +
                                          ModuleID + ". Continuing with default tab theme. Message was: " + ex.Message );
                     CurrentTheme = portalSettings.GetCurrentTheme( themeName );
                 }
             }
-            else {
+            else
+            {
                 // original behaviour unchanged
                 CurrentTheme = portalSettings.GetCurrentTheme( themeName );
             }
@@ -3676,13 +4091,17 @@ end of modification
         /// <summary>
         /// Merges the three public button lists into one.
         /// </summary>
-        protected virtual void MergeButtonLists() {
-            if ( CurrentTheme.Type != "zen" ) {
+        protected virtual void MergeButtonLists()
+        {
+            if ( CurrentTheme.Type != "zen" )
+            {
                 string _divider;
-                try {
+                try
+                {
                     _divider = CurrentTheme.GetHTMLPart( "ButtonGroupsDivider" );
                 }
-                catch {
+                catch
+                {
                     _divider =
                         string.Concat( "<img src='", CurrentTheme.GetImage( "Spacer", "Spacer.gif" ).ImageUrl,
                                       "' class='rb_mod_title_sep'/>" );
@@ -3705,7 +4124,8 @@ end of modification
         /// <summary>
         /// Builds the three public button lists
         /// </summary>
-        protected virtual void BuildButtonLists() {
+        protected virtual void BuildButtonLists()
+        {
             // user buttons
             if ( BackButton != null ) ButtonListUser.Add( BackButton );
             if ( PrintButton != null ) ButtonListUser.Add( PrintButton );
@@ -3764,7 +4184,8 @@ end of modification
         /// Save module data
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public virtual DataSet SaveData( DataSet ds ) {
+        public virtual DataSet SaveData( DataSet ds )
+        {
             return ( ds );
         }
 
@@ -3772,7 +4193,8 @@ end of modification
         /// Load Data
         /// </summary>
         [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public virtual DataSet LoadData( DataSet ds ) {
+        public virtual DataSet LoadData( DataSet ds )
+        {
             return ( ds );
         }
 
@@ -3780,28 +4202,32 @@ end of modification
         /// Unknown
         /// </summary>
         /// <param name="stateSaver"></param>
-        public virtual void Install( IDictionary stateSaver ) {
+        public virtual void Install( IDictionary stateSaver )
+        {
         }
 
         /// <summary>
         /// Unknown
         /// </summary>
         /// <param name="stateSaver"></param>
-        public virtual void Uninstall( IDictionary stateSaver ) {
+        public virtual void Uninstall( IDictionary stateSaver )
+        {
         }
 
         /// <summary>
         /// Unknown
         /// </summary>
         /// <param name="stateSaver">The state saver.</param>
-        public virtual void Commit( IDictionary stateSaver ) {
+        public virtual void Commit( IDictionary stateSaver )
+        {
         }
 
         /// <summary>
         /// Unknown
         /// </summary>
         /// <param name="stateSaver">The state saver.</param>
-        public virtual void Rollback( IDictionary stateSaver ) {
+        public virtual void Rollback( IDictionary stateSaver )
+        {
         }
 
         #endregion

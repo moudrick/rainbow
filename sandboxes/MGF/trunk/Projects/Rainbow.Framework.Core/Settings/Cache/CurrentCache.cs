@@ -114,12 +114,12 @@ namespace Rainbow.Framework.Settings.Cache
 
 			//string auxkey = Portal.UniqueID + prefix;
 
-            foreach (DictionaryEntry cacheItem in HttpContext.Current.Cache) 
-            {
-                //if (cacheItem.Key.ToString().StartsWith(auxkey))
-                if (cacheItem.Key.ToString().StartsWith(prefix))
-                    Remove(cacheItem.Key.ToString());
-            }
+			foreach (DictionaryEntry cacheItem in HttpContext.Current.Cache)
+			{
+				//if (cacheItem.Key.ToString().StartsWith(auxkey))
+				if (cacheItem.Key.ToString().StartsWith(prefix))
+					Remove(cacheItem.Key.ToString());
+			}
 		}
 
 		// added: Jes1111 - 27-02-2005

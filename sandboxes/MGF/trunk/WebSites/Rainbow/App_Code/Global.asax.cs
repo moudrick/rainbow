@@ -119,15 +119,11 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
             else
             {
                 string pname = currentURL.Substring(currentURL.LastIndexOf("/") + 1);
-                
-                // if the request was not caused by an MS Ajax Client script invoking a WS.
-                if ( !currentURL.ToLower().EndsWith( ".asmx/js" ) ) {
                     pname = pname.Substring( 0, ( pname.Length - 5 ) );
                     if ( Regex.IsMatch( pname, @"^\d+$" ) )
                         context.RewritePath( "~/default.aspx?pageid=" + pname +
                                             context.Request.ServerVariables[ "QUERY_STRING" ] );
                 }
-            }
 
 
             // 1st Check: is it a dangerously malformed request?
@@ -168,6 +164,10 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
             #region 3rd Check: is database/code version correct?
 
             // 3rd Check: is database/code version correct?
+                        // don't check database when installer is running
+            if (Request.AppRelativeCurrentExecutionFilePath.ToLower() != Config.InstallerRedirect.ToLower() &&
+                Request.AppRelativeCurrentExecutionFilePath.ToLower() != "~/webresource.axd")
+            {
             int versionDelta = Database.DatabaseVersion.CompareTo(Portal.CodeVersion);
             // if DB and code versions do not match
             if (versionDelta != 0)
@@ -364,31 +364,42 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                 context.Response.Cookies["refreshed"].Value = "false";
                 context.Response.Cookies["refreshed"].Expires = DateTime.Now.AddMinutes(1);
             }
+            }
         } // end of Application_BeginRequest
 
-        protected void Application_AuthenticateRequest( Object sender, EventArgs e ) {
-            // john.mandia@whitelightsolutions.com: Check. If it's a fresh db then then is no portalSettings instance. 
-            if ( HttpContext.Current.Items[ "PortalSettings" ] != null && !Request.RawUrl.EndsWith( "/Setup/Update.aspx" ) ) {
+        /// <summary>
+        /// Handles the AuthenticateRequest event of the Application control.
+        /// If the client is authenticated with the application, then determine
+        /// which security roles he/she belongs to and replace the "User" intrinsic
+        /// with a custom IPrincipal security object that permits "User.IsInRole"
+        /// role checks within the application
+        /// Roles are cached in the browser in an in-memory encrypted cookie.  If the
+        /// cookie doesn't exist yet for this session, create it.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        protected void Application_AuthenticateRequest(Object sender, EventArgs e)
+        {
+            Reader contextReader = new Reader(new WebContextReader());
+            HttpContext context = contextReader.Current;
+
+            if (context.Items["PortalSettings"] != null)
+            {
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ "PortalSettings" ];
-
-                //jminond - option to kill cookie after certain time always
-                int minuteAdd;
-
-                if ( ConfigurationManager.AppSettings[ "CookieExpire" ] != null ) {
-                    minuteAdd = int.Parse( ConfigurationManager.AppSettings[ "CookieExpire" ] );
-                }
-                else {
-                    minuteAdd = 60; // set to previous default in minutes
-                }
+                PortalSettings portalSettings = (PortalSettings) context.Items["PortalSettings"];
 
                 // Auto-login a user who has a portal Alias login cookie
                 // Try to authenticate the user with the cookie value
-
-                if ( ( !Request.IsAuthenticated ) && ( Request.Cookies[ "Rainbow_" + portalSettings.PortalAlias ] != null ) ) {
-                    if ( Request.Cookies[ "Rainbow_" + portalSettings.PortalAlias ].Expires > DateTime.Now ) {
+                if (!context.Request.IsAuthenticated &&
+                    (context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias] != null))
+                {
+                    if (context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias].Expires > DateTime.Now)
+                    {
                         string user;
-                        user = Request.Cookies[ "Rainbow_" + portalSettings.PortalAlias.ToLower() ].Value;
+                        user = context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias.ToLower()].Value;
+
+                        //jminond - option to kill cookie after certain time always
+                        int minuteAdd = Config.CookieExpire;
 
                         // Create the FormsAuthentication cookie
                         FormsAuthentication.SetAuthCookie( user, true );
@@ -399,45 +410,62 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                             1,                              // version
                             user,							// user name
                             DateTime.Now,                   // issue time
-                            DateTime.Now.AddMinutes( minuteAdd ),       // expires every hour
+                            DateTime.Now.AddMinutes(minuteAdd),
                             false,                          // don't persist cookie
                             string.Empty								// roles
                             );
 
                         // Set the current User Security to the FormsAuthenticated User
-                        //Context.User = new GenericPrincipal(new FormsIdentity(cTicket), null);
-                        Context.User = new RainbowPrincipal( new FormsIdentity( cTicket ), null );
-
-
+                        context.User = new RainbowPrincipal(new FormsIdentity(cTicket), null);
                     }
                 }
-                else {
-                    // jminond if user asked to persist, he should have a cookie
-                    if ( ( Request.IsAuthenticated ) && ( Request.Cookies[ "Rainbow_" + portalSettings.PortalAlias ] == null ) ) {
+                else
+                {
+                    // jminond - if user asked to persist, he should have a cookie
+                    if ((context.Request.IsAuthenticated) &&
+                        (context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias] == null))
                         PortalSecurity.KillSession();
                     }
-                }
-            }
+
+                //if (context.Request.IsAuthenticated && !(context.User is WindowsPrincipal))
+                //{
+                //    // added by Jonathan Fong 22/07/2004 to support LDAP 
+                //    //string[] names = Context.User.Identity.Name.Split("|".ToCharArray());
+                //    string[] names = context.User.Identity.Name.Split('|');
+                //    if (names.Length == 3 && names[2].StartsWith("cn="))
+                //    {
+                //        context.User = new RainbowPrincipal(
+                //            new User(context.User.Identity.Name, "LDAP"), LDAPHelper.GetRoles(names[2]));
+                //    }
+                //    else
+                //    {
+                //        // Add our own custom principal to the request containing the roles in the auth ticket
+                //        context.User = new RainbowPrincipal(context.User.Identity, PortalSecurity.GetRoles());
+                //    }
+                //    // Remove Windows specific custom settings
+                //    if (portalSettings.CustomSettings != null)
+                //        portalSettings.CustomSettings.Remove("WindowsAdmins");
+                //}
+                //    // bja@reedtek.com - need to get a unique id for user
+                //else if (Config.WindowMgmtControls)
+                //{
+                //    // Need a uid, even for annoymous users
+                //    string annoyUser;
+                //    // cookie bag
+                //    IWebBagHolder abag = BagFactory.instance.create(BagFactory.BagFactoryType.CookieType);
+                //    // user data already set
+                //    annoyUser = (string) abag[GlobalInternalStrings.UserWinMgmtIndex];
+                //    // if no cookie then let's get one
+                //    if (annoyUser == null)
+                //    {
+                //        // new uid for window mgmt
+                //        Guid guid = Guid.NewGuid();
+                //        // save the data into a cookie bag
+                //        abag[GlobalInternalStrings.UserWinMgmtIndex] = guid.ToString();
+                //    }
+                //}
         }
-
-        protected void Application_PostAuthenticateRequest( Object sender, EventArgs e ) {
-            PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ "PortalSettings" ];
-
-            //jminond - option to kill cookie after certain time always
-            int minuteAdd;
-
-            if ( ConfigurationManager.AppSettings[ "CookieExpire" ] != null ) {
-                minuteAdd = int.Parse( ConfigurationManager.AppSettings[ "CookieExpire" ] );
-            }
-            else {
-                minuteAdd = 60; // set to previous default in minutes
-            }
-
-            if ( !Config.ForceExpire && ( Request.Cookies[ "Rainbow_" + portalSettings.PortalAlias ] == null ) ) {
-                //jminond - option to kill cookie after certain time always
-                PortalSecurity.ExtendCookie( portalSettings, minuteAdd );
-            }
-        }
+        } // end of Application_AuthenticateRequest
 
         /// <summary>
         /// Handler for unhandled exceptions
@@ -457,9 +485,6 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
         /// </summary>
         protected void Application_Start()
         {
-            // SqlSiteMapProvider still doesn't use cache dependencies
-            //System.Data.SqlClient.SqlDependency.Start(System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-            
             //HttpContext context = ContextReader.Current;
             HttpContext context = HttpContext.Current;
 

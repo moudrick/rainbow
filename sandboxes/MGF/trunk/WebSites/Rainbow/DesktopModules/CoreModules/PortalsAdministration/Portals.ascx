@@ -19,13 +19,13 @@
                             <tr>
                                 <td>
                                     <rbfwebui:imagebutton id="EditBtn" runat="server" alternatetext="Edit selected portal"
-                                        textkey="EDIT_PORTAL" />
+                                        textkey="EDIT_PORTAL" OnClick="EditBtn_Click" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <rbfwebui:imagebutton id="DeleteBtn" runat="server" alternatetext="Delete selected portal"
-                                        textkey="DELETE_PORTAL" />
+                                        textkey="DELETE_PORTAL" OnClick="DeleteBtn_Click" />
                                 </td>
                             </tr>
                         </table>

@@ -333,9 +333,11 @@ namespace Rainbow.Content.Web.Modules {
                 if ( uid.Length == 0 && HttpContext.Current.Items["userName"] != null )
                     uid = HttpContext.Current.Items["userName"].ToString();
 
+#if DEBUG
                 // TODO: Remove this.
                 if ( uid.Length == 0 )
                     HttpContext.Current.Response.Write( "username is empty" );
+#endif           
 
                 return uid;
             }
@@ -451,8 +453,8 @@ namespace Rainbow.Content.Web.Modules {
                         }
                         else {
                             accountSystem.UpdateUser( originalUserID, NameField.Text, CompanyField.Text, AddressField.Text,
-                                CityField.Text, ZipField.Text, CountryID, StateID, PhoneField.Text, PasswordField.Text,
-                                FaxField.Text, EmailField.Text, SendNewsletter.Checked );
+                                CityField.Text, ZipField.Text, CountryID, StateID, PhoneField.Text, FaxField.Text,
+                                PasswordField.Text, EmailField.Text, SendNewsletter.Checked );
                         }
                         //If we are here no error occurred
                     }

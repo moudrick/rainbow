@@ -394,7 +394,6 @@ namespace Rainbow.Framework.Users.Data {
 
             RainbowUser user = MembershipProvider.GetUser( userID, true ) as RainbowUser;
             user.Email = email;
-            user.Email = email;
             user.Name = name;
             user.Company = company;
             user.Address = address;

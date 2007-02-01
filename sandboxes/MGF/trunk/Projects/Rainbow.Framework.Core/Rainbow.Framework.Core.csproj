@@ -58,10 +58,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\Novell.Directory.Ldap.dll</HintPath>
     </Reference>
-    <Reference Include="RulesEngine, Version=1.0.1288.27522, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\RulesEngine.dll</HintPath>
-    </Reference>
     <Reference Include="SolpartWebControls, Version=1.4.0.2, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\SolpartWebControls.dll</HintPath>
@@ -162,9 +158,6 @@
     <Compile Include="Provider\NotSupportedByProviderException.cs" />
     <Compile Include="Provider\Web\SqlUrlBuilderProvider.cs" />
     <Compile Include="Provider\Web\UrlBuilderHelper.cs" />
-    <Compile Include="ReWrite\RegExUrlMappingBaseModule.cs" />
-    <Compile Include="ReWrite\RegExUrlMappingConfigHandler.cs" />
-    <Compile Include="ReWrite\RegExUrlMappingModule.cs" />
     <Compile Include="Scheduler\CachedScheduler.cs" />
     <Compile Include="Scheduler\ISchedulable.cs" />
     <Compile Include="Scheduler\IScheduler.cs" />

@@ -74,10 +74,6 @@ namespace Rainbow.Content.Web.Modules {
                 if ( uid.Length == 0 && HttpContext.Current.Items["userName"] != null )
                     uid = HttpContext.Current.Items["userName"].ToString();
 
-                // TODO: Remove this.
-                if ( uid.Length == 0 )
-                    HttpContext.Current.Response.Write( "username is empty" );
-
                 return uid;
             }
         }

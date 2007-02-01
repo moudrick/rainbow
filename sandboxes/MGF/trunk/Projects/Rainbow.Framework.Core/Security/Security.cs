@@ -13,7 +13,8 @@ using Rainbow.Framework.Users.Data;
 using System.Collections.Generic;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
 
-namespace Rainbow.Framework.Security {
+namespace Rainbow.Framework.Security
+{
     /// <summary>
     /// The PortalSecurity class encapsulates two helper methods that enable
     /// developers to easily check the role status of the current browser client.
@@ -25,7 +26,8 @@ namespace Rainbow.Framework.Security {
     [History( "cisakson@yahoo.com", "2003/04/28", "Changed the IsInRole function so it support's a custom setting for Windows portal admins!" )]
     [History( "Geert.Audenaert@Syntegra.Com", "2003/03/26", "Changed the IsInRole function so it support's users to in case of windowsauthentication!" )]
     [History( "Thierry (tiptopweb)", "2003/04/12", "Migrate shopping cart in SignOn for E-Commerce" )]
-    public class PortalSecurity {
+    public class PortalSecurity
+    {
         const string strPortalSettings = "PortalSettings";
 
         //        [Flags]
@@ -47,12 +49,13 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// 	<c>true</c> if [is in role] [the specified role]; otherwise, <c>false</c>.
         /// </returns>
-        [Obsolete("We should start using Roles.IsUserInRole instead of this method")]
-        public static bool IsInRole( string role ) {
+        public static bool IsInRole( string role )
+        {
             // Check if integrated windows authentication is used ?
             bool useNTLM = HttpContext.Current.User is WindowsPrincipal;
             // Check if the user is in the Admins role.
-            if ( useNTLM && role.Trim() == "Admins" ) {
+            if ( useNTLM && role.Trim() == "Admins" )
+            {
                 // Obtain PortalSettings from Current Context
                 // WindowsAdmins added 28.4.2003 Cory Isakson
                 PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ strPortalSettings ];
@@ -66,7 +69,8 @@ namespace Rainbow.Framework.Security {
             // Allow giving access to users 
             if ( useNTLM && role == HttpContext.Current.User.Identity.Name )
                 return true;
-            else {
+            else
+            {
                 return HttpContext.Current.User.IsInRole( role );
             }
         }
@@ -79,26 +83,32 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// 	<c>true</c> if [is in roles] [the specified roles]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsInRoles( string roles ) {
+        public static bool IsInRoles( string roles )
+        {
             HttpContext context = HttpContext.Current;
 
-            if ( roles != null ) {
-                foreach ( string splitRole in roles.Split( new char[] { ';' } ) ) {
+            if ( roles != null )
+            {
+                foreach ( string splitRole in roles.Split( new char[] { ';' } ) )
+                {
                     string role = splitRole.Trim();
-                    if ( role != null && role.Length != 0 && ( ( role == "All Users" ) || ( IsInRole( role ) ) ) ) {
+                    if ( role != null && role.Length != 0 && ( ( role == "All Users" ) || ( IsInRole( role ) ) ) )
+                    {
                         return true;
                     }
 
                     // Authenticated user role added
                     // 15 nov 2002 - by manudea
-                    if ( ( role == "Authenticated Users" ) && ( context.Request.IsAuthenticated ) ) {
+                    if ( ( role == "Authenticated Users" ) && ( context.Request.IsAuthenticated ) )
+                    {
                         return true;
                     }
                     // end authenticated user role added
 
                     // Unauthenticated user role added
                     // 30/01/2003 - by manudea
-                    if ( ( role == "Unauthenticated Users" ) && ( !context.Request.IsAuthenticated ) ) {
+                    if ( ( role == "Unauthenticated Users" ) && ( !context.Request.IsAuthenticated ) )
+                    {
                         return true;
                     }
                     // end Unauthenticated user role added
@@ -118,7 +128,8 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// 	<c>true</c> if the specified module ID has permissions; otherwise, <c>false</c>.
         /// </returns>
-        private static bool hasPermissions( int moduleID, string procedureName, string parameterRol ) {
+        private static bool hasPermissions( int moduleID, string procedureName, string parameterRol )
+        {
 
             if ( RecyclerDB.ModuleIsInRecycler( moduleID ) )
                 procedureName = procedureName + "Recycler";
@@ -131,8 +142,10 @@ namespace Rainbow.Framework.Security {
             if ( Config.UseSingleUserBase ) portalID = 0;
 
             // Create Instance of Connection and Command Object
-            using ( SqlConnection myConnection = Config.SqlConnectionString ) {
-                using ( SqlCommand myCommand = new SqlCommand( procedureName, myConnection ) ) {
+            using ( SqlConnection myConnection = Config.SqlConnectionString )
+            {
+                using ( SqlCommand myCommand = new SqlCommand( procedureName, myConnection ) )
+                {
 
                     // Mark the Command as a SPROC
                     myCommand.CommandType = CommandType.StoredProcedure;
@@ -157,10 +170,12 @@ namespace Rainbow.Framework.Security {
 
                     // Open the database connection and execute the command
                     myConnection.Open();
-                    try {
+                    try
+                    {
                         myCommand.ExecuteNonQuery();
                     }
-                    finally {
+                    finally
+                    {
                         myConnection.Close();
                     }
 
@@ -179,7 +194,8 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// 	<c>true</c> if [has edit permissions] [the specified module ID]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool HasEditPermissions( int moduleID ) {
+        public static bool HasEditPermissions( int moduleID )
+        {
             //			if (RecyclerDB.ModuleIsInRecycler(moduleID))
             //				return hasPermissions (moduleID, "rb_GetAuthEditRolesRecycler", "@EditRoles");
             //			else
@@ -196,7 +212,8 @@ namespace Rainbow.Framework.Security {
         /// 	<c>true</c> if [has view permissions] [the specified module ID]; otherwise, <c>false</c>.
         /// </returns>
         [History( "JB - john@bowenweb.com", "2005/06/11", "Added support for module Recycle Bin" )]
-        public static bool HasViewPermissions( int moduleID ) {
+        public static bool HasViewPermissions( int moduleID )
+        {
             return hasPermissions( moduleID, "rb_GetAuthViewRoles", "@ViewRoles" );
         }
 
@@ -209,7 +226,8 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// 	<c>true</c> if [has add permissions] [the specified module ID]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool HasAddPermissions( int moduleID ) {
+        public static bool HasAddPermissions( int moduleID )
+        {
             return hasPermissions( moduleID, "rb_GetAuthAddRoles", "@AddRoles" );
         }
 
@@ -222,7 +240,8 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// 	<c>true</c> if [has delete permissions] [the specified module ID]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool HasDeletePermissions( int moduleID ) {
+        public static bool HasDeletePermissions( int moduleID )
+        {
             return hasPermissions( moduleID, "rb_GetAuthDeleteRoles", "@DeleteRoles" );
         }
 
@@ -235,7 +254,8 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// 	<c>true</c> if [has properties permissions] [the specified module ID]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool HasPropertiesPermissions( int moduleID ) {
+        public static bool HasPropertiesPermissions( int moduleID )
+        {
             return hasPermissions( moduleID, "rb_GetAuthPropertiesRoles", "@PropertiesRoles" );
         }
 
@@ -248,7 +268,8 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// 	<c>true</c> if [has approve permissions] [the specified module ID]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool HasApprovePermissions( int moduleID ) {
+        public static bool HasApprovePermissions( int moduleID )
+        {
             return hasPermissions( moduleID, "rb_GetAuthApproveRoles", "@ApproveRoles" );
         }
 
@@ -261,14 +282,16 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// 	<c>true</c> if [has publish permissions] [the specified module ID]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool HasPublishPermissions( int moduleID ) {
+        public static bool HasPublishPermissions( int moduleID )
+        {
             return hasPermissions( moduleID, "rb_GetAuthPublishingRoles", "@PublishingRoles" );
         }
         #endregion
 
         #region GetRoleList Methods - Added by John Mandia (www.whitelightsolutions.com) 15/08/04
 
-        private static string getPermissions( int moduleID, string procedureName, string parameterRol ) {
+        private static string getPermissions( int moduleID, string procedureName, string parameterRol )
+        {
             // Obtain PortalSettings from Current Context
             PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ strPortalSettings ];
             int portalID = portalSettings.PortalID;
@@ -276,8 +299,10 @@ namespace Rainbow.Framework.Security {
             if ( Config.UseSingleUserBase ) portalID = 0;
 
             // Create Instance of Connection and Command Object
-            using ( SqlConnection myConnection = Config.SqlConnectionString ) {
-                using ( SqlCommand myCommand = new SqlCommand( procedureName, myConnection ) ) {
+            using ( SqlConnection myConnection = Config.SqlConnectionString )
+            {
+                using ( SqlCommand myCommand = new SqlCommand( procedureName, myConnection ) )
+                {
 
                     // Mark the Command as a SPROC
                     myCommand.CommandType = CommandType.StoredProcedure;
@@ -302,10 +327,12 @@ namespace Rainbow.Framework.Security {
 
                     // Open the database connection and execute the command
                     myConnection.Open();
-                    try {
+                    try
+                    {
                         myCommand.ExecuteNonQuery();
                     }
-                    finally {
+                    finally
+                    {
                         myConnection.Close();
                     }
 
@@ -321,7 +348,8 @@ namespace Rainbow.Framework.Security {
         /// </summary>
         /// <param name="moduleID"></param>
         /// <returns>A list of roles that have Edit permissions seperated by ;</returns>
-        public static string GetEditPermissions( int moduleID ) {
+        public static string GetEditPermissions( int moduleID )
+        {
             return getPermissions( moduleID, "rb_GetAuthEditRoles", "@EditRoles" );
         }
 
@@ -332,7 +360,8 @@ namespace Rainbow.Framework.Security {
         /// </summary>
         /// <param name="moduleID"></param>
         /// <returns>A list of roles that have View permissions for the specified module seperated by ;</returns>
-        public static string GetViewPermissions( int moduleID ) {
+        public static string GetViewPermissions( int moduleID )
+        {
             return getPermissions( moduleID, "rb_GetAuthViewRoles", "@ViewRoles" );
         }
 
@@ -343,7 +372,8 @@ namespace Rainbow.Framework.Security {
         /// </summary>
         /// <param name="moduleID"></param>
         /// <returns>A list of roles that have Add permissions for the specified module seperated by ;</returns>
-        public static string GetAddPermissions( int moduleID ) {
+        public static string GetAddPermissions( int moduleID )
+        {
             return getPermissions( moduleID, "rb_GetAuthAddRoles", "@AddRoles" );
         }
 
@@ -354,7 +384,8 @@ namespace Rainbow.Framework.Security {
         /// </summary>
         /// <param name="moduleID"></param>
         /// <returns>A list of roles that have delete permissions for the specified module seperated by ;</returns>
-        public static string GetDeletePermissions( int moduleID ) {
+        public static string GetDeletePermissions( int moduleID )
+        {
             return getPermissions( moduleID, "rb_GetAuthDeleteRoles", "@DeleteRoles" );
         }
 
@@ -365,7 +396,8 @@ namespace Rainbow.Framework.Security {
         /// </summary>
         /// <param name="moduleID"></param>
         /// <returns>A list of roles that have Properties permission for the specified module seperated by ;</returns>
-        public static string GetPropertiesPermissions( int moduleID ) {
+        public static string GetPropertiesPermissions( int moduleID )
+        {
             return getPermissions( moduleID, "rb_GetAuthPropertiesRoles", "@PropertiesRoles" );
         }
 
@@ -375,7 +407,8 @@ namespace Rainbow.Framework.Security {
         /// </summary>
         /// <param name="moduleID"></param>
         /// <returns>A list of roles that have move module permission for the specified module seperated by ;</returns>
-        public static string GetMoveModulePermissions( int moduleID ) {
+        public static string GetMoveModulePermissions( int moduleID )
+        {
             return getPermissions( moduleID, "rb_GetAuthMoveModuleRoles", "@MoveModuleRoles" );
         }
 
@@ -385,7 +418,8 @@ namespace Rainbow.Framework.Security {
         /// </summary>
         /// <param name="moduleID"></param>
         /// <returns>A list of roles that have delete module permission for the specified module seperated by ;</returns>
-        public static string GetDeleteModulePermissions( int moduleID ) {
+        public static string GetDeleteModulePermissions( int moduleID )
+        {
             return getPermissions( moduleID, "rb_GetAuthDeleteModuleRoles", "@DeleteModuleRoles" );
         }
 
@@ -398,7 +432,8 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// A string of roles that have approve permissions seperated by ;
         /// </returns>
-        public static string GetApprovePermissions( int moduleID ) {
+        public static string GetApprovePermissions( int moduleID )
+        {
             return getPermissions( moduleID, "rb_GetAuthApproveRoles", "@ApproveRoles" );
         }
 
@@ -410,7 +445,8 @@ namespace Rainbow.Framework.Security {
         /// <returns>
         /// A list of roles that has Publish Permissions seperated by ;
         /// </returns>
-        public static string GetPublishPermissions( int moduleID ) {
+        public static string GetPublishPermissions( int moduleID )
+        {
             return getPermissions( moduleID, "rb_GetAuthPublishingRoles", "@PublishingRoles" );
         }
         #endregion
@@ -422,7 +458,8 @@ namespace Rainbow.Framework.Security {
         /// <param name="user">Username or email</param>
         /// <param name="password">Password</param>
         /// <returns></returns>
-        public static string SignOn( string user, string password ) {
+        public static string SignOn( string user, string password )
+        {
             return SignOn( user, password, false );
         }
 
@@ -433,7 +470,8 @@ namespace Rainbow.Framework.Security {
         /// <param name="password">Password</param>
         /// <param name="persistent">Use a cookie to make it persistent</param>
         /// <returns></returns>
-        public static string SignOn( string user, string password, bool persistent ) {
+        public static string SignOn( string user, string password, bool persistent )
+        {
             return SignOn( user, password, persistent, null );
         }
 
@@ -446,7 +484,8 @@ namespace Rainbow.Framework.Security {
         /// <param name="redirectPage">The redirect page.</param>
         /// <returns></returns>
         [History( "bja@reedtek.com", "2003/05/16", "Support for collapsable" )]
-        public static string SignOn( string user, string password, bool persistent, string redirectPage ) {
+        public static string SignOn( string user, string password, bool persistent, string redirectPage )
+        {
             // Obtain PortalSettings from Current Context
             PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ strPortalSettings ];
 
@@ -460,22 +499,23 @@ namespace Rainbow.Framework.Security {
             //			ShoppingCartDB shoppingCart = new ShoppingCartDB();
             //			string tempCartID = ShoppingCartDB.GetCurrentShoppingCartID();
 
-            if ( usr != null ) {
+            if ( usr != null )
+            {
                 // Ender, 31 July 2003: Support for the monitoring module by Paul Yarrow
-                if ( Config.EnableMonitoring ) {
-                    try {
+                if ( Config.EnableMonitoring )
+                {
+                    try
+                    {
                         Monitoring.LogEntry( ( Guid )usr.ProviderUserKey, portalSettings.PortalID, -1, "Logon", string.Empty );
                     }
-                    catch {
+                    catch
+                    {
                         ErrorHandler.Publish( LogLevel.Info, "Cannot monitoring login user " + usr.UserName );
                     }
                 }
 
                 // Use security system to set the UserID within a client-side Cookie
                 FormsAuthentication.SetAuthCookie( usr.ToString(), persistent );
-                //FormsAuthenticationTicket ticket = new FormsAuthenticationTicket( 1, usr.ToString(),
-                //    DateTime.Now, DateTime.Now.AddMinutes( 30 ), // value of time out property
-                //    persistent, string.Empty, FormsAuthentication.FormsCookiePath );
 
                 // Rainbow Security cookie Required if we are sharing a single domain 
                 // with portal Alias in the URL
@@ -483,15 +523,16 @@ namespace Rainbow.Framework.Security {
                 // Set a cookie to persist authentication for each portal 
                 // so user can be reauthenticated 
                 // automatically if they chose to Remember Login	
-                HttpCookie hck = new HttpCookie( "Rainbow_" + portalSettings.PortalAlias.ToLower(), usr.ToString() );
+				HttpCookie hck = HttpContext.Current.Response.Cookies["Rainbow_" + portalSettings.PortalAlias.ToLower()];
                 hck.Value = usr.ToString(); //Fill all data: name + email + id
                 hck.Path = "/";
 
                 if ( persistent ) // Keep the cookie?
                 {
-                    hck.Expires = DateTime.Now.AddYears( 1 );
+					hck.Expires = DateTime.Now.AddYears(50);
                 }
-                else {
+                else
+                {
                     //jminond - option to kill cookie after certain time always
                     // jes1111
                     //					if(ConfigurationSettings.AppSettings["CookieExpire"] != null)
@@ -503,21 +544,25 @@ namespace Rainbow.Framework.Security {
                     TimeSpan span = new TimeSpan( 0, 0, minuteAdd, 0, 0 );
 
                     hck.Expires = time.Add( span );
+//					}
                 }
-                HttpContext.Current.Response.Cookies.Set( hck );
 
 
-                if ( redirectPage == null || redirectPage.Length == 0 ) {
+                if ( redirectPage == null || redirectPage.Length == 0 )
+                {
                     // Redirect browser back to originating page
-                    if ( HttpContext.Current.Request.UrlReferrer != null ) {
+                    if ( HttpContext.Current.Request.UrlReferrer != null )
+                    {
                         HttpContext.Current.Response.Redirect( HttpContext.Current.Request.UrlReferrer.ToString() );
                     }
-                    else {
+                    else
+                    {
                         HttpContext.Current.Response.Redirect( Path.ApplicationRoot );
                     }
                     return usr.Email;
                 }
-                else {
+                else
+                {
                     HttpContext.Current.Response.Redirect( redirectPage );
                 }
             }
@@ -530,16 +575,12 @@ namespace Rainbow.Framework.Security {
         /// </summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="minuteAdd">The minute add.</param>
-        public static void ExtendCookie( PortalSettings portalSettings, int minuteAdd ) {
+        public static void ExtendCookie( PortalSettings portalSettings, int minuteAdd )
+        {
             DateTime time = DateTime.Now;
             TimeSpan span = new TimeSpan( 0, 0, minuteAdd, 0, 0 );
 
-            HttpCookie hck = HttpContext.Current.Response.Cookies[ "Rainbow_" + portalSettings.PortalAlias ];
-
-            // don't update cookie expiration date if it will be less than the actual value (persistent cookie)
-            if ( hck.Expires < time.Add( span ) ) {
-                hck.Expires = time.Add( span );
-            }
+			HttpContext.Current.Response.Cookies["Rainbow_" + portalSettings.PortalAlias].Expires = time.Add(span);
 
             return;
         }
@@ -548,7 +589,8 @@ namespace Rainbow.Framework.Security {
         /// ExtendCookie
         /// </summary>
         /// <param name="portalSettings">The portal settings.</param>
-        public static void ExtendCookie( PortalSettings portalSettings ) {
+        public static void ExtendCookie( PortalSettings portalSettings )
+        {
             int minuteAdd = Config.CookieExpire;
             ExtendCookie( portalSettings, minuteAdd );
             return;
@@ -557,7 +599,8 @@ namespace Rainbow.Framework.Security {
         /// <summary>
         /// Single point logoff
         /// </summary>
-        public static void SignOut() {
+        public static void SignOut()
+        {
             SignOut( HttpUrlBuilder.BuildUrl( "~/Default.aspx" ), true );
         }
 
@@ -565,7 +608,8 @@ namespace Rainbow.Framework.Security {
         /// Kills session after timeout
         /// jminond - fix kill session after timeout.
         /// </summary>
-        public static void KillSession() {
+        public static void KillSession()
+        {
 
             SignOut( HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Admin/Logon.aspx" ), true );
 
@@ -576,7 +620,8 @@ namespace Rainbow.Framework.Security {
         /// <summary>
         /// Single point logoff
         /// </summary>
-        public static void SignOut( string urlToRedirect, bool removeLogin ) {
+        public static void SignOut( string urlToRedirect, bool removeLogin )
+        {
             // Log User Off from Cookie Authentication System
             FormsAuthentication.SignOut();
 
@@ -586,7 +631,8 @@ namespace Rainbow.Framework.Security {
             hck.Expires = new DateTime( 1999, 10, 12 );
             hck.Path = "/";
 
-            if ( removeLogin ) {
+            if ( removeLogin )
+            {
                 // Obtain PortalSettings from Current Context
                 PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ strPortalSettings ];
 
@@ -595,13 +641,13 @@ namespace Rainbow.Framework.Security {
                 xhck.Value = null;
                 xhck.Expires = new DateTime( 1999, 10, 12 );
                 xhck.Path = "/";
-                //HttpContext.Current.Response.Cookies.Remove( "Rainbow_" + portalSettings.PortalAlias.ToLower() );
             }
 
             // [START]  bja@reedtek.com remove user window information
             // User Information
             // valid user
-            if ( HttpContext.Current.User != null ) {
+            if ( HttpContext.Current.User != null )
+            {
                 // Obtain PortalSettings from Current Context
                 //Ender 4 July 2003: Added to support the Monitoring module by Paul Yarrow
                 PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ strPortalSettings ];
@@ -613,9 +659,12 @@ namespace Rainbow.Framework.Security {
                 // get user id
                 Guid uid = ( Guid )user.ProviderUserKey;
 
-                if ( !uid.Equals( Guid.Empty ) ) {
-                    try {
-                        if ( Config.EnableMonitoring ) {
+                if ( !uid.Equals( Guid.Empty ) )
+                {
+                    try
+                    {
+                        if ( Config.EnableMonitoring )
+                        {
                             Monitoring.LogEntry( uid, portalSettings.PortalID, -1, "Logoff", string.Empty );
                         }
                     }
@@ -635,7 +684,8 @@ namespace Rainbow.Framework.Security {
         /// Redirect user back to the Portal Home Page.
         /// Mainily used after a succesfull login.
         /// </summary>
-        public static void PortalHome() {
+        public static void PortalHome()
+        {
             HttpContext.Current.Response.Redirect( HttpUrlBuilder.BuildUrl( "~/Default.aspx" ) );
         }
 
@@ -643,7 +693,8 @@ namespace Rainbow.Framework.Security {
         /// Single point access deny.
         /// Called when there is an unauthorized access attempt.
         /// </summary>
-        public static void AccessDenied() {
+        public static void AccessDenied()
+        {
             if ( HttpContext.Current.User.Identity.IsAuthenticated )
                 throw new HttpException( 403, "Access Denied", 2 );
             else
@@ -654,7 +705,8 @@ namespace Rainbow.Framework.Security {
         /// Single point edit access deny.
         /// Called when there is an unauthorized access attempt to an edit page.
         /// </summary>
-        public static void AccessDeniedEdit() {
+        public static void AccessDeniedEdit()
+        {
             if ( HttpContext.Current.User.Identity.IsAuthenticated )
                 throw new HttpException( 403, "Access Denied Edit", 3 );
             else
@@ -665,14 +717,16 @@ namespace Rainbow.Framework.Security {
         /// Single point edit access deny from the Secure server (SSL)
         /// Called when there is an unauthorized access attempt to an edit page.
         /// </summary>
-        public static void SecureAccessDenied() {
+        public static void SecureAccessDenied()
+        {
             throw new HttpException( 403, "Secure Access Denied", 3 );
         }
 
         /// <summary>
         /// Single point get roles
         /// </summary>
-        public static IList<RainbowRole> GetRoles() {
+        public static IList<RainbowRole> GetRoles()
+        {
             // Obtain PortalSettings from Current Context
             PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items[ strPortalSettings ];
             int portalID = portalSettings.PortalID;
@@ -687,13 +741,15 @@ namespace Rainbow.Framework.Security {
             //// Create the roles cookie if it doesn't exist yet for this session.
             //if ((HttpContext.Current.Request.Cookies["portalroles"] == null) || (HttpContext.Current.Request.Cookies["portalroles"].Value == string.Empty) || (HttpContext.Current.Request.Cookies["portalroles"].Expires < DateTime.Now)) 
             //{
-            try {
+            try
+            {
                 // Get roles from UserRoles table, and add to cookie
                 UsersDB accountSystem = new UsersDB();
                 MembershipUser u = accountSystem.GetSingleUser( HttpContext.Current.User.Identity.Name );
                 roles = accountSystem.GetRoles( u.Email, portalSettings.PortalAlias );
             }
-            catch {
+            catch
+            {
                 //no roles
                 roles = new List<RainbowRole>();
             }

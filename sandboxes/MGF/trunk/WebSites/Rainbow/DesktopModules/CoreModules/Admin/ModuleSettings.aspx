@@ -1,18 +1,19 @@
-<%@ register src="~/Design/DesktopLayouts/DesktopFooter.ascx" tagname="Footer" tagprefix="foot" %>
-<%@ register src="~/Design/DesktopLayouts/DesktopPortalBanner.ascx" tagname="Banner"
-    tagprefix="portal" %>
-<%@ page autoeventwireup="false" codefile="ModuleSettings.aspx.cs" inherits="Rainbow.Admin.ModuleSettingsPage"
-    language="c#" %>
+<%@ Register Src="~/Design/DesktopLayouts/DesktopFooter.ascx" TagName="Footer" TagPrefix="foot" %>
+<%@ Register Src="~/Design/DesktopLayouts/DesktopPortalBanner.ascx" TagName="Banner"
+    TagPrefix="portal" %>
+
+<%@ Page AutoEventWireup="false" CodeFile="ModuleSettings.aspx.cs" Inherits="Rainbow.Admin.ModuleSettingsPage"
+    Language="c#" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head id="Head1" runat="server"><title></title>
+<head id="Head1" runat="server">
+    <title></title>
 </head>
 <body id="Body1" runat="server">
     <form id="Form1" runat="server">
         <div id="zenpanes" class="zen-main">
             <div class="rb_DefaultPortalHeader">
-                <portal:banner id="Banner1" runat="server" showtabs="false" />
-                
+                <portal:Banner ID="Banner1" runat="server" showtabs="false" />
             </div>
             <div class="div_ev_Table">
                 <table border="0" cellpadding="4" cellspacing="0" width="98%">
@@ -262,16 +263,5 @@
             </div>
         </div>
     </form>
-
-    <script language="javascript" type="text/javascript">
-	//var tabw = (450);
-	//var tabH = (350);
-	//var tpg1 = new xTabPanelGroup('tpg1', tabw, tabH, 50, 'tabPanel', 'tabGroup', 'tabDefault', 'tabSelected');
-	//var tabgroupd = xGetElementById('tpg1');
-	//var pareTbl = xGetElementById(tabgroupd.id);
-	//pareTbl.style["height"] = 380;
-	//pareTbl.style["overflow"] = 'hidden';
-    </script>
-
 </body>
 </html>

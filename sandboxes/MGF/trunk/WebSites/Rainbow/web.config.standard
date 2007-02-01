@@ -68,7 +68,6 @@
     <add name="Main.ConnectionString" connectionString="{!!! CHANGE ME TO A VALID CONNECTION STRING !!!}" />
   </connectionStrings>
 
-  
   <!-- Application specific settings -->
   <appSettings file="Rainbow.config">
     <add key="RainbowConfigUpdated" value="06/03/2006" />
