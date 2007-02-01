@@ -6,6 +6,7 @@ using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
+using Rainbow.Framework.Providers.RainbowSiteMapProvider;
 using History=Rainbow.Framework.History;
 using Label=System.Web.UI.WebControls.Label;
 using LinkButton=System.Web.UI.WebControls.LinkButton;
@@ -226,6 +227,9 @@ namespace Rainbow.Content.Web.Modules.AddModule
                     // Copied to here 29/12/2004 by Mike Stone
                     CurrentCache.RemoveAll("_TabNavigationSettings_");
                     //Debug.WriteLine("************* Remove " + Key.TabSettings(parentTabID));
+                    
+                    //Clear SiteMaps Cache
+                    RainbowSiteMapProvider.ClearAllRainbowSiteMapCaches();
 
                     //Jump to Page option
                     string returnTab = string.Empty;

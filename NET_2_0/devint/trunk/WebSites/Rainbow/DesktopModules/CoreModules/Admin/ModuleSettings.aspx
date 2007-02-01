@@ -8,7 +8,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title></title>
-
 </head>
 <body id="Body1" runat="server"> 
     <form id="Form1" runat="server">
@@ -19,204 +18,239 @@
             <div class="div_ev_Table">
                 <table border="0" cellpadding="4" cellspacing="0" width="98%">
                     <tr valign="top">
-                        <td width="150">&nbsp;</td>
+                        <td width="150">
+                            &nbsp;</td>
                         <td width="*">
                             <table border="0" cellpadding="2" cellspacing="1">
-                            <cols><col width="200" /><col width="400" /></cols>
                                 <tr>
-                                    <td colspan="4" class="Head" height="20">
-                                        <rbfwebui:Localize ID="Literal1" runat="server" Text="Module base settings" TextKey="MODULESETTINGS_BASE_SETTINGS">
-                                        </rbfwebui:Localize>
+                                    <td colspan="4" height="20">
+                                        <table cellpadding="0" cellspacing="0" width="100%">
+                                            <tr>
+                                                <td align="left" class="Head" nowrap="true" width="1%">
+                                                    <rbfwebui:localize id="Literal1" runat="server" text="Module base settings" textkey="MODULESETTINGS_BASE_SETTINGS">
+                                                    </rbfwebui:localize></td>
+                                                <td align="right" nowrap="true" width="99%">
+                                                    <asp:placeholder id="PlaceholderButtons2" runat="server"></asp:placeholder>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
                                         <hr noshade="noshade" size="1" />
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="SubHead" height="50">
-                                        <rbfwebui:Localize ID="Literal2" runat="server" Text="Module type" TextKey="MODULESETTINGS_MODULE_TYPE">
-                                        </rbfwebui:Localize>: </td>
-                                    <td colspan="3" nowrap="nowrap" height="38">&nbsp;<rbfwebui:Label ID="moduleType" runat="server"
-                                        CssClass="NormalBold" Width="300"></rbfwebui:Label>
+                                        </table>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="SubHead">
-                                        <rbfwebui:Localize ID="Literal18" runat="server" Text="Module name" TextKey="MODULESETTINGS_MODULE_NAME">
-                                        </rbfwebui:Localize>: </td>
-                                    <td colspan="3">&nbsp;<asp:TextBox ID="moduleTitle" runat="server" CssClass="NormalTextBox"
-                                        Width="300"></asp:TextBox>
+                                    <td class="SubHead" height="50" width="200">
+                                        <rbfwebui:localize id="Literal2" runat="server" text="Module type" textkey="MODULESETTINGS_MODULE_TYPE">
+                                        </rbfwebui:localize>:
+                                    </td>
+                                    <td colspan="3" height="38">
+                                        &nbsp;<rbfwebui:label id="moduleType" runat="server" cssclass="NormalBold" width="300"></rbfwebui:label>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="SubHead">
-                                        <rbfwebui:Localize ID="Literal3" runat="server" Text="Cache Timeout" TextKey="MODULESETTINGS_CACHE_TIMEOUT">
-                                        </rbfwebui:Localize>: </td>
-                                    <td colspan="3">&nbsp;<asp:TextBox ID="cacheTime" runat="server" CssClass="NormalTextBox"
-                                        Width="100"></asp:TextBox>
+                                    <td class="SubHead" width="200">
+                                        <rbfwebui:localize id="Literal18" runat="server" text="Module name" textkey="MODULESETTINGS_MODULE_NAME">
+                                        </rbfwebui:localize>:
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td class="SubHead">
-                                        <rbfwebui:Localize ID="Literal13" runat="server" Text="Move to tab" TextKey="MODULESETTINGS_MOVE_TO_TAB">
-                                        </rbfwebui:Localize>:</td>
-                                    <td colspan="3">&nbsp;<asp:DropDownList ID="tabDropDownList" runat="server" CssClass="NormalTextBox"
-                                        DataSource="<%# portalTabs %>" DataTextField="Name" DataValueField="ID" Width="300px">
-                                    </asp:DropDownList></td>
-                                </tr>
-                                <tr>
-                                    <td>&nbsp; </td>
                                     <td colspan="3">
-                                        <hr noshade="noshade" size="1" />
+                                        &nbsp;<asp:textbox id="moduleTitle" runat="server" cssclass="NormalTextBox" width="300"></asp:textbox>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="SubHead" valign="top">
-                                        <rbfwebui:Localize ID="Literal5" runat="server" Text="Roles that can view" TextKey="MODULESETTINGS_ROLE_VIEW">
-                                        </rbfwebui:Localize>: </td>
-                                    <td colspan="3" nowrap="nowrap">
-                                        <asp:CheckBoxList ID="authViewRoles" runat="server" CellPadding="0" CellSpacing="0"
-                                            CssClass="Normal" RepeatColumns="2">
-                                        </asp:CheckBoxList>
+                                    <td class="SubHead" width="200">
+                                        <rbfwebui:localize id="Literal3" runat="server" text="Cache Timeout" textkey="MODULESETTINGS_CACHE_TIMEOUT">
+                                        </rbfwebui:localize>:
+                                    </td>
+                                    <td colspan="3">
+                                        &nbsp;<asp:textbox id="cacheTime" runat="server" cssclass="NormalTextBox" width="100"></asp:textbox>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="SubHead" valign="top">
-                                        <rbfwebui:Localize ID="Literal4" runat="server" Text="Roles that can edit" TextKey="MODULESETTINGS_ROLES_EDIT">
-                                        </rbfwebui:Localize>:</td>
-                                    <td colspan="3" nowrap="nowrap">
-                                        <asp:CheckBoxList ID="authEditRoles" runat="server" CellPadding="0" CellSpacing="0"
-                                            CssClass="Normal" RepeatColumns="2">
-                                        </asp:CheckBoxList>
-                                    </td>
+                                    <td class="SubHead" width="200">
+                                        <rbfwebui:localize id="Literal13" runat="server" text="Move to tab" textkey="MODULESETTINGS_MOVE_TO_TAB">
+                                        </rbfwebui:localize>:</td>
+                                    <td colspan="3">
+                                        &nbsp;<asp:dropdownlist id="tabDropDownList" runat="server" cssclass="NormalTextBox"
+                                            datasource="<%# portalTabs %>" datatextfield="Name" datavaluefield="ID" width="300px">
+                                        </asp:dropdownlist></td>
                                 </tr>
                                 <tr>
-                                    <td class="SubHead" valign="top">
-                                        <rbfwebui:Localize ID="Literal6" runat="server" Text="Roles that can add" TextKey="MODULESETTINGS_ROLES_ADD">
-                                        </rbfwebui:Localize>: </td>
-                                    <td colspan="3" nowrap="nowrap">
-                                        <asp:CheckBoxList ID="authAddRoles" runat="server" CellPadding="0" CellSpacing="0"
-                                            CssClass="Normal" RepeatColumns="2">
-                                        </asp:CheckBoxList>
+                                    <td>
+                                        &nbsp;
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td class="SubHead" valign="top">
-                                        <rbfwebui:Localize ID="Literal7" runat="server" Text="Roles that can delete" TextKey="MODULESETTINGS_ROLES_DELETE">
-                                        </rbfwebui:Localize>: </td>
-                                    <td colspan="3" nowrap="nowrap">
-                                        <asp:CheckBoxList ID="authDeleteRoles" runat="server" CellPadding="0" CellSpacing="0"
-                                            CssClass="Normal" RepeatColumns="2">
-                                        </asp:CheckBoxList>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="SubHead" valign="top">
-                                        <rbfwebui:Localize ID="Literal8" runat="server" Text="Roles that can edit properties"
-                                            TextKey="MODULESETTINGS_ROLES_EDIT_COLLECTION">
-                                        </rbfwebui:Localize>: </td>
-                                    <td colspan="3" nowrap="nowrap">
-                                        <asp:CheckBoxList ID="authPropertiesRoles" runat="server" CellPadding="0" CellSpacing="0"
-                                            CssClass="Normal" RepeatColumns="2">
-                                        </asp:CheckBoxList>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="SubHead" valign="top">
-                                        <rbfwebui:Localize ID="Literal16" runat="server" Text="Roles that can move modules"
-                                            TextKey="MODULESETTINGS_ROLES_MOVE_MODULES">
-                                        </rbfwebui:Localize>: </td>
-                                    <td colspan="3" nowrap="nowrap">
-                                        <asp:CheckBoxList ID="authMoveModuleRoles" runat="server" CellPadding="0" CellSpacing="0"
-                                            CssClass="Normal" RepeatColumns="2">
-                                        </asp:CheckBoxList>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="SubHead" valign="top">
-                                        <rbfwebui:Localize ID="Literal17" runat="server" Text="Roles that can delete modules"
-                                            TextKey="MODULESETTINGS_ROLES_DELETE_MODULES">
-                                        </rbfwebui:Localize>: </td>
-                                    <td colspan="3" nowrap="nowrap">
-                                        <asp:CheckBoxList ID="authDeleteModuleRoles" runat="server" CellPadding="0" CellSpacing="0"
-                                            CssClass="Normal" RepeatColumns="2">
-                                        </asp:CheckBoxList>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>&nbsp; </td>
                                     <td colspan="3">
                                         <hr noshade="noshade" size="1" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="SubHead" valign="top">
-                                        <rbfwebui:Localize ID="Literal9" runat="server" Text="Enable workflow" TextKey="MODULESETTINGS_SUPPORT_WORKFLOW">
-                                        </rbfwebui:Localize>: </td>
-                                    <td colspan="3">
-                                        <asp:CheckBox ID="enableWorkflowSupport" runat="server" AutoPostBack="True" /></td>
-                                </tr>
-                                <tr>
-                                    <td class="SubHead" valign="top">
-                                        <rbfwebui:Localize ID="Literal10" runat="server" Text="Approve roles" TextKey="MODULESETTINGS_ROLES_APPROVING">
-                                        </rbfwebui:Localize>: </td>
+                                    <td class="SubHead" valign="top" width="200">
+                                        <rbfwebui:localize id="Literal5" runat="server" text="Roles that can view" textkey="MODULESETTINGS_ROLE_VIEW">
+                                        </rbfwebui:localize>:
+                                    </td>
                                     <td colspan="3" nowrap="nowrap">
-                                        <asp:CheckBoxList ID="authApproveRoles" runat="server" CellPadding="0" CellSpacing="0"
-                                            CssClass="Normal" RepeatColumns="2">
-                                        </asp:CheckBoxList>
+                                        <asp:checkboxlist id="authViewRoles" runat="server" cellpadding="0" cellspacing="0"
+                                            cssclass="Normal" repeatcolumns="2" width="300">
+                                        </asp:checkboxlist>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="SubHead" valign="top">
-                                        <rbfwebui:Localize ID="Literal11" runat="server" Text="Publishing roles" TextKey="MODULESETTINGS_ROLES_PUBLISHING">
-                                        </rbfwebui:Localize>: </td>
+                                    <td class="SubHead" valign="top" width="200">
+                                        <rbfwebui:localize id="Literal4" runat="server" text="Roles that can edit" textkey="MODULESETTINGS_ROLES_EDIT">
+                                        </rbfwebui:localize>:</td>
                                     <td colspan="3" nowrap="nowrap">
-                                        <asp:CheckBoxList ID="authPublishingRoles" runat="server" CellPadding="0" CellSpacing="0"
-                                            CssClass="Normal" RepeatColumns="2">
-                                        </asp:CheckBoxList>
+                                        <asp:checkboxlist id="authEditRoles" runat="server" cellpadding="0" cellspacing="0"
+                                            cssclass="Normal" repeatcolumns="2" width="300">
+                                        </asp:checkboxlist>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>&nbsp; </td>
+                                    <td class="SubHead" valign="top" width="200">
+                                        <rbfwebui:localize id="Literal6" runat="server" text="Roles that can add" textkey="MODULESETTINGS_ROLES_ADD">
+                                        </rbfwebui:localize>:
+                                    </td>
+                                    <td colspan="3" nowrap="nowrap">
+                                        <asp:checkboxlist id="authAddRoles" runat="server" cellpadding="0" cellspacing="0"
+                                            cssclass="Normal" repeatcolumns="2" width="300">
+                                        </asp:checkboxlist>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="SubHead" valign="top" width="200">
+                                        <rbfwebui:localize id="Literal7" runat="server" text="Roles that can delete" textkey="MODULESETTINGS_ROLES_DELETE">
+                                        </rbfwebui:localize>:
+                                    </td>
+                                    <td colspan="3" nowrap="nowrap">
+                                        <asp:checkboxlist id="authDeleteRoles" runat="server" cellpadding="0" cellspacing="0"
+                                            cssclass="Normal" repeatcolumns="2" width="300">
+                                        </asp:checkboxlist>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="SubHead" valign="top" width="200">
+                                        <rbfwebui:localize id="Literal8" runat="server" text="Roles that can edit properties"
+                                            textkey="MODULESETTINGS_ROLES_EDIT_COLLECTION">
+                                        </rbfwebui:localize>:
+                                    </td>
+                                    <td colspan="3" nowrap="nowrap">
+                                        <asp:checkboxlist id="authPropertiesRoles" runat="server" cellpadding="0" cellspacing="0"
+                                            cssclass="Normal" repeatcolumns="2" width="300">
+                                        </asp:checkboxlist>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="SubHead" valign="top" width="200">
+                                        <rbfwebui:localize id="Literal16" runat="server" text="Roles that can move modules"
+                                            textkey="MODULESETTINGS_ROLES_MOVE_MODULES">
+                                        </rbfwebui:localize>:
+                                    </td>
+                                    <td colspan="3" nowrap="nowrap">
+                                        <asp:checkboxlist id="authMoveModuleRoles" runat="server" cellpadding="0" cellspacing="0"
+                                            cssclass="Normal" repeatcolumns="2" width="300">
+                                        </asp:checkboxlist>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="SubHead" valign="top" width="200">
+                                        <rbfwebui:localize id="Literal17" runat="server" text="Roles that can delete modules"
+                                            textkey="MODULESETTINGS_ROLES_DELETE_MODULES">
+                                        </rbfwebui:localize>:
+                                    </td>
+                                    <td colspan="3" nowrap="nowrap">
+                                        <asp:checkboxlist id="authDeleteModuleRoles" runat="server" cellpadding="0" cellspacing="0"
+                                            cssclass="Normal" repeatcolumns="2" width="300">
+                                        </asp:checkboxlist>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
                                     <td colspan="3">
                                         <hr noshade="noshade" size="1" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="SubHead" nowrap="nowrap">
-                                        <rbfwebui:Localize ID="Literal12" runat="server" Text="Show to mobile users" TextKey="SHOWMOBILE">
-                                        </rbfwebui:Localize>: </td>
+                                    <td class="SubHead" valign="top" width="200">
+                                        <rbfwebui:localize id="Literal9" runat="server" text="Enable workflow" textkey="MODULESETTINGS_SUPPORT_WORKFLOW">
+                                        </rbfwebui:localize>:
+                                    </td>
                                     <td colspan="3">
-                                        <asp:CheckBox ID="ShowMobile" runat="server" CssClass="Normal" /></td>
+                                        <asp:checkbox id="enableWorkflowSupport" runat="server" autopostback="True" /></td>
                                 </tr>
                                 <tr>
-                                    <td>&nbsp; </td>
+                                    <td class="SubHead" valign="top" width="200">
+                                        <rbfwebui:localize id="Literal10" runat="server" text="Approve roles" textkey="MODULESETTINGS_ROLES_APPROVING">
+                                        </rbfwebui:localize>:
+                                    </td>
+                                    <td colspan="3" nowrap="nowrap">
+                                        <asp:checkboxlist id="authApproveRoles" runat="server" cellpadding="0" cellspacing="0"
+                                            cssclass="Normal" repeatcolumns="2" width="300">
+                                        </asp:checkboxlist>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="SubHead" valign="top" width="200">
+                                        <rbfwebui:localize id="Literal11" runat="server" text="Publishing roles" textkey="MODULESETTINGS_ROLES_PUBLISHING">
+                                        </rbfwebui:localize>:
+                                    </td>
+                                    <td colspan="3" nowrap="nowrap">
+                                        <asp:checkboxlist id="authPublishingRoles" runat="server" cellpadding="0" cellspacing="0"
+                                            cssclass="Normal" repeatcolumns="2" width="300">
+                                        </asp:checkboxlist>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
                                     <td colspan="3">
                                         <hr noshade="noshade" size="1" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="SubHead" nowrap="nowrap">
-                                        <rbfwebui:Localize ID="Literal14" runat="server" Text="Show on every page?" TextKey="MODULESETTINGS_SHOW_EVERYWHERE">
-                                        </rbfwebui:Localize>: </td>
+                                    <td class="SubHead" nowrap="nowrap" width="200">
+                                        <rbfwebui:localize id="Literal12" runat="server" text="Show to mobile users" textkey="SHOWMOBILE">
+                                        </rbfwebui:localize>:
+                                    </td>
                                     <td colspan="3">
-                                        <asp:CheckBox ID="showEveryWhere" runat="server" CssClass="Normal" /></td>
+                                        <asp:checkbox id="ShowMobile" runat="server" cssclass="Normal" /></td>
                                 </tr>
                                 <tr>
-                                    <td class="SubHead" nowrap="nowrap">
-                                        <rbfwebui:Localize ID="Literal15" runat="server" Text="Can collapse window?" TextKey="MODULESETTINGS_SHOW_COLLAPSABLE">
-                                        </rbfwebui:Localize>: </td>
-                                    <td colspan="3">
-                                        <asp:CheckBox ID="allowCollapsable" runat="server" CssClass="Normal" /></td>
-                                </tr>
-                                <tr>
-                                    <td>&nbsp; </td>
+                                    <td>
+                                        &nbsp;
+                                    </td>
                                     <td colspan="3">
                                         <hr noshade="noshade" size="1" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>&nbsp; </td>
+                                    <td class="SubHead" nowrap="nowrap" width="200">
+                                        <rbfwebui:localize id="Literal14" runat="server" text="Show on every page?" textkey="MODULESETTINGS_SHOW_EVERYWHERE">
+                                        </rbfwebui:localize>:
+                                    </td>
                                     <td colspan="3">
-                                        <asp:PlaceHolder ID="PlaceHolderButtons" runat="server"></asp:PlaceHolder>
+                                        <asp:checkbox id="showEveryWhere" runat="server" cssclass="Normal" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="SubHead" nowrap="nowrap" width="200">
+                                        <rbfwebui:localize id="Literal15" runat="server" text="Can collapse window?" textkey="MODULESETTINGS_SHOW_COLLAPSABLE">
+                                        </rbfwebui:localize>:
+                                    </td>
+                                    <td colspan="3">
+                                        <asp:checkbox id="allowCollapsable" runat="server" cssclass="Normal" /></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr noshade="noshade" size="1" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" nowrap="true">
+                                        <asp:placeholder id="PlaceHolderButtons" runat="server"></asp:placeholder>
+                                        &nbsp;
                                     </td> 
                                 </tr>
                             </table>
@@ -225,7 +259,7 @@
                 </table>
             </div>
             <div class="rb_AlternatePortalFooter">
-                <foot:Footer ID="Footer" runat="server" />
+                <foot:footer id="Footer" runat="server" />
             </div>
         </div>
     </form>

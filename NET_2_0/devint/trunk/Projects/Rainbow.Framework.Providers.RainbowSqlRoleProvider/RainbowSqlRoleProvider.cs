@@ -199,8 +199,13 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
 
         public override bool RoleExists( string roleName ) {
             try {
-                RainbowRole role = GetRoleByName( ApplicationName, roleName );
-                return RoleExists( ApplicationName, role.Id );
+                IList<RainbowRole> allRoles = GetAllRoles( ApplicationName );
+                foreach ( RainbowRole role in allRoles ) {
+                    if ( role.Name.Equals( roleName ) ) {
+                        return true;
+                    }
+                }
+                return false;
             }
             catch {
                 return false;
@@ -436,9 +441,9 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         public override IList<RainbowRole> GetAllRoles( string portalAlias ) {
 
             IList<RainbowRole> result = new List<RainbowRole>();
-            result.Insert( 0, new RainbowRole( AllUsersGuid, "All users", "All users" ) );
-            result.Insert( 1, new RainbowRole( AuthenticatedUsersGuid, "Authenticated users", "Authenticated users" ) );
-            result.Insert( 2, new RainbowRole( UnauthenticatedUsersGuid, "Unauthenticated users", "Unauthenticated users" ) );
+            result.Insert( 0, new RainbowRole( AllUsersGuid, AllUsersRoleName, AllUsersRoleName ) );
+            result.Insert( 1, new RainbowRole( AuthenticatedUsersGuid, AuthenticatedUsersRoleName, AuthenticatedUsersRoleName ) );
+            result.Insert( 2, new RainbowRole( UnauthenticatedUsersGuid, UnauthenticatedUsersRoleName, UnauthenticatedUsersRoleName ) );
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = "aspnet_Roles_GetAllRoles";
@@ -601,6 +606,14 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         }
 
         public override bool IsUserInRole( string portalAlias, Guid userId, Guid roleId ) {
+
+            if ( roleId.Equals( AllUsersGuid ) || roleId.Equals( AuthenticatedUsersGuid ) ) {
+                return true;
+            }
+            else if ( roleId.Equals( UnauthenticatedUsersGuid ) ) {
+                return false;
+            }
+            
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = "aspnet_UsersInRoles_IsUserInRole";
             cmd.CommandType = CommandType.StoredProcedure;
@@ -782,6 +795,42 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
             }
         }
 
+        public override RainbowRole GetRoleById( Guid roleId ) {
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "SELECT RoleId, RoleName, Description FROM aspnet_Roles WHERE RoleId=@RoleId";
+            cmd.Parameters.Add( "@RoleId", SqlDbType.UniqueIdentifier ).Value = roleId;
+
+            cmd.Connection = new SqlConnection( connectionString );
+
+            SqlDataReader reader = null;
+            try {
+                cmd.Connection.Open();
+
+                using ( reader = cmd.ExecuteReader() ) {
+
+                    if ( reader.Read() ) {
+
+                        return GetRoleFromReader( reader );
+                    }
+                    else {
+                        throw new RainbowRoleProviderException( "Role doesn't exist" );
+                    }
+                }
+            }
+            catch ( SqlException e ) {
+                if ( WriteExceptionsToEventLog ) {
+                    WriteToEventLog( e, "GetRoleById" );
+                }
+
+                throw new RainbowRoleProviderException( "Error executing method GetRoleById", e );
+            }
+            finally {
+                if ( reader != null ) {
+                    reader.Close();
+                }
+                cmd.Connection.Close();
+            }
+        }
 
         #endregion
 
@@ -824,7 +873,11 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         private RainbowRole GetRoleFromReader( SqlDataReader reader ) {
             Guid roleId = reader.GetGuid( 0 );
             string roleName = reader.GetString( 1 );
-            string roleDescription = reader.IsDBNull( 2 ) ? string.Empty : reader.GetString( 2 );
+
+            string roleDescription =  string.Empty;
+            if ( !reader.IsDBNull( 2 ) ) {
+                roleDescription = reader.GetString( 2 );
+            }
 
             return new RainbowRole( roleId, roleName, roleDescription );
         }

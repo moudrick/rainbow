@@ -6,7 +6,6 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.BLL.UserConfig;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
@@ -41,7 +40,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private bool _showEditProfile = true;
         private bool _showWelcome = true;
         private bool _showLogOff = true;
-        private bool _showSaveDesktop = true;
         private bool _dataBindOnInit = true;
         // 26 October 2003 John Mandia - Finish
 
@@ -149,17 +147,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             get { return _showLogOff; }
             set { _showLogOff = value; }
-        }
-
-        /// <summary>
-        /// Whether Logoff ShowSaveDesktop Shows
-        /// </summary>
-        /// <value><c>true</c> if [show save desktop]; otherwise, <c>false</c>.</value>
-        [DefaultValue(true)]
-        public bool ShowSaveDesktop
-        {
-            get { return _showSaveDesktop; }
-            set { _showSaveDesktop = value; }
         }
 
         /// <summary>
@@ -440,48 +427,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
                             list.Add(menuLink);
                         }
                     }
-                    // [START] bja@reedtek.com - Save Desktop
-                    //-------------------------------------------------
-                    // This may be a little strange but the menu header
-                    // does not except buttons (link/push/image/...) but
-                    // references (strings). So in order for me to get a
-                    // callback, not calling a .aspx page, I simply get 
-                    // a link button that is in the skin and insert a
-                    // callback (provided by .net) w/ the proper name
-                    // in the reference as done above. This way I get
-                    // the same affect but w/ a callback event
-                    //-------------------------------------------------
-                    // get the link button -- only need the link button even though
-                    // it is not visible. It's needed to provide a callback from
-                    // for this reference. So it is not in this datalist but just outside of it
-                    LinkButton lb = (LinkButton) Parent.FindControl("saveConfig");
-                    // if there a button in the layouts
-// Jes1111
-//					if ( lb != null && 
-//						HttpContext.Current.Request.IsAuthenticated && 
-//						GlobalResources.SupportWindowMgmt ) 
-                    if (lb != null && HttpContext.Current.Request.IsAuthenticated && Config.WindowMgmtControls)
-                    {
-                        // If Statement and public/private property added by john.mandia@whitelightsolutions.com 26th October
-                        if (ShowSaveDesktop)
-                        {
-                            // set the callback to handle the save
-                            lb.Click += new EventHandler(HandleSave);
-                            // convert the name for the postback to understand -- the
-                            // control it will be calling
-                            string lb_id = lb.UniqueID.Replace(":", "$");
-                            // insert the  callback/postback
-                            // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
-                            menuLink = "<a";
-                            if (CssClass.Length != 0)
-                                menuLink = menuLink + " class=\"" + CssClass + "\"";
-
-                            menuLink = menuLink + " href=\"javascript:__doPostBack('" + lb_id + "','')\">" +
-                                       General.GetString("HEADER_SAVE_DESKTOP", "Save Desktop", null) + "</a>";
-                            list.Add(menuLink);
-                        }
-                    }
-                    // [END] bja@reedtek.com
                 }
                 else
                 {
@@ -538,20 +483,5 @@ namespace Rainbow.Framework.Web.UI.WebControls
             get { return innerDataSource; }
             set { innerDataSource = value; }
         }
-
-        // [START] bja@reedtek.com
-
-        /// <summary>
-        /// Handles the button event to save desktop
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="evt">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void HandleSave(object sender, EventArgs evt)
-        {
-            // go save user desktop
-            UserDesktop.SaveUserDesktop();
-        } // end of HandleSave
-
-        // [END] bja@reedtek.com
     }
 }

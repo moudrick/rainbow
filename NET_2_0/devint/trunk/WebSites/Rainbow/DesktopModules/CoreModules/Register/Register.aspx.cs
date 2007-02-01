@@ -113,8 +113,7 @@ namespace Rainbow.Admin
             if ( moduleID > 0 )
                 moduleDesktopSrc = ModuleSettings.GetModuleDesktopSrc( moduleID );
             if ( moduleDesktopSrc.Length == 0 )
-                moduleDesktopSrc =
-                    Path.WebPathCombine( Path.ApplicationRoot, "DesktopModules/CoreModules/Register", RegisterPage );
+                moduleDesktopSrc = RegisterPage;
             Control myControl = x.LoadControl( moduleDesktopSrc );
             // End Modification by gman3001
 

@@ -32,7 +32,8 @@
         &nbsp;
         <asp:TextBox ID="CompanyField" runat="server" Columns="28" CssClass="NormalTextBox"
           MaxLength="50" Width="350px" /></td>
-      <td>&nbsp;</td>
+            <td>
+            </td>
     </tr>
     <tr>
       <td class="Subhead" nowrap="nowrap">
@@ -42,7 +43,8 @@
         &nbsp;
         <asp:TextBox ID="AddressField" runat="server" Columns="28" CssClass="NormalTextBox"
           MaxLength="50" Width="350px" /></td>
-      <td>&nbsp;</td>
+            <td>
+                &nbsp;</td>
     </tr>
     <tr>
       <td class="Subhead" nowrap="nowrap">
@@ -52,7 +54,8 @@
         &nbsp;
         <asp:TextBox ID="CityField" runat="server" Columns="28" CssClass="NormalTextBox"
           MaxLength="50" Width="350px" /></td>
-      <td>&nbsp;</td>
+            <td>
+                &nbsp;</td>
     </tr>
     <tr>
       <td class="Subhead" nowrap="nowrap">
@@ -62,7 +65,8 @@
         &nbsp;
         <asp:TextBox ID="ZipField" runat="server" Columns="28" CssClass="NormalTextBox" MaxLength="10"
           Width="60px" /></td>
-      <td>&nbsp;</td>
+            <td>
+                &nbsp;</td>
     </tr>
     <tr>
       <td class="Subhead" nowrap="nowrap">
@@ -71,7 +75,8 @@
         &nbsp;
         <asp:DropDownList ID="CountryField" runat="server" DataTextField="DisplayName" DataValueField="Name"
           AutoPostBack="True" Width="350px" /></td>
-      <td>&nbsp;</td>
+            <td>
+                &nbsp;</td>
     </tr>
     <tr id="StateRow" runat="server">
       <td class="Subhead" nowrap="nowrap">
@@ -82,7 +87,8 @@
           Width="170px" />
         <rbfwebui:Label ID="InLabel" runat="server" Text="in" TextKey="IN" />&nbsp;
         <rbfwebui:Label ID="ThisCountryLabel" runat="server" Font-Bold="True" Font-Italic="True" /></td>
-      <td>&nbsp;</td>
+            <td>
+                &nbsp;</td>
     </tr>
     <tr>
       <td class="Subhead" nowrap="nowrap">
@@ -92,7 +98,8 @@
         &nbsp;
         <asp:TextBox ID="PhoneField" runat="server" Columns="28" CssClass="NormalTextBox"
           MaxLength="50" Width="350px" /></td>
-      <td>&nbsp;</td>
+            <td>
+                &nbsp;</td>
     </tr>
     <tr>
       <td class="Subhead" nowrap="nowrap">
@@ -101,7 +108,8 @@
         &nbsp;
         <asp:TextBox ID="FaxField" runat="server" Columns="28" CssClass="NormalTextBox" MaxLength="50"
           Width="350px" /></td>
-      <td>&nbsp;</td>
+            <td>
+                &nbsp;</td>
     </tr>
     <tr>
       <td class="Subhead" nowrap="nowrap">
@@ -110,7 +118,8 @@
       <td class="Normal">
         &nbsp;
         <asp:CheckBox ID="SendNewsletter" runat="server" /></td>
-      <td>&nbsp;</td>
+            <td>
+                &nbsp;</td>
     </tr>
   </table>
 </asp:Panel>

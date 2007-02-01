@@ -6,6 +6,7 @@ using System.Xml;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
+using System.Collections.Generic;
 
 namespace Rainbow.Framework.Site.Data
 {
@@ -508,58 +509,6 @@ namespace Rainbow.Framework.Site.Data
             return t_order;
         }
 
-        //		/// <summary>
-        //		///     
-        //		/// </summary>
-        //		/// <param name="portalID" type="int">
-        //		/// </param>
-        //		/// <returns>
-        //		///     A System.Collections.ArrayList value...
-        //		/// </returns>
-        //		public ArrayList GetPagesFlat(int portalID) 
-        //		{
-        //
-        //			// Create Instance of Connection and Command Object
-        //			using (SqlConnection myConnection = Config.SqlConnectionString) 
-        //			{
-        //
-        //				using (SqlCommand myCommand = new SqlCommand("rb_GetPageTree", myConnection))
-        //				{
-        //					// Mark the Command as a SPROC
-        //					myCommand.CommandType = CommandType.StoredProcedure;
-        //					// Add Parameters to SPROC
-        //					SqlParameter parameterPortalID = new SqlParameter(strPortalID, SqlDbType.Int, 4);
-        //					parameterPortalID.Value = portalID;
-        //					myCommand.Parameters.Add(parameterPortalID);
-        //					// Execute the command
-        //					myConnection.Open();
-        //					SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-        //					ArrayList DesktopTabs = new ArrayList();
-        //
-        //					// Read the resultset
-        //					try
-        //					{
-        //
-        //						while(result.Read()) 
-        //						{
-        //							PageItem tabItem = new PageItem();
-        //							tabItem.ID = (int) result["TabID"];
-        //							tabItem.Name = (string) result["TabName"];
-        //							tabItem.Order = (int) result["TabOrder"];
-        //							tabItem.NestLevel = (int) result["LevelNo"];
-        //							DesktopTabs.Add(tabItem);
-        //						}
-        //					}
-        //
-        //					finally
-        //					{
-        //						result.Close(); //by Manu, fixed bug 807858
-        //					}
-        //					return DesktopTabs;
-        //				}
-        //			}
-        //		}
-
         /// <summary>
         /// Gets the pages flat.
         /// </summary>
@@ -667,8 +616,7 @@ namespace Rainbow.Framework.Site.Data
         /// <returns>
         /// A System.Data.SqlClient.SqlDataReader value...
         /// </returns>
-        // TODO --> [Obsolete("Replace me")]
-        public SqlDataReader GetPagesParent(int portalID, int pageID)
+        public IList<PageItem> GetPagesParent(int portalID, int pageID)
         {
             // Create Instance of Connection and Command Object
             SqlConnection myConnection = Config.SqlConnectionString;
@@ -684,8 +632,17 @@ namespace Rainbow.Framework.Site.Data
             myCommand.Parameters.Add(parameterPageID);
             // Execute the command
             myConnection.Open();
-            SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            // Return the datareader 
+            SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
+
+            IList<PageItem> result = new List<PageItem>();
+
+            while ( dr.Read() ) {
+                PageItem item = new PageItem();
+                item.ID = Convert.ToInt32( dr[ "PageID" ] );
+                item.Name = ( string )dr[ "PageName" ];
+                result.Add( item );
+            }
+
             return result;
         }
     }

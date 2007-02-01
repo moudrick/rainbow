@@ -177,15 +177,15 @@ namespace Rainbow.Framework.Web
 
                 if (_pageidNoSplitter)
                 {
-                    sb.Append(pageID);
-                    sb.Append("/");
+                    // Add pageID to URL
+                    sb.Append( "pageid" );
+                    sb.Append( _defaultSplitter + pageID );
+                    sb.Append( "/" );
                 }
                 else
                 {
-                    // Add pageID to URL
-                    sb.Append("pageid");
-                    sb.Append(_defaultSplitter + pageID);
-                    sb.Append("/");
+                    sb.Append( pageID );
+                    sb.Append( "/" );
                 }
 
                 // TODO : Need to fix page names rewrites
@@ -193,6 +193,7 @@ namespace Rainbow.Framework.Web
                 //		sb.Append(_pageName);
                 //	else
                 //		sb.Append(targetPage);
+                sb.Append( _friendlyPageName );
 
                 //Return page
                 return sb.ToString().Replace("//", "/");
@@ -206,6 +207,9 @@ namespace Rainbow.Framework.Web
         /// <param name="configValue"></param>
         public override void Initialize(string name, NameValueCollection configValue)
         {
+
+            base.Initialize( name, configValue );
+
             // For legacy support first check provider settings then web.config/rainbow.config legacy settings
             if (configValue["handlersplitter"] != null)
             {
@@ -264,11 +268,19 @@ namespace Rainbow.Framework.Web
             {
                 _pageidNoSplitter = bool.Parse(configValue["pageidnosplitter"].ToString());
             }
+            else {
+                if ( ConfigurationManager.AppSettings[ "PageIdNoSplitter" ] != null )
+                    _pageidNoSplitter = bool.Parse( ConfigurationManager.AppSettings[ "PageIdNoSplitter" ] );
+            }
 
-            if (configValue["friendlypagename"] != null)
-            {
+            // For legacy support first check provider settings then web.config/rainbow.config legacy settings
+            if ( configValue[ "friendlypagename" ] != null ) {
                 // TODO: Friendly url's need to be fixed
-                _friendlyPageName = configValue["friendlypagename"].ToString();
+                _friendlyPageName = configValue[ "friendlypagename" ].ToString();
+            }
+            else {
+                if ( ConfigurationManager.AppSettings[ "FriendlyPageName" ] != null )
+                    _friendlyPageName = ConfigurationManager.AppSettings[ "FriendlyPageName" ];
             }
         }
 

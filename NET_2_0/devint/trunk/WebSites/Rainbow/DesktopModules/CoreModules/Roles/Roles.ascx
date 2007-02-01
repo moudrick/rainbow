@@ -33,6 +33,8 @@
                     <table cellspacing="3">
                         <tr>
                             <td>
+                                <asp:Label ID="roleId" runat="server" Text='<%# Eval("Id") %>' Visible="false" />
+                                
                                 <asp:TextBox ID="roleName" runat="server" CssClass="NormalTextBox" Text='<%# Eval("Name") %>' />
                             </td>
                             <td>

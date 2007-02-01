@@ -6,7 +6,6 @@ using System.Security.Principal;
 using System.Text;
 using System.Web;
 using System.Web.Security;
-using Rainbow.Framework.BLL.UserConfig;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
@@ -71,8 +70,10 @@ namespace Rainbow.Framework.Security
 			if ( useNTLM && role == HttpContext.Current.User.Identity.Name )
 				return true;
 			else
+            {
 				return HttpContext.Current.User.IsInRole(role);
 		}
+        }
 
         /// <summary>
         /// The IsInRoles method enables developers to easily check the role
@@ -488,30 +489,11 @@ namespace Rainbow.Framework.Security
 			// Obtain PortalSettings from Current Context
 			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
 
-			//Check if user inserted an email or a number
-            Guid uid = Guid.Empty;
-			try
-			{
-				uid = new Guid(user);
-			}
-			catch
-			{
-			}
-
             MembershipUser usr;
 			UsersDB accountSystem = new UsersDB();
-			if (uid != Guid.Empty)
-			{
-				// Authenticate using id
-				// Attempt to Validate User Credentials using UsersDB
-				usr = accountSystem.Login(uid, password );
-			}
-			else
-			{
-				// No id
+
 				// Attempt to Validate User Credentials using UsersDB
 				usr = accountSystem.Login(user, password);
-			}
 
 			// Thierry (tiptopweb), 12 Apr 2003: Save old ShoppingCartID
 			//			ShoppingCartDB shoppingCart = new ShoppingCartDB();
@@ -531,17 +513,6 @@ namespace Rainbow.Framework.Security
 						ErrorHandler.Publish(LogLevel.Info, "Cannot monitoring login user " + usr.UserName);
 					}
 				}
-
-				// [START] bja 5/17/2003: Get user's window configuration
-				// first clear any state the user may have in the bag (cookie,session,application)
-				UserDesktop.ResetDesktop(uid);
-				// load in user window configuration
-				UserDesktop.ConfigureDesktop(uid,portalSettings.PortalID);
-				// [END] bja 5/17/2003: Get user's window configuration
-
-				// Thierry (tiptopweb), 12 Apr 2003: migrate shopping cart
-				// Thierry (tiptopweb), 5 May 2003: use Email only as CartID
-				//				shoppingCart.MigrateCart(tempCartID, usr.Email.ToString());
 
 				// Use security system to set the UserID within a client-side Cookie
 				FormsAuthentication.SetAuthCookie(usr.ToString(), persistent);
@@ -692,9 +663,6 @@ namespace Rainbow.Framework.Security
 				{
 					try 
 					{
-						UserDesktop.ResetDesktop(uid);
-
-
 						if(Config.EnableMonitoring)
 						{
 							Monitoring.LogEntry(uid, portalSettings.PortalID, -1, "Logoff", string.Empty);  

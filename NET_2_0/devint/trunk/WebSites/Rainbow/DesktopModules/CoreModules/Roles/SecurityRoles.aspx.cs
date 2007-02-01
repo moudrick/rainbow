@@ -6,7 +6,10 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
-using History=Rainbow.Framework.History;
+using History = Rainbow.Framework.History;
+using System.Web.Security;
+using Rainbow.Framework.Providers.RainbowRoleProvider;
+using Rainbow.Framework.Providers.RainbowMembershipProvider;
 
 namespace Rainbow.Content.Web.Modules {
     /// <summary>
@@ -16,23 +19,6 @@ namespace Rainbow.Content.Web.Modules {
     [History( "jminond", "march 2005", "Changes for moving Tab to Page" )]
     public partial class SecurityRoles : EditItemPage {
         private Guid roleId = Guid.Empty;
-
-        /// <summary>
-        /// The Page_Load server event handler on this page is used
-        /// to populate the role information for the page
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load( object sender, EventArgs e ) {
-            if ( Request.Params["roleID"] != null ) {
-                roleId = new Guid( ( string )Request.Params["roleID"] );
-            }
-
-            // If this is the first visit to the page, bind the role data to the datalist
-            if ( !Page.IsPostBack ) {
-                BindData();
-            }
-        }
 
         /// <summary>
         /// Set the module guids with free access to this page
@@ -46,13 +32,33 @@ namespace Rainbow.Content.Web.Modules {
             }
         }
 
+        #region Event handlers
+
+        /// <summary>
+        /// The Page_Load server event handler on this page is used
+        /// to populate the role information for the page
+        /// </summary>
+        protected override void OnLoad( EventArgs e ) {
+            base.OnLoad( e );
+
+            if ( Request.Params[ "roleID" ] != null ) {
+                roleId = new Guid( ( string )Request.Params[ "roleID" ] );
+            }
+
+            // If this is the first visit to the page, bind the role data to the datalist
+            if ( !Page.IsPostBack ) {
+                BindData();
+            }
+        }
+
+
         /// <summary>
         /// The Save_Click server event handler on this page is used
         /// to save the current security settings to the configuration system
         /// </summary>
         /// <param name="Sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Save_Click( Object Sender, EventArgs e ) {
+        protected void Save_Click( Object Sender, EventArgs e ) {
             // Navigate back to admin page
             Response.Redirect( HttpUrlBuilder.BuildUrl( PageID ) );
         }
@@ -63,23 +69,10 @@ namespace Rainbow.Content.Web.Modules {
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void AddUser_Click( Object sender, EventArgs e ) {
-            Guid userID;
+        protected void AddUser_Click( Object sender, EventArgs e ) {
 
-            if ( ( ( LinkButton )sender ).ID == "addNew" ) {
-                // add new user to users table
-                UsersDB users = new UsersDB();
-                if (
-                    ( userID = users.AddUser( windowsUserName.Text, windowsUserName.Text, "acme" ) ) == Guid.Empty ) {
-                    // Added EsperantusKeys for Localization 
-                    // Mario Endara mario@softworks.com.uy june-1-2004 
-                    Message.Text = General.GetString( "ROLE_ERROR_ADD" ).Replace( "%1%", windowsUserName.Text );
-                }
-            }
-            else {
-                //get user id from dropdownlist of existing users
-                userID = new Guid( allUsers.SelectedItem.Value );
-            }
+            //get user id from dropdownlist of existing users
+            Guid userID = new Guid( allUsers.SelectedItem.Value );
 
             if ( !userID.Equals( Guid.Empty ) ) {
                 // Add a new userRole to the database
@@ -98,14 +91,16 @@ namespace Rainbow.Content.Web.Modules {
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.Web.UI.WebControls.DataListCommandEventArgs"/> instance containing the event data.</param>
-        private void usersInRole_ItemCommand( object sender, DataListCommandEventArgs e ) {
+        protected void usersInRole_ItemCommand( object sender, DataListCommandEventArgs e ) {
             UsersDB users = new UsersDB();
-            string[] keys = ( string[] )usersInRole.DataSource;
-            Guid userID = new Guid( keys[e.Item.ItemIndex] );
+
+            Label lblUserEmail = (Label)e.Item.FindControl("lblUserEmail");
+
+            RainbowUser user = ( RainbowUser )Membership.GetUser( lblUserEmail.Text );
 
             if ( e.CommandName == "delete" ) {
                 // update database
-                users.DeleteUserRole( roleId, userID );
+                users.DeleteUserRole( roleId, user.ProviderUserKey );
 
                 // Ensure that item is not editable
                 usersInRole.EditItemIndex = -1;
@@ -115,22 +110,20 @@ namespace Rainbow.Content.Web.Modules {
             }
         }
 
+        #endregion
+
         /// <summary>
         /// The BindData helper method is used to bind the list of
         /// security roles for this portal to an asp:datalist server control
         /// </summary>
         private void BindData() {
-            // unhide the Windows Authentication UI, if application
-            if ( User.Identity.AuthenticationType != "Forms" ) {
-                windowsUserName.Visible = true;
-                addNew.Visible = true;
-            }
-
             // add the role name to the title
             if ( roleId != Guid.Empty ) {
-                // Added EsperantusKeys for Localization 
-                // Mario Endara mario@softworks.com.uy june-1-2004 
-                title.InnerText = General.GetString( "ROLE_MEMBERSHIP" ) + roleId;
+
+                RainbowRoleProvider roleProvider = ( RainbowRoleProvider )System.Web.Security.Roles.Provider;
+                RainbowRole role = roleProvider.GetRoleById( roleId );
+    
+                title.InnerText = General.GetString( "ROLE_MEMBERSHIP" ) + role.Name;
             }
 
             // Get the portal's roles from the database
@@ -144,23 +137,5 @@ namespace Rainbow.Content.Web.Modules {
             allUsers.DataSource = users.GetUsers();
             allUsers.DataBind();
         }
-
-        #region Web Form Designer generated code
-
-        /// <summary>
-        /// Raises the Init event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data.</param>
-        protected override void OnInit( EventArgs e ) {
-            this.addNew.Click += new EventHandler( this.AddUser_Click );
-            this.addExisting.Click += new EventHandler( this.AddUser_Click );
-            this.usersInRole.ItemCommand += new DataListCommandEventHandler( this.usersInRole_ItemCommand );
-            this.saveBtn.Click += new EventHandler( this.Save_Click );
-            this.Load += new EventHandler( this.Page_Load );
-
-            base.OnInit( e );
-        }
-
-        #endregion
     }
 }
