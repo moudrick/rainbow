@@ -1,4 +1,5 @@
 #summary How to locally svn:ignore frequently ignored stuff without changing any property in the repository
+#labels Phase-Implementation
 
 No need to explicitely ignore frequently ignored stuff stuff. 
 
@@ -11,7 +12,7 @@ You have to find the section *{{{[miscellany]}}}* and uncomment the *{{{global-i
 For *ASP.Net* and other *.Net* development it is recommended to ignore the following list of signatures:
 
 {{{
-global-ignores = bin obj _old Bin *.suo *.user *.db Thumbs.db *.pdb *.csproj.user
+global-ignores = bin obj _old Bin *.suo *.user *.db Thumbs.db *.pdb *.csproj.user *.pdb
 }}}
 
 
