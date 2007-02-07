@@ -20,7 +20,8 @@
                             </td>
                             <td>
                                 <rbfwebui:ImageButton ID="ImageButton1" runat="server" AlternateText="Delete this item"
-                                    CausesValidation="false" CommandName="delete" ImageUrl='<%# CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl %>'
+                                    CausesValidation="false" CommandName="delete"  CommandArgument='<%# Eval( "Id" ) %>'
+                                    ImageUrl='<%# CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl %>'
                                     TextKey="DELETE_THIS_ITEM" />
                             </td>
                             <td>
