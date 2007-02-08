@@ -137,7 +137,7 @@ namespace Rainbow.Content.Web.Modules {
                 // john.mandia@whitelightsolutions.com: 30th May 2004: Added Try And Catch To Delete Role
                 // update database
                 try {
-                    users.DeleteRole( selectedRole.Id );
+                    users.DeleteRole( new Guid( e.CommandArgument.ToString() ) );
                 }
                 catch {
                     labelError.Visible = true;
