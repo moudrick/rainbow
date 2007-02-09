@@ -51,7 +51,7 @@ GO
 --	@PortalID	,	@SettingName	,	@SettingValue
 EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_PAGE_LAYOUT'	, N'Default' --	N'Default'
 GO
-EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_REGISTER_TYPE'	,	N'RegisterFull.ascx'
+EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_REGISTER_TYPE'	,	N'~/desktopmodules/coremodules/register/registerfull.ascx'
 GO
 EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_THEME'	,	N'Default' -- N'Default'
 GO
