@@ -46,7 +46,7 @@ namespace Rainbow.Admin
                     }
                 }
                 //try to validate logon
-                if (PortalSecurity.SignOn(_user, _password, false, _alias) == null) {
+                if (PortalSecurity.SignOn(_user, _password, true, _alias) == null) {
                     // Login failed
                     PortalSecurity.AccessDenied();
                 }
