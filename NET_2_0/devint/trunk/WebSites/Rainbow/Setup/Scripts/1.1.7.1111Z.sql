@@ -49,15 +49,17 @@ GO
 CREATE PROC rb_PortalSettings_IU 	@PortalID	int,  	@SettingName	nvarchar(50),  	@SettingValue	nvarchar(256)  AS  SET NOCOUNT ON  	UPDATE [rb_PortalSettings] 	SET SettingValue = @SettingValue 	WHERE PortalID	=	@PortalID AND SettingName	=	@SettingName  	IF @@ROWCOUNT = 0 	BEGIN 	INSERT [rb_PortalSettings] (PortalID,  		SettingName,  		SettingValue) 	VALUES (@PortalID,  		@SettingName,  		@SettingValue) 	END  Return 
 GO
 --	@PortalID	,	@SettingName	,	@SettingValue
-EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_PAGE_LAYOUT'	, N'zen-3col-hmenu' --	N'Default'
+EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_PAGE_LAYOUT'	, N'Default' --	N'Default'
 GO
 EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_REGISTER_TYPE'	,	N'RegisterFull.ascx'
 GO
-EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_THEME'	,	N'zen-example1' -- N'Default'
+EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_THEME'	,	N'Default' -- N'Default'
 GO
-EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_ALT_THEME'	, N'zen-example1' -- N'DefaultAlternate'
+EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_ALT_THEME'	, N'DefaultAlternate' -- N'DefaultAlternate'
 GO
 EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_LANGLIST'	,	N'en;it;ar;bg;ca;cs;da;de;es;es-MX;fr;hr;is;ko;nl;nl-BE;no;pl;pt;ru;sl;sr-SP-Cyrl;sr-SP-Latn;sv;tr;uk;zh-CN;zh-TW;'
+GO
+EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_DEFAULT_EDITOR'	, N'FCKEditor V2' --	N'FCKEditor V2'
 GO
 IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[rb_PortalSettings_IU]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE [rb_PortalSettings_IU]
