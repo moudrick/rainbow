@@ -190,9 +190,22 @@
 
   <target name="this.build">
     <property name="this.solution.name" value="${this.branch.encoded}.sln" />
+    <property name="build.SlnRelativePath" value="WebSites\Rainbow\" />
     <copy file="${this.branch}Rainbow.sln" tofile="${this.branch}${this.solution.name}" overwrite="true">
       <filterchain>
         <replacestring from="${this.webAppTemplate}" to="${this.virtDirName}" />
+        <replacestring 
+          from="&quot;${build.SlnRelativePath}&quot;, &quot;${build.SlnRelativePath}&quot;" 
+          to="&quot;http://localhost/${this.virtDirName}/&quot;, &quot;http://localhost/${this.virtDirName}/&quot;" />
+        <replacestring 
+          from=".AspNetCompiler.VirtualPath = &quot;/Rainbow&quot;" 
+          to=".AspNetCompiler.VirtualPath = &quot;/${this.virtDirName}&quot;" />
+        <replacestring 
+          from="VWDPort = &quot;9389&quot;" 
+          to="SlnRelativePath = &quot;${build.SlnRelativePath}&quot;" />
+        <replacestring 
+          from="PrecompiledWeb\Rainbow\" 
+          to="PrecompiledWeb\${this.virtDirName}\" />
       </filterchain>
     </copy>
     <foreach item="String" property="configuration" in="Release" delim=";"> <!-- ;Debug -->
