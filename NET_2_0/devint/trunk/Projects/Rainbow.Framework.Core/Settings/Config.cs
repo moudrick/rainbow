@@ -298,7 +298,7 @@ namespace Rainbow.Framework.Settings
                 catch (System.ArgumentException) //connectionstring not well formed
                 {
                     //redirect to installer
-                    HttpContext.Current.Response.Redirect(InstallerRedirect);
+                    //HttpContext.Current.Response.Redirect(InstallerRedirect);
                 }
                 return myConnection;
             }
