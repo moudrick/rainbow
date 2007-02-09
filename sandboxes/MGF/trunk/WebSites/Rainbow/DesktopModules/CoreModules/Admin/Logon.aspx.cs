@@ -20,6 +20,7 @@ namespace Rainbow.Admin
             string _user = string.Empty;
             string _password = string.Empty;
             string _alias = string.Empty;
+            int _pageId = 0;
 
             // Get Login User from querystring
             if (Request.Params["usr"] != null)
@@ -30,17 +31,26 @@ namespace Rainbow.Admin
                 {
                     _password = Request.Params["pwd"];
                 }
+                               
                 // Get portalaias
                 if (Request.Params["alias"] != null)
                 {
                     _alias = HttpUrlBuilder.BuildUrl("~/Default.aspx", 0, string.Empty, Request.Params["alias"]);
                 }
+                if (Request.Params["pageId"] != null) {
+                    try {
+                        _pageId = int.Parse(Request.Params["pageId"].ToString());
+                        _alias = HttpUrlBuilder.BuildUrl(_pageId);
+                    } catch {
+                        PortalSecurity.AccessDenied();
+                    }
+                }
                 //try to validate logon
-                if (PortalSecurity.SignOn(_user, _password, false, _alias) == null)
-                {
+                if (PortalSecurity.SignOn(_user, _password, false, _alias) == null) {
                     // Login failed
                     PortalSecurity.AccessDenied();
                 }
+                
             }
             else
             {
