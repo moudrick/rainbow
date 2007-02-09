@@ -1,12 +1,16 @@
-Rainbow Portal Beta 1 Developer Preview 
+Rainbow Portal 2.0 Beta 1 Developer Preview 
 
 Changes :
+
+Contributions by the MGF Team (Lead: José Arrarte) :
+
 
 Added ASP.NET Ajax Support
 Added ASPNETDB Support for Membership, Roles, Profiles, Web Parts
 XHMTL is now on by default
 Fixed many open Community issues
 Organized Modules into two sections
+Added Geographical Provider
 
 
 
