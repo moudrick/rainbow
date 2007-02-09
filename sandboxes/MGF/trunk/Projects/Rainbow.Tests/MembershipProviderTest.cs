@@ -498,7 +498,7 @@ namespace Rainbow.Tests {
         }
 
         [Test]
-        public void ChangePasswordTest1() {
+        public void ChangePasswordToExistingUserTest() {
             try {
                 bool sucess = Membership.Provider.ChangePassword( "Tito", "tito", "newPassword" );
 
@@ -511,7 +511,7 @@ namespace Rainbow.Tests {
         }
 
         [Test]
-        public void ChangePasswordTest2() {
+        public void ChangePasswordToInexistentUserTest() {
             try {
                 bool sucess = Membership.Provider.ChangePassword( "invaliduser@doesnotexist.com", "pwd", "newPassword" );
 
@@ -524,7 +524,7 @@ namespace Rainbow.Tests {
         }
 
         [Test]
-        public void ChangePasswordTest3() {
+        public void ChangePasswordInvalidCurrentPassorwdTest() {
             try {
                 bool sucess = Membership.Provider.ChangePassword( "Admin@rainbowportal.net", "invalidPwd", "newPassword" );
 
@@ -537,7 +537,7 @@ namespace Rainbow.Tests {
         }
 
         [Test]
-        public void UpdateUserTest1() {
+        public void UpdateExistingUserTest() {
             try {
                 RainbowUser user = ( RainbowUser )Membership.GetUser( "Tito" );
 

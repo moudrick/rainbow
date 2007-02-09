@@ -3,6 +3,10 @@
 @import url(MenuSolpart.css);
 @import url(TabsSubTabs.css);
 @import url(TabControl.css);
+
+/* CSS Control Adapters */
+@import url(Menu.css);
+
 /* Standard HTML tags */
 BODY{
 padding-left:0px;

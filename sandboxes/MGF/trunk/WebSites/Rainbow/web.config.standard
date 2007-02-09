@@ -153,6 +153,9 @@
     <add key="LangInURL" value="false" />
     <add key="FriendlyPageName" value="Default.aspx" />
     <add key="PageIdNoSplitter" value="false" />
+
+    <!-- CSS Control adapters -->
+    <add key="CSSFriendly-JavaScript-Path" value="aspnet_client/CSSControlAdapters" />
   </appSettings>
   <system.net>
     <mailSettings>
