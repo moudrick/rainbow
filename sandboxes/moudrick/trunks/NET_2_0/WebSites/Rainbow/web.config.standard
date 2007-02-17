@@ -153,6 +153,7 @@
     <add key="LangInURL" value="false" />
     <add key="FriendlyPageName" value="Default.aspx" />
     <add key="PageIdNoSplitter" value="false" />
+    <add key="UsePortalAliasCookie" value="false" />
   </appSettings>
   <system.net>
     <mailSettings>

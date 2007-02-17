@@ -12,6 +12,8 @@ namespace Rainbow.Framework.Settings
     /// </summary>
     public sealed class Portal
     {
+        public const string CookieNamePortalAlias = "PortalAlias";
+        
         private static Context.Reader context = new Context.Reader(new WebContextReader());
 
         /// <summary>
@@ -71,19 +73,17 @@ namespace Rainbow.Framework.Settings
             // new version - Jes1111 - 07/07/2005
             get
             {
-                if (context.Current.Items["PortalAlias"] == null) // not already in context
+                const string index = "PortalAlias";
+                if (context.Current.Items[index] == null) // not already in context
                 {
                     string uniquePortalID = Config.DefaultPortal; // set default value
-
                     FindAlias(context.Current.Request, ref uniquePortalID); // will change uniquePortalID if it can
-
-                    context.Current.Items.Add("PortalAlias", uniquePortalID); // add to context
-
+                    context.Current.Items.Add(index, uniquePortalID); // add to context
                     return uniquePortalID; // return current value
                 }
                 else // already in context
                 {
-                    return (string) context.Current.Items["PortalAlias"]; // return from context
+                    return (string) context.Current.Items[index]; // return from context
                 }
             }
         }
@@ -99,7 +99,7 @@ namespace Rainbow.Framework.Settings
             {
                 return;
             }
-            else if (FindAliasFromCookies(request.Cookies, ref alias))
+            else if (Config.UsePortalAliasCookie && FindAliasFromCookies(request.Cookies, ref alias))
             {
                 return;
             }
@@ -119,9 +119,9 @@ namespace Rainbow.Framework.Settings
         /// <returns></returns>
         public static bool FindAliasFromCookies(HttpCookieCollection cookies, ref string alias)
         {
-            if (cookies["PortalAlias"] != null)
+            if (cookies[CookieNamePortalAlias] != null)
             {
-                string cookieValue = cookies["PortalAlias"].Value.Trim().ToLower(CultureInfo.InvariantCulture);
+                string cookieValue = cookies[CookieNamePortalAlias].Value.Trim().ToLower(CultureInfo.InvariantCulture);
                 if (cookieValue.Length != 0)
                 {
                     alias = cookieValue;
