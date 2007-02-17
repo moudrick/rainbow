@@ -1095,4 +1095,12 @@
 			<Script>2.0.0.1881_GeographicProvider.sql</Script>
 		</Scripts>
 	</Release>
+  <Release>
+    <ID>1882</ID>
+    <Version>2.0.0.1882</Version>
+    <Date>2007-01-16T00:00:00.0000000-03:00</Date>
+    <Scripts>
+      <Script>2.0.0.1882.sql</Script>
+    </Scripts>
+  </Release>
 </History>

@@ -65,8 +65,8 @@
                                                 <rbfwebui:localize id="tab_parent" runat="server" text="Parent Page" textkey="TAB_PARENT">
                                                 </rbfwebui:localize></td>
                                             <td colspan="3">
-                                                <asp:dropdownlist id="parentPage" runat="server" cssclass="NormalTextBox" datatextfield="PageName"
-                                                    datavaluefield="PageID" width="300px">
+                                                <asp:dropdownlist id="parentPage" runat="server" cssclass="NormalTextBox" datatextfield="Name"
+                                                    datavaluefield="ID" width="300px">
                                                 </asp:dropdownlist><rbfwebui:label id="lblErrorNotAllowed" runat="server" cssclass="Error"
                                                     enableviewstate="False" textkey="ERROR_NOT_ALLOWED_PARENT" visible="False">Not allowed to choose that parent</rbfwebui:label></td>
                                         </tr>

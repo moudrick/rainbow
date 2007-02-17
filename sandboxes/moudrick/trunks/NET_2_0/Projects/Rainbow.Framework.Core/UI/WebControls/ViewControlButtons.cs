@@ -3,7 +3,6 @@ using System.Collections;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.BLL.UserConfig;
 using Rainbow.Framework.BLL.Utils;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Site.Configuration;
@@ -337,27 +336,28 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="evt">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void Button_Click(Object sender, EventArgs evt)
         {
-            // 
-            LinkButton ibut = (LinkButton) sender;
-            WindowStateEnum state = WindowStateEnum.Minimized;
-            string name = ibut.Attributes["bname"];
-            int mID = Int32.Parse(ibut.Attributes["mID"]);
-            int tadID = Int32.Parse(ibut.Attributes["tID"]);
+            //// 
+            //LinkButton ibut = (LinkButton) sender;
+            //WindowStateEnum state = WindowStateEnum.Minimized;
+            //string name = ibut.Attributes["bname"];
+            //int mID = Int32.Parse(ibut.Attributes["mID"]);
+            //int tadID = Int32.Parse(ibut.Attributes["tID"]);
 
-            // what state are we in
-            if (name != null)
-            {
-                if (name == WindowStateStrings.ButtonMaxName)
-                {
-                    state = WindowStateEnum.Maximized;
-                }
-                else if (name == WindowStateStrings.ButtonCloseName) // close
-                {
-                    state = WindowStateEnum.Closed;
-                }
-                // set the state of visibility
-                UserDesktop.UpdateUserDesktop(mID, state, tadID);
-            }
+            //// what state are we in
+            //if (name != null)
+            //{
+            //    if (name == WindowStateStrings.ButtonMaxName)
+            //    {
+            //        state = WindowStateEnum.Maximized;
+            //    }
+            //    else if (name == WindowStateStrings.ButtonCloseName) // close
+            //    {
+            //        state = WindowStateEnum.Closed;
+            //    }
+            //    // set the state of visibility
+            //    UserDesktop.UpdateUserDesktop(mID, state, tadID);
+            //}
+
 
             HttpContext.Current.Response.Redirect(HttpContext.Current.Request.RawUrl);
         } // end of Button_Click

@@ -714,10 +714,11 @@ namespace Rainbow.Framework.Site.Configuration
 				// Register
 				Hashtable regPages = new Hashtable();
 
-				foreach (string registerPage in Directory.GetFiles(HttpContext.Current.Server.MapPath(Path.ApplicationRoot + "/DesktopModules/CoreModules/Register/"), "register*.ascx"))
+				foreach (string registerPage in Directory.GetFiles(HttpContext.Current.Server.MapPath(Path.ApplicationRoot + "/DesktopModules/CoreModules/Register/"), "register*.ascx", SearchOption.AllDirectories))
 				{
 					string registerPageDisplayName = registerPage.Substring(registerPage.LastIndexOf("\\") + 1, registerPage.LastIndexOf(".") - registerPage.LastIndexOf("\\") - 1);
-					string registerPageName = registerPage.Substring(registerPage.LastIndexOf("\\") + 1);
+					//string registerPageName = registerPage.Substring(registerPage.LastIndexOf("\\") + 1);
+                    string registerPageName = registerPage.Replace( Path.ApplicationPhysicalPath, "~/" ).Replace( "\\", "/" );
 					regPages.Add(registerPageDisplayName, registerPageName.ToLower());
 				}
 				// Register Layout Setting

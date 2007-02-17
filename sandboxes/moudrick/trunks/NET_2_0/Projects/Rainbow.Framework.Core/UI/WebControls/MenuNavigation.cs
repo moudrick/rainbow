@@ -151,8 +151,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
             // Obtain PortalSettings from Current Context 
             PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
 
-            bool activeIsProducts = (Bind == BindOption.BindOptionCurrentChilds) &&
-                                    products(portalSettings.ActivePage.PageID);
             // Build list of tabs to be shown to user 
             ArrayList authorizedTabs = new ArrayList();
 
@@ -161,18 +159,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
             for (int i = 0; i < authorizedTabs.Count; i++)
             {
                 PageStripDetails myTab = (PageStripDetails) authorizedTabs[i];
-                if (products(myTab.PageID))
-                {
-                    ShopMenu(0, myTab, portalSettings.ActivePage.PageID == myTab.PageID);
-                }
-                else if (activeIsProducts && myTab.ParentPageID == portalSettings.ActivePage.PageID)
-                {
-                    ShopDesktopNavigation(myTab);
-                }
-                else
-                {
-                    AddMenuTreeNode(0, myTab);
-                }
+ 
+                AddMenuTreeNode(0, myTab);
             }
         }
 
@@ -193,23 +181,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Productses the specified tab.
-        /// </summary>
-        /// <param name="tab">The tab.</param>
-        /// <returns></returns>
-        private bool products(int tab)
-        {
-            if (!AutoShopDetect) return false;
-            if (!CurrentCache.Exists(Key.TabNavigationSettings(tab, "Shop")))
-            {
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-                bool exists = new ModulesDB().ExistModuleProductsInPage(tab, portalSettings.PortalID);
-                CurrentCache.Insert(Key.TabNavigationSettings(tab, "Shop"), exists);
-            }
-            return (bool) CurrentCache.Get(Key.TabNavigationSettings(tab, "Shop"));
-        }
-
-        /// <summary>
         /// Shops the desktop navigation.
         /// </summary>
         /// <param name="myTab">My tab.</param>
@@ -225,27 +196,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 mn.Height = Height;
                 mn.Width = Width;
                 mn = RecourseMenuShop(0, myTab.Pages, mn, myTab.ParentPageID);
-                Childs.Add(mn);
-            }
-        }
-
-        /// <summary>
-        /// Shops the menu.
-        /// </summary>
-        /// <param name="tabIndex">Index of the tab.</param>
-        /// <param name="myTab">My tab.</param>
-        /// <param name="active">if set to <c>true</c> [active].</param>
-        protected virtual void ShopMenu(int tabIndex, PageStripDetails myTab, bool active)
-        {
-            if (PortalSecurity.IsInRoles(myTab.AuthorizedRoles))
-            {
-                MenuTreeNode mn = new MenuTreeNode(myTab.PageName);
-
-                mn.Link = giveMeUrl(myTab.PageName, myTab.PageID);
-                mn.Height = Height;
-                mn.Width = Width;
-                if (active)
-                    mn = RecourseMenuShop(tabIndex, myTab.Pages, mn, myTab.PageID);
                 Childs.Add(mn);
             }
         }
@@ -322,16 +272,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                         mnc.Link = giveMeUrl(mySubTab.PageName, mySubTab.PageID);
                         mnc.Width = mn.Width;
-                        if (products(mySubTab.PageID))
-                        {
-                            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-                            if (portalSettings.ActivePage.PageID == mySubTab.PageID)
-                                mnc = RecourseMenuShop(tabIndex, mySubTab.Pages, mnc, mySubTab.PageID);
-                        }
-                        else
-                        {
-                            mnc = RecourseMenu(tabIndex, mySubTab.Pages, mnc);
-                        }
+
+                        mnc = RecourseMenu(tabIndex, mySubTab.Pages, mnc);
+                        
                         mn.Childs.Add(mnc);
                     }
                 }

@@ -13,7 +13,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
-using Rainbow.Framework.BLL.UserConfig;
 using Rainbow.Framework.BLL.Utils;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
@@ -24,7 +23,6 @@ using Rainbow.Framework.Setup;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Path=Rainbow.Framework.Settings.Path;
-// [END] Added for window mgmt. support (bja@reedtek.com)
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -42,18 +40,13 @@ namespace Rainbow.Framework.Web.UI.WebControls
     [History("Jes1111", "2003/04/24", "Added PortalAlias to cachekey")]
     [History("Jes1111", "2003/04/24", "Added Cacheable property")]
     [History("bja@reedtek.com", "2003/04/26", "Added support for win. mgmt min/max/close")]
-    [
-        History("david.verberckmoes@syntegra.com", "2003/06/02",
-            "Showing LastModified date & user in a better way with themes")]
+    [History("david.verberckmoes@syntegra.com", "2003/06/02", "Showing LastModified date & user in a better way with themes")]
     [History("Jes1111", "2004/08/30", "All new version! No more DesktopModuleTitle.")]
     [History("Mark, John and Jose", "2004/09/08", "Corrections in constructor for detect DesignMode")]
     // history from old DesktopModuleTitle class
     [History("Nicholas Smeaton", "2004/07/24", "Added support for arrow buttons to move modules")]
     [History("jviladiu@portalServices.net", "2004/07/13", "Corrections in workflow buttons")]
-    [
-        History("gman3001", "2004/04/08",
-            "Added support for custom buttons in the title bar, and set all undefined title bar buttons to 'rb_mod_title_btn' css-class."
-            )]
+    [History("gman3001", "2004/04/08","Added support for custom buttons in the title bar, and set all undefined title bar buttons to 'rb_mod_title_btn' css-class.")]
     [History("Pekka Ylenius", "2004/11/28", "When '?' in ulr then '&' is needed not '?'")]
     [History("Hongwei Shen", "2005/09/8", "Fix the publishing problem and RevertToProduction button problem")]
     [History("Hongwei Shen", "2005/09/12", "Fix topic setting order problem(add module specific settings group base)")]
@@ -1481,7 +1474,8 @@ end of modification
                         // TODO: This JavaScript Function Is used for different controls and should be in one place
                         // (it's also overweight considering that Javascript has a standard confirm() function - Jes1111)
                         if ( Page.Request.Browser.EcmaScriptVersion.Major >= 1 &&
-                            !( Page.ClientScript.IsClientScriptBlockRegistered( this.Page.GetType(), "confirmDelete" ) ) ) {
+                            !( Page.ClientScript.IsClientScriptBlockRegistered( this.Page.GetType(), "confirmDelete" ) ) )
+                            {
                             string[] s = { "CONFIRM_DELETE" };
                             Page.ClientScript.RegisterClientScriptBlock( this.Page.GetType(), "confirmDelete",
                                                                         PortalSettings.GetStringResource(
@@ -2050,64 +2044,55 @@ end of modification
         /// <summary>
         /// Module button to minimize/maximize module
         /// </summary>
-        public LinkButton MinMaxButton
-        {
-            get
-            {
-                if (minMaxButton == null && HttpContext.Current != null)
-                {
-                    // check authority
-                    if (_vcm != null && !UserDesktop.isClosed(_vcm.ModuleID) && CanMinimized)
-                    {
-                        // create the button based on current view
-                        if (!UserDesktop.isMinimized(_vcm.ModuleID))
-                            minMaxButton =
-                                _vcm.create(WindowStateStrings.ButtonMinName, WindowStateStrings.ButtonMinLocalized);
-                        else
-                        {
-                            minMaxButton =
-                                _vcm.create(WindowStateStrings.ButtonMaxName, WindowStateStrings.ButtonMaxLocalized);
-                            // we are minimized -- show the user a hint by changing the color [future]
-                            // min_hint_ = true;
-                        }
+        //public LinkButton MinMaxButton {
+        //    get {
+        //        if ( minMaxButton == null && HttpContext.Current != null ) {
+        //            // check authority
+        //            if ( _vcm != null && !UserDesktop.isClosed( _vcm.ModuleID ) && CanMinimized ) {
+        //                // create the button based on current view
+        //                if ( !UserDesktop.isMinimized( _vcm.ModuleID ) )
+        //                    minMaxButton =
+        //                        _vcm.create( WindowStateStrings.ButtonMinName, WindowStateStrings.ButtonMinLocalized );
+        //                else {
+        //                    minMaxButton =
+        //                        _vcm.create( WindowStateStrings.ButtonMaxName, WindowStateStrings.ButtonMaxLocalized );
+        //                    // we are minimized -- show the user a hint by changing the color [future]
+        //                    // min_hint_ = true;
+        //                }
 
-                        // set additional button properties
-                        minMaxButton.CssClass = "rb_mod_btn";
-                    }
-                }
-                return minMaxButton;
-            }
-        }
+        //                // set additional button properties
+        //                minMaxButton.CssClass = "rb_mod_btn";
+        //            }
+        //        }
+        //        return minMaxButton;
+        //    }
+        //}
 
         private LinkButton closeButton = null;
 
         /// <summary>
         /// Module button to close module
         /// </summary>
-        public LinkButton CloseButton
-        {
-            get
-            {
-                if (closeButton == null && HttpContext.Current != null)
-                {
-                    // check authority
-                    // jes1111 - if (_vcm != null && !UserDesktop.isClosed(_vcm.ModuleID) && CanClose && GlobalResources.SupportWindowMgmtClose)
-                    if (_vcm != null && !UserDesktop.isClosed(_vcm.ModuleID) && CanClose && Config.WindowMgmtWantClose)
-                    {
-                        // create the button
-                        closeButton =
-                            _vcm.create(WindowStateStrings.ButtonCloseName, WindowStateStrings.ButtonClosedLocalized);
+        //public LinkButton CloseButton {
+        //    get {
+        //        if ( closeButton == null && HttpContext.Current != null ) {
+        //            // check authority
+        //            // jes1111 - if (_vcm != null && !UserDesktop.isClosed(_vcm.ModuleID) && CanClose && GlobalResources.SupportWindowMgmtClose)
+        //            if ( _vcm != null && !UserDesktop.isClosed( _vcm.ModuleID ) && CanClose && Config.WindowMgmtWantClose ) {
+        //                // create the button
+        //                closeButton =
+        //                    _vcm.create( WindowStateStrings.ButtonCloseName, WindowStateStrings.ButtonClosedLocalized );
 
-                        // set attribute to confirm delete
-                        setDeleteAttributes(ref closeButton);
+        //                // set attribute to confirm delete
+        //                setDeleteAttributes( ref closeButton );
 
-                        // set additional button properties
-                        closeButton.CssClass = "rb_mod_btn";
-                    }
-                }
-                return closeButton;
-            }
-        }
+        //                // set additional button properties
+        //                closeButton.CssClass = "rb_mod_btn";
+        //            }
+        //        }
+        //        return closeButton;
+        //    }
+        //}
 
         #endregion
 
@@ -3516,10 +3501,9 @@ end of modification
                 if (!ShowTitlePrint)
                     _buildTitle = false;
             }
-            else if (SupportCollapsable && UserDesktop.isMinimized(ModuleID))
-            {
-                _buildBody = false;
-            }
+            //else if ( SupportCollapsable && UserDesktop.isMinimized( ModuleID ) ) {
+            //    _buildBody = false;
+            //}
             else if (!ShowTitle)
             {
                 _buildTitle = false;
@@ -3625,9 +3609,12 @@ end of modification
 
         }
 
-        private void HtmRenderButtons( PlaceHolder placeHolder ) {
-            if ( _buildButtons ) {
-                foreach ( Control _button in this.ButtonList ) {
+        private void HtmRenderButtons( PlaceHolder placeHolder )
+        {
+            if ( _buildButtons )
+            {
+                foreach ( Control _button in this.ButtonList )
+                {
                     placeHolder.Controls.Add( CurrentTheme.GetLiteralControl( "TitleBeforeButton" ) );
                     placeHolder.Controls.Add( _button );
                     placeHolder.Controls.Add( CurrentTheme.GetLiteralControl( "TitleAfterButton" ) );
@@ -4181,10 +4168,10 @@ end of modification
             if (ModuleTitle != null)
                 foreach (Control c in ModuleTitle.CustomButtons)
                     ButtonListCustom.Add(c);
-            if (MinMaxButton != null)
-                ButtonListCustom.Add(MinMaxButton);
-            if (CloseButton != null)
-                ButtonListCustom.Add(CloseButton);
+            //if ( MinMaxButton != null )
+            //    ButtonListCustom.Add( MinMaxButton );
+            //if ( CloseButton != null )
+            //    ButtonListCustom.Add( CloseButton );
 
             // set image url for standard buttons edit & delete
             if (DeleteBtn != null)

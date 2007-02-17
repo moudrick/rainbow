@@ -1,11 +1,11 @@
 UPDATE rb_PortalSettings
-SET SettingValue = 'registerfull.ascx' 
+SET SettingValue = '~/desktopmodules/coremodules/register/registerfull.ascx' 
 WHERE SettingName = 'SITESETTINGS_REGISTER_TYPE'
 AND SettingValue = '0'
 GO
 
 UPDATE rb_PortalSettings
-SET SettingValue = 'register.ascx' 
+SET SettingValue = '~/desktopmodules/coremodules/register/register.ascx' 
 WHERE SettingName = 'SITESETTINGS_REGISTER_TYPE'
 AND SettingValue = '1'
 GO

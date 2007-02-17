@@ -118,6 +118,8 @@ namespace Rainbow.Admin {
                     }
                 }
 
+                // Change by Geert.Audenaert@Syntegra.Com
+                // Date: 6/2/2003
                 // Publishing Roles
                 string PublishingRoles = string.Empty;
                 foreach ( ListItem PropertiesItem in authPublishingRoles.Items ) {
@@ -125,14 +127,17 @@ namespace Rainbow.Admin {
                         PublishingRoles = PublishingRoles + PropertiesItem.Text + ";";
                     }
                 }
-
-                // Approval Roles
+                // End Change Geert.Audenaert@Syntegra.Com
+                // Change by Geert.Audenaert@Syntegra.Com
+                // Date: 27/2/2003
                 string ApprovalRoles = string.Empty;
                 foreach ( ListItem PropertiesItem in authApproveRoles.Items ) {
                     if ( PropertiesItem.Selected == true ) {
                         ApprovalRoles = ApprovalRoles + PropertiesItem.Text + ";";
                     }
                 }
+
+                // End Change Geert.Audenaert@Syntegra.Com
 
                 // update module
                 ModulesDB modules = new ModulesDB();
@@ -159,7 +164,6 @@ namespace Rainbow.Admin {
 
             // Clear existing items in checkboxlist
             listRoles.Items.Clear();
-            //listRoles.RepeatLayout = RepeatLayout.Flow;            
 
             //All Users
             ListItem allItem = new ListItem( "All Users" );
@@ -314,18 +318,76 @@ namespace Rainbow.Admin {
         /// <param name="e"></param>
         protected override void OnInit( EventArgs e ) {
             this.PlaceHolderButtons.EnableViewState = false;
+            this.PlaceholderButtons2.EnableViewState = false;
 
             //Controls must be created here
+            updateButton = new LinkButton();
+            updateButton.CssClass = "CommandButton";
+            PlaceHolderButtons.Controls.Add( updateButton );
+
+
+            // jminond added to top of property page so no need to scroll for save
+            LinkButton update2 = new LinkButton();
+            update2.CssClass = "CommandButton";
+            update2.TextKey = "Apply";
+            update2.Text = "Apply";
+            update2.Click += new EventHandler( UpdateButton_Click );
+            PlaceholderButtons2.Controls.Add( update2 );
+
+            PlaceHolderButtons.Controls.Add( new LiteralControl( "&nbsp;" ) );
+            PlaceholderButtons2.Controls.Add( new LiteralControl( "&nbsp;" ) );
+
             saveAndCloseButton = new LinkButton();
-            saveAndCloseButton.TextKey = "SAVE_AND_CLOSE";
+            saveAndCloseButton.TextKey = "OK";
             saveAndCloseButton.Text = "Save and close";
             saveAndCloseButton.CssClass = "CommandButton";
             PlaceHolderButtons.Controls.Add( saveAndCloseButton );
             this.saveAndCloseButton.Click += new EventHandler( this.saveAndCloseButton_Click );
 
+
+            // jminond added to top of property page so no need to scroll for save
+            LinkButton saveAndCloseButton2 = new LinkButton();
+            saveAndCloseButton2.TextKey = "OK";
+            saveAndCloseButton2.Text = "Save and close";
+            saveAndCloseButton2.CssClass = "CommandButton";
+            PlaceholderButtons2.Controls.Add( saveAndCloseButton2 );
+            saveAndCloseButton2.Click += new EventHandler( this.saveAndCloseButton_Click );
+
+
+            PlaceHolderButtons.Controls.Add( new LiteralControl( "&nbsp;" ) );
+            PlaceholderButtons2.Controls.Add( new LiteralControl( "&nbsp;" ) );
+
+            moduleSettingsButton = new HyperLink();
+            moduleSettingsButton.TextKey = "MODULESETTINGS_SETTINGS";
+            moduleSettingsButton.Text = "Settings";
+            moduleSettingsButton.CssClass = "CommandButton";
+            moduleSettingsButton.NavigateUrl =
+                Rainbow.Framework.HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Admin/PropertyPage.aspx", PageID, ModuleID);
+            PlaceHolderButtons.Controls.Add( moduleSettingsButton );
+
+            // jminond added to top of property page so no need to scroll for save
+            HyperLink moduleSettingsButton2 = new HyperLink();
+            moduleSettingsButton2.TextKey = "MODULESETTINGS_SETTINGS";
+            moduleSettingsButton2.Text = "Settings";
+            moduleSettingsButton2.CssClass = "CommandButton";
+            moduleSettingsButton2.NavigateUrl =
+                Rainbow.Framework.HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Admin/PropertyPage.aspx", PageID, ModuleID);
+            PlaceholderButtons2.Controls.Add( moduleSettingsButton2 );
+
+            PlaceHolderButtons.Controls.Add( new LiteralControl( "&nbsp;" ) );
+            PlaceholderButtons2.Controls.Add( new LiteralControl( "&nbsp;" ) );
+
             cancelButton = new LinkButton();
             cancelButton.CssClass = "CommandButton";
             PlaceHolderButtons.Controls.Add( cancelButton );
+
+            // jminond added to top of property page so no need to scroll for save
+            LinkButton cancel2 = new LinkButton();
+            cancel2.CssClass = "CommandButton";
+            cancel2.TextKey = "Cancel";
+            cancel2.Text = "Cancel";
+            cancel2.Click += new EventHandler( CancelButton_Click );
+            PlaceholderButtons2.Controls.Add( cancel2 );
 
             //			if (((Page) this.Page).IsCssFileRegistered("tabsControl") == false)
             //			{

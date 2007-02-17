@@ -14,6 +14,10 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         public static Guid AuthenticatedUsersGuid = new Guid( "{40D335D3-8C46-4009-B456-53F254959042}" );
         public static Guid UnauthenticatedUsersGuid = new Guid( "{6E21FB8C-F345-4071-870B-151E79008B44}" );
 
+        public const string AllUsersRoleName = "All Users";
+        public const string AuthenticatedUsersRoleName = "Authenticated Users";
+        public const string UnauthenticatedUsersRoleName = "Unauthenticated Users";
+
         /// <summary>
         /// Takes, as input, a list of user names and a list of role ids and adds the specified users to the specified roles.  
         /// </summary>
@@ -141,6 +145,13 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         /// <exception cref="ProviderException">GetRole throws a ProviderException if the role doesn't exist</exception>
         public abstract RainbowRole GetRoleByName( string portalAlias, string roleName );
 
+        /// <summary>
+        /// Retrieves a <code>RainbowRole</code> given a role id
+        /// </summary>
+        /// <param name="roleId">A role id</param>
+        /// <returns>A <code>RainbowRole</code></returns>
+        /// <exception cref="ProviderException">GetRole throws a ProviderException if the role doesn't exist</exception>
+        public abstract RainbowRole GetRoleById( Guid roleId );
     }
 
 }

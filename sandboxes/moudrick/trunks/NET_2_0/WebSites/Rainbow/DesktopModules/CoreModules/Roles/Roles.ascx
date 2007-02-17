@@ -20,7 +20,8 @@
                             </td>
                             <td>
                                 <rbfwebui:ImageButton ID="ImageButton1" runat="server" AlternateText="Delete this item"
-                                    CausesValidation="false" CommandName="delete" ImageUrl='<%# CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl %>'
+                                    CausesValidation="false" CommandName="delete"  CommandArgument='<%# Eval( "Id" ) %>'
+                                    ImageUrl='<%# CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl %>'
                                     TextKey="DELETE_THIS_ITEM" />
                             </td>
                             <td>
@@ -33,6 +34,8 @@
                     <table cellspacing="3">
                         <tr>
                             <td>
+                                <asp:Label ID="roleId" runat="server" Text='<%# Eval("Id") %>' Visible="false" />
+                                
                                 <asp:TextBox ID="roleName" runat="server" CssClass="NormalTextBox" Text='<%# Eval("Name") %>' />
                             </td>
                             <td>

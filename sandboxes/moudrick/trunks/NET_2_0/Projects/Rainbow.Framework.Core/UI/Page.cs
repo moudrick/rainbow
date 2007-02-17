@@ -16,7 +16,6 @@ using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Path = Rainbow.Framework.Settings.Path;
 using Rainbow.Framework.Web.UI.WebControls;
-using Microsoft.Web.UI;
 
 namespace Rainbow.Framework.Web.UI {
     // TODO: this class needs a better write-up ;-)
@@ -62,11 +61,6 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         protected LinkButton cancelButton;
 
-        /// <summary>
-        /// Atlas script manager
-        /// </summary>
-        protected ScriptManager atlasScriptMgr;
-
         #endregion
 
         private ResourceSet userCultureSet = null;
@@ -95,15 +89,6 @@ namespace Rainbow.Framework.Web.UI {
                     //  userCultureSet = (ResourceSet)Cache.Get("Culture_" + userCulture);
                 }
                 return userCultureSet;
-            }
-        }
-
-        /// <summary>
-        /// Returns the <code>ScriptManager</code> control.
-        /// </summary>
-        public ScriptManager AtlasScriptManager {
-            get {
-                return atlasScriptMgr;
             }
         }
 
@@ -208,6 +193,7 @@ namespace Rainbow.Framework.Web.UI {
                 }
             }
             ModuleGuidInCookie();
+
             base.OnInit( e );
         }
 
@@ -233,6 +219,32 @@ namespace Rainbow.Framework.Web.UI {
                 if ( Request.UrlReferrer != null )
                     UrlReferrer = Request.UrlReferrer.ToString();
             }
+
+
+            //if ( ScriptManager.GetCurrent( this ) == null ) {
+            //    ScriptManager scriptManager = new ScriptManager();
+            //    //scriptManager.EnablePartialRendering = true;
+
+            //    scriptManager.Scripts.Add( new ScriptReference( "PreviewScript.js", "Microsoft.Web.Preview" ) );
+            //    scriptManager.Scripts.Add( new ScriptReference( "PreviewGlitz.js", "Microsoft.Web.Preview" ) );
+            //    scriptManager.Scripts.Add( new ScriptReference( "PreviewDragDrop.js", "Microsoft.Web.Preview" ) );
+
+            //    foreach ( Control c in Controls ) {
+            //        if ( c is HtmlGenericControl ) {
+            //            HtmlGenericControl genericControl = ( HtmlGenericControl )c;
+
+            //            if ( genericControl.TagName.ToLower() == "body" ) {
+            //                foreach ( Control bodyControl in genericControl.Controls ) {
+            //                    if ( bodyControl is HtmlForm ) {
+            //                        bodyControl.Controls.AddAt( 0, scriptManager );
+            //                    }
+            //                }
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
+
             base.OnLoad( e );
         }
 
@@ -1133,19 +1145,5 @@ namespace Rainbow.Framework.Web.UI {
 
         #endregion
 
-        /// <summary>
-        /// Called by the ASP.NET page framework to notify server controls that use composition-based implementation to 
-        /// create any child controls they contain in preparation for posting back or rendering.
-        /// </summary>
-        protected override void CreateChildControls() {
-            base.CreateChildControls();
-
-            atlasScriptMgr = new ScriptManager();
-            atlasScriptMgr.ID = "ScriptMgr";
-            atlasScriptMgr.EnablePartialRendering = true;
-            atlasScriptMgr.EnableScriptComponents = true;
-
-            this.Controls.Add( atlasScriptMgr );
-        }
     }
 }

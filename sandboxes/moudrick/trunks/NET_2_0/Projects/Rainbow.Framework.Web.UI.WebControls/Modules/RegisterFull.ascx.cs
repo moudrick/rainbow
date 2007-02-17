@@ -26,7 +26,6 @@ namespace Rainbow.Content.Web.Modules {
     /// <summary>
     /// Placeable Registration (Full) module
     /// </summary>
-  [History( "barrywadsworth@yahoo.com", "2006/10/24", "Fixed problem with Fax and Password parameters being in the wrong order" )]
     [History( "jminond", "march 2005", "Changes for moving Tab to Page" )]
     [
         History( "john.mandia@whitelightsolutions.com", "2005/02/12",
@@ -454,8 +453,8 @@ namespace Rainbow.Content.Web.Modules {
                         }
                         else {
                             accountSystem.UpdateUser( originalUserID, NameField.Text, CompanyField.Text, AddressField.Text,
-                                CityField.Text, ZipField.Text, CountryID, StateID, PhoneField.Text,
-                                FaxField.Text, PasswordField.Text, EmailField.Text, SendNewsletter.Checked );
+                                CityField.Text, ZipField.Text, CountryID, StateID, PhoneField.Text, FaxField.Text,
+                                PasswordField.Text, EmailField.Text, SendNewsletter.Checked );
                         }
                         //If we are here no error occurred
                     }

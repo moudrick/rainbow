@@ -49,15 +49,17 @@ GO
 CREATE PROC rb_PortalSettings_IU 	@PortalID	int,  	@SettingName	nvarchar(50),  	@SettingValue	nvarchar(256)  AS  SET NOCOUNT ON  	UPDATE [rb_PortalSettings] 	SET SettingValue = @SettingValue 	WHERE PortalID	=	@PortalID AND SettingName	=	@SettingName  	IF @@ROWCOUNT = 0 	BEGIN 	INSERT [rb_PortalSettings] (PortalID,  		SettingName,  		SettingValue) 	VALUES (@PortalID,  		@SettingName,  		@SettingValue) 	END  Return 
 GO
 --	@PortalID	,	@SettingName	,	@SettingValue
-EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_PAGE_LAYOUT'	, N'zen-3col-hmenu' --	N'Default'
+EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_PAGE_LAYOUT'	, N'Default' --	N'Default'
 GO
-EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_REGISTER_TYPE'	,	N'RegisterFull.ascx'
+EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_REGISTER_TYPE'	,	N'~/desktopmodules/coremodules/register/registerfull.ascx'
 GO
-EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_THEME'	,	N'zen-example1' -- N'Default'
+EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_THEME'	,	N'Default' -- N'Default'
 GO
-EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_ALT_THEME'	, N'zen-example1' -- N'DefaultAlternate'
+EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_ALT_THEME'	, N'DefaultAlternate' -- N'DefaultAlternate'
 GO
 EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_LANGLIST'	,	N'en;it;ar;bg;ca;cs;da;de;es;es-MX;fr;hr;is;ko;nl;nl-BE;no;pl;pt;ru;sl;sr-SP-Cyrl;sr-SP-Latn;sv;tr;uk;zh-CN;zh-TW;'
+GO
+EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_DEFAULT_EDITOR'	, N'FCKEditor V2' --	N'FCKEditor V2'
 GO
 IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[rb_PortalSettings_IU]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE [rb_PortalSettings_IU]
@@ -218,7 +220,7 @@ GO
 --	@ModuleID, @TabID, @GeneralModDefID, @ModuleOrder, @PaneName, @ModuleTitle, @AuthorizedEditRoles, @AuthorizedViewRoles, @AuthorizedAddRoles, @AuthorizedDeleteRoles, @AuthorizedPropertiesRoles, @CacheTime, @ShowMobile, @AuthorizedPublishingRoles, @NewVersion, @SupportWorkflow, @AuthorizedApproveRoles, @WorkflowState, @LastModified, @LastEditor, @StagingLastModified, @StagingLastEditor, @SupportCollapsable, @ShowEveryWhere
 EXEC rb_Modules_IU 	1, 1, '{A0F1F62B-FDC7-4DE5-BBAD-A5DAF31D960A}', -1, N'LeftPane', N'Login', N'Admins;', N'Unauthenticated Users;Admins;', N'Admins;', N'Admins;', N'Admins;', 0, 0, NULL, 1, 0, NULL, 0, '', NULL, '', NULL, 0, 0, N'Admins;', N'Admins;'
 GO
-EXEC rb_Modules_IU 	2,	1,	'{0B113F51-FEA3-499A-98E7-7B83C192FDBB}', 1, N'ContentPane', N'Rainbow Portal 2006 released!', N'Admins', N'All Users', N'Admins', N'Admins', N'Admins', 0, 0, NULL, 0, 0, NULL, NULL, '', NULL, '', NULL, 0, 0, N'Admins;', N'Admins;'
+EXEC rb_Modules_IU 	2,	1,	'{0B113F51-FEA3-499A-98E7-7B83C192FDBB}', 1, N'ContentPane', N'Rainbow Portal 2.0 Beta 1 released!', N'Admins', N'All Users', N'Admins', N'Admins', N'Admins', 0, 0, NULL, 0, 0, NULL, NULL, '', NULL, '', NULL, 0, 0, N'Admins;', N'Admins;'
 GO
 EXEC rb_Modules_IU 	3,	1,	'{25E3290E-3B9A-4302-9384-9CA01243C00F}', 2, N'LeftPane', N'Language', N'Admins', N'All Users', N'Admins', N'Admins', N'Admins', 0, 0, NULL, 0, 0, NULL, NULL, '', NULL, '', NULL, 0, 0, N'Admins;', N'Admins;'
 GO
@@ -430,7 +432,7 @@ GO
 
 INSERT rb_HtmlText_st
 (ModuleID, DesktopHtml, MobileSummary, MobileDetails)
-VALUES (2, 'Welcome to Rainbow Portal 2006.<br>You can start immediately to add content to your site. Type on the login box on your left <pre>admin@rainbowportal.net</pre> as email and <pre>admin</pre> as password. Enjoy.', '', '')
+VALUES (2, 'Welcome to Rainbow Portal 2.0 Beta 1.<br>This is a beta version and should not be deployed in production.  <br>You can start immediately to add content to your site. Type on the login box on your left <pre>admin@rainbowportal.net</pre> as email and <pre>admin</pre> as password. Enjoy.', '', '')
 GO
 
 IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[rb_ModuleSettings_IU]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
