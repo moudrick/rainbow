@@ -1,0 +1,188 @@
+<VisualStudioProject>
+    <CSHARP
+        ProjectType = "Local"
+        ProductVersion = "7.10.3077"
+        SchemaVersion = "2.0"
+        ProjectGuid = "{DCDA0619-FD70-42B6-B2DA-78EAFA4BE955}"
+    >
+        <Build>
+            <Settings
+                ApplicationIcon = ""
+                AssemblyKeyContainerName = ""
+                AssemblyName = "DUEMETRI.UI.WebControls.HWMenu"
+                AssemblyOriginatorKeyFile = ""
+                DefaultClientScript = "JScript"
+                DefaultHTMLPageLayout = "Grid"
+                DefaultTargetSchema = "IE50"
+                DelaySign = "false"
+                OutputType = "Library"
+                PreBuildEvent = ""
+                PostBuildEvent = ""
+                RootNamespace = "DUEMETRI.UI.WebControls.HWMenu"
+                RunPostBuildEvent = "OnBuildSuccess"
+                StartupObject = ""
+            >
+                <Config
+                    Name = "Debug"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "DEBUG;TRACE"
+                    DocumentationFile = "Menu.xml"
+                    DebugSymbols = "true"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "true"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "false"
+                    OutputPath = "bin\Debug\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+                <Config
+                    Name = "Release"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "TRACE"
+                    DocumentationFile = "HWMenu.xml"
+                    DebugSymbols = "false"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "true"
+                    OutputPath = "bin\Release\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+            </Settings>
+            <References>
+                <Reference
+                    Name = "System"
+                    AssemblyName = "System"
+                    HintPath = "F:\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.dll"
+                />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "F:\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.Drawing.dll"
+                />
+                <Reference
+                    Name = "System.Web"
+                    AssemblyName = "System.Web"
+                    HintPath = "F:\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.Web.dll"
+                />
+                <Reference
+                    Name = "System.Design"
+                    AssemblyName = "System.Design"
+                    HintPath = "F:\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.Design.dll"
+                />
+            </References>
+        </Build>
+        <Files>
+            <Include>
+                <File
+                    RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "History.txt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Licence.txt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Menu.bmp"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Menu.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MenuTreeNode.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MenuTreeNodes.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1316\menu_com.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1316\tri.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1316\tridown.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1316\trileft.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1318\1x1.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1318\menu_com.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1318\tri.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1318\tridown.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1318\trileft.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1329\1x1.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1329\menu_com.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1329\tri.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1329\tridown.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "aspnet_client\DUEMETRI_UI_WebControls_HWMenu\1_0_0_1329\trileft.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Design\MenuDesigner.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+            </Include>
+        </Files>
+    </CSHARP>
+</VisualStudioProject>
+
