@@ -1,0 +1,15 @@
+/* CSS for Tasks module 
+NOTE:Only three status change the color.
+Complete = 100%
+Beginning < 50%
+NearlyComplete >= 50% and < 100%  */
+.Task_Complete{
+color:White;
+background-color:White;
+}
+.Task_Beginning{
+background-color:White;
+}
+.Task_NearlyComplete{
+background-color:White;
+}
