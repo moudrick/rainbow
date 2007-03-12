@@ -43,6 +43,10 @@ namespace Rainbow
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void DesktopDefault_Load(object sender, EventArgs e)
         {
+            // This is a check is done in order to fix a bug produced by de cssadapters in IE7
+            if (Request.Browser.Browser.StartsWith("IE")) {
+                Response.Write(@"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.1//EN"" ""http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"">");
+            }
             // Ensure that the visiting user has access to the current page
             if (PortalSecurity.IsInRoles(portalSettings.ActivePage.AuthorizedRoles) == false)
                 PortalSecurity.AccessDenied();
