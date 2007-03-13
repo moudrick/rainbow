@@ -1,0 +1,569 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Rainbow.Modules.Tasks</name>
+    </assembly>
+    <members>
+        <member name="T:Rainbow.DesktopModules.Tasks">
+            <summary>
+            Tasks module - Task list tool
+            Based on IBS module
+            Ported to Rainbow by Jakob Hansen, hansen3000@hotmail.com
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.Tasks.myDataGrid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.Tasks.myDataView">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.Tasks.sortField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.Tasks.sortDirection">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.Tasks.Literal1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Tasks.Page_Load(System.Object,System.EventArgs)">
+            <summary>
+            The Page_Load event handler on this User Control is used to
+            obtain a DataReader of task information from the Tasks
+            table, and then databind the results to a templated DataList
+            server control.  It uses the Rainbow.TasksDB()
+            data component to encapsulate all data functionality.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Tasks.SortTasks(System.Object,System.Web.UI.WebControls.DataGridSortCommandEventArgs)">
+            <summary>
+            The SortTasks event handler sorts the task list (a DataGrid control)
+            </summary>
+            <param name="source"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Tasks.BindGrid">
+            <summary>
+            Bind the tasks grid
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Tasks.PerCent(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Tasks.SearchSqlSelect(System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Searchable module implementation
+            </summary>
+            <param name="portalID">The portal ID</param>
+            <param name="userID">ID of the user is searching</param>
+            <param name="searchString">The text to search</param>
+            <param name="searchField">The fields where perfoming the search</param>
+            <returns>The SELECT sql to perform a search on the current module</returns>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Tasks.#ctor">
+            <summary>
+            Public constructor. Sets base settings for module.
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Tasks.Install(System.Collections.IDictionary)">
+            <summary>
+            
+            </summary>
+            <param name="stateSaver"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Tasks.Uninstall(System.Collections.IDictionary)">
+            <summary>
+            
+            </summary>
+            <param name="stateSaver"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.Tasks.OnInit(System.EventArgs)">
+            <summary>
+            Raises OnInitEvent
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Rainbow.DesktopModules.Tasks.Searchable">
+            <summary>
+            If the module is searchable you
+            must override the property to return true
+            </summary>
+        </member>
+        <member name="P:Rainbow.DesktopModules.Tasks.GuidID">
+            <summary>
+            General module def GUID
+            </summary>
+        </member>
+        <member name="T:Rainbow.DesktopModules.TasksDB">
+            <summary>
+            IBS Tasks module
+            Class that encapsulates all data logic necessary to add/query/delete
+            tasks within the Portal database.
+            Written by: ??? (the guy did not write his name in the original code)
+            Moved into Rainbow by Jakob Hansen, hansen3000@hotmail.com
+            EHN - By Mike Stone Change Description field to ntext to remove the 3000 char limit
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TasksDB.GetTasks(System.Int32)">
+            <summary>
+            GetTasks
+            NOTE: A DataSet is returned from this method to allow this method to support
+            both desktop and mobile Web UI.
+            </summary>
+            <returns>A DataSet</returns>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TasksDB.GetSingleTask(System.Int32)">
+            <summary>
+            GetSingleTask
+            </summary>
+            <param name="itemID">ItemID</param>
+            <returns>A SqlDataReader</returns>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TasksDB.DeleteTask(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="itemID"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TasksDB.AddTask(System.Int32,System.Int32,System.String,System.String,System.DateTime,System.String,System.String,System.String,System.String,System.DateTime,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="moduleID"></param>
+            <param name="itemID"></param>
+            <param name="userName"></param>
+            <param name="title"></param>
+            <param name="startDate"></param>
+            <param name="description"></param>
+            <param name="status"></param>
+            <param name="priority"></param>
+            <param name="assignedto"></param>
+            <param name="dueDate"></param>
+            <param name="percentComplete"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TasksDB.UpdateTask(System.Int32,System.Int32,System.String,System.String,System.DateTime,System.String,System.String,System.String,System.String,System.DateTime,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="moduleID"></param>
+            <param name="itemID"></param>
+            <param name="userName"></param>
+            <param name="title"></param>
+            <param name="startDate"></param>
+            <param name="description"></param>
+            <param name="status"></param>
+            <param name="priority"></param>
+            <param name="assignedto"></param>
+            <param name="dueDate"></param>
+            <param name="percentComplete"></param>
+        </member>
+        <member name="T:Rainbow.DesktopModules.TasksEdit">
+            <summary>
+            Tasks Module - Edit page part
+            Writen by: ?
+            Moved into Rainbow by Jakob Hansen, hansen3000@hotmail.com
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.TitleField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.RequiredTitle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.PercentCompleteField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.PercentValidator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.StatusField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.PriorityField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.AssignedField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.PickDateCalendarScript">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.Literal1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.Literal3">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.Literal4">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.Literal5">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.Literal6">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.Literal7">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.Literal8">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.Literal9">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.Literal2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.CreatedBy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.CreatedDate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.CreatedLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.OnLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.ModifiedBy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.ModifiedDate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.ModifiedLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.ModifiedOnLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.StartField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.DueField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.VerifyEndDate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.Requiredfieldvalidator1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.Datetextboxvalidator1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.RequiredEndDate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.DescriptionField">
+             <summary>
+            Chris Farrell, chris@cftechconsulting.com, 5/28/04 added support
+            for all Rainbow-supported editors.
+             </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TasksEdit.DesktopText">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TasksEdit.Page_Load(System.Object,System.EventArgs)">
+            <summary>
+            The Page_Load event on this Page is used to obtain the ModuleID
+            and ItemID of the task to edit.
+            It then uses the Rainbow.TasksDB() data component
+            to populate the page's edit controls with the task details.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TasksEdit.OnUpdate(System.EventArgs)">
+            <summary>
+            The OnUpdate event handler on this Page is used to either
+            create or update an task. It uses the Rainbow.TasksDB()
+            data component to encapsulate all data functionality.
+            Note: This procedure is automaticall called on Update
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TasksEdit.OnDelete(System.EventArgs)">
+            <summary>
+            The OnDelete event handler on this Page is used to delete
+            an task. It uses the Rainbow.TasksDB() data component to
+            encapsulate all data functionality.
+            Note:This procedure is automaticall called on Update
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TasksEdit.AddListItem(System.String,System.String,System.Web.UI.WebControls.DropDownList)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="translation"></param>
+            <param name="sender"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TasksEdit.OnInit(System.EventArgs)">
+            <summary>
+            Raises OnInitEvent
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TasksEdit.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Rainbow.DesktopModules.TasksEdit.AllowedModules">
+            <summary>
+            Set the module guids with free access to this page
+            </summary>
+        </member>
+        <member name="T:Rainbow.DesktopModules.TaskView">
+            IBS Portal Tasks Module - Display all info about single task
+            Writen by: ?
+            Moved into Rainbow by Jakob Hansen, hansen3000@hotmail.com
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.TitleField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.longdesc">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.PercentCompleteField">
+            Chris Farrell, 5/27/04, chris@cftechconsulting.com
+            fix longdesc does not wrap text.
+            protected System.Web.UI.HtmlControls.HtmlGenericControl longdesc;
+             <summary>
+             
+             </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.StatusField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.PriorityField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.AssignedField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.StartField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.DueField">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.CreatedBy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.CreatedDate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.ModifiedBy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.ModifiedDate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.Literal1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.Literal2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.Literal3">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.Literal4">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.Literal5">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.Literal6">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.Literal7">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.Literal8">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.Literal9">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.CreatedLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.OnLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.ModifiedLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.ModifiedOnLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Rainbow.DesktopModules.TaskView.EditLink">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TaskView.Page_Load(System.Object,System.EventArgs)">
+            <summary>
+            The Page_Load event on this Page is used to obtain the ModuleID
+            and ItemID of the task to display.
+            It then uses the Rainbow.TasksDB() data component
+            to populate the page's edit controls with the task details.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TaskView.OnInit(System.EventArgs)">
+            <summary>
+            Raises OnInitEvent
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Rainbow.DesktopModules.TaskView.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Rainbow.DesktopModules.TaskView.AllowedModules">
+            <summary>
+            Set the module guids with free access to this page
+            </summary>
+        </member>
+    </members>
+</doc>

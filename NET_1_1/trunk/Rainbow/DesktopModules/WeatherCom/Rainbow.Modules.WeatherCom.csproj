@@ -1,0 +1,755 @@
+<VisualStudioProject>
+    <CSHARP
+        ProjectType = "Local"
+        ProductVersion = "7.10.3077"
+        SchemaVersion = "2.0"
+        ProjectGuid = "{55DC4EE5-B817-4F57-B255-ABE98E04C035}"
+    >
+        <Build>
+            <Settings
+                ApplicationIcon = ""
+                AssemblyKeyContainerName = ""
+                AssemblyName = "Rainbow.Modules.WeatherCom"
+                AssemblyOriginatorKeyFile = ""
+                DefaultClientScript = "JScript"
+                DefaultHTMLPageLayout = "Flow"
+                DefaultTargetSchema = "IE50"
+                DelaySign = "false"
+                OutputType = "Library"
+                PreBuildEvent = ""
+                PostBuildEvent = ""
+                RootNamespace = "Rainbow.DesktopModules.WeatherCom"
+                RunPostBuildEvent = "OnBuildSuccess"
+                StartupObject = ""
+            >
+                <Config
+                    Name = "Debug"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "DEBUG;TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "true"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "false"
+                    OutputPath = "..\..\bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+                <Config
+                    Name = "Release"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "false"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "true"
+                    OutputPath = "..\..\bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+            </Settings>
+            <References>
+                <Reference
+                    Name = "System"
+                    AssemblyName = "System"
+                    HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
+                />
+                <Reference
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                    HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
+                />
+                <Reference
+                    Name = "System.XML"
+                    AssemblyName = "System.Xml"
+                    HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
+                />
+                <Reference
+                    Name = "System.Web"
+                    AssemblyName = "System.Web"
+                    HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Web.dll"
+                />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
+                />
+                <Reference
+                    Name = "Esperantus"
+                    AssemblyName = "Esperantus"
+                    HintPath = "..\..\bin\Esperantus.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "Rainbow"
+                    AssemblyName = "Rainbow"
+                    HintPath = "..\..\bin\Rainbow.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "Rainbow.Settings"
+                    AssemblyName = "Rainbow.Settings"
+                    HintPath = "..\..\bin\Rainbow.Settings.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "Rainbow.Provider"
+                    AssemblyName = "Rainbow.Provider"
+                    HintPath = "..\..\bin\Rainbow.Provider.dll"
+                />
+            </References>
+        </Build>
+        <Files>
+            <Include>
+                <File
+                    RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "install.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "readme.txt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WeatherCom.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WeatherCom.ascx.cs"
+                    DependentUpon = "WeatherCom.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WeatherCom.ascx.resx"
+                    DependentUpon = "WeatherCom.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WeatherCom.xslt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WeatherComM.xslt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\0.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\1.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\10.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\11.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\12.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\13.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\14.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\15.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\16.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\17.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\18.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\19.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\2.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\20.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\21.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\22.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\23.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\24.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\25.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\26.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\27.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\28.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\29.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\3.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\30.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\31.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\32.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\33.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\34.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\35.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\36.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\37.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\38.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\39.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\4.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\40.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\41.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\42.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\43.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\44.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\45.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\46.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\47.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\5.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\6.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\7.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\8.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\9.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\128x128\na.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\0.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\1.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\10.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\11.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\12.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\13.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\14.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\15.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\16.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\17.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\18.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\19.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\2.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\20.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\21.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\22.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\23.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\24.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\25.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\26.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\27.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\28.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\29.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\3.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\30.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\31.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\32.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\33.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\34.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\35.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\36.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\37.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\38.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\39.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\4.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\40.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\41.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\42.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\43.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\44.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\45.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\46.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\47.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\5.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\6.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\7.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\8.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\9.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\32x32\na.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\0.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\1.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\10.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\11.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\12.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\13.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\14.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\15.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\16.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\17.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\18.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\19.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\2.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\20.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\21.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\22.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\23.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\24.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\25.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\26.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\27.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\28.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\29.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\3.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\30.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\31.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\32.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\33.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\34.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\35.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\36.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\37.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\38.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\39.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\4.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\40.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\41.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\42.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\43.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\44.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\45.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\46.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\47.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\5.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\6.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\7.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\8.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\9.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\64x64\na.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\logos\TWClogo_32px.png"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "images\logos\TWClogo_64px.png"
+                    BuildAction = "Content"
+                />
+            </Include>
+        </Files>
+    </CSHARP>
+</VisualStudioProject>
+
