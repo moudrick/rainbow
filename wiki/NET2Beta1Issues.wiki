@@ -1,0 +1,13 @@
+#summary One-sentence summary of this page.
+#labels Phase-Implementation,Phase-QA,Featured
+
+= Introduction =
+
+This wiki page is for issues with Rainbow 2.0 Beta 1 Release
+
+
+== Current Issues ==
+
+=== ASP.NET Ajax Considerations ===
+
+Rainbow Portal 2.0 Beta 1 comes with ASP.NET Ajax RC.  You should make sure you install at least this version for the portal to function correctly.  If you install the final release of ASP.NET Ajax, some considerations should be followed.  This issue is cross-listed with this [http://tinyurl.com/29rxku blog] entry and information can be found there.
