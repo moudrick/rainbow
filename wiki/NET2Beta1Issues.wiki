@@ -20,6 +20,7 @@ The new beta 1 requires the use of 4 connection strings.  The reason for this is
 
 *Please Note:*  Always include the Application Name in ASPNETDB supported applications.  Many membership issues stem from the Application Name attribute not being set.
 
+{{{
 <connectionStrings>
 
     <add name="ConnectionString" connectionString="Data Source=.\SQLEXPRESS;database=Telerik.Rainbow;Integrated Security=True;Application Name=Rainbow" providerName="System.Data.SqlClient" />
@@ -31,3 +32,4 @@ The new beta 1 requires the use of 4 connection strings.  The reason for this is
     <add name="Main.ConnectionString" connectionString="Data Source=.\SQLEXPRESS;database=Telerik.Rainbow;Integrated Security=True;Application Name=Rainbow" providerName="System.Data.SqlClient"/>
   
 </connectionStrings>
+}}}
