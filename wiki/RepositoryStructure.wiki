@@ -1,0 +1,121 @@
+#summary Repository structure
+#labels Featured
+Structure is set in accordance to the following recommendations [http://community.rainbowportal.net/blogs/rahul_notes/archive/2006/02/10/338.aspx here in Rahul's blog]
+
+  IMPORTANT! To *anonymously* _checkout_ or _export_ use *http* protocol.
+  Otherwise if you have been granted with commit rights use *https* protocol to *authorized* _export_, _checkout_, _switch_, _commit_, other repository operations.
+
+The root of the repository is *http://rainbow.googlecode.com/svn/* (*https://rainbow.googlecode.com/svn/*)
+Do not checkout or export this url directly, you have to add a *relative path* to a structure unit for best result. Please remember that the relative paths are case sensitive.  
+
+  WARNING! There is no ~~http://rainbow.googlecode.com/svn/trunk/~~  as it shown at [http://code.google.com/p/rainbow/source standard Google Code page of the Rainbow project]
+ 
+
+
+
+
+We use our own structure instead of initially precreated structure. It is described below more detailed. You who has rights to commit please follow this structure and never make commits outside your sandbox.
+
+
+
+|| || ||
+|| || ||
+|| *Relative paths for substructure units* || *Short description* ||
+|| || ||
+|| */wiki/* || standard google code wiki for the whole repository ||
+|| || ||
+|| */sandboxes/* || devepolers' sandboxes with their *personal* trunks/tags/branches and other required personal structure ||
+|| || ||
+|| */NET_1_1/* || latest code of *rainbow portal* for *.Net 1.1* ||
+|| || ||
+|| */NET_1_1/branches/* || ||
+|| */NET_1_1/tags/* || ||
+|| || ||
+|| */NET_1_1/trunk/* || latest trunk with its own substructure ||
+|| || ||
+|| */NET_1_1/trunk/ECommerce/* || ECommerce module ||
+|| */NET_1_1/trunk/Extensions/* || extensioins necessary ||
+|| */NET_1_1/trunk/Rainbow/* || site root ||
+|| || ||
+|| || ||
+|| */NET_2_0/* || unfolded comprehensive structure for working on *rainbow* for *.Net 2.0* version ||
+|| || ||
+|| */NET_2_0/devint/* || _development & integration_ folder ||
+|| || ||
+|| */NET_2_0/devint/branches/* || ||
+|| */NET_2_0/devint/tags/* || ||
+|| || ||
+|| */NET_2_0/devint/trunk/* || latest _devint_ trunk with its own substructure ||
+|| || ||
+|| */NET_2_0/devint/trunk/Libs* || binary libraries references in *Projects* and *!WebSites* ||
+|| */NET_2_0/devint/trunk/!PrecompiledWeb/* || precreated empty folder for precompiled web sites ||
+|| */NET_2_0/devint/trunk/Projects/* || subproject such as *Core*, *Providers* etc (see detailed structure at [NET_2_0_FoldersStructure]) ||
+|| */NET_2_0/devint/trunk/!WebSites/* || folder containing all web sites in use ||
+|| */NET_2_0/devint/trunk/!WebSites/Rainbow/* || the web site (see detailed structure at [NET_2_0_FoldersStructure]) ||
+|| || ||
+|| */NET_2_0/stage/* || stage environment with its own separate structure ||
+|| || ||
+|| */NET_2_0/stage/branches/* || ||
+|| */NET_2_0/stage/tags/* || ||
+|| */NET_2_0/stage/trunk/* || ||
+|| || ||
+|| || ||
+|| */NET_2_0/prod/* || production environment with its own separate structure ||
+|| || ||
+|| */NET_2_0/prod/branches/* || ||
+|| */NET_2_0/prod/tags/* || ||
+|| */NET_2_0/prod/trunk/ * || ||
+|| || ||
+|| || ||
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
