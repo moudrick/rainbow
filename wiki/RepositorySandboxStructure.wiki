@@ -1,0 +1,14 @@
+#summary Repository Sandbox Structure
+
+|| || ||
+|| */sandboxes/* || devepolers' sandboxes root ||
+|| || ||
+|| */sandboxes/DEVELOPER_LOGIN/* || DEVELOPER_LOGIN's sandbox ||
+|| || ||
+|| */sandboxes/DEVELOPER_LOGIN/branches/* || DEVELOPER_LOGIN's own *branches* folder ||
+|| || ||
+|| */sandboxes/DEVELOPER_LOGIN/tags/* || DEVELOPER_LOGIN's own *tags* folder ||
+|| || ||
+|| */sandboxes/DEVELOPER_LOGIN/trunks/* || DEVELOPER_LOGIN's own *trunks* folder. Trunks to be created by branching (*svn copy*) from appropriate tag or trunk from *NET_2_0* or *NET_1_1* ||
+|| || ||
+
