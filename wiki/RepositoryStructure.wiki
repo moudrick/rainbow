@@ -24,7 +24,7 @@ We use our own structure instead of initially precreated structure. It is descri
 || || ||
 || */wiki/* || standard google code wiki for the whole repository ||
 || || ||
-|| */sandboxes/* || devepolers' sandboxes with their *personal* trunks/tags/branches and other required personal structure ||
+|| */sandboxes/* || devepolers' sandboxes with their *personal* trunks/tags/branches and other required personal structure (RepositorySandboxStructure) ||
 || || ||
 || */NET_1_1/* || latest code of *rainbow portal* for *.Net 1.1* ||
 || || ||
