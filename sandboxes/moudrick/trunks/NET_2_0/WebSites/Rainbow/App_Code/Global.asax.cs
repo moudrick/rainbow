@@ -101,6 +101,7 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
             string currentURL = context.Request.Path.ToLower();
 
             context.Trace.Warn("Application_BeginRequest :: " + currentURL);
+			string queryString = context.Request.ServerVariables["QUERY_STRING"];
             if (Portal.PageID > 0)
             {
                 //Creates the physical path on the server 
@@ -109,16 +110,19 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                 // TODO: Can we enhance performance here by checking to see if it is a friedly url page
                 // name instead of doing an IO check for exists?
                 // checks to see if the file does not exsists.
-                if (!File.Exists(physicalPath)) // Rewrites the path
-                    context.RewritePath("~/default.aspx?" + context.Request.ServerVariables["QUERY_STRING"]);
+				if (!File.Exists(physicalPath)) // Rewrites the path
+				{
+					context.RewritePath("~/default.aspx?" + queryString);
+				}
             }
             else
             {
-                string pname = currentURL.Substring(currentURL.LastIndexOf("/") + 1);
-                pname = pname.Substring(0, (pname.Length - 5));
-                if (Regex.IsMatch(pname, @"^\d+$"))
-                    context.RewritePath("~/default.aspx?pageid=" + pname +
-                                        context.Request.ServerVariables["QUERY_STRING"]);
+                string pageName = currentURL.Substring(currentURL.LastIndexOf("/") + 1);
+                pageName = pageName.Substring(0, (pageName.Length - 5));
+                if (Regex.IsMatch(pageName, @"^\d+$"))
+                {
+                	context.RewritePath("~/default.aspx?pageid=" + pageName + queryString);
+                }
             }
 
 
@@ -179,8 +183,8 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                             _databaseUpdateRedirect.ToLower(CultureInfo.InvariantCulture)))
                     {
                         // ...and this is not DB Update page
-                        string errorMessage = "Database version: " + Database.DatabaseVersion.ToString() + " Code version: " +
-                                              Portal.CodeVersion.ToString();
+                        string errorMessage = "Database version: " + Database.DatabaseVersion + 
+							" Code version: " + Portal.CodeVersion;
                         if (versionDelta < 0) // DB Version is behind Code Version
                         {
                             // Jonathan : WHy wouldnt we redirect to update page?
