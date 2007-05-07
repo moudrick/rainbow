@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vs="http://schemas.microsoft.com/Visual-Studio-Intellisense" vs:friendlyname="Rainbow Installer Definition" vs:ishtmlschema="false" vs:iscasesensitive="true" vs:requireattributequotes="true">
+    <xs:simpleType name="installerVersionDef">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="2.0" />
+            <xs:pattern value="\d{1}\.\d{1}" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="packageVersionDef">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{1}\.\d{1}.\d{1}" />
+            <xs:enumeration value="0.0.1" />
+            <xs:enumeration value="0.0.2" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="packageTypeDef">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="theme" />
+            <xs:enumeration value="module" />
+            <xs:enumeration value="extension" />
+            <xs:enumeration value="custom" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="rainbowFoldersDef">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="bin" />
+            <xs:enumeration value="themes" />
+            <xs:enumeration value="layouts" />
+            <xs:enumeration value="data" />
+            <xs:enumeration value="portalData" />
+            <xs:enumeration value="modules" />
+            <xs:enumeration value="custom" />
+            <xs:enumeration value="portalThemes" />
+            <xs:enumeration value="portalLayouts" />
+            <xs:enumeration value="uninstall" />
+            <xs:enumeration value="install" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="installer">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="package" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="caption" type="xs:string" />
+                        <xs:attribute name="informationUrl" type="xs:string" />
+                        <xs:attribute name="description" type="xs:string" />
+                        <xs:attribute name="type" type="packageTypeDef" />
+                        <xs:attribute name="id" type="guidDef" />
+                        <xs:attribute name="version" type="packageVersionDef" />
+                        <xs:attribute name="isBeta" type="xs:boolean" />
+                        <xs:attribute name="author" type="xs:string" />
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="install" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="renameFile" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence />
+                                    <xs:attribute name="baseFolder" type="rainbowFoldersDef" />
+                                    <xs:attribute name="newName" type="xs:string" />
+                                    <xs:attribute name="oldName" type="xs:string" />
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="createFolder" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="folderName" type="xs:string" />
+                                    <xs:attribute name="baseFolder" type="rainbowFoldersDef" />
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="createFile" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence />
+                                    <xs:attribute name="fileName" type="xs:string" />
+                                    <xs:attribute name="destinationFile" type="xs:string" />
+                                    <xs:attribute name="destinationBaseFolder" type="rainbowFoldersDef" />
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="executeSqlScript" minOccurs="0" maxOccurs="unbounded" type="executeSqlScriptDef">
+                            </xs:element>
+                            <xs:element name="registerModule" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="friendlyName" type="xs:string" />
+                                    <xs:attribute name="desktopControlSource" type="xs:string" />
+                                    <xs:attribute name="mobileControlSource" type="xs:string" />
+                                    <xs:attribute name="assemblyFileName" type="xs:string" />
+                                    <xs:attribute name="moduleGuid" type="guidDef" />
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="uninstall" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="unregisterModule" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="moduleGuid" type="guidDef" />
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="executeSqlScript" minOccurs="0" maxOccurs="unbounded" type="executeSqlScriptDef">
+                            </xs:element>
+                            <xs:element name="renameFile" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence />
+                                    <xs:attribute name="baseFolder" type="rainbowFoldersDef" />
+                                    <xs:attribute name="newName" type="xs:string" />
+                                    <xs:attribute name="oldName" type="xs:string" />
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="copyFile" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="sourceFile" type="xs:string" />
+                                    <xs:attribute name="destinationFile" type="xs:string" />
+                                    <xs:attribute name="sourceBaseFolder" type="rainbowFoldersDef" />
+                                    <xs:attribute name="destinationBaseFolder" type="rainbowFoldersDef" />
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="deleteFile" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="fileName" type="xs:string" />
+                                    <xs:attribute name="baseFolder" type="rainbowFoldersDef" />
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="deleteFolder" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="folderName" type="xs:string" />
+                                    <xs:attribute name="baseFolder" type="rainbowFoldersDef" />
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="version" type="installerVersionDef" />
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="executeSqlScriptDef">
+        <xs:attribute name="scriptFile" type="xs:string" />
+    </xs:complexType>
+    <xs:simpleType name="guidDef">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

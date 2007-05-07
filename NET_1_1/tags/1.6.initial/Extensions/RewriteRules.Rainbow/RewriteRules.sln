@@ -1,0 +1,22 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RewriteRules.Rainbow", "RewriteRules.Rainbow.csproj", "{D7701E3B-8344-4064-BFBA-1A241939E91D}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{D7701E3B-8344-4064-BFBA-1A241939E91D}.Debug.ActiveCfg = Debug|.NET
+		{D7701E3B-8344-4064-BFBA-1A241939E91D}.Debug.Build.0 = Debug|.NET
+		{D7701E3B-8344-4064-BFBA-1A241939E91D}.Release.ActiveCfg = Release|.NET
+		{D7701E3B-8344-4064-BFBA-1A241939E91D}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		XCSharpProjectsDisabled = 
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
