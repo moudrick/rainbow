@@ -156,8 +156,11 @@ namespace Rainbow.Content.Web.Modules
                 if (moduleID > 0)
                     moduleDesktopSrc = ModuleSettings.GetModuleDesktopSrc(moduleID);
                 if (moduleDesktopSrc.Length == 0)
-                    moduleDesktopSrc =
-                        Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/CoreModules/Register", RegisterPage);
+                    moduleDesktopSrc = RegisterPage;
+                        //Changed by moudrick to fix the issue 27
+                        //commented out path combinig and left just assignment since it is already combined in the default configuration
+                        //http://code.google.com/p/rainbow/issues/detail?id=27
+                        //Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/CoreModules/Register", RegisterPage);
                 Control myControl = LoadControl(moduleDesktopSrc);
 
                 PortalModuleControl p = ((PortalModuleControl) myControl);
