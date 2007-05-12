@@ -60,10 +60,9 @@
   <target name="main" >
     <call target="this.information" />
     <call target="svn.update" />
-    <call target="config.update" />
-
-    <call target="this.prepare.webProjectDirSql2000" />
     <call target="tests.prepare" />
+    <call target="config.update" />
+    <call target="this.prepare.webProjectDirSql2000" />
 
     <call target="this.rebuild" />
 
