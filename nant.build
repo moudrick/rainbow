@@ -59,11 +59,11 @@
   <target name="manual" depends="main, this.notepadSpecifics" />
   <target name="main" >
     <call target="this.information" />
-    <call target="this.svn.update" />
-    <call target="this.config.update" />
+    <call target="svn.update" />
+    <call target="config.update" />
 
     <call target="this.prepare.webProjectDirSql2000" />
-    <call target="this.tests.prepare" />
+    <call target="tests.prepare" />
 
     <call target="this.rebuild" />
 
@@ -72,16 +72,21 @@
     <call target="this.fixup.webProjectDirSql2000" />
     <call target="this.fixup.webPrecompiledDirSql2005" />
 
-    <call target="this.tests.run" />
+    <call target="tests.run" />
   </target>
 
   <target name="main.tests" >
-    <call target="this.config.update" />
+    <call target="config.update" />
     <call target="this.prepare.webProjectDirSql2000" />
-    <call target="this.tests.prepare" />
+    <call target="tests.prepare" />
     <call target="this.rebuild" />
-    <call target="this.tests.run" />
+    <call target="tests.run" />
   </target>
+
+  <!-- *************** -->
+  <!-- **  Aliases  ** -->
+  <!-- *************** -->
+  <target name="tests" depends="tests.all" />
 
   <!-- ******************************** -->
   <!-- **  Simple action targets     ** -->
@@ -102,17 +107,26 @@
     <echo message="${this::echo-property('')}" />
   </target>
 
-  <target name="this.svn.update">
+  <!-- *********** -->
+  <!-- **  svn  ** -->
+  <!-- *********** -->
+  <target name="svn.update">
     <exec program="svn.exe" verbose="true" commandline="-r ${this.revision} update" workingdir="${this.branch}" />
   </target>
 
-  <target name="this.config.update">
+  <!-- ************** -->
+  <!-- **  config  ** -->
+  <!-- ************** -->
+  <target name="config.update">
     <property name="config" value="${this.branch}${this.webProjectDir}Web.config" />
     <copy file="${config}.standard" tofile="${config}" overwrite="true" />
 
-    <property name="config" value="${this.branch}Projects/Rainbow.Tests/App.config" />
-    <copy file="${config}.standard" tofile="${config}" overwrite="true" />
+	<call target="tests.updateConfig" />
   </target>
+
+  <!-- *********** -->
+  <!-- **  web  ** -->
+  <!-- *********** -->
 
   <target name="this.createIisApp">
     <echo message="${this::echo-property('this.virtDirName')}" />
@@ -135,53 +149,9 @@
     </if>
   </target>
 
-  <target name="this.setTrustedConnectionString">
-    <echo message="${this::echo-property('this.dbInstance')}" />
-    <property name="this.sqlConnectionString.trusted" value="server=${this.dbInstance};Trusted_Connection=true;database=${this.databaseName}" />
-    <property name="this.sqlConnectionString.rainbow" value="server=${this.dbInstance};database=${this.databaseName};uid=${const.dbUid};pwd=${const.dbPwd}" />
-    <property name="this.sqlConnectionString" value="${this.sqlConnectionString.trusted}" />    
-  </target>
-
-  <target name="this.setProperties2000">
-    <property name="this.virtDirName" value="${this.branch.encoded}" />
-    <property name="this.relativeApplicationPath" value="${this.webProjectDir}" />
-    <property name="this.dbInstance" value="(local)" />
-    <call target="this.setTrustedConnectionString" />
-  </target>
-
-  <target name="this.setProperties2005">
-    <property name="this.virtDirName" value="${this.webPrecompiledDir}/${this.branch.encoded}" />
-    <property name="this.relativeApplicationPath" value="${this.virtDirName}/" />
-    <property name="this.dbInstance" value="(local)\SQLEXPRESS" />
-    <call target="this.setTrustedConnectionString" />
-  </target>
-
-  <target name="this.prepare.webProjectDirSql2000" >
-    <call target="this.setProperties2000" />
-    <call target="this.createIisApp" />
-    <call target="deleteLog" />
-  </target>
-
-  <target name="this.prepare.webPrecompiledDirSql2005" >
-    <call target="this.setProperties2005" />
-    <readregistry property="iisWwwRoot" key="SOFTWARE\Microsoft\InetStp\PathWWWRoot" hive="LocalMachine" />
-    <mkdir dir="${iisWwwRoot}\${this.webPrecompiledDir}" />
-
-    <call target="this.createIisApp" />
-    <call target="deleteLog" />
-  </target>
-
-  <target name="this.fixup.webProjectDirSql2000" >
-    <call target="this.setProperties2000" />
-    <call target="this.sqlRecreate" />
-    <call target="this.setWebConfigConnectionStrings" />
-  </target>
-
-  <target name="this.fixup.webPrecompiledDirSql2005">
-    <call target="this.setProperties2005" />
-    <call target="this.sqlRecreate" />
-    <call target="this.setWebConfigConnectionStrings" />
-  </target>
+  <!-- ************* -->
+  <!-- **  build  ** -->
+  <!-- ************* -->
 
   <target name="this.rebuild">
     <property name="this.msbuild.targets" value="Clean;Rebuild" />
@@ -216,6 +186,14 @@
         <arg value="/verbosity:quiet" />
       </exec>
     </foreach>
+  </target>
+
+  <!-- *********** -->
+  <!-- **  sql  ** -->
+  <!-- *********** -->
+  <target name="sql.instanceLevelOsql">
+    <echo message="${this::echo-property('sql.instanceLevelQuery')}" />
+    <exec verbose="true" program="osql" commandline="-S ${tests.dbInstance} -n -b -E -Q &quot;${sql.instanceLevelQuery}&quot;" />
   </target>
   
   <target name="this.sqlRecreate">
@@ -312,60 +290,112 @@ http://localhost/${this.webPrecompiledDir}/${this.branch.encoded}/
   <!-- **  Rainbow.Tests running stuff              ** -->
   <!-- *********************************************** -->
 
-  <target name="this.tests.prepare">
-    <call target="this.tests.recreateDb" />
-    <call target="this.tests.updateConfig" />
+  <target name="tests.all">
+    <call target="tests.prepare" />
+    <call target="tests.run" />
   </target>
 
-  <target name="this.tests.recreateDb">
-    <property name="this.tests.dbInstance" value="(local)" />
-    <property name="this.tests.dbInstance" value="(local)\SQLEXPRESS" />
-    <property name="this.tests.databaseName" value="rbtests_${this.databaseName}" />
-    <property name="this.tests.sqlConnectionString" value="server=${this.tests.dbInstance};database=${this.tests.databaseName};uid=rainbow;pwd=rainbow_" />
+  <target name="tests.prepare">
+    <call target="tests.recreateDb" />
+    <call target="tests.updateConfig" />
+  </target>
+
+  <target name="tests.recreateDb">
+    <property name="tests.dbInstance" value="(local)" />
+    <property name="tests.dbInstance" value="(local)\SQLEXPRESS" />
+    <property name="tests.databaseName" value="rbtests_${this.databaseName}" />
+    <property name="tests.sqlConnectionString" value="server=${tests.dbInstance};database=${tests.databaseName};uid=rainbow;pwd=rainbow_" />
 
     <!-- killQuery -->
     <property name="sql.instanceLevelQuery" 
-      value="USE [master]; DECLARE @sql VARCHAR(8000); SET @sql = ''; SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '${this.tests.databaseName}'; EXEC(@sql)"/>
+      value="USE [master]; DECLARE @sql VARCHAR(8000); SET @sql = ''; SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '${tests.databaseName}'; EXEC(@sql)"/>
     <call target="sql.instanceLevelOsql" />
 
     <!-- dropQuery -->
-    <property name="sql.instanceLevelQuery" value="USE [master]; IF EXISTS (SELECT name FROM sys.databases WHERE name = N'${this.tests.databaseName}') DROP DATABASE [${this.tests.databaseName}]"/>
+    <property name="sql.instanceLevelQuery" value="USE [master]; IF EXISTS (SELECT name FROM sys.databases WHERE name = N'${tests.databaseName}') DROP DATABASE [${tests.databaseName}]"/>
     <call target="sql.instanceLevelOsql" />
 
     <!-- createQuery -->
-    <property name="sql.instanceLevelQuery" value="USE [master]; CREATE DATABASE [${this.tests.databaseName}]"/>
+    <property name="sql.instanceLevelQuery" value="USE [master]; CREATE DATABASE [${tests.databaseName}]"/>
     <call target="sql.instanceLevelOsql" />
 
     <!-- grantQuery -->
-    <property name="sql.instanceLevelQuery" value="USE [${this.tests.databaseName}]; CREATE USER [${const.dbUid}] FOR LOGIN [${const.dbUid}]; EXEC sp_addrolemember N'db_owner', N'${const.dbUid}';" />
+    <property name="sql.instanceLevelQuery" value="USE [${tests.databaseName}]; CREATE USER [${const.dbUid}] FOR LOGIN [${const.dbUid}]; EXEC sp_addrolemember N'db_owner', N'${const.dbUid}';" />
     <call target="sql.instanceLevelOsql" />
   </target>
 
-  <target name="sql.instanceLevelOsql">
-    <echo message="${this::echo-property('sql.instanceLevelQuery')}" />
-    <exec verbose="true" program="osql" commandline="-S ${this.tests.dbInstance} -n -b -E -Q &quot;${sql.instanceLevelQuery}&quot;" />
-  </target>
-
-  <target name="this.tests.updateConfig">
+  <target name="tests.updateConfig">
     <property name="relativeTestsPath" value="Projects\Rainbow.Tests\" />
     <copy file="${this.branch}${relativeTestsPath}App.config.standard" 
       tofile="${this.branch}${relativeTestsPath}App.config" overwrite="true">
       <filterchain>
         <replacestring from="[[RainbowTestDBUser]]" to="${const.dbUid}" />
         <replacestring from="[[RainbowTestDBUserPwd]]" to="${const.dbPwd}" />
-        <replacestring from="[[RainbowTestDBServer]]" to="${this.tests.dbInstance}" />
+        <replacestring from="[[RainbowTestDBServer]]" to="${tests.dbInstance}" />
         <replacestring from="[[your.branch.root]]" to="${directory::get-current-directory()}\${string::replace(this.branch, '/', '\')}" />
-        <replacestring from="[[RainbowTestDBConnectionString]]" to="${this.tests.sqlConnectionString}" />
+        <replacestring from="[[RainbowTestDBConnectionString]]" to="${tests.sqlConnectionString}" />
       </filterchain>
     </copy>
   </target>
 
-  <target name="this.tests.run">
+  <target name="tests.run">
     <nunit2 haltonfailure="true" failonerror="true">
       <formatter type="Xml" usefile="true" extension=".xml" outputdir="${this.branch}" />
       <formatter type="Plain" usefile="false" />
       <test assemblyname="${this.branch}Projects\Rainbow.Tests\bin\Rainbow.Tests.dll" />
     </nunit2>
+  </target>
+
+  <!-- ********************** -->
+  <!-- **  parameter sets  ** -->
+  <!-- ********************** -->
+
+  <target name="this.setTrustedConnectionString">
+    <echo message="${this::echo-property('this.dbInstance')}" />
+    <property name="this.sqlConnectionString.trusted" value="server=${this.dbInstance};Trusted_Connection=true;database=${this.databaseName}" />
+    <property name="this.sqlConnectionString.rainbow" value="server=${this.dbInstance};database=${this.databaseName};uid=${const.dbUid};pwd=${const.dbPwd}" />
+    <property name="this.sqlConnectionString" value="${this.sqlConnectionString.trusted}" />    
+  </target>
+
+  <target name="this.setProperties2000">
+    <property name="this.virtDirName" value="${this.branch.encoded}" />
+    <property name="this.relativeApplicationPath" value="${this.webProjectDir}" />
+    <property name="this.dbInstance" value="(local)" />
+    <call target="this.setTrustedConnectionString" />
+  </target>
+
+  <target name="this.setProperties2005">
+    <property name="this.virtDirName" value="${this.webPrecompiledDir}/${this.branch.encoded}" />
+    <property name="this.relativeApplicationPath" value="${this.virtDirName}/" />
+    <property name="this.dbInstance" value="(local)\SQLEXPRESS" />
+    <call target="this.setTrustedConnectionString" />
+  </target>
+
+  <target name="this.prepare.webProjectDirSql2000" >
+    <call target="this.setProperties2000" />
+    <call target="this.createIisApp" />
+    <call target="deleteLog" />
+  </target>
+
+  <target name="this.prepare.webPrecompiledDirSql2005" >
+    <call target="this.setProperties2005" />
+    <readregistry property="iisWwwRoot" key="SOFTWARE\Microsoft\InetStp\PathWWWRoot" hive="LocalMachine" />
+    <mkdir dir="${iisWwwRoot}\${this.webPrecompiledDir}" />
+
+    <call target="this.createIisApp" />
+    <call target="deleteLog" />
+  </target>
+
+  <target name="this.fixup.webProjectDirSql2000" >
+    <call target="this.setProperties2000" />
+    <call target="this.sqlRecreate" />
+    <call target="this.setWebConfigConnectionStrings" />
+  </target>
+
+  <target name="this.fixup.webPrecompiledDirSql2005">
+    <call target="this.setProperties2005" />
+    <call target="this.sqlRecreate" />
+    <call target="this.setWebConfigConnectionStrings" />
   </target>
 
   <!-- *********************************************** -->
