@@ -1,17 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Configuration.Provider;
-using System.Data;
-using System.Data.SqlClient;
-using System.Threading;
-using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 
-using Rainbow.Framework.BLL.Utils;
-using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
@@ -29,11 +20,17 @@ namespace Rainbow.Framework.Users.Data {
     /// is used to store and validate all username/password credentials.
     /// </remarks>
     /// </summary>
+	[History( "moudrick", "2007/05/12", "UseSingleDatabase support introduced" )]
     [History( "jminond", "2005/03/10", "Tab to page conversion" )]
     [History( "gman3001", "2004/09/29", "Added the UpdateLastVisit method to update the user's last visit date indicator." )]
     public class UsersDB {
 
         #region Properties
+
+		private string AuthPortal
+		{
+			get { return Config.UseSingleUserBase ? Config.DefaultPortal : CurrentPortalSettings.PortalAlias; }
+		}
 
         private RainbowMembershipProvider MembershipProvider {
             get {
@@ -177,7 +174,7 @@ namespace Rainbow.Framework.Users.Data {
         /// <summary>
         /// Get Current UserID
         /// </summary>
-        /// <param name="portalID">The portal ID.</param>
+        //// <param name="portalID">The portal ID.</param>
         /// <returns></returns>
         //public Guid GetCurrentUserID( int portalID ) {
         //    MembershipUser user = Membership.GetUser();
@@ -277,12 +274,11 @@ namespace Rainbow.Framework.Users.Data {
         /// <param name="userName">the user's email</param>
         /// <returns></returns>
         public RainbowUser GetSingleUser( string userName ) {
-
-            RainbowUser user = MembershipProvider.GetUser( CurrentPortalSettings.PortalAlias, userName, true ) as RainbowUser;
-            return user;
+        	RainbowUser user = MembershipProvider.GetUser(AuthPortal, userName, true) as RainbowUser;
+        	return user;
         }
 
-        /// <summary>
+    	/// <summary>
         /// The GetUser method returns the collection of users.
         /// </summary>
         /// <returns></returns>
@@ -313,8 +309,7 @@ namespace Rainbow.Framework.Users.Data {
         /// <returns></returns>
         /// <remarks>UserLogin Stored Procedure</remarks>
         public MembershipUser Login( string email, string password ) {
-
-            string userName = MembershipProvider.GetUserNameByEmail( CurrentPortalSettings.PortalAlias, email );
+        	string userName = MembershipProvider.GetUserNameByEmail( AuthPortal, email );
 
             if ( string.IsNullOrEmpty( userName ) ) {
                 return null;

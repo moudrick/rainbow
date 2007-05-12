@@ -82,7 +82,7 @@ namespace Rainbow.Content.Web.Modules
             UsersDB usersDB = new UsersDB();
 
             //Obtain single row of User information
-            MembershipUser memberUser = usersDB.GetSingleUser( email.Text );
+            MembershipUser memberUser = usersDB.GetSingleUser(email.Text);
             //ProfileCommon profile = usersDB.GetSingleUserProfile( email.Text, portalSettings.PortalID );
 
             if ( true ) {

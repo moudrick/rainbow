@@ -96,7 +96,7 @@
     <add key="RemoveTLD" value="true" />
     <add key="SecondLevelDomains" value="aero;biz;com;coop;info;museum;name;net;org;pro;gov;edu;mil;int;co;ac;sch;nhs;police;mod;ltd;plc;me" />
     <add key="DefaultTheme" value="Default" />
-    <add key="UseSingleUserBase" value="false" />
+    <add key="UseSingleUserBase" value="true" />
     <add key="EnableMonitoring" value="true" />
     <add key="EnableWebCompile" value="false" />
     <add key="AmazonPromoCode" value="minondcom-20" />

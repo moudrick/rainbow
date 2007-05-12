@@ -1,180 +1,22 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
 using NUnit.Framework;
 
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
-using System.Collections.Specialized;
 using System.Web.Security;
-using System.Data.SqlClient;
+using Rainbow.Framework.Settings;
 
 namespace Rainbow.Tests {
 
     [TestFixture]
-    public class MembershipProviderTest {
-
+    public class MembershipProviderTest 
+	{
         [TestFixtureSetUp]
-        public void FixtureSetUp() {
+        public void FixtureSetUp() 
+		{
             // Set up initial database environment for testing purposes
             TestHelper.TearDownDB();
             TestHelper.RecreateDBSchema();
         }
-
-        [Test]
-        public void Foo() {
-            Console.WriteLine( "This should pass. It only writes to the Console." );
-        }
-
-        #region Config properties
-
-        [Test]
-        public void ApplicationNameTest() {
-            try {
-                string appName = Membership.ApplicationName;
-                Assert.AreEqual( appName, "Rainbow" );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving ApplicationName property", ex );
-            }
-        }
-
-        [Test]
-        public void EnablePasswordResetTest() {
-            try {
-                bool enablePwdReset = Membership.EnablePasswordReset;
-                Assert.AreEqual( enablePwdReset, true );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving EnablePasswordReset property", ex );
-            }
-        }
-
-        [Test]
-        public void EnablePasswordRetrievalTest() {
-            try {
-                bool enablePwdRetrieval = Membership.EnablePasswordRetrieval;
-                Assert.AreEqual( enablePwdRetrieval, false );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving EnablePasswordRetrieval property", ex );
-            }
-        }
-
-        [Test]
-        public void HashAlgorithmTypeTest() {
-            try {
-                string hashAlgType = Membership.HashAlgorithmType;
-                Assert.AreEqual( hashAlgType, "SHA1" );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving HashAlgorithmType property", ex );
-            }
-        }
-
-        [Test]
-        public void MaxInvalidPasswordAttemptsTest() {
-            try {
-                int maxInvalidPwdAttempts = Membership.MaxInvalidPasswordAttempts;
-                Assert.AreEqual( maxInvalidPwdAttempts, 5 );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving MaxInvalidPasswordAttempts property", ex );
-            }
-        }
-
-        [Test]
-        public void MinRequiredNonAlphanumericCharactersTest() {
-            try {
-                int minReqNonAlpha = Membership.MinRequiredNonAlphanumericCharacters;
-                Assert.AreEqual( minReqNonAlpha, 1 );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving MinRequiredNonAlphanumericCharacters property", ex );
-            }
-        }
-
-        [Test]
-        public void MinRequiredPasswordLengthTest() {
-            try {
-                int minReqPwdLength = Membership.MinRequiredPasswordLength;
-                Assert.AreEqual( minReqPwdLength, 5 );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving MinRequiredPasswordLength property", ex );
-            }
-        }
-
-        [Test]
-        public void PasswordAttemptWindowTest() {
-            try {
-                int pwdAttemptWindow = Membership.PasswordAttemptWindow;
-                Assert.AreEqual( pwdAttemptWindow, 15 );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving PasswordAttemptWindows property", ex );
-            }
-        }
-
-        [Test]
-        public void PasswordStrengthRegularExpressionTest() {
-            try {
-                string pwdStrengthRegex = Membership.PasswordStrengthRegularExpression;
-                Assert.AreEqual( pwdStrengthRegex, string.Empty );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving PasswordStrengthRegularExpression property", ex );
-            }
-        }
-
-        [Test]
-        public void ProviderTest() {
-            try {
-                MembershipProvider provider = Membership.Provider;
-                Assert.AreEqual( provider.GetType(), typeof( Rainbow.Framework.Providers.RainbowMembershipProvider.RainbowSqlMembershipProvider ) );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving Provider property", ex );
-            }
-        }
-
-        [Test]
-        public void ProvidersTest() {
-            try {
-                MembershipProviderCollection providers = Membership.Providers;
-                Assert.AreEqual( providers.Count, 1 );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving Providers property", ex );
-            }
-        }
-
-        [Test]
-        public void RequiresQuestionAndAnswerTest() {
-            try {
-                bool reqQuestionAndAnswer = Membership.RequiresQuestionAndAnswer;
-                Assert.AreEqual( reqQuestionAndAnswer, false );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error retrieving RequiresQuestionAndAnswer property", ex );
-            }
-        }
-
-        #endregion
-
-        #region Membership provider methods
 
         [Test]
         public void GetAllUsersTest() {
@@ -225,15 +67,10 @@ namespace Rainbow.Tests {
         }
 
         [Test]
-        public void GetUserNameByEmailValidUserTest() {
-            try {
-                string userName = Membership.GetUserNameByEmail( "admin@rainbowportal.net" );
-                Assert.AreEqual( userName, "admin@rainbowportal.net" );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message + ex.StackTrace );
-                Assert.Fail( "Error in GetUserNameByEmailValidUserTest", ex );
-            }
+        public void GetUserNameByEmailValidUserTest()
+        {
+        	const string defaultEmailLogin = "admin@rainbowportal.net";
+        	Assert.AreEqual(Membership.GetUserNameByEmail(defaultEmailLogin), defaultEmailLogin);
         }
 
         [Test]
@@ -641,6 +478,5 @@ namespace Rainbow.Tests {
                 Assert.Fail( "Error in DeleteUserTest2", ex );
             }
         }
-        #endregion
     }
 }
