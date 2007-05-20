@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<project name="Rainbow" default="default">
+  <include buildfile="nant.build" />
+
+  <target name="imtest">
+    <echo message="imtest" />
+  </target>
+</project>

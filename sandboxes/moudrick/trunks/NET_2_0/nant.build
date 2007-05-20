@@ -1,0 +1,489 @@
+<?xml version="1.0"?>
+<!DOCTYPE project [ 
+  <!ENTITY configurationNamespaces '
+        <namespaces>
+          <namespace prefix="x" uri="${xmlNamespace}" />
+        </namespaces>
+'
+>
+]>
+<project name="Rainbow">
+  <!-- ************************************************************ -->
+  <!-- **  Optional incoming parameters and their default values ** -->
+  <!-- ************************************************************ -->
+  <property if="${not property::exists('in.sql.instanse.sa.commandline')}" name="in.sql.instanse.sa.commandline" value="-E" />
+  <property if="${not property::exists('in.webSiteName')}" name="in.webSiteName" value="1" />
+  <property if="${not property::exists('in.revision')}" name="in.revision" value="HEAD" />
+
+  <echo message="in.sql.instanse.sa.commandline=${in.sql.instanse.sa.commandline}" />
+  <echo message="in.webSiteName=${in.webSiteName}" />
+  <echo message="in.revision=${in.revision}" />
+
+  <!-- ******************************************** -->
+  <!-- ** Global properties pre-initialization   ** -->
+  <!-- ******************************************** -->
+  <property name="this.sql.instanse.sa.commandline" value="${in.sql.instanse.sa.commandline}" />
+  <property name="this.webSiteName" value="${in.webSiteName}" />
+  <property name="this.revision" value="${in.revision}" />
+
+  <property name="this.configuration" value="Release" />
+  <property name="this.msbuild.targets" value="Clean;Build" />
+
+  <property name="this.relativeSqlPath" value="Setup/Scripts/" />
+  <property name="this.webProjectDir" value="WebSites/Rainbow/" />
+  <property name="this.webPrecompiledDir" value="PrecompiledWeb" />
+
+  <property name="this.netFramework" value="net-2.0" />
+  <property name="this.netFrameworkPath" value="${framework::get-framework-directory(this.netFramework)}"  />
+
+  <property name="const.dbUid" value="rainbow" readonly="true" />
+  <property name="const.dbPwd" value="rainbow_" readonly="true" />
+
+  <!-- ***************************************** -->
+  <!-- **  Public action sequence targets     ** -->
+  <!-- ***************************************** -->
+  <target name="ccnet" depends="main" />
+  <target name="manual" depends="main, this.notepadSpecifics" />
+  <target name="main" >
+    <call target="this.information" />
+    <call target="svn.default" />
+    <call target="tests.prepare" />
+    <call target="config.update" />
+    <call target="this.prepare.webProjectDirSql2000" />
+
+    <call target="this.rebuild" />
+
+    <call target="this.prepare.webPrecompiledDirSql2005" />
+
+    <call target="this.fixup.webProjectDirSql2000" />
+    <call target="this.fixup.webPrecompiledDirSql2005" />
+
+    <call target="tests.run" />
+  </target>
+
+  <target name="main.tests" >
+    <call target="config.update" />
+    <call target="this.prepare.webProjectDirSql2000" />
+    <call target="tests.prepare" />
+    <call target="this.rebuild" />
+    <call target="tests.run" />
+  </target>
+
+  <!-- *************** -->
+  <!-- **  Aliases  ** -->
+  <!-- *************** -->
+  <target name="tests" depends="tests.all" />
+
+  <!-- ******************************** -->
+  <!-- **  Simple action targets     ** -->
+  <!-- ******************************** -->
+  <target name="this.information">
+    <echo message="** this.information: runtime property values **" />
+    <echo message="" />
+    <echo message="** .Net Framework related information **" />
+    <echo message="framework::get-runtime-framework()='${framework::get-runtime-framework()}'" />
+    <echo message="${this::echo-property('this.netFramework')}" />
+    <echo message="${this::echo-property('this.netFrameworkPath')}" />
+    <echo message="" />
+    <echo message="** branch specific information **" />
+    <echo message="${this::echo-property('this.dbInstance')}" />
+    <echo message="" />
+    <echo message="** CCNet related information **" />
+    <echo message="${this::echo-property('CCNetLabel')}" />
+    <echo message="${this::echo-property('')}" />
+  </target>
+
+  <!-- *********** -->
+  <!-- **  svn  ** -->
+  <!-- *********** -->
+  <target name="svn.default">
+    <call target="svn.update" />
+    <call target="svn.info" />
+  </target>
+
+  <target name="svn.update">
+    <exec program="svn.exe" verbose="true" commandline="-r ${this.revision} update" />
+  </target>
+
+  <target name="svn.info">
+    <property name="svnInfoOutput" value=".svn.info.txt" />
+    <exec program="svn.exe" commandline="info" output="${svnInfoOutput}" />
+    <loadfile file="${svnInfoOutput}" property="svnInfo" />
+
+    <regex pattern="(Revision\:\ (?'revision'[0-9]*))" input="${svnInfo}" options="Multiline" />
+    <property name="build.version.revision" value="${revision}" />
+    <echo message="${this::echo-property('build.version.revision')}" />
+
+    <regex pattern="(URL\:\ (?'url'\S*))" input="${svnInfo}" options="Multiline" />
+    <property name="svn.info.url" value="${url}" />
+    <echo message="${this::echo-property('svn.info.url')}" />
+
+    <regex pattern="(Repository Root\:\ (?'root'\S*))" input="${svnInfo}" options="Multiline" />
+    <property name="svn.info.root" value="${root}" />
+    <echo message="${this::echo-property('svn.info.root')}" />
+
+    <property name="svn.branch" value="${string::replace(svn.info.url + '/', svn.info.root + '/', '')}" />
+    <echo message="${this::echo-property('svn.branch')}" />  
+
+    <property name="svn.branch.encoded" value="${string::replace(svn.branch, '/', '$')}" dynamic="true" />
+    <echo message="${this::echo-property('svn.branch.encoded')}" />  
+
+    <property name="sql.db.name" value="${svn.branch.encoded}" />
+    <echo message="${this::echo-property('sql.db.name')}" />  
+  </target>
+
+  <!-- ************** -->
+  <!-- **  config  ** -->
+  <!-- ************** -->
+  <target name="config.update">
+    <property name="config" value="${this.webProjectDir}Web.config" />
+    <copy file="${config}.standard" tofile="${config}" overwrite="true" />
+
+	<call target="tests.updateConfig" />
+  </target>
+
+  <!-- *********** -->
+  <!-- **  web  ** -->
+  <!-- *********** -->
+  <target name="this.createIisApp">
+    <echo message="${this::echo-property('this.virtDirName')}" />
+    <echo message="${this::echo-property('this.relativeApplicationPath')}" />
+    <setenv name="branch" value="."/>
+    <setenv name="relativeApplicationPath" value="${this.relativeApplicationPath}" />
+    <setenv name="virtDirName" value="${this.virtDirName}" />
+    <setenv name="webSiteName" value="${this.webSiteName}" />
+    <exec program="CreateIISApp.cmd" />
+  </target>
+
+  <target name="deleteLog">
+    <echo message="${this::echo-property('this.relativeApplicationPath')}" />
+    <property name="logFileName" value="${this.relativeApplicationPath}rb_logs/rb_log.resx" />
+    <echo message="${this::echo-property('logFileName')}" />
+    <if test="${file::exists(logFileName)}">
+      <touch verbose="true" file="${this.relativeApplicationPath}Web.config" />
+      <sleep milliseconds="500" />
+      <delete verbose="true" file="${logFileName}" />
+    </if>
+  </target>
+
+  <!-- ************* -->
+  <!-- **  build  ** -->
+  <!-- ************* -->
+
+  <target name="this.rebuild">
+    <property name="this.msbuild.targets" value="Clean;Rebuild" />
+    <call target="this.build" />
+  </target>
+
+  <target name="this.build">
+    <property name="this.solution.name" value="${svn.branch.encoded}.sln" />
+    <property name="build.SlnRelativePath" value="WebSites\Rainbow\" />
+    <copy file="Rainbow.sln" tofile="${this.solution.name}" overwrite="true">
+      <filterchain>
+        <!-- replacestring from="${this.webAppTemplate}" to="${this.virtDirName}" / -->
+        <replacestring 
+          from="&quot;${build.SlnRelativePath}&quot;, &quot;${build.SlnRelativePath}&quot;" 
+          to="&quot;http://localhost/${this.virtDirName}/&quot;, &quot;http://localhost/${this.virtDirName}/&quot;" />
+        <replacestring 
+          from=".AspNetCompiler.VirtualPath = &quot;/Rainbow&quot;" 
+          to=".AspNetCompiler.VirtualPath = &quot;/${this.virtDirName}&quot;" />
+        <replacestring 
+          from="VWDPort = &quot;9389&quot;" 
+          to="SlnRelativePath = &quot;${build.SlnRelativePath}&quot;" />
+        <replacestring 
+          from="PrecompiledWeb\Rainbow\" 
+          to="PrecompiledWeb\${this.virtDirName}\" />
+      </filterchain>
+    </copy>
+    <foreach item="String" property="configuration" in="Release" delim=";"> <!-- ;Debug -->
+      <exec program="msbuild.exe" basedir="${this.netFrameworkPath}" workingdir=".">
+        <arg value="${this.solution.name}" />
+        <arg value="/property:Configuration=${configuration};Platform=Mixed Platforms" />
+        <arg value="/target:${this.msbuild.targets}" />
+        <arg value="/verbosity:quiet" />
+      </exec>
+    </foreach>
+  </target>
+
+  <!-- *********** -->
+  <!-- **  sql  ** -->
+  <!-- *********** -->
+  <target name="sql.instanceLevelOsql">
+    <echo message="${this::echo-property('sql.instanceLevelQuery')}" />
+    <exec verbose="true" program="osql" commandline="-S ${tests.dbInstance} -n -b -E -Q &quot;${sql.instanceLevelQuery}&quot;" />
+  </target>
+  
+  <target name="this.sqlRecreate">
+    <property name="this.sql.path" value="${this.relativeApplicationPath}${this.relativeSqlPath}" />
+    <property name="this.sql.setup.name" value="setup.${svn.branch.encoded}.bat" />
+    <property name="this.create.db.script.name" value="createdb_bat.sql" />
+
+    <copy file="${this.sql.path}${this.create.db.script.name}" 
+      tofile="${this.sql.path}${sql.db.name}.${this.create.db.script.name}" 
+      overwrite="true">
+      <filterchain>
+        <replacestring from="Rainbow" to="${sql.db.name}" />
+      </filterchain>
+    </copy>
+
+    <copy file="${this.sql.path}setup.bat" 
+      tofile="${this.sql.path}${this.sql.setup.name}" overwrite="true">
+      <filterchain>
+        <replacestring from="Rainbow" to="${sql.db.name}" />
+        <replacestring from="${this.create.db.script.name}" 
+          to="${sql.db.name}.${this.create.db.script.name}" />
+        <replacestring from="(local)" to="${this.dbInstance}" />
+        <replacestring from="-E" to="${this.sql.instanse.sa.commandline}" />
+        <replacestring from="@pause" to="@rem" />
+      </filterchain>
+    </copy>
+
+    <exec program="${this.sql.setup.name}" basedir="${this.sql.path}" workingdir="${this.sql.path}" />
+
+    <!-- -n -b -->
+    <property name="sqlCommandLinePrefix.trusted" value="-S ${this.dbInstance} -E " />
+
+    <call target="this.grantLogin" />
+  </target>
+
+  <target name="this.grantLogin">
+    <description>To run the quries below and successfully use the result, you have to create the 'rainbow' database instance user with 'rainbow_'</description>
+    <property name="createLoginQueryFilename" value=".create.login.sql" />
+    <echo file="${createLoginQueryFilename}">
+USE [master]
+GO
+
+if not exists (select * from master.dbo.syslogins where loginname = N'${const.dbUid}')
+BEGIN
+  declare @logindb nvarchar(132), @loginlang nvarchar(132) select @logindb = N'master', @loginlang = N'us_english'
+  if @logindb is null or not exists (select * from master.dbo.sysdatabases where name = @logindb)
+    select @logindb = N'master'
+  if @loginlang is null or (not exists (select * from master.dbo.syslanguages where name = @loginlang) and @loginlang &lt;&gt; N'us_english')
+    select @loginlang = @@language
+  exec sp_addlogin N'${const.dbUid}', ${const.dbPwd}, @logindb, @loginlang
+END
+GO
+-- SQL 2005
+--CREATE LOGIN [${const.dbUid}] WITH PASSWORD=N'${const.dbPwd}', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
+GO
+    </echo>
+    <exec program="osql" commandline="${sqlCommandLinePrefix.trusted} -i ${createLoginQueryFilename}" />
+    <property name="grantQuery" value="USE [${sql.db.name}]; CREATE USER [${const.dbUid}] FOR LOGIN [${const.dbUid}]; EXEC sp_addrolemember N'db_owner', N'${const.dbUid}'; --SQL 2005 only" />
+    <property name="grantQuery" value="USE [${sql.db.name}]; if not exists (select * from dbo.sysusers where name = N'${const.dbUid}') EXEC sp_grantdbaccess N'${const.dbUid}', N'${const.dbUid}'; EXEC sp_addrolemember N'db_owner', N'${const.dbUid}';" />
+
+    <echo message="${this::echo-property('grantQuery')}" />
+    <exec program="osql" commandline="${sqlCommandLinePrefix.trusted} -Q &quot;${grantQuery}&quot;" />
+  </target>
+
+  <target name="this.setWebConfigConnectionStrings" >
+    <property name="this.webConfig" value="${this.relativeApplicationPath}Web.config" />
+    <echo message="${this::echo-property('this.webConfig')}" />
+    <echo message="${this::echo-property('this.sqlConnectionString')}" />
+    <foreach item="String" property="addName" delim=";" 
+      in="ConnectionString;Providers.ConnectionString;RainbowProviders.ConnectionString;Main.ConnectionString">
+      <property name="par.xpath" 
+        value="/x:configuration/x:connectionStrings/x:add[@name = '${addName}']/@connectionString" />
+      <call target="helper.xmlpoke.connectionString.ensure" />
+    </foreach>
+    <property name="par.xpath" 
+      value="/x:configuration/x:log4net/x:appender/x:param[@name = 'ConnectionString']/@value" />
+    <call target="helper.xmlpoke.connectionString.ensure" />
+  </target>
+
+  <target name="this.notepadSpecifics">
+    <property name="fileName" value=".specifics" />
+    <echo file="${fileName}" append="false">
+http://localhost/${svn.branch.encoded}/
+http://localhost/${this.webPrecompiledDir}/${svn.branch.encoded}/
+    </echo>
+    <exec program="notepad">
+      <arg value="${fileName}" />
+    </exec>
+  </target>
+
+  <!-- *********************************************** -->
+  <!-- **  Rainbow.Tests running stuff              ** -->
+  <!-- *********************************************** -->
+
+  <target name="tests.all">
+    <call target="tests.prepare" />
+    <call target="tests.run" />
+  </target>
+
+  <target name="tests.prepare">
+    <call target="tests.recreateDb" />
+    <call target="tests.updateConfig" />
+  </target>
+
+  <target name="tests.recreateDb">
+    <property name="tests.dbInstance" value="(local)" />
+    <property name="tests.dbInstance" value="(local)\SQLEXPRESS" />
+    <property name="tests.databaseName" value="rbtests_${sql.db.name}" />
+    <property name="tests.sqlConnectionString" value="server=${tests.dbInstance};database=${tests.databaseName};uid=rainbow;pwd=rainbow_" />
+
+    <!-- killQuery -->
+    <property name="sql.instanceLevelQuery" 
+      value="USE [master]; DECLARE @sql VARCHAR(8000); SET @sql = ''; SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '${tests.databaseName}'; EXEC(@sql)"/>
+    <call target="sql.instanceLevelOsql" />
+
+    <!-- dropQuery -->
+    <property name="sql.instanceLevelQuery" value="USE [master]; IF EXISTS (SELECT name FROM sys.databases WHERE name = N'${tests.databaseName}') DROP DATABASE [${tests.databaseName}]"/>
+    <call target="sql.instanceLevelOsql" />
+
+    <!-- createQuery -->
+    <property name="sql.instanceLevelQuery" value="USE [master]; CREATE DATABASE [${tests.databaseName}]"/>
+    <call target="sql.instanceLevelOsql" />
+
+    <!-- grantQuery -->
+    <property name="sql.instanceLevelQuery" value="USE [${tests.databaseName}]; CREATE USER [${const.dbUid}] FOR LOGIN [${const.dbUid}]; EXEC sp_addrolemember N'db_owner', N'${const.dbUid}';" />
+    <call target="sql.instanceLevelOsql" />
+  </target>
+
+  <target name="tests.updateConfig">
+    <property name="relativeTestsPath" value="Projects\Rainbow.Tests\" />
+    <copy file="${relativeTestsPath}App.config.standard" 
+      tofile="${relativeTestsPath}App.config" overwrite="true">
+      <filterchain>
+        <replacestring from="[[RainbowTestDBUser]]" to="${const.dbUid}" />
+        <replacestring from="[[RainbowTestDBUserPwd]]" to="${const.dbPwd}" />
+        <replacestring from="[[RainbowTestDBServer]]" to="${tests.dbInstance}" />
+        <replacestring from="[[your.branch.root]]" to="${directory::get-current-directory()}\}" /> <!-- ${string::replace(this.branch, '/', '\') -->
+        <replacestring from="[[RainbowTestDBConnectionString]]" to="${tests.sqlConnectionString}" />
+      </filterchain>
+    </copy>
+  </target>
+
+  <target name="tests.run">
+    <echo message="Running nunit2 task" />
+    <foreach item="File" property="testAssembly">
+      <in>
+	    <items>
+          <include name="Projects\Rainbow.Tests\bin\Rainbow.Tests.dll" />
+        </items>
+      </in>
+<!--      <in>
+        <items refid="test.assemblies" />
+      </in> -->
+      <do>
+        <echo message="Running test assembly: ${testAssembly}" />
+        <nunit2 haltonfailure="false" failonerror="false">
+          <formatter type="Xml" usefile="true" extension=".xml" outputdir="." />
+          <formatter type="Plain" usefile="false" />
+          <test assemblyname="${testAssembly}" >
+            <categories>
+              <exclude name="NotWorking" />
+            </categories>
+          </test>
+        </nunit2>
+      </do>
+    </foreach>
+    <property name="customTestsSummary" value="" />
+    <property name="total" value="0" />
+    <foreach item="File" property="testResult">
+      <in>
+	    <items>
+          <include name="Rainbow.Tests.dll-results.xml" />
+        </items>
+      </in>
+<!--      <in>
+        <items refid="test.results" />
+      </in> -->
+      <do>
+        <xmlpeek file="${testResult}" xpath="/test-results/@failures" property="currentFailuresNumber" />
+        <property name="customTestsSummary" value="${customTestsSummary}&#xd;&#xa;${currentFailuresNumber} failures in ${testResult}" />
+        <property name="total" value="${int::parse(total)+int::parse(currentFailuresNumber)}" />
+      </do>
+    </foreach>
+    <echo message="${customTestsSummary}" />
+    <echo message="Total Tests Failed: ${total}" />
+    <fail if="${int::parse(total) > 0}" message="Total Tests Failed: ${total}." />
+  </target>
+
+  <!-- ********************** -->
+  <!-- **  parameter sets  ** -->
+  <!-- ********************** -->
+
+  <target name="this.setTrustedConnectionString">
+    <echo message="${this::echo-property('this.dbInstance')}" />
+    <property name="this.sqlConnectionString.trusted" value="server=${this.dbInstance};Trusted_Connection=true;database=${sql.db.name}" />
+    <property name="this.sqlConnectionString.rainbow" value="server=${this.dbInstance};database=${sql.db.name};uid=${const.dbUid};pwd=${const.dbPwd}" />
+    <property name="this.sqlConnectionString" value="${this.sqlConnectionString.trusted}" />    
+  </target>
+
+  <target name="this.setProperties2000">
+    <property name="this.virtDirName" value="${svn.branch.encoded}" />
+    <property name="this.relativeApplicationPath" value="${this.webProjectDir}" />
+    <property name="this.dbInstance" value="(local)" />
+    <call target="this.setTrustedConnectionString" />
+  </target>
+
+  <target name="this.setProperties2005">
+    <property name="this.virtDirName" value="${this.webPrecompiledDir}/${svn.branch.encoded}" />
+    <property name="this.relativeApplicationPath" value="${this.virtDirName}/" />
+    <property name="this.dbInstance" value="(local)\SQLEXPRESS" />
+    <call target="this.setTrustedConnectionString" />
+  </target>
+
+  <target name="this.prepare.webProjectDirSql2000" >
+    <call target="this.setProperties2000" />
+    <call target="this.createIisApp" />
+    <call target="deleteLog" />
+  </target>
+
+  <target name="this.prepare.webPrecompiledDirSql2005" >
+    <call target="this.setProperties2005" />
+    <readregistry property="iisWwwRoot" key="SOFTWARE\Microsoft\InetStp\PathWWWRoot" hive="LocalMachine" />
+    <mkdir dir="${iisWwwRoot}\${this.webPrecompiledDir}" />
+
+    <call target="this.createIisApp" />
+    <call target="deleteLog" />
+  </target>
+
+  <target name="this.fixup.webProjectDirSql2000" >
+    <call target="this.setProperties2000" />
+    <call target="this.sqlRecreate" />
+    <call target="this.setWebConfigConnectionStrings" />
+  </target>
+
+  <target name="this.fixup.webPrecompiledDirSql2005">
+    <call target="this.setProperties2005" />
+    <call target="this.sqlRecreate" />
+    <call target="this.setWebConfigConnectionStrings" />
+  </target>
+
+  <!-- *********************************************** -->
+  <!-- **  Helper stuff (targets, scripts, etc)     ** -->
+  <!-- *********************************************** -->
+
+  <target name="helper.xmlpoke.connectionString.ensure">
+    <property name="xmlNamespace" value="http://schemas.microsoft.com/.NetConfiguration/v2.0" />
+    <xmlpeek file="${this.webConfig}"
+      xpath="${par.xpath}"
+      property="readString" >
+      &configurationNamespaces;
+    </xmlpeek>
+    <xmlpoke file="${this.webConfig}"
+      xpath="${par.xpath}"
+      value="${this.sqlConnectionString}" >
+      &configurationNamespaces;
+    </xmlpoke>
+  </target>
+
+  <script language="C#" >
+    <code>
+      <![CDATA[
+[FunctionSet("this", "This")]
+public class ThisFunctions : FunctionSetBase {        
+  public ThisFunctions(Project project, PropertyDictionary properties) : base(project, properties) {
+  }
+
+  [Function("echo-property")]
+  public string EchoProperty(string propertyName) {
+    string result = string.Format("{0}='{1}'", propertyName, this.Project.Properties[propertyName]);
+    return result;
+  }
+}
+      ]]>
+    </code>
+  </script>
+</project>
