@@ -1,0 +1,29 @@
+	<project name="Rainbow moudrick">
+		<workingDirectory>&RainbowWCRoot;&path_moudrick;</workingDirectory>
+		<triggers />
+		<externalLinks>
+			<externalLink name="localhost / Project / SQL 2000" url="&localExternalWebRoot;&name_moudrick;" />
+			<externalLink name="localhost / Precompiled / SQL 2005" url="&localExternalWebRoot;PrecompiledWeb/&name_moudrick;" />
+			<externalLink name="test.domain / Project / SQL 2000" url="http://test.domain/&name_moudrick;" />
+			<externalLink name="test.domain / Precompiled / SQL 2005" url="http://test.domain/PrecompiledWeb/&name_moudrick;" />
+			<externalLink name="another.test.domain / Project / SQL 2000" url="http://another.test.domain/&name_moudrick;" />
+			<externalLink name="another.test.domain / Precompiled / SQL 2005" url="http://another.test.domain/PrecompiledWeb/&name_moudrick;" />
+		</externalLinks>
+		<sourcecontrol type="svn" />
+		<build type="nant">
+			<buildFile>default.build</buildFile>
+			<targetList>
+				<target>ccnet</target>
+			</targetList>
+			<buildTimeoutSeconds>2400</buildTimeoutSeconds>
+		</build>
+		<publishers>
+			<merge>
+				<files>
+					<file>*-results.xml</file>
+				</files>
+			</merge>
+			<xmllogger />
+			&rainbow_email_publishers;
+		</publishers>
+	</project>

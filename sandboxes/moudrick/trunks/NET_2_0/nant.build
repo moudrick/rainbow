@@ -347,7 +347,7 @@ http://localhost/${this.webPrecompiledDir}/${svn.branch.encoded}/
         <replacestring from="[[RainbowTestDBUser]]" to="${const.dbUid}" />
         <replacestring from="[[RainbowTestDBUserPwd]]" to="${const.dbPwd}" />
         <replacestring from="[[RainbowTestDBServer]]" to="${tests.dbInstance}" />
-        <replacestring from="[[your.branch.root]]" to="${directory::get-current-directory()}\}" /> <!-- ${string::replace(this.branch, '/', '\') -->
+        <replacestring from="[[your.branch.root]]" to="${directory::get-current-directory() + '\'}" /> <!-- ${string::replace(this.branch, '/', '\') -->
         <replacestring from="[[RainbowTestDBConnectionString]]" to="${tests.sqlConnectionString}" />
       </filterchain>
     </copy>
