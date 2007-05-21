@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<!DOCTYPE project [ 
+<!-- DOCTYPE project [ 
   <!ENTITY configurationNamespaces '
         <namespaces>
           <namespace prefix="x" uri="${xmlNamespace}" />
         </namespaces>
 '
 >
-]>
+] -->
 <project name="Rainbow">
   <!-- ************************************************************ -->
   <!-- **  Optional incoming parameters and their default values ** -->
@@ -353,17 +353,20 @@ http://localhost/${this.webPrecompiledDir}/${svn.branch.encoded}/
     </copy>
   </target>
 
+  <fileset id="test.assemblies">
+    <include name="Projects\Rainbow.Tests\bin\Rainbow.Tests.dll" />
+  </fileset>
+
+  <fileset id="test.results">
+    <include name="Rainbow.Tests.dll-results.xml" />
+  </fileset>
+
   <target name="tests.run">
     <echo message="Running nunit2 task" />
     <foreach item="File" property="testAssembly">
       <in>
-	    <items>
-          <include name="Projects\Rainbow.Tests\bin\Rainbow.Tests.dll" />
-        </items>
-      </in>
-<!--      <in>
         <items refid="test.assemblies" />
-      </in> -->
+      </in>
       <do>
         <echo message="Running test assembly: ${testAssembly}" />
         <nunit2 haltonfailure="false" failonerror="false">
@@ -381,13 +384,8 @@ http://localhost/${this.webPrecompiledDir}/${svn.branch.encoded}/
     <property name="total" value="0" />
     <foreach item="File" property="testResult">
       <in>
-	    <items>
-          <include name="Rainbow.Tests.dll-results.xml" />
-        </items>
-      </in>
-<!--      <in>
         <items refid="test.results" />
-      </in> -->
+      </in>
       <do>
         <xmlpeek file="${testResult}" xpath="/test-results/@failures" property="currentFailuresNumber" />
         <property name="customTestsSummary" value="${customTestsSummary}&#xd;&#xa;${currentFailuresNumber} failures in ${testResult}" />
@@ -460,12 +458,18 @@ http://localhost/${this.webPrecompiledDir}/${svn.branch.encoded}/
     <xmlpeek file="${this.webConfig}"
       xpath="${par.xpath}"
       property="readString" >
-      &configurationNamespaces;
+        <namespaces>
+          <namespace prefix="x" uri="${xmlNamespace}" />
+        </namespaces>
+      <!-- &configurationNamespaces; -->
     </xmlpeek>
     <xmlpoke file="${this.webConfig}"
       xpath="${par.xpath}"
       value="${this.sqlConnectionString}" >
-      &configurationNamespaces;
+        <namespaces>
+          <namespace prefix="x" uri="${xmlNamespace}" />
+        </namespaces>
+      <!-- &configurationNamespaces; -->
     </xmlpoke>
   </target>
 
