@@ -36,7 +36,7 @@ blnWritePermissions = "True"
 blnReadPermissions = "True"
 blnIntegratedWindowsAuthentication = "True"
 
-Dim strIisSiteRoot: strIisSiteRoot = "IIS://localhost/W3SVC/" & webSiteName & "/Root"
+Dim strIisSiteRoot: strIisSiteRoot = "IIS://localhost/W3SVC/" & webSiteIdentifier & "/Root"
 Wscript.echo ("strIisSiteRoot = " & strIisSiteRoot)
 Dim strObjectType: strObjectType = "IIsWebVirtualDir"
 
