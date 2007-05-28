@@ -380,7 +380,7 @@ GO
   <target name="config.web.setConnectionStrings" >
     <property name="this.webConfig" value="${web.relativeApplicationPath}Web.config" />
     <echo message="${this::echo-property('this.webConfig')}" />
-    <echo message="${this::echo-property('this.sqlConnectionString')}" />
+    <echo message="${this::echo-property('sql.web.connectionString')}" />
     <foreach item="String" property="addName" delim=";" 
       in="ConnectionString;Providers.ConnectionString;RainbowProviders.ConnectionString;Main.ConnectionString">
       <property name="par.xpath" 
@@ -504,9 +504,9 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
   <!-- ********************** -->
   <target name="sql.setTrustedConnectionString">
     <echo message="${this::echo-property('sql.instance')}" />
-    <property name="this.sqlConnectionString.trusted" value="server=${sql.instance};Trusted_Connection=true;database=${sql.db.name}" />
-    <property name="this.sqlConnectionString.rainbow" value="server=${sql.instance};database=${sql.db.name};uid=${sql.db.user.name};pwd=${sql.db.user.password}" />
-    <property name="this.sqlConnectionString" value="${this.sqlConnectionString.trusted}" />
+    <property name="sql.web.connectionString.trusted" value="server=${sql.instance};Trusted_Connection=true;database=${sql.db.name}" />
+    <property name="sql.web.connectionString.user" value="server=${sql.instance};database=${sql.db.name};uid=${sql.db.user.name};pwd=${sql.db.user.password}" />
+    <property name="sql.web.connectionString" value="${sql.web.connectionString.trusted}" />
   </target>
 
   <!-- **************** -->
@@ -572,7 +572,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     </xmlpeek>
     <xmlpoke file="${this.webConfig}"
       xpath="${par.xpath}"
-      value="${this.sqlConnectionString}" >
+      value="${sql.web.connectionString}" >
         <namespaces>
           <namespace prefix="x" uri="${xmlNamespace}" />
         </namespaces>
