@@ -30,6 +30,7 @@
   <property if="${not property::exists('build.version.build')}" name="build.version.build" value="0" />
   <property if="${not property::exists('build.version.revision')}" name="build.version.revision" value="0" />
 
+  <property name="wc.dir" value="${project::get-base-directory()}\" />
   <property name="sql.relativePath" value="Setup/Scripts/" />
   <property name="web.rainbow.dir" value="WebSites/Rainbow/" />
   <property name="web.precompiled.dir" value="PrecompiledWeb" />
@@ -46,7 +47,7 @@
   <target name="ccnet" depends="main" />
   <target name="manual" depends="main, wc.notepadSpecifics" />
   <target name="main" >
-    <call target="wc.information" />
+    <call target="wc.info" />
     <call target="svn.default" />
     <call target="tests.prepare" />
     <call target="config.update" />
@@ -80,8 +81,8 @@
   <!-- ******************************** -->
   <!-- **  Simple action targets     ** -->
   <!-- ******************************** -->
-  <target name="wc.information">
-    <echo message="** wc.information: runtime property values **" />
+  <target name="wc.info">
+    <echo message="** wc.info: runtime property values **" />
     <echo message="" />
     <echo message="** .Net Framework related information **" />
     <echo message="framework::get-runtime-framework()='${framework::get-runtime-framework()}'" />
@@ -223,7 +224,7 @@
 
   <target name="build.processSolution">
     <call target="build.prepareBranchSolution" />
-	<property name="build.configurations" value="Release" /> <!-- ;Debug -->
+    <property name="build.configurations" value="Release" /> <!-- ;Debug -->
     <foreach item="String" property="configuration" in="${build.configurations}" delim=";"> 
       <exec program="msbuild.exe" basedir="${this.netFrameworkPath}" workingdir=".">
         <arg value="${build.solution.filename}" />
@@ -237,14 +238,20 @@
   <!-- *********** -->
   <!-- **  sql  ** -->
   <!-- *********** -->
-  <target name="sql.instanceLevelOsql">
-    <echo message="${this::echo-property('sql.instanceLevelQuery')}" />
-    <exec verbose="true" program="osql" commandline="-S ${tests.dbInstance} -n -b -E -Q &quot;${sql.instanceLevelQuery}&quot;" />
+  <property name="sql.osqlParams" value="-n -b" />
+  <property name="sql.auth.trusted" value="-E " />
+
+  <target name="sql.run.query.trusted">
+    <echo message="${this::echo-property('sql.query')}" />
+    <property name="outputFile" value=".sql.run.query.trusted.txt" />
+    <exec verbose="true" program="osql" output="${outputFile}"
+      commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -Q &quot;${sql.query}&quot;" />
+    <loadfile if="${file::exists(outputFile)}" file="${outputFile}" property="sql.run.query.output" />
   </target>
   
   <target name="sql.recreate">
     <property name="sql.path" value="${web.relativeApplicationPath}${sql.relativePath}" />
-    <property name="this.sql.setup.name" value="setup.${svn.branch.encoded}.bat" />
+    <property name="sql.setup.name" value="setup.${svn.branch.encoded}.bat" />
     <property name="sql.createScriptName" value="createdb_bat.sql" />
 
     <copy file="${sql.path}${sql.createScriptName}" 
@@ -256,7 +263,7 @@
     </copy>
 
     <copy file="${sql.path}setup.bat" 
-      tofile="${sql.path}${this.sql.setup.name}" overwrite="true">
+      tofile="${sql.path}${sql.setup.name}" overwrite="true">
       <filterchain>
         <replacestring from="Rainbow" to="${sql.db.name}" />
         <replacestring from="${sql.createScriptName}" 
@@ -267,12 +274,63 @@
       </filterchain>
     </copy>
 
-    <exec program="${this.sql.setup.name}" basedir="${sql.path}" workingdir="${sql.path}" />
+    <exec program="${sql.setup.name}" basedir="${sql.path}" workingdir="${sql.path}" />
+    <call target="sql.grantLogin" />
+  </target>
 
-    <!-- -n -b -->
-    <property name="sqlCommandLinePrefix.trusted" value="-S ${sql.instance} -E " />
+  <target name="sql.setBackupProperties">
+    <property name="sql.dir.backup" value="${wc.dir}.Backup\" />
+    <property name="sql.instance.encoded" value="${string::replace(sql.instance, '\', '$')}" dynamic="true" />
+    <echo message="${this::echo-property('sql.instance')}" />
+    <property name="sql.backupFileName" value="${sql.dir.backup}${sql.instance.encoded}.${sql.db.name}.bak" />
+  </target>
+
+  <target name="sql.backup">
+    <call target="sql.setBackupProperties" />
+    <mkdir dir="${sql.dir.backup}" />
+    <property name="deviceName" value="${sql.db.name}_Backup" />
+
+    <property name="sql.query" value="USE [master]; DECLARE @device VARCHAR(100);SET @device = '${deviceName}';EXEC sp_dropdevice @device;" />
+    <call target="sql.run.query.trusted" failonerror="false" />
+
+    <delete file="${sql.backupFileName}" />
+    <property name="sql.query" value="USE [master]; DECLARE @device VARCHAR(100);SET @device = '${deviceName}';EXEC sp_addumpdevice 'disk', @device, '${sql.backupFileName}';BACKUP DATABASE [${sql.db.name}] TO [${deviceName}] WITH INIT, SKIP; EXEC sp_dropdevice @device;" />
+    <call target="sql.run.query.trusted" />
+
+    <zip zipfile="${sql.backupFileName}.zip">
+      <fileset basedir="${sql.dir.backup}">
+        <include name="${sql.backupFileName}" />
+      </fileset>
+    </zip>
+  </target>
+
+  <target name="sql.restore">
+    <call target="sql.setBackupProperties" />
+    
+    <delete file="${sql.backupFileName}" failonerror="false" />
+    <unzip zipfile="${sql.backupFileName}.zip" todir="${sql.dir.backup}" />
+
+    <!-- killQuery -->
+    <property name="sql.query"
+      value="USE [master]; DECLARE @sql VARCHAR(8000); SET @sql = ''; SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '${sql.db.name}'; EXEC(@sql)" />
+    <call target="sql.run.query.trusted" />
+
+    <!-- physicalNameQuery -->
+    <!-- 2k: USE [master]; DECLARE @physical_name VARCHAR(8000); SELECT @physical_name=[filename] FROM dbo.sysfiles WHERE [name] = 'master'; PRINT @physical_name -->
+    <!-- 2k5: USE [master]; DECLARE @physical_name VARCHAR(MAX); SELECT @physical_name=physical_name FROM sys.database_files WHERE [name] = 'master'; PRINT @physical_name -->
+    <property name="sql.query"
+      value="USE [master]; DECLARE @physical_name VARCHAR(8000); SELECT @physical_name=[filename] FROM dbo.sysfiles WHERE [name] = 'master'; PRINT @physical_name" />
+    <call target="sql.run.query.trusted" />
+    <property name="sql.instance.dir.data" value="${path::get-directory-name(string::trim(sql.run.query.output))}\" />
+    <echo message="${this::echo-property('sql.instance.dir.data')}" />  
+
+    <!-- restoreQuery -->
+    <property name="sql.query" 
+      value="USE [master]; RESTORE DATABASE [${sql.db.name}] FROM DISK = N'${sql.backupFileName}' WITH  FILE = 1,  MOVE N'${sql.db.name}' TO N'${sql.instance.dir.data}${sql.db.name}.mdf',  MOVE N'${sql.db.name}_log' TO N'${sql.instance.dir.data}${sql.db.name}_log.ldf', NOUNLOAD, REPLACE, STATS = 10" />
+    <call target="sql.run.query.trusted" />
 
     <call target="sql.grantLogin" />
+    <call target="sql.grantLogin.aspnet" />
   </target>
 
   <target name="sql.grantLogin">
@@ -296,12 +354,27 @@ GO
 --CREATE LOGIN [${sql.db.user.name}] WITH PASSWORD=N'${sql.db.user.password}', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
 GO
     </echo>
-    <exec program="osql" commandline="${sqlCommandLinePrefix.trusted} -i ${createLoginQueryFilename}" />
+    <exec program="osql" commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -i ${createLoginQueryFilename}" />
     <property name="grantQuery" value="USE [${sql.db.name}]; CREATE USER [${sql.db.user.name}] FOR LOGIN [${sql.db.user.name}]; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}'; --SQL 2005 only" />
     <property name="grantQuery" value="USE [${sql.db.name}]; if not exists (select * from dbo.sysusers where name = N'${sql.db.user.name}') EXEC sp_grantdbaccess N'${sql.db.user.name}', N'${sql.db.user.name}'; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}';" />
 
     <echo message="${this::echo-property('grantQuery')}" />
-    <exec program="osql" commandline="${sqlCommandLinePrefix.trusted} -Q &quot;${grantQuery}&quot;" />
+    <exec program="osql" commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -Q &quot;${grantQuery}&quot;" />
+  </target>
+
+  <target name="sql.grantLogin.aspnet">
+    <property name="aspnetAccount" value="${environment::get-variable('COMPUTERNAME')}\ASPNET" />
+
+    <!-- removeUserQuery -->
+    <!-- 2k: USE [${sql.db.name}]; EXEC sp_droprolemember 'db_owner', '${aspnetAccount}'; IF EXISTS (SELECT * FROM [sysusers] WHERE [name] = N'${aspnetAccount}') EXEC sp_dropuser '${aspnetAccount}' -->
+    <!-- 2k5: IF EXISTS (SELECT * FROM sys.schemas WHERE name = N'${aspnetAccount}') DROP SCHEMA [${aspnetAccount}]; IF EXISTS (SELECT * FROM sys.database_principals WHERE name = N'${aspnetAccount}') DROP USER [${aspnetAccount}] -->
+    <property name="sql.query" 
+      value="USE [${sql.db.name}]; EXEC sp_droprolemember 'db_owner', '${aspnetAccount}'; IF EXISTS (SELECT * FROM [sysusers] WHERE [name] = N'${aspnetAccount}') EXEC sp_dropuser '${aspnetAccount}'" />
+    <call target="sql.run.query.trusted" />
+
+    <property name="sql.query" 
+      value="use [${sql.db.name}]; EXEC sp_grantlogin '${aspnetAccount}'; EXEC sp_addrolemember 'db_owner', '${aspnetAccount}'; EXEC sp_grantdbaccess '${aspnetAccount}';" />
+    <call target="sql.run.query.trusted" />
   </target>
 
   <target name="config.web.setConnectionStrings" >
@@ -330,9 +403,33 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     </exec>
   </target>
 
-  <!-- *********************************************** -->
-  <!-- **  Rainbow.Tests running stuff              ** -->
-  <!-- *********************************************** -->
+  <target name="sql.tests.db.recreate">
+    <property name="sql.tests.instance" value="(local)\SQLEXPRESS" />
+    <property name="sql.instance" value="${sql.tests.instance}" />
+    <property name="sql.tests.db.name" value="rbtests_${sql.db.name}" />
+    <property name="sql.tests.connectionString" value="server=${sql.tests.instance};database=${sql.tests.db.name};uid=rainbow;pwd=rainbow_" />
+
+    <!-- killQuery -->
+    <property name="sql.query" 
+      value="USE [master]; DECLARE @sql VARCHAR(8000); SET @sql = ''; SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '${sql.tests.db.name}'; EXEC(@sql)"/>
+    <call target="sql.run.query.trusted" />
+
+    <!-- dropQuery -->
+    <property name="sql.query" value="USE [master]; IF EXISTS (SELECT name FROM sys.databases WHERE name = N'${sql.tests.db.name}') DROP DATABASE [${sql.tests.db.name}]"/>
+    <call target="sql.run.query.trusted" />
+
+    <!-- createQuery -->
+    <property name="sql.query" value="USE [master]; CREATE DATABASE [${sql.tests.db.name}]"/>
+    <call target="sql.run.query.trusted" />
+
+    <!-- grantQuery -->
+    <property name="sql.query" value="USE [${sql.tests.db.name}]; CREATE USER [${sql.db.user.name}] FOR LOGIN [${sql.db.user.name}]; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}';" />
+    <call target="sql.run.query.trusted" />
+  </target>
+
+  <!-- ************ -->
+  <!-- **  tests ** -->
+  <!-- ************ -->
 
   <target name="tests.default">
     <call target="tests.prepare" />
@@ -340,32 +437,8 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
   </target>
 
   <target name="tests.prepare">
-    <call target="tests.recreateDb" />
+    <call target="sql.tests.db.recreate" />
     <call target="tests.updateConfig" />
-  </target>
-
-  <target name="tests.recreateDb">
-    <property name="tests.dbInstance" value="(local)" />
-    <property name="tests.dbInstance" value="(local)\SQLEXPRESS" />
-    <property name="tests.databaseName" value="rbtests_${sql.db.name}" />
-    <property name="tests.sqlConnectionString" value="server=${tests.dbInstance};database=${tests.databaseName};uid=rainbow;pwd=rainbow_" />
-
-    <!-- killQuery -->
-    <property name="sql.instanceLevelQuery" 
-      value="USE [master]; DECLARE @sql VARCHAR(8000); SET @sql = ''; SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '${tests.databaseName}'; EXEC(@sql)"/>
-    <call target="sql.instanceLevelOsql" />
-
-    <!-- dropQuery -->
-    <property name="sql.instanceLevelQuery" value="USE [master]; IF EXISTS (SELECT name FROM sys.databases WHERE name = N'${tests.databaseName}') DROP DATABASE [${tests.databaseName}]"/>
-    <call target="sql.instanceLevelOsql" />
-
-    <!-- createQuery -->
-    <property name="sql.instanceLevelQuery" value="USE [master]; CREATE DATABASE [${tests.databaseName}]"/>
-    <call target="sql.instanceLevelOsql" />
-
-    <!-- grantQuery -->
-    <property name="sql.instanceLevelQuery" value="USE [${tests.databaseName}]; CREATE USER [${sql.db.user.name}] FOR LOGIN [${sql.db.user.name}]; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}';" />
-    <call target="sql.instanceLevelOsql" />
   </target>
 
   <target name="tests.updateConfig">
@@ -375,9 +448,9 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
       <filterchain>
         <replacestring from="[[RainbowTestDBUser]]" to="${sql.db.user.name}" />
         <replacestring from="[[RainbowTestDBUserPwd]]" to="${sql.db.user.password}" />
-        <replacestring from="[[RainbowTestDBServer]]" to="${tests.dbInstance}" />
+        <replacestring from="[[RainbowTestDBServer]]" to="${sql.tests.instance}" />
         <replacestring from="[[your.branch.root]]" to="${directory::get-current-directory() + '\'}" /> <!-- ${string::replace(this.branch, '/', '\') -->
-        <replacestring from="[[RainbowTestDBConnectionString]]" to="${tests.sqlConnectionString}" />
+        <replacestring from="[[RainbowTestDBConnectionString]]" to="${sql.tests.connectionString}" />
       </filterchain>
     </copy>
   </target>
@@ -461,7 +534,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
   <!-- **************************** -->
   <!-- **  appSql2k5Precompiled  ** -->
   <!-- **************************** -->
-  <target name="appSql2k5Precompiled.setProperties">
+  <target name="appSql2k5Precompiled.setProperties" depends="svn.info">
     <property name="web.virtDirName" value="${web.precompiled.dir}/${svn.branch.encoded}" />
     <property name="web.relativeApplicationPath" value="${web.virtDirName}/" />
     <property name="sql.instance" value="(local)\SQLEXPRESS" />
