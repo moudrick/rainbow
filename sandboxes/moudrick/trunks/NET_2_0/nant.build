@@ -51,21 +51,21 @@
     <call target="svn.default" />
     <call target="tests.prepare" />
     <call target="config.update" />
-    <call target="appSql2k.prepare" />
+    <call target="app.sql2k.prepare" />
 
     <call target="build.rebuild" />
 
-    <call target="appSql2k5Precompiled.prepare" />
+    <call target="app.sql2k5Precompiled.prepare" />
 
-    <call target="appSql2k.fixup" />
-    <call target="appSql2k5Precompiled.fixup" />
+    <call target="app.sql2k.fixup" />
+    <call target="app.sql2k5Precompiled.fixup" />
 
     <call target="tests.run" />
   </target>
 
   <target name="main.tests" >
     <call target="config.update" />
-    <call target="appSql2k.prepare" />
+    <call target="app.sql2k.prepare" />
     <call target="tests.prepare" />
     <call target="build.rebuild" />
     <call target="tests.run" />
@@ -509,40 +509,40 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <property name="sql.web.connectionString" value="${sql.web.connectionString.trusted}" />
   </target>
 
-  <!-- **************** -->
-  <!-- **  appSql2k  ** -->
-  <!-- **************** -->
-  <target name="appSql2k.setProperties" depends="svn.info">
+  <!-- ***************** -->
+  <!-- **  app.sql2k  ** -->
+  <!-- ***************** -->
+  <target name="app.sql2k.setProperties" depends="svn.info">
     <property name="web.virtDirName" value="${svn.branch.encoded}" />
     <property name="web.relativeApplicationPath" value="${web.rainbow.dir}" />
     <property name="sql.instance" value="(local)" />
     <call target="sql.setTrustedConnectionString" />
   </target>
 
-  <target name="appSql2k.prepare" depends="svn.info">
-    <call target="appSql2k.setProperties" />
+  <target name="app.sql2k.prepare" depends="svn.info">
+    <call target="app.sql2k.setProperties" />
     <call target="web.createIisApp" />
     <call target="web.rainbow.deleteLog" />
   </target>
 
-  <target name="appSql2k.fixup" >
-    <call target="appSql2k.setProperties" />
+  <target name="app.sql2k.fixup" >
+    <call target="app.sql2k.setProperties" />
     <call target="sql.recreate" />
     <call target="config.web.setConnectionStrings" />
   </target>
 
-  <!-- **************************** -->
-  <!-- **  appSql2k5Precompiled  ** -->
-  <!-- **************************** -->
-  <target name="appSql2k5Precompiled.setProperties" depends="svn.info">
+  <!-- ***************************** -->
+  <!-- **  app.sql2k5Precompiled  ** -->
+  <!-- ***************************** -->
+  <target name="app.sql2k5Precompiled.setProperties" depends="svn.info">
     <property name="web.virtDirName" value="${web.precompiled.dir}/${svn.branch.encoded}" />
     <property name="web.relativeApplicationPath" value="${web.virtDirName}/" />
     <property name="sql.instance" value="(local)\SQLEXPRESS" />
     <call target="sql.setTrustedConnectionString" />
   </target>
 
-  <target name="appSql2k5Precompiled.prepare" depends="svn.info">
-    <call target="appSql2k5Precompiled.setProperties" />
+  <target name="app.sql2k5Precompiled.prepare" depends="svn.info">
+    <call target="app.sql2k5Precompiled.setProperties" />
     <readregistry property="iisWwwRoot" key="SOFTWARE\Microsoft\InetStp\PathWWWRoot" hive="LocalMachine" />
     <mkdir dir="${iisWwwRoot}\${web.precompiled.dir}" />
 
@@ -550,8 +550,8 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <call target="web.rainbow.deleteLog" />
   </target>
 
-  <target name="appSql2k5Precompiled.fixup">
-    <call target="appSql2k5Precompiled.setProperties" />
+  <target name="app.sql2k5Precompiled.fixup">
+    <call target="app.sql2k5Precompiled.setProperties" />
     <call target="sql.recreate" />
     <call target="config.web.setConnectionStrings" />
   </target>
