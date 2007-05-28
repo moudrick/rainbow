@@ -340,12 +340,13 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
             HttpContext context = HttpContext.Current;
 
             // moved from PortalSettings
-            FileVersionInfo f = FileVersionInfo.GetVersionInfo(Assembly.GetAssembly(typeof(Rainbow.Framework.Settings.Portal)).Location);
+            FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(Assembly.GetAssembly(typeof(Rainbow.Framework.Settings.Portal)).Location);
             HttpContext.Current.Application.Lock();
-            HttpContext.Current.Application["CodeVersion"] = f.FilePrivatePart;
+
+			HttpContext.Current.Application["CodeVersion"] = fileVersionInfo.FilePrivatePart;
             HttpContext.Current.Application.UnLock();
 
-            ErrorHandler.Publish(LogLevel.Info, "Application Started: code version " + Portal.CodeVersion.ToString());
+            ErrorHandler.Publish(LogLevel.Info, "Application Started: code version " + Portal.CodeVersion);
 
             if (Config.CheckForFilePermission)
             {
