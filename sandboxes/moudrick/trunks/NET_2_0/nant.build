@@ -25,6 +25,11 @@
 
   <property name="build.targets" value="Clean;Build" />
 
+  <property if="${not property::exists('build.version.major')}" name="build.version.major" value="2" />
+  <property if="${not property::exists('build.version.minor')}" name="build.version.minor" value="0" />
+  <property if="${not property::exists('build.version.build')}" name="build.version.build" value="0" />
+  <property if="${not property::exists('build.version.revision')}" name="build.version.revision" value="0" />
+
   <property name="sql.relativePath" value="Setup/Scripts/" />
   <property name="web.rainbow.dir" value="WebSites/Rainbow/" />
   <property name="web.precompiled.dir" value="PrecompiledWeb" />
@@ -49,10 +54,10 @@
 
     <call target="build.rebuild" />
 
-    <call target="appSql2k5.prepare" />
+    <call target="appSql2k5Precompiled.prepare" />
 
     <call target="appSql2k.fixup" />
-    <call target="appSql2k5.fixup" />
+    <call target="appSql2k5Precompiled.fixup" />
 
     <call target="tests.run" />
   </target>
@@ -68,7 +73,9 @@
   <!-- *************** -->
   <!-- **  Aliases  ** -->
   <!-- *************** -->
+  <target name="svn" depends="svn.default" />
   <target name="tests" depends="tests.default" />
+  <target name="build" depends="build.default" />
 
   <!-- ******************************** -->
   <!-- **  Simple action targets     ** -->
@@ -142,20 +149,20 @@
   <!-- **  web  ** -->
   <!-- *********** -->
   <target name="web.createIisApp">
-    <echo message="${this::echo-property('this.virtDirName')}" />
-    <echo message="${this::echo-property('this.relativeApplicationPath')}" />
-    <setenv name="relativeApplicationPath" value="${this.relativeApplicationPath}" />
-    <setenv name="virtDirName" value="${this.virtDirName}" />
+    <echo message="${this::echo-property('web.virtDirName')}" />
+    <echo message="${this::echo-property('web.relativeApplicationPath')}" />
+    <setenv name="relativeApplicationPath" value="${web.relativeApplicationPath}" />
+    <setenv name="virtDirName" value="${web.virtDirName}" />
     <setenv name="webSiteIdentifier" value="${web.siteIdentifier}" />
     <exec program="CreateIISApp.cmd" />
   </target>
 
   <target name="web.rainbow.deleteLog">
-    <echo message="${this::echo-property('this.relativeApplicationPath')}" />
-    <property name="logFileName" value="${this.relativeApplicationPath}rb_logs/rb_log.resx" />
+    <echo message="${this::echo-property('web.relativeApplicationPath')}" />
+    <property name="logFileName" value="${web.relativeApplicationPath}rb_logs/rb_log.resx" />
     <echo message="${this::echo-property('logFileName')}" />
     <if test="${file::exists(logFileName)}">
-      <touch verbose="true" file="${this.relativeApplicationPath}Web.config" />
+      <touch verbose="true" file="${web.relativeApplicationPath}Web.config" />
       <sleep milliseconds="500" />
       <delete verbose="true" file="${logFileName}" />
     </if>
@@ -165,36 +172,61 @@
   <!-- **  build  ** -->
   <!-- ************* -->
 
+  <target name="build.default">
+    <call target="build.rebuild" />
+  </target>
+
   <target name="build.rebuild">
+    <call target="build.prebuild" />
     <property name="build.targets" value="Clean;Rebuild" />
     <call target="build.processSolution" />
   </target>
 
-  <target name="build.processSolution">
-    <property name="this.solution.name" value="${svn.branch.encoded}.sln" />
-    <property name="build.SlnRelativePath" value="WebSites\Rainbow\" />
-    <copy file="Rainbow.sln" tofile="${this.solution.name}" overwrite="true">
+  <target name="build.prebuild">
+    <call target="build.version" />
+  </target>
+
+  <target name= "build.version" depends="svn.info">
+    <property if="${property::exists('CCNetLabel')}" name="build.version.build" value="${CCNetLabel}" />
+    <copy file="VersionInfo.cs.standard" tofile="VersionInfo.cs" overwrite="true">
       <filterchain>
-        <!-- replacestring from="${this.webAppTemplate}" to="${this.virtDirName}" / -->
+        <replacetokens begintoken="&lt;" endtoken="&gt;">
+          <token key="MAJOR" value="${build.version.major}" />
+          <token key="MINOR" value="${build.version.minor}" />
+          <token key="BUILD" value="${build.version.build}" />
+          <token key="REVISION" value="${build.version.revision}" />
+        </replacetokens>
+      </filterchain>
+    </copy>
+  </target>
+
+  <target name="build.prepareBranchSolution" depends="svn.info">
+    <property name="build.solution.filename" value="${svn.branch.encoded}.sln" />
+    <property name="build.SlnRelativePath" value="WebSites\Rainbow\" />
+    <copy file="Rainbow.sln" tofile="${build.solution.filename}" overwrite="true">
+      <filterchain>
         <replacestring 
           from="&quot;${build.SlnRelativePath}&quot;, &quot;${build.SlnRelativePath}&quot;" 
-          to="&quot;http://localhost/${this.virtDirName}/&quot;, &quot;http://localhost/${this.virtDirName}/&quot;" />
+          to="&quot;http://localhost/${web.virtDirName}/&quot;, &quot;http://localhost/${web.virtDirName}/&quot;" />
         <replacestring 
           from=".AspNetCompiler.VirtualPath = &quot;/Rainbow&quot;" 
-          to=".AspNetCompiler.VirtualPath = &quot;/${this.virtDirName}&quot;" />
+          to=".AspNetCompiler.VirtualPath = &quot;/${web.virtDirName}&quot;" />
         <replacestring 
           from="VWDPort = &quot;9389&quot;" 
           to="SlnRelativePath = &quot;${build.SlnRelativePath}&quot;" />
         <replacestring 
           from="PrecompiledWeb\Rainbow\" 
-          to="PrecompiledWeb\${this.virtDirName}\" />
+          to="PrecompiledWeb\${web.virtDirName}\" />
       </filterchain>
     </copy>
+  </target>
 
+  <target name="build.processSolution">
+    <call target="build.prepareBranchSolution" />
 	<property name="build.configurations" value="Release" /> <!-- ;Debug -->
     <foreach item="String" property="configuration" in="${build.configurations}" delim=";"> 
       <exec program="msbuild.exe" basedir="${this.netFrameworkPath}" workingdir=".">
-        <arg value="${this.solution.name}" />
+        <arg value="${build.solution.filename}" />
         <arg value="/property:Configuration=${configuration};Platform=Mixed Platforms" />
         <arg value="/target:${build.targets}" />
         <arg value="/verbosity:quiet" />
@@ -211,7 +243,7 @@
   </target>
   
   <target name="sql.recreate">
-    <property name="sql.path" value="${this.relativeApplicationPath}${sql.relativePath}" />
+    <property name="sql.path" value="${web.relativeApplicationPath}${sql.relativePath}" />
     <property name="this.sql.setup.name" value="setup.${svn.branch.encoded}.bat" />
     <property name="sql.createScriptName" value="createdb_bat.sql" />
 
@@ -273,7 +305,7 @@ GO
   </target>
 
   <target name="config.web.setConnectionStrings" >
-    <property name="this.webConfig" value="${this.relativeApplicationPath}Web.config" />
+    <property name="this.webConfig" value="${web.relativeApplicationPath}Web.config" />
     <echo message="${this::echo-property('this.webConfig')}" />
     <echo message="${this::echo-property('this.sqlConnectionString')}" />
     <foreach item="String" property="addName" delim=";" 
@@ -407,9 +439,9 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
   <!-- **************** -->
   <!-- **  appSql2k  ** -->
   <!-- **************** -->
-  <target name="appSql2k.setProperties">
-    <property name="this.virtDirName" value="${svn.branch.encoded}" />
-    <property name="this.relativeApplicationPath" value="${web.rainbow.dir}" />
+  <target name="appSql2k.setProperties" depends="svn.info">
+    <property name="web.virtDirName" value="${svn.branch.encoded}" />
+    <property name="web.relativeApplicationPath" value="${web.rainbow.dir}" />
     <property name="sql.instance" value="(local)" />
     <call target="sql.setTrustedConnectionString" />
   </target>
@@ -426,18 +458,18 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <call target="config.web.setConnectionStrings" />
   </target>
 
-  <!-- ***************** -->
-  <!-- **  appSql2k5  ** -->
-  <!-- ***************** -->
-  <target name="appSql2k5.setProperties">
-    <property name="this.virtDirName" value="${web.precompiled.dir}/${svn.branch.encoded}" />
-    <property name="this.relativeApplicationPath" value="${this.virtDirName}/" />
+  <!-- **************************** -->
+  <!-- **  appSql2k5Precompiled  ** -->
+  <!-- **************************** -->
+  <target name="appSql2k5Precompiled.setProperties">
+    <property name="web.virtDirName" value="${web.precompiled.dir}/${svn.branch.encoded}" />
+    <property name="web.relativeApplicationPath" value="${web.virtDirName}/" />
     <property name="sql.instance" value="(local)\SQLEXPRESS" />
     <call target="sql.setTrustedConnectionString" />
   </target>
 
-  <target name="appSql2k5.prepare" depends="svn.info">
-    <call target="appSql2k5.setProperties" />
+  <target name="appSql2k5Precompiled.prepare" depends="svn.info">
+    <call target="appSql2k5Precompiled.setProperties" />
     <readregistry property="iisWwwRoot" key="SOFTWARE\Microsoft\InetStp\PathWWWRoot" hive="LocalMachine" />
     <mkdir dir="${iisWwwRoot}\${web.precompiled.dir}" />
 
@@ -445,8 +477,8 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <call target="web.rainbow.deleteLog" />
   </target>
 
-  <target name="appSql2k5.fixup">
-    <call target="appSql2k5.setProperties" />
+  <target name="appSql2k5Precompiled.fixup">
+    <call target="appSql2k5Precompiled.setProperties" />
     <call target="sql.recreate" />
     <call target="config.web.setConnectionStrings" />
   </target>

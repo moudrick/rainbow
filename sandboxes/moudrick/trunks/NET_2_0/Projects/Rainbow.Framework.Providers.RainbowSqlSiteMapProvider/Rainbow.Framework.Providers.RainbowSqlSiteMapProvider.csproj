@@ -39,6 +39,9 @@
   <ItemGroup>
     <Compile Include="RainbowSqlSiteMapProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rainbow.Framework.Core\Rainbow.Framework.Core.csproj">
