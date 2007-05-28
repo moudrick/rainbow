@@ -142,7 +142,7 @@
     <property name="config" value="${web.rainbow.dir}Web.config" />
     <copy file="${config}.standard" tofile="${config}" overwrite="true" />
 
-	<call target="tests.updateConfig" />
+    <call target="tests.updateConfig" />
   </target>
 
   <!-- *********** -->

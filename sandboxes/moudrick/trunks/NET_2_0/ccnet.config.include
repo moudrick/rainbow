@@ -10,13 +10,20 @@
 			<externalLink name="another.test.domain / Precompiled / SQL 2005" url="http://another.test.domain/PrecompiledWeb/&name_moudrick;" />
 		</externalLinks>
 		<sourcecontrol type="svn" />
-		<build type="nant">
-			<buildFile>default.build</buildFile>
-			<targetList>
-				<target>ccnet</target>
-			</targetList>
-			<buildTimeoutSeconds>2400</buildTimeoutSeconds>
-		</build>
+		<tasks>
+			<exec>
+				<executable>svn</executable>
+				<buildArgs>update nant.build</buildArgs>
+				<buildTimeoutSeconds>10</buildTimeoutSeconds>
+			</exec>
+			<nant>
+				<buildFile>default.build</buildFile>
+				<targetList>
+					<target>ccnet</target>
+				</targetList>
+				<buildTimeoutSeconds>2400</buildTimeoutSeconds>
+			</nant>
+		</tasks>
 		<publishers>
 			<merge>
 				<files>
