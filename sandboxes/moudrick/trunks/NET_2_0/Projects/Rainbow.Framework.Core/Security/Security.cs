@@ -137,8 +137,10 @@ namespace Rainbow.Framework.Security
 			// Obtain PortalSettings from Current Context
 			PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items[strPortalSettings];
 			int portalID = portalSettings.PortalID;
+
+			// [moudrick] seems this line has become incorrect in 2.0
 			// jviladiu@portalServices.net: Get users & roles from true portal (2004/09/23)
-			if (Config.UseSingleUserBase) portalID = 0;
+			//if (Config.UseSingleUserBase) portalID = 0;
 
 			// Create Instance of Connection and Command Object
 			using (SqlConnection myConnection = Config.SqlConnectionString)
