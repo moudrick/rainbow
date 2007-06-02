@@ -134,6 +134,9 @@
 
     <property name="sql.db.name" value="${svn.branch.encoded}" />
     <echo message="${this::echo-property('sql.db.name')}" />  
+
+    <xmlpeek file="${web.rainbow.dir}${sql.relativePath}history.xml" property="sql.version"
+      xpath="/History/Release[last()]/Version" />
   </target>
 
   <!-- ************** -->
@@ -189,6 +192,7 @@
 
   <target name= "build.version" depends="svn.info">
     <property if="${property::exists('CCNetLabel')}" name="build.version.build" value="${CCNetLabel}" />
+
     <copy file="VersionInfo.cs.standard" tofile="VersionInfo.cs" overwrite="true">
       <filterchain>
         <replacetokens begintoken="&lt;" endtoken="&gt;">
@@ -196,6 +200,7 @@
           <token key="MINOR" value="${build.version.minor}" />
           <token key="BUILD" value="${build.version.build}" />
           <token key="REVISION" value="${build.version.revision}" />
+          <token key="DATABASE" value="${sql.version}" />
         </replacetokens>
       </filterchain>
     </copy>
