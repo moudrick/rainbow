@@ -29,6 +29,7 @@
   <property if="${not property::exists('build.version.minor')}" name="build.version.minor" value="0" />
   <property if="${not property::exists('build.version.build')}" name="build.version.build" value="0" />
   <property if="${not property::exists('build.version.revision')}" name="build.version.revision" value="0" />
+  <property if="${not property::exists('wc.indicator')}" name="wc.indicator" value="" />
 
   <property name="wc.dir" value="${project::get-base-directory()}\" />
   <property name="sql.relativePath" value="Setup/Scripts/" />
@@ -75,8 +76,8 @@
   <!-- **  Aliases  ** -->
   <!-- *************** -->
   <target name="svn" depends="svn.default" />
-  <target name="tests" depends="tests.default" />
   <target name="build" depends="build.default" />
+  <target name="tests" depends="tests.default" />
 
   <!-- ******************************** -->
   <!-- **  Simple action targets     ** -->
@@ -111,32 +112,40 @@
 
   <target name="svn.info">
     <property name="svnInfoOutput" value=".svn.info.txt" />
-    <exec program="svn.exe" commandline="info" output="${svnInfoOutput}" />
+    <exec program="svn.exe" commandline="info" output="${svnInfoOutput}" failonerror="false" />
     <loadfile file="${svnInfoOutput}" property="svnInfo" />
 
-    <regex pattern="(Revision\:\ (?'revision'[0-9]*))" input="${svnInfo}" options="Multiline" />
-    <property name="build.version.revision" value="${revision}" />
-    <echo message="${this::echo-property('build.version.revision')}" />
+    <if test="${string::index-of(svnInfo, 'is not a working copy') == -1}" >
+      <regex pattern="(Last Changed Rev\:\ (?'revision'[0-9]*))" input="${svnInfo}" options="Multiline" />
+      <property name="build.version.revision" value="${revision}" />
 
-    <regex pattern="(URL\:\ (?'url'\S*))" input="${svnInfo}" options="Multiline" />
-    <property name="svn.info.url" value="${url}" />
-    <echo message="${this::echo-property('svn.info.url')}" />
+      <regex pattern="(URL\:\ (?'url'\S*))" input="${svnInfo}" options="Multiline" />
+      <property name="svn.info.url" value="${url}" />
+      <echo message="${this::echo-property('svn.info.url')}" />
 
-    <regex pattern="(Repository Root\:\ (?'root'\S*))" input="${svnInfo}" options="Multiline" />
-    <property name="svn.info.root" value="${root}" />
-    <echo message="${this::echo-property('svn.info.root')}" />
+      <regex pattern="(Repository Root\:\ (?'root'\S*))" input="${svnInfo}" options="Multiline" />
+      <property name="svn.info.root" value="${root}" />
+      <echo message="${this::echo-property('svn.info.root')}" />
 
-    <property name="svn.branch" value="${string::replace(svn.info.url + '/', svn.info.root + '/', '')}" />
-    <echo message="${this::echo-property('svn.branch')}" />  
+      <property name="svn.branch" value="${wc.indicator}rb_${string::replace(svn.info.url + '/', svn.info.root + '/', '')}" />
+      <property name="svn.branch.encoded" value="${string::replace(svn.branch, '/', '$')}" dynamic="true" />
+    </if>
+    <if test="${string::index-of(svnInfo, 'is not a working copy') > 0}" >
+      <property name="build.version.revision" value="0" />
+      <echo message="${this::echo-property('build.version.revision')}" />
 
-    <property name="svn.branch.encoded" value="${string::replace(svn.branch, '/', '$')}" dynamic="true" />
-    <echo message="${this::echo-property('svn.branch.encoded')}" />  
-
+      <property name="svn.branch" value="${wc.indicator}rainbow" />
+      <property name="svn.branch.encoded" value="${svn.branch}" dynamic="true" />
+    </if>
     <property name="sql.db.name" value="${svn.branch.encoded}" />
-    <echo message="${this::echo-property('sql.db.name')}" />  
-
     <xmlpeek file="${web.rainbow.dir}${sql.relativePath}history.xml" property="sql.version"
       xpath="/History/Release[last()]/Version" />
+
+    <echo message="${this::echo-property('build.version.revision')}" />
+    <echo message="${this::echo-property('svn.branch')}" />
+    <echo message="${this::echo-property('svn.branch.encoded')}" />
+    <echo message="${this::echo-property('sql.db.name')}" />
+    <echo message="${this::echo-property('sql.version')}" />
   </target>
 
   <!-- ************** -->
@@ -411,7 +420,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
   <target name="sql.tests.db.recreate">
     <property name="sql.tests.instance" value="(local)\SQLEXPRESS" />
     <property name="sql.instance" value="${sql.tests.instance}" />
-    <property name="sql.tests.db.name" value="rbtests_${sql.db.name}" />
+    <property name="sql.tests.db.name" value="tests_${sql.db.name}" />
     <property name="sql.tests.connectionString" value="server=${sql.tests.instance};database=${sql.tests.db.name};uid=rainbow;pwd=rainbow_" />
 
     <!-- killQuery -->

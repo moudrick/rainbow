@@ -1,13 +1,13 @@
 	<project name="Rainbow moudrick">
-		<workingDirectory>&RainbowWCRoot;&path_moudrick;</workingDirectory>
+		<workingDirectory>&RainbowWCRoot;&BranchPath;</workingDirectory>
 		<triggers />
 		<externalLinks>
-			<externalLink name="localhost / Project / SQL 2000" url="&localExternalWebRoot;&name_moudrick;" />
-			<externalLink name="localhost / Precompiled / SQL 2005" url="&localExternalWebRoot;PrecompiledWeb/&name_moudrick;" />
-			<externalLink name="test.domain / Project / SQL 2000" url="http://test.domain/&name_moudrick;" />
-			<externalLink name="test.domain / Precompiled / SQL 2005" url="http://test.domain/PrecompiledWeb/&name_moudrick;" />
-			<externalLink name="another.test.domain / Project / SQL 2000" url="http://another.test.domain/&name_moudrick;" />
-			<externalLink name="another.test.domain / Precompiled / SQL 2005" url="http://another.test.domain/PrecompiledWeb/&name_moudrick;" />
+			<externalLink name="localhost / Project / SQL 2000" url="&localExternalWebRoot;&BranchName;" />
+			<externalLink name="localhost / Precompiled / SQL 2005" url="&localExternalWebRoot;PrecompiledWeb/&BranchName;" />
+			<externalLink name="test.domain / Project / SQL 2000" url="http://test.domain/&BranchName;" />
+			<externalLink name="test.domain / Precompiled / SQL 2005" url="http://test.domain/PrecompiledWeb/&BranchName;" />
+			<externalLink name="another.test.domain / Project / SQL 2000" url="http://another.test.domain/&BranchName;" />
+			<externalLink name="another.test.domain / Precompiled / SQL 2005" url="http://another.test.domain/PrecompiledWeb/&BranchName;" />
 		</externalLinks>
 		<sourcecontrol type="svn" />
 		<tasks>
@@ -21,7 +21,7 @@
 				<targetList>
 					<target>ccnet</target>
 				</targetList>
-				<buildTimeoutSeconds>2400</buildTimeoutSeconds>
+				<buildTimeoutSeconds>3600</buildTimeoutSeconds>
 			</nant>
 		</tasks>
 		<publishers>
