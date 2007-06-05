@@ -539,10 +539,10 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
   <!-- ********************* -->
   <!-- **  app.iocluster  ** -->
   <!-- ********************* -->
-  <target name="app.iocluster.setProperties">
+  <target name="app.iocluster.setProperties" depends="svn.info">
     <property name="web.virtDirName" value="${svn.branch.encoded}" />
     <property name="web.relativeApplicationPath" value="${web.rainbow.dir}" />
-    <property name="sql.instance" value="source.iocluster.com\SQLEXPRESS" />
+    <property name="sql.instance" value="(local)\SQLEXPRESS" />
     <property name="sql.web.connectionString" value="server=${sql.instance};database=${sql.db.name};Trusted_Connection=true" />    
   </target>
 
