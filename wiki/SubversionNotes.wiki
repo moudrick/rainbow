@@ -1,5 +1,5 @@
 #summary Commit conventions for rainbow svn repository @ googlecode
-#labels Featured,Phase-Implementation
+#labels Phase-Implementation
 
 =Commit conventions=
 
