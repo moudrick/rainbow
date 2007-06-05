@@ -85,6 +85,9 @@
     <Compile Include="ZenEngine\ZenNavigation.cs" />
     <Compile Include="ZenEngine\ZenTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="DAL\Modules\BooksDB.cs" />
     <Compile Include="DAL\Modules\AnnouncementsDB.cs" />
     <Compile Include="DesktopModules\Articles\Articles.ascx.cs">

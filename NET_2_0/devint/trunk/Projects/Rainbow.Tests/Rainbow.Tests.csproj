@@ -47,7 +47,13 @@
     <Compile Include="GeographicProviderTest.cs" />
     <Compile Include="DiagnoseEnvironment.cs" />
     <Compile Include="MembershipProviderTest.cs" />
+    <Compile Include="MembershipProviderTests\BaseMembershipProvideTestFixture.cs" />
+    <Compile Include="MembershipProviderTests\MembershipDefaultConfigTests.cs" />
+    <Compile Include="MembershipProviderTests\UserDbTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="RoleProviderTest.cs" />
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
