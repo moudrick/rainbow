@@ -53,7 +53,6 @@ with configuration based on this file for whole team monitoring your copy status
 
   * NOT included to repository!!!
   * The best practice is to avoid committing this file.
-  * Local custom changes are allowed and sometimes even required.
   * To be created by standard build process (see below).
 
 *IMPORTANT!!!*
@@ -72,6 +71,5 @@ with configuration based on this file for whole team monitoring your copy status
   * Do not change these files.
   * Contain code to automatically create web applications in local IIS.
   * To be fully integrated to nant.build.
-
 
 
