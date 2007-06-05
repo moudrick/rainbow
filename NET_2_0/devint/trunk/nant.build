@@ -547,13 +547,13 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
   </target>
 
   <target name="app.iocluster.prepare" >
-    <call target="app.moudrick.setProperties" />
+    <call target="app.iocluster.setProperties" />
     <call target="web.createIisApp" />
     <call target="web.rainbow.deleteLog" />
   </target>
 
   <target name="app.iocluster.fixup" >
-    <call target="app.moudrick.setProperties" />
+    <call target="app.iocluster.setProperties" />
     <call target="config.web.setConnectionStrings" />
     <call target="sql.recreate" />
   </target>
