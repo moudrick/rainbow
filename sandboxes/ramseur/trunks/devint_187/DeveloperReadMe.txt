@@ -8,29 +8,31 @@ provideded the following quick start instructions.
 JOIN THE RAINBOW DEVELOPER TEAM
 
 1. Contact Eric Ramseur at ramseur@gmail.com to request to join the team.
+
 2. Eric will give you access to the http://community.rainbowportal.net/
    Rainbow Community. Eric will give you instructions on creating your 
    statement of work.  You will primarily use the Developer Forum at
    http://community.rainbowportal.net/forums/31/ShowForum.aspx to collaborate
    with the other developers.  You will also be able to maintain your own
    blog about the work you are doing on this site.
+
 3. Join the Rainbow Portal Google Group at
    http://groups.google.com/group/rainbowportal to receive other 
    developer communications.
+
 4. Eric will ask Alexey Moudrick at moudrick@gmail.com to grant you access to 
-   the Rainbow Portal project at Novell Forge SVN site at
+   the Rainbow project at Google Code site at
    http://code.google.com/p/rainbow/.  You will be able
-   to browse the repository at 
-   http://rainbow.googlecode.com/svn/ and use Subversion
-   to access the repository at
-   http://rainbow.googlecode.com/svn/trunk/.  Alexey will create a sandbox for
-   you and provide additional instructions on best practices.
+     to browse the repository at http://rainbow.googlecode.com/svn/ and use Subversion
+     to access the repository at http://rainbow.googlecode.com/svn/sandboxes/YOUR_GOOGLE_LOGIN/.  
+   Alexey will create a sandbox for you and provide additional instructions on best practices.
+
 5. Sign up for a google account to use Google Code.
-6. Download and install the Tortoise Subversion GUI at 
-   http://tortoisesvn.tigris.org/.
+
+6. Download and install the Tortoise Subversion GUI at http://tortoisesvn.tigris.org/
+      or command-line client at http://subversion.tigris.org/.
+
 7. Subversion documentation is available at http://svnbook.red-bean.com/.
-
-
 
 Note that you can use the Tortoise GUI to do the above also. Please contact
 Alexey Moudrick at moudrick@gmail.com if you have questions about using 

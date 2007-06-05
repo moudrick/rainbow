@@ -50,11 +50,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBC370A1-8A28-4011-9197-9263BE5474F9}"
 	ProjectSection(SolutionItems) = preProject
 		Brief.Install.Instructions.txt = Brief.Install.Instructions.txt
+		CreateIISApp.cmd = CreateIISApp.cmd
+		CreateIISApp.vbs = CreateIISApp.vbs
 		DeveloperReadMe.txt = DeveloperReadMe.txt
 		ImportantNotes.txt = ImportantNotes.txt
 		LICENSE.txt = LICENSE.txt
+		nant.build = nant.build
 		NOTICE.txt = NOTICE.txt
 		README.txt = README.txt
+		VersionInfo.cs = VersionInfo.cs
+		VersionInfo.cs.standard = VersionInfo.cs.standard
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSites", "WebSites", "{DCD8AFCE-7572-4A1D-AD78-0A6469A415C0}"
