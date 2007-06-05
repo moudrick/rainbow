@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<project name="Rainbow" default="default">
+
+<!--
+  This file should be named default.build to impact
+  Put here your custom initialization of standard build process
+-->
+  <include buildfile="nant.build" />
+
+  <target name="imtest">
+    <echo message="imtest" />
+  </target>
+</project>
