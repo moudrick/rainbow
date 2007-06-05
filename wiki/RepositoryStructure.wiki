@@ -1,5 +1,5 @@
 #summary Repository structure
-#labels Featured
+#labels Phase-Implementation
 Structure is set in accordance to the following recommendations [http://community.rainbowportal.net/blogs/rahul_notes/archive/2006/02/10/338.aspx here in Rahul's blog]
 
   IMPORTANT! To *anonymously* _checkout_ or _export_ use *http* protocol.
