@@ -155,7 +155,7 @@
         <include name="**/*" />
       </fileset>
     </zip>
-    <move file="${downloads.source.zip}" todir="${downloads.dir}" />
+    <move file="${downloads.source.zip}" todir="${downloads.dir}" overwrite="true" />
   </target>
 
   <target name="downloads.binary" depends="build.version">
@@ -181,7 +181,7 @@
         <include name="**/*" />
       </fileset>
     </zip>
-    <move file="${downloads.binary.zip}" todir="${downloads.dir}" />
+    <move file="${downloads.binary.zip}" todir="${downloads.dir}" overwrite="true" />
   </target>
 
   <!-- *********** -->
