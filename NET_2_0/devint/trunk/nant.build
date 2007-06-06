@@ -83,6 +83,7 @@
     <call target="app.iocluster.fixup" />
 
     <call target="tests.run" />
+    <call target="downloads.default" />
   </target>
 
   <target name="main.tests" >
