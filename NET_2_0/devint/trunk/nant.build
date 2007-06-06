@@ -37,7 +37,6 @@
   <property name="web.precompiled.dir" value="PrecompiledWeb" />
 
   <property name="svn.branch.default" value="rainbow" />
-  <property name="sql.version" value="SQL VERSION NOT SET" dynamic="true" />
   <property name="sql.tests.instance" value="(local)\SQLEXPRESS" />
   <property name="build.VersionInfo" value="VersionInfo.cs" />
 
@@ -142,9 +141,7 @@
     <delete file="${downloads.source.zip}" />
     <exec program="svn.exe" commandline="export . ${downloads.source.dir}" />
     <exec program="svn.exe" commandline="info" output="${downloads.source.dir}/${downloads.svnInfoFile}" />      
-    <copy file="${build.VersionInfo}.standard" tofile="${downloads.source.dir}/${build.VersionInfo}" overwrite="true">
-      <filterchain refid="build.version.VersionInfo" />
-    </copy>
+    <copy file="${build.VersionInfo}" tofile="${downloads.source.dir}/${build.VersionInfo}" overwrite="true" />
 
     <property name="wc.dir" value="${project::get-base-directory()}\${downloads.source.dir}\" />
     <call target="app.rainbow.setProperties" />
@@ -308,20 +305,18 @@
     <call target="build.version" />
   </target>
 
-  <filterchain id="build.version.VersionInfo">
-    <replacetokens begintoken="&lt;" endtoken="&gt;">
-      <token key="MAJOR" value="${build.version.major}" />
-      <token key="MINOR" value="${build.version.minor}" />
-      <token key="BUILD" value="${build.version.build}" />
-      <token key="REVISION" value="${build.version.revision}" />
-      <token key="DATABASE" value="${sql.version}" />
-    </replacetokens>
-  </filterchain>
-
   <target name= "build.version" depends="svn.info">
     <property if="${property::exists('CCNetLabel')}" name="build.version.build" value="${CCNetLabel}" />
     <copy file="${build.VersionInfo}.standard" tofile="${build.VersionInfo}" overwrite="true">
-      <filterchain refid="build.version.VersionInfo" />
+      <filterchain>
+        <replacetokens begintoken="&lt;" endtoken="&gt;">
+          <token key="MAJOR" value="${build.version.major}" />
+          <token key="MINOR" value="${build.version.minor}" />
+          <token key="BUILD" value="${build.version.build}" />
+          <token key="REVISION" value="${build.version.revision}" />
+          <token key="DATABASE" value="${sql.version}" />
+        </replacetokens>
+      </filterchain>
     </copy>
   </target>
 
