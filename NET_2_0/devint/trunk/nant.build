@@ -126,9 +126,9 @@
   <!-- ***************** -->
   <property name="downloads.svnInfoFile" value="downloads.svn.info.txt" />
   <property name="downloads.dir" value="${web.precompiled.dir}/downloads/" />
-  <property name="downloads.source.dir" value="${web.precompiled.dir}/source-latest" />
+  <property name="downloads.source.dir" value="${web.precompiled.dir}/rainbow-source-latest" />
   <property name="downloads.source.zip" value="${downloads.source.dir}.zip" />
-  <property name="downloads.binary.dir" value="${web.precompiled.dir}/binary-latest" />
+  <property name="downloads.binary.dir" value="${web.precompiled.dir}/rainbow-binary-latest" />
   <property name="downloads.binary.zip" value="${downloads.binary.dir}.zip" />
 
   <target name="downloads.default">
