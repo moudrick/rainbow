@@ -36,6 +36,11 @@
   <property name="web.rainbow.dir" value="WebSites/Rainbow/" />
   <property name="web.precompiled.dir" value="PrecompiledWeb" />
 
+  <property name="svn.branch.default" value="rainbow" />
+  <property name="sql.version" value="SQL VERSION NOT SET" dynamic="true" />
+  <property name="sql.tests.instance" value="(local)\SQLEXPRESS" />
+  <property name="build.VersionInfo" value="VersionInfo.cs" />
+
   <property name="this.netFramework" value="net-2.0" />
   <property name="this.netFrameworkPath" value="${framework::get-framework-directory(this.netFramework)}"  />
 
@@ -45,7 +50,10 @@
   <!-- ***************************************** -->
   <!-- **  Public action sequence targets     ** -->
   <!-- ***************************************** -->
-  <target name="ccnet" depends="main" />
+  <target name="ccnet" depends="main">
+    <call target="main" />
+    <call target="downloads" />
+  </target>
   <target name="manual" depends="main, wc.notepadSpecifics" />
   <target name="main" >
     <call target="wc.info" />
@@ -91,6 +99,7 @@
   <target name="svn" depends="svn.default" />
   <target name="build" depends="build.default" />
   <target name="tests" depends="tests.default" />
+  <target name="downloads" depends="downloads.default" />
 
   <!-- ******************************** -->
   <!-- **  Simple action targets     ** -->
@@ -111,6 +120,72 @@
     <echo message="${this::echo-property('')}" />
   </target>
 
+  <!-- ***************** -->
+  <!-- **  downloads  ** -->
+  <!-- ***************** -->
+  <property name="downloads.svnInfoFile" value="downloads.svn.info.txt" />
+  <property name="downloads.dir" value="${web.precompiled.dir}/downloads/" />
+  <property name="downloads.source.dir" value="${web.precompiled.dir}/source-latest" />
+  <property name="downloads.source.zip" value="${downloads.source.dir}.zip" />
+  <property name="downloads.binary.dir" value="${web.precompiled.dir}/binary-latest" />
+  <property name="downloads.binary.zip" value="${downloads.binary.dir}.zip" />
+
+  <target name="downloads.default">
+    <call target="downloads.source" />
+    <call target="downloads.binary" />
+  </target>
+
+  <target name="downloads.source" depends="build.version">
+    <fail if="${not svn.isWorkingCopy}" message="Downloads can be created from versioned working copy only" />
+    <delete dir="${downloads.source.dir}" />
+    <delete file="${downloads.source.zip}" />
+    <exec program="svn.exe" commandline="export . ${downloads.source.dir}" />
+    <exec program="svn.exe" commandline="info" output="${downloads.source.dir}/${downloads.svnInfoFile}" />      
+    <copy file="${build.VersionInfo}.standard" tofile="${downloads.source.dir}/${build.VersionInfo}" overwrite="true">
+      <filterchain refid="build.version.VersionInfo" />
+    </copy>
+
+    <property name="wc.dir" value="${project::get-base-directory()}\${downloads.source.dir}\" />
+    <call target="app.rainbow.setProperties" />
+    <call target="tests.setProperties" />
+    <call target="config.update" />
+    <call target="config.web.setConnectionStrings" />
+
+    <zip zipfile="${downloads.source.zip}" includeemptydirs="true" ziplevel="9" 
+        comment="${sql.version}">
+      <fileset basedir="${downloads.source.dir}">
+        <include name="**/*" />
+      </fileset>
+    </zip>
+    <move file="${downloads.source.zip}" todir="${downloads.dir}" />
+  </target>
+
+  <target name="downloads.binary" depends="build.version">
+    <fail if="${not svn.isWorkingCopy}" message="Downloads can be created from versioned working copy only" />
+    <delete dir="${downloads.binary.dir}" />
+    <delete file="${downloads.binary.zip}" />
+    
+    <copy todir="${downloads.binary.dir}">
+      <fileset basedir="${web.precompiled.dir}/${svn.branch.encoded}/">
+        <include name="**\*\**" />
+        <!-- <exclude name="**\PrecompiledApp.config\**" /> -->
+      </fileset>
+    </copy>
+
+    <property name="wc.dir" value="${project::get-base-directory()}\${downloads.binary.dir}\" />
+    <call target="app.rainbow.setProperties" />
+    <property name="web.relativeApplicationPath" value="" />
+    <call target="config.web.setConnectionStrings" />
+
+    <zip zipfile="${downloads.binary.zip}" includeemptydirs="true" ziplevel="9" 
+        comment="${sql.version}">
+      <fileset basedir="${downloads.binary.dir}">
+        <include name="**/*" />
+      </fileset>
+    </zip>
+    <move file="${downloads.binary.zip}" todir="${downloads.dir}" />
+  </target>
+
   <!-- *********** -->
   <!-- **  svn  ** -->
   <!-- *********** -->
@@ -128,7 +203,13 @@
     <exec program="svn.exe" commandline="info" output="${svnInfoOutput}" failonerror="false" />
     <loadfile file="${svnInfoOutput}" property="svnInfo" />
 
-    <if test="${string::index-of(svnInfo, 'is not a working copy') == -1}" >
+    <property name="svn.isWorkingCopy" value="${string::index-of(svnInfo, 'is not a working copy') == -1}" />
+    <property name="svn.setupSvnInfoExists" value="${file::exists(downloads.svnInfoFile)}" />
+    <if test="${not svn.isWorkingCopy and svn.setupSvnInfoExists}">
+      <loadfile file="${setupSvnInfoFile}" property="svnInfo" />
+    </if>
+
+    <if test="${svn.isWorkingCopy or svn.setupSvnInfoExists}">
       <regex pattern="(Last Changed Rev\:\ (?'revision'[0-9]*))" input="${svnInfo}" options="Multiline" />
       <property name="build.version.revision" value="${revision}" />
 
@@ -143,14 +224,13 @@
       <property name="svn.branch" value="${wc.indicator}rb_${string::replace(svn.info.url + '/', svn.info.root + '/', '')}" />
       <property name="svn.branch.encoded" value="${string::replace(svn.branch, '/', '$')}" dynamic="true" />
     </if>
-    <if test="${string::index-of(svnInfo, 'is not a working copy') > 0}" >
+    <if test="${not svn.isWorkingCopy}" >
       <property name="build.version.revision" value="0" />
-      <echo message="${this::echo-property('build.version.revision')}" />
 
-      <property name="svn.branch" value="${wc.indicator}rainbow" />
+      <property name="svn.branch" value="${wc.indicator}${svn.branch.default}" />
       <property name="svn.branch.encoded" value="${svn.branch}" dynamic="true" />
     </if>
-    <property name="sql.db.name" value="${svn.branch.encoded}" />
+    <property name="sql.db.name" value="${svn.branch.encoded}" dynamic="true" />
     <xmlpeek file="${web.rainbow.dir}${sql.relativePath}history.xml" property="sql.version"
       xpath="/History/Release[last()]/Version" />
 
@@ -165,10 +245,25 @@
   <!-- **  config  ** -->
   <!-- ************** -->
   <target name="config.update">
-    <property name="config" value="${web.rainbow.dir}Web.config" />
+    <property name="config" value="${wc.dir}${web.rainbow.dir}Web.config" />
     <copy file="${config}.standard" tofile="${config}" overwrite="true" />
 
     <call target="tests.updateConfig" />
+  </target>
+
+  <target name="config.web.setConnectionStrings" >
+    <property name="web.config" value="${wc.dir}${web.relativeApplicationPath}Web.config" />
+    <echo message="${this::echo-property('web.config')}" />
+    <echo message="${this::echo-property('sql.web.connectionString')}" />
+    <foreach item="String" property="addName" delim=";" 
+      in="ConnectionString;Providers.ConnectionString;RainbowProviders.ConnectionString;Main.ConnectionString">
+      <property name="par.xpath" 
+        value="/x:configuration/x:connectionStrings/x:add[@name = '${addName}']/@connectionString" />
+      <call target="helper.xmlpoke.connectionString.ensure" />
+    </foreach>
+    <property name="par.xpath" 
+      value="/x:configuration/x:log4net/x:appender/x:param[@name = 'ConnectionString']/@value" />
+    <call target="helper.xmlpoke.connectionString.ensure" />
   </target>
 
   <!-- *********** -->
@@ -212,19 +307,20 @@
     <call target="build.version" />
   </target>
 
+  <filterchain id="build.version.VersionInfo">
+    <replacetokens begintoken="&lt;" endtoken="&gt;">
+      <token key="MAJOR" value="${build.version.major}" />
+      <token key="MINOR" value="${build.version.minor}" />
+      <token key="BUILD" value="${build.version.build}" />
+      <token key="REVISION" value="${build.version.revision}" />
+      <token key="DATABASE" value="${sql.version}" />
+    </replacetokens>
+  </filterchain>
+
   <target name= "build.version" depends="svn.info">
     <property if="${property::exists('CCNetLabel')}" name="build.version.build" value="${CCNetLabel}" />
-
-    <copy file="VersionInfo.cs.standard" tofile="VersionInfo.cs" overwrite="true">
-      <filterchain>
-        <replacetokens begintoken="&lt;" endtoken="&gt;">
-          <token key="MAJOR" value="${build.version.major}" />
-          <token key="MINOR" value="${build.version.minor}" />
-          <token key="BUILD" value="${build.version.build}" />
-          <token key="REVISION" value="${build.version.revision}" />
-          <token key="DATABASE" value="${sql.version}" />
-        </replacetokens>
-      </filterchain>
+    <copy file="${build.VersionInfo}.standard" tofile="${build.VersionInfo}" overwrite="true">
+      <filterchain refid="build.version.VersionInfo" />
     </copy>
   </target>
 
@@ -404,21 +500,6 @@ GO
     <call target="sql.run.query.trusted" />
   </target>
 
-  <target name="config.web.setConnectionStrings" >
-    <property name="this.webConfig" value="${web.relativeApplicationPath}Web.config" />
-    <echo message="${this::echo-property('this.webConfig')}" />
-    <echo message="${this::echo-property('sql.web.connectionString')}" />
-    <foreach item="String" property="addName" delim=";" 
-      in="ConnectionString;Providers.ConnectionString;RainbowProviders.ConnectionString;Main.ConnectionString">
-      <property name="par.xpath" 
-        value="/x:configuration/x:connectionStrings/x:add[@name = '${addName}']/@connectionString" />
-      <call target="helper.xmlpoke.connectionString.ensure" />
-    </foreach>
-    <property name="par.xpath" 
-      value="/x:configuration/x:log4net/x:appender/x:param[@name = 'ConnectionString']/@value" />
-    <call target="helper.xmlpoke.connectionString.ensure" />
-  </target>
-
   <target name="wc.notepadSpecifics">
     <property name="fileName" value=".specifics" />
     <echo file="${fileName}" append="false">
@@ -430,8 +511,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     </exec>
   </target>
 
-  <target name="sql.tests.db.recreate">
-    <property name="sql.tests.instance" value="(local)\SQLEXPRESS" />
+  <target name="sql.tests.db.recreate" depends="tests.setProperties">
     <property name="sql.instance" value="${sql.tests.instance}" />
     <property name="sql.tests.db.name" value="tests_${sql.db.name}" />
     <property name="sql.tests.connectionString" value="server=${sql.tests.instance};database=${sql.tests.db.name};uid=rainbow;pwd=rainbow_" />
@@ -463,6 +543,12 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <call target="tests.run" />
   </target>
 
+  <target name="tests.setProperties">
+    <property name="sql.instance" value="${sql.tests.instance}" />
+    <property name="sql.tests.db.name" value="tests_${sql.db.name}" />
+    <property name="sql.tests.connectionString" value="server=${sql.tests.instance};database=${sql.tests.db.name};uid=rainbow;pwd=rainbow_" />
+  </target>
+
   <target name="tests.prepare">
     <call target="sql.tests.db.recreate" />
     <call target="tests.updateConfig" />
@@ -470,23 +556,23 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
 
   <target name="tests.updateConfig">
     <property name="relativeTestsPath" value="Projects\Rainbow.Tests\" />
-    <copy file="${relativeTestsPath}App.config.standard" 
-      tofile="${relativeTestsPath}App.config" overwrite="true">
+    <copy file="${wc.dir}${relativeTestsPath}App.config.standard" 
+      tofile="${wc.dir}${relativeTestsPath}App.config" overwrite="true">
       <filterchain>
         <replacestring from="[[RainbowTestDBUser]]" to="${sql.db.user.name}" />
         <replacestring from="[[RainbowTestDBUserPwd]]" to="${sql.db.user.password}" />
         <replacestring from="[[RainbowTestDBServer]]" to="${sql.tests.instance}" />
-        <replacestring from="[[your.branch.root]]" to="${directory::get-current-directory() + '\'}" /> <!-- ${string::replace(this.branch, '/', '\') -->
+        <replacestring from="[[your.branch.root]]" to="${wc.dir}" />
         <replacestring from="[[RainbowTestDBConnectionString]]" to="${sql.tests.connectionString}" />
       </filterchain>
     </copy>
   </target>
 
-  <fileset id="test.assemblies">
+  <fileset id="tests.assemblies">
     <include name="Projects\Rainbow.Tests\bin\Rainbow.Tests.dll" />
   </fileset>
 
-  <fileset id="test.results">
+  <fileset id="tests.results">
     <include name="Rainbow.Tests.dll-results.xml" />
   </fileset>
 
@@ -494,7 +580,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <echo message="Running nunit2 task" />
     <foreach item="File" property="testAssembly">
       <in>
-        <items refid="test.assemblies" />
+        <items refid="tests.assemblies" />
       </in>
       <do>
         <echo message="Running test assembly: ${testAssembly}" />
@@ -513,7 +599,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <property name="total" value="0" />
     <foreach item="File" property="testResult">
       <in>
-        <items refid="test.results" />
+        <items refid="tests.results" />
       </in>
       <do>
         <xmlpeek file="${testResult}" xpath="/test-results/@failures" property="currentFailuresNumber" />
@@ -546,16 +632,35 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <property name="sql.web.connectionString" value="server=${sql.instance};database=${sql.db.name};Trusted_Connection=true" />    
   </target>
 
-  <target name="app.iocluster.prepare" >
-    <call target="app.iocluster.setProperties" />
+  <target name="app.iocluster.prepare" depends="app.iocluster.setProperties">
     <call target="web.createIisApp" />
     <call target="web.rainbow.deleteLog" />
   </target>
 
-  <target name="app.iocluster.fixup" >
-    <call target="app.iocluster.setProperties" />
+  <target name="app.iocluster.fixup" depends="app.iocluster.setProperties">
     <call target="config.web.setConnectionStrings" />
     <call target="sql.recreate" />
+  </target>
+
+  <!-- ******************* -->
+  <!-- **  app.rainbow  ** -->
+  <!-- ******************* -->
+  <target name="app.rainbow.setProperties" depends="svn.info">
+    <property name="web.virtDirName" value="${svn.branch.default}" />
+    <property name="web.relativeApplicationPath" value="${web.rainbow.dir}" />
+    <property name="sql.instance" value="(local)\SQLEXPRESS" />
+    <property name="sql.db.name" value="${svn.branch.default}" />
+    <call target="sql.setTrustedConnectionString" />
+  </target>
+
+  <target name="app.rainbow.prepare" depends="app.rainbow.setProperties">
+    <call target="web.createIisApp" />
+    <call target="web.rainbow.deleteLog" />
+  </target>
+
+  <target name="app.rainbow.fixup" depends="app.rainbow.setProperties">
+    <call target="sql.recreate" />
+    <call target="config.web.setConnectionStrings" />
   </target>
 
   <!-- ***************** -->
@@ -568,14 +673,12 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <call target="sql.setTrustedConnectionString" />
   </target>
 
-  <target name="app.sql2k.prepare" depends="svn.info">
-    <call target="app.sql2k.setProperties" />
+  <target name="app.sql2k.prepare" depends="app.sql2k.setProperties">
     <call target="web.createIisApp" />
     <call target="web.rainbow.deleteLog" />
   </target>
 
-  <target name="app.sql2k.fixup" >
-    <call target="app.sql2k.setProperties" />
+  <target name="app.sql2k.fixup" depends="app.sql2k.setProperties">
     <call target="sql.recreate" />
     <call target="config.web.setConnectionStrings" />
   </target>
@@ -590,8 +693,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <call target="sql.setTrustedConnectionString" />
   </target>
 
-  <target name="app.sql2k5Precompiled.prepare" depends="svn.info">
-    <call target="app.sql2k5Precompiled.setProperties" />
+  <target name="app.sql2k5Precompiled.prepare" depends="app.sql2k5Precompiled.setProperties">
     <readregistry property="iisWwwRoot" key="SOFTWARE\Microsoft\InetStp\PathWWWRoot" hive="LocalMachine" />
     <mkdir dir="${iisWwwRoot}\${web.precompiled.dir}" />
 
@@ -599,8 +701,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <call target="web.rainbow.deleteLog" />
   </target>
 
-  <target name="app.sql2k5Precompiled.fixup">
-    <call target="app.sql2k5Precompiled.setProperties" />
+  <target name="app.sql2k5Precompiled.fixup" depends="app.sql2k5Precompiled.setProperties">
     <call target="sql.recreate" />
     <call target="config.web.setConnectionStrings" />
   </target>
@@ -611,7 +712,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
 
   <target name="helper.xmlpoke.connectionString.ensure">
     <property name="xmlNamespace" value="http://schemas.microsoft.com/.NetConfiguration/v2.0" />
-    <xmlpeek file="${this.webConfig}"
+    <xmlpeek file="${web.config}"
       xpath="${par.xpath}"
       property="readString" >
         <namespaces>
@@ -619,7 +720,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
         </namespaces>
       <!-- &configurationNamespaces; -->
     </xmlpeek>
-    <xmlpoke file="${this.webConfig}"
+    <xmlpoke file="${web.config}"
       xpath="${par.xpath}"
       value="${sql.web.connectionString}" >
         <namespaces>
