@@ -26,7 +26,7 @@
   <property name="build.targets" value="Clean;Build" />
 
   <property if="${not property::exists('build.version.major')}" name="build.version.major" value="2" />
-  <property if="${not property::exists('build.version.minor')}" name="build.version.minor" value="0" />
+  <property if="${not property::exists('build.version.minor')}" name="build.version.minor" value="1" />
   <property if="${not property::exists('build.version.build')}" name="build.version.build" value="0" />
   <property if="${not property::exists('build.version.revision')}" name="build.version.revision" value="0" />
   <property if="${not property::exists('wc.indicator')}" name="wc.indicator" value="" />
