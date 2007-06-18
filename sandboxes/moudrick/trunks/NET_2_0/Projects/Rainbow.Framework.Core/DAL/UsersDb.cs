@@ -185,7 +185,7 @@ namespace Rainbow.Framework.Users.Data {
         /// The GetPortalRoles method returns a list of all roles for the specified portal.
         /// </summary>
         /// <param name="portalAlias">The portal alias.</param>
-        /// <returns>a <code>IList<RainbowRole></code> containing all role objects.
+        /// <returns>a <code>IList&lt;RainbowRole&gt;</code> containing all role objects.
         /// </returns>
         public IList<RainbowRole> GetPortalRoles( string portalAlias ) {
             return RoleProvider.GetAllRoles( portalAlias );
