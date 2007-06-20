@@ -622,10 +622,10 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
   <property name="tests.ncover.results" value="${results.dir}NCover\"/>
   <property name="tests.ncover.files.properties" value="${tests.ncover.results}Properties.txt" />
   <property name="tests.ncover.files.build" value="${project::get-buildfile-path()}" />
+  <property name="tests.ncover.tasks" value="${tests.ncover.package.root}package\NCoverExplorer\bin\NCoverExplorer.NAntTasks.dll" />
 
   <target name="tests.ncover.default">
-    <!-- loadtasks assembly="${tests.ncover.package.root}package\bin\NAnt.NCoverExplorer.Tasks.dll" / -->
-	<loadtasks assembly="${tests.ncover.package.root}package\NCoverExplorer\bin\NCoverExplorer.NAntTasks.dll" />
+    <loadtasks assembly="${tests.ncover.tasks}" />
     <ncover program="${tests.ncover.package.root}NCover.Console.exe"
         commandLineExe="${nant::get-base-directory()}nant.exe"
         commandLineArgs="-buildfile:${tests.ncover.files.build} svn.info tests.default"
@@ -640,7 +640,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
   </target>
 
   <target name="tests.ncover.private.explorer">
-    <loadtasks assembly="${tests.ncover.package.root}package\bin\NAnt.NCoverExplorer.Tasks.dll" />
+    <loadtasks assembly="${tests.ncover.tasks}" />
     <echo message="Starting NCoverExplorer report generation..."/>
     <ncoverexplorer program="${tests.ncover.package.root}package\NCoverExplorer\NCoverExplorer.Console.exe"
         projectName="${project::get-name()}"
