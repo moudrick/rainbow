@@ -29,9 +29,11 @@
   <property if="${not property::exists('build.version.minor')}" name="build.version.minor" value="1" />
   <property if="${not property::exists('build.version.build')}" name="build.version.build" value="0" />
   <property if="${not property::exists('build.version.revision')}" name="build.version.revision" value="0" />
+  <property if="${not property::exists('build.configurations')}" name="build.configurations" value="Release" /> <!-- Release;Debug -->
   <property if="${not property::exists('wc.indicator')}" name="wc.indicator" value="" />
 
   <property name="wc.dir" value="${project::get-base-directory()}\" />
+  <property name="results.dir" value="Results\" />
   <property name="sql.relativePath" value="Setup/Scripts/" />
   <property name="web.rainbow.dir" value="WebSites/Rainbow/" />
   <property name="web.precompiled.dir" value="PrecompiledWeb" />
@@ -56,6 +58,7 @@
   <target name="manual" depends="main, wc.notepadSpecifics" />
   <target name="main" >
     <call target="wc.info" />
+    <call target="results.delete" />
     <call target="svn.default" />
     <call target="tests.prepare" />
     <call target="config.update" />
@@ -69,10 +72,12 @@
     <call target="app.sql2k5Precompiled.fixup" />
 
     <call target="tests.run" />
+    <call target="tests.ncover.default" />
   </target>
 
   <target name="ccnet.iocluster" >
     <call target="wc.info" />
+    <call target="results.delete" />
     <call target="svn.default" />
     <call target="tests.prepare" />
     <call target="config.update" />
@@ -82,6 +87,7 @@
     <call target="app.iocluster.fixup" />
 
     <call target="tests.run" />
+    <call target="tests.ncover.default" />
     <call target="downloads.default" />
   </target>
 
@@ -343,7 +349,6 @@
 
   <target name="build.processSolution">
     <call target="build.prepareBranchSolution" />
-    <property name="build.configurations" value="Release" /> <!-- ;Debug -->
     <foreach item="String" property="configuration" in="${build.configurations}" delim=";"> 
       <exec program="msbuild.exe" basedir="${this.netFrameworkPath}" workingdir=".">
         <arg value="${build.solution.filename}" />
@@ -568,8 +573,10 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <include name="Projects\Rainbow.Tests\bin\Rainbow.Tests.dll" />
   </fileset>
 
+  <property name="tests.results.dir" value="${results.dir}NUnit\" />
+
   <fileset id="tests.results">
-    <include name="Rainbow.Tests.dll-results.xml" />
+    <include name="${tests.results.dir}**\*.xml" />
   </fileset>
 
   <target name="tests.run">
@@ -581,7 +588,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
       <do>
         <echo message="Running test assembly: ${testAssembly}" />
         <nunit2 haltonfailure="false" failonerror="false">
-          <formatter type="Xml" usefile="true" extension=".xml" outputdir="." />
+          <formatter type="Xml" usefile="true" extension=".xml" outputdir="${tests.results.dir}" />
           <formatter type="Plain" usefile="false" />
           <test assemblyname="${testAssembly}" >
             <categories>
@@ -606,6 +613,59 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <echo message="${customTestsSummary}" />
     <echo message="Total Tests Failed: ${total}" />
     <fail if="${int::parse(total) > 0}" message="Total Tests Failed: ${total}." />
+  </target>
+
+  <!-- ******************** -->
+  <!-- **  tests.ncover  ** -->
+  <!-- ******************** -->
+  <property name="tests.ncover.package.root" value="C:\Program Files\NCover\" />
+  <property name="tests.ncover.results" value="${results.dir}NCover\"/>
+  <property name="tests.ncover.files.properties" value="${tests.ncover.results}Properties.txt" />
+  <property name="tests.ncover.files.build" value="${project::get-buildfile-path()}" />
+
+  <target name="tests.ncover.default">
+    <!-- loadtasks assembly="${tests.ncover.package.root}package\bin\NAnt.NCoverExplorer.Tasks.dll" / -->
+	<loadtasks assembly="${tests.ncover.package.root}package\NCoverExplorer\bin\NCoverExplorer.NAntTasks.dll" />
+    <ncover program="${tests.ncover.package.root}NCover.Console.exe"
+        commandLineExe="${nant::get-base-directory()}nant.exe"
+        commandLineArgs="-buildfile:${tests.ncover.files.build} svn.info tests.default"
+        coverageFile="${tests.ncover.results}RawCoverage.xml"
+        assemblyList="Rainbow.Framework.Core;Rainbow.Framework.Providers.RainbowMembershipProvider;Rainbow.Framework.Providers.RainbowRoleProvider;Rainbow.Framework.Providers.RainbowSqlMembershipProvider;Rainbow.Framework.Providers.RainbowSqlRoleProvider"
+        logFile="${tests.ncover.results}coverage.log"
+        verbose="true"
+        >
+      <assemblies refid="tests.assemblies" />
+    </ncover>
+    <call target="tests.ncover.private.explorer" />
+  </target>
+
+  <target name="tests.ncover.private.explorer">
+    <loadtasks assembly="${tests.ncover.package.root}package\bin\NAnt.NCoverExplorer.Tasks.dll" />
+    <echo message="Starting NCoverExplorer report generation..."/>
+    <ncoverexplorer program="${tests.ncover.package.root}package\NCoverExplorer\NCoverExplorer.Console.exe"
+        projectName="${project::get-name()}"
+        reportType="4"
+        outputDir="${wc.dir}${tests.ncover.results}" 
+        xmlReportName="CoverageReport.xml"
+        showExcluded="True"
+        satisfactoryCoverage="80" >
+      <fileset>
+        <include name="${tests.ncover.results}RawCoverage.xml" />
+      </fileset>
+    </ncoverexplorer>
+  </target>
+
+  <!-- *************** -->
+  <!-- **  results  ** -->
+  <!-- *************** -->
+  <target name="results.delete">
+    <delete>
+      <fileset>
+        <include name="${results.dir}**\*.xml" />
+        <include name="${results.dir}**\*.log" />
+        <include name="${results.dir}**\*.xsl" />
+      </fileset>
+    </delete>
   </target>
 
   <!-- ********************** -->
