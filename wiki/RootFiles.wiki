@@ -63,7 +63,7 @@ with configuration based on this file for whole team monitoring your copy status
 
   * Included to repository.
   * The best practice is to avoid any changes to this file even in your sandbox
-  * To be copied with filter chains substitution by standard build process to *VersionInfo.cs*.
+  * To be copied with filter chains substitution by standard build process to *!VersionInfo.cs*.
 
 ===CreateIISApp.cmd and CreateIISApp.vbs ===
 
