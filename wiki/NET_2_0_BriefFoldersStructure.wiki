@@ -1,0 +1,16 @@
+#summary NET_2_0 version folders structure brief description
+#labels Phase-Implementation
+
+=== Rainbow 2.x developers' source folders structure ===
+
+|| || ||
+|| */* || RootFiles ||
+|| */Libs/* || binary libraries references in *Projects* and *!WebSites* ||
+|| */!PrecompiledWeb/* || precreated empty folder for precompiled web sites and download packages preparation ||
+|| */Projects/* || subproject such as *Core*, *Providers* etc (see detailed structure at [NET_2_0_FoldersStructure]) ||
+|| */!WebSites/* || folder containing all web sites in use ||
+|| */!WebSites/Rainbow/* || the web site (see detailed structure at [NET_2_0_FoldersStructure]) ||
+
+
+
+
