@@ -44,7 +44,7 @@ We use our own structure instead of initially precreated structure. It is descri
 || || ||
 || */NET_2_0/devint/branches/* || ||
 || */NET_2_0/devint/tags/* || ||
-|| */NET_2_0/devint/trunk/* || latest _devint_ trunk with its own content (see RootFiles) and substructure (see NET_2_0_BriefFoldersStructure) ||
+|| */NET_2_0/devint/trunk/* || latest _devint_ trunk with its own content (see RootFiles) and substructure (see [NET_2_0_BriefFoldersStructure]) ||
 || || ||
 || */NET_2_0/stage/* || stage environment with its own separate structure ||
 || || ||
