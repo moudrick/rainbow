@@ -14,7 +14,7 @@ Do not checkout or export this url directly, you have to add a *relative path* t
 
 
 
-We use our own structure instead of initially precreated structure. It is described below more detailed. You who has rights to commit please follow this structure and never make commits outside your sandbox.
+We use our own structure instead of initially precreated structure. It is described below more detailed. You can browse this structure by !TortoiseSvn Repo-browser (see http://tortoisesvn.tigris.org/). You who has rights to commit please follow this structure and never make commits outside your sandbox.
 
 
 
@@ -60,6 +60,7 @@ We use our own structure instead of initially precreated structure. It is descri
 || */NET_2_0/prod/trunk/ * || ||
 || || ||
 || || ||
+
 
 
 
