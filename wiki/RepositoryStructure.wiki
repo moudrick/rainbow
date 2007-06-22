@@ -34,7 +34,7 @@ We use our own structure instead of initially precreated structure. It is descri
 || */NET_1_1/trunk/* || latest trunk with its own substructure ||
 || || ||
 || */NET_1_1/trunk/ECommerce/* || ECommerce module ||
-|| */NET_1_1/trunk/Extensions/* || extensioins necessary ||
+|| */NET_1_1/trunk/Extensions/* || extensions necessary ||
 || */NET_1_1/trunk/Rainbow/* || site root ||
 || || ||
 || || ||
@@ -44,14 +44,7 @@ We use our own structure instead of initially precreated structure. It is descri
 || || ||
 || */NET_2_0/devint/branches/* || ||
 || */NET_2_0/devint/tags/* || ||
-|| || ||
-|| */NET_2_0/devint/trunk/* || latest _devint_ trunk with its own substructure ||
-|| || ||
-|| */NET_2_0/devint/trunk/Libs* || binary libraries references in *Projects* and *!WebSites* ||
-|| */NET_2_0/devint/trunk/!PrecompiledWeb/* || precreated empty folder for precompiled web sites ||
-|| */NET_2_0/devint/trunk/Projects/* || subproject such as *Core*, *Providers* etc (see detailed structure at [NET_2_0_FoldersStructure]) ||
-|| */NET_2_0/devint/trunk/!WebSites/* || folder containing all web sites in use ||
-|| */NET_2_0/devint/trunk/!WebSites/Rainbow/* || the web site (see detailed structure at [NET_2_0_FoldersStructure]) ||
+|| */NET_2_0/devint/trunk/* || latest _devint_ trunk with its own content (see RootFiles) and substructure (see NET_2_0_BriefFoldersStructure) ||
 || || ||
 || */NET_2_0/stage/* || stage environment with its own separate structure ||
 || || ||
@@ -67,6 +60,11 @@ We use our own structure instead of initially precreated structure. It is descri
 || */NET_2_0/prod/trunk/ * || ||
 || || ||
 || || ||
+
+
+
+
+
 
 
 
