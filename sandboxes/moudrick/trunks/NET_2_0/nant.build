@@ -488,7 +488,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     </copy>
   </target>
 
-  <fileset id="test.assemblies">
+  <fileset id="tests.assemblies">
     <include name="Projects\Rainbow.Tests\bin\Rainbow.Tests.dll" />
   </fileset>
 
@@ -502,7 +502,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <echo message="Running nunit2 task" />
     <foreach item="File" property="testAssembly">
       <in>
-        <items refid="test.assemblies" />
+        <items refid="tests.assemblies" />
       </in>
       <do>
         <echo message="Running test assembly: ${testAssembly}" />
