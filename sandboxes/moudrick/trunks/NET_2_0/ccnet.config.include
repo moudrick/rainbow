@@ -27,7 +27,8 @@
 		<publishers>
 			<merge>
 				<files>
-					<file>*-results.xml</file>
+					<file>Results/NUnit/*-results.xml</file>
+					<file>Results/NCover/*.xml</file>
 				</files>
 			</merge>
 			<xmllogger />
