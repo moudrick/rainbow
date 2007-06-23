@@ -521,7 +521,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <property name="total" value="0" />
     <foreach item="File" property="testResult">
       <in>
-        <items refid="test.results" />
+        <items refid="tests.results" />
       </in>
       <do>
         <xmlpeek file="${testResult}" xpath="/test-results/@failures" property="currentFailuresNumber" />
