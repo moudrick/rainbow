@@ -1,4 +1,5 @@
 #summary An installation guide for intial setup of Rainbow Portal 2.0.Beta1.7z
+#labels Phase-Implementation,Phase-Support,Phase-Deploy
 
 = Software Requirements =
 
@@ -20,7 +21,6 @@ Rainbow Portal is not designed to function with a Microsoft Access Database (97/
 = Installation =
 
 The following instructions will detail the installation of Rainbow Portal 2.0
-
 
 
 
