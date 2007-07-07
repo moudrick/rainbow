@@ -5,22 +5,33 @@
 
 Rainbow Portal is a .Net 2.0 Open Source Content Management System based on ASP.NET, C# and SQL Server. It has the following minimum software requirements to be run as a web application:
 
-*Microsoft IIS (Internet Management Server) 5.0 or later*:
-_(Rainbow can also be run using Cassini Personal Web Server. This method is not discussed in this document)_
+  * Microsoft IIS (Internet Management Server) 5.0 or later*:
+  _(Rainbow can also be run using Cassini Personal Web Server. This method is not discussed in this document)_
 
-*Microsoft .NET Framework 2.0*
+  * Microsoft .NET Framework 2.0*
 
-*A minimum of SQL Server Express 2005 installed on the application server*
+  * A minimum of SQL Server Express 2005 installed on the application server*
 
-OR
+  OR
 
-*Microsoft SQL Server 2000 or greater*
+  * Microsoft SQL Server 2000 or greater*
 
 Rainbow Portal is not designed to function with a Microsoft Access Database (97/XP/2003/2007) and is not supported.
 
 = Installation =
 
 The following instructions will detail the installation of Rainbow Portal 2.0
+
+* The project is not compiled. This installation will discuss installation and compilation using Microsoft Visual Studio 2005 *
+
+  # Download the file from http://code.google.com/p/rainbow/downloads/list?q=label:Type-Installer
+  # Extract the project files to a project directory like c:\projects or something similar
+
+
+
+
+
+
 
 
 
