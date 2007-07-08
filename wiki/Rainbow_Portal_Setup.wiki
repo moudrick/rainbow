@@ -1,4 +1,4 @@
-#summary An installation guide for intial setup of Rainbow Portal 2.0.Beta1.7z
+#summary An installation guide for intial setup of Rainbow Portal 2.0
 #labels Phase-Implementation,Phase-Support,Phase-Deploy
 
 = Software Requirements =
@@ -26,7 +26,6 @@ The following instructions will detail the installation of Rainbow Portal 2.0
 
   # Download the file from http://code.google.com/p/rainbow/downloads/list?q=label:Type-Installer
   # Extract the project files to a project directory like c:\projects or something similar
-
 
 
 
