@@ -75,7 +75,7 @@
     <call target="tests.ncover.default" />
   </target>
 
-  <target name="ccnet.iocluster" >
+  <target name="ccnet.iocluster">
     <call target="wc.info" />
     <call target="results.delete" />
     <call target="svn.default" />
@@ -274,6 +274,152 @@
   <!-- **  web  ** -->
   <!-- *********** -->
   <target name="web.createIisApp">
+    <echo message="${this::echo-property('web.virtDirName')}" />
+    <echo message="${this::echo-property('web.relativeApplicationPath')}" />
+    <property name="web.createScriptFileName" value=".Create.vbs" />
+    
+    <echo file="${web.createScriptFileName}">
+' File name: ${web.createScriptFileName}
+' Set some variables and constants we will use...
+Dim currentDir: currentDir = "${directory::get-current-directory()}"
+Dim branchDir: branchDir = "${web.relativeApplicationPath}"
+Dim webSiteIdentifier: webSiteIdentifier = "${web.siteIdentifier}"
+Dim strVirtualDirectoryName: strVirtualDirectoryName = "${web.virtDirName}"
+
+Dim blnInProcessApplication 'IIS In Process Application Flag
+Dim objIIS 'ADSI IIS Object
+Dim strVirtualDirectoryPath 'IIS Virtual Directory Path
+Dim objFileSystem 'VBScript FileSystemObject
+Dim strOwner 'NT Folder Owner
+Dim objVirtualDirectory 'ADSI IIS Virtual Directory Object
+
+Dim blnScriptPermissions 'IIS script permissions flag
+Dim blnExecutePermissions ' IIS Execute permissions flag
+Dim blnWritePermissions ' 
+Dim blnReadPermissions '
+Dim blnIntegratedWindowsAuthentication
+
+Dim strHTTPReferer 'IIS Referrer Page
+Dim objWSH 'Windows Scripting Host Object
+Dim objRTC 'Return
+Dim strACLCommand 'Command Line string to set ACLs
+Dim MachineName ' computer name
+
+strVirtualDirectoryPath = currentDir + "/" + branchDir 'IIS Virtual Directory Path
+strVirtualDirectoryPath = Replace(strVirtualDirectoryPath, "/", "\")
+
+' Get the Computer name using Wscript.Network and assign to IUSR to create IIS IUSR account name
+Set WshNetwork = WScript.CreateObject("WScript.Network")
+MachineName=WshNetwork.ComputerName
+strOwner = "IUSR_" &amp; MachineName
+Set WshNetwork = Nothing
+set wsc = Wscript.CreateObject("WScript.Shell")
+'wsc.Popup "Setting Permissions for Computer Name = " &amp; strOwner , 1
+Wscript.echo ("Setting Permissions for Computer Name = " &amp; strOwner)
+blnScriptPermissions = "True" 
+blnExecutePermissions = "True"
+blnWritePermissions = "True"
+blnReadPermissions = "True"
+blnIntegratedWindowsAuthentication = "True"
+
+Dim strIisSiteRoot: strIisSiteRoot = "IIS://localhost/W3SVC/" &amp; webSiteIdentifier &amp; "/Root"
+Wscript.echo ("strIisSiteRoot = " &amp; strIisSiteRoot)
+Dim strObjectType: strObjectType = "IIsWebVirtualDir"
+
+' Does this IIS application already exist in the metabase?
+On Error Resume Next
+Dim strIisVirtualDirFullName: strIisVirtualDirFullName = strIisSiteRoot &amp; "/" &amp; strVirtualDirectoryName
+Set objIIS = GetObject(strIisVirtualDirFullName)
+If Err.Number = 0 Then
+	Wscript.echo ("An application '" &amp; strIisVirtualDirFullName &amp; "' already exists. ")
+	Wscript.echo ("Deleting application '" &amp; strIisVirtualDirFullName &amp;  "'")
+	Dim objIisRoot
+	Set objIisRoot = GetObject(strIisSiteRoot)
+	objIisRoot.Delete strObjectType, strVirtualDirectoryName
+	If Err.Number = 0 Then
+		Wscript.echo ("Application '" &amp; strIisVirtualDirFullName &amp; "' seems to be deleted")
+	Else
+		Wscript.echo ("Application '" &amp; strIisVirtualDirFullName &amp; "' was not deleted")
+		Wscript.quit
+	End If
+End If
+Set objIIS = Nothing
+
+'Now use IIS administration objects to create the IIS application in the metabase. 
+'Create the IIS application
+Set objIIS = GetObject(strIisSiteRoot) '"IIS://localhost/W3SVC/1/Root"
+'                 strVirtualDirectoryPath = objIIS.Path &amp; "\" &amp; strVirtualDirectoryName
+
+' First check for and optionally create the physical folder under wwwroot
+Set objFileSystem = Wscript.CreateObject("Scripting.FileSystemObject")
+On Error Resume Next
+Set Folder = objFileSystem.GetFolder(strVirtualDirectoryPath)
+If Hex(Err.number) = "4C" Then
+	'wsc.Popup "Creating folder " &amp; strVirtualDirectoryPath , 1
+	Wscript.echo ("Creating folder " &amp; strVirtualDirectoryPath )
+	set f = objFileSystem.CreateFolder(strVirtualDirectoryPath)
+End If
+Set objFileSystem = Nothing
+
+'Using IIS Administration object , turn on script/execute permissions and define the virtual directory as an 'in-process application. 
+Set objVirtualDirectory = objIIS.Create(strObjectType, strVirtualDirectoryName)
+objVirtualDirectory.AccessScript = blnScriptPermissions
+objVirtualDirectory.Path = strVirtualDirectoryPath
+objVirtualDirectory.AppCreate blnInProcessApplication
+objVirtualDirectory.AccessWrite = blnWritePermissions 
+objVirtualDirectory.AccessRead = blnReadPermissions
+objVirtualDirectory.AccessExecute = blnExecutePermissions
+objVirtualDirectory.AuthNTLM = blnIntegratedWindowsAuthentication
+objVirtualDirectory.AuthAnonymous =True
+objVirtualDirectory.AnonymousUserName=strOwner
+objVirtualDirectory.AnonymousPasswordSync=True
+objVirtualDirectory.AppCreate (True)
+objVirtualDirectory.SetInfo 
+
+UpdateScriptMaps strVirtualDirectoryName
+
+'Set Change Permissions for the owner using CACLS.exe
+' need to "|" pipe the "Y" yes answer to the command "Are you sure?" prompt for this to work (see KB: Q135268 )
+strACLCommand = "cmd /c echo y| CACLS "
+strACLCommand = strACLCommand &amp; strVirtualDirectoryPath
+strACLCommand = strACLCommand &amp; " /g " &amp; strOwner &amp; ":C"
+Set objWSH = Server.CreateObject("WScript.Shell")
+objRTC = objWSH.Run (strACLCommand , 0, True)
+Set objWSH = Nothing
+
+'Display results
+strRes = "Web Application Created Sucessfully" &amp; vbCRlf
+strRes = strRes &amp; "Name : " &amp; strVirtualDirectoryName &amp; vbCRlf
+strRes = strRes &amp; "Path : " &amp; strVirtualDirectoryPath &amp; vbCRlf
+strRes = strRes &amp; "Script Permissions : " &amp; blnScriptPermissions &amp; vbCRlf
+strRes = strRes &amp; "Read Permissions : " &amp; blnReadPermissions &amp; vbCRlf
+strRes = strRes &amp; "Write Permissions: " &amp; blnWritePermissions &amp; vbCrLf
+strRes = strRes &amp; "Execute Permission: " &amp; blnExecutePermissions &amp; vbCrLf
+strRes = strRes &amp; "Integrated Windows Authentication: " &amp; blnIntegratedWindowsAuthentication &amp; vbCrLf
+strRes = strREs &amp; strOwner &amp; " granted change permissions" &amp; vbCrlF
+wscript.echo strRes
+
+Sub UpdateScriptMaps(folderName)
+
+   Dim winPath, netPath, toolPath
+   Dim wsShell
+   Dim fso
+
+   Set wsShell = CreateObject("WScript.Shell")
+   Set fso = CreateObject("Scripting.FileSystemObject")
+
+   winPath = wsShell.ExpandEnvironmentStrings("%windir%")
+   netPath = "${this.netFrameworkPath}"
+   toolPath = fso.BuildPath(netPath, "aspnet_regiis.exe")
+
+   wsShell.Run toolPath &amp; " -sn W3SVC/1/Root/""" &amp; folderName &amp; """", 1, true
+End Sub 
+    </echo>
+
+    <exec program="cscript.exe" commandline="${web.createScriptFileName}" />
+  </target>
+
+  <target name="web.createIisApp.old">
     <echo message="${this::echo-property('web.virtDirName')}" />
     <echo message="${this::echo-property('web.relativeApplicationPath')}" />
     <setenv name="relativeApplicationPath" value="${web.relativeApplicationPath}" />
