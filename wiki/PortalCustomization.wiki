@@ -9,6 +9,8 @@ There are three main locations to change the look and feel of the web portal –
 == Built In Portal Controls (UI) ==
 Internal portal controls are used for changing the logo, page title, desktop layout, theme, and more.  To get to the portal controls, log into the portal, go to the admin pages, and find the portal controls.  When editing a portal from the portal module, you can change the default logo, the default page title, default description, keywords, and etc.  It is also where you can choose the Theme and Desktop Layout (Page Layout) that your portal is using, as well as many other options.
 ==Theme==
+The themes are located in the \design\theme folder of Rainbow.  Each theme has it's own folder for the CSS, theme.xml, icons, and more.
+
 *CSS* – The css file is where changes to colors are usually made, as well as format, locations, line wrapping, fonts, and much more.  Most of the themes contain a single CSS file with all the options, although a few themes do have multiple CSS files.  This is a standard Cascading Style Sheet page, and should be mostly documented in the CSS file itself.
 
 *Theme.xml* – The theme.xml file is located in the \design\theme\ThemeName folder and contains customizable information about what graphics are used for buttons on the website, as well as some title formatting.  Historically, we have mostly only used this file for changing the button graphics on the site
