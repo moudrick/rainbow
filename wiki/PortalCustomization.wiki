@@ -28,7 +28,13 @@ Desktop Layout is in the \Design\DesktopLayouts folder.  Each customized website
 
 *DesktopThreePanes.ascx* – This is the template for the main body.  This file is never changed, much like the desktopdefault.ascx
 
+==Help==
 
+One side section that is good to bring up is how to change the web page that comes up when you click the Help button in the top right corner of the portal.  Basically the help just opens an XML document and formats it using an XSLT.
+
+*Rainbow.xml* - This file is located in the \rb_documentation\rainbow folder.  Currently it just has a single page with information on it, but it can be turned into a fairly extensive help.  It's reasonably easy to change this xml file by looking at the help page as you compare with the xml.
+
+*viewer.xslt* - This is the XSL Transform that arranges and displays the Rainbow.xml into the help web page.  It is located in the \rb_documentation\xsl folder.
 
 
 
