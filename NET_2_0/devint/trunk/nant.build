@@ -115,15 +115,15 @@
     <echo message="" />
     <echo message="** .Net Framework related information **" />
     <echo message="framework::get-runtime-framework()='${framework::get-runtime-framework()}'" />
-    <echo message="${this::echo-property('this.netFramework')}" />
-    <echo message="${this::echo-property('this.netFrameworkPath')}" />
+    <echo-property property="this.netFramework" />
+    <echo-property property="this.netFrameworkPath" />
     <echo message="" />
     <echo message="** branch specific information **" />
-    <echo message="${this::echo-property('sql.instance')}" />
+    <echo-property property="sql.instance" />
     <echo message="" />
     <echo message="** CCNet related information **" />
-    <echo message="${this::echo-property('CCNetLabel')}" />
-    <echo message="${this::echo-property('')}" />
+    <echo-property property="CCNetLabel" />
+    <echo-property property="" />
   </target>
 
   <!-- ***************** -->
@@ -219,11 +219,11 @@
 
       <regex pattern="(URL\:\ (?'url'\S*))" input="${svnInfo}" options="Multiline" />
       <property name="svn.info.url" value="${url}" />
-      <echo message="${this::echo-property('svn.info.url')}" />
+      <echo-property property="svn.info.url" />
 
       <regex pattern="(Repository Root\:\ (?'root'\S*))" input="${svnInfo}" options="Multiline" />
       <property name="svn.info.root" value="${root}" />
-      <echo message="${this::echo-property('svn.info.root')}" />
+      <echo-property property="svn.info.root" />
 
       <property name="svn.branch" value="${wc.indicator}rb_${string::replace(svn.info.url + '/', svn.info.root + '/', '')}" />
       <property name="svn.branch.encoded" value="${string::replace(svn.branch, '/', '$')}" dynamic="true" />
@@ -238,11 +238,11 @@
     <xmlpeek file="${web.rainbow.dir}${sql.relativePath}history.xml" property="sql.version"
       xpath="/History/Release[last()]/Version" />
 
-    <echo message="${this::echo-property('build.version.revision')}" />
-    <echo message="${this::echo-property('svn.branch')}" />
-    <echo message="${this::echo-property('svn.branch.encoded')}" />
-    <echo message="${this::echo-property('sql.db.name')}" />
-    <echo message="${this::echo-property('sql.version')}" />
+    <echo-property property="build.version.revision" />
+    <echo-property property="svn.branch" />
+    <echo-property property="svn.branch.encoded" />
+    <echo-property property="sql.db.name" />
+    <echo-property property="sql.version" />
   </target>
 
   <!-- ************** -->
@@ -257,8 +257,8 @@
 
   <target name="config.web.setConnectionStrings" >
     <property name="web.config" value="${wc.dir}${web.relativeApplicationPath}Web.config" />
-    <echo message="${this::echo-property('web.config')}" />
-    <echo message="${this::echo-property('sql.web.connectionString')}" />
+    <echo-property property="web.config" />
+    <echo-property property="sql.web.connectionString" />
     <foreach item="String" property="addName" delim=";" 
       in="ConnectionString;Providers.ConnectionString;RainbowProviders.ConnectionString;Main.ConnectionString">
       <property name="par.xpath" 
@@ -274,8 +274,8 @@
   <!-- **  web  ** -->
   <!-- *********** -->
   <target name="web.createIisApp">
-    <echo message="${this::echo-property('web.virtDirName')}" />
-    <echo message="${this::echo-property('web.relativeApplicationPath')}" />
+    <echo-property property="web.virtDirName" />
+    <echo-property property="web.relativeApplicationPath" />
     <property name="web.createScriptFileName" value=".Create.vbs" />
     
     <echo file="${web.createScriptFileName}">
@@ -331,17 +331,17 @@ On Error Resume Next
 Dim strIisVirtualDirFullName: strIisVirtualDirFullName = strIisSiteRoot &amp; "/" &amp; strVirtualDirectoryName
 Set objIIS = GetObject(strIisVirtualDirFullName)
 If Err.Number = 0 Then
-	Wscript.echo ("An application '" &amp; strIisVirtualDirFullName &amp; "' already exists. ")
-	Wscript.echo ("Deleting application '" &amp; strIisVirtualDirFullName &amp;  "'")
-	Dim objIisRoot
-	Set objIisRoot = GetObject(strIisSiteRoot)
-	objIisRoot.Delete strObjectType, strVirtualDirectoryName
-	If Err.Number = 0 Then
-		Wscript.echo ("Application '" &amp; strIisVirtualDirFullName &amp; "' seems to be deleted")
-	Else
-		Wscript.echo ("Application '" &amp; strIisVirtualDirFullName &amp; "' was not deleted")
-		Wscript.quit
-	End If
+  Wscript.echo ("An application '" &amp; strIisVirtualDirFullName &amp; "' already exists. ")
+  Wscript.echo ("Deleting application '" &amp; strIisVirtualDirFullName &amp;  "'")
+  Dim objIisRoot
+  Set objIisRoot = GetObject(strIisSiteRoot)
+  objIisRoot.Delete strObjectType, strVirtualDirectoryName
+  If Err.Number = 0 Then
+    Wscript.echo ("Application '" &amp; strIisVirtualDirFullName &amp; "' seems to be deleted")
+  Else
+    Wscript.echo ("Application '" &amp; strIisVirtualDirFullName &amp; "' was not deleted")
+    Wscript.quit
+  End If
 End If
 Set objIIS = Nothing
 
@@ -355,9 +355,9 @@ Set objFileSystem = Wscript.CreateObject("Scripting.FileSystemObject")
 On Error Resume Next
 Set Folder = objFileSystem.GetFolder(strVirtualDirectoryPath)
 If Hex(Err.number) = "4C" Then
-	'wsc.Popup "Creating folder " &amp; strVirtualDirectoryPath , 1
-	Wscript.echo ("Creating folder " &amp; strVirtualDirectoryPath )
-	set f = objFileSystem.CreateFolder(strVirtualDirectoryPath)
+  'wsc.Popup "Creating folder " &amp; strVirtualDirectoryPath , 1
+  Wscript.echo ("Creating folder " &amp; strVirtualDirectoryPath )
+  set f = objFileSystem.CreateFolder(strVirtualDirectoryPath)
 End If
 Set objFileSystem = Nothing
 
@@ -401,18 +401,18 @@ wscript.echo strRes
 
 Sub UpdateScriptMaps(folderName)
 
-   Dim winPath, netPath, toolPath
-   Dim wsShell
-   Dim fso
+  Dim winPath, netPath, toolPath
+  Dim wsShell
+  Dim fso
 
-   Set wsShell = CreateObject("WScript.Shell")
-   Set fso = CreateObject("Scripting.FileSystemObject")
+  Set wsShell = CreateObject("WScript.Shell")
+  Set fso = CreateObject("Scripting.FileSystemObject")
 
-   winPath = wsShell.ExpandEnvironmentStrings("%windir%")
-   netPath = "${this.netFrameworkPath}"
-   toolPath = fso.BuildPath(netPath, "aspnet_regiis.exe")
+  winPath = wsShell.ExpandEnvironmentStrings("%windir%")
+  netPath = "${this.netFrameworkPath}"
+  toolPath = fso.BuildPath(netPath, "aspnet_regiis.exe")
 
-   wsShell.Run toolPath &amp; " -sn W3SVC/1/Root/""" &amp; folderName &amp; """", 1, true
+  wsShell.Run toolPath &amp; " -sn W3SVC/1/Root/""" &amp; folderName &amp; """", 1, true
 End Sub 
     </echo>
 
@@ -420,8 +420,8 @@ End Sub
   </target>
 
   <target name="web.createIisApp.old">
-    <echo message="${this::echo-property('web.virtDirName')}" />
-    <echo message="${this::echo-property('web.relativeApplicationPath')}" />
+    <echo-property property="web.virtDirName" />
+    <echo-property property="web.relativeApplicationPath" />
     <setenv name="relativeApplicationPath" value="${web.relativeApplicationPath}" />
     <setenv name="virtDirName" value="${web.virtDirName}" />
     <setenv name="webSiteIdentifier" value="${web.siteIdentifier}" />
@@ -429,9 +429,9 @@ End Sub
   </target>
 
   <target name="web.rainbow.deleteLog">
-    <echo message="${this::echo-property('web.relativeApplicationPath')}" />
+    <echo-property property="web.relativeApplicationPath" />
     <property name="logFileName" value="${web.relativeApplicationPath}rb_logs/rb_log.resx" />
-    <echo message="${this::echo-property('logFileName')}" />
+    <echo-property property="logFileName" />
     <if test="${file::exists(logFileName)}">
       <touch verbose="true" file="${web.relativeApplicationPath}Web.config" />
       <sleep milliseconds="500" />
@@ -512,7 +512,7 @@ End Sub
   <property name="sql.auth.trusted" value="-E " />
 
   <target name="sql.run.query.trusted">
-    <echo message="${this::echo-property('sql.query')}" />
+    <echo-property property="sql.query" />
     <property name="outputFile" value=".sql.run.query.trusted.txt" />
     <exec verbose="true" program="osql" output="${outputFile}"
       commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -Q &quot;${sql.query}&quot;" />
@@ -551,7 +551,7 @@ End Sub
   <target name="sql.setBackupProperties">
     <property name="sql.dir.backup" value="${wc.dir}.Backup\" />
     <property name="sql.instance.encoded" value="${string::replace(sql.instance, '\', '$')}" dynamic="true" />
-    <echo message="${this::echo-property('sql.instance')}" />
+    <echo-property property="sql.instance" />
     <property name="sql.backupFileName" value="${sql.dir.backup}${sql.instance.encoded}.${sql.db.name}.bak" />
   </target>
 
@@ -592,7 +592,7 @@ End Sub
       value="USE [master]; DECLARE @physical_name VARCHAR(8000); SELECT @physical_name=[filename] FROM dbo.sysfiles WHERE [name] = 'master'; PRINT @physical_name" />
     <call target="sql.run.query.trusted" />
     <property name="sql.instance.dir.data" value="${path::get-directory-name(string::trim(sql.run.query.output))}\" />
-    <echo message="${this::echo-property('sql.instance.dir.data')}" />  
+    <echo-property property="sql.instance.dir.data" />
 
     <!-- restoreQuery -->
     <property name="sql.query" 
@@ -628,7 +628,7 @@ GO
     <property name="grantQuery" value="USE [${sql.db.name}]; CREATE USER [${sql.db.user.name}] FOR LOGIN [${sql.db.user.name}]; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}'; --SQL 2005 only" />
     <property name="grantQuery" value="USE [${sql.db.name}]; if not exists (select * from dbo.sysusers where name = N'${sql.db.user.name}') EXEC sp_grantdbaccess N'${sql.db.user.name}', N'${sql.db.user.name}'; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}';" />
 
-    <echo message="${this::echo-property('grantQuery')}" />
+    <echo-property property="grantQuery" />
     <exec program="osql" commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -Q &quot;${grantQuery}&quot;" />
   </target>
 
@@ -818,7 +818,7 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
   <!-- **  parameter sets  ** -->
   <!-- ********************** -->
   <target name="sql.setTrustedConnectionString">
-    <echo message="${this::echo-property('sql.instance')}" />
+    <echo-property property="sql.instance" />
     <property name="sql.web.connectionString.trusted" value="server=${sql.instance};Trusted_Connection=true;database=${sql.db.name}" />
     <property name="sql.web.connectionString.user" value="server=${sql.instance};database=${sql.db.name};uid=${sql.db.user.name};pwd=${sql.db.user.password}" />
     <property name="sql.web.connectionString" value="${sql.web.connectionString.trusted}" />
@@ -944,6 +944,26 @@ public class ThisFunctions : FunctionSetBase {
   public string EchoProperty(string propertyName) {
     string result = string.Format("{0}='{1}'", propertyName, this.Project.Properties[propertyName]);
     return result;
+  }
+}
+      ]]>
+    </code>
+  </script>
+  <script language="C#" prefix="LocalExtentionTask" >
+    <code>
+      <![CDATA[
+[TaskName("echo-property")]
+public class LocalExtentionTask_EchoProperty : Task {
+  private string property;
+
+  [TaskAttribute("property", Required=true)]
+  public string FileName {
+    get { return property; }
+    set { property = value; }
+  }
+
+  protected override void ExecuteTask() {
+    Log(Level.Info, string.Format("{0}='{1}'", property, this.Project.Properties[property]));
   }
 }
       ]]>
