@@ -3,7 +3,10 @@
 
 = Overview =
 
-There are three main locations to change the look and feel of the web portal – the built in portal controls (UI), theme, and the desktop layout.  Each of these has different things it can customize
+There are three main locations to change the look and feel of the web portal in the 2.0 version of Rainbow and below. – the built in portal controls (UI), theme, and the desktop layout.  Each of these has different things it can customize
+
+Note: The 2.1 version of Rainbow uses Master Pages and is a different process to customize.
+
 = Details =
 
 == Built In Portal Controls (UI) ==
@@ -35,7 +38,6 @@ In addition, there is a help web page that comes up when you click the Help butt
 *Rainbow.xml* - This file is located in the \rb_documentation\rainbow folder.  Currently it just has a single page with information on it, but it can be turned into a fairly extensive help.  It's reasonably easy to change this xml file by looking at the help page as you compare with the xml.
 
 *viewer.xslt* - This is the XSL Transform that arranges and displays the Rainbow.xml into the help web page.  It is located in the \rb_documentation\xsl folder.
-
 
 
 
