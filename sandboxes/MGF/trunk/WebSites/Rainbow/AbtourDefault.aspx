@@ -5,7 +5,7 @@
 <head runat="server">
     <title>Bienvenido a ABTOUR Viajes</title>
 </head>
-<body>
+<body style="margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px">
     <form id="form1" runat="server">
     <div>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -22,7 +22,7 @@
           </tr>
           <tr>
             <td height="32">&nbsp;</td>
-            <td colspan="3"><span class="style1">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <td colspan="3">
                 <span class="Error">
                     <asp:Label ID="lblError" runat="server" Visible="false" EnableViewState="false">Ha ocurrido un error.Verifique que la direcci&oacute;n de correo y la contrase&ntilde;a hayan sido bien ingresadas.</asp:Label> 
                     <asp:ValidationSummary runat="server" ID="valSummary" />
@@ -72,11 +72,11 @@
                           </table></td>
                       </tr>
                       <tr>
-                        <td height="20"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <td height="23"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
                               <td width="60%" height="18" scope="col">Recordarme: </td>
                               <td width="40%" scope="col"><span class="Normal">
-                                <asp:CheckBox runat="Server" ID="chkRememberMe" Height="12px" />
+                                <asp:CheckBox runat="Server" ID="chkRememberMe" Height="12px" Checked="true" />
                               </span></td>
                             </tr>
                           </table></td>

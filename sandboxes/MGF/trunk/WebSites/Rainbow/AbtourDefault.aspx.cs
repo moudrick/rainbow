@@ -14,6 +14,7 @@ public partial class AbtourDefault : Rainbow.Framework.Web.UI.Page {
     
     protected void Page_Load(object sender, EventArgs e) {
         DataBind();
+        this.chkRememberMe.Checked = true;
     }
 
     protected void btnLogin_Click(object sender, EventArgs e) {
