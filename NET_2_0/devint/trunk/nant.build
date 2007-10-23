@@ -125,7 +125,7 @@
     <echo-property property="CCNetLabel" />
     <echo property="" />
     <echo message="** build related information **" />
-    <echo-property message="${build.configurations}" />
+    <echo-property property="${build.configurations}" />
     <echo-property property="" />
   </target>
 
