@@ -123,7 +123,7 @@
     <echo message="" />
     <echo message="** CCNet related information **" />
     <echo-property property="CCNetLabel" />
-    <echo property="" />
+    <echo message="" />
     <echo message="** build related information **" />
     <echo-property property="${build.configurations}" />
     <echo-property property="" />
