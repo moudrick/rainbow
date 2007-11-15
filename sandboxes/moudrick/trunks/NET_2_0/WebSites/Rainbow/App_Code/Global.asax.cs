@@ -21,6 +21,7 @@ using History = Rainbow.Framework.History;
 using Path = System.IO.Path;
 using Reader = Rainbow.Context.Reader;
 using System.Configuration;
+using System.Configuration;
 
 namespace Rainbow
 {

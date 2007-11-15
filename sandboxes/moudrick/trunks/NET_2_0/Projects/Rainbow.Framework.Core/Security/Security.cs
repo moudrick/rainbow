@@ -69,10 +69,10 @@ namespace Rainbow.Framework.Security
 			if (useNTLM && role == HttpContext.Current.User.Identity.Name)
 				return true;
 			else
-			{
+            {
 				return HttpContext.Current.User.IsInRole(role);
 			}
-		}
+        }
 
 		/// <summary>
 		/// The IsInRoles method enables developers to easily check the role
@@ -490,7 +490,7 @@ namespace Rainbow.Framework.Security
 			// Obtain PortalSettings from Current Context
 			PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items[strPortalSettings];
 
-			MembershipUser usr;
+            MembershipUser usr;
 			UsersDB accountSystem = new UsersDB();
 
 			// Attempt to Validate User Credentials using UsersDB
