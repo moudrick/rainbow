@@ -4,6 +4,7 @@ using System.IO;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
+using Rainbow.Framework.Core.Helpers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -122,7 +123,7 @@ namespace Rainbow.Content.Web.Modules
             {
                 return
                     HttpUrlBuilder.BuildUrl(moduleLocation + "LinksEdit.aspx",
-                                            "ItemID=" + itemID.ToString() + "&mID=" + ModuleID.ToString());
+                                            "ItemID=" + itemID + "&mID=" + ModuleID);
             }
             else
             {

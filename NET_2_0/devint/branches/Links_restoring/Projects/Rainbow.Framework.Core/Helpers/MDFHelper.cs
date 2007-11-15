@@ -9,28 +9,27 @@ using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 
-namespace Rainbow.Framework.Helpers
+namespace Rainbow.Framework.Core.Helpers
 {
+    /// <summary>
+    /// Lists the possible types of data sources for the MDF system
+    /// </summary>
+    public enum DataSourceType 
+    {
+        /// <summary>The current module</summary>
+        This, 
+        /// <summary>All modules in the portal</summary>
+        All, 
+        /// <summary>The specified list of modules (for the portal)</summary>
+        List
+    }
 
-	/// <summary>
-	/// Lists the possible types of data sources for the MDF system
-	/// </summary>
-	public enum DataSourceType 
-	{
-		/// <summary>The current module</summary>
-		This, 
-		/// <summary>All modules in the portal</summary>
-		All, 
-		/// <summary>The specified list of modules (for the portal)</summary>
-		List
-	}
-
-	/// <summary>
-	/// MDFHelper file by Jakob Hansen.
-	/// MDF = Module Data Filter
-	/// This class Represents all settings used by the MDF settings system
-	/// </summary>
-	public class MDFSettings
+    /// <summary>
+    /// MDFHelper file by Jakob Hansen.
+    /// MDF = Module Data Filter
+    /// This class Represents all settings used by the MDF settings system
+    /// </summary>
+    public class MDFSettings
     {
         #region Public Fields
         /// <summary>
@@ -40,104 +39,105 @@ namespace Rainbow.Framework.Helpers
         /// <summary>
         /// 
         /// </summary>
-		public const string NameDataSource   = "MDF_DATA_SOURCE";
+        public const string NameDataSource   = "MDF_DATA_SOURCE";
         /// <summary>
         /// 
         /// </summary>
-		public const string NameMaxHits      = "MDF_MAX_HITS";
+        public const string NameMaxHits      = "MDF_MAX_HITS";
         /// <summary>
         /// 
         /// </summary>
-		public const string NameModuleList   = "MDF_MODULE_LIST";
+        public const string NameModuleList   = "MDF_MODULE_LIST";
         /// <summary>
         /// 
         /// </summary>
-		public const string NameAllNotInList = "MDF_ALL_NOT_IN_LIST";
+        public const string NameAllNotInList = "MDF_ALL_NOT_IN_LIST";
         /// <summary>
         /// 
         /// </summary>
-		public const string NameSortField    = "MDF_SORT_FIELD";
+        public const string NameSortField    = "MDF_SORT_FIELD";
         /// <summary>
         /// 
         /// </summary>
-		public const string NameSortDirection= "MDF_SORT_DIRECTION";
+        public const string NameSortDirection= "MDF_SORT_DIRECTION";
         /// <summary>
         /// 
         /// </summary>
-		public const string NameSearchString = "MDF_SEARCH_STRING";
+        public const string NameSearchString = "MDF_SEARCH_STRING";
         /// <summary>
         /// 
         /// </summary>
-		public const string NameSearchField  = "MDF_SEARCH_FIELD";
+        public const string NameSearchField  = "MDF_SEARCH_FIELD";
         /// <summary>
         /// 
         /// </summary>
-		public const string NameMobileOnly   = "MDF_MOBILE_ONLY";
+        public const string NameMobileOnly   = "MDF_MOBILE_ONLY";
 
         /// <summary>
         /// 
         /// </summary>
-		public const bool DefaultValueApplyMDF = false;
+        public const bool DefaultValueApplyMDF = false;
         /// <summary>
         /// 
         /// </summary>
-		public const DataSourceType DefaultValueDataSource = DataSourceType.This;
+        public const DataSourceType DefaultValueDataSource = DataSourceType.This;
         /// <summary>
         /// 
         /// </summary>
-		public const int DefaultValueMaxHits = 20;
+        public const int DefaultValueMaxHits = 20;
         /// <summary>
         /// 
         /// </summary>
-		public const string DefaultValueModuleList = "";
+        public const string DefaultValueModuleList = "";
         /// <summary>
         /// 
         /// </summary>
-		public const bool DefaultValueAllNotInList = false;
+        public const bool DefaultValueAllNotInList = false;
         /// <summary>
         /// 
         /// </summary>
-		public const string DefaultValueSortField = "";
+        public const string DefaultValueSortField = "";
         /// <summary>
         /// 
         /// </summary>
-		public const string DefaultValueSortDirection = "ASC";
+        public const string DefaultValueSortDirection = "ASC";
         /// <summary>
         /// 
         /// </summary>
-		public const string DefaultValueSearchString = "";
+        public const string DefaultValueSearchString = "";
         /// <summary>
         /// 
         /// </summary>
-		public const string DefaultValueSearchField = "";
+        public const string DefaultValueSearchField = "";
         /// <summary>
         /// 
         /// </summary>
-		public const bool DefaultValueMobileOnly = false;
+        public const bool DefaultValueMobileOnly = false;
         #endregion
 
         #region Private fields
         bool _applyMDF = DefaultValueApplyMDF;
-		DataSourceType _dataSource = DefaultValueDataSource;
-		int _maxHits = DefaultValueMaxHits;
-		string _moduleList = DefaultValueModuleList;   //Module ID. Can be a list: "23,45,56"
-		bool _allNotInList = DefaultValueAllNotInList;
-		string _sortField = DefaultValueSortField;
-		string _sortDirection = DefaultValueSortDirection;
-		string _searchString = DefaultValueSearchString;
-		string _searchField = DefaultValueSearchField;
-		bool _mobileOnly = DefaultValueMobileOnly;
+        DataSourceType _dataSource = DefaultValueDataSource;
+        int _maxHits = DefaultValueMaxHits;
+        string _moduleList = DefaultValueModuleList;   //Module ID. Can be a list: "23,45,56"
+        bool _allNotInList = DefaultValueAllNotInList;
+        string _sortField = DefaultValueSortField;
+        string _sortDirection = DefaultValueSortDirection;
+        string _searchString = DefaultValueSearchString;
+        string _searchField = DefaultValueSearchField;
+        bool _mobileOnly = DefaultValueMobileOnly;
 
-		bool _supportsWorkflow = false;
-		WorkFlowVersion _workflowVersion = WorkFlowVersion.Production;
+        bool _supportsWorkflow = false;
+        WorkFlowVersion _workflowVersion = WorkFlowVersion.Production;
 
-		string _itemTableName = "";
-		string _titleFieldName = "";
-		string _selectFieldList = "";
-		string _searchFieldList = "";
+        string _itemTableName = "";
+        string _titleFieldName = "";
+        string _selectFieldList = "";
+        string _searchFieldList = "";
 
-		int _portalID = -1;
-		int _userID = -1;
+        int _portalID = -1;
+        //int _userID = -1;
+        Guid _userID = Guid.Empty;
         #endregion
 
         #region Public Properties
@@ -146,22 +146,22 @@ namespace Rainbow.Framework.Helpers
         /// Default value: false
         /// </summary>
         /// <value><c>true</c> if [apply MDF]; otherwise, <c>false</c>.</value>
-		public bool ApplyMDF
-		{
-			get {return _applyMDF;}
-			set {_applyMDF = value;}
-		}
+        public bool ApplyMDF
+        {
+            get {return _applyMDF;}
+            set {_applyMDF = value;}
+        }
 
         /// <summary>
         /// Controls the data displyed in the module
         /// Default value: DataSourceType.This;
         /// </summary>
         /// <value>The data source.</value>
-		public DataSourceType DataSource
-		{
-			get {return _dataSource;}
-			set {_dataSource = value;}
-		}
+        public DataSourceType DataSource
+        {
+            get {return _dataSource;}
+            set {_dataSource = value;}
+        }
 
         /// <summary>
         /// Represents the number of items returned by the service.
@@ -169,11 +169,11 @@ namespace Rainbow.Framework.Helpers
         /// Default value: 20
         /// </summary>
         /// <value>The max hits.</value>
-		public int MaxHits
-		{
-			get {return _maxHits;}
-			set {_maxHits = value;}
-		}
+        public int MaxHits
+        {
+            get {return _maxHits;}
+            set {_maxHits = value;}
+        }
 
         /// <summary>
         /// Comma separated list of module ID's. e.g.: 1234,234,5454.
@@ -181,22 +181,22 @@ namespace Rainbow.Framework.Helpers
         /// Default value: string.Empty
         /// </summary>
         /// <value>The module list.</value>
-		public string ModuleList
-		{
-			get {return _moduleList;}
-			set {_moduleList = value;}
-		}
+        public string ModuleList
+        {
+            get {return _moduleList;}
+            set {_moduleList = value;}
+        }
 
         /// <summary>
         /// If DataSource is All or List this can exclude modules listed in ModuleList
         /// Default value: false
         /// </summary>
         /// <value><c>true</c> if [all not in list]; otherwise, <c>false</c>.</value>
-		public bool AllNotInList
-		{
-			get {return _allNotInList;}
-			set {_allNotInList = value;}
-		}
+        public bool AllNotInList
+        {
+            get {return _allNotInList;}
+            set {_allNotInList = value;}
+        }
 
         /// <summary>
         /// Sort list on this field
@@ -204,11 +204,11 @@ namespace Rainbow.Framework.Helpers
         /// Must be a existing field in the module core item table.
         /// </summary>
         /// <value>The sort field.</value>
-		public string SortField
-		{
-			get {return _sortField;}
-			set {_sortField = value;}
-		}
+        public string SortField
+        {
+            get {return _sortField;}
+            set {_sortField = value;}
+        }
 
         /// <summary>
         /// Sort Ascending or Descending
@@ -216,75 +216,75 @@ namespace Rainbow.Framework.Helpers
         /// Default value: ASC
         /// </summary>
         /// <value>The sort direction.</value>
-		public string SortDirection
-		{
-			get {return _sortDirection;}
-			set {_sortDirection = value;}
-		}
+        public string SortDirection
+        {
+            get {return _sortDirection;}
+            set {_sortDirection = value;}
+        }
 
         /// <summary>
         /// Search string. An empty string means no search (same as off).
         /// Default value: string.Empty
         /// </summary>
         /// <value>The search string.</value>
-		public string SearchString
-		{
-			get {return _searchString;}
-			set {_searchString = value;}
-		}
+        public string SearchString
+        {
+            get {return _searchString;}
+            set {_searchString = value;}
+        }
 
         /// <summary>
         /// Set this if only a single field should be searched e.g.: "Title"
         /// Default value: string.Empty
         /// </summary>
         /// <value>The search field.</value>
-		public string SearchField
-		{
-			get {return _searchField;}
-			set {_searchField = value;}
-		}
+        public string SearchField
+        {
+            get {return _searchField;}
+            set {_searchField = value;}
+        }
 
         /// <summary>
         /// Default value: false
         /// </summary>
         /// <value><c>true</c> if [supports workflow]; otherwise, <c>false</c>.</value>
-		public bool SupportsWorkflow
-		{
-			get {return _supportsWorkflow;}
-			set {_supportsWorkflow = value;}
-		}
+        public bool SupportsWorkflow
+        {
+            get {return _supportsWorkflow;}
+            set {_supportsWorkflow = value;}
+        }
 
         /// <summary>
         /// Default value: Production
         /// </summary>
         /// <value>The workflow version.</value>
-		public WorkFlowVersion WorkflowVersion
-		{
-			get {return _workflowVersion;}
-			set {_workflowVersion = value;}
-		}
+        public WorkFlowVersion WorkflowVersion
+        {
+            get {return _workflowVersion;}
+            set {_workflowVersion = value;}
+        }
 
         /// <summary>
         /// The name of the modules core item table e.g. "rb_Links" for module Links
         /// Default value: string.Empty
         /// </summary>
         /// <value>The name of the item table.</value>
-		public string ItemTableName
-		{
-			get {return _itemTableName;}
-			set {_itemTableName = value;}
-		}
+        public string ItemTableName
+        {
+            get {return _itemTableName;}
+            set {_itemTableName = value;}
+        }
 
         /// <summary>
         /// The name of the field in the item table that is considered the item title. Typical value is "Title"
         /// Default value: string.Empty
         /// </summary>
         /// <value>The name of the title field.</value>
-		public string TitleFieldName
-		{
-			get {return _titleFieldName;}
-			set {_titleFieldName = value;}
-		}
+        public string TitleFieldName
+        {
+            get {return _titleFieldName;}
+            set {_titleFieldName = value;}
+        }
 
         /// <summary>
         /// The list of fields in the SQL select, separated with comma.
@@ -292,11 +292,11 @@ namespace Rainbow.Framework.Helpers
         /// Default value: string.Empty
         /// </summary>
         /// <value>The select field list.</value>
-		public string SelectFieldList
-		{
-			get {return _selectFieldList;}
-			set {_selectFieldList = value;}
-		}
+        public string SelectFieldList
+        {
+            get {return _selectFieldList;}
+            set {_selectFieldList = value;}
+        }
 
         /// <summary>
         /// Fields to search - must be of nvarchar or ntext type.
@@ -304,33 +304,33 @@ namespace Rainbow.Framework.Helpers
         /// Default value: string.Empty
         /// </summary>
         /// <value>The search field list.</value>
-		public string SearchFieldList
-		{
-			get {return _searchFieldList;}
-			set {_searchFieldList = value;}
-		}
+        public string SearchFieldList
+        {
+            get {return _searchFieldList;}
+            set {_searchFieldList = value;}
+        }
 
         /// <summary>
         /// When true only data for mobile devices are displyed
         /// Default value: false
         /// </summary>
         /// <value><c>true</c> if [mobile only]; otherwise, <c>false</c>.</value>
-		public bool MobileOnly
-		{
-			get {return _mobileOnly;}
-			set {_mobileOnly = value;}
-		}
+        public bool MobileOnly
+        {
+            get {return _mobileOnly;}
+            set {_mobileOnly = value;}
+        }
 
         /// <summary>
         /// The portal id
         /// Default value: -1
         /// </summary>
         /// <value>The portal ID.</value>
-		public int PortalID
-		{
-			get {return _portalID;}
-			set {_portalID = value;}
-		}
+        public int PortalID
+        {
+            get {return _portalID;}
+            set {_portalID = value;}
+        }
 
         /// <summary>
         /// When the value of UserID is 0 the user has not signed in (it's a guest!)
@@ -483,15 +483,15 @@ namespace Rainbow.Framework.Helpers
         static public SettingItem MakeDataSource(DataSourceType defaultValue)
         {
             SettingItem si = new SettingItem(new ListDataType(DataSourceType.This + ";" 
-                + DataSourceType.All + ";" + DataSourceType.List));
+                                                              + DataSourceType.All + ";" + DataSourceType.List));
             si.Group = SettingItemGroup.MDF_SETTINGS;
             si.Order = 2;
             si.Required = true;
             si.Value = defaultValue.ToString();
             si.EnglishName = "DataSource";
             si.Description = "Controls where data displyed in the module is comming from. " +
-                "'This' is the current module, 'All' is all modules in the current portal " +
-                "and with 'List' you must specify a list of module id's, e.g.: 20242,10243";
+                             "'This' is the current module, 'All' is all modules in the current portal " +
+                             "and with 'List' you must specify a list of module id's, e.g.: 20242,10243";
             return si;
         }
 
@@ -613,7 +613,7 @@ namespace Rainbow.Framework.Helpers
             si.Value = "All";
             si.EnglishName = "Search field";
             si.Description = "Search all fields or a single named field in the item record. " +
-                "The list of possible search fields are different for different modules";
+                             "The list of possible search fields are different for different modules";
             return si;
         }
 
@@ -659,7 +659,7 @@ namespace Rainbow.Framework.Helpers
             else
             {
                 select.Append(", rb_Modules mod, rb_ModuleDefinitions modDef");
-                if (_userID > -1)
+                if (_userID != Guid.Empty )//(_userID > -1)
                     select.Append(", rb_Roles, rb_UserRoles");
 
                 if (DataSource == DataSourceType.List)
@@ -679,7 +679,7 @@ namespace Rainbow.Framework.Helpers
                 select.Append(" AND itm.ModuleID = mod.ModuleID");
                 select.Append(" AND mod.ModuleDefID = modDef.ModuleDefID");
                 select.Append(" AND modDef.PortalID = " + PortalID.ToString());
-                if (_userID > -1)
+                if (_userID != Guid.Empty) //(_userID > -1)
                 {
                     select.Append(" AND rb_UserRoles.UserID = " + _userID);
                     select.Append(" AND rb_UserRoles.RoleID = rb_Roles.RoleID");
@@ -743,6 +743,5 @@ namespace Rainbow.Framework.Helpers
             return DBHelper.GetDataSet(sqlSelect);
         } 
         #endregion
-	}
-  
+    }
 }

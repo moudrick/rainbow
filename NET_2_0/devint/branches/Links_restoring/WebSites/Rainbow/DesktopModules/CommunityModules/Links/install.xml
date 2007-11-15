@@ -2,7 +2,7 @@
 <Modules>
 	<Module>
 		<FriendlyName>Links</FriendlyName>
-		<DesktopSource>DesktopModules/Links/Links.ascx</DesktopSource>
+		<DesktopSource>DesktopModules/CommunityModules/Links/Links.ascx</DesktopSource>
 		<MobileSource></MobileSource>
 	</Module>
 </Modules>

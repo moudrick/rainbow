@@ -1,4 +1,4 @@
-	<project name="Rainbow">
+	<project name="Rainbow Links_restoring">
 		<workingDirectory>&RainbowWCRoot;&BranchPath;</workingDirectory>
 		<triggers />
 		<externalLinks>

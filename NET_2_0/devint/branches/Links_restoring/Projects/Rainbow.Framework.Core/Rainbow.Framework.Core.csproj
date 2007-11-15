@@ -131,6 +131,7 @@
     <Compile Include="Helpers\JavaScriptBuilder.cs" />
     <Compile Include="Helpers\LogHelper.cs" />
     <Compile Include="Helpers\MailHelper.cs" />
+    <Compile Include="Helpers\MDFHelper.cs" />
     <Compile Include="Helpers\ModuleInstall.cs" />
     <Compile Include="Helpers\SearchDefinition.cs" />
     <Compile Include="Helpers\SearchHelper.cs" />
