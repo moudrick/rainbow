@@ -20,24 +20,28 @@ Rainbow Portal is not designed to function with a Microsoft Access Database (97/
 
 = Installation =
 
-New Setup:
+==New Setup==
 * Create an empty database called Rainbow (or whatever you wish) in
+
 * Give a user dbo access to that database ( this will change to lower access)
+
 * Change the connection string in web.config with your user and db
   Please note that if you are using the 2.0 version ( not 2.1 or beta 2.1 ),
-the connection string is in <appsettings> and not the new ConnectionStrings method.
-This feature was added in the 2.1 version.
+  the connection string is in <appsettings> and not the new
+  Connection Strings methodology.  This feature was added in the 2.1 version.
 
 * Control - F5 in VS 2005 OR browse to the directory configured in IIS
 
-Updating database:
+==Updating database==
 * Backup your database and files
+
 * Update your files overwriting old ones
+
 * Browse to your web site, a page will prompt you for update
+
 * Follow carefully instructions (click on the button, duh)
+
 * Sit back and watch it work (or not) and click finish button when done.
-
-
 
 
 
