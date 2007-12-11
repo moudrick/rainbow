@@ -35,14 +35,16 @@ Rainbow Portal is not designed to function with a Microsoft Access Database (97/
 ==Updating database==
 * Backup your database and files
 
-* Update your files overwriting old ones
+* Extract the new 2.0 files to a location.  Please note that you must convert your custom modules to 2.0 in order for them to work correctly.
 
-* Browse to your web site, a page will prompt you for update
+* Point the 2.0 web.config to your old rainbow database.
 
-* Follow carefully instructions (click on the button, duh)
+* Browse to default.aspx which should prompt ( a redirect to update.aspx) an update
 
-* Sit back and watch it work (or not) and click finish button when done.
+* Click the button to apply the update
 
+Issues with updating
 
+You may have issues with updating if you heavily modified Rainbow or added modules which dont work on the .NET 2.0 framework.  Also, the scripts to update your database might conflict if you changed your db from the standard.  These issues will be logged in your rb_logs folder.  You can disable the install/upgrade of a module/rainbow feature by editing the History.xml file in Setup\Scripts.  This way, if there is a minor issue, you can skip its script and install the rest to complete the update.
 
 
