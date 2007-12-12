@@ -41,7 +41,7 @@ FROM
 WHERE
 	(SendNewsletter = 1) AND 
 	(CAST(COALESCE (LastSend, GETDATE() - @MinSend) AS float) <= CAST(GETDATE() - @MinSend AS float)) AND
-        (PortalID = @PortalID) AND (NOT (Email IN (SELECT EMAIL FROM rb_BlackList WHERE PortalID = @PortalID)))
+        (PortalID = @PortalID) AND (NOT (Email IN (SELECT Email FROM rb_BlackList WHERE PortalID = @PortalID)))
 ORDER BY UserID
 
 SELECT * FROM #TempItems WHERE ID <= @MaxUsers
