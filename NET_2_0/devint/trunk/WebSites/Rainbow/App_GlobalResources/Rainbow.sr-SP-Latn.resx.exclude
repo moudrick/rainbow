@@ -4763,12 +4763,6 @@
 	<data name="SORTORDER">
 		<value>Redosled sortiranja</value>
 	</data>
-	<data name="sr-SP-Cyrl">
-		<value>sr-SP-Cyrl</value>
-	</data>
-	<data name="sr-SP-Latn">
-		<value>Naslov (sr-SP-Latn)</value>
-	</data>
 	<data name="START_DATE">
 		<value>Datum početka</value>
 	</data>

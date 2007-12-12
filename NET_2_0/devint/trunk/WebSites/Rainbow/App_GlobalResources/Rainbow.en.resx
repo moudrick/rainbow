@@ -4814,12 +4814,6 @@
 	<data name="SORTORDER">
 		<value>Sort order</value>
 	</data>
-	<data name="sr-SP-Cyrl">
-		<value/>
-	</data>
-	<data name="sr-SP-Latn">
-		<value/>
-	</data>
 	<data name="START_DATE">
 		<value>Start date</value>
 	</data>

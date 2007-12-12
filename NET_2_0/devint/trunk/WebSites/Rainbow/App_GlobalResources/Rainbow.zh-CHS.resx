@@ -4782,12 +4782,6 @@
   <data name="SORTORDER" xml:space="preserve">
     <value>SORTORDER</value>
   </data>
-  <data name="sr-SP-Cyrl" xml:space="preserve">
-    <value>sr-SP-Cyrl</value>
-  </data>
-  <data name="sr-SP-Latn" xml:space="preserve">
-    <value>sr-SP-Latn</value>
-  </data>
   <data name="START_DATE" xml:space="preserve">
     <value>START_DATE</value>
   </data>

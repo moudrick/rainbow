@@ -57,7 +57,7 @@ EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_THEME'	,	N'Default' -- N'Default'
 GO
 EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_ALT_THEME'	, N'DefaultAlternate' -- N'DefaultAlternate'
 GO
-EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_LANGLIST'	,	N'en;it;ar;bg;ca;cs;da;de;es;es-MX;fr;hr;is;ko;nl;nl-BE;no;pl;pt;ru;sl;sr-SP-Cyrl;sr-SP-Latn;sv;tr;uk;zh-CN;zh-TW;'
+EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_LANGLIST'	,	N'en;it;ar;bg;ca;cs;da;de;es;es-MX;fr;hr;is;ko;nl;nl-BE;no;pl;pt;ru;sl;sv;tr;uk;zh-CN;zh-TW;' --sr-SP-Cyrl;sr-SP-Latn;
 GO
 EXEC rb_PortalSettings_IU 	0	,	N'SITESETTINGS_DEFAULT_EDITOR'	, N'FCKEditor V2' --	N'FCKEditor V2'
 GO

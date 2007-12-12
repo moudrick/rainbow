@@ -4339,18 +4339,6 @@
 	<data name="SORTORDER">
 		<value>排序顺序</value>
 	</data>
-	<data name="SR-SP-CYRL">
-		<value>塞尔维亚西里尔语标题</value>
-	</data>
-	<data name="SR-SP-CYRL_DESCRIPTION">
-		<value>设置塞尔维亚西里尔语标题</value>
-	</data>
-	<data name="SR-SP-LATN">
-		<value>塞尔维亚西拉丁语标题</value>
-	</data>
-	<data name="SR-SP-LATN_DESCRIPTION">
-		<value>设置塞尔维亚西拉丁语标题</value>
-	</data>
 	<data name="SRC">
 		<value>源文件</value>
 	</data>

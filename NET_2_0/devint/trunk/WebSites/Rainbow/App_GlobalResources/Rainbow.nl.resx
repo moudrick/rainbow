@@ -3245,10 +3245,6 @@
   <data name="SORTORDER">
       <value>Sorteer volgorde</value>
   </data>
-  <data name="SR-SP-CYRL"></data>
-  <data name="SR-SP-CYRL_DESCRIPTION"></data>
-  <data name="SR-SP-LATN"></data>
-  <data name="SR-SP-LATN_DESCRIPTION"></data>
   <data name="START_DATE">
       <value>Startddatum</value>
   </data>
