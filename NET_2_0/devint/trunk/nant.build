@@ -7,7 +7,7 @@
 '
 >
 ] -->
-<project name="Rainbow">
+<project name="Rainbow" default="deploy.preview">
   <!-- ************************************************************ -->
   <!-- **  Optional incoming parameters and their default values ** -->
   <!-- ************************************************************ -->
@@ -47,6 +47,36 @@
 
   <property name="sql.db.user.name" value="rainbow" readonly="true" />
   <property name="sql.db.user.password" value="rainbow_" readonly="true" />
+  <property name="sql.recreate.confirmation" value="false" />
+
+  <!-- ************************* -->
+  <!-- **  deploy section     ** -->
+  <!-- ************************* -->
+  <target name="deploy.preview">
+    <property name="sql.recreate.showCaution" value="true" />
+    <call target="wc.info" />
+    <exec program="notepad" commandline="README.TXT" />
+    <call target="svn.default" />
+    <call target="tests.prepare" />
+    <call target="config.update" />
+    <call target="app.sql2k5.export.prepare" />
+    <call target="build.rebuild" />
+    <call target="app.sql2k5.export.fixup" />
+  </target>
+
+  <target name="deploy.preview.cleanup">
+    <!-- exec program="svn.exe" commandline="revert -R ." / -->
+    <property name="local.filename" value=".remove" />
+    <delete file="${local.filename}.cmd" />
+    <exec program="svn.exe" commandline="st --no-ignore" output="${local.filename}" />
+    <move file=".remove" tofile="${local.filename}.cmd">
+      <filterchain>
+        <replacestring from="I      " to="del /Q " />
+        <replacestring from="?      " to="del /Q " />
+      </filterchain>
+    </move>
+    <exec program="${local.filename}.cmd" />
+  </target>
 
   <!-- ***************************************** -->
   <!-- **  Public action sequence targets     ** -->
@@ -478,7 +508,8 @@ End Sub
   <target name="build.prepareBranchSolution" depends="svn.info">
     <property name="build.solution.filename" value="${svn.branch.encoded}.sln" />
     <property name="build.SlnRelativePath" value="WebSites\Rainbow\" />
-    <copy file="Rainbow.sln" tofile="${build.solution.filename}" overwrite="true">
+    <copy if="${string::to-lower(build.solution.filename)!='rainbow.sln'}" 
+        file="rainbow.sln" tofile="${build.solution.filename}" overwrite="true">
       <filterchain>
         <replacestring 
           from="&quot;${build.SlnRelativePath}&quot;, &quot;${build.SlnRelativePath}&quot;" 
@@ -521,7 +552,7 @@ End Sub
       commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -Q &quot;${sql.query}&quot;" />
     <loadfile if="${file::exists(outputFile)}" file="${outputFile}" property="sql.run.query.output" />
   </target>
-  
+
   <target name="sql.recreate">
     <property name="sql.path" value="${web.relativeApplicationPath}${sql.relativePath}" />
     <property name="sql.setup.name" value="setup.${svn.branch.encoded}.bat" />
@@ -529,12 +560,24 @@ End Sub
 
     <copy file="${sql.path}${sql.createScriptName}" 
       tofile="${sql.path}${sql.db.name}.${sql.createScriptName}" 
-      overwrite="true">
+      overwrite="true" verbose="true">
       <filterchain>
         <replacestring from="Rainbow" to="${sql.db.name}" />
       </filterchain>
     </copy>
 
+    <if test="${sql.recreate.showCaution}">
+      <property name="local.filename" value=".CAUTION.TXT" />
+      <echo file="${local.filename}">
+CAUTION!!! This action will automatically create new database "${sql.db.name}" with overwrite.
+Please BACK UP it first if you need, then close this caution to continue (ALT-F4).
+
+To abort operation, switch to console (ALT-TAB).
+Then break script execution (CTRL-C)
+      </echo>
+      <exec program="notepad" commandline="${local.filename}" />
+      <delete file="${local.filename}" />
+    </if>
     <copy file="${sql.path}setup.bat" 
       tofile="${sql.path}${sql.setup.name}" overwrite="true">
       <filterchain>
@@ -907,6 +950,28 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
   </target>
 
   <target name="app.sql2k5Precompiled.fixup" depends="app.sql2k5Precompiled.setProperties">
+    <call target="sql.recreate" />
+    <call target="config.web.setConnectionStrings" />
+  </target>
+
+  <!-- ************************* -->
+  <!-- **  app.sql2k5.export  ** -->
+  <!-- ************************* -->
+  <target name="app.sql2k5.export.setProperties">
+    <property name="sql.db.name" value="Rainbow" dynamic="true" />
+
+    <property name="web.virtDirName" value="Rainbow" />
+    <property name="web.relativeApplicationPath" value="${web.rainbow.dir}" />
+    <property name="sql.instance" value="(local)\SQLEXPRESS" />
+    <call target="sql.setTrustedConnectionString" />
+  </target>
+
+  <target name="app.sql2k5.export.prepare" depends="app.sql2k5.export.setProperties">
+    <call target="web.createIisApp" />
+    <call target="web.rainbow.deleteLog" />
+  </target>
+
+  <target name="app.sql2k5.export.fixup" depends="app.sql2k5.export.setProperties">
     <call target="sql.recreate" />
     <call target="config.web.setConnectionStrings" />
   </target>

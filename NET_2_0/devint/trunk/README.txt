@@ -2,7 +2,7 @@ Rainbow Portal 2.0 Beta 1 Developer Preview
 
 Changes :
 
-Contributions by the MGF Team (Lead: José Arrarte) :
+Contributions by the MGF Team (Lead: Jose Arrarte) :
 
 
 Added ASP.NET Ajax Support
@@ -14,14 +14,60 @@ Added Geographical Provider
 
 
 
-Install Instructions : 
+Preview Deployment Instructions : 
 
-    Extract
-    Point IIS ( with 2.0 configured) to your directory
-    Change web.config connection string value [ in connectionStrings section]
-    Browse to site
+I. DEPLOYMENT FOR PREVIEW USING nant.build SCRIPT
 
-      [ We will soon automate this process]
+II.1 Requirements
+
+I.1.1 Windows XP, Windows 2003 Server, Windows Vista
+I.1.2 IIS 6.0
+I.1.3 .Net Framework 2.0
+I.1.4 MS SQL Server 2005 Express edition - (local)\SQLEXPRESS instance
+I.1.5 nant 0.85 release (freeware opensource, http://nant.sf.net/)
+
+I.2. Deployment
+
+I.2.1 Download and unpack nant package if necessary. 
+Add full path to bin/nant.exe from the package to your PATH environment variable.
+
+I.2.2 Download and unpack this package.
+
+I.2.3 Run "nant deploy.preview" or just "nant" command line from the root of the folder you have unpacked this package.
+
+CAUTION!!! This action will automatically create new databases "Rainbow" and "tests-rainbow" and "Rainbow" web applcation.
+The databases will be overwritten, so back up back up them if you have them and still need their content.
+
+I.2.4 Open http://localhost/Roinbow link in your browser.
+
+
+II. DEPLOYMENT FOR PREVIEW USING Visual Studio.
+
+II.1 Requirements
+
+II.1.1 Windows 2000, Windows 2000 Server, Windows XP, Windows 2003 Server, Windows Vista
+II.1.2 IIS 6.0
+II.1.3 .Net Framework 2.0
+II.1.4 MS SQL Server 2005 - (local) instance
+II.1.5 Visual Studio 2005 (8.0)
+
+I.2. Deployment
+
+I.2.1 Unpack this package.
+
+I.2.3 Create IIS ASP.Net 2.0 web application named Rainbow in the default web site. 
+Set Local Path o  the application to full name of WebSites\Rainbow\ subfolder in the unpacked folder.
+
+I.2.3 Create database using WebSites\Rainbow\Setup\Scripts\setup.bat file.
+
+CAUTION!!! This task will automatically create new "Rainbow" database!
+The database will be overwritten, so back up it if you have it and still need its content.
+
+I.2.4 Open Rainbow.sln file in Visual Studio 2005.
+
+I.2.5 Build the solution by studio.
+
+I.2.6 Run web site "Rainbow" from Webs solution folder.
 
 
 Note : This is a Beta Release and should by no means be
