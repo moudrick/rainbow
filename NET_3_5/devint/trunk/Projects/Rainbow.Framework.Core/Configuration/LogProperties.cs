@@ -40,14 +40,10 @@ namespace Rainbow.Framework.Logging
         /// </returns>
         public override string ToString()
         {
-            try
-            {
-                return HttpContext.Current.User.Identity.Name;
-            }
-            catch
-            {
+            if (HttpContext.Current.User != null)
+                return (HttpContext.Current.User.Identity.Name ?? "not available");
+            else
                 return "not available";
-            }
         }
     }
 

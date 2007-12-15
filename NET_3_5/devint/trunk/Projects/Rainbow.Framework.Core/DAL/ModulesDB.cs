@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Web;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Settings;
@@ -9,6 +10,7 @@ using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Core.BLL;
 using System.Collections.Generic;
+using System.Data.Linq;
 
 namespace Rainbow.Framework.Site.Data
 {
@@ -68,54 +70,86 @@ namespace Rainbow.Framework.Site.Data
                                                 string MobileSrc, string AssemblyName, string ClassName, bool Admin,
                                                 bool Searchable)
         {
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SiteDataClassesDataContext db = new SiteDataClassesDataContext())
             {
-                using (SqlCommand myCommand = new SqlCommand("rb_AddGeneralModuleDefinitions", myConnection))
+                //int returnCode = db.rb_AddGeneralModuleDefinitions(GeneralModDefID, FriendlyName, DesktopSrc, MobileSrc,
+                //    AssemblyName, ClassName, Admin, Searchable);
+
+                rb_GeneralModuleDefinition row = (from d in db.rb_GeneralModuleDefinitions
+                                                  where d.GeneralModDefID == GeneralModDefID
+                                                  select d).FirstOrDefault();
+                bool newRow = false;
+                if (row == null)
                 {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Add Parameters to SPROC
-                    SqlParameter parameterGeneralModDefID =
-                        new SqlParameter(strATGeneralModDefID, SqlDbType.UniqueIdentifier);
-                    parameterGeneralModDefID.Value = GeneralModDefID;
-                    myCommand.Parameters.Add(parameterGeneralModDefID);
-                    SqlParameter parameterFriendlyName = new SqlParameter(strATFriendlyName, SqlDbType.NVarChar, 128);
-                    parameterFriendlyName.Value = FriendlyName;
-                    myCommand.Parameters.Add(parameterFriendlyName);
-                    SqlParameter parameterDesktopSrc = new SqlParameter(strATDesktopSrc, SqlDbType.NVarChar, 256);
-                    parameterDesktopSrc.Value = DesktopSrc;
-                    myCommand.Parameters.Add(parameterDesktopSrc);
-                    SqlParameter parameterMobileSrc = new SqlParameter(strATMobileSrc, SqlDbType.NVarChar, 256);
-                    parameterMobileSrc.Value = MobileSrc;
-                    myCommand.Parameters.Add(parameterMobileSrc);
-                    SqlParameter parameterAssemblyName = new SqlParameter(strATAssemblyName, SqlDbType.VarChar, 50);
-                    parameterAssemblyName.Value = AssemblyName;
-                    myCommand.Parameters.Add(parameterAssemblyName);
-                    SqlParameter parameterClassName = new SqlParameter(strATClassName, SqlDbType.NVarChar, 128);
-                    parameterClassName.Value = ClassName;
-                    myCommand.Parameters.Add(parameterClassName);
-                    SqlParameter parameterAdmin = new SqlParameter(strATAdmin, SqlDbType.Bit);
-                    parameterAdmin.Value = Admin;
-                    myCommand.Parameters.Add(parameterAdmin);
-                    SqlParameter parameterSearchable = new SqlParameter(strATSearchable, SqlDbType.Bit);
-                    parameterSearchable.Value = Searchable;
-                    myCommand.Parameters.Add(parameterSearchable);
-                    // Open the database connection and execute the command
-                    myConnection.Open();
-
-                    try
-                    {
-                        myCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in AddGeneralModuleDefinitions. ", ex);
-                    }
-
-                    // Return the newly created ID
-                    return new Guid(parameterGeneralModDefID.Value.ToString());
+                    newRow = true;
+                    row = new rb_GeneralModuleDefinition();
                 }
+
+                row.GeneralModDefID = GeneralModDefID;
+                row.FriendlyName = FriendlyName;
+                row.DesktopSrc = DesktopSrc;
+                row.MobileSrc = MobileSrc;
+                row.AssemblyName = AssemblyName;
+                row.ClassName = ClassName;
+                row.Admin = Admin;
+                row.Searchable = Searchable;
+
+                if (newRow)
+                    db.rb_GeneralModuleDefinitions.InsertOnSubmit(row);
+
+                db.SubmitChanges();
             }
+
+            return GeneralModDefID;
+
+            //using (SqlConnection myConnection = Config.SqlConnectionString)
+            //{
+            //    using (SqlCommand myCommand = new SqlCommand("rb_AddGeneralModuleDefinitions", myConnection))
+            //    {
+            //        // Mark the Command as a SPROC
+            //        myCommand.CommandType = CommandType.StoredProcedure;
+            //        // Add Parameters to SPROC
+            //        SqlParameter parameterGeneralModDefID =
+            //            new SqlParameter(strATGeneralModDefID, SqlDbType.UniqueIdentifier);
+            //        parameterGeneralModDefID.Value = GeneralModDefID;
+            //        myCommand.Parameters.Add(parameterGeneralModDefID);
+            //        SqlParameter parameterFriendlyName = new SqlParameter(strATFriendlyName, SqlDbType.NVarChar, 128);
+            //        parameterFriendlyName.Value = FriendlyName;
+            //        myCommand.Parameters.Add(parameterFriendlyName);
+            //        SqlParameter parameterDesktopSrc = new SqlParameter(strATDesktopSrc, SqlDbType.NVarChar, 256);
+            //        parameterDesktopSrc.Value = DesktopSrc;
+            //        myCommand.Parameters.Add(parameterDesktopSrc);
+            //        SqlParameter parameterMobileSrc = new SqlParameter(strATMobileSrc, SqlDbType.NVarChar, 256);
+            //        parameterMobileSrc.Value = MobileSrc;
+            //        myCommand.Parameters.Add(parameterMobileSrc);
+            //        SqlParameter parameterAssemblyName = new SqlParameter(strATAssemblyName, SqlDbType.VarChar, 50);
+            //        parameterAssemblyName.Value = AssemblyName;
+            //        myCommand.Parameters.Add(parameterAssemblyName);
+            //        SqlParameter parameterClassName = new SqlParameter(strATClassName, SqlDbType.NVarChar, 128);
+            //        parameterClassName.Value = ClassName;
+            //        myCommand.Parameters.Add(parameterClassName);
+            //        SqlParameter parameterAdmin = new SqlParameter(strATAdmin, SqlDbType.Bit);
+            //        parameterAdmin.Value = Admin;
+            //        myCommand.Parameters.Add(parameterAdmin);
+            //        SqlParameter parameterSearchable = new SqlParameter(strATSearchable, SqlDbType.Bit);
+            //        parameterSearchable.Value = Searchable;
+            //        myCommand.Parameters.Add(parameterSearchable);
+            //        // Open the database connection and execute the command
+            //        myConnection.Open();
+
+            //        try
+            //        {
+            //            myCommand.ExecuteNonQuery();
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in AddGeneralModuleDefinitions. ", ex);
+            //        }
+
+            //        // Return the newly created ID
+            //        return new Guid(parameterGeneralModDefID.Value.ToString());
+            //    }
+            //}
         }
 
         /// <summary>
@@ -243,7 +277,7 @@ namespace Rainbow.Framework.Site.Data
                         ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in AddModule. ", ex);
                     }
 
-                    return (int) parameterModuleID.Value;
+                    return (int)parameterModuleID.Value;
                 }
             }
         }
@@ -257,7 +291,7 @@ namespace Rainbow.Framework.Site.Data
         public void DeleteModule(int moduleID)
         {
             //BOWEN 11 June 2005 - BEGIN
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             bool useRecycler =
                 bool.Parse(
                     PortalSettings.GetPortalCustomSettings(portalSettings.PortalID,
@@ -265,8 +299,8 @@ namespace Rainbow.Framework.Site.Data
                                                                portalSettings.PortalPath))["SITESETTINGS_USE_RECYCLER"].
                         ToString());
 
-			// TODO: THIS LINE DISABLES THE RECYCLER DUE SOME TROUBLES WITH IT !!!!!! Fix those troubles and then discomment.
-			useRecycler = false;
+            // TODO: THIS LINE DISABLES THE RECYCLER DUE SOME TROUBLES WITH IT !!!!!! Fix those troubles and then discomment.
+            useRecycler = false;
 
             using (SqlConnection myConnection = Config.SqlConnectionString)
             {
@@ -418,7 +452,7 @@ namespace Rainbow.Framework.Site.Data
                         while (result.Read())
                         {
                             m = new ModuleItem();
-                            m.ID = (int) result["ModuleId"];
+                            m.ID = (int)result["ModuleId"];
                             modList.Add(m);
                         }
                     }
@@ -486,32 +520,35 @@ namespace Rainbow.Framework.Site.Data
         /// <param name="portalID">The portal ID.</param>
         /// <returns></returns>
         /// <remarks>Other relevant sources: GetModuleDefinitions Stored Procedure</remarks>
-        public IList<GeneralModuleDefinition> GetCurrentModuleDefinitionsList( int portalID ) {
+        public IList<GeneralModuleDefinition> GetCurrentModuleDefinitionsList(int portalID)
+        {
             // Create Instance of Connection and Command Object
             SqlConnection myConnection = Config.SqlConnectionString;
-            SqlCommand myCommand = new SqlCommand( "rb_GetCurrentModuleDefinitions", myConnection );
+            SqlCommand myCommand = new SqlCommand("rb_GetCurrentModuleDefinitions", myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
             // Add Parameters to SPROC
-            SqlParameter parameterPortalID = new SqlParameter( strATPortalID, SqlDbType.Int, 4 );
+            SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
             parameterPortalID.Value = portalID;
-            myCommand.Parameters.Add( parameterPortalID );
+            myCommand.Parameters.Add(parameterPortalID);
             // Open the database connection and execute the command
             myConnection.Open();
 
             IList<GeneralModuleDefinition> result = new List<GeneralModuleDefinition>();
             GeneralModuleDefinition genModDef = null;
-            using ( SqlDataReader dr = myCommand.ExecuteReader( CommandBehavior.CloseConnection ) ) {
-                while ( dr.Read() ) {
+            using (SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection))
+            {
+                while (dr.Read())
+                {
                     genModDef = new GeneralModuleDefinition();
 
-                    genModDef.FriendlyName = dr.GetString( 0 );
-                    genModDef.DesktopSource = dr.GetString( 1 );
-                    genModDef.MobileSource = dr.GetString( 2 );
-                    genModDef.Admin = dr.GetBoolean( 3 );
-                    genModDef.GeneralModDefID = dr.GetInt32( 4 );
+                    genModDef.FriendlyName = dr.GetString(0);
+                    genModDef.DesktopSource = dr.GetString(1);
+                    genModDef.MobileSource = dr.GetString(2);
+                    genModDef.Admin = dr.GetBoolean(3);
+                    genModDef.GeneralModDefID = dr.GetInt32(4);
 
-                    result.Add( genModDef );
+                    result.Add(genModDef);
                 }
             }
 
@@ -619,7 +656,7 @@ namespace Rainbow.Framework.Site.Data
                                              "An Error Occurred in GetModuleDefinitionByGuid. Parameter : " +
                                              guid.ToString(), ex);
                     }
-                    return (int) parameterModuleID.Value;
+                    return (int)parameterModuleID.Value;
                 }
             }
         }
@@ -662,7 +699,7 @@ namespace Rainbow.Framework.Site.Data
                                              "An Error Occurred in GetModuleDefinitionByName. Parameter : " + moduleName,
                                              ex);
                     }
-                    return (int) parameterModuleID.Value;
+                    return (int)parameterModuleID.Value;
                 }
             }
         }
@@ -718,7 +755,7 @@ namespace Rainbow.Framework.Site.Data
                 CurrentCache.Insert(cacheGuid, moduleGuid);
             }
             else
-                moduleGuid = (Guid) CurrentCache.Get(cacheGuid);
+                moduleGuid = (Guid)CurrentCache.Get(cacheGuid);
             return moduleGuid;
         }
 
@@ -1162,7 +1199,7 @@ namespace Rainbow.Framework.Site.Data
                         //ErrorHandler.Publish(Rainbow.Framework.LogLevel.Warn, "An Error Occurred in UpdateModule", ex);
                         ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in UpdateModule", ex);
                     }
-                    return (int) parameterModuleID.Value;
+                    return (int)parameterModuleID.Value;
                 }
             }
         }
