@@ -709,6 +709,20 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
     <property name="sql.tests.db.name" value="tests_${sql.db.name}" />
     <property name="sql.tests.connectionString" value="server=${sql.tests.instance};database=${sql.tests.db.name};uid=rainbow;pwd=rainbow_" />
 
+    <if test="${sql.recreate.showCaution}">
+      <property name="local.filename" value=".CAUTION.TXT" />
+      <echo file="${local.filename}">
+CAUTION!!! This action will automatically create new database "${sql.tests.db.name}" with overwrite.
+Please BACK UP it first if you need, then close this caution to continue (ALT-F4).
+
+To abort operation, switch to console (ALT-TAB).
+Then break script execution (CTRL-C)
+      </echo>
+      <exec program="notepad" commandline="${local.filename}" />
+      <delete file="${local.filename}" />
+    </if>
+
+
     <!-- killQuery -->
     <property name="sql.query" 
       value="USE [master]; DECLARE @sql VARCHAR(8000); SET @sql = ''; SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '${sql.tests.db.name}'; EXEC(@sql)"/>

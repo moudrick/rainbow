@@ -63,11 +63,16 @@ I.2.3 Create database using WebSites\Rainbow\Setup\Scripts\setup.bat file.
 CAUTION!!! This task will automatically create new "Rainbow" database!
 The database will be overwritten, so back up it if you have it and still need its content.
 
-I.2.4 Open Rainbow.sln file in Visual Studio 2005.
+I.2.4 Copy WebSites\Rainbow\web.config.standard file to WebSites\Rainbow\web.config, 
+then find there all the phrases "CHANGE ME TO A VALID CONNECTION STRING" and change them to valid connection string.
+In most preview deployment cases it should be literally "server=(local)\SQLEXPRESS;Trusted_Connection=true;database=Rainbow".
+Also, you have to copy Projects\Rainbow.Tests\App.config.standard file to Projects\Rainbow.Tests\App.config.
 
-I.2.5 Build the solution by studio.
+I.2.5 Open Rainbow.sln file in Visual Studio 2005.
 
-I.2.6 Run web site "Rainbow" from Webs solution folder.
+I.2.6 Build the solution by studio.
+
+I.2.7 Run web site "Rainbow" from Webs solution folder.
 
 
 Note : This is a Beta Release and should by no means be

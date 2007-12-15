@@ -95,4 +95,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>@cd $(SolutionDir)
+@copy.standard.by.VS.cmd</PreBuildEvent>
+  </PropertyGroup>
 </Project>
