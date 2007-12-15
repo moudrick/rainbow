@@ -10,7 +10,6 @@ using System.Web;
 using System.Web.Security;
 using Rainbow.Context;
 using Rainbow.Framework;
-using Rainbow.Framework.BLL.Utils;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Scheduler;
@@ -20,7 +19,6 @@ using Rainbow.Framework.Site.Configuration;
 using History=Rainbow.Framework.History;
 using Path=System.IO.Path;
 using Reader=Rainbow.Context.Reader;
-using System.Configuration;
 
 namespace Rainbow
 {

@@ -452,15 +452,6 @@ End Sub
     <exec program="cscript.exe" commandline="${web.createScriptFileName}" />
   </target>
 
-  <target name="web.createIisApp.old">
-    <echo-property property="web.virtDirName" />
-    <echo-property property="web.relativeApplicationPath" />
-    <setenv name="relativeApplicationPath" value="${web.relativeApplicationPath}" />
-    <setenv name="virtDirName" value="${web.virtDirName}" />
-    <setenv name="webSiteIdentifier" value="${web.siteIdentifier}" />
-    <exec program="CreateIISApp.cmd" />
-  </target>
-
   <target name="web.rainbow.deleteLog">
     <echo-property property="web.relativeApplicationPath" />
     <property name="logFileName" value="${web.relativeApplicationPath}rb_logs/rb_log.resx" />
