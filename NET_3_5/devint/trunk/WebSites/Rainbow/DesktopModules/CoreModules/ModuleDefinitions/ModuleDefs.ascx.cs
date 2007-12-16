@@ -42,7 +42,7 @@ namespace Rainbow.Content.Web.Modules
         protected void BindData()
         {
             // Get the portal's defs from the database
-            SqlDataReader dr = new ModulesDB().GetCurrentModuleDefinitions(portalSettings.PortalID);
+            var dr = new ModulesDB().GetCurrentModuleDefinitions(portalSettings.PortalID);
 
             DataTable userTable = new DataTable();
             userTable.Columns.Add(new DataColumn("FriendlyName", typeof (string)));
@@ -53,13 +53,13 @@ namespace Rainbow.Content.Web.Modules
             adminTable.Columns.Add(new DataColumn("ModuleDefID", typeof (string)));
 
             DataRow drow;
-            while (dr.Read())
+            foreach (var d in dr)
             {
-                if (bool.Parse(dr["Admin"].ToString()))
+                if (d.Admin)
                 {
                     drow = adminTable.NewRow();
-                    drow["ModuleDefID"] = dr["ModuleDefID"];
-                    string aux = dr["FriendlyName"].ToString();
+                    drow["ModuleDefID"] = d.GeneralModDefID;
+                    string aux = d.FriendlyName;
                     if (aux.StartsWith("Admin"))
                     {
                         aux = aux.Substring(5);
@@ -71,8 +71,8 @@ namespace Rainbow.Content.Web.Modules
                 else
                 {
                     drow = userTable.NewRow();
-                    drow["ModuleDefID"] = dr["ModuleDefID"];
-                    drow["FriendlyName"] = dr["FriendlyName"];
+                    drow["ModuleDefID"] = d.GeneralModDefID;
+                    drow["FriendlyName"] = d.FriendlyName;
                     userTable.Rows.Add(drow);
                 }
             }
@@ -80,7 +80,6 @@ namespace Rainbow.Content.Web.Modules
             userModules.DataBind();
             adminModules.DataSource = adminTable;
             adminModules.DataBind();
-            dr.Close();
         }
 
         /// <summary>

@@ -527,8 +527,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <summary>
         /// Get current Language from ViewState
         /// </summary>
-        /// <param name="myLanguageCultureItem"></param>
-        /// <returns></returns>
+        /// <param name="myLanguageCultureItem">My language culture item.</param>
+        /// <param name="switcher">The switcher.</param>
         private static void InternalSetViewState(LanguageCultureItem myLanguageCultureItem, LanguageSwitcher switcher)
         {
             if (switcher != null)

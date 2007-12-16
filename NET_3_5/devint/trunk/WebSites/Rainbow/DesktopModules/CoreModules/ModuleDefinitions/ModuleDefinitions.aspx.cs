@@ -68,20 +68,20 @@ namespace Rainbow.AdminAll
 
                 // Populate checkbox list with all portals
                 // and "check" the ones already configured for this tab
-                SqlDataReader portals = modules.GetModuleInUse(defID);
+                var portals = modules.GetModuleInUse(defID);
 
                 // Clear existing items in checkboxlist
                 PortalsName.Items.Clear();
 
-                while (portals.Read())
+                foreach (var portal in portals)
                 {
-                    if (Convert.ToInt32(portals["PortalID"]) >= 0)
+                    if (portal.PortalID >= 0)
                     {
                         ListItem item = new ListItem();
-                        item.Text = (string) portals["PortalName"];
-                        item.Value = portals["PortalID"].ToString();
+                        item.Text = portal.PortalName;
+                        item.Value = portal.PortalID.ToString();
 
-                        if ((portals["checked"].ToString()) == "1")
+                        if ((portal.Checked.ToString()) == "1")
                             item.Selected = true;
                         else
                             item.Selected = false;
@@ -89,7 +89,6 @@ namespace Rainbow.AdminAll
                         PortalsName.Items.Add(item);
                     }
                 }
-                portals.Close(); //by Manu, fixed bug 807858
             }
         }
 

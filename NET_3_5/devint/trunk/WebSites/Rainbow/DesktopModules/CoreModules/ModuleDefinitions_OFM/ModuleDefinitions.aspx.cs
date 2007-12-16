@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;
-using Label=Rainbow.Framework.Web.UI.WebControls.Label;
+using Label = Rainbow.Framework.Web.UI.WebControls.Label;
 
 namespace Rainbow.AdminAll
 {
@@ -84,16 +84,16 @@ namespace Rainbow.AdminAll
 
                 // Populate checkbox list with all portals
                 // and "check" the ones already configured for this tab
-                SqlDataReader portals = modules.GetModuleInUse(defID);
-                while (portals.Read())
+                var portals = modules.GetModuleInUse(defID);
+                foreach (var portal in portals)
                 {
-                    if (Convert.ToInt32(portals["PortalID"]) >= 0)
+                    if (portal.PortalID >= 0)
                     {
                         ListItem item = new ListItem();
-                        item.Text = (string) portals["PortalName"];
-                        item.Value = portals["PortalID"].ToString();
+                        item.Text = portal.PortalName;
+                        item.Value = portal.PortalID.ToString();
 
-                        if ((portals["checked"].ToString()) == "1")
+                        if ((portal.Checked.ToString()) == "1")
                             item.Selected = true;
                         else
                             item.Selected = false;
@@ -101,7 +101,6 @@ namespace Rainbow.AdminAll
                         PortalsName.Items.Add(item);
                     }
                 }
-                portals.Close(); //by Manu, fixed bug 807858
             }
         }
 

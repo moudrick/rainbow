@@ -78,21 +78,13 @@ namespace Rainbow.Framework.Site.Data
                                                 string MobileSrc, string AssemblyName, string ClassName, bool Admin,
                                                 bool Searchable)
         {
-            try
-            {
-                rb_GeneralModuleDefinition row = db.rb_GeneralModuleDefinitions.Where(d => d.GeneralModDefID == GeneralModDefID).Single();
+            var rows = db.rb_GeneralModuleDefinitions.Where(d => d.GeneralModDefID == GeneralModDefID);
+            if (rows.Count() > 0)
+                ErrorHandler.Publish(LogLevel.Warn,
+                    "An Error Occurred in AddGeneralModuleDefinitions: The definition you tried to add already exists.");
 
-                //if it hasn't thrown an exception that means the row exists, which is bad.
-                ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in AddGeneralModuleDefinitions: The definition you tried to add already exists.");
-            }
-            catch (ArgumentNullException)
-            {
-                //this is good, probably change this method later since this is the rule and not really an exception,
-                //but this should get thrown and ignored if the row isn't there... we are adding it after all...
-
-                db.rb_AddGeneralModuleDefinitions((Guid?)GeneralModDefID, FriendlyName, DesktopSrc, MobileSrc, AssemblyName,
+            db.rb_AddGeneralModuleDefinitions((Guid?)GeneralModDefID, FriendlyName, DesktopSrc, MobileSrc, AssemblyName,
                 ClassName, (bool?)Admin, (bool?)Searchable);
-            }
 
             return GeneralModDefID;
         }
@@ -230,70 +222,17 @@ namespace Rainbow.Framework.Site.Data
         }
 
         /// <summary>
-        /// Find modules defined by the guid in a tab in the portal
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="guid">The GUID.</param>
-        /// <returns></returns>
-        [Obsolete("Use FindModuleItemsByGuid instead.")]
-        public SqlDataReader FindModulesByGuid(int portalID, Guid guid)
-        {
-            // Create Instance of Connection and Command Object
-            SqlConnection myConnection = (SqlConnection)db.Connection;
-            SqlCommand myCommand = new SqlCommand("rb_FindModulesByGuid", myConnection);
-            // Mark the Command as a SPROC
-            myCommand.CommandType = CommandType.StoredProcedure;
-            // Add Parameters to SPROC
-            SqlParameter parameterFriendlyName = new SqlParameter(strATGuid, SqlDbType.UniqueIdentifier);
-            parameterFriendlyName.Value = guid;
-            myCommand.Parameters.Add(parameterFriendlyName);
-            SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
-            parameterPortalID.Value = portalID;
-            myCommand.Parameters.Add(parameterPortalID);
-            // Open the database connection and execute the command
-            myConnection.Open();
-            SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            // Return the datareader
-            return dr;
-        }
-
-        /// <summary>
-        /// The GetModuleDefinitions method returns a list of all module type definitions.
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <returns></returns>
-        /// <remarks>Other relevant sources: GetModuleDefinitions Stored Procedure</remarks>
-        [Obsolete("Replace me, bad design practive to pass SqlDataReaders to the UI")]
-        public SqlDataReader GetCurrentModuleDefinitions(int portalID)
-        {
-            // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
-            SqlCommand myCommand = new SqlCommand("rb_GetCurrentModuleDefinitions", myConnection);
-            // Mark the Command as a SPROC
-            myCommand.CommandType = CommandType.StoredProcedure;
-            // Add Parameters to SPROC
-            SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
-            parameterPortalID.Value = portalID;
-            myCommand.Parameters.Add(parameterPortalID);
-            // Open the database connection and execute the command
-            myConnection.Open();
-            SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            // Return the datareader
-            return dr;
-        }
-
-        /// <summary>
         /// The GetModuleDefinitions method returns a list of all module type definitions.
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <returns></returns>
         /// <remarks>Other relevant sources: GetModuleDefinitions Stored Procedure</remarks>
         [History("Bill - bill@improvtech.com", "2007/12/16", "Updated to use LINQ")]
-        public IList<GeneralModuleDefinition> GetCurrentModuleDefinitionsList(int portalID)
+        public List<GeneralModuleDefinition> GetCurrentModuleDefinitions(int portalID)
         {
             var defs = db.rb_GetCurrentModuleDefinitions((int?)portalID);
 
-            IList<GeneralModuleDefinition> result = new List<GeneralModuleDefinition>();
+            List<GeneralModuleDefinition> result = new List<GeneralModuleDefinition>();
             GeneralModuleDefinition genModDef = null;
 
             foreach (var def in defs)
@@ -361,38 +300,10 @@ namespace Rainbow.Framework.Site.Data
         /// <returns></returns>
         public int GetModuleDefinitionByName(int portalID, string moduleName)
         {
-            // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
-            {
-                using (SqlCommand myCommand = new SqlCommand("rb_GetModuleDefinitionByName", myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Add Parameters to SPROC
-                    SqlParameter parameterFriendlyName = new SqlParameter(strATFriendlyName, SqlDbType.NVarChar, 128);
-                    parameterFriendlyName.Value = moduleName;
-                    myCommand.Parameters.Add(parameterFriendlyName);
-                    SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
-                    parameterPortalID.Value = portalID;
-                    myCommand.Parameters.Add(parameterPortalID);
-                    SqlParameter parameterModuleID = new SqlParameter(strATModuleID, SqlDbType.Int, 4);
-                    parameterModuleID.Direction = ParameterDirection.Output;
-                    myCommand.Parameters.Add(parameterModuleID);
+            int? moduleId = null;
+            db.rb_GetModuleDefinitionByName((int?)portalID, moduleName, ref moduleId);
 
-                    myConnection.Open();
-                    try
-                    {
-                        myCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorHandler.Publish(LogLevel.Warn,
-                                             "An Error Occurred in GetModuleDefinitionByName. Parameter : " + moduleName,
-                                             ex);
-                    }
-                    return (int)parameterModuleID.Value;
-                }
-            }
+            return (int)moduleId;
         }
 
         /// <summary>
@@ -427,26 +338,16 @@ namespace Rainbow.Framework.Site.Data
             string cacheGuid = Key.ModuleSettings(moduleID) + "GUID";
             if (CurrentCache.Get(cacheGuid) == null)
             {
-                using (SqlConnection myConnection = Config.SqlConnectionString)
+                var guids = db.rb_GetGuid((int?)moduleID);
+                if (guids.Count() > 0)
                 {
-                    using (SqlCommand myCommand = new SqlCommand("rb_GetGuid", myConnection))
-                    {
-                        myCommand.CommandType = CommandType.StoredProcedure;
-                        SqlParameter parameterModuleID = new SqlParameter(strATModuleID, SqlDbType.Int, 4);
-                        parameterModuleID.Value = moduleID;
-                        myCommand.Parameters.Add(parameterModuleID);
-                        myConnection.Open();
-                        using (SqlDataReader dr = myCommand.ExecuteReader())
-                        {
-                            if (dr.Read())
-                                moduleGuid = dr.GetGuid(0);
-                        }
-                    }
+                    moduleGuid = guids.Single().GeneralModDefID;
+                    CurrentCache.Insert(cacheGuid, moduleGuid);
                 }
-                CurrentCache.Insert(cacheGuid, moduleGuid);
             }
             else
                 moduleGuid = (Guid)CurrentCache.Get(cacheGuid);
+
             return moduleGuid;
         }
 
@@ -457,22 +358,26 @@ namespace Rainbow.Framework.Site.Data
         /// <param name="defID">The def ID.</param>
         /// <returns></returns>
         [Obsolete("Replace me, bad design practive to pass SqlDataReaders to the UI")]
-        public SqlDataReader GetModuleInUse(Guid defID)
+        public ISingleResult<rb_GetModuleInUseResult> GetModuleInUse(Guid defID)
         {
-            // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
-            SqlCommand myCommand = new SqlCommand("rb_GetModuleInUse", myConnection);
-            // Mark the Command as a SPROC
-            myCommand.CommandType = CommandType.StoredProcedure;
-            // Add Parameters to SPROC
-            SqlParameter parameterdefID = new SqlParameter(strATModuleID, SqlDbType.UniqueIdentifier);
-            parameterdefID.Value = defID;
-            myCommand.Parameters.Add(parameterdefID);
-            // Open the database connection and execute the command
-            myConnection.Open();
-            SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            // Return the datareader
-            return dr;
+            var miu = db.rb_GetModuleInUse((Guid?)defID);
+
+            return miu;
+
+            //// Create Instance of Connection and Command Object
+            //SqlConnection myConnection = Config.SqlConnectionString;
+            //SqlCommand myCommand = new SqlCommand("rb_GetModuleInUse", myConnection);
+            //// Mark the Command as a SPROC
+            //myCommand.CommandType = CommandType.StoredProcedure;
+            //// Add Parameters to SPROC
+            //SqlParameter parameterdefID = new SqlParameter(strATModuleID, SqlDbType.UniqueIdentifier);
+            //parameterdefID.Value = defID;
+            //myCommand.Parameters.Add(parameterdefID);
+            //// Open the database connection and execute the command
+            //myConnection.Open();
+            //SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
+            //// Return the datareader
+            //return dr;
         }
 
         /// <summary>
@@ -529,25 +434,29 @@ namespace Rainbow.Framework.Site.Data
         /// <returns></returns>
         /// <remarks>Other relevant sources: GetModuleByName Stored Procedure</remarks>
         [Obsolete("Replace me, bad design practive to pass SqlDataReaders to the UI")]
-        public SqlDataReader GetModulesByName(string moduleName, int portalID)
+        public ISingleResult<rb_GetModulesByNameResult> GetModulesByName(string moduleName, int portalID)
         {
-            // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
-            SqlCommand myCommand = new SqlCommand("rb_GetModulesByName", myConnection);
-            // Mark the Command as a SPROC
-            myCommand.CommandType = CommandType.StoredProcedure;
-            // Add Parameters to SPROC
-            SqlParameter parameterFriendlyName = new SqlParameter("@moduleName", SqlDbType.NVarChar, 128);
-            parameterFriendlyName.Value = moduleName;
-            myCommand.Parameters.Add(parameterFriendlyName);
-            SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
-            parameterPortalID.Value = portalID;
-            myCommand.Parameters.Add(parameterPortalID);
-            // Open the database connection and execute the command
-            myConnection.Open();
-            SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            // Return the datareader
-            return dr;
+            var mods = db.rb_GetModulesByName(moduleName, (int?)portalID);
+
+            return mods;
+
+            //// Create Instance of Connection and Command Object
+            //SqlConnection myConnection = Config.SqlConnectionString;
+            //SqlCommand myCommand = new SqlCommand("rb_GetModulesByName", myConnection);
+            //// Mark the Command as a SPROC
+            //myCommand.CommandType = CommandType.StoredProcedure;
+            //// Add Parameters to SPROC
+            //SqlParameter parameterFriendlyName = new SqlParameter("@moduleName", SqlDbType.NVarChar, 128);
+            //parameterFriendlyName.Value = moduleName;
+            //myCommand.Parameters.Add(parameterFriendlyName);
+            //SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
+            //parameterPortalID.Value = portalID;
+            //myCommand.Parameters.Add(parameterPortalID);
+            //// Open the database connection and execute the command
+            //myConnection.Open();
+            //SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
+            //// Return the datareader
+            //return dr;
         }
 
         /// <summary>

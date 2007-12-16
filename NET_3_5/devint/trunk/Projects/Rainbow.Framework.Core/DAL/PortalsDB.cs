@@ -7,7 +7,7 @@ using System.Web;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Users.Data;
-using Path=Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Settings.Path;
 
 namespace Rainbow.Framework.Site.Data
 {
@@ -95,7 +95,7 @@ namespace Rainbow.Framework.Site.Data
                     {
                         myConnection.Close();
                     }
-                    return (int) parameterPortalID.Value;
+                    return (int)parameterPortalID.Value;
                 }
             }
         }
@@ -138,17 +138,18 @@ namespace Rainbow.Framework.Site.Data
                 myReader.Close(); //by Manu, fixed bug 807858
             }
 
-            if ( !Config.UseSingleUserBase ) {
+            if (!Config.UseSingleUserBase)
+            {
                 string AdminEmail = "admin@rainbowportal.net";
-                
+
                 // Create the stradmin User for the new portal
                 UsersDB User = new UsersDB();
                 // Create the "Admins" role for the new portal
-                Guid roleID = User.AddRole( "Admins" );
-                Guid userID = User.AddUser( stradmin, AdminEmail, stradmin );
+                Guid roleID = User.AddRole("Admins");
+                Guid userID = User.AddUser(stradmin, AdminEmail, stradmin);
                 // Create a new row in a many to many table (userroles)
                 // giving the "admins" role to the stradmin user
-                User.AddUserRole( roleID, userID );
+                User.AddUserRole(roleID, userID);
             }
             // Create a new Page "home"
             int homePageID = tabs.AddPage(portalID, "Home", 1);
@@ -244,7 +245,7 @@ namespace Rainbow.Framework.Site.Data
             if (!Directory.Exists(portalPhisicalDir))
                 Directory.CreateDirectory(portalPhisicalDir);
             // Subdirs
-            string[] subdirs = {"images", "polls", "documents", "xml"};
+            string[] subdirs = { "images", "polls", "documents", "xml" };
 
             for (int i = 0; i <= subdirs.GetUpperBound(0); i++)
 

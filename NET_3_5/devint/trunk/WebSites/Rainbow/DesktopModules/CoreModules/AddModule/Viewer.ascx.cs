@@ -7,9 +7,11 @@ using Rainbow.Framework;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
-using History=Rainbow.Framework.History;
-using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
-using Path=Rainbow.Framework.Settings.Path;
+using History = Rainbow.Framework.History;
+using Localize = Rainbow.Framework.Web.UI.WebControls.Localize;
+using Path = Rainbow.Framework.Settings.Path;
+using Rainbow.Framework.Core.BLL;
+using System.Collections.Generic;
 
 namespace Rainbow.Content.Web.Modules.AddModule
 {
@@ -59,38 +61,29 @@ namespace Rainbow.Content.Web.Modules.AddModule
             // Populate the "Add Module" Data
             ModulesDB m = new ModulesDB();
 
-            SqlDataReader drCurrentModuleDefinitions = m.GetCurrentModuleDefinitions(portalSettings.PortalID);
+            List<GeneralModuleDefinition> CurrentModuleDefinitions = m.GetCurrentModuleDefinitions(portalSettings.PortalID);
 
-            try
+            //				if(this.ArePropertiesEditable)
+            //				{
+            //					while(drCurrentModuleDefinitions.Read())
+            //					{
+            //						moduleType.Items.Add(new ListItem(drCurrentModuleDefinitions["FriendlyName"].ToString(),drCurrentModuleDefinitions["ModuleDefID"].ToString() + "|" + GetHelpPath(drCurrentModuleDefinitions["DesktopSrc"].ToString())));
+            //					}
+            //				}
+            //				else
+            //				{
+            foreach (GeneralModuleDefinition gmd in CurrentModuleDefinitions)
             {
-//				if(this.ArePropertiesEditable)
-//				{
-//					while(drCurrentModuleDefinitions.Read())
-//					{
-//						moduleType.Items.Add(new ListItem(drCurrentModuleDefinitions["FriendlyName"].ToString(),drCurrentModuleDefinitions["ModuleDefID"].ToString() + "|" + GetHelpPath(drCurrentModuleDefinitions["DesktopSrc"].ToString())));
-//					}
-//				}
-//				else
-//				{
-                while (drCurrentModuleDefinitions.Read())
+                // Added by Mario Endara <mario@softworks.com.uy> 2004/11/04
+                // only users members of the "Amins" role can add Admin modules to a Tab
+                if (PortalSecurity.IsInRoles("Admins") || !gmd.Admin)
                 {
-                    // Added by Mario Endara <mario@softworks.com.uy> 2004/11/04
-                    // only users members of the "Amins" role can add Admin modules to a Tab
-                    if (PortalSecurity.IsInRoles("Admins") == true ||
-                        !(bool.Parse(drCurrentModuleDefinitions["Admin"].ToString())))
-                    {
-                        moduleType.Items.Add(
-                            new ListItem(drCurrentModuleDefinitions["FriendlyName"].ToString(),
-                                         drCurrentModuleDefinitions["ModuleDefID"].ToString() + "|" +
-                                         GetHelpPath(drCurrentModuleDefinitions["DesktopSrc"].ToString())));
-                    }
+                    moduleType.Items.Add(
+                        new ListItem(gmd.FriendlyName,
+                                     gmd.GeneralModDefID + "|" + GetHelpPath(gmd.DesktopSource)));
                 }
-//				}
             }
-            finally
-            {
-                drCurrentModuleDefinitions.Close();
-            }
+            //				}
         }
 
 
@@ -314,11 +307,11 @@ namespace Rainbow.Content.Web.Modules.AddModule
             InitializeComponent();
 
             // Create a new Title the control
-//			ModuleTitle = new DesktopModuleTitle();
+            //			ModuleTitle = new DesktopModuleTitle();
             // Set here title properties
             // Add title ad the very beginning of
             // the control's controls collection
-//			Controls.AddAt(0, ModuleTitle);
+            //			Controls.AddAt(0, ModuleTitle);
 
             // Call base init procedure
             base.OnInit(e);

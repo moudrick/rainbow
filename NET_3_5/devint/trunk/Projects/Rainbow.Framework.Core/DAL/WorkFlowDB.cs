@@ -203,6 +203,11 @@ namespace Rainbow.Framework.Site.Data
             }
         }
 
+        /// <summary>
+        /// Sets the last modified.
+        /// </summary>
+        /// <param name="moduleID">The module ID.</param>
+        /// <param name="email">The email.</param>
         public static void SetLastModified(int moduleID, string email)
         {
             // Create Instance of Connection and Command Object

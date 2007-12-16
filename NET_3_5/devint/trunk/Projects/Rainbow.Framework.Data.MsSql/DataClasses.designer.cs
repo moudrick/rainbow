@@ -23,7 +23,7 @@ namespace Rainbow.Framework.Data.MsSql
 	using System;
 	
 	
-	[System.Data.Linq.Mapping.DatabaseAttribute(Name="Database")]
+	[System.Data.Linq.Mapping.DatabaseAttribute(Name="Rainbow")]
 	public partial class DataClassesDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -52,7 +52,7 @@ namespace Rainbow.Framework.Data.MsSql
     #endregion
 		
 		public DataClassesDataContext() : 
-				base(global::Rainbow.Framework.Data.MsSql.Properties.Settings.Default.DatabaseConnectionString1, mappingSource)
+				base(global::Rainbow.Framework.Data.MsSql.Properties.Settings.Default.RainbowConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -440,6 +440,34 @@ namespace Rainbow.Framework.Data.MsSql
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
 			return ((ISingleResult<rb_GetModuleDefinitionByIDResult>)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_GetGuid")]
+		public ISingleResult<rb_GetGuidResult> rb_GetGuid([Parameter(Name="ModuleID", DbType="Int")] System.Nullable<int> moduleID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
+			return ((ISingleResult<rb_GetGuidResult>)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_GetModuleInUse")]
+		public ISingleResult<rb_GetModuleInUseResult> rb_GetModuleInUse([Parameter(Name="ModuleID", DbType="UniqueIdentifier")] System.Nullable<System.Guid> moduleID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
+			return ((ISingleResult<rb_GetModuleInUseResult>)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_GetModulesAllPortals")]
+		public int rb_GetModulesAllPortals()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_GetModulesByName")]
+		public ISingleResult<rb_GetModulesByNameResult> rb_GetModulesByName([Parameter(Name="ModuleName", DbType="VarChar(128)")] string moduleName, [Parameter(Name="PortalID", DbType="Int")] System.Nullable<int> portalID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleName, portalID);
+			return ((ISingleResult<rb_GetModulesByNameResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -4639,6 +4667,166 @@ namespace Rainbow.Framework.Data.MsSql
 				if ((this._ModuleID != value))
 				{
 					this._ModuleID = value;
+				}
+			}
+		}
+	}
+	
+	[DataContract()]
+	public partial class rb_GetGuidResult
+	{
+		
+		private System.Guid _GeneralModDefID;
+		
+		public rb_GetGuidResult()
+		{
+		}
+		
+		[Column(Storage="_GeneralModDefID", DbType="UniqueIdentifier NOT NULL")]
+		[DataMember(Order=1)]
+		public System.Guid GeneralModDefID
+		{
+			get
+			{
+				return this._GeneralModDefID;
+			}
+			set
+			{
+				if ((this._GeneralModDefID != value))
+				{
+					this._GeneralModDefID = value;
+				}
+			}
+		}
+	}
+	
+	[DataContract()]
+	public partial class rb_GetModuleInUseResult
+	{
+		
+		private int _PortalID;
+		
+		private string _PortalAlias;
+		
+		private string _PortalName;
+		
+		private char _Checked;
+		
+		public rb_GetModuleInUseResult()
+		{
+		}
+		
+		[Column(Storage="_PortalID", DbType="Int NOT NULL")]
+		[DataMember(Order=1)]
+		public int PortalID
+		{
+			get
+			{
+				return this._PortalID;
+			}
+			set
+			{
+				if ((this._PortalID != value))
+				{
+					this._PortalID = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_PortalAlias", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=2)]
+		public string PortalAlias
+		{
+			get
+			{
+				return this._PortalAlias;
+			}
+			set
+			{
+				if ((this._PortalAlias != value))
+				{
+					this._PortalAlias = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_PortalName", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=3)]
+		public string PortalName
+		{
+			get
+			{
+				return this._PortalName;
+			}
+			set
+			{
+				if ((this._PortalName != value))
+				{
+					this._PortalName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_Checked", DbType="VarChar(1) NOT NULL")]
+		[DataMember(Order=4)]
+		public char Checked
+		{
+			get
+			{
+				return this._Checked;
+			}
+			set
+			{
+				if ((this._Checked != value))
+				{
+					this._Checked = value;
+				}
+			}
+		}
+	}
+	
+	[DataContract()]
+	public partial class rb_GetModulesByNameResult
+	{
+		
+		private int _Column1;
+		
+		private string _Column2;
+		
+		public rb_GetModulesByNameResult()
+		{
+		}
+		
+		[Column(Storage="_Column1", DbType="Int NOT NULL")]
+		[DataMember(Order=1)]
+		public int Column1
+		{
+			get
+			{
+				return this._Column1;
+			}
+			set
+			{
+				if ((this._Column1 != value))
+				{
+					this._Column1 = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_Column2", DbType="NVarChar(256)")]
+		[DataMember(Order=2)]
+		public string Column2
+		{
+			get
+			{
+				return this._Column2;
+			}
+			set
+			{
+				if ((this._Column2 != value))
+				{
+					this._Column2 = value;
 				}
 			}
 		}

@@ -45,8 +45,6 @@ namespace Rainbow.Framework.Settings
             get
             {
                 DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString);
-                //Caches dbversion
-                int curVersion = 0;
 
                 if (HttpContext.Current.Application[dbKey] == null)
                 {
@@ -73,10 +71,14 @@ namespace Rainbow.Framework.Settings
                         //throw;
                     }
 
-                    var versions = from v in db.rb_Versions orderby v.Release descending select v;
-                    curVersion = versions.First().Release;
+                    //Caches dbversion
+                    int curVersion = 0;
 
-                    if (curVersion == 0)
+                    var versions = from v in db.rb_Versions orderby v.Release descending select v;
+                    
+                    if (versions.Count() > 0)
+                        curVersion = versions.First().Release;
+                    else
                     {
                         curVersion = 1110;
                         // TODO: This should be the best place

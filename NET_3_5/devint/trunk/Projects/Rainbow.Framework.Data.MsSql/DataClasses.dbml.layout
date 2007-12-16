@@ -41,7 +41,7 @@
         <classShapeMoniker Id="f22e5899-5bae-408a-807e-81eb539131c6" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(3.625 : 3.01524983723958); (5.16666666666667 : 3.01524983723958 : JumpStart); (5.33333333333333 : 3.01524983723958 : JumpEnd); (5.72916666666667 : 3.01524983723958 : JumpStart); (5.89583333333333 : 3.01524983723958 : JumpEnd); (6.875 : 3.01524983723958)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(3.625 : 3.01524983723958); (6.875 : 3.01524983723958)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClassesDataContext/aspnet_Membership/aspnet_Membership_User" />
       <nodes>
         <classShapeMoniker Id="35ba44d8-aeac-45cf-b8a5-0a014a671ff0" />

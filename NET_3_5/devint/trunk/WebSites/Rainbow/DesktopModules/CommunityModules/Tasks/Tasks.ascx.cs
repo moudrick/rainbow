@@ -11,7 +11,7 @@ using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
-using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
+using Localize = Rainbow.Framework.Web.UI.WebControls.Localize;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -66,8 +66,8 @@ namespace Rainbow.Content.Web.Modules
             }
             else
             {
-                sortField = (string) ViewState["SortField"];
-                sortDirection = (string) ViewState["sortDirection"];
+                sortField = (string)ViewState["SortField"];
+                sortDirection = (string)ViewState["sortDirection"];
             }
 
             myDataView = new DataView();
@@ -215,23 +215,11 @@ namespace Rainbow.Content.Web.Modules
             // Task modules list
             ModulesDB m = new ModulesDB();
             ArrayList taskModulesListOptions = new ArrayList();
-            SqlDataReader r = null;
-            try
+
+            var r = m.GetModulesByName("Tasks", PortalID);
+            foreach (var o in r)
             {
-                r = m.GetModulesByName("Tasks", portalSettings.PortalID);
-                while (r.Read())
-                {
-                    taskModulesListOptions.Add(
-                        new SettingOption(int.Parse(r["ModuleID"].ToString()), r["ModuleTitle"].ToString()));
-                }
-            }
-            catch //install time
-            {
-            }
-            finally
-            {
-                if (r != null && r.IsClosed == false)
-                    r.Close();
+                taskModulesListOptions.Add(new SettingOption(o.Column1, o.Column2));
             }
 
             SettingItem linkedModules =

@@ -22,7 +22,7 @@ using Rainbow.Framework.Settings;
 using Rainbow.Framework.Setup;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
-using Path=Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Settings.Path;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -46,7 +46,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
     // history from old DesktopModuleTitle class
     [History("Nicholas Smeaton", "2004/07/24", "Added support for arrow buttons to move modules")]
     [History("jviladiu@portalServices.net", "2004/07/13", "Corrections in workflow buttons")]
-    [History("gman3001", "2004/04/08","Added support for custom buttons in the title bar, and set all undefined title bar buttons to 'rb_mod_title_btn' css-class.")]
+    [History("gman3001", "2004/04/08", "Added support for custom buttons in the title bar, and set all undefined title bar buttons to 'rb_mod_title_btn' css-class.")]
     [History("Pekka Ylenius", "2004/11/28", "When '?' in ulr then '&' is needed not '?'")]
     [History("Hongwei Shen", "2005/09/8", "Fix the publishing problem and RevertToProduction button problem")]
     [History("Hongwei Shen", "2005/09/12", "Fix topic setting order problem(add module specific settings group base)")]
@@ -126,7 +126,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             // THEME MANAGEMENT
             _Group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
-            _groupOrderBase = (int) SettingItemGroup.THEME_LAYOUT_SETTINGS;
+            _groupOrderBase = (int)SettingItemGroup.THEME_LAYOUT_SETTINGS;
 
             SettingItem ApplyTheme = new SettingItem(new BooleanDataType());
             ApplyTheme.Order = _groupOrderBase + 10;
@@ -138,12 +138,12 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             ArrayList themeOptions = new ArrayList();
             themeOptions.Add(
-                new SettingOption((int) ThemeList.Default, General.GetString("MODULESETTINGS_THEME_DEFAULT")));
-            themeOptions.Add(new SettingOption((int) ThemeList.Alt, General.GetString("MODULESETTINGS_THEME_ALT")));
+                new SettingOption((int)ThemeList.Default, General.GetString("MODULESETTINGS_THEME_DEFAULT")));
+            themeOptions.Add(new SettingOption((int)ThemeList.Alt, General.GetString("MODULESETTINGS_THEME_ALT")));
             SettingItem Theme = new SettingItem(new CustomListDataType(themeOptions, "Name", "Val"));
             Theme.Order = _groupOrderBase + 20;
             Theme.Group = _Group;
-            Theme.Value = ((int) ThemeList.Default).ToString();
+            Theme.Value = ((int)ThemeList.Default).ToString();
             Theme.EnglishName = "Theme";
             Theme.Description = "Choose theme for this module";
             _baseSettings.Add("MODULESETTINGS_THEME", Theme);
@@ -152,7 +152,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 // Added: Jes1111 - 2004-08-03
                 PortalSettings _portalSettings;
-                _portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
                 // end addition: Jes1111
 
                 if (_portalSettings != null)
@@ -254,7 +254,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             // BUTTONS
             _Group = SettingItemGroup.BUTTON_DISPLAY_SETTINGS;
-            _groupOrderBase = (int) SettingItemGroup.BUTTON_DISPLAY_SETTINGS;
+            _groupOrderBase = (int)SettingItemGroup.BUTTON_DISPLAY_SETTINGS;
 
             // Show print button in view mode?
             SettingItem PrintButton = new SettingItem(new BooleanDataType());
@@ -278,21 +278,21 @@ namespace Rainbow.Framework.Web.UI.WebControls
             // added: Jes1111 2004-08-02 - choices for Button display on module
             ArrayList buttonDisplayOptions = new ArrayList();
             buttonDisplayOptions.Add(
-                new SettingOption((int) ModuleButton.RenderOptions.ImageOnly,
+                new SettingOption((int)ModuleButton.RenderOptions.ImageOnly,
                                   General.GetString("MODULESETTINGS_BUTTON_DISPLAY_IMAGE")));
             buttonDisplayOptions.Add(
-                new SettingOption((int) ModuleButton.RenderOptions.TextOnly,
+                new SettingOption((int)ModuleButton.RenderOptions.TextOnly,
                                   General.GetString("MODULESETTINGS_BUTTON_DISPLAY_TEXT")));
             buttonDisplayOptions.Add(
-                new SettingOption((int) ModuleButton.RenderOptions.ImageAndTextCSS,
+                new SettingOption((int)ModuleButton.RenderOptions.ImageAndTextCSS,
                                   General.GetString("MODULESETTINGS_BUTTON_DISPLAY_BOTH")));
             buttonDisplayOptions.Add(
-                new SettingOption((int) ModuleButton.RenderOptions.ImageOnlyCSS,
+                new SettingOption((int)ModuleButton.RenderOptions.ImageOnlyCSS,
                                   General.GetString("MODULESETTINGS_BUTTON_DISPLAY_IMAGECSS")));
             SettingItem ButtonDisplay = new SettingItem(new CustomListDataType(buttonDisplayOptions, "Name", "Val"));
             ButtonDisplay.Order = _groupOrderBase + 30;
             ButtonDisplay.Group = _Group;
-            ButtonDisplay.Value = ((int) ModuleButton.RenderOptions.ImageOnly).ToString();
+            ButtonDisplay.Value = ((int)ModuleButton.RenderOptions.ImageOnly).ToString();
             ButtonDisplay.EnglishName = "Display Buttons as:";
             ButtonDisplay.Description =
                 "Choose how you want module buttons to be displayed. Note that settings other than 'Image only' may require Zen or special treatment in the Theme.";
@@ -325,7 +325,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             _baseSettings.Add("MODULESETTINGS_SHOW_HELP_BUTTON", HelpButton);
 
             // LANGUAGE/CULTURE MANAGEMENT
-            _groupOrderBase = (int) SettingItemGroup.CULTURE_SETTINGS;
+            _groupOrderBase = (int)SettingItemGroup.CULTURE_SETTINGS;
             _Group = SettingItemGroup.CULTURE_SETTINGS;
 
             CultureInfo[] cultureList = Localization.LanguageSwitcher.GetLanguageList(true);
@@ -359,7 +359,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             // SEARCH
             if (Searchable)
             {
-                _groupOrderBase = (int) SettingItemGroup.MODULE_SPECIAL_SETTINGS;
+                _groupOrderBase = (int)SettingItemGroup.MODULE_SPECIAL_SETTINGS;
                 _Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
 
                 SettingItem topicName = new SettingItem(new StringDataType());
@@ -446,7 +446,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     // Change 8/April/2003 Jes1111
                     // changes to Language behaviour require addition of culture names to cache key
                     // Jes1111 2003/04/24 - Added PortalAlias to cachekey
-                    PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                    PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
                     StringBuilder sb = new StringBuilder();
                     sb.Append("rb_");
                     sb.Append(portalSettings.PortalAlias);
@@ -743,7 +743,7 @@ end of modification
 
                     if (!(Page.ClientScript.IsClientScriptBlockRegistered("confirmDelete")))
                     {
-                        string[] s = {"CONFIRM_DELETE"};
+                        string[] s = { "CONFIRM_DELETE" };
                         Page.ClientScript.RegisterClientScriptBlock(GetType(), "confirmDelete",
                                                                     PortalSettings.GetStringResource(
                                                                         "CONFIRM_DELETE_SCRIPT",
@@ -986,13 +986,13 @@ end of modification
             get
             {
                 if (Page != null)
-                    return ((Page) Page).portalSettings;
+                    return ((Page)Page).portalSettings;
                 else
                 {
                     // Obtain PortalSettings from Current Context
                     if (HttpContext.Current != null)
                     {
-                        return (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                        return (PortalSettings)HttpContext.Current.Items["PortalSettings"];
                     }
                     return null;
                 }
@@ -1021,7 +1021,7 @@ end of modification
             get
             {
                 if (base.Page is Page)
-                    return (Page) base.Page;
+                    return (Page)base.Page;
                 else
                     return null;
             }
@@ -1061,7 +1061,7 @@ end of modification
             get
             {
                 if (Page != null)
-                    return ((Page) Page).pageSettings;
+                    return ((Page)Page).pageSettings;
                 else
                     return null;
             }
@@ -1146,7 +1146,7 @@ end of modification
             get
             {
                 if (HttpContext.Current != null && titleText == string.Empty)
-                    // if it is not design time (and not overriden - Jes1111)
+                // if it is not design time (and not overriden - Jes1111)
                 {
                     if (portalSettings.PortalContentLanguage != CultureInfo.InvariantCulture &&
                         Settings["MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name] != null &&
@@ -1372,7 +1372,7 @@ end of modification
                     if (Settings["MODULESETTINGS_BUTTON_DISPLAY"] != null &&
                         Settings["MODULESETTINGS_BUTTON_DISPLAY"].ToString().Length != 0)
                         buttonsRenderAs =
-                            (ModuleButton.RenderOptions) int.Parse(Settings["MODULESETTINGS_BUTTON_DISPLAY"].ToString());
+                            (ModuleButton.RenderOptions)int.Parse(Settings["MODULESETTINGS_BUTTON_DISPLAY"].ToString());
                 }
                 return buttonsRenderAs;
             }
@@ -1473,14 +1473,14 @@ end of modification
 
                         // TODO: This JavaScript Function Is used for different controls and should be in one place
                         // (it's also overweight considering that Javascript has a standard confirm() function - Jes1111)
-                        if ( Page.Request.Browser.EcmaScriptVersion.Major >= 1 &&
-                            !( Page.ClientScript.IsClientScriptBlockRegistered( this.Page.GetType(), "confirmDelete" ) ) )
-                            {
+                        if (Page.Request.Browser.EcmaScriptVersion.Major >= 1 &&
+                            !(Page.ClientScript.IsClientScriptBlockRegistered(this.Page.GetType(), "confirmDelete")))
+                        {
                             string[] s = { "CONFIRM_DELETE" };
-                            Page.ClientScript.RegisterClientScriptBlock( this.Page.GetType(), "confirmDelete",
+                            Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "confirmDelete",
                                                                         PortalSettings.GetStringResource(
                                                                             "CONFIRM_DELETE_SCRIPT",
-                                                                            s ) );
+                                                                            s));
                         }
                         if (deleteModuleButton.Attributes["onclick"] != null)
                             deleteModuleButton.Attributes["onclick"] = "return confirmDelete();" +
@@ -1585,7 +1585,7 @@ end of modification
                     if (CanArrows)
                     {
                         ArrayList sourceList = GetModules(ModuleConfiguration.PaneName.ToLower());
-                        ModuleItem m = (ModuleItem) sourceList[sourceList.Count - 1];
+                        ModuleItem m = (ModuleItem)sourceList[sourceList.Count - 1];
                         if (ModuleConfiguration.ModuleOrder != m.Order)
                         {
                             // create the button
@@ -2041,9 +2041,9 @@ end of modification
 
         //private LinkButton minMaxButton = null;
 
-        /// <summary>
-        /// Module button to minimize/maximize module
-        /// </summary>
+        ///// <summary>
+        ///// Module button to minimize/maximize module
+        ///// </summary>
         //public LinkButton MinMaxButton {
         //    get {
         //        if ( minMaxButton == null && HttpContext.Current != null ) {
@@ -2838,7 +2838,7 @@ end of modification
                    (Version == WorkFlowVersion.Production
                         ? WorkFlowVersion.Staging.ToString()
                         : WorkFlowVersion.Production.ToString()));
-            querystring = string.Join("&", (string[]) qs.ToArray(typeof (string)));
+            querystring = string.Join("&", (string[])qs.ToArray(typeof(string)));
             if (querystring.Length != 0)
                 url += "?" + querystring;
             return url;
@@ -2864,7 +2864,7 @@ end of modification
             // modified by Hongwei Shen (hongwei.shen@gmail.com) 8/9/2005
             // qs.Add("wpublish" + this.ModuleConfiguration.ModuleID.ToString() + "=doit"); 
             // end of modification
-            querystring = string.Join("&", (string[]) qs.ToArray(typeof (string)));
+            querystring = string.Join("&", (string[])qs.ToArray(typeof(string)));
             if (querystring.Length != 0)
                 url += "?" + querystring;
             return url;
@@ -2913,8 +2913,8 @@ end of modification
         public string GetLastModified()
         {
             // CHANGE by david.verberckmoes@syntegra.com on june, 2 2003
-            if (bool.Parse(((SettingItem) portalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
-                bool.Parse(((SettingItem) Settings["MODULESETTINGS_SHOW_MODIFIED_BY"]).Value))
+            if (bool.Parse(((SettingItem)portalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
+                bool.Parse(((SettingItem)Settings["MODULESETTINGS_SHOW_MODIFIED_BY"]).Value))
             {
                 // Get stuff from database
                 string Email = string.Empty;
@@ -2985,7 +2985,7 @@ end of modification
             ArrayList paneModules = new ArrayList();
 
             // get the portal setting at the Tab level and not from this class as it is not refreshed
-            foreach (ModuleSettings _module in ((Page) Page).portalSettings.ActivePage.Modules)
+            foreach (ModuleSettings _module in ((Page)Page).portalSettings.ActivePage.Modules)
             {
                 if (portalSettings.ActivePage.PageID == _module.PageID && _module.PaneName.ToLower() == pane.ToLower())
                 {
@@ -3064,8 +3064,8 @@ end of modification
         /// <param name="e"></param>
         private void RightLeft_Click(Object sender, EventArgs e)
         {
-            string sourcePane = ((ModuleButton) sender).Attributes["sourcepane"];
-            string targetPane = ((ModuleButton) sender).Attributes["targetpane"];
+            string sourcePane = ((ModuleButton)sender).Attributes["sourcepane"];
+            string targetPane = ((ModuleButton)sender).Attributes["targetpane"];
 
             // get source arraylist
             ArrayList sourceList = GetModules(sourcePane);
@@ -3077,7 +3077,7 @@ end of modification
 
             // reload the portalSettings from the database
             HttpContext.Current.Items["PortalSettings"] = new PortalSettings(PageID, portalSettings.PortalAlias);
-            ((Page) Page).portalSettings = (PortalSettings) Context.Items["PortalSettings"];
+            ((Page)Page).portalSettings = (PortalSettings)Context.Items["PortalSettings"];
 
             // reorder the modules in the source pane
             sourceList = GetModules(sourcePane);
@@ -3111,8 +3111,8 @@ end of modification
 
             //			string cmd = ((ModuleButton)sender).CommandName;
             //			string pane = ((ModuleButton)sender).CommandArgument;
-            string cmd = ((ModuleButton) sender).Attributes["direction"];
-            string pane = ((ModuleButton) sender).Attributes["pane"];
+            string cmd = ((ModuleButton)sender).Attributes["direction"];
+            string pane = ((ModuleButton)sender).Attributes["pane"];
 
 
             ArrayList modules = GetModules(pane);
@@ -3159,7 +3159,7 @@ end of modification
             if (Page.Request.Browser.EcmaScriptVersion.Major >= 1 &&
                 !(Page.ClientScript.IsClientScriptBlockRegistered("confirmDelete")))
             {
-                string[] s = {"CONFIRM_DELETE"};
+                string[] s = { "CONFIRM_DELETE" };
                 Page.ClientScript.RegisterClientScriptBlock(GetType(), "confirmDelete",
                                                             PortalSettings.GetStringResource(
                                                                 "CONFIRM_DELETE_SCRIPT",
@@ -3342,7 +3342,7 @@ end of modification
         {
             if (moduleControl is LiteralControl && moduleControl != null)
             {
-                LiteralControl moduleElement = (LiteralControl) moduleControl;
+                LiteralControl moduleElement = (LiteralControl)moduleControl;
                 bool isStretched = (Settings["MODULESETTINGS_WIDTH_STRETCHING"] != null &&
                                     bool.Parse(Settings["MODULESETTINGS_WIDTH_STRETCHING"].ToString()) == true);
                 string tmp = (moduleElement.Text != null) ? moduleElement.Text.Trim() : string.Empty;
@@ -3397,12 +3397,12 @@ end of modification
                                     tmp = tmp.Substring(0, SIndx + SwIndx + TIndx) +
                                           tmp.Substring(SIndx + SwIndx + TIndx + SwLength);
                             }
-                                //Else, Add width style property to the existing style attribute
+                            //Else, Add width style property to the existing style attribute
                             else if (isStretched)
                                 tmp = tmp.Substring(0, SIndx + TIndx + 7) + "width:100%;" +
                                       tmp.Substring(SIndx + TIndx + 7);
                         }
-                            //Else, Add width style property to a new style attribute
+                        //Else, Add width style property to a new style attribute
                         else if (isStretched)
                             tmp = tmp.Substring(0, TIndx + 7) + "style='width:100%' " + tmp.Substring(TIndx + 7);
                     }
@@ -3520,7 +3520,7 @@ end of modification
                 BuildNoTheme();
             else if (CurrentTheme.Type.Equals("zen"))
                 ZenBuild();
-            else if ( this.CurrentTheme.Type.Equals( "htm" ) )
+            else if (this.CurrentTheme.Type.Equals("htm"))
                 HtmBuild();
             else
                 Build();
@@ -3537,70 +3537,83 @@ end of modification
         /// <summary>
         /// Builds the "with theme" versions of the module using html, with optional Title, Buttons and Body.
         /// </summary>
-        protected virtual void HtmBuild() {
+        protected virtual void HtmBuild()
+        {
 
-            string template = CurrentTheme.GetThemePart( "ModuleLayout" );
+            string template = CurrentTheme.GetThemePart("ModuleLayout");
 
             #region Replace PlaceHolders
 
-            template = template.Replace( "{Title}", TitleText );
+            template = template.Replace("{Title}", TitleText);
 
-            if ( ShowTitle ) {
-                template = template.Replace( "{TitleRowStyle}", "display:inline" );
+            if (ShowTitle)
+            {
+                template = template.Replace("{TitleRowStyle}", "display:inline");
             }
-            else {
-                template = template.Replace( "{TitleRowStyle}", "display:none" );
+            else
+            {
+                template = template.Replace("{TitleRowStyle}", "display:none");
             }
 
-            template = template.Replace( "{BodyBgColor}", CurrentTheme.GetThemePart( "DefaultBodyBgColor" ) );
-            template = template.Replace( "{TitleBgColor}", CurrentTheme.GetThemePart( "DefaultTitleBgColor" ) );
+            template = template.Replace("{BodyBgColor}", CurrentTheme.GetThemePart("DefaultBodyBgColor"));
+            template = template.Replace("{TitleBgColor}", CurrentTheme.GetThemePart("DefaultTitleBgColor"));
 
             #endregion
 
-            int iCtr = template.IndexOf( "{ControlPanel}" );
-            int iBdy = template.IndexOf( "{Body}" );
-            int iMby = template.IndexOf( "{ModifiedBy}" );
+            int iCtr = template.IndexOf("{ControlPanel}");
+            int iBdy = template.IndexOf("{Body}");
+            int iMby = template.IndexOf("{ModifiedBy}");
 
 
-            if ( iCtr < iBdy ) {
-                if ( iCtr != -1 ) {
+            if (iCtr < iBdy)
+            {
+                if (iCtr != -1)
+                {
                     // Both Ctrl & Body : ....Ctrl....Body.....
-                    this._header.Controls.Add( new LiteralControl( template.Substring( 0, iCtr ) ) );
-                    HtmRenderButtons( this._header );
-                    this._header.Controls.Add( new LiteralControl( template.Substring( iCtr + 14, iBdy - ( iCtr + 14 ) ) ) );
+                    this._header.Controls.Add(new LiteralControl(template.Substring(0, iCtr)));
+                    HtmRenderButtons(this._header);
+                    this._header.Controls.Add(new LiteralControl(template.Substring(iCtr + 14, iBdy - (iCtr + 14))));
                     //base.Render(output);
-                    this._footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6 ) ) );
+                    this._footer.Controls.Add(new LiteralControl(template.Substring(iBdy + 6)));
                 }
-                else {
-                    if ( iBdy != -1 ) {
+                else
+                {
+                    if (iBdy != -1)
+                    {
                         // Only Body: ...Body...
-                        this._header.Controls.Add( new LiteralControl( template.Substring( 0, iBdy ) ) );
+                        this._header.Controls.Add(new LiteralControl(template.Substring(0, iBdy)));
                         //base.Render(output);
-                        this._footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6 ) ) );
+                        this._footer.Controls.Add(new LiteralControl(template.Substring(iBdy + 6)));
                     }
-                    else {
+                    else
+                    {
                         // No Ctrl No Body...
                         //base.Render(output);
                     }
                 }
             }
-            else {
-                if ( iBdy != -1 ) {
+            else
+            {
+                if (iBdy != -1)
+                {
                     // Both Ctrl & Body : ....Body....Ctrl.....
-                    this._header.Controls.Add( new LiteralControl( template.Substring( 0, iBdy ) ) );
+                    this._header.Controls.Add(new LiteralControl(template.Substring(0, iBdy)));
                     //base.Render(output);
-                    this._footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6, iCtr - ( iBdy + 6 ) ) ) );
-                    HtmRenderButtons( this._footer );
-                    this._footer.Controls.Add( new LiteralControl( template.Substring( iCtr + 14 ) ) );
+                    this._footer.Controls.Add(new LiteralControl(template.Substring(iBdy + 6, iCtr - (iBdy + 6))));
+                    HtmRenderButtons(this._footer);
+                    this._footer.Controls.Add(new LiteralControl(template.Substring(iCtr + 14)));
                 }
-                else {
-                    if ( iCtr != -1 ) {
+                else
+                {
+                    if (iCtr != -1)
+                    {
                         // Only Ctrl: ...Ctrl...
-                        this._header.Controls.Add( new LiteralControl( template.Substring( 0, iCtr ) ) );
-                        HtmRenderButtons( this._header );
-                        this._footer.Controls.Add( new LiteralControl( template.Substring( iCtr + 14 ) ) );
+                        this._header.Controls.Add(new LiteralControl(template.Substring(0, iCtr)));
+                        HtmRenderButtons(this._header);
+                        this._footer.Controls.Add(new LiteralControl(template.Substring(iCtr + 14)));
                     }
-                    else {
+                    else
+                    {
                         // No Ctrl No Body...
                         //base.Render(output);
                     }
@@ -3609,15 +3622,15 @@ end of modification
 
         }
 
-        private void HtmRenderButtons( PlaceHolder placeHolder )
+        private void HtmRenderButtons(PlaceHolder placeHolder)
         {
-            if ( _buildButtons )
+            if (_buildButtons)
             {
-                foreach ( Control _button in this.ButtonList )
+                foreach (Control _button in this.ButtonList)
                 {
-                    placeHolder.Controls.Add( CurrentTheme.GetLiteralControl( "TitleBeforeButton" ) );
-                    placeHolder.Controls.Add( _button );
-                    placeHolder.Controls.Add( CurrentTheme.GetLiteralControl( "TitleAfterButton" ) );
+                    placeHolder.Controls.Add(CurrentTheme.GetLiteralControl("TitleBeforeButton"));
+                    placeHolder.Controls.Add(_button);
+                    placeHolder.Controls.Add(CurrentTheme.GetLiteralControl("TitleAfterButton"));
                 }
             }
         }
@@ -4024,8 +4037,8 @@ end of modification
                     break;
                 case "ShowModifiedBy":
                     if (
-                        bool.Parse(((SettingItem) portalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
-                        bool.Parse(((SettingItem) Settings["MODULESETTINGS_SHOW_MODIFIED_BY"]).Value))
+                        bool.Parse(((SettingItem)portalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
+                        bool.Parse(((SettingItem)Settings["MODULESETTINGS_SHOW_MODIFIED_BY"]).Value))
                         _returnVal = true;
                     break;
                 default:
@@ -4047,7 +4060,7 @@ end of modification
             // changed: Jes1111 - 2004-08-05 - supports custom theme per module
             // (better to do this in OnLoad than in RenderChildren, which is too late)
             string themeName;
-            if (Int32.Parse(Settings["MODULESETTINGS_THEME"].ToString()) == (int) ThemeList.Alt)
+            if (Int32.Parse(Settings["MODULESETTINGS_THEME"].ToString()) == (int)ThemeList.Alt)
                 themeName = "Alt";
             else
                 themeName = "Default";
@@ -4070,7 +4083,7 @@ end of modification
                     CssHelper cssHelper = new CssHelper();
                     string selectorPrefix = string.Concat("#mID", ModuleID);
                     string cssFileName = Page.Server.MapPath(CurrentTheme.CssFile);
-                    ((Page) Page).RegisterCssImport(ModuleID.ToString(), cssHelper.ParseCss(cssFileName, selectorPrefix));
+                    ((Page)Page).RegisterCssImport(ModuleID.ToString(), cssHelper.ParseCss(cssFileName, selectorPrefix));
                 }
                 catch (Exception ex)
                 {

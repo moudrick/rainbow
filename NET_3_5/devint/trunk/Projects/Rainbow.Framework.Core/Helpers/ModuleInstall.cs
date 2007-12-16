@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
-using Path=Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Settings.Path;
 
 namespace Rainbow.Framework.Helpers
 {
@@ -110,7 +110,7 @@ namespace Rainbow.Framework.Helpers
         {
             ErrorHandler.Publish(LogLevel.Info,
                                  "Installing DesktopModule '" + friendlyName + "' from '" + desktopSource + "'");
-            if (mobileSource != null && mobileSource.Length > 0)
+            if (!string.IsNullOrEmpty(mobileSource))
                 ErrorHandler.Publish(LogLevel.Info,
                                      "Installing MobileModule '" + friendlyName + "' from '" + mobileSource + "'");
 
@@ -125,7 +125,7 @@ namespace Rainbow.Framework.Helpers
             if (!(myControl is PortalModuleControl))
                 throw new Exception("Module '" + myControl.GetType().FullName + "' is not a PortalModule Control");
 
-            PortalModuleControl portalModule = (PortalModuleControl) myControl;
+            PortalModuleControl portalModule = (PortalModuleControl)myControl;
 
             // Check mobile module
             if (mobileSource != null && mobileSource.Length != 0 && mobileSource.ToLower().EndsWith(".ascx"))
@@ -167,18 +167,9 @@ namespace Rainbow.Framework.Helpers
                     throw new Exception("Exception occurred installing '" + portalModule.GuidID.ToString() + "'!", ex);
                 }
 
-                try
-                {
-                    // Add a new module definition to the database
-                    modules.AddGeneralModuleDefinitions(defID, friendlyName, desktopSource, mobileSource, assemblyName,
-                                                        className, portalModule.AdminModule, portalModule.Searchable);
-                }
-                catch (Exception ex)
-                {
-                    //Rethrow exception
-                    throw new Exception(
-                        "AddGeneralModuleDefinitions Exception '" + portalModule.GuidID.ToString() + "'!", ex);
-                }
+                // Add a new module definition to the database
+                modules.AddGeneralModuleDefinitions(defID, friendlyName, desktopSource, mobileSource, assemblyName,
+                                                    className, portalModule.AdminModule, portalModule.Searchable);
 
                 // All is fine: we can call Commit
                 portalModule.Commit(null);
@@ -216,7 +207,7 @@ namespace Rainbow.Framework.Helpers
 
             // Istantiate the module
             PortalModuleControl portalModule =
-                (PortalModuleControl) page.LoadControl(Path.ApplicationRoot + "/" + desktopSource);
+                (PortalModuleControl)page.LoadControl(Path.ApplicationRoot + "/" + desktopSource);
 
             //Call Uninstall
             try

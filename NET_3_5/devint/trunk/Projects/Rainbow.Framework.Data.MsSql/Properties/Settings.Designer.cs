@@ -26,7 +26,8 @@ namespace Rainbow.Framework.Data.MsSql.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"Data Source=.\SQLEXPRESS;AttachDbFilename=""T:\Users\William Forney\Documents\Visual Studio 2008\Projects\Rainbow\NET_3_5\devint\trunk\WebSites\Rainbow\Database.mdf"";Integrated Security=True;Asynchronous Processing=True;MultipleActiveResultSets=True;Connect Timeout=30;User Instance=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;database=Rainbow;Integrated Security=True;Asynchronous P" +
+            "rocessing=True;MultipleActiveResultSets=True;Connect Timeout=30;")]
         public string DatabaseConnectionString {
             get {
                 return ((string)(this["DatabaseConnectionString"]));
@@ -36,10 +37,21 @@ namespace Rainbow.Framework.Data.MsSql.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"Data Source=.\SQLEXPRESS;AttachDbFilename=""T:\Users\William Forney\Documents\Visual Studio 2008\Projects\Rainbow\NET_3_5\devint\trunk\WebSites\Rainbow\App_Data\Database.mdf"";Integrated Security=True;Asynchronous Processing=True;MultipleActiveResultSets=True;Connect Timeout=30;User Instance=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;database=Rainbow;Integrated Security=True;Asynchronous P" +
+            "rocessing=True;MultipleActiveResultSets=True;Connect Timeout=30;")]
         public string DatabaseConnectionString1 {
             get {
                 return ((string)(this["DatabaseConnectionString1"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"Data Source=.\SQLExpress;AttachDbFilename=""T:\Users\William Forney\Documents\Visual Studio 2008\Projects\Rainbow\NET_3_5\devint\trunk\WebSites\Rainbow\App_Data\Database.mdf"";Initial Catalog=Rainbow;Integrated Security=True;Asynchronous Processing=True;MultipleActiveResultSets=True")]
+        public string RainbowConnectionString {
+            get {
+                return ((string)(this["RainbowConnectionString"]));
             }
         }
     }

@@ -14,8 +14,8 @@ using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
-using History=Rainbow.Framework.History;
-using ImageButton=System.Web.UI.WebControls.ImageButton;
+using History = Rainbow.Framework.History;
+using ImageButton = System.Web.UI.WebControls.ImageButton;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
 using System.Collections.Generic;
 using Rainbow.Framework.Providers.RainbowSiteMapProvider;
@@ -52,23 +52,26 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        protected override void OnLoad( EventArgs e ) {
-            base.OnLoad( e );
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
 
             //Confirm delete
-            if ( !( ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) ) {
+            if (!(ClientScript.IsClientScriptBlockRegistered("confirmDelete")))
+            {
                 string[] s = { "CONFIRM_DELETE" };
-                ClientScript.RegisterClientScriptBlock( this.GetType(), "confirmDelete",
+                ClientScript.RegisterClientScriptBlock(this.GetType(), "confirmDelete",
                                                        PortalSettings.GetStringResource(
-                                                           "CONFIRM_DELETE_SCRIPT", s ) );
+                                                           "CONFIRM_DELETE_SCRIPT", s));
             }
 
-            LeftDeleteBtn.Attributes.Add( "OnClick", "return confirmDelete()" );
-            RightDeleteBtn.Attributes.Add( "OnClick", "return confirmDelete()" );
-            ContentDeleteBtn.Attributes.Add( "OnClick", "return confirmDelete()" );
+            LeftDeleteBtn.Attributes.Add("OnClick", "return confirmDelete()");
+            RightDeleteBtn.Attributes.Add("OnClick", "return confirmDelete()");
+            ContentDeleteBtn.Attributes.Add("OnClick", "return confirmDelete()");
 
             // If first visit to the page, update all entries
-            if ( !Page.IsPostBack ) {
+            if (!Page.IsPostBack)
+            {
                 msgError.Visible = false;
 
                 // Set images for buttons from current theme
@@ -98,14 +101,17 @@ namespace Rainbow.Admin
                 // 2/27/2003 Start - Ender Malkoc
                 // After up or down button when the page is refreshed, select the previously selected
                 // tab from the list.
-                if ( Request.Params[ "selectedmodid" ] != null ) {
-                    try {
+                if (Request.Params["selectedmodid"] != null)
+                {
+                    try
+                    {
                         int modIndex = Int32.Parse(Request.Params["selectedmodid"]);
                         SelectModule(leftPane, GetModules("LeftPane"), modIndex);
                         SelectModule(contentPane, GetModules("ContentPane"), modIndex);
                         SelectModule(rightPane, GetModules("RightPane"), modIndex);
                     }
-                    catch ( Exception ex ) {
+                    catch (Exception ex)
+                    {
                         ErrorHandler.Publish(LogLevel.Error,
                                              "After up or down button when the page is refreshed, select the previously selected tab from the list.",
                                              ex);
@@ -168,7 +174,7 @@ namespace Rainbow.Admin
         {
             for (int i = 0; i < modules.Count; i++)
             {
-                if (((ModuleItem) modules[i]).ID == moduleID)
+                if (((ModuleItem)modules[i]).ID == moduleID)
                 {
                     if (listBox.SelectedItem != null) listBox.SelectedItem.Selected = false;
                     listBox.Items[i].Selected = true;
@@ -245,7 +251,7 @@ namespace Rainbow.Admin
 
             // reload the portalSettings from the database
             Context.Items["PortalSettings"] = new PortalSettings(PageID, portalSettings.PortalAlias);
-            portalSettings = (PortalSettings) Context.Items["PortalSettings"];
+            portalSettings = (PortalSettings)Context.Items["PortalSettings"];
 
             // reorder the modules in the content pane
             ArrayList modules = GetModules("ContentPane");
@@ -269,9 +275,9 @@ namespace Rainbow.Admin
         /// <param name="e">The <see cref="T:System.Web.UI.ImageClickEventArgs"/> instance containing the event data.</param>
         protected void UpDown_Click(Object sender, ImageClickEventArgs e)
         {
-            string cmd = ((ImageButton) sender).CommandName;
-            string pane = ((ImageButton) sender).CommandArgument;
-            ListBox _listbox = (ListBox) Page.FindControl(pane);
+            string cmd = ((ImageButton)sender).CommandName;
+            string pane = ((ImageButton)sender).CommandArgument;
+            ListBox _listbox = (ListBox)Page.FindControl(pane);
 
             ArrayList modules = GetModules(pane);
 
@@ -296,7 +302,7 @@ namespace Rainbow.Admin
                 }
 
                 ModuleItem m;
-                m = (ModuleItem) modules[_listbox.SelectedIndex];
+                m = (ModuleItem)modules[_listbox.SelectedIndex];
 
                 if (PortalSecurity.IsInRoles(PortalSecurity.GetMoveModulePermissions(m.ID)))
                 {
@@ -332,10 +338,10 @@ namespace Rainbow.Admin
         /// <param name="e">The <see cref="T:System.Web.UI.ImageClickEventArgs"/> instance containing the event data.</param>
         protected void RightLeft_Click(Object sender, ImageClickEventArgs e)
         {
-            string sourcePane = ((ImageButton) sender).Attributes["sourcepane"];
-            string targetPane = ((ImageButton) sender).Attributes["targetpane"];
-            ListBox sourceBox = (ListBox) Page.FindControl(sourcePane);
-            ListBox targetBox = (ListBox) Page.FindControl(targetPane);
+            string sourcePane = ((ImageButton)sender).Attributes["sourcepane"];
+            string targetPane = ((ImageButton)sender).Attributes["targetpane"];
+            ListBox sourceBox = (ListBox)Page.FindControl(sourcePane);
+            ListBox targetBox = (ListBox)Page.FindControl(targetPane);
 
             if (sourceBox.SelectedIndex != -1)
             {
@@ -344,7 +350,7 @@ namespace Rainbow.Admin
 
                 // get a reference to the module to move
                 // and assign a high order number to send it to the end of the target list
-                ModuleItem m = (ModuleItem) sourceList[sourceBox.SelectedIndex];
+                ModuleItem m = (ModuleItem)sourceList[sourceBox.SelectedIndex];
 
                 if (PortalSecurity.IsInRoles(PortalSecurity.GetMoveModulePermissions(m.ID)))
                 {
@@ -357,7 +363,7 @@ namespace Rainbow.Admin
 
                     // reload the portalSettings from the database
                     HttpContext.Current.Items["PortalSettings"] = new PortalSettings(PageID, portalSettings.PortalAlias);
-                    portalSettings = (PortalSettings) Context.Items["PortalSettings"];
+                    portalSettings = (PortalSettings)Context.Items["PortalSettings"];
 
                     // reorder the modules in the source pane
                     sourceList = GetModules(sourcePane);
@@ -406,7 +412,7 @@ namespace Rainbow.Admin
                     CurrentCache.RemoveAll("_PageNavigationSettings_");
                     // Clear RainbowSiteMapCache
                     RainbowSiteMapProvider.ClearAllRainbowSiteMapCaches();
-                    
+
 
                     // redirect back to the admin page
                     // int adminIndex = portalSettings.DesktopPages.Count-1;        
@@ -456,8 +462,10 @@ namespace Rainbow.Admin
             // Construct Authorized User Roles string
             string authorizedRoles = string.Empty;
 
-            foreach ( ListItem item in authRoles.Items ) {
-                if ( item.Selected == true ) {
+            foreach (ListItem item in authRoles.Items)
+            {
+                if (item.Selected == true)
+                {
                     authorizedRoles = authorizedRoles + item.Text + ";";
                 }
             }
@@ -479,8 +487,8 @@ namespace Rainbow.Admin
         /// <param name="e">The <see cref="T:System.Web.UI.ImageClickEventArgs"/> instance containing the event data.</param>
         protected void EditBtn_Click(Object sender, ImageClickEventArgs e)
         {
-            string pane = ((ImageButton) sender).CommandArgument;
-            ListBox _listbox = (ListBox) Page.FindControl(pane);
+            string pane = ((ImageButton)sender).CommandArgument;
+            ListBox _listbox = (ListBox)Page.FindControl(pane);
 
             if (_listbox.SelectedIndex != -1)
             {
@@ -508,13 +516,13 @@ namespace Rainbow.Admin
         /// <param name="e">The <see cref="T:System.Web.UI.ImageClickEventArgs"/> instance containing the event data.</param>
         protected void DeleteBtn_Click(Object sender, ImageClickEventArgs e)
         {
-            string pane = ((ImageButton) sender).CommandArgument;
-            ListBox _listbox = (ListBox) Page.FindControl(pane);
+            string pane = ((ImageButton)sender).CommandArgument;
+            ListBox _listbox = (ListBox)Page.FindControl(pane);
             ArrayList modules = GetModules(pane);
 
             if (_listbox.SelectedIndex != -1)
             {
-                ModuleItem m = (ModuleItem) modules[_listbox.SelectedIndex];
+                ModuleItem m = (ModuleItem)modules[_listbox.SelectedIndex];
                 if (m.ID > -1)
                 {
                     // jviladiu@portalServices.net (20/08/2004) Add role control for delete module
@@ -541,7 +549,8 @@ namespace Rainbow.Admin
         /// The BindData helper method is used to update the tab's
         /// layout panes with the current configuration information
         /// </summary>
-        private void BindData() {
+        private void BindData()
+        {
             PageSettings page = portalSettings.ActivePage;
 
             // Populate Page Names, etc.
@@ -551,68 +560,66 @@ namespace Rainbow.Admin
 
             // Populate the "ParentPage" Data
             PagesDB t = new PagesDB();
-            IList<PageItem> items = t.GetPagesParent( portalSettings.PortalID, PageID );
+            IList<PageItem> items = t.GetPagesParent(portalSettings.PortalID, PageID);
             parentPage.DataSource = items;
             parentPage.DataBind();
 
-            if ( parentPage.Items.FindByValue( page.ParentPageID.ToString() ) != null ) {
+            if (parentPage.Items.FindByValue(page.ParentPageID.ToString()) != null)
+            {
                 //parentPage.Items.FindByValue( tab.ParentPageID.ToString() ).Selected = true;
 
                 parentPage.SelectedValue = page.ParentPageID.ToString();
             }
 
             // Translate
-            if ( parentPage.Items.FindByText( " ROOT_LEVEL" ) != null )
-                parentPage.Items.FindByText( " ROOT_LEVEL" ).Text =
-                    General.GetString( "ROOT_LEVEL", "Root Level", parentPage );
+            if (parentPage.Items.FindByText(" ROOT_LEVEL") != null)
+                parentPage.Items.FindByText(" ROOT_LEVEL").Text =
+                    General.GetString("ROOT_LEVEL", "Root Level", parentPage);
 
             // Populate checkbox list with all security roles for this portal
             // and "check" the ones already configured for this tab
             UsersDB users = new UsersDB();
-            IList<RainbowRole> roles = users.GetPortalRoles( portalSettings.PortalAlias );
+            IList<RainbowRole> roles = users.GetPortalRoles(portalSettings.PortalAlias);
 
             // Clear existing items in checkboxlist
             authRoles.Items.Clear();
 
-            foreach ( RainbowRole role in roles ) {
+            foreach (RainbowRole role in roles)
+            {
                 ListItem item = new ListItem();
                 item.Text = role.Name;
                 item.Value = role.Id.ToString();
 
-                if ( ( page.AuthorizedRoles.LastIndexOf( item.Text ) ) > -1 )
+                if ((page.AuthorizedRoles.LastIndexOf(item.Text)) > -1)
                     item.Selected = true;
 
-                authRoles.Items.Add( item );
+                authRoles.Items.Add(item);
             }
 
             // Populate the "Add Module" Data
             ModulesDB m = new ModulesDB();
 
-            SqlDataReader drCurrentModuleDefinitions = m.GetCurrentModuleDefinitions( portalSettings.PortalID );
-            try {
-                while ( drCurrentModuleDefinitions.Read() ) {
-                    if ( PortalSecurity.IsInRoles( "Admins" ) == true ||
-                        !( bool.Parse( drCurrentModuleDefinitions["Admin"].ToString() ) ) ) {
-                        moduleType.Items.Add(
-                            new ListItem( drCurrentModuleDefinitions["FriendlyName"].ToString(),
-                                         drCurrentModuleDefinitions["ModuleDefID"].ToString() ) );
-                    }
+            var drCurrentModuleDefinitions = m.GetCurrentModuleDefinitions(portalSettings.PortalID);
+            foreach (var cmd in drCurrentModuleDefinitions)
+            {
+                if (PortalSecurity.IsInRoles("Admins") == true || !cmd.Admin)
+                {
+                    moduleType.Items.Add(
+                        new ListItem(cmd.FriendlyName,
+                                     cmd.GeneralModDefID.ToString()));
                 }
-            }
-            finally {
-                drCurrentModuleDefinitions.Close();
             }
 
             // Populate Right Hand Module Data
-            rightList = GetModules( "RightPane" );
+            rightList = GetModules("RightPane");
             rightPane.DataBind();
 
             // Populate Content Pane Module Data
-            contentList = GetModules( "ContentPane" );
+            contentList = GetModules("ContentPane");
             contentPane.DataBind();
 
             // Populate Left Hand Pane Module Data
-            leftList = GetModules( "LeftPane" );
+            leftList = GetModules("LeftPane");
             leftPane.DataBind();
         }
 
