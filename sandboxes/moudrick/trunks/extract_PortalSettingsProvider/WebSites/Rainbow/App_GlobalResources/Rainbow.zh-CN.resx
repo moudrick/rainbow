@@ -1,0 +1,5086 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="ResMimeType">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="Version">
+		<value>1.0.0.0</value>
+	</resheader>
+	<resheader name="Reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="Writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="ABSTRACT">
+		<value>摘要</value>
+	</data>
+	<data name="ACCEPT_TERMS">
+		<value>本人愿接受条款和条件</value>
+	</data>
+	<data name="ACCESS_DENIED">
+		<value>访问被拒绝</value>
+	</data>
+	<data name="ACCESS_DENIED_MESSAGE">
+		<value>你没有访问此页面的权利，或者你尚未登录。如果有疑问，请与系统管理员联络。</value>
+	</data>
+	<data name="ACCESSDENIED">
+		<value>访问被拒绝</value>
+	</data>
+	<data name="ACCOUNT_INFO">
+		<value>账号信息</value>
+	</data>
+	<data name="ACCOUNT_LOGIN">
+		<value>账号登录</value>
+	</data>
+	<data name="ADD">
+		<value>新增</value>
+	</data>
+	<data name="ADD_ARTICLE">
+		<value>新增文章</value>
+	</data>
+	<data name="ADD_DOCUMENT">
+		<value>新增文档</value>
+	</data>
+	<data name="ADD_NEW">
+		<value>新增</value>
+	</data>
+	<data name="ADD_NEW_USER">
+		<value>新增用户</value>
+	</data>
+	<data name="ADD_PORTAL">
+		<value>新增插件</value>
+	</data>
+	<data name="ADD_VEHICLE">
+		<value>新增购物车</value>
+	</data>
+	<data name="ADDRESS">
+		<value>地址</value>
+	</data>
+	<data name="ADDTAB">
+		<value>新增页面</value>
+	</data>
+	<data name="ADDUSER">
+		<value>增加用户到该角色</value>
+	</data>
+	<data name="ADMIN_MODULE">
+		<value>管理模块</value>
+	</data>
+	<data name="ADVPAYM">
+		<value>高级支付</value>
+	</data>
+	<data name="ALBUMPATH">
+		<value>相册路径</value>
+	</data>
+	<data name="ALL">
+		<value>全部</value>
+	</data>
+	<data name="ALLOWBULKLOAD">
+		<value>允许批量装入</value>
+	</data>
+	<data name="ALLOWPAGING">
+		<value>允许分布</value>
+	</data>
+	<data name="ALLOWNEWREGISTRATIONS">
+		<value>允许新注册</value>
+	</data>
+	<data name="ALLOWNEWREGISTRATIONS_DESCRIPTION">
+		<value>勾选本项允许新用户自己注册，留空则只允许管理员加入用户。</value>
+	</data>
+	<data name="ALPHA_LIST_DESCRIPTION">
+		<value>描述</value>
+	</data>
+	<data name="ALPHA_LIST_ITEM_DETAILS">
+		<value>详细内容</value>
+	</data>
+	<data name="ALPHA_LIST_LABEL1">
+		<value>标签1</value>
+	</data>
+	<data name="ALPHA_LIST_LABEL2">
+		<value>标签2</value>
+	</data>
+	<data name="ALPHA_LIST_READMORELINK">
+		<value>阅读更多</value>
+	</data>
+	<data name="ALPHA_LIST_TITLE">
+		<value>字母列表标题</value>
+	</data>
+	<data name="ALREADY_REGISTERED">
+		<value>已经被注册</value>
+	</data>
+	<data name="ALREADY_REGISTERED1">
+		<value>是否您已拥有一个账号</value>
+	</data>
+	<data name="AM_ADDMODULE">
+		<value>新增模块</value>
+	</data>
+	<data name="AM_ADDMODULEBELOW">
+		<value>增加到“模块布置”下方</value>
+	</data>
+	<data name="AM_ADDMODULETOTAB">
+		<value>增加这个模块到本页</value>
+	</data>
+	<data name="AM_ADDROLE">
+		<value>新增角色</value>
+	</data>
+	<data name="AM_BASESOLUTION">
+		<value>基本方案</value>
+	</data>
+	<data name="AM_CENTERPANEL">
+		<value>内容面板</value>
+	</data>
+	<data name="AM_LEFTPANEL">
+		<value>左侧小面板</value>
+	</data>
+	<data name="AM_MOBILETAB">
+		<value>移动页名称</value>
+	</data>
+	<data name="AM_MODULELOCATION">
+		<value>模块位置</value>
+	</data>
+	<data name="AM_MODULENAME">
+		<value>模块名称</value>
+	</data>
+	<data name="AM_MODULETYPE">
+		<value>模块类别</value>
+	</data>
+	<data name="AM_MODULEVISIBLETO">
+		<value>模块显示给</value>
+	</data>
+	<data name="AM_ORGANIZEMODULE">
+		<value>模块布置</value>
+	</data>
+	<data name="AM_PAGEVISIBLETO">
+		<value>页面显示给</value>
+	</data>
+	<data name="AM_PORTALALIAS">
+		<value>插件别名</value>
+	</data>
+	<data name="AM_PORTALID">
+		<value>插件标识(ID)</value>
+	</data>
+	<data name="AM_RIGHTPANEL">
+		<value>右侧小面板</value>
+	</data>
+	<data name="AM_ROLESAUTH">
+		<value>信任角色</value>
+	</data>
+	<data name="AM_SHOWEDIT">
+		<value>总是显示“编辑”按钮</value>
+	</data>
+	<data name="AM_SHOWMOBILE">
+		<value>显示给移动用户</value>
+	</data>
+	<data name="AM_SITEPATH">
+		<value>站点路径</value>
+	</data>
+	<data name="AM_SITETITLE">
+		<value>站点标题</value>
+	</data>
+	<data name="AM_TABNAME">
+		<value>页名和布局</value>
+	</data>
+	<data name="AM_TABNAME1">
+		<value>页名</value>
+	</data>
+	<data name="AM_TABS">
+		<value>页</value>
+	</data>
+	<data name="AM_THEME">
+		<value>主题风格</value>
+	</data>
+	<data name="AMAZON DEV TOKEN">
+		<value>开发者代号</value>
+	</data>
+	<data name="ANNOUNCES_ADD">
+		<value>新增公告</value>
+	</data>
+	<data name="ANNOUNCES_DESCRIPTION">
+		<value>描述</value>
+	</data>
+	<data name="ANNOUNCES_DETAILS">
+		<value>公告详细内容</value>
+	</data>
+	<data name="ANNOUNCES_EXPIRES">
+		<value>有效期</value>
+	</data>
+	<data name="ANNOUNCES_READ_MORE_LINK">
+		<value>阅读更多链接</value>
+	</data>
+	<data name="ANNOUNCES_READ_MORE_MOBILE">
+		<value>阅读更多(移动)</value>
+	</data>
+	<data name="ANNOUNCES_TITLE">
+		<value>标题</value>
+	</data>
+	<data name="ANNOUNCES_VALID_DESCRIPTION">
+		<value>必须输入有效描述</value>
+	</data>
+	<data name="ANNOUNCES_VALID_EXPIRE">
+		<value>必须输入有效期</value>
+	</data>
+	<data name="ANNOUNCES_VALID_TITLE">
+		<value>必须输入有效标题</value>
+	</data>
+	<data name="APPLY">
+		<value>应用更改</value>
+	</data>
+	<data name="APPLY_CHANGES">
+		<value>应用更改</value>
+	</data>
+	<data name="APPLY_MODULE_CHANGES">
+		<value>应用模块更改</value>
+	</data>
+	<data name="APPLYBUTTON">
+		<value>应用更改</value>
+	</data>
+	<data name="APPLYMODULECHANGES">
+		<value>应用模块更改</value>
+	</data>
+	<data name="APPLYNAME">
+		<value>应用名称和密码更改</value>
+	</data>
+	<data name="APPLYTHEME">
+		<value>应用主题风格</value>
+	</data>
+	<data name="APPLYTHEME_DESCRIPTION">
+		<value>勾选本项应用主题风格到本模块</value>
+	</data>
+	<data name="AREA">
+		<value>范围</value>
+	</data>
+	<data name="ARTICLE_DETAIL">
+		<value>文章详细内容</value>
+	</data>
+	<data name="ARTICLES_RICHABSTRACT">
+		<value>富文本摘要</value>
+	</data>
+	<data name="ARTICLES_RICHABSTRACT_DESCRIPTION">
+		<value>用富文本编辑器编辑摘要</value>
+	</data>
+	<data name="AT_ADDPAGE">
+		<value>新增本页</value>
+	</data>
+	<data name="AT_ADDTAB">
+		<value>新增页</value>
+	</data>
+	<data name="AT_JUMPTOPAGE">
+		<value>跳转到新页</value>
+	</data>
+	<data name="AT_JUMPTOTAB">
+		<value>跳转到页</value>
+	</data>
+	<data name="AT_MOBILETABNAME">
+		<value>移动用户页名</value>
+	</data>
+	<data name="AT_PAGEPARENT">
+		<value>父页</value>
+	</data>
+	<data name="AT_PAGETITLE">
+		<value>页标题</value>
+	</data>
+	<data name="AT_SHOWMOBILE">
+		<value>显示移动用户页</value>
+	</data>
+	<data name="AT_TABPARENT">
+		<value>父页</value>
+	</data>
+	<data name="AT_TABTITLE">
+		<value>页标题</value>
+	</data>
+	<data name="AUTHOR">
+		<value>作者</value>
+	</data>
+	<data name="AUTHOR EMAIL">
+		<value>作者电子邮箱</value>
+	</data>
+	<data name="BACK">
+		<value>退回</value>
+	</data>
+	<data name="BACKCOLOR">
+		<value>背景颜色</value>
+	</data>
+	<data name="BANK">
+		<value>银行</value>
+	</data>
+	<data name="BG-BG">
+		<value>标题(保加利亚)</value>
+	</data>
+	<data name="BG-BG_DESCRIPTION">
+		<value>设置保加利亚(Bulgarian)语标题。</value>
+	</data>
+	<data name="BIND_OPTION_CHILDREN">
+		<value>绑定选项到子项</value>
+	</data>
+	<data name="BIND_OPTION_CURRENT_CHILDS">
+		<value>绑定选项到当前子项</value>
+	</data>
+	<data name="BIND_OPTION_DEFINED_PARENT">
+		<value>绑定选项到定义父项</value>
+	</data>
+	<data name="BIND_OPTION_NONE">
+		<value>选项不绑定到任何项</value>
+	</data>
+	<data name="BIND_OPTION_PAGESIBLING">
+		<value>绑定选项页到同胞页</value>
+	</data>
+	<data name="BIND_OPTION_SIBLINGS">
+		<value>绑定选项同胞</value>
+	</data>
+	<data name="BIND_OPTION_SUBPAGE_SIBLING">
+		<value>绑定选项到子页同胞页</value>
+	</data>
+	<data name="BIND_OPTION_SUBTAB_SIBLING">
+		<value>绑定选项到子标签页同胞页</value>
+	</data>
+	<data name="BIND_OPTION_TABSIBLING">
+		<value>绑定选项到页同胞</value>
+	</data>
+	<data name="BIND_OPTION_TOP">
+		<value>绑定选项到顶</value>
+	</data>
+	<data name="BINDTOTAB">
+		<value>绑定到标签页</value>
+	</data>
+	<data name="BLACKLIST">
+		<value>黑名单</value>
+	</data>
+	<data name="BLACKLIST_ADD">
+		<value>加入黑名单</value>
+	</data>
+	<data name="BLACKLIST_ALL">
+		<value>全部选定</value>
+	</data>
+	<data name="BLACKLIST_DATE">
+		<value>日期</value>
+	</data>
+	<data name="BLACKLIST_EMAIL">
+		<value>电子邮箱</value>
+	</data>
+	<data name="BLACKLIST_LASTSEND">
+		<value>最后发送</value>
+	</data>
+	<data name="BLACKLIST_NAME">
+		<value>用户名</value>
+	</data>
+	<data name="BLACKLIST_NONE">
+		<value>全部不选</value>
+	</data>
+	<data name="BLACKLIST_REASON">
+		<value>原因</value>
+	</data>
+	<data name="BLACKLIST_SENDNEWSLETTER">
+		<value>发送新闻组</value>
+	</data>
+	<data name="BLACKLIST_SHOWALLUSERS">
+		<value>显示所有用户</value>
+	</data>
+	<data name="BLACKLIST_SHOWCOLUMNDATE">
+		<value>显示日期</value>
+	</data>
+	<data name="BLACKLIST_SHOWCOLUMNEMAIL">
+		<value>显示电子邮箱</value>
+	</data>
+	<data name="BLACKLIST_SHOWCOLUMNLASTSEND">
+		<value>显示最后发送</value>
+	</data>
+	<data name="BLACKLIST_SHOWCOLUMNNAME">
+		<value>显示姓名</value>
+	</data>
+	<data name="BLACKLIST_SHOWCOLUMNREASON">
+		<value>显示原因</value>
+	</data>
+	<data name="BLACKLIST_SHOWCOLUMNSENDNEWSLETTER">
+		<value>显示发送新闻组</value>
+	</data>
+	<data name="BLACKLIST_SHOWSUBSCRIBERSONLY">
+		<value>仅显示订阅</value>
+	</data>
+	<data name="BLACKLIST_SORTFIELD">
+		<value>排序字段</value>
+	</data>
+	<data name="BLACKLISTED">
+		<value>列入黑名单</value>
+	</data>
+	<data name="BLOG_ARCHIVES">
+		<value>档案</value>
+	</data>
+	<data name="BLOG_COMMENTS">
+		<value>评论</value>
+	</data>
+	<data name="BLOG_ENTRIES">
+		<value>话题</value>
+	</data>
+	<data name="BLOG_ENTRY">
+		<value>博客话题</value>
+	</data>
+	<data name="BLOG_FEEDBACK">
+		<value>反馈</value>
+	</data>
+	<data name="BLOG_NAME">
+		<value>名称</value>
+	</data>
+	<data name="BLOG_POSTED">
+		<value>提交</value>
+	</data>
+	<data name="BLOG_POSTSFROM">
+		<value>提交来源</value>
+	</data>
+	<data name="BLOG_REMEMBER_ME">
+		<value>记住</value>
+	</data>
+	<data name="BLOG_STATISTICS">
+		<value>统计</value>
+	</data>
+	<data name="BLOG_SYNDICATION">
+		<value>群组</value>
+	</data>
+	<data name="BLOG_TITLE">
+		<value>标题</value>
+	</data>
+	<data name="BLOG_TITLE_FEEDBACK">
+		<value>反馈</value>
+	</data>
+	<data name="BLOG_URL">
+		<value>网址</value>
+	</data>
+	<data name="BOTTOM">
+		<value>底部</value>
+	</data>
+	<data name="BTN_HELP">
+		<value>显示关于这个模块的帮助</value>
+	</data>
+	<data name="BTN_PRINT">
+		<value>打印</value>
+	</data>
+	<data name="BUTTON_DISPLAY_SETTINGS">
+		<value>按钮和显示设置</value>
+	</data>
+	<data name="BUYNOW">
+		<value>现在购买</value>
+	</data>
+	<data name="CA">
+		<value>标题</value>
+	</data>
+	<data name="CA_DESCRIPTION">
+		<value>设置加泰罗尼亚 (catalan)语标题</value>
+	</data>
+	<data name="CACHETIMEOUT">
+		<value>缓存时间(秒)</value>
+	</data>
+	<data name="CACHETIMEOUT_DESCRIPTION">
+		<value>缓存时间(秒)</value>
+	</data>
+	<data name="CANCEL">
+		<value>取消</value>
+	</data>
+	<data name="CAPTION">
+		<value>标题</value>
+	</data>
+	<data name="CAT">
+		<value>分类</value>
+	</data>
+	<data name="CATEGORY">
+		<value>分类</value>
+	</data>
+	<data name="CATS"></data>
+	<data name="CENTER">
+		<value>中心</value>
+	</data>
+	<data name="CFISCALE">
+		<value>财政代码</value>
+	</data>
+	<data name="CHANGE_DATE">
+		<value>修改日期</value>
+	</data>
+	<data name="CHANGE_LANGUAGE">
+		<value>更改语言</value>
+	</data>
+	<data name="CHANGE_PASSWORD">
+		<value>仅当你想修改时更改密码</value>
+	</data>
+	<data name="CHECKOUT">
+		<value>签出</value>
+	</data>
+	<data name="CHECKOUT_ADDRESS">
+		<value>地址</value>
+	</data>
+	<data name="CHECKOUT_AUTHORIZE">
+		<value>您需要确认您的订单</value>
+	</data>
+	<data name="CHECKOUT_CART_IS_EMPTY">
+		<value>当前购物车内是空的！</value>
+	</data>
+	<data name="CHECKOUT_CC_EXPIRY">
+		<value>有效日期</value>
+	</data>
+	<data name="CHECKOUT_CC_NAME">
+		<value>卡上姓名</value>
+	</data>
+	<data name="CHECKOUT_CC_NUMBER">
+		<value>卡号</value>
+	</data>
+	<data name="CHECKOUT_CC_TYPE">
+		<value>卡类型</value>
+	</data>
+	<data name="CHECKOUT_CFISCALE">
+		<value>财政</value>
+	</data>
+	<data name="CHECKOUT_CITY">
+		<value>城市</value>
+	</data>
+	<data name="CHECKOUT_COMPANY">
+		<value>公司</value>
+	</data>
+	<data name="CHECKOUT_COPY_TO_SHIPPING_INFO">
+		<value>根据我的帐号重设送货信息</value>
+	</data>
+	<data name="CHECKOUT_COUNTRY">
+		<value>国家</value>
+	</data>
+	<data name="CHECKOUT_EMAIL">
+		<value>电子邮箱</value>
+	</data>
+	<data name="CHECKOUT_ERROR_PROCESSING_CART">
+		<value>处理您的购物车时发生了错误</value>
+	</data>
+	<data name="CHECKOUT_ERROR_PROCESSING_SHIPPING">
+		<value>处理您的送货信息时发生了错误</value>
+	</data>
+	<data name="CHECKOUT_FAX">
+		<value>传真</value>
+	</data>
+	<data name="CHECKOUT_MAKE_SURE_ADDRESS_IS_CORRECT">
+		<value>请确认电子邮箱的正确性，订单信息副本将发送到该邮箱。</value>
+	</data>
+	<data name="CHECKOUT_MAKE_SURE_ADDRESS_IS_CORRECT_2">
+		<value>如果不是这样的，请。</value>
+	</data>
+	<data name="CHECKOUT_NAME">
+		<value>姓名</value>
+	</data>
+	<data name="CHECKOUT_PHONE">
+		<value>固定电话</value>
+	</data>
+	<data name="CHECKOUT_PIVA">
+		<value>公司号码</value>
+	</data>
+	<data name="CHECKOUT_PROV_STATE">
+		<value>省(直辖市)</value>
+	</data>
+	<data name="CHECKOUT_SELECT_PAYMENT">
+		<value>选择付款方式</value>
+	</data>
+	<data name="CHECKOUT_SEND_NEWSLETTER">
+		<value>发送新闻组</value>
+	</data>
+	<data name="CHECKOUT_STEP1">
+		<value>第一步概要信息</value>
+	</data>
+	<data name="CHECKOUT_STEP2">
+		<value>第二步送货信息</value>
+	</data>
+	<data name="CHECKOUT_STEP3">
+		<value>第三步计算最后价格</value>
+	</data>
+	<data name="CHECKOUT_STEP4">
+		<value>第四步处理支付</value>
+	</data>
+	<data name="CHECKOUT_TOTAL_PRODUCT">
+		<value>产品总数</value>
+	</data>
+	<data name="CHECKOUT_TOTAL_SHIPPING">
+		<value>送货总数</value>
+	</data>
+	<data name="CHECKOUT_VERIFY_INFORMATION">
+		<value>请检查以下信息，确认其正确性。</value>
+	</data>
+	<data name="CHECKOUT_VERIFY_INFORMATION_CLICK_BACK">
+		<value>点击“退回”按钮返回上一步，点击“继续”按钮进入下一步。</value>
+	</data>
+	<data name="CHECKOUT_ZIP">
+		<value>邮编</value>
+	</data>
+	<data name="CITY">
+		<value>城市</value>
+	</data>
+	<data name="COLLAPSED">
+		<value>折叠显示</value>
+	</data>
+	<data name="COLLECTION_PROPERTIES">
+		<value>属性集</value>
+	</data>
+	<data name="COLUMNS">
+		<value>显示列数</value>
+	</data>
+	<data name="COMPANY">
+		<value>公司</value>
+	</data>
+	<data name="CONDITIONS">
+		<value>服务条款</value>
+	</data>
+	<data name="CONFIRM">
+		<value>确认密码</value>
+	</data>
+	<data name="CONFIRM_DELETE">
+		<value>确定要册除吗？</value>
+	</data>
+	<data name="CONTACT">
+		<value>联系</value>
+	</data>
+	<data name="CONTACT_ADDRESS">
+		<value>地址</value>
+	</data>
+	<data name="CONTACT_CONTACT1">
+		<value>办公室</value>
+	</data>
+	<data name="CONTACT_CONTACT2">
+		<value>移动电话</value>
+	</data>
+	<data name="CONTACT_EMAIL">
+		<value>电子邮箱</value>
+	</data>
+	<data name="CONTACT_FAX">
+		<value>传真</value>
+	</data>
+	<data name="CONTACT_NAME">
+		<value>姓名</value>
+	</data>
+	<data name="CONTACT_ROLE">
+		<value>角色</value>
+	</data>
+	<data name="CONTACTS_ADD">
+		<value>新增联系人</value>
+	</data>
+	<data name="CONTACTS_ADDRESS">
+		<value>地址</value>
+	</data>
+	<data name="CONTACTS_CONTACT1">
+		<value>办公室</value>
+	</data>
+	<data name="CONTACTS_CONTACT2">
+		<value>移动电话</value>
+	</data>
+	<data name="CONTACTS_DETAILS">
+		<value>详细联系方式</value>
+	</data>
+	<data name="CONTACTS_EMAIL">
+		<value>电子邮箱</value>
+	</data>
+	<data name="CONTACTS_FAX">
+		<value>传真</value>
+	</data>
+	<data name="CONTACTS_NAME">
+		<value>姓名</value>
+	</data>
+	<data name="CONTACTS_ROLE">
+		<value>角色</value>
+	</data>
+	<data name="CONTACTS_VALID_NAME">
+		<value>请输入有效姓名</value>
+	</data>
+	<data name="CONTENTTYPE">
+		<value>内容类别</value>
+	</data>
+	<data name="CONTINUE">
+		<value>继续</value>
+	</data>
+	<data name="COPYALL">
+		<value>全部复制 -&gt;</value>
+	</data>
+	<data name="COPYITEM">
+		<value>复制 -&gt;</value>
+	</data>
+	<data name="COPYRIGHT">
+		<value>版权说明</value>
+	</data>
+	<data name="COUNTRIESFILTER">
+		<value>允许的国家</value>
+	</data>
+	<data name="COUNTRIESFILTER_DESCRIPTION">
+		<value>允许的国家限制RegisterFull页国家列表，留空表示所有国家。</value>
+	</data>
+	<data name="COUNTRY">
+		<value>国家(地区)</value>
+	</data>
+	<data name="COUNTRY_AD">
+		<value>安道尔</value>
+	</data>
+	<data name="COUNTRY_AE">
+		<value>阿拉伯联合酋长国</value>
+	</data>
+	<data name="COUNTRY_AF">
+		<value>阿富汗</value>
+	</data>
+	<data name="COUNTRY_AG">
+		<value>安提瓜岛和巴布达岛</value>
+	</data>
+	<data name="COUNTRY_AI">
+		<value>安圭拉岛</value>
+	</data>
+	<data name="COUNTRY_AL">
+		<value>阿尔巴尼亚</value>
+	</data>
+	<data name="COUNTRY_AM">
+		<value>亚美尼亚</value>
+	</data>
+	<data name="COUNTRY_AN">
+		<value>荷兰安的列斯群岛</value>
+	</data>
+	<data name="COUNTRY_AO">
+		<value>安哥拉</value>
+	</data>
+	<data name="COUNTRY_AQ">
+		<value>南极洲</value>
+	</data>
+	<data name="COUNTRY_AR">
+		<value>阿根廷</value>
+	</data>
+	<data name="COUNTRY_AS">
+		<value>南美萨摩亚群岛</value>
+	</data>
+	<data name="COUNTRY_AT">
+		<value>奥地利</value>
+	</data>
+	<data name="COUNTRY_AU">
+		<value>澳大利亚</value>
+	</data>
+	<data name="COUNTRY_AW">
+		<value>阿鲁巴岛</value>
+	</data>
+	<data name="COUNTRY_AZ">
+		<value>阿塞拜疆</value>
+	</data>
+	<data name="COUNTRY_BA">
+		<value>波斯尼亚和黑塞哥维那</value>
+	</data>
+	<data name="COUNTRY_BB">
+		<value>巴巴多斯岛</value>
+	</data>
+	<data name="COUNTRY_BD">
+		<value>孟加拉国</value>
+	</data>
+	<data name="COUNTRY_BE">
+		<value>比利时</value>
+	</data>
+	<data name="COUNTRY_BF">
+		<value>布基纳法索</value>
+	</data>
+	<data name="COUNTRY_BG">
+		<value>保加利亚</value>
+	</data>
+	<data name="COUNTRY_BH">
+		<value>巴林</value>
+	</data>
+	<data name="COUNTRY_BI">
+		<value>布隆迪</value>
+	</data>
+	<data name="COUNTRY_BJ">
+		<value>贝宁湾</value>
+	</data>
+	<data name="COUNTRY_BM">
+		<value>百慕大群岛</value>
+	</data>
+	<data name="COUNTRY_BN">
+		<value>文莱</value>
+	</data>
+	<data name="COUNTRY_BO">
+		<value>玻利维亚</value>
+	</data>
+	<data name="COUNTRY_BR">
+		<value>巴西</value>
+	</data>
+	<data name="COUNTRY_BS">
+		<value>巴哈马群岛</value>
+	</data>
+	<data name="COUNTRY_BT">
+		<value>不丹</value>
+	</data>
+	<data name="COUNTRY_BV">
+		<value>博维特岛</value>
+	</data>
+	<data name="COUNTRY_BW">
+		<value>博茨瓦纳</value>
+	</data>
+	<data name="COUNTRY_BY">
+		<value>白俄罗斯</value>
+	</data>
+	<data name="COUNTRY_BZ">
+		<value>伯利兹城</value>
+	</data>
+	<data name="COUNTRY_CA">
+		<value>加拿大</value>
+	</data>
+	<data name="COUNTRY_CC">
+		<value>科科斯群岛
+科科斯群岛
+科科斯群岛
+科科斯群岛
+科科斯群岛</value>
+	</data>
+	<data name="COUNTRY_CD">
+		<value>刚果民主共和国</value>
+	</data>
+	<data name="COUNTRY_CF">
+		<value>中非共和国</value>
+	</data>
+	<data name="COUNTRY_CG">
+		<value>刚果</value>
+	</data>
+	<data name="COUNTRY_CH">
+		<value>瑞士</value>
+	</data>
+	<data name="COUNTRY_CI">
+		<value>科特迪瓦</value>
+	</data>
+	<data name="COUNTRY_CK">
+		<value>库克群岛</value>
+	</data>
+	<data name="COUNTRY_CL">
+		<value>智利</value>
+	</data>
+	<data name="COUNTRY_CM">
+		<value>喀麦隆</value>
+	</data>
+	<data name="COUNTRY_CN">
+		<value>中国</value>
+	</data>
+	<data name="COUNTRY_CO">
+		<value>哥伦比亚</value>
+	</data>
+	<data name="COUNTRY_CR">
+		<value>哥斯达黎加</value>
+	</data>
+	<data name="COUNTRY_CU">
+		<value>古巴</value>
+	</data>
+	<data name="COUNTRY_CV">
+		<value>佛得角</value>
+	</data>
+	<data name="COUNTRY_CX">
+		<value>圣诞岛</value>
+	</data>
+	<data name="COUNTRY_CY">
+		<value>塞浦路斯</value>
+	</data>
+	<data name="COUNTRY_CZ">
+		<value>捷克</value>
+	</data>
+	<data name="COUNTRY_DE">
+		<value>德国</value>
+	</data>
+	<data name="COUNTRY_DJ">
+		<value>吉布提</value>
+	</data>
+	<data name="COUNTRY_DK">
+		<value>丹麦</value>
+	</data>
+	<data name="COUNTRY_DM">
+		<value>多米尼加</value>
+	</data>
+	<data name="COUNTRY_DO">
+		<value>多米尼加共和国
+多米尼加共和国
+多米尼加共和国</value>
+	</data>
+	<data name="COUNTRY_DZ">
+		<value>阿尔及利亚</value>
+	</data>
+	<data name="COUNTRY_EC">
+		<value>厄瓜多尔</value>
+	</data>
+	<data name="COUNTRY_EE">
+		<value>爱沙尼亚</value>
+	</data>
+	<data name="COUNTRY_EG">
+		<value>埃及</value>
+	</data>
+	<data name="COUNTRY_ER">
+		<value>厄立特里亚</value>
+	</data>
+	<data name="COUNTRY_ES">
+		<value>西班牙</value>
+	</data>
+	<data name="COUNTRY_ET">
+		<value>埃塞俄比亚</value>
+	</data>
+	<data name="COUNTRY_FI">
+		<value>芬兰</value>
+	</data>
+	<data name="COUNTRY_FJ">
+		<value>斐济群岛共和国</value>
+	</data>
+	<data name="COUNTRY_FK">
+		<value>福克兰岛</value>
+	</data>
+	<data name="COUNTRY_FM">
+		<value>密克罗尼西亚</value>
+	</data>
+	<data name="COUNTRY_FO">
+		<value>法罗群岛</value>
+	</data>
+	<data name="COUNTRY_FR">
+		<value>法国</value>
+	</data>
+	<data name="COUNTRY_GA">
+		<value>加蓬</value>
+	</data>
+	<data name="COUNTRY_GB">
+		<value>(大不列颠)联合王国</value>
+	</data>
+	<data name="COUNTRY_GD">
+		<value>格林纳达</value>
+	</data>
+	<data name="COUNTRY_GE">
+		<value>乔治亚苏维埃社会主义共和国</value>
+	</data>
+	<data name="COUNTRY_GF">
+		<value>法属圭亚那</value>
+	</data>
+	<data name="COUNTRY_GH">
+		<value>加纳</value>
+	</data>
+	<data name="COUNTRY_GI">
+		<value>直布罗陀</value>
+	</data>
+	<data name="COUNTRY_GL">
+		<value>格陵兰</value>
+	</data>
+	<data name="COUNTRY_GM">
+		<value>冈比亚</value>
+	</data>
+	<data name="COUNTRY_GN">
+		<value>几内亚</value>
+	</data>
+	<data name="COUNTRY_GP">
+		<value>瓜德罗普岛</value>
+	</data>
+	<data name="COUNTRY_GQ">
+		<value>赤道几内亚</value>
+	</data>
+	<data name="COUNTRY_GR">
+		<value>希腊</value>
+	</data>
+	<data name="COUNTRY_GS">
+		<value>南乔治亚岛和南桑德韦奇岛</value>
+	</data>
+	<data name="COUNTRY_GT">
+		<value>危地马拉</value>
+	</data>
+	<data name="COUNTRY_GU">
+		<value>关岛</value>
+	</data>
+	<data name="COUNTRY_GW">
+		<value>几内亚比绍共和国</value>
+	</data>
+	<data name="COUNTRY_GY">
+		<value>圭亚那</value>
+	</data>
+	<data name="COUNTRY_HK">
+		<value>中国香港特别行政区</value>
+	</data>
+	<data name="COUNTRY_HM">
+		<value>赫德岛和麦克唐纳群岛</value>
+	</data>
+	<data name="COUNTRY_HN">
+		<value>洪都拉斯</value>
+	</data>
+	<data name="COUNTRY_HR">
+		<value>克罗地亚共和国</value>
+	</data>
+	<data name="COUNTRY_HT">
+		<value>海地</value>
+	</data>
+	<data name="COUNTRY_HU">
+		<value>匈牙利</value>
+	</data>
+	<data name="COUNTRY_ID">
+		<value>印尼</value>
+	</data>
+	<data name="COUNTRY_IE">
+		<value>爱尔兰</value>
+	</data>
+	<data name="COUNTRY_IL">
+		<value>以色列</value>
+	</data>
+	<data name="COUNTRY_IN">
+		<value>印度</value>
+	</data>
+	<data name="COUNTRY_IO">
+		<value>英属印度洋领地</value>
+	</data>
+	<data name="COUNTRY_IQ">
+		<value>伊拉克共和国</value>
+	</data>
+	<data name="COUNTRY_IR">
+		<value>伊朗</value>
+	</data>
+	<data name="COUNTRY_IS">
+		<value>冰岛</value>
+	</data>
+	<data name="COUNTRY_IT">
+		<value>意大利</value>
+	</data>
+	<data name="COUNTRY_JM">
+		<value>牙买加</value>
+	</data>
+	<data name="COUNTRY_JO">
+		<value>约旦</value>
+	</data>
+	<data name="COUNTRY_JP">
+		<value>日本</value>
+	</data>
+	<data name="COUNTRY_KE">
+		<value>肯尼亚</value>
+	</data>
+	<data name="COUNTRY_KG">
+		<value>吉尔吉斯坦</value>
+	</data>
+	<data name="COUNTRY_KH">
+		<value>柬埔寨</value>
+	</data>
+	<data name="COUNTRY_KI">
+		<value>基里巴斯</value>
+	</data>
+	<data name="COUNTRY_KM">
+		<value>科摩罗</value>
+	</data>
+	<data name="COUNTRY_KN">
+		<value>圣基茨和尼维斯</value>
+	</data>
+	<data name="COUNTRY_KP">
+		<value>朝鲜</value>
+	</data>
+	<data name="COUNTRY_KR">
+		<value>韩国</value>
+	</data>
+	<data name="COUNTRY_KW">
+		<value>科威特</value>
+	</data>
+	<data name="COUNTRY_KY">
+		<value>澳门</value>
+	</data>
+	<data name="COUNTRY_KZ">
+		<value>哈萨克</value>
+	</data>
+	<data name="COUNTRY_LA">
+		<value>老挝</value>
+	</data>
+	<data name="COUNTRY_LB">
+		<value>黎巴嫩</value>
+	</data>
+	<data name="COUNTRY_LC">
+		<value>圣卢西亚岛</value>
+	</data>
+	<data name="COUNTRY_LI">
+		<value>列支敦士登的</value>
+	</data>
+	<data name="COUNTRY_LK">
+		<value>斯里兰卡</value>
+	</data>
+	<data name="COUNTRY_LR">
+		<value>利比里亚</value>
+	</data>
+	<data name="COUNTRY_LS">
+		<value>莱索托</value>
+	</data>
+	<data name="COUNTRY_LT">
+		<value>立陶宛</value>
+	</data>
+	<data name="COUNTRY_LU">
+		<value>卢森堡公国</value>
+	</data>
+	<data name="COUNTRY_LV">
+		<value>拉脱维亚</value>
+	</data>
+	<data name="COUNTRY_LY">
+		<value>利比亚</value>
+	</data>
+	<data name="COUNTRY_MA">
+		<value>摩洛哥</value>
+	</data>
+	<data name="COUNTRY_MC">
+		<value>摩纳哥</value>
+	</data>
+	<data name="COUNTRY_MD">
+		<value>摩尔多瓦</value>
+	</data>
+	<data name="COUNTRY_MG">
+		<value>马达加斯加岛</value>
+	</data>
+	<data name="COUNTRY_MH">
+		<value>马绍尔群岛</value>
+	</data>
+	<data name="COUNTRY_MK">
+		<value>马其顿共和国</value>
+	</data>
+	<data name="COUNTRY_ML">
+		<value>马里</value>
+	</data>
+	<data name="COUNTRY_MM">
+		<value>缅甸</value>
+	</data>
+	<data name="COUNTRY_MN">
+		<value>蒙古</value>
+	</data>
+	<data name="COUNTRY_MO">
+		<value>中国澳门特别行政区</value>
+	</data>
+	<data name="COUNTRY_MP">
+		<value>北马里亚纳群岛</value>
+	</data>
+	<data name="COUNTRY_MQ">
+		<value>马提尼克岛</value>
+	</data>
+	<data name="COUNTRY_MR">
+		<value>毛利塔尼亚</value>
+	</data>
+	<data name="COUNTRY_MS">
+		<value>蒙特塞拉特岛</value>
+	</data>
+	<data name="COUNTRY_MT">
+		<value>马耳他</value>
+	</data>
+	<data name="COUNTRY_MU">
+		<value>毛里求斯</value>
+	</data>
+	<data name="COUNTRY_MV">
+		<value>马尔代夫</value>
+	</data>
+	<data name="COUNTRY_MW">
+		<value>马拉维</value>
+	</data>
+	<data name="COUNTRY_MX">
+		<value>墨西哥</value>
+	</data>
+	<data name="COUNTRY_MY">
+		<value>马来群岛</value>
+	</data>
+	<data name="COUNTRY_MZ">
+		<value>莫桑比克</value>
+	</data>
+	<data name="COUNTRY_NA">
+		<value>纳米比亚</value>
+	</data>
+	<data name="COUNTRY_NC">
+		<value>新喀里多尼亚</value>
+	</data>
+	<data name="COUNTRY_NE">
+		<value>尼日尔</value>
+	</data>
+	<data name="COUNTRY_NF">
+		<value>诺福克岛</value>
+	</data>
+	<data name="COUNTRY_NG">
+		<value>尼日利亚</value>
+	</data>
+	<data name="COUNTRY_NI">
+		<value>尼加拉瓜</value>
+	</data>
+	<data name="COUNTRY_NL">
+		<value>荷兰</value>
+	</data>
+	<data name="COUNTRY_NN">
+		<value>不知道</value>
+	</data>
+	<data name="COUNTRY_NO">
+		<value>挪威</value>
+	</data>
+	<data name="COUNTRY_NP">
+		<value>尼泊尔</value>
+	</data>
+	<data name="COUNTRY_NR">
+		<value>瑙鲁</value>
+	</data>
+	<data name="COUNTRY_NU">
+		<value>纽埃岛</value>
+	</data>
+	<data name="COUNTRY_NZ">
+		<value>新西兰</value>
+	</data>
+	<data name="COUNTRY_OM">
+		<value>阿曼</value>
+	</data>
+	<data name="COUNTRY_PA">
+		<value>巴拿马</value>
+	</data>
+	<data name="COUNTRY_PE">
+		<value>秘鲁</value>
+	</data>
+	<data name="COUNTRY_PF">
+		<value>波利尼西亚</value>
+	</data>
+	<data name="COUNTRY_PG">
+		<value>巴布亚新几内亚</value>
+	</data>
+	<data name="COUNTRY_PH">
+		<value>菲律宾共和国</value>
+	</data>
+	<data name="COUNTRY_PK">
+		<value>巴基斯坦</value>
+	</data>
+	<data name="COUNTRY_PL">
+		<value>波兰</value>
+	</data>
+	<data name="COUNTRY_PM">
+		<value>圣皮埃尔岛和密克隆岛</value>
+	</data>
+	<data name="COUNTRY_PN">
+		<value>皮特克恩岛</value>
+	</data>
+	<data name="COUNTRY_PR">
+		<value>波多黎各</value>
+	</data>
+	<data name="COUNTRY_PT">
+		<value>葡萄牙</value>
+	</data>
+	<data name="COUNTRY_PW">
+		<value>帕劳群岛</value>
+	</data>
+	<data name="COUNTRY_PY">
+		<value>巴拉圭</value>
+	</data>
+	<data name="COUNTRY_QA">
+		<value>卡塔尔</value>
+	</data>
+	<data name="COUNTRY_RE">
+		<value>留尼汪岛</value>
+	</data>
+	<data name="COUNTRY_RO">
+		<value>罗马尼亚</value>
+	</data>
+	<data name="COUNTRY_RU">
+		<value>俄罗斯</value>
+	</data>
+	<data name="COUNTRY_RW">
+		<value>卢旺达</value>
+	</data>
+	<data name="COUNTRY_SA">
+		<value>沙特阿拉伯</value>
+	</data>
+	<data name="COUNTRY_SB">
+		<value>所罗门群岛</value>
+	</data>
+	<data name="COUNTRY_SC">
+		<value>塞舌尔</value>
+	</data>
+	<data name="COUNTRY_SD">
+		<value>苏丹</value>
+	</data>
+	<data name="COUNTRY_SE">
+		<value>瑞典</value>
+	</data>
+	<data name="COUNTRY_SG">
+		<value>新加坡</value>
+	</data>
+	<data name="COUNTRY_SH">
+		<value>圣赫勒拿岛</value>
+	</data>
+	<data name="COUNTRY_SI">
+		<value>斯洛文尼亚</value>
+	</data>
+	<data name="COUNTRY_SJ">
+		<value>斯瓦尔巴特和扬马延岛</value>
+	</data>
+	<data name="COUNTRY_SK">
+		<value>斯洛伐克</value>
+	</data>
+	<data name="COUNTRY_SL">
+		<value>塞拉利昂</value>
+	</data>
+	<data name="COUNTRY_SM">
+		<value>圣马力诺</value>
+	</data>
+	<data name="COUNTRY_SN">
+		<value>塞内加尔</value>
+	</data>
+	<data name="COUNTRY_SO">
+		<value>索马里</value>
+	</data>
+	<data name="COUNTRY_SR">
+		<value>苏里南</value>
+	</data>
+	<data name="COUNTRY_ST">
+		<value>圣多美和普林西比群岛</value>
+	</data>
+	<data name="COUNTRY_SV">
+		<value>萨尔瓦多</value>
+	</data>
+	<data name="COUNTRY_SY">
+		<value>叙利亚共和国</value>
+	</data>
+	<data name="COUNTRY_SZ">
+		<value>斯威士兰</value>
+	</data>
+	<data name="COUNTRY_TC">
+		<value>特克斯和凯科斯群岛</value>
+	</data>
+	<data name="COUNTRY_TD">
+		<value>乍得湖</value>
+	</data>
+	<data name="COUNTRY_TF">
+		<value>法属南部领土</value>
+	</data>
+	<data name="COUNTRY_TG">
+		<value>多哥</value>
+	</data>
+	<data name="COUNTRY_TH">
+		<value>泰国</value>
+	</data>
+	<data name="COUNTRY_TJ">
+		<value>塔吉克斯坦</value>
+	</data>
+	<data name="COUNTRY_TK">
+		<value>托克劳</value>
+	</data>
+	<data name="COUNTRY_TL">
+		<value>东帝汶</value>
+	</data>
+	<data name="COUNTRY_TM">
+		<value>土库曼斯坦</value>
+	</data>
+	<data name="COUNTRY_TN">
+		<value>突尼斯</value>
+	</data>
+	<data name="COUNTRY_TO">
+		<value>汤加</value>
+	</data>
+	<data name="COUNTRY_TR">
+		<value>土耳其</value>
+	</data>
+	<data name="COUNTRY_TT">
+		<value>特立尼达和多巴哥共和国</value>
+	</data>
+	<data name="COUNTRY_TV">
+		<value>图瓦卢</value>
+	</data>
+	<data name="COUNTRY_TW">
+		<value>台湾</value>
+	</data>
+	<data name="COUNTRY_TZ">
+		<value>坦桑尼亚</value>
+	</data>
+	<data name="COUNTRY_UA">
+		<value>乌克兰</value>
+	</data>
+	<data name="COUNTRY_UG">
+		<value>乌干达</value>
+	</data>
+	<data name="COUNTRY_UM">
+		<value>美属萨摩亚</value>
+	</data>
+	<data name="COUNTRY_US">
+		<value>美国</value>
+	</data>
+	<data name="COUNTRY_UY">
+		<value>乌拉圭</value>
+	</data>
+	<data name="COUNTRY_UZ">
+		<value>乌兹别克斯坦</value>
+	</data>
+	<data name="COUNTRY_VA">
+		<value>梵蒂冈</value>
+	</data>
+	<data name="COUNTRY_VC">
+		<value>圣文森特和格林纳丁斯</value>
+	</data>
+	<data name="COUNTRY_VE">
+		<value>委内瑞拉</value>
+	</data>
+	<data name="COUNTRY_VG">
+		<value>英属维津群岛</value>
+	</data>
+	<data name="COUNTRY_VI">
+		<value>美属维津群岛</value>
+	</data>
+	<data name="COUNTRY_VN">
+		<value>越南</value>
+	</data>
+	<data name="COUNTRY_VU">
+		<value>瓦努阿图</value>
+	</data>
+	<data name="COUNTRY_WF">
+		<value>瓦里斯和福图纳群岛</value>
+	</data>
+	<data name="COUNTRY_WS">
+		<value>萨摩亚群岛</value>
+	</data>
+	<data name="COUNTRY_YE">
+		<value>也门</value>
+	</data>
+	<data name="COUNTRY_YT">
+		<value>马约特岛</value>
+	</data>
+	<data name="COUNTRY_YU">
+		<value>南斯拉夫</value>
+	</data>
+	<data name="COUNTRY_ZA">
+		<value>南非</value>
+	</data>
+	<data name="COUNTRY_ZM">
+		<value>赞比亚</value>
+	</data>
+	<data name="COUNTRY_ZW">
+		<value>津巴布韦</value>
+	</data>
+	<data name="CREATED_BY">
+		<value>创建者</value>
+	</data>
+	<data name="CREATED_ON">
+		<value>创建时间</value>
+	</data>
+	<data name="CREATEDBY">
+		<value>创建者</value>
+	</data>
+	<data name="CULTURE">
+		<value>语言文化</value>
+	</data>
+	<data name="CULTURE_DESCRIPTION">
+		<value>请选择语言文化。不选择时模块总是显示，如果选择了一种或多种语言文化，则模块只在选定的语言文化环境下显示。</value>
+	</data>
+	<data name="CULTURE_SETTINGS">
+		<value>语言文化设置</value>
+	</data>
+	<data name="CULTUREIMGPORTAL">
+		<value>使用自定义旗帜</value>
+	</data>
+	<data name="CULTUREIMGPORTAL_DESCRIPTION">
+		<value>勾选此项使用自定义旗帜。</value>
+	</data>
+	<data name="CULTURELIST">
+		<value>语言文化列表</value>
+	</data>
+	<data name="CUSTOMLAYOUT">
+		<value>自定义布局</value>
+	</data>
+	<data name="CUSTOMLAYOUT_DESCRIPTION">
+		<value>设置一个仅用于此标签页的自定义布局。</value>
+	</data>
+	<data name="CUSTOMMENUIMAGE">
+		<value>自定义菜单图片</value>
+	</data>
+	<data name="CUSTOMMENUIMAGE_DESCRIPTION">
+		<value>为这个标签页设置一个自定义菜单图片</value>
+	</data>
+	<data name="CUSTOMTHEME">
+		<value>自定义主题风格</value>
+	</data>
+	<data name="CUSTOMTHEME_DESCRIPTION">
+		<value>设置一种仅用于本标签页内模块的自定义主题风格。</value>
+	</data>
+	<data name="CUSTOMTHEMEALT">
+		<value>自定义交替主题风格</value>
+	</data>
+	<data name="CUSTOMTHEMEALT_DESCRIPTION">
+		<value>设置仅用于本标签页内模块的自定义交替主题风格。</value>
+	</data>
+	<data name="DA-DK">
+		<value>标题(丹麦语)</value>
+	</data>
+	<data name="DA-DK_DESCRIPTION">
+		<value>设置丹麦语标题</value>
+	</data>
+	<data name="DATABASENAME">
+		<value>数据库名称</value>
+	</data>
+	<data name="DATE">
+		<value>日期</value>
+	</data>
+	<data name="DBTOOL_GETDATA">
+		<value>数据</value>
+	</data>
+	<data name="DBTOOL_GETINFO">
+		<value>信息</value>
+	</data>
+	<data name="DBTOOL_GETINFOEXTENDED">
+		<value>扩展信息</value>
+	</data>
+	<data name="DBTOOL_GETPROPERTIES">
+		<value>属性</value>
+	</data>
+	<data name="DBTOOL_OWNER">
+		<value>所有者</value>
+	</data>
+	<data name="DBTOOL_QUERYEXECUTE">
+		<value>执行查询</value>
+	</data>
+	<data name="DE-CH">
+		<value>德语标题</value>
+	</data>
+	<data name="DE-CH_DESCRIPTION">
+		<value>设置德语(瑞士)标题</value>
+	</data>
+	<data name="DECLINE">
+		<value>不需要，谢谢！</value>
+	</data>
+	<data name="DE-DE">
+		<value>德语标题</value>
+	</data>
+	<data name="DE-DE_DESCRIPTION">
+		<value>设置德语(德国)标题</value>
+	</data>
+	<data name="DEFAULT_IMAGE_EDITOR">
+		<value>默认图片编辑器</value>
+	</data>
+	<data name="DEFAULTEMAIL">
+		<value>发出电子邮件</value>
+	</data>
+	<data name="DEFAULTNAME">
+		<value>发件人姓名</value>
+	</data>
+	<data name="DEFAULTTOPIC">
+		<value>默认标题</value>
+	</data>
+	<data name="DEFAULTTOPIC_DESCRIPTION">
+		<value>待搜索的默认标题。</value>
+	</data>
+	<data name="DEFAULTVISIBLEDAYS">
+		<value>默认天数可见</value>
+	</data>
+	<data name="DELAYEXPIRE">
+		<value>默认推延有效日期</value>
+	</data>
+	<data name="DELETE">
+		<value>删除</value>
+	</data>
+	<data name="DELETE_PORTAL">
+		<value>删除插件</value>
+	</data>
+	<data name="DELETE_THIS_ITEM">
+		<value>刪除</value>
+	</data>
+	<data name="DELETE_THIS_MODULE_TYPE">
+		<value>刪除模块类别</value>
+	</data>
+	<data name="DELETE_USER">
+		<value>刪除用户</value>
+	</data>
+	<data name="DELETEBTN">
+		<value>刪除</value>
+	</data>
+	<data name="DELETEITEM">
+		<value>刪除</value>
+	</data>
+	<data name="DELETELEFT">
+		<value>&lt;- 删除</value>
+	</data>
+	<data name="DELETEMODULE">
+		<value>刪除模块</value>
+	</data>
+	<data name="DELETERIGHT">
+		<value>刪除 -&gt;</value>
+	</data>
+	<data name="DELUSER">
+		<value>从角色中移除用户</value>
+	</data>
+	<data name="DEPARTMENT">
+		<value>部门</value>
+	</data>
+	<data name="DESCRIPTION">
+		<value>描述</value>
+	</data>
+	<data name="DESKTOP_SOURCE">
+		<value>桌面来源</value>
+	</data>
+	<data name="DIRECTORY">
+		<value>目录路径</value>
+	</data>
+	<data name="DIRECTURL">
+		<value>被用来自动地登录的直接URL</value>
+	</data>
+	<data name="DISCUSION_AUTHOR">
+		<value>作者</value>
+	</data>
+	<data name="DISCUSION_LAST_UPDATE">
+		<value>最后更新</value>
+	</data>
+	<data name="DISCUSION_TITLE">
+		<value>标题</value>
+	</data>
+	<data name="DISCUSSION_DELETE_RESPONSE">
+		<value>您确定要删除选定的回复信息及其所有子项吗？</value>
+	</data>
+	<data name="DISCUSSION_LAST_UPDATE">
+		<value>最后更新</value>
+	</data>
+	<data name="DISCUSSION_MSGCOLLAPSE">
+		<value>折叠该主题线程</value>
+	</data>
+	<data name="DISCUSSION_MSGEXPAND">
+		<value>在当前浏览窗中展开该主题线程</value>
+	</data>
+	<data name="DISCUSSION_MSGSELECT">
+		<value>在新的浏览窗口中打开该主题线程</value>
+	</data>
+	<data name="DISCUSSION_REPLYS">
+		<value>该主题回复数</value>
+	</data>
+	<data name="DISCUSSION_VIEWED">
+		<value>该主题被访问次数</value>
+	</data>
+	<data name="DISPLAY IN BOLD">
+		<value>显示为粗体</value>
+	</data>
+	<data name="DISPLAY IN BOLD_DESCRIPTION">
+		<value>语录文本以粗体显示。</value>
+	</data>
+	<data name="DISPLAY IN ITALIC">
+		<value>显示为斜体</value>
+	</data>
+	<data name="DISPLAY IN ITALIC_DESCRIPTION">
+		<value>语录文本以斜体显示。</value>
+	</data>
+	<data name="DISPLAYASXML">
+		<value>显示XML</value>
+	</data>
+	<data name="DISPLAYASXML_DESCRIPTION">
+		<value>以XML形式显示数据。对开发XSL文件很有帮助。</value>
+	</data>
+	<data name="DOCUMENT_AREA">
+		<value>范围</value>
+	</data>
+	<data name="DOCUMENT_DETAILS">
+		<value>文档详细内容</value>
+	</data>
+	<data name="DOCUMENT_LAST_UPDATED">
+		<value>最后更新</value>
+	</data>
+	<data name="DOCUMENT_OWNER">
+		<value>所有者</value>
+	</data>
+	<data name="DOCUMENTPATH">
+		<value>文档路径</value>
+	</data>
+	<data name="DOCUMENTPATH_DESCRIPTION">
+		<value>保存该文档的文件夹路径</value>
+	</data>
+	<data name="DOCUMENTS_DBSAVE">
+		<value>将文件保存到数据库</value>
+	</data>
+	<data name="DOCUMENTS_DBSAVE_DESCRIPTION">
+		<value>如果要将文件保存到数据库，请在此标记。</value>
+	</data>
+	<data name="DOCUMENTS_FOLDER">
+		<value>文档文件夹</value>
+	</data>
+	<data name="DOCUMENTS_SHOWAREA">
+		<value>显示范围栏</value>
+	</data>
+	<data name="DOCUMENTS_SHOWAREA_DESCRIPTION">
+		<value>如果要显示范围栏，请在此标记。</value>
+	</data>
+	<data name="DOCUMENTS_SHOWIMAGES">
+		<value>显示图片图标</value>
+	</data>
+	<data name="DOCUMENTS_SHOWIMAGES_DESCRIPTION">
+		<value>如果要显示图片图标，请在此标记。</value>
+	</data>
+	<data name="DOCUMENTS_SHOWLASTUPDATED">
+		<value>显示最后更新</value>
+	</data>
+	<data name="DOCUMENTS_SHOWLASTUPDATED_DESCRIPTION">
+		<value>如果要显示最后更新栏，请在此标记。</value>
+	</data>
+	<data name="DOCUMENTS_SHOWOWNER">
+		<value>显示所有者</value>
+	</data>
+	<data name="DOCUMENTS_SHOWOWNER_DESCRIPTION">
+		<value>如果要显示所有者栏，请在此标记。</value>
+	</data>
+	<data name="DOCUMENTS_SHOWTITLE">
+		<value>显示标题</value>
+	</data>
+	<data name="DOCUMENTS_SHOWTITLE_DESCRIPTION">
+		<value>如果要显示标题栏，请在此标记。</value>
+	</data>
+	<data name="DOCUMENTS_SORTBY_DIRECTION">
+		<value>升序或降序</value>
+	</data>
+	<data name="DOCUMENTS_SORTBY_DIRECTION_DESCRIPTION">
+		<value>升序(Ascending)A-&gt;Z 或 0-&gt;9，降序(Descending)Z-&gt;A 或 9-&gt;0</value>
+	</data>
+	<data name="DOCUMENTS_SORTBY_DIRECTION_LIST"></data>
+	<data name="DOCUMENTS_SORTBY_FIELD">
+		<value>排序字段</value>
+	</data>
+	<data name="DOCUMENTS_SORTBY_FIELD_DESCRIPTION">
+		<value>按文件名(File Name)还是创建日期(Created Date)排序？</value>
+	</data>
+	<data name="DOCUMENTS_SORTBY_FIELD_LIST"></data>
+	<data name="DOCUMENTS_SOURCE">
+		<value>文档来源</value>
+	</data>
+	<data name="DONOTRESENDWITHIN">
+		<value>不允许重发天数</value>
+	</data>
+	<data name="DONOTRESENDWITHIN_DESCRIPTION">
+		<value>为避免垃圾邮件和重复发送，在指定的天数内给同一用户发送邮件不能超过一次。</value>
+	</data>
+	<data name="DONT_RESIZE">
+		<value>不要重设尺寸</value>
+	</data>
+	<data name="DS_AUTHOR">
+		<value>作者</value>
+	</data>
+	<data name="DS_BODY">
+		<value>内容</value>
+	</data>
+	<data name="DS_DATE">
+		<value>日期</value>
+	</data>
+	<data name="DS_DISPLAY_THREADS">
+		<value>显示该主题所有线程</value>
+	</data>
+	<data name="DS_LASTREPLYDATE">
+		<value>最后回复日期</value>
+	</data>
+	<data name="DS_MSGDETAILS">
+		<value>信息详细内容</value>
+	</data>
+	<data name="DS_NEWTHREAD">
+		<value>增加一个新线程</value>
+	</data>
+	<data name="DS_ORIGINALMSG">
+		<value>原始信息</value>
+	</data>
+	<data name="DS_REPLYTHISMSG">
+		<value>回复</value>
+	</data>
+	<data name="DS_RETURN_LIST">
+		<value>返回到线程列表</value>
+	</data>
+	<data name="ECOMMERCE_ACCOUNT_LOGIN">
+		<value>账号登录</value>
+	</data>
+	<data name="ECOMMERCE_GATEWAY_CARIGE_TITLE">
+		<value>网关运输标题</value>
+	</data>
+	<data name="ECOMMERCE_GATEWAY_TITLE">
+		<value>网关标题</value>
+	</data>
+	<data name="ECOMMERCE_KO_MSG1">
+		<value>您的信息 &lt;b&gt;没有&lt;/b&gt;被更新。</value>
+	</data>
+	<data name="ECOMMERCE_KO_MSG2">
+		<value>点击“继续”按钮转向非安全保护区域。</value>
+	</data>
+	<data name="ECOMMERCE_KO_MSG3">
+		<value>依赖于您的浏览器，您可能不得不点击一个对话框以确认离开安全保护区域。</value>
+	</data>
+	<data name="ECOMMERCE_LOGIN_EMAILSUBJECTOK">
+		<value>您的rainbowportal.net密码</value>
+	</data>
+	<data name="ECOMMERCE_LOGIN_ENTEREMAIL">
+		<value>请输入您的电子邮箱</value>
+	</data>
+	<data name="ECOMMERCE_LOGIN_FAILED">
+		<value>登录失败</value>
+	</data>
+	<data name="ECOMMERCE_LOGON_MSGCANCEL">
+		<value>，退回首页</value>
+	</data>
+	<data name="ECOMMERCE_LOGON_MSGREGISTER">
+		<value>，如果您还没有账号，请注册一个。</value>
+	</data>
+	<data name="ECOMMERCE_OK_MSG1">
+		<value>您在数据库中的信息已更新</value>
+	</data>
+	<data name="ECOMMERCE_OK_MSG2">
+		<value>点击“继续”按钮转向非安全保护区域。</value>
+	</data>
+	<data name="ECOMMERCE_OK_MSG3">
+		<value>依赖于您的浏览器，您可能不得不点击一个对话框以确认离开安全保护区域。</value>
+	</data>
+	<data name="ECOMMERCE_SECURE_TITLE">
+		<value>插件安全服务器</value>
+	</data>
+	<data name="EDIT">
+		<value>编辑</value>
+	</data>
+	<data name="EDIT_ACCESS_DENIED">
+		<value>编辑被拒绝</value>
+	</data>
+	<data name="EDIT_ACCESS_DENIED_MESSAGE">
+		<value>你没有存取此页面的权利,或者是你尚未登录.如果有疑问请与管理员联络</value>
+	</data>
+	<data name="EDIT_PORTAL">
+		<value>编辑插件</value>
+	</data>
+	<data name="EDIT_PROFILE">
+		<value>编辑配置文件</value>
+	</data>
+	<data name="EDIT_THIS_ITEM">
+		<value>编辑该项</value>
+	</data>
+	<data name="EDIT_USER">
+		<value>编辑用户</value>
+	</data>
+	<data name="EDITBTN">
+		<value>编辑选定项属性</value>
+	</data>
+	<data name="EDITOR">
+		<value>编辑器</value>
+	</data>
+	<data name="EDITOR_DESCRIPTION">
+		<value>选择该模块的HTML编辑器</value>
+	</data>
+	<data name="ELECTRONICDELIVERY">
+		<value>电子传送</value>
+	</data>
+	<data name="ELECTRONICDELIVERY_DESCRIPTION">
+		<value>电子传送描述</value>
+	</data>
+	<data name="EMAIL">
+		<value>电子邮箱</value>
+	</data>
+	<data name="EMAILORWINDOW">
+		<value>电子邮箱或Windows域用户名</value>
+	</data>
+	<data name="EMF_ADDRESSES_NOT_OK">
+		<value>电子邮箱不正确</value>
+	</data>
+	<data name="EMF_BCC">
+		<value>留存</value>
+	</data>
+	<data name="EMF_CC">
+		<value>抄送</value>
+	</data>
+	<data name="EMF_HTMLBODY_ERROR">
+		<value>必须输入HTML文本内容。</value>
+	</data>
+	<data name="EMF_SUBJECT">
+		<value>主题</value>
+	</data>
+	<data name="EMF_SUBJECT_ERROR">
+		<value>必须输入信息主题。</value>
+	</data>
+	<data name="EMF_TEXTBODY_ERROR">
+		<value>必须输入文本内容。</value>
+	</data>
+	<data name="EMF_TO">
+		<value>收件人</value>
+	</data>
+	<data name="EN">
+		<value>英文标题</value>
+	</data>
+	<data name="EN_DESCRIPTION">
+		<value>设置英文标题</value>
+	</data>
+	<data name="END_DATE">
+		<value>结束日期</value>
+	</data>
+	<data name="END TAG">
+		<value>结束标记</value>
+	</data>
+	<data name="END TAG">
+		<value>输入HTML结束标记，呼应开始标记。</value>
+	</data>
+	<data name="ENHANCEDHTML_ADDINVARIANTCULTURE">
+		<value>新增不变的语言文化</value>
+	</data>
+	<data name="ENHANCEDHTML_ADDINVARIANTCULTURE_DESCRIPTION">
+		<value>如果要在页面根据语言文化代码看到不同的显示内容，请在此标记。</value>
+	</data>
+	<data name="ENHANCEDHTML_ALIGNDOWNMENU">
+		<value>排列导航菜单</value>
+	</data>
+	<data name="ENHANCEDHTML_ALIGNDOWNMENU_DESCRIPTION">
+		<value>在此选索引菜单排列方式</value>
+	</data>
+	<data name="ENHANCEDHTML_ALIGNUPMENU">
+		<value>排列索引菜单</value>
+	</data>
+	<data name="ENHANCEDHTML_ALIGNUPMENU_DESCRIPTION">
+		<value>在此选择索引菜单排列方式</value>
+	</data>
+	<data name="ENHANCEDHTML_CANCEL">
+		<value>取消</value>
+	</data>
+	<data name="ENHANCEDHTML_CONFIRMDELETEMESSAGE">
+		<value>确定要删除该项吗?</value>
+	</data>
+	<data name="ENHANCEDHTML_CONTENT_FROM">
+		<value>内容来源</value>
+	</data>
+	<data name="ENHANCEDHTML_DELETEPAGE">
+		<value>删除页面</value>
+	</data>
+	<data name="ENHANCEDHTML_EDITOR">
+		<value>编辑器</value>
+	</data>
+	<data name="ENHANCEDHTML_EDITOR_DESCRIPTION">
+		<value>为模块选择HTML编辑器</value>
+	</data>
+	<data name="ENHANCEDHTML_EDITPAGE">
+		<value>编辑页面</value>
+	</data>
+	<data name="ENHANCEDHTML_GET_CONTENTS_FROM_PORTALS">
+		<value>从其他插件获取内容</value>
+	</data>
+	<data name="ENHANCEDHTML_GET_CONTENTS_FROM_PORTALS_DESCRIPTION">
+		<value>如果要从同一数据库的其他插件获取内容，请在此标记。</value>
+	</data>
+	<data name="ENHANCEDHTML_LANGUAGE">
+		<value>语言</value>
+	</data>
+	<data name="ENHANCEDHTML_MULTIPAGEMODE">
+		<value>多页面模式</value>
+	</data>
+	<data name="ENHANCEDHTML_NEWPAGE">
+		<value>新增页面</value>
+	</data>
+	<data name="ENHANCEDHTML_OF">
+		<value>的</value>
+	</data>
+	<data name="ENHANCEDHTML_PAGE">
+		<value>页面</value>
+	</data>
+	<data name="ENHANCEDHTML_PAGENAME">
+		<value>页名</value>
+	</data>
+	<data name="ENHANCEDHTML_RETURN">
+		<value>返回</value>
+	</data>
+	<data name="ENHANCEDHTML_SELECT_MODULE">
+		<value>从插件选择一个模块，用于在页面上显示内容。</value>
+	</data>
+	<data name="ENHANCEDHTML_SELECT_MODULE_PORTAL">
+		<value>从数据库插件中选择一个模块，用于在页面上显示内容。</value>
+	</data>
+	<data name="ENHANCEDHTML_SHOWALLPAGES">
+		<value>所有页</value>
+	</data>
+	<data name="ENHANCEDHTML_SHOWDOWNMENU">
+		<value>显示导航菜单</value>
+	</data>
+	<data name="ENHANCEDHTML_SHOWDOWNMENU_DESCRIPTION">
+		<value>如果要显示包含“前页”、“后页”的导航菜单，请在此标记。</value>
+	</data>
+	<data name="ENHANCEDHTML_SHOWMULTIMODE">
+		<value>显示多模式图标</value>
+	</data>
+	<data name="ENHANCEDHTML_SHOWMULTIMODE_DESCRIPTION">
+		<value>如果要显示图标多模式页面，请在此标记</value>
+	</data>
+	<data name="ENHANCEDHTML_SHOWTITLEPAGE">
+		<value>显示标题页</value>
+	</data>
+	<data name="ENHANCEDHTML_SHOWTITLEPAGE_DESCRIPTION">
+		<value>如果要显示标题页，请在此标记。</value>
+	</data>
+	<data name="ENHANCEDHTML_SHOWUPLOAD">
+		<value>显示上传</value>
+	</data>
+	<data name="ENHANCEDHTML_SHOWUPLOAD_DESCRIPTION">
+		<value>仅在ActiveUp HtmlTextBox编辑器下可用。</value>
+	</data>
+	<data name="ENHANCEDHTML_SHOWUPMENU">
+		<value>显示索引菜单</value>
+	</data>
+	<data name="ENHANCEDHTML_SHOWUPMENU_DESCRIPTION">
+		<value>如果要在所有页面显示带标题的索引菜单，请在此标记。</value>
+	</data>
+	<data name="ENHANCEDHTML_SINGLEPAGEMODE">
+		<value>单页模式</value>
+	</data>
+	<data name="ENHANCEDHTML_UPDATE">
+		<value>更新</value>
+	</data>
+	<data name="ENHANCEDHTML_VIEWORDER">
+		<value>查看顺序</value>
+	</data>
+	<data name="ENHANCEDLINK_GALLERYTITLE">
+		<value>图标库</value>
+	</data>
+	<data name="ENHANCEDLINK_ICON">
+		<value>上传图标文件</value>
+	</data>
+	<data name="ENHANCEDLINK_SELECT">
+		<value>1.选择图片</value>
+	</data>
+	<data name="ENHANCEDLINK_UPLOAD">
+		<value>2.上传文件</value>
+	</data>
+	<data name="ENHANCEDLINKS_DEFAULTIMAGE">
+		<value>默认链接图片</value>
+	</data>
+	<data name="ENHANCEDLINKS_DEFAULTIMAGE_DESCRIPTION">
+		<value>在此处为选择未特别设置时的链接的默认图片</value>
+	</data>
+	<data name="ENHANCEDLINKS_DROPDOWNLIST">
+		<value>下拉式列表</value>
+	</data>
+	<data name="ENHANCEDLINKS_EDITLINK">
+		<value>编辑链接</value>
+	</data>
+	<data name="ENHANCEDLINKS_EXPANDALL">
+		<value>显示描述</value>
+	</data>
+	<data name="ENHANCEDLINKS_EXPANDALL_DESCRIPTION">
+		<value>要在链接下方显示描述内容，请在此标记。</value>
+	</data>
+	<data name="ENHANCEDLINKS_GENERALIMAGE">
+		<value>通用图片</value>
+	</data>
+	<data name="ENHANCEDLINKS_GENERALIMAGE_DESCRIPTION">
+		<value>为所有模块选择一个通用图片。</value>
+	</data>
+	<data name="ENHANCEDLINKS_ICONPATH">
+		<value>图标容器</value>
+	</data>
+	<data name="ENHANCEDLINKS_ICONPATH_DESCRIPTION">
+		<value>插件所使用的图标的存放目录</value>
+	</data>
+	<data name="ENHANCEDLINKS_LINKS">
+		<value>链接</value>
+	</data>
+	<data name="ENHANCEDLINKS_LINKSHORIZONTAL">
+		<value>水平链接</value>
+	</data>
+	<data name="ENHANCEDLINKS_MAXCOLUMS">
+		<value>最大栏数</value>
+	</data>
+	<data name="ENHANCEDLINKS_MAXCOLUMS_DESCRIPTION">
+		<value>栏的最大数字。</value>
+	</data>
+	<data name="ENHANCEDLINKS_SWITCHERTYPES">
+		<value>样式链接</value>
+	</data>
+	<data name="ENHANCEDLINKS_SWITCHERTYPES_DESCRIPTION">
+		<value>在此选择模块显示样式</value>
+	</data>
+	<data name="EN-US">
+		<value>美式英语标题</value>
+	</data>
+	<data name="EN-US_DESCRIPTION">
+		<value>设置美式英文标题</value>
+	</data>
+	<data name="ENTRIES TO SHOW">
+		<value>显示条数</value>
+	</data>
+	<data name="ERROR">
+		<value>错误</value>
+	</data>
+	<data name="ERROR_403">
+		<value>访问或编辑被拒绝</value>
+	</data>
+	<data name="ERROR_403_MESSAGE">
+		<value>您没有足够的权限访问或操作该页。</value>
+	</data>
+	<data name="ERROR_404">
+		<value>网页没发现</value>
+	</data>
+	<data name="ERROR_404_MESSAGE">
+		<value>对不起，没有找到与您的输入匹配的网页，可能是您输入有误，或者网页已不再存在。您可以再试着输入一次，或者从以下链接中选择一个，我们希望能帮您找到所需要的内容。</value>
+	</data>
+	<data name="ERROR_COMPLETION_DATE">
+		<value>请输入预计完成日期</value>
+	</data>
+	<data name="ERROR_ENTER_A_FILE_NAME">
+		<value>请输入安装文件名</value>
+	</data>
+	<data name="ERROR_ENTER_A_MODULE_NAME">
+		<value>请输入模块名称</value>
+	</data>
+	<data name="ERROR_ENTER_A_SOURCE_PATH">
+		<value>必须输入桌面模块的源路径</value>
+	</data>
+	<data name="ERROR_FILE_NAME">
+		<value>无效的文件名！</value>
+	</data>
+	<data name="ERROR_INVALID_MODULE">
+		<value>无效模块！</value>
+	</data>
+	<data name="ERROR_NOT_ALLOWED_PARENT">
+		<value>不允许选择这个作为父</value>
+	</data>
+	<data name="ERROR_QUIZ_ANSWER">
+		<value>请选择一个答案</value>
+	</data>
+	<data name="ERROR_SUBJECT">
+		<value>必须输入信息主题</value>
+	</data>
+	<data name="ERROR_VALID_COMPLETION_DATE">
+		<value>必须输入预计完成日期</value>
+	</data>
+	<data name="ERROR_VALID_DATE">
+		<value>请输入有效日期</value>
+	</data>
+	<data name="ERROR_VALID_DESCRIPTION">
+		<value>请输入有效的描述</value>
+	</data>
+	<data name="ERROR_VALID_EMAIL">
+		<value>请输入有效电子邮箱</value>
+	</data>
+	<data name="ERROR_VALID_ENDDATE">
+		<value>必须输入有效结束日期</value>
+	</data>
+	<data name="ERROR_VALID_EXPIRE_DATE">
+		<value>请输入有效的过期日期</value>
+	</data>
+	<data name="ERROR_VALID_ID">
+		<value>标识(ID)必须为整数</value>
+	</data>
+	<data name="ERROR_VALID_MESSAGE_TEXT">
+		<value>请输入信息内容</value>
+	</data>
+	<data name="ERROR_VALID_MILESTONE_STATUS">
+		<value>请输入里程碑状态</value>
+	</data>
+	<data name="ERROR_VALID_MILESTONE_TITLE">
+		<value>请输入有效的标题</value>
+	</data>
+	<data name="ERROR_VALID_NAME">
+		<value>请输入有效名称</value>
+	</data>
+	<data name="ERROR_VALID_STARTDATE">
+		<value>必须输入有效的开始日期</value>
+	</data>
+	<data name="ERROR_VALID_TITLE">
+		<value>请输入有效标题</value>
+	</data>
+	<data name="ERROR_VALID_URL">
+		<value>必须输入有效网址</value>
+	</data>
+	<data name="ERROR_VALID_VIEWORDER">
+		<value>必须输入有效查看顺序</value>
+	</data>
+	<data name="ERROR_VALID_WHERE_WHEN">
+		<value>请输入有效的Where When字段</value>
+	</data>
+	<data name="ERROR_VALID_WHEREWHEN">
+		<value>请输入有效的Where When字段</value>
+	</data>
+	<data name="ES">
+		<value>西班牙语标题</value>
+	</data>
+	<data name="ES_DESCRIPTION">
+		<value>设置西班牙语标题。</value>
+	</data>
+	<data name="ES-ES">
+		<value>西班牙语标题</value>
+	</data>
+	<data name="ES-ES_DESCRIPTION">
+		<value>设置西班牙语标题。</value>
+	</data>
+	<data name="EVENTS_ADD">
+		<value>新增事件</value>
+	</data>
+	<data name="EVENTS_ALLDAY">
+		<value>全部事件</value>
+	</data>
+	<data name="EVENTS_BOOKING_REQUIRED">
+		<value>需要登记</value>
+	</data>
+	<data name="EVENTS_CATEGORY">
+		<value>分类</value>
+	</data>
+	<data name="EVENTS_DESCRIPTION">
+		<value>描述</value>
+	</data>
+	<data name="EVENTS_DETAILS">
+		<value>事件详细内容</value>
+	</data>
+	<data name="EVENTS_EMAIL">
+		<value>信息邮件</value>
+	</data>
+	<data name="EVENTS_ENABLED">
+		<value>可用</value>
+	</data>
+	<data name="EVENTS_END_DATE">
+		<value>结束日期</value>
+	</data>
+	<data name="EVENTS_EXPIRES">
+		<value>过期</value>
+	</data>
+	<data name="EVENTS_GROUP">
+		<value>组</value>
+	</data>
+	<data name="EVENTS_PAYMENT">
+		<value>支付</value>
+	</data>
+	<data name="EVENTS_PLACE">
+		<value>地方</value>
+	</data>
+	<data name="EVENTS_PRICES">
+		<value>价格</value>
+	</data>
+	<data name="EVENTS_SITEURL">
+		<value>站点网址</value>
+	</data>
+	<data name="EVENTS_START_DATE">
+		<value>开始日期</value>
+	</data>
+	<data name="EVENTS_STARTAT">
+		<value>开始于</value>
+	</data>
+	<data name="EVENTS_STARTDATE">
+		<value>日期</value>
+	</data>
+	<data name="EVENTS_STARTTIME">
+		<value>时间</value>
+	</data>
+	<data name="EVENTS_TIMETABLE">
+		<value>详细时间表</value>
+	</data>
+	<data name="EVENTS_TITLE">
+		<value>标题</value>
+	</data>
+	<data name="EVENTS_VALID_DESCRIPTION">
+		<value>请输入有效描述</value>
+	</data>
+	<data name="EVENTS_VALID_EXPIRE">
+		<value>请输入有效过期日期</value>
+	</data>
+	<data name="EVENTS_VALID_TITLE">
+		<value>请输入有效标题</value>
+	</data>
+	<data name="EVENTS_VALID_WHEN-WHERE">
+		<value>请输入有效的时间、地点</value>
+	</data>
+	<data name="EVENTS_WHEN-WHERE">
+		<value>地点</value>
+	</data>
+	<data name="EVENTS_WHEREWHEN">
+		<value>地点</value>
+	</data>
+	<data name="EXCERPT">
+		<value>摘录</value>
+	</data>
+	<data name="EXPIRE_DATE">
+		<value>过期日期</value>
+	</data>
+	<data name="EXPIRED_PERMISSION_ROLE">
+		<value>过期内容可见角色</value>
+	</data>
+	<data name="EXPIRED_PERMISSION_ROLE_DESCRIPTION">
+		<value>可查看过期内容的角色。</value>
+	</data>
+	<data name="FAQ_A">
+		<value>答</value>
+	</data>
+	<data name="FAQ_ANSWER">
+		<value>回答</value>
+	</data>
+	<data name="FAQ_ANSWER_ERR">
+		<value>回答错误</value>
+	</data>
+	<data name="FAQ_DETAILS">
+		<value>详细内容</value>
+	</data>
+	<data name="FAQ_Q">
+		<value>问</value>
+	</data>
+	<data name="FAQ_QUESTION">
+		<value>问题</value>
+	</data>
+	<data name="FAQ_QUESTION_ERR">
+		<value>问题错误！</value>
+	</data>
+	<data name="FAX">
+		<value>传真</value>
+	</data>
+	<data name="FILE_CATEGORY">
+		<value>分类</value>
+	</data>
+	<data name="FILE_NAME">
+		<value>文件名</value>
+	</data>
+	<data name="FILE_NOT_FOUND">
+		<value>没发现 %1% 文件</value>
+	</data>
+	<data name="FILE_UPLOAD">
+		<value>上传文件</value>
+	</data>
+	<data name="FILE_UPLOAD_ERROR">
+		<value>上传文件无效</value>
+	</data>
+	<data name="FILEMAN_FILENAME">
+		<value>文件名</value>
+	</data>
+	<data name="FILEMAN_MODIFIED">
+		<value>修改时间</value>
+	</data>
+	<data name="FILEMAN_SIZE">
+		<value>大小(KB)</value>
+	</data>
+	<data name="FIXED_WIDTH_AND_HEIGHT">
+		<value>固定宽度和高度</value>
+	</data>
+	<data name="FIXEDSHIPPING">
+		<value>固定送货日期</value>
+	</data>
+	<data name="FIXEDSHIPPING_DESCRIPTION">
+		<value>固定送货日期</value>
+	</data>
+	<data name="FLASH_BACKGROUNDCOLOR">
+		<value>背景颜色</value>
+	</data>
+	<data name="FLASH_GALLERY">
+		<value>Flash图库</value>
+	</data>
+	<data name="FLASH_PATH">
+		<value>Swf文件路径</value>
+	</data>
+	<data name="FLASH_SELECT_FILE">
+		<value>1.选择Flash文件</value>
+	</data>
+	<data name="FLASH_SETTINGS">
+		<value>Flash设置</value>
+	</data>
+	<data name="FLASH_UPLOAD_FILE">
+		<value>2.上传Swf文件</value>
+	</data>
+	<data name="FLASH_UPLOAD_TITLE">
+		<value>上传Flash文件</value>
+	</data>
+	<data name="FLASHPATH">
+		<value>Flash文件路径</value>
+	</data>
+	<data name="FM_DIRECTORY">
+		<value>目录路径</value>
+	</data>
+	<data name="FM_DOWNLOADABLEEXT">
+		<value>可下载扩展名</value>
+	</data>
+	<data name="FM_DOWNLOADABLEEXT_DESCRIPTION">
+		<value>提供一个用逗号分隔的可下载文件扩展名列表</value>
+	</data>
+	<data name="FRIENDLY_NAME">
+		<value>易记名</value>
+	</data>
+	<data name="FROM">
+		<value>从</value>
+	</data>
+	<data name="GATEWAY_WIRE_TRANSFER">
+		<value>有线传送</value>
+	</data>
+	<data name="GENERAL_ERROR_MESSAGE">
+		<value>本部分维护中</value>
+	</data>
+	<data name="GOOGLE_SEARCH">
+		<value>搜索</value>
+	</data>
+	<data name="GOOGLE_START">
+		<value>开始</value>
+	</data>
+	<data name="GOOGLESEARCH_RESTRICT_DOMAIN">
+		<value>限制在此域</value>
+	</data>
+	<data name="GOOGLESEARCH_RESTRICT_DOMAIN_DESCRIPTION">
+		<value>限制在指定的域范围内搜索。本项掩盖“仅搜索本站”项。</value>
+	</data>
+	<data name="GOOGLESEARCH_SEARCH_THIS_SITE_ONLY">
+		<value>仅搜索本站</value>
+	</data>
+	<data name="GOOGLESEARCH_SEARCH_THIS_SITE_ONLY_DESCRIPTION">
+		<value>仅搜索本站。在“限制在这此域”项空白时才有效。</value>
+	</data>
+	<data name="GOTO_PAGE">
+		<value>跳转到页面</value>
+	</data>
+	<data name="GUID"></data>
+	<data name="HEADER_EDIT_PROFILE">
+		<value>编辑配置文件</value>
+	</data>
+	<data name="HEADER_HELP">
+		<value>帮助</value>
+	</data>
+	<data name="HEADER_LOGOFF">
+		<value>退出</value>
+	</data>
+	<data name="HEADER_MANAGE_TAB">
+		<value>编辑本页</value>
+	</data>
+	<data name="HEADER_SAVE_DESKTOP">
+		<value>保存桌面</value>
+	</data>
+	<data name="HEADER_WELCOME">
+		<value>欢迎</value>
+	</data>
+	<data name="HEIGHT">
+		<value>高度</value>
+	</data>
+	<data name="HEIGHT_DESCRIPTION">
+		<value>编辑控件的高度</value>
+	</data>
+	<data name="HERE">
+		<value>这里</value>
+	</data>
+	<data name="HOME">
+		<value>首页</value>
+	</data>
+	<data name="HORIZONTAL">
+		<value>水平</value>
+	</data>
+	<data name="HTML_DESKTOP_CONTENT">
+		<value>桌面Html内容</value>
+	</data>
+	<data name="HTML_EDITOR">
+		<value>HTML编辑器</value>
+	</data>
+	<data name="HTML_MOBILE_DETAILS">
+		<value>移动用户页详细内容</value>
+	</data>
+	<data name="HTML_MOBILE_SUMMARY">
+		<value>移动用户页摘要</value>
+	</data>
+	<data name="HTMLDOCUMENT_TODO_ADDCONTENT">
+		<value>操作增加内容…</value>
+	</data>
+	<data name="HTMLTEMPLATE">
+		<value>HTML模板</value>
+	</data>
+	<data name="HTMLTEMPLATE_DESCRIPTION">
+		<value>请选择一个HTML模板，作为该模块发送新闻组的基础。</value>
+	</data>
+	<data name="HTMLTEMPLATEURL">
+		<value>HTML模板网址</value>
+	</data>
+	<data name="IDLIST">
+		<value>ID列表</value>
+	</data>
+	<data name="IDLISTTYPE">
+		<value>列表类型</value>
+	</data>
+	<data name="ICONFILE">
+		<value>图标文件</value>
+	</data>
+	<data name="ICONHEIGHT">
+		<value>图标高度</value>
+	</data>
+	<data name="ICONWIDTH">
+		<value>图标宽度</value>
+	</data>
+	<data name="IMAGE">
+		<value>图片</value>
+	</data>
+	<data name="IMAGE_DETAIL">
+		<value>图片详细内容</value>
+	</data>
+	<data name="IMAGE_UPLOAD_ERROR">
+		<value>您上传的图片无效。请检查文件扩展名是否正确(如.jpg、.gif)。</value>
+	</data>
+	<data name="IMAGELAYOUT">
+		<value>图片布局</value>
+	</data>
+	<data name="IMAGELOGO">
+		<value>图片徽标(LOGO)</value>
+	</data>
+	<data name="IMAGELOGO_DESCRIPTION">
+		<value>图片徽标(LOGO)文件网址</value>
+	</data>
+	<data name="IMAGEPATH">
+		<value>图像路径</value>
+	</data>
+	<data name="IMAGEPERCENT">
+		<value>图像大小百分比</value>
+	</data>
+	<data name="IN">
+		<value>在</value>
+	</data>
+	<data name="INDENT">
+		<value>子目录缩进(px)</value>
+	</data>
+	<data name="INFOEXTENDEDFIELDS">
+		<value>信息扩展字段</value>
+	</data>
+	<data name="INFOFIELDS">
+		<value>信息字段</value>
+	</data>
+	<data name="INSERT_CONFIRM">
+		<value>“确认密码”不可为空。</value>
+	</data>
+	<data name="INSERT_EMAIL">
+		<value>“电子邮箱”不可为空。</value>
+	</data>
+	<data name="INSERT_IMAGE_FROM_GALLERY">
+		<value>从图库中插入图片</value>
+	</data>
+	<data name="INSERT_NAME">
+		<value>“名字”不可空。</value>
+	</data>
+	<data name="INSERT_PASSWORD">
+		<value>“密码”不可空。</value>
+	</data>
+	<data name="INSTALL_MANUALLY">
+		<value>手动安装</value>
+	</data>
+	<data name="INSTALLER_FILE">
+		<value>安装文件</value>
+	</data>
+	<data name="IT">
+		<value>意大利语标题</value>
+	</data>
+	<data name="IT_DESCRIPTION">
+		<value>设置为意大利语标题。</value>
+	</data>
+	<data name="IT-IT">
+		<value>意大利语标题</value>
+	</data>
+	<data name="IT-IT_DESCRIPTION">
+		<value>设置为意大利语标题。</value>
+	</data>
+	<data name="LANGUAGE">
+		<value>语言</value>
+	</data>
+	<data name="LANGSWITCHTDISPLAY_CULTURELIST">
+		<value>使用语言文化名称</value>
+	</data>
+	<data name="LANGSWITCHTDISPLAY_NONE">
+		<value>无</value>
+	</data>
+	<data name="LANGSWITCHTDISPLAY_UICULTURELIST">
+		<value>使用图形界面语言文化名称</value>
+	</data>
+	<data name="LANGSWITCHTNAMES_DISPLAYNAME">
+		<value>显示名称</value>
+	</data>
+	<data name="LANGSWITCHTNAMES_ENGLISHNAME">
+		<value>英文名称</value>
+	</data>
+	<data name="LANGSWITCHTNAMES_NATIVENAME">
+		<value>本地化名称</value>
+	</data>
+	<data name="LANGSWITCHTYPE_DISABLED">
+		<value>不可用</value>
+	</data>
+	<data name="LANGSWITCHTYPE_DROPDOWNLIST">
+		<value>下拉式列表</value>
+	</data>
+	<data name="LANGSWITCHTYPE_FLAGS">
+		<value>仅旗帜</value>
+	</data>
+	<data name="LANGSWITCHTYPE_FLAGSHORIZONTAL">
+		<value>仅旗帜水平方向</value>
+	</data>
+	<data name="LANGSWITCHTYPE_FORM">
+		<value>形式</value>
+	</data>
+	<data name="LANGSWITCHTYPE_LINKS">
+		<value>链接</value>
+	</data>
+	<data name="LANGSWITCHTYPE_LINKSHORIZONTAL">
+		<value>水平链接</value>
+	</data>
+	<data name="LANGUAGESWITCHER_CUSTOMFLAGS">
+		<value>使用自定义旗帜</value>
+	</data>
+	<data name="LANGUAGESWITCHER_CUSTOMFLAGS_DESCRIPTION">
+		<value>如果要使用插件图片文件夹中自定义的标志，请勾选本项。自定义标志位于插件的“/images/flags/”文件夹中。</value>
+	</data>
+	<data name="LANGUAGESWITCHER_FLAGS">
+		<value>显示标志为</value>
+	</data>
+	<data name="LANGUAGESWITCHER_FLAGS_DESCRIPTION">
+		<value>在此选择标志外观。</value>
+	</data>
+	<data name="LANGUAGESWITCHER_LABELS">
+		<value>显示标签为</value>
+	</data>
+	<data name="LANGUAGESWITCHER_LABELS_DESCRIPTION">
+		<value>在此选择标签外观。</value>
+	</data>
+	<data name="LANGUAGESWITCHER_NAMES">
+		<value>显示名称为</value>
+	</data>
+	<data name="LANGUAGESWITCHER_NAMES_DESCRIPTION">
+		<value>在此选择显示名称外观。</value>
+	</data>
+	<data name="LANGUAGESWITCHER_TYPES">
+		<value>语言切换类别</value>
+	</data>
+	<data name="LANGUAGESWITCHER_TYPES_DESCRIPTION">
+		<value>在此选择语言切换器外观。</value>
+	</data>
+	<data name="LANGUAGESWITCHTYPE">
+		<value>语言切换类别</value>
+	</data>
+	<data name="LANGUAGESWITCHTYPE_DESCRIPTION">
+		<value>在此选择语言切换器外观。</value>
+	</data>
+	<data name="LAST_UPDATED">
+		<value>最后更新</value>
+	</data>
+	<data name="LASTNAME">
+		<value>姓氏</value>
+	</data>
+	<data name="LAYOUT">
+		<value>布局</value>
+	</data>
+	<data name="LEFT">
+		<value>左</value>
+	</data>
+	<data name="LET_USER_CHOOSE">
+		<value>让用户选择</value>
+	</data>
+	<data name="LICKEY">
+		<value>许可关键字</value>
+	</data>
+	<data name="LINKDETAILS">
+		<value>链接详细内容</value>
+	</data>
+	<data name="LINKEDMODULE">
+		<value>链接模块</value>
+	</data>
+	<data name="LINKGROUP">
+		<value>链接组</value>
+	</data>
+	<data name="LINKTYPE">
+		<value>链接类型</value>
+	</data>
+	<data name="LOCALMODE">
+		<value>本地化模式</value>
+	</data>
+	<data name="LOCATION">
+		<value>位置</value>
+	</data>
+	<data name="LOAD_THEME_ERROR">
+		<value>无法装载主题风格 %1% 。默认主题不可用。</value>
+	</data>
+	<data name="LOGIN_FAILED">
+		<value>用户名或密码不正确，登录失败！</value>
+	</data>
+	<data name="LOGINHOMEPAGE">
+		<value>站点网址</value>
+	</data>
+	<data name="LOGINHOMEPAGE_DESCRIPTION">
+		<value>站点网址或首页用于建立直接登录网址。使用当前站点时留空。</value>
+	</data>
+	<data name="LOGOFF">
+		<value>退出</value>
+	</data>
+	<data name="LOGON">
+		<value>登录</value>
+	</data>
+	<data name="MACHINENAME">
+		<value>机器名</value>
+	</data>
+	<data name="MAINTAIN_ASPECT_FIXED_HEIGHT">
+		<value>修正外观固定高度</value>
+	</data>
+	<data name="MAINTAIN_ASPECT_FIXED_WIDTH">
+		<value>修正外观固定宽度</value>
+	</data>
+	<data name="MARK">
+		<value>标记</value>
+	</data>
+	<data name="MAXHITS">
+		<value>最大采样数</value>
+	</data>
+	<data name="MAXRESULTS">
+		<value>返回最大结果数</value>
+	</data>
+	<data name="MAXSTRINGLENGTH">
+		<value>最大字符串长度</value>
+	</data>
+	<data name="MDF_ALL_NOT_IN_LIST">
+		<value>所有不在列表中的</value>
+	</data>
+	<data name="MDF_ALL_NOT_IN_LIST_DESCRIPTION">
+		<value>如果数据源是“All”或“List”，勾选本项选择所有在模块列表中不包括的模块。</value>
+	</data>
+	<data name="MDF_APPLY_MDF">
+		<value>应用MDF</value>
+	</data>
+	<data name="MDF_APPLY_MDF_DESCRIPTION">
+		<value>设置是否激活MDF系统。</value>
+	</data>
+	<data name="MDF_DATA_SOURCE">
+		<value>数据源</value>
+	</data>
+	<data name="MDF_DATA_SOURCE_DESCRIPTION">
+		<value>控件模块上显示数据的来源，“This”表示当前模块，“All”表示此插件中的所有模块，而“List”您必须指定模块标识(ID)如“1023”、“2048”等。</value>
+	</data>
+	<data name="MDF_MAX_HITS">
+		<value>最大采样数</value>
+	</data>
+	<data name="MDF_MAX_HITS_DESCRIPTION">
+		<value>显示MDF返回最大记录数，0表示不限(显示所有返回内容)。</value>
+	</data>
+	<data name="MDF_MOBILE_ONLY">
+		<value>仅移动用户</value>
+	</data>
+	<data name="MDF_MOBILE_ONLY_DESCRIPTION">
+		<value>仅在移动设备上显示</value>
+	</data>
+	<data name="MDF_MODULE_LIST">
+		<value>模块列表</value>
+	</data>
+	<data name="MDF_MODULE_LIST_DESCRIPTION">
+		<value>逗号分隔的模块标识(ID)，如“1023”、“2048”等，</value>
+	</data>
+	<data name="MDF_SETTINGS">
+		<value>模块数据过滤设置</value>
+	</data>
+	<data name="MDF_SORT_FIELD">
+		<value>排序字段</value>
+	</data>
+	<data name="MDF_SORT_FIELD_DESCRIPTION">
+		<value>你希望排序的所有字段列表</value>
+	</data>
+	<data name="MDF_SORT_DIRECTION">
+		<value>排序方向</value>
+	</data>
+	<data name="MDF_SORT_DIRECTION_DESCRIPTION">
+		<value>升序(ASC)或降序(DESC)</value>
+	</data>
+	<data name="MDF_SEARCH_STRING">
+		<value>搜索字符串</value>
+	</data>
+	<data name="MDF_SEARCH_STRING_DESCRIPTION">
+		<value>空字符串表示不搜索</value>
+	</data>
+	<data name="MDF_SEARCH_FIELD">
+		<value>搜索字段</value>
+	</data>
+	<data name="MDF_SEARCH_FIELD_DESCRIPTION">
+		<value>在记录中搜索所有字段或单个字段，不同的模块可搜索字段不相同。</value>
+	</data>
+	<data name="MERCHANT">
+		<value>店主标识(ID)</value>
+	</data>
+	<data name="MEMBERSHIP">
+		<value>会员身份</value>
+	</data>
+	<data name="META_SETTINGS">
+		<value>META设置</value>
+	</data>
+	<data name="MIDDLE">
+		<value>中间</value>
+	</data>
+	<data name="MILESTONE_COMPL_DATE">
+		<value>完成日期</value>
+	</data>
+	<data name="MILESTONE_STATUS">
+		<value>状态</value>
+	</data>
+	<data name="MILESTONE_TITLE">
+		<value>标题</value>
+	</data>
+	<data name="MILESTONES_COMPLETION_DATE">
+		<value>完成日期</value>
+	</data>
+	<data name="MILESTONES_DETAIL">
+		<value>里程碑详细内容</value>
+	</data>
+	<data name="MILESTONES_STATUS">
+		<value>状态</value>
+	</data>
+	<data name="MILESTONES_TITLE">
+		<value>标题</value>
+	</data>
+	<data name="MISC_SETTINGS">
+		<value>其他</value>
+	</data>
+	<data name="MOBILE_SOURCE">
+		<value>移动来源</value>
+	</data>
+	<data name="MOBILEONLY">
+		<value>仅移动用户用</value>
+	</data>
+	<data name="MOBILEURL">
+		<value>移动网址</value>
+	</data>
+	<data name="MODEL">
+		<value>模型</value>
+	</data>
+	<data name="MODIFIED_BY">
+		<value>修改者</value>
+	</data>
+	<data name="MODULE_DEFS_ADMIN">
+		<value>管理模块</value>
+	</data>
+	<data name="MODULE_DEFS_USER">
+		<value>用户模块</value>
+	</data>
+	<data name="MODULE_IMAGE_FOLDER">
+		<value>默认图片文件夹</value>
+	</data>
+	<data name="MODULE_IMAGE_FOLDER_DESCRIPTION">
+		<value>这个文件夹用于该模块编辑器取用、上传图片。</value>
+	</data>
+	<data name="MODULE_SPECIAL_SETTINGS">
+		<value>模块个性化设置</value>
+	</data>
+	<data name="MODULE_TITLE">
+		<value>新模块名称</value>
+	</data>
+	<data name="MODULE_TYPE_DEFINITION">
+		<value>模块类别定义</value>
+	</data>
+	<data name="MODULENAME">
+		<value>模块名称</value>
+	</data>
+	<data name="MODULESETTINGS">
+		<value>模块设置</value>
+	</data>
+	<data name="MODULESETTINGS__SUPPORT_WORKFLOW">
+		<value>可用工作流</value>
+	</data>
+	<data name="MODULESETTINGS_APPLY_THEME">
+		<value>应用主题风格</value>
+	</data>
+	<data name="MODULESETTINGS_APPLY_THEME_DESCRIPTION">
+		<value>勾选本项应用主题风格到模块</value>
+	</data>
+	<data name="MODULESETTINGS_BASE_SETTINGS">
+		<value>编辑基本设置</value>
+	</data>
+	<data name="MODULESETTINGS_BUTTON_DISPLAY">
+		<value>显示按钮为</value>
+	</data>
+	<data name="MODULESETTINGS_BUTTON_DISPLAY_BOTH">
+		<value>图片和文本(CSS)</value>
+	</data>
+	<data name="MODULESETTINGS_BUTTON_DISPLAY_DESCRIPTION">
+		<value>选择您希望按钮如何显示。注意选择“仅图片”之外的项可能需要Zen或者主题特殊处理。</value>
+	</data>
+	<data name="MODULESETTINGS_BUTTON_DISPLAY_IMAGE">
+		<value>仅图片</value>
+	</data>
+	<data name="MODULESETTINGS_BUTTON_DISPLAY_IMAGECSS">
+		<value>仅图片(CSS)</value>
+	</data>
+	<data name="MODULESETTINGS_BUTTON_DISPLAY_TEXT">
+		<value>仅文本</value>
+	</data>
+	<data name="MODULESETTINGS_CACHE_TIMEOUT">
+		<value>缓存超时</value>
+	</data>
+	<data name="MODULESETTINGS_CONTENT_HEIGHT">
+		<value>内容高度</value>
+	</data>
+	<data name="MODULESETTINGS_CONTENT_HEIGHT_DESCRIPTION">
+		<value>该模块内容的最小高度(像素值)，0为无。</value>
+	</data>
+	<data name="MODULESETTINGS_CONTENT_SCROLLING">
+		<value>内容滚动</value>
+	</data>
+	<data name="MODULESETTINGS_CONTENT_SCROLLING_DESCRIPTION">
+		<value>设置启用或不用内容在设定的宽度和高度范围内滚动。</value>
+	</data>
+	<data name="MODULESETTINGS_CONTENT_WIDTH">
+		<value>内容宽度</value>
+	</data>
+	<data name="MODULESETTINGS_CONTENT_WIDTH_DESCRIPTION">
+		<value>该模块内容的最小宽度(像素值)，0为无。</value>
+	</data>
+	<data name="MODULESETTINGS_CULTURE">
+		<value>语言文化</value>
+	</data>
+	<data name="MODULESETTINGS_CULTURE_DESCRIPTION">
+		<value>请选择语言文化，不选择时模块总是显示，选择一种或多种语言文化后，模块只在选定的语言文化环境下才显示。</value>
+	</data>
+	<data name="MODULESETTINGS_HTMLDOCUMENT_SHOW_COMPARE_BUTTON">
+		<value>显示比较按钮</value>
+	</data>
+	<data name="MODULESETTINGS_HTMLDOCUMENT_SHOW_COMPARE_BUTTON_DESCRIPTION">
+		<value>比较工作版本和当前活动版本。</value>
+	</data>
+	<data name="MODULESETTINGS_MODULE_NAME">
+		<value>模块名称</value>
+	</data>
+	<data name="MODULESETTINGS_MODULE_THEME">
+		<value>自定义主题风格</value>
+	</data>
+	<data name="MODULESETTINGS_MODULE_THEME_DESCRIPTION">
+		<value>设置仅用于此模块的自定义主题风格。</value>
+	</data>
+	<data name="MODULESETTINGS_MODULE_TYPE">
+		<value>模块类别</value>
+	</data>
+	<data name="MODULESETTINGS_MOVE_TO_TAB">
+		<value>移到标签页</value>
+	</data>
+	<data name="MODULESETTINGS_ROLE_VIEW">
+		<value>可查看的角色</value>
+	</data>
+	<data name="MODULESETTINGS_ROLES_ADD">
+		<value>可增加的角色</value>
+	</data>
+	<data name="MODULESETTINGS_ROLES_APPROVING">
+		<value>可审批的角色</value>
+	</data>
+	<data name="MODULESETTINGS_ROLES_DELETE">
+		<value>可删除的角色</value>
+	</data>
+	<data name="MODULESETTINGS_ROLES_DELETE_MODULES">
+		<value>可删除模块的角色</value>
+	</data>
+	<data name="MODULESETTINGS_ROLES_EDIT">
+		<value>可编辑模块的角色</value>
+	</data>
+	<data name="MODULESETTINGS_ROLES_EDIT_COLLECTION">
+		<value>可编辑属性的角色</value>
+	</data>
+	<data name="MODULESETTINGS_ROLES_MOVE_MODULES">
+		<value>可移动模块的角色</value>
+	</data>
+	<data name="MODULESETTINGS_ROLES_PUBLISHING">
+		<value>可发布信息的角色</value>
+	</data>
+	<data name="MODULESETTINGS_SETTINGS">
+		<value>模块设置</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_ARROW_BUTTONS">
+		<value>显示箭头管理按钮</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_ARROW_BUTTONS_DESCRIPTION">
+		<value>是否显示箭头按钮？</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_COLLAPSABLE">
+		<value>可折叠窗口</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_EVERYWHERE">
+		<value>显示在每个页面</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_HELP_BUTTON">
+		<value>显示帮助按钮</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_HELP_BUTTON_DESCRIPTION">
+		<value>如果存在该模块文档，则在标题上显示帮助按钮</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_MODIFIED_BY">
+		<value>显示修改者</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_MODIFIED_BY_DESCRIPTION">
+		<value>切换“修改者显示”开关</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_PRINT_BUTTION">
+		<value>显示打印按钮</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_PRINT_BUTTION_DESCRIPTION">
+		<value>在查看状态下显示打印按钮？</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_TITLE">
+		<value>显示标题</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_TITLE_DESCRIPTION">
+		<value>切换“标题显示”开关</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_TITLE_PRINT">
+		<value>显示打印标题</value>
+	</data>
+	<data name="MODULESETTINGS_SHOW_TITLE_PRINT_DESCRIPTION">
+		<value>在打印弹出窗内显示标题？</value>
+	</data>
+	<data name="MODULESETTINGS_SUPPORT_WORKFLOW">
+		<value>工作流可用</value>
+	</data>
+	<data name="MODULESETTINGS_THEME">
+		<value>主题风格</value>
+	</data>
+	<data name="MODULESETTINGS_THEME_ALT">
+		<value>交替主题风格</value>
+	</data>
+	<data name="MODULESETTINGS_THEME_DEFAULT">
+		<value>默认</value>
+	</data>
+	<data name="MODULESETTINGS_THEME_DESCRIPTION">
+		<value>为模块选择主题风格</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_BG-BG">
+		<value>保加利亚语标题</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_BG-BG_DESCRIPTION">
+		<value>设置保加利亚语标题。</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_CA">
+		<value>加泰罗尼亚语标题</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_CA_DESCRIPTION">
+		<value>设置加泰罗尼亚语标题。</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_EN">
+		<value>英文标题</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_EN_DESCRIPTION">
+		<value>设置英文本标题。</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_EN-GB">
+		<value>英文标题(联合王国)</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_EN-GB_DESCRIPTION">
+		<value>设置英文本标题(联合王国)。</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_EN-US">
+		<value>英文标题(美国)</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_EN-US_DESCRIPTION">
+		<value>设置英文本标题(美国)。</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_ES">
+		<value>西班牙语标题</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_ES_DESCRIPTION">
+		<value>设置西班牙语标题。</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_ES-ES">
+		<value>西班牙语标题</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_ES-ES_DESCRIPTION">
+		<value>设置西班牙语标题。</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_FR">
+		<value>法语标题</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_FR_DESCRIPTION">
+		<value>设置法语标题。</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_IT">
+		<value>意大利语标题</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_IT_DESCRIPTION">
+		<value>设置意大利语标题。</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_NL-BE">
+		<value>荷兰语(比利时)标题</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_NL-BE_DESCRIPTION">
+		<value>设置荷兰语(比利时)标题。</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_ZH-CN">
+		<value>简体中文标题</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_ZH-CN_DESCRIPTION">
+		<value>设置简体中文标题(UTF-8)。</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_ZH-TW">
+		<value>繁体中文标题</value>
+	</data>
+	<data name="MODULESETTINGS_TITLE_ZH-TW_DESCRIPTION">
+		<value>设置繁体中文标题(UTF-8)。</value>
+	</data>
+	<data name="MODULESETTINGS_WIDTH_STRETCHING">
+		<value>模块自动伸展</value>
+	</data>
+	<data name="MODULESETTINGS_WIDTH_STRETCHING_DESCRIPTION">
+		<value>设置启用/禁用模块自动向右边空白区域伸展。</value>
+	</data>
+	<data name="MODULETYPE">
+		<value>模板类型</value>
+	</data>
+	<data name="MOVE_DOWN">
+		<value>下移</value>
+	</data>
+	<data name="MOVE_LEFT">
+		<value>左移</value>
+	</data>
+	<data name="MOVE_RIGHT">
+		<value>右移</value>
+	</data>
+	<data name="MOVE_TO">
+		<value>移到</value>
+	</data>
+	<data name="MOVE_TO_TAB">
+		<value>移到标签页</value>
+	</data>
+	<data name="MOVE_UP">
+		<value>上移</value>
+	</data>
+	<data name="MOVEDOWN">
+		<value>下移</value>
+	</data>
+	<data name="MOVEITEMLEFT">
+		<value>&lt;- 左移</value>
+	</data>
+	<data name="MOVEITEMRIGHT">
+		<value>右移 -&gt;</value>
+	</data>
+	<data name="MOVELEFT">
+		<value>移动左边选项</value>
+	</data>
+	<data name="MOVERIGHT">
+		<value>移动右边选项</value>
+	</data>
+	<data name="MOVEUP">
+		<value>列表中选定项上移</value>
+	</data>
+	<data name="MULTIPORTALSUPPORT">
+		<value>多插件支持</value>
+	</data>
+	<data name="MULTIPORTALSUPPORT_DESCRIPTION">
+		<value>允许或禁止多插件支持。</value>
+	</data>
+	<data name="MY QUOTE">
+		<value>我的语录</value>
+	</data>
+	<data name="MY QUOTE_DESCRIPTION">
+		<value>输入任何一条语录，并设置语录来源为“我的语录”。</value>
+	</data>
+	<data name="NAME">
+		<value>名称</value>
+	</data>
+	<data name="NAVIGATION_SETTINGS">
+		<value>导航设置</value>
+	</data>
+	<data name="NEW_FOLDER">
+		<value>新建文件夹</value>
+	</data>
+	<data name="NEW_PORTAL_ERROR">
+		<value>创建插件时发生错误，可能插件已存在，请更改别名后重试！</value>
+	</data>
+	<data name="NEWSLETTER_BLACKLISTED">
+		<value>被谁列入黑名单</value>
+	</data>
+	<data name="NEWSLETTER_DEFAULTEMAIL">
+		<value>发件箱</value>
+	</data>
+	<data name="NEWSLETTER_DEFAULTNAME">
+		<value>发件人</value>
+	</data>
+	<data name="NEWSLETTER_DIRECTURL">
+		<value>可自动登录的直达网址</value>
+	</data>
+	<data name="NEWSLETTER_DONOTRESENDWITHIN">
+		<value>不允许重发天数</value>
+	</data>
+	<data name="NEWSLETTER_DONOTRESENDWITHIN_DESCRIPTION">
+		<value>为避免垃圾邮件和重复发送，在指定的天数内给同一用户发送邮件不能超过一次。</value>
+	</data>
+	<data name="NEWSLETTER_HTML_MODE">
+		<value>HTML模式</value>
+	</data>
+	<data name="NEWSLETTER_HTMLTEMPLATE">
+		<value>HTML模板</value>
+	</data>
+	<data name="NEWSLETTER_HTMLTEMPLATE_DESCRIPTION">
+		<value>请选择一个HTML模板，作为该新闻组邮件的基础。</value>
+	</data>
+	<data name="NEWSLETTER_INSERT_BREAK_LINES">
+		<value>插入分隔行</value>
+	</data>
+	<data name="NEWSLETTER_LOGINHOMEPAGE">
+		<value>站点网址(URL)</value>
+	</data>
+	<data name="NEWSLETTER_LOGINHOMEPAGE_DESCRIPTION">
+		<value>站点网址或首页用于建立直接登录网址。使用当前站点时留空。</value>
+	</data>
+	<data name="NEWSLETTER_MESSAGE_BODY">
+		<value>信息内容</value>
+	</data>
+	<data name="NEWSLETTER_MSG">
+		<value>这条信息将被发送给订阅了新闻组的{1}注册用户</value>
+	</data>
+	<data name="NEWSLETTER_MSG_TEST">
+		<value>测试信息将被发送到 {1} [{2}] - 测试模式</value>
+	</data>
+	<data name="NEWSLETTER_PASSWORD">
+		<value>密码</value>
+	</data>
+	<data name="NEWSLETTER_SENDER_EMAIL_ADDRESS">
+		<value>发件电子邮箱</value>
+	</data>
+	<data name="NEWSLETTER_SENDER_OPTIONAL_NAME">
+		<value>您的姓名(可选)</value>
+	</data>
+	<data name="NEWSLETTER_SUBJECT">
+		<value>主题</value>
+	</data>
+	<data name="NEWSLETTER_TITLE">
+		<value>新闻组订阅者</value>
+	</data>
+	<data name="NEWSLETTER_USERBLOCK">
+		<value>组用户数</value>
+	</data>
+	<data name="NEWSLETTER_USERBLOCK_DESCRIPTION">
+		<value>选择每组最大用户数。当发送邮件到所有你要重复处理的用户时，用较小的开销避免服务器超时。</value>
+	</data>
+	<data name="NEWSLETTER_USERNAME">
+		<value>用户名</value>
+	</data>
+	<data name="NEWSLETTER_USEREMAIL">
+		<value>电子邮箱</value>
+	</data>
+	<data name="NEXT">
+		<value>下一步</value>
+	</data>
+	<data name="NO_ACCOUNT">
+		<value>如果您还没有账号</value>
+	</data>
+	<data name="NO_FILE_MESSAGE">
+		<value>必须输入有效文件名</value>
+	</data>
+	<data name="NO_FOLDER_SPECIFIED_MESSAGE">
+		<value>不能在FlashPath中建立指定的文件夹</value>
+	</data>
+	<data name="NO_IMAGE_MESSAGE">
+		<value>没有文件可显示。</value>
+	</data>
+	<data name="NO_MODULE">
+		<value>没有模块</value>
+	</data>
+	<data name="NODEICON">
+		<value>节点图标</value>
+	</data>
+	<data name="NONE">
+		<value>没有</value>
+	</data>
+	<data name="NOTE">
+		<value>注意</value>
+	</data>
+	<data name="OF">
+		<value>的</value>
+	</data>
+	<data name="OK">
+		<value>确定</value>
+	</data>
+	<data name="ON">
+		<value>于</value>
+	</data>
+	<data name="ONLY_FEATURED">
+		<value>仅显示有特点的</value>
+	</data>
+	<data name="OPTION">
+		<value>选项</value>
+	</data>
+	<data name="OR">
+		<value>或</value>
+	</data>
+	<data name="ORDER_OK">
+		<value>您的订单已成功发送</value>
+	</data>
+	<data name="ORDER_RECEIPT_NUMBER">
+		<value>接受号码</value>
+	</data>
+	<data name="ORDER_WAIT_CONFIRM">
+		<value>请等待我们通过电子邮箱确认。</value>
+	</data>
+	<data name="ORIGINALHEIGHT">
+		<value>原始图片高</value>
+	</data>
+	<data name="ORIGINALRESIZE">
+		<value>原始图片尺寸</value>
+	</data>
+	<data name="ORIGINALWIDTH">
+		<value>原始图片宽</value>
+	</data>
+	<data name="OWNER">
+		<value>创建者</value>
+	</data>
+	<data name="PAGE">
+		<value>页面</value>
+	</data>
+	<data name="PAGESIZE">
+		<value>每页显示记录数</value>
+	</data>
+	<data name="PASSWORD">
+		<value>密码</value>
+	</data>
+	<data name="PASSWORD_DO_NOT_MATCH">
+		<value>密码不符</value>
+	</data>
+	<data name="PASSWORD_NOT_MATCH">
+		<value>密码不符</value>
+	</data>
+	<data name="PHONE">
+		<value>电话</value>
+	</data>
+	<data name="PICTURES_CAPTION">
+		<value>标题</value>
+	</data>
+	<data name="PICTURES_DISPLAY_ORDER">
+		<value>显示顺序</value>
+	</data>
+	<data name="PICTURES_DONT_RESIZE">
+		<value>不要调整尺寸</value>
+	</data>
+	<data name="PICTURES_FAILED_TO_LOAD">
+		<value>装载模板失败，请检查您的设置。</value>
+	</data>
+	<data name="PICTURES_FILE">
+		<value>文件</value>
+	</data>
+	<data name="PICTURES_FIXED_WIDTH_AND_HEIGHT">
+		<value>固定宽度和高度</value>
+	</data>
+	<data name="PICTURES_FLIP">
+		<value>翻转</value>
+	</data>
+	<data name="PICTURES_HORIZONTAL">
+		<value>水平</value>
+	</data>
+	<data name="PICTURES_INCLUDE_EXIF">
+		<value>包含EXIF</value>
+	</data>
+	<data name="PICTURES_KEYWORDS">
+		<value>关键词</value>
+	</data>
+	<data name="PICTURES_LONG_DESCRIPTION">
+		<value>详细描述</value>
+	</data>
+	<data name="PICTURES_MAINTAIN_ASPECT_FIXED_HEIGHT">
+		<value>保持外观固定高度</value>
+	</data>
+	<data name="PICTURES_MAINTAIN_ASPECT_FIXED_WIDTH">
+		<value>保持外观固定宽度</value>
+	</data>
+	<data name="PICTURES_ROTATE">
+		<value>旋转</value>
+	</data>
+	<data name="PICTURES_SHORT_DESCRIPTION">
+		<value>简短描述</value>
+	</data>
+	<data name="PICTURES_VERTICAL">
+		<value>垂直</value>
+	</data>
+	<data name="PICTURESPERPAGE">
+		<value>每页显示图片数</value>
+	</data>
+	<data name="PIVA">
+		<value>公司号码</value>
+	</data>
+	<data name="PORTAL_HOME">
+		<value>首页</value>
+	</data>
+	<data name="PORTALALIAS">
+		<value>插件别名</value>
+	</data>
+	<data name="PORTALS">
+		<value>插件</value>
+	</data>
+	<data name="PORTALSEARCH_ALL">
+		<value>全部</value>
+	</data>
+	<data name="PORTALSEARCH_FIELD">
+		<value>字段</value>
+	</data>
+	<data name="PORTALSEARCH_HIT">
+		<value>采样</value>
+	</data>
+	<data name="PORTALSEARCH_HITS">
+		<value>采样</value>
+	</data>
+	<data name="PORTALSEARCH_LINK">
+		<value>链接</value>
+	</data>
+	<data name="PORTALSEARCH_MISSING">
+		<value>缺失</value>
+	</data>
+	<data name="PORTALSEARCH_MODULE">
+		<value>模块</value>
+	</data>
+	<data name="PORTALSEARCH_MODULETITLE">
+		<value>模块标题</value>
+	</data>
+	<data name="PORTALSEARCH_SEARCH">
+		<value>搜索</value>
+	</data>
+	<data name="PORTALSEARCH_TAB">
+		<value>标签页</value>
+	</data>
+	<data name="PORTALSEARCH_TESTINFO">
+		<value>测试信息</value>
+	</data>
+	<data name="PORTALSEARCH_TITLE">
+		<value>标题</value>
+	</data>
+	<data name="PORTALSEARCH_TOPIC">
+		<value>标题</value>
+	</data>
+	<data name="PORTALSEARCH_USER">
+		<value>用户</value>
+	</data>
+	<data name="POSTALCODE">
+		<value>邮编</value>
+	</data>
+	<data name="POSTED_BY">
+		<value>提交者</value>
+	</data>
+	<data name="POSTED_DATE">
+		<value>提交日期</value>
+	</data>
+	<data name="PREVIEW">
+		<value>预览</value>
+	</data>
+	<data name="PREVIOUS">
+		<value>上一步</value>
+	</data>
+	<data name="PRICE">
+		<value>价格</value>
+	</data>
+	<data name="PRICE_FROM">
+		<value>价格来源</value>
+	</data>
+	<data name="PRODUCT_ACCOUNT_INFORMATION">
+		<value>账号信息</value>
+	</data>
+	<data name="PRODUCT_ADD_OPTION">
+		<value>增加选项</value>
+	</data>
+	<data name="PRODUCT_ADD_TO_CART">
+		<value>加入购入车</value>
+	</data>
+	<data name="PRODUCT_CANNOT_UPDATE">
+		<value>不能更新产品</value>
+	</data>
+	<data name="PRODUCT_CATEGORY">
+		<value>分类</value>
+	</data>
+	<data name="PRODUCT_CATEGORY_DESCRIPTION">
+		<value>新增产品前，先建立产品分类。产品分类是包含电子商务模块的标签页的子页，简单地使用创建标签页管理模块(create tab admin module)生成。&lt;br&gt;只有在此模块建立后，该特性项才在页面显示。</value>
+	</data>
+	<data name="PRODUCT_CATEGORY_NOT_FOUND">
+		<value>分类没发现</value>
+	</data>
+	<data name="PRODUCT_CHECKOUT">
+		<value>签出</value>
+	</data>
+	<data name="PRODUCT_CONTINUE_SHOPPING">
+		<value>继续订购</value>
+	</data>
+	<data name="PRODUCT_DELETE_OPTION">
+		<value>删除</value>
+	</data>
+	<data name="PRODUCT_DISPLAY_FEATURED_ITEMS">
+		<value>显示有特征的项</value>
+	</data>
+	<data name="PRODUCT_EMPTY_CART">
+		<value>购物车内当前是空的。</value>
+	</data>
+	<data name="PRODUCT_FEATURED_ITEM">
+		<value>特征项</value>
+	</data>
+	<data name="PRODUCT_FEATURED_ITEM_DESCRIPTION">
+		<value>特征项将被显示在根页</value>
+	</data>
+	<data name="PRODUCT_HOME">
+		<value>商店首页</value>
+	</data>
+	<data name="PRODUCT_ID">
+		<value>产品标识(ID)</value>
+	</data>
+	<data name="PRODUCT_INCLUDING_TAXES">
+		<value>含税</value>
+	</data>
+	<data name="PRODUCT_INPUT_PROBLEM">
+		<value>您的输入有一个或多个问题。</value>
+	</data>
+	<data name="PRODUCT_MODELNAME">
+		<value>模块名称</value>
+	</data>
+	<data name="PRODUCT_MODELNUMBER">
+		<value>模块号码</value>
+	</data>
+	<data name="PRODUCT_MUST_LOG_IN_FOR_CHECKOUT">
+		<value>必须登录或注册后才可签出。</value>
+	</data>
+	<data name="PRODUCT_NAME">
+		<value>名称</value>
+	</data>
+	<data name="PRODUCT_OPTIONS">
+		<value>选项</value>
+	</data>
+	<data name="PRODUCT_ORDER_DATE_CREATED">
+		<value>生成日期</value>
+	</data>
+	<data name="PRODUCT_ORDER_DATE_MODIFIED">
+		<value>最后修改</value>
+	</data>
+	<data name="PRODUCT_ORDER_REFERENCE">
+		<value>订单参考</value>
+	</data>
+	<data name="PRODUCT_ORDER_TOTAL">
+		<value>总数</value>
+	</data>
+	<data name="PRODUCT_PAYMENT_METHOD">
+		<value>支付方式</value>
+	</data>
+	<data name="PRODUCT_PRICE">
+		<value>价格</value>
+	</data>
+	<data name="PRODUCT_PRICE_NOT_AVAILABLE">
+		<value>请联系我们购买该产品。</value>
+	</data>
+	<data name="PRODUCT_PRICE_WITH_TAX">
+		<value>含税价</value>
+	</data>
+	<data name="PRODUCT_QUANTITY">
+		<value>数量</value>
+	</data>
+	<data name="PRODUCT_REFERENCE">
+		<value>参考</value>
+	</data>
+	<data name="PRODUCT_REMOVE">
+		<value>移除</value>
+	</data>
+	<data name="PRODUCT_SELECT_CATEGORY">
+		<value>请选择类别</value>
+	</data>
+	<data name="PRODUCT_SHIPPING">
+		<value>送货</value>
+	</data>
+	<data name="PRODUCT_SHIPPING_INFORMATION">
+		<value>送货信息</value>
+	</data>
+	<data name="PRODUCT_SHIPPING_METHOD">
+		<value>送货方法</value>
+	</data>
+	<data name="PRODUCT_SHOP_HOME">
+		<value>商店首页</value>
+	</data>
+	<data name="PRODUCT_SUBTOTAL">
+		<value>累计</value>
+	</data>
+	<data name="PRODUCT_TAXRATE">
+		<value>税率</value>
+	</data>
+	<data name="PRODUCT_TOTAL">
+		<value>总数</value>
+	</data>
+	<data name="PRODUCT_TOTAL_EXPENSES">
+		<value>总金额</value>
+	</data>
+	<data name="PRODUCT_TOTAL_PRICE_(INC._TAXES)">
+		<value>总价格(含税)</value>
+	</data>
+	<data name="PRODUCT_TOTAL_TAXES">
+		<value>总税额</value>
+	</data>
+	<data name="PRODUCT_TOTAL_WEIGHT">
+		<value>总重量</value>
+	</data>
+	<data name="PRODUCT_TOTAL_WITH_TAXES">
+		<value>含税总额</value>
+	</data>
+	<data name="PRODUCT_UNIT">
+		<value>单位</value>
+	</data>
+	<data name="PRODUCT_UNITPRICE">
+		<value>单价</value>
+	</data>
+	<data name="PRODUCT_UPDATE">
+		<value>更新</value>
+	</data>
+	<data name="PRODUCT_VIEW_ACCOUNT">
+		<value>查看账号</value>
+	</data>
+	<data name="PRODUCT_VIEW_CART">
+		<value>查看购物车</value>
+	</data>
+	<data name="PRODUCT_WEIGHT">
+		<value>重量</value>
+	</data>
+	<data name="PRODUCTS_DISPLAYING_ORDER">
+		<value>显示顺序</value>
+	</data>
+	<data name="PRODUCTS_INSTRUCTIONS">
+		<value>您可能在以下菜单中选择一个产品类。</value>
+	</data>
+	<data name="PRODUCTS_NO_ORDERS_TO_DISPLAY">
+		<value>没有订单可显示。</value>
+	</data>
+	<data name="PRODUCTS_ORDER_HISTORY_DISPLAY">
+		<value>要历史订单，请点击订单标识(ID)查看折叠的订单的详细信息。</value>
+	</data>
+	<data name="PROFILE_INFO">
+		<value>配置信息</value>
+	</data>
+	<data name="PROFILE_INFO_ERROR">
+		<value>错误配置信息-无法找回</value>
+	</data>
+	<data name="PROMOTION CODE">
+		<value>促销商品代码</value>
+	</data>
+	<data name="PROPERTIES">
+		<value>编辑模块属性</value>
+	</data>
+	<data name="QUERY BOX HEIGHT">
+		<value>查询框高度</value>
+	</data>
+	<data name="QUIZNAME">
+		<value>测试名称</value>
+	</data>
+	<data name="QUOTE FILE">
+		<value>语录文件</value>
+	</data>
+	<data name="QUOTE FILE_DESCRIPTION">
+		<value>语录内容文件。</value>
+	</data>
+	<data name="QUOTE SOURCE">
+		<value>语录来源</value>
+	</data>
+	<data name="QUOTE SOURCE_DESCRIPTION">
+		<value>从文件中取得语录或显示“我的语录”。</value>
+	</data>
+	<data name="PROV_STATE">
+		<value>省(直辖市)</value>
+	</data>
+	<data name="RAINBOW_RUNNING_VERSION">
+		<value>当前运行彩虹(Rainbow)版本</value>
+	</data>
+	<data name="READ_FULL_ANNOUNCE">
+		<value>阅读全部公告</value>
+	</data>
+	<data name="REAGION">
+		<value>省(地区)</value>
+	</data>
+	<data name="REASON">
+		<value>理由</value>
+	</data>
+	<data name="REGISTER">
+		<value>注册</value>
+	</data>
+	<data name="REGISTER_DESCRIPTION">
+		<value>在此选择注册页外观。</value>
+	</data>
+	<data name="REGISTER_DIFFERENT">
+		<value>请用另一个电子邮箱注册。</value>
+	</data>
+	<data name="REGISTER_NOW">
+		<value>现在注册并登录</value>
+	</data>
+	<data name="REGISTER_REQUIRED">
+		<value>使用该模块必须先注册</value>
+	</data>
+	<data name="REGISTERED_USERS">
+		<value>注册用户</value>
+	</data>
+	<data name="REGISTRATION_FAILED">
+		<value>注册失败！</value>
+	</data>
+	<data name="REGISTRATION_FAILED_EXISTING_EMAIL_ADDRESS">
+		<value>注册失败，该电子邮箱已被使用。请换一个邮箱再试，或者在登录页面按“发送密码”按钮取回密码。</value>
+	</data>
+	<data name="REMEMBER_LOGIN">
+		<value>记住登录</value>
+	</data>
+	<data name="REPEATCOLUMNS">
+		<value>排列栏数</value>
+	</data>
+	<data name="REPEATDIRECTION">
+		<value>排列方向</value>
+	</data>
+	<data name="REPEATDIRECTIONSETTING">
+		<value>排列方向设置</value>
+	</data>
+	<data name="RETURN">
+		<value>返回</value>
+	</data>
+	<data name="RETURN_HOME">
+		<value>返回门户首页</value>
+	</data>
+	<data name="RETURNHOME">
+		<value>返回门户首页</value>
+	</data>
+	<data name="RIGHT">
+		<value>右</value>
+	</data>
+	<data name="ROLE_ADD_NEW_USER">
+		<value>新增用户并加入到角色</value>
+	</data>
+	<data name="ROLE_ADD_USER">
+		<value>增加已存在用户到角色</value>
+	</data>
+	<data name="ROLE_CHANGE_MEMBERS">
+		<value>改变角色成员</value>
+	</data>
+	<data name="ROLE_DELETE_FAILED">
+		<value>删除您选定的角色失败，请确定当前没有用户使用该角色。</value>
+	</data>
+	<data name="ROLE_ERROR_ADD">
+		<value>新增失败！已经有一个记录 &lt;u&gt;%1%&lt;/u&gt;在用户数据库。&lt;br&gt;请为此用户用添加已有用户方式。</value>
+	</data>
+	<data name="ROLE_MEMBERSHIP">
+		<value>角色成员身份</value>
+	</data>
+	<data name="ROLE_NEW_ROLE">
+		<value>新增角色</value>
+	</data>
+	<data name="ROLE_SAVE_CHANGES">
+		<value>保存角色更改</value>
+	</data>
+	<data name="ROLES_DESCRIPTION">
+		<value>角色</value>
+	</data>
+	<data name="ROLESADD">
+		<value>可添加内容的角色</value>
+	</data>
+	<data name="ROLESCOLLECTION">
+		<value>可编辑集合内容的角色</value>
+	</data>
+	<data name="ROLESDELETE">
+		<value>可删除内容的角色</value>
+	</data>
+	<data name="ROLESEDIT">
+		<value>可编辑内容的角色</value>
+	</data>
+	<data name="ROLESVIEW">
+		<value>可查看内容的角色</value>
+	</data>
+	<data name="ROOM_NUMBER">
+		<value>房号</value>
+	</data>
+	<data name="ROOT_LEVEL">
+		<value>根级</value>
+	</data>
+	<data name="ROOTICON">
+		<value>根节点图标</value>
+	</data>
+	<data name="RSS CACHE TIME IN MINUTES">
+		<value>RSS缓冲分钟数</value>
+	</data>
+	<data name="SAVE">
+		<value>保存更改</value>
+	</data>
+	<data name="SAVE_AND_CLOSE">
+		<value>保存并关闭</value>
+	</data>
+	<data name="SAVE_CHANGES">
+		<value>保存更改</value>
+	</data>
+	<data name="SAVE_DESKTOP">
+		<value>保存桌面</value>
+	</data>
+	<data name="SAVEUSER">
+		<value>保存用户更改</value>
+	</data>
+	<data name="SEARCH">
+		<value>搜索</value>
+	</data>
+	<data name="SEARCHFIELD">
+		<value>搜索字段</value>
+	</data>
+	<data name="SEARCHSTRING">
+		<value>搜索字符串</value>
+	</data>
+	<data name="SECURITY">
+		<value>安全</value>
+	</data>
+	<data name="SECURITY_USER_SETTINGS">
+		<value>用户及安全设置</value>
+	</data>
+	<data name="SECURITYCHECK_HEADERADD">
+		<value>增加</value>
+	</data>
+	<data name="SECURITYCHECK_HEADERADMIN">
+		<value>管理</value>
+	</data>
+	<data name="SECURITYCHECK_HEADERDELETE">
+		<value>删除</value>
+	</data>
+	<data name="SECURITYCHECK_HEADERDELMOD">
+		<value>删除模块</value>
+	</data>
+	<data name="SECURITYCHECK_HEADEREDIT">
+		<value>编辑</value>
+	</data>
+	<data name="SECURITYCHECK_HEADERMOVE">
+		<value>移动</value>
+	</data>
+	<data name="SECURITYCHECK_HEADERNAME">
+		<value>名称</value>
+	</data>
+	<data name="SECURITYCHECK_HEADERPROPERTIES">
+		<value>属性</value>
+	</data>
+	<data name="SECURITYCHECK_HEADERTAB">
+		<value>标签页</value>
+	</data>
+	<data name="SECURITYCHECK_HEADERTYPE">
+		<value>模块类别</value>
+	</data>
+	<data name="SECURITYCHECK_HEADERVIEW">
+		<value>查看</value>
+	</data>
+	<data name="SECURITYCHECK_ONLYADMIN">
+		<value>仅管理模块</value>
+	</data>
+	<data name="SECURITYCHECK_SEARCH">
+		<value>搜索</value>
+	</data>
+	<data name="SELECT">
+		<value>选择</value>
+	</data>
+	<data name="SELECT_ALL">
+		<value>全选</value>
+	</data>
+	<data name="SELECT_NONE">
+		<value>全不选</value>
+	</data>
+	<data name="SEND_NEWSLETTER">
+		<value>发送新闻组</value>
+	</data>
+	<data name="SENDNEWSLETTER">
+		<value>发送新闻组</value>
+	</data>
+	<data name="SENDTHTS_BODY">
+		<value>信息内容</value>
+	</data>
+	<data name="SENDTHTS_BODY_ERR">
+		<value>请输入信息内容。</value>
+	</data>
+	<data name="SENDTHTS_CLEAR">
+		<value>清除</value>
+	</data>
+	<data name="SENDTHTS_DES_TXT">
+		<value>在此书写描述…</value>
+	</data>
+	<data name="SENDTHTS_EMAILBLANK">
+		<value>电子邮箱不可空白。</value>
+	</data>
+	<data name="SENDTHTS_EMAILVALID">
+		<value>请输入有效电子邮箱。</value>
+	</data>
+	<data name="SENDTHTS_NAME">
+		<value>姓名</value>
+	</data>
+	<data name="SENDTHTS_RECIPIENT">
+		<value>回复地址未填写。</value>
+	</data>
+	<data name="SENDTHTS_REMAIL">
+		<value>真实电子邮箱</value>
+	</data>
+	<data name="SENDTHTS_SEND">
+		<value>发送</value>
+	</data>
+	<data name="SENDTHTS_SENT">
+		<value>信息已发送，谢谢您的信息！</value>
+	</data>
+	<data name="SENDTHTS_SUBJECT">
+		<value>主题(可选)</value>
+	</data>
+	<data name="SENDTHTS_YREMAIL">
+		<value>您的电子邮箱</value>
+	</data>
+	<data name="SENDTHTS_YRNAME">
+		<value>您的姓名（可选）</value>
+	</data>
+	<data name="SERVERNAME">
+		<value>服务器名称</value>
+	</data>
+	<data name="SETTING_BETWEEN">
+		<value>%1% 必须介于 %2% 和 %3% 之间！</value>
+	</data>
+	<data name="SETTING_REQUIRED">
+		<value>%1% 必需！</value>
+	</data>
+	<data name="SETTINGS">
+		<value>设置</value>
+	</data>
+	<data name="SHOW DETAILS">
+		<value>显示详细信息</value>
+	</data>
+	<data name="SHOWADDRESS">
+		<value>显示地址</value>
+	</data>
+	<data name="SHOWBORDER">
+		<value>显示边框</value>
+	</data>
+	<data name="SHOW_COLUMN_ADDRESS">
+		<value>是否显示地址栏切换</value>
+	</data>
+	<data name="SHOW_COLUMN_CONTACT1">
+		<value>是否显示联系1栏切换</value>
+	</data>
+	<data name="SHOW_COLUMN_CONTACT2">
+		<value>是否显示联系2栏切换</value>
+	</data>
+	<data name="SHOW_COLUMN_EMAIL">
+		<value>是否显示电子邮箱栏切换</value>
+	</data>
+	<data name="SHOW_COLUMN_FAX">
+		<value>是否显示传真栏切换</value>
+	</data>
+	<data name="SHOW_FLASH_GALLERY">
+		<value>显示FLASH图库</value>
+	</data>
+	<data name="SHOWABSTRACT">
+		<value>显示摘要</value>
+	</data>
+	<data name="SHOWCALENDAR">
+		<value>显示日历</value>
+	</data>
+	<data name="SHOWCOLLAPSABLE">
+		<value>显示折叠窗</value>
+	</data>
+	<data name="SHOWCREATEDBYUSER">
+		<value>显示用户创建数据库</value>
+	</data>
+	<data name="SHOWCREATEDDATE">
+		<value>显示创建日期</value>
+	</data>
+	<data name="SHOWDATE">
+		<value>显示日期</value>
+	</data>
+	<data name="SHOWDDFIELD">
+		<value>显示字段列表</value>
+	</data>
+	<data name="SHOWDDFIELD_DESCRIPTION">
+		<value>显示字段下拉式列表。</value>
+	</data>
+	<data name="SHOWDDMODULE">
+		<value>显示模块列表</value>
+	</data>
+	<data name="SHOWDDMODULE_DESCRIPTION">
+		<value>显示模块下拉式列表。</value>
+	</data>
+	<data name="SHOWDDTOPIC">
+		<value>显示标题列表</value>
+	</data>
+	<data name="SHOWDDTOPIC_DESCRIPTION">
+		<value>显示标题下拉式列表。</value>
+	</data>
+	<data name="SHOWDESCRIPTION">
+		<value>显示描述</value>
+	</data>
+	<data name="SHOWEVERYWHERE">
+		<value>显示在每个页面</value>
+	</data>
+	<data name="SHOWID">
+		<value>显示标识(ID)</value>
+	</data>
+	<data name="SHOWLINK">
+		<value>显示链接</value>
+	</data>
+	<data name="SHOWMAP">
+		<value>显示地图</value>
+	</data>
+	<data name="SHOWMOBILE">
+		<value>显示给移动用户</value>
+	</data>
+	<data name="SHOWMODIFIEDBY">
+		<value>显示字段修改者</value>
+	</data>
+	<data name="SHOWMODIFIEDBY_DESCRIPTION">
+		<value>显示“显示字段修改者”切换开关</value>
+	</data>
+	<data name="SHOWMODULEFRIENDLYNAME">
+		<value>显示模块易记名</value>
+	</data>
+	<data name="SHOWMODULENAME">
+		<value>显示模块名称</value>
+	</data>
+	<data name="SHOWMODULETITLE">
+		<value>显示模块标题</value>
+	</data>
+	<data name="SHOWPRINTBUTTON">
+		<value>显示打印按钮</value>
+	</data>
+	<data name="SHOWPRINTBUTTON_DESCRIPTION">
+		<value>在查看模式下显示打印按钮？</value>
+	</data>
+	<data name="SHOW QUERY BOX">
+		<value>显示查询框</value>
+	</data>
+	<data name="SHOWSNIPPET">
+		<value>显示内容片段</value>
+	</data>
+	<data name="SHOWSEARCHTITLE">
+		<value>显示搜索标题</value>
+	</data>
+	<data name="SHOWSUMMARY">
+		<value>显示摘要</value>
+	</data>
+	<data name="SHOWURL">
+		<value>显示网址</value>
+	</data>
+	<data name="SHOWTABID">
+		<value>显示标签页标识(ID)</value>
+	</data>
+	<data name="SHOWTABNAME">
+		<value>显示标签页名称</value>
+	</data>
+	<data name="SHOWTESTINFO">
+		<value>显示测试信息</value>
+	</data>
+	<data name="SHOWTITLE">
+		<value>显示标题</value>
+	</data>
+	<data name="SHOWTITLE_DESCRIPTION">
+		<value>显示“显示标题”切换开关</value>
+	</data>
+	<data name="SHOWUPLOAD">
+		<value>上传</value>
+	</data>
+	<data name="SHOWUPLOAD_DESCRIPTION">
+		<value>仅当HTML编辑器为ActiveUp HtmlTextBox时可用。</value>
+	</data>
+	<data name="SHOWZOOM">
+		<value>显示缩放器</value>
+	</data>
+	<data name="SIGNIN">
+		<value>登录</value>
+	</data>
+	<data name="SIGNIN_ALLOW_AUTOCOMPLETE">
+		<value>允许IE自动完成</value>
+	</data>
+	<data name="SIGNIN_ALLOW_AUTOCOMPLETE_DESCRIPTION">
+		<value>勾选此项后IE将试图自动登录会员。</value>
+	</data>
+	<data name="SIGNIN_ALLOW_REMEMBER_LOGIN">
+		<value>允许记住登录</value>
+	</data>
+	<data name="SIGNIN_ALLOW_REMEMBER_LOGIN_DESCRIPTION">
+		<value>勾选此项后将允许记住登录</value>
+	</data>
+	<data name="SIGNIN_ALLOW_SEND_PASSWORD">
+		<value>允许发送密码</value>
+	</data>
+	<data name="SIGNIN_ALLOW_SEND_PASSWORD_DESCRIPTION">
+		<value>勾选此项后，允许用户在忘记密码时请求通过电子邮件发送密码。</value>
+	</data>
+	<data name="SIGNIN_AUTOMATICALLYHIDE">
+		<value>自动隐藏</value>
+	</data>
+	<data name="SIGNIN_ENTER_EMAIL_ADDR">
+		<value>请输入电子邮箱</value>
+	</data>
+	<data name="SIGNIN_PWD_MISSING_IN_DB">
+		<value>在数据库中未发现您的密码。</value>
+	</data>
+	<data name="SIGNIN_PWD_REQUESTED">
+		<value>您请求的密码是</value>
+	</data>
+	<data name="SIGNIN_PWD_TO">
+		<value>密码到</value>
+	</data>
+	<data name="SIGNIN_PWD_WAS_SEND">
+		<value>密码已发送到您提供的电子邮箱！</value>
+	</data>
+	<data name="SIGNIN_PWD_WAS_SENT">
+		<value>密码已发送到您提供的电子邮箱！</value>
+	</data>
+	<data name="SIGNIN_SEND_PWD">
+		<value>发送密码</value>
+	</data>
+	<data name="SIGNIN_THANK_YOU">
+		<value>谢谢登录！祝您访问愉快！</value>
+	</data>
+	<data name="SIGNIN_URL_WARNING">
+		<value>注意以上网址可能不是以一行的形式显示在您的屏幕上，这将会阻止您使用此链接访问网页，如果出现这种情况，请使用“剪切”和“粘贴”连接网址片段。</value>
+	</data>
+	<data name="SIGNIN_USE_DIRECT_URL">
+		<value>或使用直接网址</value>
+	</data>
+	<data name="SIGNIN_YOU_CAN_LOGIN_FROM">
+		<value>您可以从这里登录</value>
+	</data>
+	<data name="SITE_PATH">
+		<value>网站路径</value>
+	</data>
+	<data name="SITE_TITLE">
+		<value>网站标题</value>
+	</data>
+	<data name="SITESETTINGS_ALLOW_EDIT_USER_ID">
+		<value>允许用户更改标识(ID)</value>
+	</data>
+	<data name="SITESETTINGS_ALLOW_EDIT_USER_ID_DESCRIPTION">
+		<value>本选项允许管理员更改用户标识以匹配指定的数字。</value>
+	</data>
+	<data name="SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES">
+		<value>允许模块自定义主题风格</value>
+	</data>
+	<data name="SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES_DESCRIPTION">
+		<value>勾选项本项允许使用自定义主题风格设置到模块。</value>
+	</data>
+	<data name="SITESETTINGS_ALLOW_NEW_REGISTRATION">
+		<value>允许新用户注册</value>
+	</data>
+	<data name="SITESETTINGS_ALLOW_NEW_REGISTRATION_DESCRIPTION">
+		<value>勾选本项允许新用户自己注册，否则只允许管理员加入用户。</value>
+	</data>
+	<data name="SITESETTINGS_ALT_THEME">
+		<value>交替主题风格</value>
+	</data>
+	<data name="SITESETTINGS_ALT_THEME_DESCRIPTION">
+		<value>在此指定站点级的交替主题风格</value>
+	</data>
+	<data name="SITESETTINGS_BODYATTS">
+		<value>页体(BODY)属性</value>
+	</data>
+	<data name="SITESETTINGS_BODYATTS_DESCRIPTION">
+		<value>允许加入字符串到页体（&lt;BODY&gt;）标记内。如 leftmargin='0' bottommargin='0'等。注意不建议在此加入onload()函数调用，已有一个这样的程序。无须在此加入样式表，系统中已为你编排好了。</value>
+	</data>
+	<data name="SITESETTINGS_COUNTRY_FILTER">
+		<value>允许的国家</value>
+	</data>
+	<data name="SITESETTINGS_COUNTRY_FILTER_DESCRIPTION">
+		<value>允许的国家限制RegisterFull页中的国家列表内容，选择"全世界"显示所有国家。</value>
+	</data>
+	<data name="SITESETTINGS_DEFAULT_EDITOR">
+		<value>默认编辑器</value>
+	</data>
+	<data name="SITESETTINGS_DEFAULT_EDITOR_DESCRIPTION">
+		<value>默认编辑器用于工作流及新模块</value>
+	</data>
+	<data name="SITESETTINGS_DEFAULT_IMAGE_FOLDER">
+		<value>默认图片文件夹</value>
+	</data>
+	<data name="SITESETTINGS_DEFAULT_IMAGE_FOLDER_DESCRIPTION">
+		<value>默认图片文件夹用于当前编辑器</value>
+	</data>
+	<data name="SITESETTINGS_DOCTYPE">
+		<value>文档类别字符串</value>
+	</data>
+	<data name="SITESETTINGS_DOCTYPE_DESCRIPTION">
+		<value>允许您输入一个文档类别(DOCTYPE)字符串，将插入并作为HTML第一行输出。此方法用作强迫使用急转或标准常模式，特别针对IE。Rainbow.Zen在所有浏览器上需要该设置以确保标准模式</value>
+	</data>
+	<data name="SITESETTINGS_EDITOR_HEIGHT">
+		<value>编辑器高度</value>
+	</data>
+	<data name="SITESETTINGS_EDITOR_HEIGHT_DESCRIPTION">
+		<value>默认编辑器高度</value>
+	</data>
+	<data name="SITESETTINGS_EDITOR_WIDTH">
+		<value>编辑器宽度</value>
+	</data>
+	<data name="SITESETTINGS_EDITOR_WIDTH_DESCRIPTION">
+		<value>默认编辑器宽度</value>
+	</data>
+	<data name="SITESETTINGS_LANGLIST">
+		<value>语言列表</value>
+	</data>
+	<data name="SITESETTINGS_LANGLIST_DESCRIPTION">
+		<value>网站将会支持的语言列表，格式为 &lt;UI-Culture&gt;=&lt;Formatting-Culture&gt;，可按SHIFT键选择多种语言。</value>
+	</data>
+	<data name="SITESETTINGS_LOGO">
+		<value>徽标(LOGO)</value>
+	</data>
+	<data name="SITESETTINGS_LOGO_DESCRIPTION">
+		<value>输入徽标文件的路径，该文件将从您的插件目录中寻找，默认为“~/_Rainbow”</value>
+	</data>
+	<data name="SITESETTINGS_ON_REGISTER_SEND_FROM">
+		<value>电子邮件发自</value>
+	</data>
+	<data name="SITESETTINGS_ON_REGISTER_SEND_FROM_DESCRIPTION">
+		<value>有用户新注册时，向其发送邮件的发件箱。</value>
+	</data>
+	<data name="SITESETTINGS_ON_REGISTER_SEND_TO">
+		<value>电子邮件发往</value>
+	</data>
+	<data name="SITESETTINGS_ON_REGISTER_SEND_TO_DESCRIPTION">
+		<value>有新用户注册时，将有一封电子邮件发往您在此提供的邮箱。</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_KEY_PHRASE">
+		<value>默认页关键词</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_KEY_PHRASE_DESCRIPTION">
+		<value>本设置用于一个插件或控件，允许您定义一个通用的信息，如“欢迎访问 某某 插件”。本设置同时可用于帮助搜索引擎收录插件内容，允许您为插件设置关键词。</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_LAYOUT">
+		<value>页面布局</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_LAYOUT_DESCRIPTION">
+		<value>在此指定站点级的页面布局</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_META_DESCRIPTION">
+		<value>默认页面描述</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_META_DESCRIPTION_DESCRIPTION">
+		<value>帮助搜索引擎收录网页的优化设置，输入对插件的描述（不必太长，一个字都可以）</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_META_ENCODING">
+		<value>默认页面字符编码</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_META_ENCODING_DESCRIPTION">
+		<value>每次浏览器访问页面时，都会根据字符编码返回显示的内容。</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_META_KEYWORDS">
+		<value>默认页面关键字</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_META_KEYWORDS_DESCRIPTION">
+		<value>帮助搜索引擎收录网页的优化设置，可输入1到15个与站点相关的默认关键词。</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_META_OTHERS">
+		<value>默认的附加META标记项</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_META_OTHERS_DESCRIPTION">
+		<value>本设置允许您加入页面、标签页的附加META标记到页头中，比如我们加入一个插件标记以标注版本，但是你可以用别的META刷新标记或样式表引用什么的替代。</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_TITLE">
+		<value>默认页面标题</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_TITLE_DESCRIPTION">
+		<value>允许您输入一个默认的页、标签页标题，显示在浏览器顶部。</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_URL_KEYWORD">
+		<value>标识所有页的默认关键字。</value>
+	</data>
+	<data name="SITESETTINGS_PAGE_URL_KEYWORD_DESCRIPTION">
+		<value>尚未完全启用，帮助搜索引擎收录网页的优化设置，允许您设置一个默认关键字出现在您的网址上。</value>
+	</data>
+	<data name="SITESETTINGS_REGISTER_FULL">
+		<value></value>
+	</data>
+	<data name="SITESETTINGS_REGISTER_MODULEID">
+		<value>注册模块标识(ID)</value>
+	</data>
+	<data name="SITESETTINGS_REGISTER_MODULEID_DESCRIPTION">
+		<value>某些自定义注册可能需要附加设置，在此输入用于加载设置参数的模块标识（0表示没有），通常该模块被加到隐藏区域中。</value>
+	</data>
+	<data name="SITESETTINGS_REGISTER_SIMPLE">
+		<value>注册</value>
+	</data>
+	<data name="SITESETTINGS_REGISTER_TYPE">
+		<value>注册类型</value>
+	</data>
+	<data name="SITESETTINGS_REGISTER_TYPE_DESCRIPTION">
+		<value>在此选择注册页面外观。</value>
+	</data>
+	<data name="SITESETTINGS_SHOW_MODIFIED_BY">
+		<value>显示修改者</value>
+	</data>
+	<data name="SITESETTINGS_SHOW_MODIFIED_BY_DESCRIPTION">
+		<value>勾选此项在模块上显示最后修改者。</value>
+	</data>
+	<data name="SITESETTINGS_SHOW_MODULE_ARROWS">
+		<value>显示模块箭头</value>
+	</data>
+	<data name="SITESETTINGS_SHOW_MODULE_ARROWS_DESCRIPTION">
+		<value>勾选本项在模块在模块标题上显示移动模块的箭头。</value>
+	</data>
+	<data name="SITESETTINGS_SHOWUPLOAD">
+		<value>上传</value>
+	</data>
+	<data name="SITESETTINGS_SHOWUPLOAD_DESCRIPTION">
+		<value>仅用于编辑器为ActiveUp HtmlTextBox的情况下。</value>
+	</data>
+	<data name="SITESETTINGS_SITE_PATH">
+		<value>站点路径</value>
+	</data>
+	<data name="SITESETTINGS_SITE_TITLE">
+		<value>网站标题</value>
+	</data>
+	<data name="SITESETTINGS_TERMS_OF_SERVICE">
+		<value>服务条款文件</value>
+	</data>
+	<data name="SITESETTINGS_TERMS_OF_SERVICE_DESCRIPTION">
+		<value>在此输入用于注册页面的服务条款、条件的文件名，提供本地化版本（语言文化环境）条款。例如输入Terms.txt，系统将查找Terms.txt、Terms_EN-US.txt文件</value>
+	</data>
+	<data name="SITESETTINGS_THEME">
+		<value>主题风格</value>
+	</data>
+	<data name="SITESETTINGS_THEME_DESCRIPTION">
+		<value>在此指定站点级的主题风格。</value>
+	</data>
+	<data name="SITESETTINGS_USE_RECYCLER">
+		<value>删除模块使用回收站</value>
+	</data>
+	<data name="SITESETTINGS_USE_RECYCLER_DESCRIPTION">
+		<value>将被删除的模块移入回收站，以替代永久性删除。</value>
+	</data>
+	<data name="SM_MENU_REPEATDIRECTION">
+		<value>菜单排列方向</value>
+	</data>
+	<data name="SM_MENU_REPEATDIRECTION_DESCRIPTION">
+		<value>设置菜单呈现时的排列方向。</value>
+	</data>
+	<data name="SM_MENUBINDINGTYPE">
+		<value>绑定类型</value>
+	</data>
+	<data name="SM_MENUTYPE">
+		<value>菜单类型</value>
+	</data>
+	<data name="SM_MENUTYPE_DESCRIPTION">
+		<value>设置本模块使用的菜单类型。</value>
+	</data>
+	<data name="SM_PARENTPAGEID">
+		<value>父(标签)页标识(ID)</value>
+	</data>
+	<data name="SM_PARENTPAGEID_DESCRIPTION">
+		<value>设置菜单的父(标签)页(可以是对登录用户隐藏或不可访问的)。</value>
+	</data>
+	<data name="SMARTERROR_403HEADING">
+		<value>没有权限</value>
+	</data>
+	<data name="SMARTERROR_403TEXT">
+		<value>您没有足够的权限访问或操作所请求的页面。</value>
+	</data>
+	<data name="SMARTERROR_404HEADING">
+		<value>页面不存在</value>
+	</data>
+	<data name="SMARTERROR_404TEXT">
+		<value>对不起，没有与您的插件对应的页面，可能您输入了不正确的页面网址，或者该页面已不再存在。您可以试一试别的插件，或者从以下了列表中选择一个链接，希望您好能找到所寻找的内容</value>
+	</data>
+	<data name="SMARTERROR_500HEADING">
+		<value>抱歉</value>
+	</data>
+	<data name="SMARTERROR_500TEXT">
+		<value>对不起，我们无法对您的请求响应服务，可能发生了一些暂时性的错误。</value>
+	</data>
+	<data name="SMARTERROR_SUPPORTDETAILS_HEADING">
+		<value>支持详细内容</value>
+	</data>
+	<data name="SORTDIRECTION">
+		<value>排序方向</value>
+	</data>
+	<data name="SORTFIELD">
+		<value>排序字段</value>
+	</data>
+	<data name="SORTORDER">
+		<value>排序顺序</value>
+	</data>
+	<data name="SRC">
+		<value>源文件</value>
+	</data>
+	<data name="START_DATE">
+		<value>开始日期</value>
+	</data>
+	<data name="START TAG">
+		<value>开始标记</value>
+	</data>
+	<data name="START TAG_DESCRIPTION">
+		<value>输入一个特定的HTML标记(如：MARQUEE，让语录文字滚动)。</value>
+	</data>
+	<data name="STYLE">
+		<value>样式</value>
+	</data>
+	<data name="SUBJECT">
+		<value>主题</value>
+	</data>
+	<data name="SUBMIT">
+		<value>提交</value>
+	</data>
+	<data name="SUBTITLE">
+		<value>副标题</value>
+	</data>
+	<data name="SURVEY_ADDBELOW">
+		<value>增加到“问题”下方</value>
+	</data>
+	<data name="SURVEY_ADDNEWOPTION">
+		<value>新增选项</value>
+	</data>
+	<data name="SURVEY_ADDNEWQUESTION">
+		<value>新增问题</value>
+	</data>
+	<data name="SURVEY_ADDOPTBELOW">
+		<value>增加到“选项”下方</value>
+	</data>
+	<data name="SURVEY_CHECKBOXES">
+		<value>复选框</value>
+	</data>
+	<data name="SURVEY_DETAILS">
+		<value>调查详细内容</value>
+	</data>
+	<data name="SURVEY_DETAILSOPTIONS">
+		<value>调查详细选项</value>
+	</data>
+	<data name="SURVEY_NEWOPTION">
+		<value>新选项</value>
+	</data>
+	<data name="SURVEY_NEWQUESTION">
+		<value>新问题</value>
+	</data>
+	<data name="SURVEY_OPTION_ERR">
+		<value>请增加选项。</value>
+	</data>
+	<data name="SURVEY_OPTIONS">
+		<value>选项</value>
+	</data>
+	<data name="SURVEY_OPTIONTYPE">
+		<value>选项类别</value>
+	</data>
+	<data name="SURVEY_QUESTION">
+		<value>问题</value>
+	</data>
+	<data name="SURVEY_QUESTION_ERR">
+		<value>请增加问题。</value>
+	</data>
+	<data name="SURVEY_QUESTIONS">
+		<value>问题</value>
+	</data>
+	<data name="SURVEY_RADIOBUTTONS">
+		<value>单选按钮</value>
+	</data>
+	<data name="SURVEY_SUBMIT">
+		<value>提交</value>
+	</data>
+	<data name="SURVEY_TITLE">
+		<value>调查</value>
+	</data>
+	<data name="SURVEY_VOTES">
+		<value>投票</value>
+	</data>
+	<data name="SWI_APPROVE">
+		<value>批准</value>
+	</data>
+	<data name="SWI_APPROVESENDMAIL">
+		<value>批准并发送邮件</value>
+	</data>
+	<data name="SWI_BUTTON_MAX">
+		<value>最大化窗口</value>
+	</data>
+	<data name="SWI_BUTTON_MIN">
+		<value>最小化窗口</value>
+	</data>
+	<data name="SWI_PUBLISH">
+		<value>发布</value>
+	</data>
+	<data name="SWI_READYTOAPPROVE">
+		<value>请求批准</value>
+	</data>
+	<data name="SWI_READYTOAPPROVESENDMAIL">
+		<value>请求批准并发达邮件</value>
+	</data>
+	<data name="SWI_REJECT">
+		<value>驳回</value>
+	</data>
+	<data name="SWI_REJECT_BODY">
+		<value>您能发现驳回内容在</value>
+	</data>
+	<data name="SWI_REJECT_SUBJECT1">
+		<value>新内容关于</value>
+	</data>
+	<data name="SWI_REJECT_SUBJECT2">
+		<value>已被驳回</value>
+	</data>
+	<data name="SWI_REJECTSENDMAIL">
+		<value>驳回并发送邮件</value>
+	</data>
+	<data name="SWI_REQUEST_APPROVAL_SUBJECT">
+		<value>申请批准新内容'</value>
+	</data>
+	<data name="SWI_REQUEST_BODY">
+		<value>您可找到新内容在</value>
+	</data>
+	<data name="SWI_REQUEST_PUBLISH_SUBJECT">
+		<value>请求发布新内容'</value>
+	</data>
+	<data name="SWI_REVERT">
+		<value>回复</value>
+	</data>
+	<data name="SWI_ROLESAPPROVING">
+		<value>批准角色</value>
+	</data>
+	<data name="SWI_ROLESPUBLISHING">
+		<value>授权发布角色</value>
+	</data>
+	<data name="SWI_SUPPORTWORKFLOW">
+		<value>可支持工作流</value>
+	</data>
+	<data name="SWI_SWAPTOPRODUCTION">
+		<value>切换到生产版本</value>
+	</data>
+	<data name="SWI_SWAPTOSTAGING">
+		<value>切换到升级版本</value>
+	</data>
+	<data name="TAB_DELETE_FAILED">
+		<value>删除标签页失败，尚有模块在页上或有其他页链接到此页，请先删除页上所有模块及所有来自其他的链接。</value>
+	</data>
+	<data name="TAB_NAME">
+		<value>新页(插入名称)</value>
+	</data>
+	<data name="TAB_PARENT">
+		<value>父标签页</value>
+	</data>
+	<data name="TAB_TITLE_RAINBOW_HELP">
+		<value>《彩虹》帮助</value>
+	</data>
+	<data name="TAB_VERSION">
+		<value>使用旧版本</value>
+	</data>
+	<data name="TAB_VERSION_DESCRIPTION">
+		<value>如果选择此项模块模块表现为以前的样式。否则它使用允许设置安全的新表单，因此新的标签页是不对所有用户可见。</value>
+	</data>
+	<data name="TABKEYPHRASE">
+		<value>默认(标签)页关键词</value>
+	</data>
+	<data name="TABKEYPHRASE_BG-BG">
+		<value>保加利亚语关键字</value>
+	</data>
+	<data name="TABKEYPHRASE_BG-BG_DESCRIPTION">
+		<value>保加利亚语(标签)页关键字</value>
+	</data>
+	<data name="TABKEYPHRASE_DESCRIPTION">
+		<value>帮助搜索引擎收录网页的优化设置。可输入1至15个与标签页相关的词语，替代插件默认的关键词</value>
+	</data>
+	<data name="TABKEYPHRASE_EN">
+		<value>英语关键字</value>
+	</data>
+	<data name="TABKEYPHRASE_EN_DESCRIPTION">
+		<value>英语(标签)页关键字</value>
+	</data>
+	<data name="TABKEYPHRASE_ES">
+		<value>西班牙语关键字</value>
+	</data>
+	<data name="TABKEYPHRASE_ES_DESCRIPTION">
+		<value>西班牙语(标签)页关键字</value>
+	</data>
+	<data name="TABKEYPHRASE_ES-ES">
+		<value>西班牙语关键字</value>
+	</data>
+	<data name="TABKEYPHRASE_ES-ES_DESCRIPTION">
+		<value>西班牙语(标签)页关键字</value>
+	</data>
+	<data name="TABKEYPHRASE_SR_SP_CYRL">
+		<value>塞尔维亚西里尔语关键字</value>
+	</data>
+	<data name="TABKEYPHRASE_SR_SP_CYRL_DESCRIPTION">
+		<value>塞尔维亚西里尔语(标签)页关键字</value>
+	</data>
+	<data name="TABKEYPHRASE_SR_SP_LATN">
+		<value>塞尔维亚拉丁语关键字</value>
+	</data>
+	<data name="TABKEYPHRASE_SR_SP_LATN_DESCRIPTION">
+		<value>塞尔维亚拉丁语(标签)页关键字</value>
+	</data>
+	<data name="TABLAYOUT">
+		<value>默认布局</value>
+	</data>
+	<data name="TABLEEDIT_MSG_CONNECT">
+		<value>请连接到数据库（检查设置）…</value>
+	</data>
+	<data name="TABLEEDIT_SELECT_TABLE">
+		<value>选择数据表</value>
+	</data>
+	<data name="TABLINK">
+		<value>静态链接网址</value>
+	</data>
+	<data name="TABLINK_DESCRIPTION">
+		<value>允许标签页作为指向任何网址的链接导航。</value>
+	</data>
+	<data name="TABMETADESCRIPTION">
+		<value>默认(标签)页描述</value>
+	</data>
+	<data name="TABMETADESCRIPTION_DESCRIPTION">
+		<value>帮助搜索引擎收录网页的优化设置，输入一个对标签页的描述（不需太长，一个词足够了），以替换插件级的默认值。</value>
+	</data>
+	<data name="TABMETAENCODING">
+		<value>(标签)页字符编码</value>
+	</data>
+	<data name="TABMETAENCODING_DESCRIPTION">
+		<value>任何时候浏览器都根据网页上设定的字符集返回显示内容。您可以在这里设置字符编码替代插件的默认值。</value>
+	</data>
+	<data name="TABMETAKEYWORDS">
+		<value>默认(标签)页关键词</value>
+	</data>
+	<data name="TABMETAKEYWORDS_DESCRIPTION">
+		<value>帮助搜索引擎收录网页的优化设置。可输入1至15个与标签页相关的词语，替代插件默认的META关键词</value>
+	</data>
+	<data name="TABMETAOTHER">
+		<value>默认附加META标记项</value>
+	</data>
+	<data name="TABMETAOTHER_DESCRIPTION">
+		<value>本设置允许您加入页面、标签页的附加META标记到页头中，比如我们加入一个插件标记以标注版本，但是你可以用别的META刷新标记或样式表引用什么的替代。</value>
+	</data>
+	<data name="TABPLACEHOLDER">
+		<value>作为占位符</value>
+	</data>
+	<data name="TABPLACEHOLDER_DESCRIPTION">
+		<value>允许标签页仅作为一个导航占位符。</value>
+	</data>
+	<data name="TABTITLE">
+		<value>标签页标题</value>
+	</data>
+	<data name="TABTITLE_DESCRIPTION">
+		<value>允许您输入一个默认标签页标题，显示在浏览器顶部，替代默认的插件标题。</value>
+	</data>
+	<data name="TABURLKEYWORD">
+		<value>标识所有（标签）页的默认关键字</value>
+	</data>
+	<data name="TABURLKEYWORD_DESCRIPTION">
+		<value>尚未完全启用，帮助搜索引擎收录网页的优化设置，允许您设置一个默认关键字出现在您的网址上。</value>
+	</data>
+	<data name="TAG">
+		<value>标记</value>
+	</data>
+	<data name="TARGET">
+		<value>目标</value>
+	</data>
+	<data name="TASK_ASSIGNEDTO">
+		<value>分派给</value>
+	</data>
+	<data name="TASK_COMPLETION">
+		<value>完成百分比</value>
+	</data>
+	<data name="TASK_COMPLETION_ERROR">
+		<value>必须输入0至100间的整数</value>
+	</data>
+	<data name="TASKS_DEFAULT_ASSIGNEE">
+		<value>默认派给</value>
+	</data>
+	<data name="TASKS_DEFAULT_ASSIGNEE_DESCRIPTION">
+		<value>任务被自动分配给的用户名</value>
+	</data>
+	<data name="TASK_DESCRIPTION">
+		<value>描述</value>
+	</data>
+	<data name="TASK_DETAIL">
+		<value>详细内容</value>
+	</data>
+	<data name="TASK_DUEDATE">
+		<value>预计日期</value>
+	</data>
+	<data name="TASK_DUEDATE_ERROR">
+		<value>请输入有效预计日期</value>
+	</data>
+	<data name="TASKS_LINKED_MODULES">
+		<value>任务链接模块</value>
+	</data>
+	<data name="TASKS_LINKED_MODULES_DESCRIPTION">
+		<value>选择任何一个模块，自动接受所有新分派任务的副本。</value>
+	</data>
+	<data name="TASK_PRIORITY">
+		<value>优先级</value>
+	</data>
+	<data name="TASK_PRIORITY_0">
+		<value>高</value>
+	</data>
+	<data name="TASK_PRIORITY_1">
+		<value>普通</value>
+	</data>
+	<data name="TASK_PRIORITY_2">
+		<value>低</value>
+	</data>
+	<data name="TASKS_SORT_FIELD">
+		<value>排序字段</value>
+	</data>
+	<data name="TASK_STARTDATE">
+		<value>开始日期</value>
+	</data>
+	<data name="TASK_STARTDATE_ERROR">
+		<value>请输入有效的确开始日期</value>
+	</data>
+	<data name="TASK_STATE_0">
+		<value>尚未开始</value>
+	</data>
+	<data name="TASK_STATE_1">
+		<value>进行中</value>
+	</data>
+	<data name="TASK_STATE_2">
+		<value>完成</value>
+	</data>
+	<data name="TASK_STATUS">
+		<value>状态</value>
+	</data>
+	<data name="TASK_TITLE">
+		<value>标题</value>
+	</data>
+	<data name="TASK_TITLE_ERROR">
+		<value>请输入有效标题</value>
+	</data>
+	<data name="TERMSOFSERVICE">
+		<value>服务条款</value>
+	</data>
+	<data name="TERMSOFSERVICE_DESCRIPTION">
+		<value>在此输入用于注册页面的服务条款、条件的文件名，提供本地化版本（语言文化环境）条款。例如输入Terms.txt，系统将查找Terms.txt、Terms_EN-US.txt文件</value>
+	</data>
+	<data name="TEST">
+		<value>测试</value>
+	</data>
+	<data name="TESTMODE">
+		<value>测试模式</value>
+	</data>
+	<data name="TESTMODE_DESCRIPTION">
+		<value>用测试模式测试您的设置，仅发送一份邮件到指定为发送者的邮箱地址。测试时很有用。</value>
+	</data>
+	<data name="TESTUSERID">
+		<value>测试用户标识(ID)</value>
+	</data>
+	<data name="TEXT SIZE">
+		<value>字体大小</value>
+	</data>
+	<data name="TEXT SIZE_DESCRIPTION">
+		<value>语录文本字体大小，选择六种内置字体之一。</value>
+	</data>
+	<data name="THEME">
+		<value>主题风格</value>
+	</data>
+	<data name="THEME_DESCRIPTION">
+		<value>为模块选择主题风格</value>
+	</data>
+	<data name="THEME_LAYOUT_SETTINGS">
+		<value>主题风格与布局设置</value>
+	</data>
+	<data name="THEMEALT">
+		<value>交替主题风格</value>
+	</data>
+	<data name="TI_ROLEADMINISTRATIONADDTOROLE">
+		<value>选择排序标准</value>
+	</data>
+	<data name="TI_ROLEADMINISTRATIONREMOVEFROMROLE">
+		<value>从选定的角色中移除选定的用户</value>
+	</data>
+	<data name="TI_ROLEADMINISTRATIONSELECTIONADDLABEL">
+		<value>选定的用户将被加到</value>
+	</data>
+	<data name="TI_ROLEADMINISTRATIONSELECTIONREMOVELABEL">
+		<value>选定的用户将被移除从</value>
+	</data>
+	<data name="TI_ROLEADMINISTRATIONSELECTIONROLENAME">
+		<value>不属于任何角色，请从上面的下拉式列表中选择角色。</value>
+	</data>
+	<data name="TI_ROLEADMINISTRATIONSELECTIONWARNING">
+		<value>提交前请选择一个以上用户。</value>
+	</data>
+	<data name="TI_ROLEADMINISTRATIONTITLE">
+		<value>欢迎使用角色管理，请用本工具添加一个或多个用户，加入到角色，或从角色中移除。</value>
+	</data>
+	<data name="TIMEOUT">
+		<value>等待时间(秒)</value>
+	</data>
+	<data name="TITLE">
+		<value>标题</value>
+	</data>
+	<data name="TO">
+		<value>到</value>
+	</data>
+	<data name="TOP">
+		<value>顶部</value>
+	</data>
+	<data name="TOPICNAME">
+		<value>标题</value>
+	</data>
+	<data name="TOPICNAME_DESCRIPTION">
+		<value>为模块选标题，在插件搜索中您可以通过标题过滤项。</value>
+	</data>
+	<data name="TOTAL">
+		<value>总数</value>
+	</data>
+	<data name="TOURISTIC_AUTO">
+		<value>自动</value>
+	</data>
+	<data name="TOURISTIC_NOFILTER">
+		<value>不过滤</value>
+	</data>
+	<data name="TOURISTIC_THISMONTH">
+		<value>仅本月</value>
+	</data>
+	<data name="TOURISTIC_THISYEAR">
+		<value>本年</value>
+	</data>
+	<data name="TR">
+		<value>土耳其语标题</value>
+	</data>
+	<data name="TR_DESCRIPTION">
+		<value>设置土耳其语标题</value>
+	</data>
+	<data name="TRANSLATOR">
+		<value></value>
+	</data>
+	<data name="TRANSLATOR_EMAIL">
+		<value></value>
+	</data>
+	<data name="TRUSTED CONNECTION">
+		<value>可信的连接</value>
+	</data>
+	<data name="TRANSLATOR_EMAIL">
+		<value></value>
+	</data>
+	<data name="TR-TR">
+		<value>土耳其语标题</value>
+	</data>
+	<data name="TR-TR_DESCRIPTION">
+		<value>设置土耳其语标题</value>
+	</data>
+	<data name="THUMBNAILHEIGHT">
+		<value>缩略图高</value>
+	</data>
+	<data name="THUMBNAILLAYOUT">
+		<value>缩略图布局</value>
+	</data>
+	<data name="THUMBNAILRESIZE">
+		<value>缩略图尺寸</value>
+	</data>
+	<data name="THUMBNAILWIDTH">
+		<value>缩略图宽</value>
+	</data>
+	<data name="TYPE">
+		<value>类别</value>
+	</data>
+	<data name="UDTSRC">
+		<value>XSL数据</value>
+	</data>
+	<data name="UDTSRC_DESCRIPTION">
+		<value>指定一个用户自定义表的模块标识(ModuleID)，作为XSL的数据源(参见编辑URL的“mID”参数)。指定 0 重置当前模块数据。</value>
+	</data>
+	<data name="UNCHECKED_USERS">
+		<value>未检查用户</value>
+	</data>
+	<data name="UNKNOWN">
+		<value>不知道</value>
+	</data>
+	<data name="UPDATE">
+		<value>更新</value>
+	</data>
+	<data name="UPDATE_YOUR_PROFILE">
+		<value>更新配置文件</value>
+	</data>
+	<data name="UPLOAD_FILE">
+		<value>上传文件</value>
+	</data>
+	<data name="UPLOAD_IMAGE">
+		<value>上传图片</value>
+	</data>
+	<data name="UPLOAD_SUCCESS_MESSAGE">
+		<value>文件上传成功！</value>
+	</data>
+	<data name="UPLOAD_TO_WEB">
+		<value>上传到WEB服务器</value>
+	</data>
+	<data name="URL">
+		<value>网址(URL)</value>
+	</data>
+	<data name="URLPAGENAME">
+		<value>URL页名</value>
+	</data>
+	<data name="URLPAGENAME_DESCRIPTION">
+		<value>本设置允许您为标签页指定一个名称，用于替代default.aspx在URL中显示</value>
+	</data>
+	<data name="URL_TO_BROWSE">
+		<value>浏览网址(URL)</value>
+	</data>
+	<data name="USE_INSTALLER">
+		<value>使用安装器</value>
+	</data>
+	<data name="USER_MANAGE">
+		<value>管理用户</value>
+	</data>
+	<data name="USER_MESSAGE_DOMAIN1">
+		<value>域用户不需要注册就可以查看指定为“所有用户”可见的插件内容。</value>
+	</data>
+	<data name="USER_MESSAGE_DOMAIN2">
+		<value>管理员可使用上面的角色安全功能通过指定用户角色的方式来添加域用户。</value>
+	</data>
+	<data name="USER_MESSAGE_DOMAIN3">
+		<value>本部分允许管理员直接管理用户及其角色安全。</value>
+	</data>
+	<data name="USER_MESSAGE1">
+		<value>用户必须注册才可以查看安全内容。</value>
+	</data>
+	<data name="USER_MESSAGE2">
+		<value>用户可以通过注册表单直接添加自己，管理员可以使用上面的功能通过指定用户的角色方式添加用户。</value>
+	</data>
+	<data name="USER_MESSAGE3">
+		<value>本部分允许管理员直接管理用户及其角色安全。</value>
+	</data>
+	<data name="USER_NEW_USER">
+		<value>新用户已创建</value>
+	</data>
+	<data name="USERBLOCK">
+		<value>组用户数</value>
+	</data>
+	<data name="USERBLOCK_DESCRIPTION">
+		<value>选择每组最大用户数。当发送邮件到所有你要重复处理的用户时，用较小的开销避免服务器超时。</value>
+	</data>
+	<data name="USEREMAIL">
+		<value>用户邮箱</value>
+	</data>
+	<data name="USERID">
+		<value>用户名</value>
+	</data>
+	<data name="USERNAME">
+		<value>用户名称</value>
+	</data>
+	<data name="USERTABLE_BACK">
+		<value>退回</value>
+	</data>
+	<data name="USERTABLE_EDITROW">
+		<value>编辑行</value>
+	</data>
+	<data name="USERTABLE_INASCORDER">
+		<value>升序排序</value>
+	</data>
+	<data name="USERTABLE_INDSCORDER">
+		<value>降序排序</value>
+	</data>
+	<data name="USERTABLE_MANAGETABLE">
+		<value>管理表</value>
+	</data>
+	<data name="USERTABLE_MOVEFIELDDOWN">
+		<value>字段下移</value>
+	</data>
+	<data name="USERTABLE_MOVEFIELDUP">
+		<value>字段上移</value>
+	</data>
+	<data name="USERTABLE_NEWFIELD">
+		<value>新增字段</value>
+	</data>
+	<data name="USERTABLE_SORTEDBY">
+		<value>排序字段</value>
+	</data>
+	<data name="USERTABLE_TITLE">
+		<value>标题</value>
+	</data>
+	<data name="USERTABLE_TYPE">
+		<value>类别</value>
+	</data>
+	<data name="USERTABLE_TYPE_BOOLEAN">
+		<value>布尔类型</value>
+	</data>
+	<data name="USERTABLE_TYPE_DATETIME">
+		<value>日期时间类型</value>
+	</data>
+	<data name="USERTABLE_TYPE_DECIMAL">
+		<value>小数类型</value>
+	</data>
+	<data name="USERTABLE_TYPE_FILE">
+		<value>文件类型</value>
+	</data>
+	<data name="USERTABLE_TYPE_INT32">
+		<value>整数类型</value>
+	</data>
+	<data name="USERTABLE_TYPE_STRING">
+		<value>字符串类型</value>
+	</data>
+	<data name="USERTABLE_VISIBLE">
+		<value>可见</value>
+	</data>
+	<data name="VALID_ADDRESS">
+		<value>必须输入有效地址</value>
+	</data>
+	<data name="VALID_CITY">
+		<value>必须输入有效城市</value>
+	</data>
+	<data name="VALID_CODE">
+		<value>必须输入有效代码</value>
+	</data>
+	<data name="VALID_DATE">
+		<value>必须输入有效日期</value>
+	</data>
+	<data name="VALID_EMAIL">
+		<value>必须输入有效邮箱</value>
+	</data>
+	<data name="VALID_FIELD">
+		<value>必须输入有效字段</value>
+	</data>
+	<data name="VALID_FILE_NAME">
+		<value>必须输入有效文件名</value>
+	</data>
+	<data name="VALID_NAME">
+		<value>必须输入有效名称</value>
+	</data>
+	<data name="VALID_NUMBER">
+		<value>必须输入有效号码</value>
+	</data>
+	<data name="VALID_PHONE">
+		<value>必须输入有效电话号码</value>
+	</data>
+	<data name="VALID_TITLE">
+		<value>必须输入有效标题</value>
+	</data>
+	<data name="VALID_VIEWORDER">
+		<value>必须输入有效显示顺序</value>
+	</data>
+	<data name="VALID_ZIP">
+		<value>必须输入有效邮编</value>
+	</data>
+	<data name="VALIDORDER">
+		<value>必须输入有效查看顺序</value>
+	</data>
+	<data name="VALIDTITLE">
+		<value>必须输入有效标题</value>
+	</data>
+	<data name="VALIDURL">
+		<value>必须输入有效网址</value>
+	</data>
+	<data name="VERTICAL">
+		<value>垂直</value>
+	</data>
+	<data name="VIEW_ORDER">
+		<value>查看顺序</value>
+	</data>
+	<data name="VIEWORDER">
+		<value>查看顺序</value>
+	</data>
+	<data name="VOTEDAYPERIOD">
+		<value>调查截止日期</value>
+	</data>
+	<data name="WEB_FARM_SUPPORT">
+		<value>存储在服务器</value>
+	</data>
+	<data name="WEBPARTFILE">
+		<value>WEBPART文件</value>
+	</data>
+	<data name="WEBSITE">
+		<value>网站</value>
+	</data>
+	<data name="WELCOME">
+		<value>欢迎</value>
+	</data>
+	<data name="WHOS_LOGGED_ON_1">
+		<value>当前在线</value>
+	</data>
+	<data name="WHOS_LOGGED_ON_2">
+		<value>名匿名用户</value>
+	</data>
+	<data name="WHOS_LOGGED_ON_3">
+		<value>名注册用户</value>
+	</data>
+	<data name="WHOSLOGGEDONCACHETIMEOUT">
+		<value>指定一个时间值，用于对登录模块者进行超时检查。</value>
+	</data>
+	<data name="WIDTH">
+		<value>宽度</value>
+	</data>
+	<data name="WIDTH_DESCRIPTION">
+		<value>编辑器控件宽度</value>
+	</data>
+	<data name="XML FILE">
+		<value>XML文件</value>
+	</data>
+	<data name="XML TYPE">
+		<value>XML类型</value>
+	</data>
+	<data name="XML URL">
+		<value>XML网址</value>
+	</data>
+	<data name="XMLSRC">
+		<value>XML源文件</value>
+	</data>
+	<data name="XSL FILE">
+		<value>XSL文件</value>
+	</data>
+	<data name="XSL PREDEFINED">
+		<value>XSL预定义</value>
+	</data>
+	<data name="XSL TYPE">
+		<value>XSL类型</value>
+	</data>
+	<data name="XSLSRC">
+		<value>XSL转换</value>
+	</data>
+	<data name="YEAR">
+		<value>年</value>
+	</data>
+	<data name="YEARS">
+		<value>年(最大)</value>
+	</data>
+	<data name="ZH-CN">
+		<value>简体中文标题</value>
+	</data>
+	<data name="ZH-CN_DESCRIPTION">
+		<value>设置简体中文标题（UTF-8）</value>
+	</data>
+	<data name="ZH-TW">
+		<value>繁体中文标题</value>
+	</data>
+	<data name="ZH-TW_DESCRIPTION">
+		<value>设置繁体中文标题（UTF-8）</value>
+	</data>
+	<data name="ZIP">
+		<value>邮编</value>
+	</data>
+	<data name="ZOOM">
+		<value>缩放</value>
+	</data>
+</root>
