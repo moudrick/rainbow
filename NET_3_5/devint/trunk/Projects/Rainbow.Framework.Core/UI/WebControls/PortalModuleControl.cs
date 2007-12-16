@@ -2039,7 +2039,7 @@ end of modification
             }
         }
 
-        private LinkButton minMaxButton = null;
+        //private LinkButton minMaxButton = null;
 
         /// <summary>
         /// Module button to minimize/maximize module
@@ -2068,11 +2068,11 @@ end of modification
         //    }
         //}
 
-        private LinkButton closeButton = null;
+        //private LinkButton closeButton = null;
 
-        /// <summary>
-        /// Module button to close module
-        /// </summary>
+        ///// <summary>
+        ///// Module button to close module
+        ///// </summary>
         //public LinkButton CloseButton {
         //    get {
         //        if ( closeButton == null && HttpContext.Current != null ) {

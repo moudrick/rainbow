@@ -8,6 +8,9 @@ using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [History("Manu", "2003/06/06", "Removed commented legacy code.")]
     [History("Manu", "2003/05/28", "Remove SignIn and LanguageSwitcher auto-placement. Place it as other modules.")]
     [History("Jes1111", "2003/03/08", "Added SignIn auto-placement")]

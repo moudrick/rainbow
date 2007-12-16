@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Data;
+using System.Data.Linq;
+using System.Linq;
+using Rainbow.Framework.Data.MsSql;
 using Rainbow.Framework.Settings;
 using System.Configuration;
 
@@ -12,13 +15,15 @@ namespace Rainbow.Framework.Providers.Geographic {
     /// SQL implementation of the <code>GeographicProvider</code> API
     /// </summary>
     public class SqlGeographicProvider : GeographicProvider {
-
         /// <summary>
         /// Initializes the provider.
         /// </summary>
         /// <param name="name">The friendly name of the provider.</param>
-        /// <param name="config">A collection of the name/value pairs representing the 
+        /// <param name="config">A collection of the name/value pairs representing the
         /// provider-specific attributes specified in the configuration for this provider.</param>
+        /// <exception cref="T:System.ArgumentNullException">The name of the provider is null.</exception>
+        /// <exception cref="T:System.ArgumentException">The name of the provider has a length of zero.</exception>
+        /// <exception cref="T:System.InvalidOperationException">An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a provider after the provider has already been initialized.</exception>
         public override void Initialize( string name, System.Collections.Specialized.NameValueCollection config ) {
             base.Initialize( name, config );
 
@@ -31,10 +36,10 @@ namespace Rainbow.Framework.Providers.Geographic {
         }
 
         /// <summary>
-        /// A helper function to retrieve config values from the configuration file. 
+        /// A helper function to retrieve config values from the configuration file.
         /// </summary>
-        /// <param name="configValue"></param>
-        /// <param name="defaultValue"></param>
+        /// <param name="configValue">The config value.</param>
+        /// <param name="defaultValue">The default value.</param>
         /// <returns></returns>
         private string GetConfigValue( string configValue, string defaultValue ) {
             if ( String.IsNullOrEmpty( configValue ) )
@@ -43,13 +48,24 @@ namespace Rainbow.Framework.Providers.Geographic {
             return configValue;
         }
 
+        /// <summary>
+        /// Gets the list of countries
+        /// </summary>
+        /// <returns>
+        /// a <code>IList&lt;Country&gt;</code> containing a list of all countries.
+        /// This method ignores the CountriesFilter property.
+        /// </returns>
         public override IList<Country> GetUnfilteredCountries() {
             return GetCountriesCore( string.Empty, string.Empty, CountryFields.CountryID );
         }
 
         /// <summary>
-        /// <see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetCountries()"/>
+        /// 	<see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetCountries()"/>
         /// </summary>
+        /// <returns>
+        /// a <code>IList&lt;Country&gt;</code> containing a list of all countries.
+        /// This method takes into account the CountriesFilter property.
+        /// </returns>
         public override IList<Country> GetCountries() {
             return GetCountriesCore( countriesFilter, string.Empty, CountryFields.CountryID );
         }
@@ -76,8 +92,12 @@ namespace Rainbow.Framework.Providers.Geographic {
         }
 
         /// <summary>
-        /// <see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetCountryStates( string )"/>
+        /// 	<see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetCountryStates( string )"/>
         /// </summary>
+        /// <param name="countryID">The country code</param>
+        /// <returns>
+        /// The list of states for the specified country
+        /// </returns>
         public override IList<State> GetCountryStates( string countryID ) {
             IList<State> result = new List<State>();
 
@@ -108,8 +128,14 @@ namespace Rainbow.Framework.Providers.Geographic {
         }
 
         /// <summary>
-        /// <see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetCountryDisplayName( string, System.Globalization.CultureInfo )"/>
+        /// 	<see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetCountryDisplayName( string, System.Globalization.CultureInfo )"/>
         /// </summary>
+        /// <param name="countryID">The country's id</param>
+        /// <param name="c">a <code>System.Globalization.CultureInfo</code> describing the language we want the name for</param>
+        /// <returns>
+        /// A <code>string</code> containing the localized name.
+        /// </returns>
+        /// <exception cref="CountryNotFoundException">If the country is not found</exception>
         public override string GetCountryDisplayName( string countryID, System.Globalization.CultureInfo c ) {
             string cacheKey = "COUNTRY_" + countryID + " - " + c.TwoLetterISOLanguageName;
 
@@ -127,8 +153,14 @@ namespace Rainbow.Framework.Providers.Geographic {
         }
 
         /// <summary>
-        /// <see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetStateDisplayName( int, System.Globalization.CultureInfo )"/>
+        /// 	<see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetStateDisplayName( int, System.Globalization.CultureInfo )"/>
         /// </summary>
+        /// <param name="stateID"></param>
+        /// <param name="c">a <code>System.Globalization.CultureInfo</code> describing the language we want the name for</param>
+        /// <returns>
+        /// A <code>string</code> containing the localized name.
+        /// </returns>
+        /// <exception cref="StateNotFoundException">If the state is not found</exception>
         public override string GetStateDisplayName( int stateID, System.Globalization.CultureInfo c ) {
             string cacheKey = "STATENAME_" + stateID + " - " + c.TwoLetterISOLanguageName;
 
@@ -146,8 +178,13 @@ namespace Rainbow.Framework.Providers.Geographic {
         }
 
         /// <summary>
-        /// <see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetAdministrativeDivisionName( string, System.Globalization.CultureInfo )"/>
+        /// 	<see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetAdministrativeDivisionName( string, System.Globalization.CultureInfo )"/>
         /// </summary>
+        /// <param name="administrativeDivisionName"></param>
+        /// <param name="c">a <code>System.Globalization.CultureInfo</code> describing the language we want the name for</param>
+        /// <returns>
+        /// A <code>string</code> containing the localized name.
+        /// </returns>
         public override string GetAdministrativeDivisionName( string administrativeDivisionName, System.Globalization.CultureInfo c ) {
             string cacheKey = "ADMINISTRATIVEDIVISIONNAME_" + administrativeDivisionName + " - " + c.TwoLetterISOLanguageName;
 
@@ -165,8 +202,13 @@ namespace Rainbow.Framework.Providers.Geographic {
         }
 
         /// <summary>
-        /// <see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetCountry( string )"/>
+        /// 	<see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetCountry( string )"/>
         /// </summary>
+        /// <param name="countryID">The country's id</param>
+        /// <returns>
+        /// A <code>Country</code> object containing the country info, or null if the country doesn't exist
+        /// </returns>
+        /// <exception cref="CountryNotFoundException">If the country is not found</exception>
         public override Country GetCountry( string countryID ) {
             Country result = null;
 
@@ -198,8 +240,13 @@ namespace Rainbow.Framework.Providers.Geographic {
         }
 
         /// <summary>
-        /// <see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetState( int )"/>
+        /// 	<see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetState( int )"/>
         /// </summary>
+        /// <param name="stateID">The state's id</param>
+        /// <returns>
+        /// A <code>State</code> object containing the State info, or null if the state doesn't exist
+        /// </returns>
+        /// <exception cref="StateNotFoundException">If the state is not found</exception>
         public override State GetState( int stateID ) {
             State result = null;
 
@@ -231,6 +278,12 @@ namespace Rainbow.Framework.Providers.Geographic {
             return result;
         }
 
+        /// <summary>
+        /// Gets the display name of the localized.
+        /// </summary>
+        /// <param name="textKey">The text key.</param>
+        /// <param name="culture">The culture.</param>
+        /// <returns></returns>
         private string GetLocalizedDisplayName( string textKey, CultureInfo culture ) {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = "SELECT Description FROM rb_Localize WHERE Textkey=@TextKey AND CultureCode=@CultureCode";
@@ -260,6 +313,13 @@ namespace Rainbow.Framework.Providers.Geographic {
 
         }
 
+        /// <summary>
+        /// Gets the countries core.
+        /// </summary>
+        /// <param name="configFilter">The config filter.</param>
+        /// <param name="additionalFilter">The additional filter.</param>
+        /// <param name="sortBY">The sort BY.</param>
+        /// <returns></returns>
         private static IList<Country> GetCountriesCore( string configFilter, string additionalFilter, CountryFields sortBY ) {
             List<Country> result = new List<Country>();
 
@@ -312,6 +372,7 @@ namespace Rainbow.Framework.Providers.Geographic {
         /// <value>The connection string.</value>
         protected static SqlConnection ConnectionString {
             get {
+
                 SqlConnection result = null;
                 try {
                     result = Config.SqlConnectionString;

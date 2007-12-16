@@ -10,12 +10,30 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
     /// </summary>
     public abstract class RainbowRoleProvider : RoleProvider {
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static Guid AllUsersGuid = new Guid( "{8E9E3841-A27A-49da-BC02-2048F1F1FD54}" );
+        /// <summary>
+        /// 
+        /// </summary>
         public static Guid AuthenticatedUsersGuid = new Guid( "{40D335D3-8C46-4009-B456-53F254959042}" );
+        /// <summary>
+        /// 
+        /// </summary>
         public static Guid UnauthenticatedUsersGuid = new Guid( "{6E21FB8C-F345-4071-870B-151E79008B44}" );
 
+        /// <summary>
+        /// 
+        /// </summary>
         public const string AllUsersRoleName = "All Users";
+        /// <summary>
+        /// 
+        /// </summary>
         public const string AuthenticatedUsersRoleName = "Authenticated Users";
+        /// <summary>
+        /// 
+        /// </summary>
         public const string UnauthenticatedUsersRoleName = "Unauthenticated Users";
 
         /// <summary>

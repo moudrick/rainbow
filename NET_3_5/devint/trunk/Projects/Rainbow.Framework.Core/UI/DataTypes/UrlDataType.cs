@@ -7,6 +7,9 @@ namespace Rainbow.Framework.DataTypes
     /// </summary>
     public class UrlDataType : BaseDataType
     {
+        /// <summary>
+        /// 
+        /// </summary>
         protected new string innerValue = "http://localhost";
 
         /// <summary>

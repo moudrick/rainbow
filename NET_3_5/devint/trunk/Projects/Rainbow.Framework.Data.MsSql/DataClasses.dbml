@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Database Name="Database" EntityNamespace="Rainbow.Framework.Data.MsSql" ContextNamespace="Rainbow.Framework.Data.MsSql" Class="DataClassesDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;AttachDbFilename=&quot;T:\Users\William Forney\Desktop\Rainbow\WebSites\Rainbow\App_Data\Database.mdf&quot;;Integrated Security=True;Asynchronous Processing=True;MultipleActiveResultSets=True;Connect Timeout=30;User Instance=True" SettingsObjectName="Rainbow.Framework.Data.MsSql.Properties.Settings" SettingsPropertyName="DatabaseConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;AttachDbFilename=&quot;T:\Users\William Forney\Documents\Visual Studio 2008\Projects\Rainbow\NET_3_5\devint\trunk\WebSites\Rainbow\App_Data\Database.mdf&quot;;Integrated Security=True;Asynchronous Processing=True;MultipleActiveResultSets=True;Connect Timeout=30;User Instance=True" SettingsObjectName="Rainbow.Framework.Data.MsSql.Properties.Settings" SettingsPropertyName="DatabaseConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.aspnet_Users" Member="aspnet_Users">
     <Type Name="aspnet_User">
       <Column Name="ApplicationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
@@ -91,6 +91,138 @@
       <Association Name="aspnet_Application_aspnet_User1" Member="aspnet_Users1" OtherKey="ApplicationId" Type="aspnet_User" />
       <Association Name="aspnet_Application_aspnet_Membership" Member="aspnet_Memberships" OtherKey="ApplicationId" Type="aspnet_Membership" />
       <Association Name="aspnet_Application_aspnet_Membership1" Member="aspnet_Memberships1" OtherKey="ApplicationId" Type="aspnet_Membership" />
+    </Type>
+  </Table>
+  <Table Name="dbo.rb_Versions" Member="rb_Versions">
+    <Type Name="rb_Version">
+      <Column Name="Release" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Version" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ReleaseDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.rb_ModuleDefinitions" Member="rb_ModuleDefinitions">
+    <Type Name="rb_ModuleDefinition">
+      <Column Name="ModuleDefID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PortalID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GeneralModDefID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="rb_ModuleDefinition_rb_Module" Member="rb_Modules" OtherKey="ModuleDefID" Type="rb_Module" />
+      <Association Name="rb_GeneralModuleDefinition_rb_ModuleDefinition" Member="rb_GeneralModuleDefinition" ThisKey="GeneralModDefID" Type="rb_GeneralModuleDefinition" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.rb_GeneralModuleDefinitions" Member="rb_GeneralModuleDefinitions">
+    <Type Name="rb_GeneralModuleDefinition">
+      <Column Name="GeneralModDefID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FriendlyName" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="DesktopSrc" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="MobileSrc" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="AssemblyName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ClassName" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="Admin" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Searchable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="rb_GeneralModuleDefinition_rb_ModuleDefinition" Member="rb_ModuleDefinitions" OtherKey="GeneralModDefID" Type="rb_ModuleDefinition" />
+    </Type>
+    <InsertFunction FunctionId="FunctionId3">
+      <Argument Parameter="generalModDefID" Member="GeneralModDefID" />
+      <Argument Parameter="friendlyName" Member="FriendlyName" />
+      <Argument Parameter="desktopSrc" Member="DesktopSrc" />
+      <Argument Parameter="mobileSrc" Member="MobileSrc" />
+      <Argument Parameter="assemblyName" Member="AssemblyName" />
+      <Argument Parameter="className" Member="ClassName" />
+      <Argument Parameter="admin" Member="Admin" />
+      <Argument Parameter="searchable" Member="Searchable" />
+    </InsertFunction>
+  </Table>
+  <Table Name="dbo.rb_Modules" Member="rb_Modules">
+    <Type Name="rb_Module">
+      <Column Name="ModuleID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TabID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ModuleDefID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ModuleOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PaneName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ModuleTitle" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="AuthorizedEditRoles" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="AuthorizedViewRoles" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="AuthorizedAddRoles" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="AuthorizedDeleteRoles" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="AuthorizedPropertiesRoles" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="CacheTime" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShowMobile" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="AuthorizedPublishingRoles" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="NewVersion" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SupportWorkflow" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="AuthorizedApproveRoles" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="WorkflowState" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="LastModified" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LastEditor" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="StagingLastModified" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="StagingLastEditor" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="SupportCollapsable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ShowEveryWhere" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="AuthorizedMoveModuleRoles" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="AuthorizedDeleteModuleRoles" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Association Name="rb_Module_rb_ModuleSetting" Member="rb_ModuleSettings" OtherKey="ModuleID" Type="rb_ModuleSetting" />
+      <Association Name="rb_ModuleDefinition_rb_Module" Member="rb_ModuleDefinition" ThisKey="ModuleDefID" Type="rb_ModuleDefinition" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+    <InsertFunction FunctionId="FunctionId4">
+      <Argument Parameter="tabID" Member="TabID" />
+      <Argument Parameter="moduleOrder" Member="ModuleOrder" />
+      <Argument Parameter="moduleTitle" Member="ModuleTitle" />
+      <Argument Parameter="paneName" Member="PaneName" />
+      <Argument Parameter="moduleDefID" Member="ModuleDefID" />
+      <Argument Parameter="cacheTime" Member="CacheTime" />
+      <Argument Parameter="editRoles" Member="AuthorizedEditRoles" />
+      <Argument Parameter="addRoles" Member="AuthorizedAddRoles" />
+      <Argument Parameter="viewRoles" Member="AuthorizedViewRoles" />
+      <Argument Parameter="deleteRoles" Member="AuthorizedDeleteRoles" />
+      <Argument Parameter="propertiesRoles" Member="AuthorizedPropertiesRoles" />
+      <Argument Parameter="moveModuleRoles" Member="AuthorizedMoveModuleRoles" />
+      <Argument Parameter="deleteModuleRoles" Member="AuthorizedDeleteModuleRoles" />
+      <Argument Parameter="showMobile" Member="ShowMobile" />
+      <Argument Parameter="publishingRoles" Member="AuthorizedPublishingRoles" />
+      <Argument Parameter="supportWorkflow" Member="SupportWorkflow" />
+      <Argument Parameter="showEveryWhere" Member="ShowEveryWhere" />
+      <Argument Parameter="supportCollapsable" Member="SupportCollapsable" />
+      <Argument Parameter="moduleID" Member="ModuleID" />
+    </InsertFunction>
+    <UpdateFunction FunctionId="FunctionId5">
+      <Argument Parameter="moduleID" Member="ModuleID" />
+      <Argument Parameter="tabID" Member="TabID" />
+      <Argument Parameter="moduleOrder" Member="ModuleOrder" />
+      <Argument Parameter="moduleTitle" Member="ModuleTitle" />
+      <Argument Parameter="paneName" Member="PaneName" />
+      <Argument Parameter="cacheTime" Member="CacheTime" />
+      <Argument Parameter="editRoles" Member="AuthorizedEditRoles" />
+      <Argument Parameter="addRoles" Member="AuthorizedAddRoles" />
+      <Argument Parameter="viewRoles" Member="AuthorizedViewRoles" />
+      <Argument Parameter="deleteRoles" Member="AuthorizedDeleteRoles" />
+      <Argument Parameter="propertiesRoles" Member="AuthorizedPropertiesRoles" />
+      <Argument Parameter="showMobile" Member="ShowMobile" />
+      <Argument Parameter="publishingRoles" Member="AuthorizedPublishingRoles" />
+      <Argument Parameter="moveModuleRoles" Member="AuthorizedMoveModuleRoles" />
+      <Argument Parameter="deleteModuleRoles" Member="AuthorizedDeleteModuleRoles" />
+      <Argument Parameter="supportWorkflow" Member="SupportWorkflow" />
+      <Argument Parameter="approvalRoles" Member="AuthorizedApproveRoles" />
+      <Argument Parameter="showEveryWhere" Member="ShowEveryWhere" />
+      <Argument Parameter="supportCollapsable" Member="SupportCollapsable" />
+    </UpdateFunction>
+    <DeleteFunction FunctionId="FunctionId6">
+      <Argument Parameter="moduleID" Member="ModuleID" />
+    </DeleteFunction>
+  </Table>
+  <Table Name="dbo.rb_ModuleSettings" Member="rb_ModuleSettings">
+    <Type Name="rb_ModuleSetting">
+      <Column Name="ModuleID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SettingName" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SettingValue" Type="System.String" DbType="NVarChar(1500) NOT NULL" CanBeNull="false" />
+      <Association Name="rb_Module_rb_ModuleSetting" Member="rb_Module" ThisKey="ModuleID" Type="rb_Module" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.rb_ModuleUserSettings" Member="rb_ModuleUserSettings">
+    <Type Name="rb_ModuleUserSetting">
+      <Column Name="ModuleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SettingName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SettingValue" Type="System.String" DbType="NVarChar(1500) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Function Name="dbo.aspnet_Membership_ChangePasswordQuestionAndAnswer" Method="aspnet_Membership_ChangePasswordQuestionAndAnswer">
@@ -226,5 +358,145 @@
     <Parameter Name="TablesToDeleteFrom" Parameter="tablesToDeleteFrom" Type="System.Int32" DbType="Int" />
     <Parameter Name="NumTablesDeletedFrom" Parameter="numTablesDeletedFrom" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Return Type="System.Int32" />
+  </Function>
+  <Function Id="FunctionId4" Name="dbo.rb_AddModule" Method="rb_AddModule">
+    <Parameter Name="TabID" Parameter="tabID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ModuleOrder" Parameter="moduleOrder" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ModuleTitle" Parameter="moduleTitle" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="PaneName" Parameter="paneName" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="ModuleDefID" Parameter="moduleDefID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CacheTime" Parameter="cacheTime" Type="System.Int32" DbType="Int" />
+    <Parameter Name="EditRoles" Parameter="editRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="AddRoles" Parameter="addRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="ViewRoles" Parameter="viewRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="DeleteRoles" Parameter="deleteRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="PropertiesRoles" Parameter="propertiesRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="MoveModuleRoles" Parameter="moveModuleRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="DeleteModuleRoles" Parameter="deleteModuleRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="ShowMobile" Parameter="showMobile" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="PublishingRoles" Parameter="publishingRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="SupportWorkflow" Parameter="supportWorkflow" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="ShowEveryWhere" Parameter="showEveryWhere" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="SupportCollapsable" Parameter="supportCollapsable" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="ModuleID" Parameter="moduleID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Id="FunctionId3" Name="dbo.rb_AddGeneralModuleDefinitions" Method="rb_AddGeneralModuleDefinitions">
+    <Parameter Name="GeneralModDefID" Parameter="generalModDefID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="FriendlyName" Parameter="friendlyName" Type="System.String" DbType="NVarChar(128)" />
+    <Parameter Name="DesktopSrc" Parameter="desktopSrc" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="MobileSrc" Parameter="mobileSrc" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="AssemblyName" Parameter="assemblyName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="ClassName" Parameter="className" Type="System.String" DbType="NVarChar(128)" />
+    <Parameter Name="Admin" Parameter="admin" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Searchable" Parameter="searchable" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Id="FunctionId6" Name="dbo.rb_DeleteModule" Method="rb_DeleteModule">
+    <Parameter Name="ModuleID" Parameter="moduleID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.rb_DeleteModuleToRecycler" Method="rb_DeleteModuleToRecycler">
+    <Parameter Name="ModuleID" Parameter="moduleID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DeletedBy" Parameter="deletedBy" Type="System.String" DbType="NVarChar(250)" />
+    <Parameter Name="DateDeleted" Parameter="dateDeleted" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Id="FunctionId5" Name="dbo.rb_UpdateModule" Method="rb_UpdateModule">
+    <Parameter Name="ModuleID" Parameter="moduleID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TabID" Parameter="tabID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ModuleOrder" Parameter="moduleOrder" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ModuleTitle" Parameter="moduleTitle" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="PaneName" Parameter="paneName" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="CacheTime" Parameter="cacheTime" Type="System.Int32" DbType="Int" />
+    <Parameter Name="EditRoles" Parameter="editRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="AddRoles" Parameter="addRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="ViewRoles" Parameter="viewRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="DeleteRoles" Parameter="deleteRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="PropertiesRoles" Parameter="propertiesRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="ShowMobile" Parameter="showMobile" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="PublishingRoles" Parameter="publishingRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="MoveModuleRoles" Parameter="moveModuleRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="DeleteModuleRoles" Parameter="deleteModuleRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="SupportWorkflow" Parameter="supportWorkflow" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="ApprovalRoles" Parameter="approvalRoles" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="ShowEveryWhere" Parameter="showEveryWhere" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="SupportCollapsable" Parameter="supportCollapsable" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.rb_UpdateModuleDefinitions" Method="rb_UpdateModuleDefinitions">
+    <Parameter Name="GeneralModDefID" Parameter="generalModDefID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="PortalID" Parameter="portalID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ischecked" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.rb_UpdateGeneralModuleDefinitions" Method="rb_UpdateGeneralModuleDefinitions">
+    <Parameter Name="GeneralModDefID" Parameter="generalModDefID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="FriendlyName" Parameter="friendlyName" Type="System.String" DbType="NVarChar(128)" />
+    <Parameter Name="DesktopSrc" Parameter="desktopSrc" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="MobileSrc" Parameter="mobileSrc" Type="System.String" DbType="NVarChar(256)" />
+    <Parameter Name="AssemblyName" Parameter="assemblyName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="ClassName" Parameter="className" Type="System.String" DbType="NVarChar(128)" />
+    <Parameter Name="Admin" Parameter="admin" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Searchable" Parameter="searchable" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.rb_DeleteModuleDefinition" Method="rb_DeleteModuleDefinition">
+    <Parameter Name="ModuleDefID" Parameter="moduleDefID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.rb_GetModulesInTab" Method="rb_GetModulesInTab">
+    <Parameter Name="PortalID" Parameter="portalID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TabID" Parameter="tabID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="rb_GetModulesInTabResult">
+      <Column Name="ModuleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GeneralModDefID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.rb_FindModulesByGuid" Method="rb_FindModulesByGuid">
+    <Parameter Name="PortalID" Parameter="portalID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Guid" Parameter="guid" Type="System.Guid" DbType="UniqueIdentifier" />
+    <ElementType Name="rb_FindModulesByGuidResult">
+      <Column Name="ModuleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.rb_GetCurrentModuleDefinitions" Method="rb_GetCurrentModuleDefinitions">
+    <Parameter Name="PortalID" Parameter="portalID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="rb_GetCurrentModuleDefinitionsResult">
+      <Column Name="FriendlyName" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="DesktopSrc" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="MobileSrc" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="Admin" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ModuleDefID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.rb_GetGeneralModuleDefinitionByName" Method="rb_GetGeneralModuleDefinitionByName">
+    <Parameter Name="FriendlyName" Parameter="friendlyName" Type="System.String" DbType="NVarChar(128)" />
+    <Parameter Name="ModuleID" Parameter="moduleID" Type="System.Guid" DbType="UniqueIdentifier" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.rb_GetModuleDefinitionByGuid" Method="rb_GetModuleDefinitionByGuid">
+    <Parameter Name="PortalID" Parameter="portalID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Guid" Parameter="guid" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="ModuleID" Parameter="moduleID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.rb_GetModuleDefinitionByName" Method="rb_GetModuleDefinitionByName">
+    <Parameter Name="PortalID" Parameter="portalID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FriendlyName" Parameter="friendlyName" Type="System.String" DbType="NVarChar(128)" />
+    <Parameter Name="ModuleID" Parameter="moduleID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.rb_GetModuleDefinitionByID" Method="rb_GetModuleDefinitionByID">
+    <Parameter Name="ModuleID" Parameter="moduleID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="rb_GetModuleDefinitionByIDResult">
+      <Column Name="ModuleDefID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PortalID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FriendlyName" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="DesktopSrc" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="MobileSrc" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="Admin" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ModuleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
   </Function>
 </Database>

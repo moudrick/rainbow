@@ -105,11 +105,6 @@ namespace Rainbow.Framework.Scheduler
                 throw new SchedulerException("Unable to load assembly name from database", ex);
             }
 
-            catch
-            {
-                _cn.Close();
-                throw;
-            }
             string assemblyName;
             string typeName;
 
@@ -153,10 +148,6 @@ namespace Rainbow.Framework.Scheduler
                     ex);
             }
 
-            catch
-            {
-                throw;
-            }
             ISchedulable module = o as ISchedulable;
 
             if (module == null)

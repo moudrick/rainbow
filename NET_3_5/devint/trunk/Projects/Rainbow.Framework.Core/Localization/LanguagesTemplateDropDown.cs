@@ -25,6 +25,9 @@ using System.Web.UI.WebControls;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class LanguagesTemplateDropDown : ITemplate
     {
         private ListItemType templateType;

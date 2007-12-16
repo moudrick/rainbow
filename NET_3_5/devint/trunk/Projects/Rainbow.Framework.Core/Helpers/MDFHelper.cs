@@ -334,16 +334,16 @@ namespace Rainbow.Framework.Core.Helpers
             set {_portalID = value;}
         }
 
-        /// <summary>
-        /// When the value of UserID is 0 the user has not signed in (it's a guest!)
-        /// Default value: -1
-        /// </summary>
-        /// <value>The user ID.</value>
-//		public int UserID
-//		{
-//			get {return _userID;}
-//			set {_userID = value;}
-//        }
+        ///// <summary>
+        ///// When the value of UserID is 0 the user has not signed in (it's a guest!)
+        ///// Default value: -1
+        ///// </summary>
+        ///// <value>The user ID.</value>
+        //public int UserID
+        //{
+        //    get { return _userID; }
+        //    set { _userID = value; }
+        //}
         #endregion
 
         #region Public Methods

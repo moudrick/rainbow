@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Rainbow.Framework.Core.BLL {
+    /// <summary>
+    /// 
+    /// </summary>
     public class GeneralModuleDefinition {
 
         private int generalModDefID;
@@ -14,6 +17,10 @@ namespace Rainbow.Framework.Core.BLL {
         private bool admin;
         private bool searchable;
 
+        /// <summary>
+        /// Gets or sets the general mod def ID.
+        /// </summary>
+        /// <value>The general mod def ID.</value>
         public int GeneralModDefID {
             get {
                 return generalModDefID;
@@ -23,6 +30,10 @@ namespace Rainbow.Framework.Core.BLL {
             }
         }
 
+        /// <summary>
+        /// Gets or sets the name of the friendly.
+        /// </summary>
+        /// <value>The name of the friendly.</value>
         public string FriendlyName {
             get {
                 return friendlyName;
@@ -32,6 +43,10 @@ namespace Rainbow.Framework.Core.BLL {
             }
         }
 
+        /// <summary>
+        /// Gets or sets the desktop source.
+        /// </summary>
+        /// <value>The desktop source.</value>
         public string DesktopSource {
             get {
                 return desktopSource;
@@ -41,6 +56,10 @@ namespace Rainbow.Framework.Core.BLL {
             }
         }
 
+        /// <summary>
+        /// Gets or sets the mobile source.
+        /// </summary>
+        /// <value>The mobile source.</value>
         public string MobileSource {
             get {
                 return mobileSource;
@@ -50,6 +69,10 @@ namespace Rainbow.Framework.Core.BLL {
             }
         }
 
+        /// <summary>
+        /// Gets or sets the name of the assembly.
+        /// </summary>
+        /// <value>The name of the assembly.</value>
         public string AssemblyName {
             get {
                 return assemblyName;
@@ -59,6 +82,10 @@ namespace Rainbow.Framework.Core.BLL {
             }
         }
 
+        /// <summary>
+        /// Gets or sets the name of the class.
+        /// </summary>
+        /// <value>The name of the class.</value>
         public string ClassName {
             get {
                 return className;
@@ -68,6 +95,10 @@ namespace Rainbow.Framework.Core.BLL {
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="GeneralModuleDefinition"/> is admin.
+        /// </summary>
+        /// <value><c>true</c> if admin; otherwise, <c>false</c>.</value>
         public bool Admin {
             get {
                 return admin;
@@ -76,7 +107,11 @@ namespace Rainbow.Framework.Core.BLL {
                 admin = value;
             }
         }
-        
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="GeneralModuleDefinition"/> is searchable.
+        /// </summary>
+        /// <value><c>true</c> if searchable; otherwise, <c>false</c>.</value>
         public bool Searchable {
             get {
                 return searchable;

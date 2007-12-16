@@ -1,7 +1,7 @@
-using System;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Web;
-using Rainbow.Framework.Data;
+using Rainbow.Framework.Data.MsSql;
 using Rainbow.Framework.Exceptions;
 
 namespace Rainbow.Framework.Settings
@@ -20,9 +20,12 @@ namespace Rainbow.Framework.Settings
             get
             {
                 string dbKey = "CurrentDatabase";
+                DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString);
+
                 if (Config.EnableMultiDbSupport)
-                    dbKey = "DatabaseVersion_" + Config.SqlConnectionString.DataSource + "_" +
-                            Config.SqlConnectionString.Database; // For multidb support
+                    dbKey = "DatabaseVersion_" + db.Connection.DataSource + "_" +
+                            db.Connection.Database; // For multidb support
+                
                 return dbKey;
             }
         }
@@ -41,6 +44,7 @@ namespace Rainbow.Framework.Settings
             //2) Connection problems are thown immediately as errors.
             get
             {
+                DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString);
                 //Caches dbversion
                 int curVersion = 0;
 
@@ -57,9 +61,8 @@ namespace Rainbow.Framework.Settings
                             "[ReleaseDate] [datetime] NULL " +
                             ") ON [PRIMARY]"
                             ;
-                        DBHelper.ExeSQL(createRbVersions);
+                        db.ExecuteCommand(createRbVersions);
                     }
-
                     catch (SqlException ex)
                     {
                         throw new DatabaseUnreachableException(
@@ -69,23 +72,21 @@ namespace Rainbow.Framework.Settings
                         //If this fails most likely cannot connect to db or no permission
                         //throw;
                     }
-                    object version =
-                        DBHelper.ExecuteSQLScalar("SELECT TOP 1 Release FROM rb_Versions ORDER BY Release DESC");
 
-                    if (version != null)
-                        curVersion = Int32.Parse(version.ToString());
+                    var versions = from v in db.rb_Versions orderby v.Release descending select v;
+                    curVersion = versions.First().Release;
 
-                    else
+                    if (curVersion == 0)
                     {
                         curVersion = 1110;
                         // TODO: This should be the best place
-                        // where run the codefor empty db
+                        // where run the code for empty db
                     }
                     HttpContext.Current.Application.Lock();
                     HttpContext.Current.Application[dbKey] = curVersion;
                     HttpContext.Current.Application.UnLock();
                 }
-                return (int) HttpContext.Current.Application[dbKey];
+                return (int)HttpContext.Current.Application[dbKey];
             }
         }
     }

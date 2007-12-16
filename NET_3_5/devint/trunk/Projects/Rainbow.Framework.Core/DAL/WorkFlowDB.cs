@@ -14,7 +14,7 @@ namespace Rainbow.Framework.Site.Data
         /// <summary>
         /// This function publishes the staging data of a module.
         /// </summary>
-        /// <param name="moduleID"></param>
+        /// <param name="moduleID">The module ID.</param>
         public static void Publish(int moduleID)
         {
             // Create Instance of Connection and Command Object
@@ -43,7 +43,7 @@ namespace Rainbow.Framework.Site.Data
         /// <summary>
         /// This function reverts the staging data to the content in production of a module.
         /// </summary>
-        /// <param name="moduleID"></param>
+        /// <param name="moduleID">The module ID.</param>
         public static void Revert(int moduleID)
         {
             // Create Instance of Connection and Command Object
@@ -72,7 +72,7 @@ namespace Rainbow.Framework.Site.Data
         /// <summary>
         /// This function puts the status of a module to request approval
         /// </summary>
-        /// <param name="moduleID"></param>
+        /// <param name="moduleID">The module ID.</param>
         public static void RequestApproval(int moduleID)
         {
             // Create Instance of Connection and Command Object
@@ -101,7 +101,7 @@ namespace Rainbow.Framework.Site.Data
         /// <summary>
         /// This function puts the status of a module to approved
         /// </summary>
-        /// <param name="moduleID"></param>
+        /// <param name="moduleID">The module ID.</param>
         public static void Approve(int moduleID)
         {
             // Create Instance of Connection and Command Object
@@ -130,7 +130,7 @@ namespace Rainbow.Framework.Site.Data
         /// <summary>
         /// This function puts the status of a module back to working
         /// </summary>
-        /// <param name="moduleID"></param>
+        /// <param name="moduleID">The module ID.</param>
         public static void Reject(int moduleID)
         {
             // Create Instance of Connection and Command Object
@@ -156,6 +156,13 @@ namespace Rainbow.Framework.Site.Data
             }
         }
 
+        /// <summary>
+        /// Gets the last modified.
+        /// </summary>
+        /// <param name="moduleID">The module ID.</param>
+        /// <param name="Version">The version.</param>
+        /// <param name="Email">The email.</param>
+        /// <param name="Timestamp">The timestamp.</param>
         public static void GetLastModified(int moduleID, WorkFlowVersion Version, ref string Email,
                                            ref DateTime Timestamp)
         {

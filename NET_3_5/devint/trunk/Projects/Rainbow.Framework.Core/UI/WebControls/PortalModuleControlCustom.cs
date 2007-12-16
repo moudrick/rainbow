@@ -14,6 +14,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
     {
         // provide a custom Hashtable that will store user-specific settings for this instance
         // of the module.  
+        /// <summary>
+        /// 
+        /// </summary>
         protected Hashtable _customUserSettings;
 
         /// <summary>

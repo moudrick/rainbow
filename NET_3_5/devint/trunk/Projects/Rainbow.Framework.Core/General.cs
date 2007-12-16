@@ -28,8 +28,9 @@ namespace Rainbow.Framework
         /// <summary>
         /// Get a resource string value
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="defaultValue"></param>
+        /// <param name="key">The key.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="o">The o.</param>
         /// <returns></returns>
         public static string GetString(string key, string defaultValue, object o)
         {

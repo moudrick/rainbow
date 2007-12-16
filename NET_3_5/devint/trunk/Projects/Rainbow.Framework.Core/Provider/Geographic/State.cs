@@ -5,6 +5,9 @@ using System.Threading;
 
 namespace Rainbow.Framework.Providers.Geographic {
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class State {
 
         private int stateID;

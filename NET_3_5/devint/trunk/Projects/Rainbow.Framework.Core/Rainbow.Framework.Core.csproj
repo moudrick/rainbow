@@ -96,6 +96,9 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
@@ -127,11 +130,6 @@
     <Compile Include="DAL\PagesDB.cs" />
     <Compile Include="DAL\PortalsDB.cs" />
     <Compile Include="DAL\RecyclerDB.cs" />
-    <Compile Include="DAL\SiteDataClasses.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SiteDataClasses.dbml</DependentUpon>
-    </Compile>
     <Compile Include="DAL\UsersDb.cs" />
     <Compile Include="DAL\WorkFlowDB.cs" />
     <Compile Include="Design\Layout.cs" />
@@ -184,11 +182,6 @@
     </Compile>
     <Compile Include="GlobalEnums.cs" />
     <Compile Include="Configuration\Log4NetLogProvider.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Provider\GeographicProvider.cs" />
     <Compile Include="Provider\Geographic\Country.cs" />
     <Compile Include="Provider\Geographic\CountryNotFoundException.cs" />
@@ -315,16 +308,6 @@
     <Content Include="UI\WebControls\DesktopModuleTitle.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="DAL\SiteDataClasses.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>SiteDataClasses.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <None Include="Settings\Rainbow.Settings.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -335,6 +318,10 @@
     <ProjectReference Include="..\DUEMETRI.UI.WebControls.HWMenu\HWMenu\DUEMETRI.UI.WebControls.HWMenu.csproj">
       <Project>{DCDA0619-FD70-42B6-B2DA-78EAFA4BE955}</Project>
       <Name>DUEMETRI.UI.WebControls.HWMenu</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rainbow.Framework.Data.MsSql\Rainbow.Framework.Data.MsSql.csproj">
+      <Project>{F3D1132B-139D-47FF-911E-10A950B572D0}</Project>
+      <Name>Rainbow.Framework.Data.MsSql</Name>
     </ProjectReference>
     <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowMembershipProvider\Rainbow.Framework.Providers.RainbowMembershipProvider.csproj">
       <Project>{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}</Project>
@@ -364,11 +351,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DAL\SiteDataClasses.dbml.layout">
-      <DependentUpon>SiteDataClasses.dbml</DependentUpon>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

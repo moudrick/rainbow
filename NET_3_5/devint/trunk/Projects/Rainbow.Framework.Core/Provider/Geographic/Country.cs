@@ -7,16 +7,28 @@ using System.Threading;
 
 namespace Rainbow.Framework.Providers.Geographic {
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class Country {
 
         #region Ctors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Country"/> class.
+        /// </summary>
         public Country() {
             this.countryID = string.Empty;
             this.neutralName = string.Empty;
             this.administrativeDivisionNeutralName = string.Empty;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Country"/> class.
+        /// </summary>
+        /// <param name="countryID">The country ID.</param>
+        /// <param name="neutralName">Name of the neutral.</param>
+        /// <param name="administrativeDivision">The administrative division.</param>
         public Country( string countryID, string neutralName, string administrativeDivision ) {
             this.countryID = countryID;
             this.neutralName = neutralName;

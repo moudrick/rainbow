@@ -521,18 +521,18 @@ namespace Rainbow.Framework.Site.Configuration
 			}
 		}
 
-		/// <summary>
-		/// The PortalSettings.GetCurrentUserProfile Method returns a hashtable of
-		/// all the fields and their values for currently logged user in the users table.
-		/// Used to retrieve a specific profile detail about the current user, without knowing whether the field exists in the user table or not.
-		/// </summary>
-		/// <param name="PortalID">The portal ID.</param>
-		/// <returns>
-		/// A Hashtable with containing all field values for the current user's user record
-		/// </returns>
-		/// <remarks>
-		/// Added by gman3001 9/29/2004
-		/// </remarks>
+        ///// <summary>
+        ///// The PortalSettings.GetCurrentUserProfile Method returns a hashtable of
+        ///// all the fields and their values for currently logged user in the users table.
+        ///// Used to retrieve a specific profile detail about the current user, without knowing whether the field exists in the user table or not.
+        ///// </summary>
+        ///// <param name="PortalID">The portal ID.</param>
+        ///// <returns>
+        ///// A Hashtable with containing all field values for the current user's user record
+        ///// </returns>
+        ///// <remarks>
+        ///// Added by gman3001 9/29/2004
+        ///// </remarks>
         //public static Hashtable GetCurrentUserProfile(int PortalID)
         //{
         //    Hashtable userSettings = new Hashtable();
@@ -1172,32 +1172,32 @@ namespace Rainbow.Framework.Site.Configuration
             return General.GetString(resourceID);
 
 
-			string res = null;
-			Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceID);
-			StreamReader sr = null;
+            //string res = null;
+            //Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceID);
+            //StreamReader sr = null;
 
-			try
-			{
-				sr = new StreamReader(st);
-				res = sr.ReadToEnd();
-			}
+            //try
+            //{
+            //    sr = new StreamReader(st);
+            //    res = sr.ReadToEnd();
+            //}
 
-			catch (Exception ex)
-			{
-				//Rainbow.Framework.Helpers.LogHelper.Logger.Log(Rainbow.Framework.Configuration.LogLevel.Debug, "Resource not found: " + resourceID, ex);
-				//throw new ArgumentNullException("Resource not found: " + resourceID);
-				throw new RainbowException(LogLevel.Error, "Resource not found: " + resourceID, ex); // jes1111
-			}
+            //catch (Exception ex)
+            //{
+            //    //Rainbow.Framework.Helpers.LogHelper.Logger.Log(Rainbow.Framework.Configuration.LogLevel.Debug, "Resource not found: " + resourceID, ex);
+            //    //throw new ArgumentNullException("Resource not found: " + resourceID);
+            //    throw new RainbowException(LogLevel.Error, "Resource not found: " + resourceID, ex); // jes1111
+            //}
 
-			finally
-			{
-				if (sr != null)
-					sr.Close();
+            //finally
+            //{
+            //    if (sr != null)
+            //        sr.Close();
 
-				if (st != null)
-					st.Close();
-			}
-			return res;
+            //    if (st != null)
+            //        st.Close();
+            //}
+            //return res;
 		}
 
 		/// <summary>

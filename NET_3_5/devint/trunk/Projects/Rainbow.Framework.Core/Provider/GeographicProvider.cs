@@ -110,6 +110,9 @@ namespace Rainbow.Framework.Providers.Geographic {
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected static Cache _currentCache = null;
 
         /// <summary>
@@ -186,14 +189,14 @@ namespace Rainbow.Framework.Providers.Geographic {
         /// <summary>
         /// Gets the list of countries
         /// </summary>
-        /// <returns>a <code>IList<Country></code> containing a list of all countries. 
+        /// <returns>a <code>IList&lt;Country&gt;</code> containing a list of all countries. 
         /// This method ignores the CountriesFilter property.</returns>
         public abstract IList<Country> GetUnfilteredCountries();
 
         /// <summary>
         /// Gets the list of countries
         /// </summary>
-        /// <returns>a <code>IList<Country></code> containing a list of all countries. 
+        /// <returns>a <code>IList&lt;Country&gt;</code> containing a list of all countries. 
         /// This method takes into account the CountriesFilter property.</returns>
         public abstract IList<Country> GetCountries();
 

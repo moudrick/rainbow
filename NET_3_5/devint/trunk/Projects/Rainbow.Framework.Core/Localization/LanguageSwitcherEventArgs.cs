@@ -29,11 +29,20 @@ namespace Rainbow.Framework.Web.UI.WebControls
     {
         private LanguageCultureItem cultureItem;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguageSwitcherEventArgs"/> class.
+        /// </summary>
+        /// <param name="uiCulture">The ui culture.</param>
+        /// <param name="culture">The culture.</param>
         public LanguageSwitcherEventArgs(CultureInfo uiCulture, CultureInfo culture) : base()
         {
             cultureItem = new LanguageCultureItem(uiCulture, culture);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguageSwitcherEventArgs"/> class.
+        /// </summary>
+        /// <param name="cultureItem">The culture item.</param>
         public LanguageSwitcherEventArgs(LanguageCultureItem cultureItem) : base()
         {
             this.cultureItem = cultureItem;
@@ -42,6 +51,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <summary>
         /// Returns the language to change
         /// </summary>
+        /// <value>The culture item.</value>
         public LanguageCultureItem CultureItem
         {
             get { return cultureItem; }

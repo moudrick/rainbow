@@ -5,6 +5,9 @@ namespace Rainbow.Framework.DataTypes
     /// </summary>
     public class NumericDataType : BaseDataType
     {
+        /// <summary>
+        /// 
+        /// </summary>
         protected new string innerValue = "0";
 
         /// <summary>

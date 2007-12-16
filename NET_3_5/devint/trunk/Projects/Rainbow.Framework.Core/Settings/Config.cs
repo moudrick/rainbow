@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Net;
 using System.Web;
+using Rainbow.Framework.Data.MsSql;
 using Rainbow.Framework.Settings.Cache;
 
 namespace Rainbow.Framework.Settings
@@ -266,7 +267,7 @@ namespace Rainbow.Framework.Settings
                 {
                     if (EnableMultiDbSupport)
                         // look in web.config for key="[uniqueID]_ConnectionString", default to key="ConnectionString"
-                        siteConnectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+                        siteConnectionString = ConfigurationManager.ConnectionStrings[keyConnection].ConnectionString;
                     else
                         // look in web.config for key="ConnectionString"
                         siteConnectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
@@ -290,17 +291,9 @@ namespace Rainbow.Framework.Settings
         {
             get
             {
-                SqlConnection myConnection = new SqlConnection();
-                //try
-                //{
-                    myConnection.ConnectionString = ConnectionString;
-                //}
-                //catch (System.ArgumentException) //connectionstring not well formed
-                //{
-                    //redirect to installer
-                    //HttpContext.Current.Response.Redirect(InstallerRedirect);
-                //}
-                return myConnection;
+                DataClassesDataContext db = new DataClassesDataContext(ConnectionString);
+
+                return db.Connection as SqlConnection;
             }
         }
 

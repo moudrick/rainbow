@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using Rainbow.Framework.Data.MsSql;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Settings;
 
@@ -209,10 +210,9 @@ namespace Rainbow.Framework.Data
         public static object ExecuteSQLScalar(string sql)
         {
             object returnValue;
-
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString))
             {
-                using (SqlCommand sqlCommand = new SqlCommand(sql, myConnection))
+                using (SqlCommand sqlCommand = new SqlCommand(sql, (SqlConnection)db.Connection))
                 {
                     try
                     {
@@ -228,8 +228,8 @@ namespace Rainbow.Framework.Data
                     finally
                     {
                         sqlCommand.Dispose();
-                        myConnection.Close();
-                        myConnection.Dispose();
+                        db.Connection.Close();
+                        db.Connection.Dispose();
                     }
                 }
             }
@@ -245,29 +245,17 @@ namespace Rainbow.Framework.Data
         {
             int returnValue = -1;
 
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString))
             {
-                using (SqlCommand sqlCommand = new SqlCommand(sql, myConnection))
+                try
                 {
-                    try
-                    {
-                        sqlCommand.Connection.Open();
-                        returnValue = sqlCommand.ExecuteNonQuery();
-                    }
-
-                    catch (Exception e)
-                    {
-                        ErrorHandler.Publish(LogLevel.Error, "Error in DBHelper - ExeSQL - SQL: '" + sql + "'", e);
-                        throw new DatabaseUnreachableException("Error in DBHelper - ExeSQL", e);
-                        //throw new Exception("Error in DBHelper:ExeSQL()-> " + e.ToString());
-                    }
-
-                    finally
-                    {
-                        sqlCommand.Dispose();
-                        myConnection.Close();
-                        myConnection.Dispose();
-                    }
+                    returnValue = db.ExecuteCommand(sql);
+                }
+                catch (Exception e)
+                {
+                    ErrorHandler.Publish(LogLevel.Error, "Error in DBHelper - ExeSQL - SQL: '" + sql + "'", e);
+                    throw new DatabaseUnreachableException("Error in DBHelper - ExeSQL", e);
+                    //throw new Exception("Error in DBHelper:ExeSQL()-> " + e.ToString());
                 }
             }
             return returnValue;

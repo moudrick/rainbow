@@ -4,6 +4,9 @@ using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class HeaderTitle : Label
     {
         /// <summary>

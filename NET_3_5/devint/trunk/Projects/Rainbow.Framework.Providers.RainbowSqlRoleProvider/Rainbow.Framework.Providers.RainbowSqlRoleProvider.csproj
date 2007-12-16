@@ -57,9 +57,15 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +75,10 @@
     <Compile Include="RainbowSqlRoleProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Rainbow.Framework.Data.MsSql\Rainbow.Framework.Data.MsSql.csproj">
+      <Project>{F3D1132B-139D-47FF-911E-10A950B572D0}</Project>
+      <Name>Rainbow.Framework.Data.MsSql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowMembershipProvider\Rainbow.Framework.Providers.RainbowMembershipProvider.csproj">
       <Project>{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}</Project>
       <Name>Rainbow.Framework.Providers.RainbowMembershipProvider</Name>

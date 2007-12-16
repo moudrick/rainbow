@@ -9,9 +9,21 @@ namespace Rainbow.Framework.Services
     /// </summary>
     public enum ServiceType
     {
+        /// <summary>
+        /// 
+        /// </summary>
         Unknown = 0,
+        /// <summary>
+        /// 
+        /// </summary>
         CommunityWebService = 1,
+        /// <summary>
+        /// 
+        /// </summary>
         CommunityRSSService = 2,
+        /// <summary>
+        /// 
+        /// </summary>
         RSSService = 3
     }
 
@@ -21,8 +33,17 @@ namespace Rainbow.Framework.Services
     /// </summary>
     public enum ServiceListType
     {
+        /// <summary>
+        /// 
+        /// </summary>
         Item = 1,
+        /// <summary>
+        /// 
+        /// </summary>
         Module = 2,
+        /// <summary>
+        /// 
+        /// </summary>
         Tab = 3
     }
 

@@ -48,6 +48,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 Culture = culture;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguageCultureItem"/> class.
+        /// </summary>
         public LanguageCultureItem()
         {
             UICulture = CultureInfo.InvariantCulture;

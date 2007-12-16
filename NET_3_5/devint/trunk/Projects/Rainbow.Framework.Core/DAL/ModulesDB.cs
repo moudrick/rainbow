@@ -1,16 +1,17 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
+using System.Data.Linq;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using Rainbow.Framework.Core.BLL;
+using Rainbow.Framework.Data.MsSql;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Core.BLL;
-using System.Collections.Generic;
-using System.Data.Linq;
 
 namespace Rainbow.Framework.Site.Data
 {
@@ -20,6 +21,8 @@ namespace Rainbow.Framework.Site.Data
     /// </summary>
     public class ModulesDB
     {
+        #region constants
+
         private const string strATAddRoles = "@AddRoles";
         private const string strATAdmin = "@Admin";
         private const string strATApprovalRoles = "@ApprovalRoles";
@@ -54,6 +57,10 @@ namespace Rainbow.Framework.Site.Data
         private const string strNoModule = "NO_MODULE";
         private const string strrb_GetModulesInPage = "rb_GetModulesInTab";
 
+        #endregion
+
+        DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString);
+
         /// <summary>
         /// AddGeneralModuleDefinitions
         /// </summary>
@@ -66,90 +73,28 @@ namespace Rainbow.Framework.Site.Data
         /// <param name="Admin">if set to <c>true</c> [admin].</param>
         /// <param name="Searchable">if set to <c>true</c> [searchable].</param>
         /// <returns>The newly created ID</returns>
+        [History("bill@improvtech.com", "2007/12/16", "Updated for LINQ")]
         public Guid AddGeneralModuleDefinitions(Guid GeneralModDefID, string FriendlyName, string DesktopSrc,
                                                 string MobileSrc, string AssemblyName, string ClassName, bool Admin,
                                                 bool Searchable)
         {
-            using (SiteDataClassesDataContext db = new SiteDataClassesDataContext())
+            try
             {
-                //int returnCode = db.rb_AddGeneralModuleDefinitions(GeneralModDefID, FriendlyName, DesktopSrc, MobileSrc,
-                //    AssemblyName, ClassName, Admin, Searchable);
+                rb_GeneralModuleDefinition row = db.rb_GeneralModuleDefinitions.Where(d => d.GeneralModDefID == GeneralModDefID).Single();
 
-                rb_GeneralModuleDefinition row = (from d in db.rb_GeneralModuleDefinitions
-                                                  where d.GeneralModDefID == GeneralModDefID
-                                                  select d).FirstOrDefault();
-                bool newRow = false;
-                if (row == null)
-                {
-                    newRow = true;
-                    row = new rb_GeneralModuleDefinition();
-                }
+                //if it hasn't thrown an exception that means the row exists, which is bad.
+                ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in AddGeneralModuleDefinitions: The definition you tried to add already exists.");
+            }
+            catch (ArgumentNullException)
+            {
+                //this is good, probably change this method later since this is the rule and not really an exception,
+                //but this should get thrown and ignored if the row isn't there... we are adding it after all...
 
-                row.GeneralModDefID = GeneralModDefID;
-                row.FriendlyName = FriendlyName;
-                row.DesktopSrc = DesktopSrc;
-                row.MobileSrc = MobileSrc;
-                row.AssemblyName = AssemblyName;
-                row.ClassName = ClassName;
-                row.Admin = Admin;
-                row.Searchable = Searchable;
-
-                if (newRow)
-                    db.rb_GeneralModuleDefinitions.InsertOnSubmit(row);
-
-                db.SubmitChanges();
+                db.rb_AddGeneralModuleDefinitions((Guid?)GeneralModDefID, FriendlyName, DesktopSrc, MobileSrc, AssemblyName,
+                ClassName, (bool?)Admin, (bool?)Searchable);
             }
 
             return GeneralModDefID;
-
-            //using (SqlConnection myConnection = Config.SqlConnectionString)
-            //{
-            //    using (SqlCommand myCommand = new SqlCommand("rb_AddGeneralModuleDefinitions", myConnection))
-            //    {
-            //        // Mark the Command as a SPROC
-            //        myCommand.CommandType = CommandType.StoredProcedure;
-            //        // Add Parameters to SPROC
-            //        SqlParameter parameterGeneralModDefID =
-            //            new SqlParameter(strATGeneralModDefID, SqlDbType.UniqueIdentifier);
-            //        parameterGeneralModDefID.Value = GeneralModDefID;
-            //        myCommand.Parameters.Add(parameterGeneralModDefID);
-            //        SqlParameter parameterFriendlyName = new SqlParameter(strATFriendlyName, SqlDbType.NVarChar, 128);
-            //        parameterFriendlyName.Value = FriendlyName;
-            //        myCommand.Parameters.Add(parameterFriendlyName);
-            //        SqlParameter parameterDesktopSrc = new SqlParameter(strATDesktopSrc, SqlDbType.NVarChar, 256);
-            //        parameterDesktopSrc.Value = DesktopSrc;
-            //        myCommand.Parameters.Add(parameterDesktopSrc);
-            //        SqlParameter parameterMobileSrc = new SqlParameter(strATMobileSrc, SqlDbType.NVarChar, 256);
-            //        parameterMobileSrc.Value = MobileSrc;
-            //        myCommand.Parameters.Add(parameterMobileSrc);
-            //        SqlParameter parameterAssemblyName = new SqlParameter(strATAssemblyName, SqlDbType.VarChar, 50);
-            //        parameterAssemblyName.Value = AssemblyName;
-            //        myCommand.Parameters.Add(parameterAssemblyName);
-            //        SqlParameter parameterClassName = new SqlParameter(strATClassName, SqlDbType.NVarChar, 128);
-            //        parameterClassName.Value = ClassName;
-            //        myCommand.Parameters.Add(parameterClassName);
-            //        SqlParameter parameterAdmin = new SqlParameter(strATAdmin, SqlDbType.Bit);
-            //        parameterAdmin.Value = Admin;
-            //        myCommand.Parameters.Add(parameterAdmin);
-            //        SqlParameter parameterSearchable = new SqlParameter(strATSearchable, SqlDbType.Bit);
-            //        parameterSearchable.Value = Searchable;
-            //        myCommand.Parameters.Add(parameterSearchable);
-            //        // Open the database connection and execute the command
-            //        myConnection.Open();
-
-            //        try
-            //        {
-            //            myCommand.ExecuteNonQuery();
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in AddGeneralModuleDefinitions. ", ex);
-            //        }
-
-            //        // Return the newly created ID
-            //        return new Guid(parameterGeneralModDefID.Value.ToString());
-            //    }
-            //}
         }
 
         /// <summary>
@@ -179,107 +124,20 @@ namespace Rainbow.Framework.Site.Data
         [History("jviladiu@portalServices.net", "2004/08/19", "Added support for move & delete modules roles")]
         [History("john.mandia@whitelightsolutions.com", "2003/05/24", "Added support for showEveryWhere")]
         [History("bja@reedtek.com", "2003/05/16", "Added support for win. mgmt min/max/close -- supportCollapsable")]
+        [History("bill@improvtech.com", "2007/12/16", "Updated for LINQ")]
         public int AddModule(int pageID, int moduleOrder, string paneName, string title, int moduleDefID, int cacheTime,
                              string editRoles, string viewRoles, string addRoles, string deleteRoles,
                              string PropertiesRoles,
                              string moveModuleRoles, string deleteModuleRoles, bool showMobile, string publishingRoles,
                              bool supportWorkflow, bool showEveryWhere, bool supportCollapsable)
         {
-            // Changes by Geert.Audenaert@Syntegra.Com Date: 6/2/2003
-            // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
-            {
-                using (SqlCommand myCommand = new SqlCommand("rb_AddModule", myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Add Parameters to SPROC
-                    SqlParameter parameterModuleID = new SqlParameter(strATModuleID, SqlDbType.Int, 4);
-                    parameterModuleID.Direction = ParameterDirection.Output;
-                    myCommand.Parameters.Add(parameterModuleID);
-                    SqlParameter parameterModuleDefinitionID = new SqlParameter(strATModuleDefID, SqlDbType.Int, 4);
-                    parameterModuleDefinitionID.Value = moduleDefID;
-                    myCommand.Parameters.Add(parameterModuleDefinitionID);
-                    SqlParameter parameterPageID = new SqlParameter(strATPageID, SqlDbType.Int, 4);
-                    parameterPageID.Value = pageID;
-                    myCommand.Parameters.Add(parameterPageID);
-                    SqlParameter parameterModuleOrder = new SqlParameter(strATModuleOrder, SqlDbType.Int, 4);
-                    parameterModuleOrder.Value = moduleOrder;
-                    myCommand.Parameters.Add(parameterModuleOrder);
-                    SqlParameter parameterTitle = new SqlParameter(strATModuleTitle, SqlDbType.NVarChar, 256);
-                    parameterTitle.Value = title;
-                    myCommand.Parameters.Add(parameterTitle);
-                    SqlParameter parameterPaneName = new SqlParameter(strATPaneName, SqlDbType.NVarChar, 256);
-                    parameterPaneName.Value = paneName;
-                    myCommand.Parameters.Add(parameterPaneName);
-                    SqlParameter parameterCacheTime = new SqlParameter(strATCacheTime, SqlDbType.Int, 4);
-                    parameterCacheTime.Value = cacheTime;
-                    myCommand.Parameters.Add(parameterCacheTime);
-                    SqlParameter parameterEditRoles = new SqlParameter(strATEditRoles, SqlDbType.NVarChar, 256);
-                    parameterEditRoles.Value = editRoles;
-                    myCommand.Parameters.Add(parameterEditRoles);
-                    SqlParameter parameterViewRoles = new SqlParameter(strATViewRoles, SqlDbType.NVarChar, 256);
-                    parameterViewRoles.Value = viewRoles;
-                    myCommand.Parameters.Add(parameterViewRoles);
-                    SqlParameter parameterAddRoles = new SqlParameter(strATAddRoles, SqlDbType.NVarChar, 256);
-                    parameterAddRoles.Value = addRoles;
-                    myCommand.Parameters.Add(parameterAddRoles);
-                    SqlParameter parameterDeleteRoles = new SqlParameter(strATDeleteRoles, SqlDbType.NVarChar, 256);
-                    parameterDeleteRoles.Value = deleteRoles;
-                    myCommand.Parameters.Add(parameterDeleteRoles);
-                    SqlParameter parameterPropertiesRoles =
-                        new SqlParameter(strATPropertiesRoles, SqlDbType.NVarChar, 256);
-                    parameterPropertiesRoles.Value = PropertiesRoles;
-                    myCommand.Parameters.Add(parameterPropertiesRoles);
-                    // Added by jviladiu@portalservices.net (19/08/2004)
-                    SqlParameter parameterMoveModuleRoles =
-                        new SqlParameter(strATMoveModuleRoles, SqlDbType.NVarChar, 256);
-                    parameterMoveModuleRoles.Value = moveModuleRoles;
-                    myCommand.Parameters.Add(parameterMoveModuleRoles);
-                    // Added by jviladiu@portalservices.net (19/08/2004)
-                    SqlParameter parameterDeleteModuleRoles =
-                        new SqlParameter(strATDeleteModuleRoles, SqlDbType.NVarChar, 256);
-                    parameterDeleteModuleRoles.Value = deleteModuleRoles;
-                    myCommand.Parameters.Add(parameterDeleteModuleRoles);
-                    // Change by Geert.Audenaert@Syntegra.Com
-                    // Date: 6/2/2003
-                    SqlParameter parameterPublishingRoles =
-                        new SqlParameter(strATPublishingRoles, SqlDbType.NVarChar, 256);
-                    parameterPublishingRoles.Value = publishingRoles;
-                    myCommand.Parameters.Add(parameterPublishingRoles);
-                    SqlParameter parameterSupportWorkflow = new SqlParameter(strATSupportWorkflow, SqlDbType.Bit, 1);
-                    parameterSupportWorkflow.Value = supportWorkflow;
-                    myCommand.Parameters.Add(parameterSupportWorkflow);
-                    // End Change Geert.Audenaert@Syntegra.Com
-                    SqlParameter parameterShowMobile = new SqlParameter(strATShowMobile, SqlDbType.Bit, 1);
-                    parameterShowMobile.Value = showMobile;
-                    myCommand.Parameters.Add(parameterShowMobile);
-                    // Start Change john.mandia@whitelightsolutions.com
-                    SqlParameter parameterShowEveryWhere = new SqlParameter(strATShowEveryWhere, SqlDbType.Bit, 1);
-                    parameterShowEveryWhere.Value = showEveryWhere;
-                    myCommand.Parameters.Add(parameterShowEveryWhere);
-                    // End Change  john.mandia@whitelightsolutions.com
-                    // Start Change bja@reedtek.com
-                    SqlParameter parameterSupportCollapsable =
-                        new SqlParameter(strATSupportCollapsable, SqlDbType.Bit, 1);
-                    parameterSupportCollapsable.Value = supportCollapsable;
-                    myCommand.Parameters.Add(parameterSupportCollapsable);
-                    // End Change  bja@reedtek.com
-                    myConnection.Open();
+            int? moduleID = null;
 
-                    try
-                    {
-                        myCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        //ErrorHandler.Publish(Rainbow.Framework.LogLevel.Warn, "An Error Occurred in AddModule. ", ex);
-                        ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in AddModule. ", ex);
-                    }
+            db.rb_AddModule((int?)pageID, (int?)moduleOrder, title, paneName, (int?)moduleDefID, (int?)cacheTime, editRoles, addRoles, viewRoles, deleteRoles,
+                PropertiesRoles, moveModuleRoles, deleteModuleRoles, (bool?)showMobile, publishingRoles, (bool?)supportWorkflow, (bool?)showEveryWhere,
+                (bool?)supportCollapsable, ref moduleID);
 
-                    return (int)parameterModuleID.Value;
-                }
-            }
+            return (int)moduleID;
         }
 
         /// <summary>
@@ -288,6 +146,7 @@ namespace Rainbow.Framework.Site.Data
         /// </summary>
         /// <param name="moduleID">The module ID.</param>
         [History("JB - john@bowenweb.com", "2005/05/12", "Added support for Recycler module")]
+        [History("Bill - bill@improvtech.com", "2007/12/16", "Updated to use LINQ")]
         public void DeleteModule(int moduleID)
         {
             //BOWEN 11 June 2005 - BEGIN
@@ -296,50 +155,18 @@ namespace Rainbow.Framework.Site.Data
                 bool.Parse(
                     PortalSettings.GetPortalCustomSettings(portalSettings.PortalID,
                                                            PortalSettings.GetPortalBaseSettings(
-                                                               portalSettings.PortalPath))["SITESETTINGS_USE_RECYCLER"].
-                        ToString());
+                                                               portalSettings.PortalPath))["SITESETTINGS_USE_RECYCLER"].ToString());
 
             // TODO: THIS LINE DISABLES THE RECYCLER DUE SOME TROUBLES WITH IT !!!!!! Fix those troubles and then discomment.
             useRecycler = false;
 
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            if (useRecycler)
             {
-                using (
-                    SqlCommand myCommand =
-                        new SqlCommand((useRecycler ? "rb_DeleteModuleToRecycler" : "rb_DeleteModule"), myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Add Parameters to SPROC
-
-                    SqlParameter parameterModuleID = new SqlParameter(strATModuleID, SqlDbType.Int, 4);
-                    parameterModuleID.Value = moduleID;
-                    myCommand.Parameters.Add(parameterModuleID);
-
-                    if (useRecycler) //Recycler needs some extra params for entry
-                    {
-                        // Add Recycler-specific Parameters to SPROC
-                        SqlParameter paramDeletedBy = new SqlParameter("@DeletedBy", SqlDbType.NVarChar, 250);
-                        paramDeletedBy.Value = MailHelper.GetCurrentUserEmailAddress();
-                        myCommand.Parameters.Add(paramDeletedBy);
-
-                        SqlParameter paramDeletedDate = new SqlParameter("@DateDeleted", SqlDbType.DateTime, 8);
-                        paramDeletedDate.Value = DateTime.Now;
-                        myCommand.Parameters.Add(paramDeletedDate);
-                    }
-                    //BOWEN 11 June 2005 - END
-                    myConnection.Open();
-
-                    try
-                    {
-                        myCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorHandler.Publish(LogLevel.Warn,
-                                             "An Error Occurred in DeleteModule. Parameter : " + moduleID.ToString(), ex);
-                    }
-                }
+                db.rb_DeleteModuleToRecycler((int?)moduleID, MailHelper.GetCurrentUserEmailAddress(), (DateTime?)DateTime.Now);
+            }
+            else
+            {
+                db.rb_DeleteModule((int?)moduleID);
             }
         }
 
@@ -349,35 +176,10 @@ namespace Rainbow.Framework.Site.Data
         /// </summary>
         /// <param name="defID">The def ID.</param>
         /// <remarks>Other relevant sources: DeleteModuleDefinition Stored Procedure</remarks>
+        [History("Bill - bill@improvtech.com", "2007/12/16", "Updated to use LINQ")]
         public void DeleteModuleDefinition(Guid defID)
         {
-            // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
-            {
-                using (SqlCommand myCommand = new SqlCommand("rb_DeleteModuleDefinition", myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Add Parameters to SPROC
-                    SqlParameter parameterModuleDefID = new SqlParameter(strATModuleDefID, SqlDbType.UniqueIdentifier);
-                    parameterModuleDefID.Value = defID;
-                    myCommand.Parameters.Add(parameterModuleDefID);
-                    // Open the database connection and execute the command
-                    myConnection.Open();
-
-                    try
-                    {
-                        myCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        //ErrorHandler.Publish(Rainbow.Framework.LogLevel.Warn, "An Error Occurred in DeleteModuleDefinition. Parameter : " + defID.ToString(), ex);
-                        ErrorHandler.Publish(LogLevel.Warn,
-                                             "An Error Occurred in DeleteModuleDefinition. Parameter : " +
-                                             defID.ToString(), ex);
-                    }
-                }
-            }
+            db.rb_DeleteModuleDefinition((Guid?)defID);
         }
 
         /// <summary>
@@ -386,38 +188,21 @@ namespace Rainbow.Framework.Site.Data
         /// <param name="tabID">The tab ID.</param>
         /// <param name="portalID">The portal ID.</param>
         /// <returns>A bool value...</returns>
+        [History("Bill - bill@improvtech.com", "2007/12/16", "Updated to use LINQ")]
         public bool ExistModuleProductsInPage(int tabID, int portalID)
         {
-            // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            var mods = db.rb_GetModulesInTab((int?)portalID, (int?)tabID);
+
+            Guid moduleGuid = new Guid("{EC24FABD-FB16-4978-8C81-1ADD39792377}");
+            bool retorno = false;
+
+            foreach (rb_GetModulesInTabResult mod in mods)
             {
-                using (SqlCommand myCommand = new SqlCommand(strrb_GetModulesInPage, myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Add Parameters to SPROC
-                    SqlParameter parameterPageID = new SqlParameter(strATPageID, SqlDbType.Int, 4);
-                    parameterPageID.Value = tabID;
-                    myCommand.Parameters.Add(parameterPageID);
-                    // Add Parameters to SPROC
-                    SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
-                    parameterPortalID.Value = portalID;
-                    myCommand.Parameters.Add(parameterPortalID);
-
-                    myConnection.Open();
-                    Guid moduleGuid = new Guid("{EC24FABD-FB16-4978-8C81-1ADD39792377}");
-                    bool retorno = false;
-
-                    using (SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection))
-                    {
-                        while (result.Read())
-                        {
-                            if (moduleGuid.Equals(result.GetGuid(1))) retorno = true;
-                        }
-                    }
-                    return retorno;
-                }
+                if (moduleGuid.Equals(mod.GeneralModDefID))
+                    retorno = true;
             }
+
+            return retorno;
         }
 
         /// <summary>
@@ -426,39 +211,22 @@ namespace Rainbow.Framework.Site.Data
         /// <param name="portalID">The portal ID.</param>
         /// <param name="guid">The GUID.</param>
         /// <returns></returns>
+        [History("Bill - bill@improvtech.com", "2007/12/16", "Updated to use LINQ")]
         public ArrayList FindModuleItemsByGuid(int portalID, Guid guid)
         {
-            // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
-            {
-                using (SqlCommand myCommand = new SqlCommand("rb_FindModulesByGuid", myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Add Parameters to SPROC
-                    SqlParameter parameterFriendlyName = new SqlParameter(strATGuid, SqlDbType.UniqueIdentifier);
-                    parameterFriendlyName.Value = guid;
-                    myCommand.Parameters.Add(parameterFriendlyName);
-                    SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
-                    parameterPortalID.Value = portalID;
-                    myCommand.Parameters.Add(parameterPortalID);
-                    // Open the database connection and execute the command
-                    myConnection.Open();
-                    ArrayList modList = new ArrayList();
+            var mods = db.rb_FindModulesByGuid((int?)portalID, (Guid?)guid);
+            ArrayList modList = new ArrayList();
 
-                    using (SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection))
-                    {
-                        ModuleItem m = null;
-                        while (result.Read())
-                        {
-                            m = new ModuleItem();
-                            m.ID = (int)result["ModuleId"];
-                            modList.Add(m);
-                        }
-                    }
-                    return modList;
-                }
+            ModuleItem m = null;
+
+            foreach (var mod in mods)
+            {
+                m = new ModuleItem();
+                m.ID = mod.ModuleID;
+                modList.Add(m);
             }
+
+            return modList;
         }
 
         /// <summary>
@@ -471,7 +239,7 @@ namespace Rainbow.Framework.Site.Data
         public SqlDataReader FindModulesByGuid(int portalID, Guid guid)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = (SqlConnection)db.Connection;
             SqlCommand myCommand = new SqlCommand("rb_FindModulesByGuid", myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -520,36 +288,25 @@ namespace Rainbow.Framework.Site.Data
         /// <param name="portalID">The portal ID.</param>
         /// <returns></returns>
         /// <remarks>Other relevant sources: GetModuleDefinitions Stored Procedure</remarks>
+        [History("Bill - bill@improvtech.com", "2007/12/16", "Updated to use LINQ")]
         public IList<GeneralModuleDefinition> GetCurrentModuleDefinitionsList(int portalID)
         {
-            // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
-            SqlCommand myCommand = new SqlCommand("rb_GetCurrentModuleDefinitions", myConnection);
-            // Mark the Command as a SPROC
-            myCommand.CommandType = CommandType.StoredProcedure;
-            // Add Parameters to SPROC
-            SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
-            parameterPortalID.Value = portalID;
-            myCommand.Parameters.Add(parameterPortalID);
-            // Open the database connection and execute the command
-            myConnection.Open();
+            var defs = db.rb_GetCurrentModuleDefinitions((int?)portalID);
 
             IList<GeneralModuleDefinition> result = new List<GeneralModuleDefinition>();
             GeneralModuleDefinition genModDef = null;
-            using (SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection))
+
+            foreach (var def in defs)
             {
-                while (dr.Read())
-                {
-                    genModDef = new GeneralModuleDefinition();
+                genModDef = new GeneralModuleDefinition();
 
-                    genModDef.FriendlyName = dr.GetString(0);
-                    genModDef.DesktopSource = dr.GetString(1);
-                    genModDef.MobileSource = dr.GetString(2);
-                    genModDef.Admin = dr.GetBoolean(3);
-                    genModDef.GeneralModDefID = dr.GetInt32(4);
+                genModDef.FriendlyName = def.FriendlyName;
+                genModDef.DesktopSource = def.DesktopSrc;
+                genModDef.MobileSource = def.MobileSrc;
+                genModDef.Admin = (bool)def.Admin;
+                genModDef.GeneralModDefID = def.ModuleDefID;
 
-                    result.Add(genModDef);
-                }
+                result.Add(genModDef);
             }
 
             return result;
@@ -561,60 +318,22 @@ namespace Rainbow.Framework.Site.Data
         /// </summary>
         /// <param name="moduleName">Name of the module.</param>
         /// <returns></returns>
+        [History("Bill - bill@improvtech.com", "2007/12/16", "Updated to use LINQ")]
         public Guid GetGeneralModuleDefinitionByName(string moduleName)
         {
-            // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            Guid? moduleId = null;
+            db.rb_GetGeneralModuleDefinitionByName(moduleName, ref moduleId);
+
+            if (moduleId.HasValue)
             {
-                using (SqlCommand myCommand = new SqlCommand("rb_GetGeneralModuleDefinitionByName", myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Add Parameters to SPROC
-                    SqlParameter parameterFriendlyName = new SqlParameter("@FriendlyName", SqlDbType.NVarChar, 128);
-                    parameterFriendlyName.Value = moduleName;
-                    myCommand.Parameters.Add(parameterFriendlyName);
-                    SqlParameter parameterModuleID = new SqlParameter(strATModuleID, SqlDbType.UniqueIdentifier);
-                    parameterModuleID.Direction = ParameterDirection.Output;
-                    myCommand.Parameters.Add(parameterModuleID);
-                    // Execute the command
-                    myConnection.Open();
-
-                    try
-                    {
-                        myCommand.ExecuteNonQuery();
-                    }
-
-                    finally
-                    {
-                        myConnection.Close();
-                    }
-
-                    if (parameterModuleID.Value != null && parameterModuleID.Value.ToString().Length != 0)
-                    {
-                        try
-                        {
-                            return new Guid(parameterModuleID.Value.ToString());
-                        }
-
-                        catch (Exception ex)
-                        {
-                            throw new Exception(
-                                "'" + parameterModuleID.Value.ToString() + "' seems not a valid Module GUID.", ex);
-                            // Jes1111
-                            //Rainbow.Framework.Configuration.ErrorHandler.HandleException("'" + parameterModuleID.Value.ToString() + "' seems not a valid GUID.", ex);
-                            //throw;
-                        }
-                    }
-
-                    else
-                    {
-                        throw new ArgumentException("Null Module GUID!"); // Jes1111
-                        //Rainbow.Framework.Configuration.ErrorHandler.HandleException("Null GUID!.", new ArgumentException("Null GUID!", strGUID));
-                    }
-                    //throw new ArgumentException("Invalid GUID", strGUID);
-                }
+                return (Guid)moduleId;
             }
+            else
+            {
+                throw new ArgumentException("Null Module GUID!"); // Jes1111
+                //Rainbow.Framework.Configuration.ErrorHandler.HandleException("Null GUID!.", new ArgumentException("Null GUID!", strGUID));
+            }
+            //throw new ArgumentException("Invalid GUID", strGUID);
         }
 
         /// <summary>
@@ -624,41 +343,13 @@ namespace Rainbow.Framework.Site.Data
         /// <param name="portalID">The portal ID.</param>
         /// <param name="guid">The GUID.</param>
         /// <returns></returns>
+        [History("Bill - bill@improvtech.com", "2007/12/16", "Updated to use LINQ")]
         public int GetModuleDefinitionByGuid(int portalID, Guid guid)
         {
-            // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
-            {
-                using (SqlCommand myCommand = new SqlCommand("rb_GetModuleDefinitionByGuid", myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Add Parameters to SPROC
-                    SqlParameter parameterFriendlyName = new SqlParameter(strATGuid, SqlDbType.UniqueIdentifier);
-                    parameterFriendlyName.Value = guid;
-                    myCommand.Parameters.Add(parameterFriendlyName);
-                    SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
-                    parameterPortalID.Value = portalID;
-                    myCommand.Parameters.Add(parameterPortalID);
-                    SqlParameter parameterModuleID = new SqlParameter(strATModuleID, SqlDbType.Int, 4);
-                    parameterModuleID.Direction = ParameterDirection.Output;
-                    myCommand.Parameters.Add(parameterModuleID);
+            int? moduleId = null;
+            db.rb_GetModuleDefinitionByGuid((int?)portalID, (Guid?)guid, ref moduleId);
 
-                    myConnection.Open();
-
-                    try
-                    {
-                        myCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorHandler.Publish(LogLevel.Warn,
-                                             "An Error Occurred in GetModuleDefinitionByGuid. Parameter : " +
-                                             guid.ToString(), ex);
-                    }
-                    return (int)parameterModuleID.Value;
-                }
-            }
+            return (int)moduleId.Value;
         }
 
         /// <summary>

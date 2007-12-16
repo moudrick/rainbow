@@ -509,7 +509,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <summary>
         /// Get current Language from ViewState
         /// </summary>
-        /// <param name="myLanguagesCultureList"></param>
+        /// <param name="myLanguagesCultureList">My languages culture list.</param>
+        /// <param name="switcher">The switcher.</param>
         /// <returns></returns>
         private static LanguageCultureItem InternalGetViewState(LanguageCultureCollection myLanguagesCultureList,
                                                                 LanguageSwitcher switcher)

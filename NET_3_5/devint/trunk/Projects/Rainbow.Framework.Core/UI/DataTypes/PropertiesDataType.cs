@@ -5,13 +5,37 @@ namespace Rainbow.Framework.DataTypes
     /// </summary>
     public enum PropertiesDataType
     {
+        /// <summary>
+        /// 
+        /// </summary>
         String,
+        /// <summary>
+        /// 
+        /// </summary>
         List,
+        /// <summary>
+        /// 
+        /// </summary>
         DataList,
+        /// <summary>
+        /// 
+        /// </summary>
         Integer,
+        /// <summary>
+        /// 
+        /// </summary>
         Double,
+        /// <summary>
+        /// 
+        /// </summary>
         Currency,
+        /// <summary>
+        /// 
+        /// </summary>
         Date,
+        /// <summary>
+        /// 
+        /// </summary>
         Boolean
     }
 }
