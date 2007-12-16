@@ -4,7 +4,7 @@ using System.Collections;
 using System.Data.SqlClient;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Content.Web.Modules

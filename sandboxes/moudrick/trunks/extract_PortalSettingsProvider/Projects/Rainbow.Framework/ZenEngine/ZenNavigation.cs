@@ -8,8 +8,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.Xsl;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Site.Configuration;
 using Path=Rainbow.Framework.Settings.Path;
 
 namespace Rainbow.Framework.Web.UI.WebControls

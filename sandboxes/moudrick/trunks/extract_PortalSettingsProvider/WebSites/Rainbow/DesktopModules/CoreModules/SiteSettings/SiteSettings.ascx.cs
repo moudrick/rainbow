@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 

@@ -6,11 +6,11 @@ using System.Net.Mail;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mail;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using MailMessage=System.Net.Mail.MailMessage;
 
 namespace Rainbow.Framework.Helpers

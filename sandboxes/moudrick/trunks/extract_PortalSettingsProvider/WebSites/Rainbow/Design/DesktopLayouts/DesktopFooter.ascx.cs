@@ -3,7 +3,7 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Path = Rainbow.Framework.Settings.Path;
 
 namespace Rainbow.Content.Web.Modules

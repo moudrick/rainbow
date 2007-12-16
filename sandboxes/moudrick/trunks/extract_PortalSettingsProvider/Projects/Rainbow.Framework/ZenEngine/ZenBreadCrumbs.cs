@@ -2,6 +2,7 @@ using System.Collections;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
 

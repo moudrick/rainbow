@@ -3,6 +3,7 @@ using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Settings.Cache;

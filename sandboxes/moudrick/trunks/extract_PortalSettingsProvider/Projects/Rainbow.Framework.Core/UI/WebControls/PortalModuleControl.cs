@@ -14,6 +14,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using Rainbow.Framework.BLL.Utils;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Helpers;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Web;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using System;

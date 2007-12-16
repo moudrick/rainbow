@@ -4,8 +4,8 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 using System.Xml.XPath;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 using System.Web.Security;
 
 namespace Rainbow.Framework.Helpers

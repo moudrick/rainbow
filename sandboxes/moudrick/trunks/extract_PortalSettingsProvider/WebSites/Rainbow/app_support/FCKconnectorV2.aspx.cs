@@ -13,6 +13,7 @@ using System.Security;
 using System.Text;
 using System.Web;
 using System.Xml;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;

@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.IO;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 using Path=Rainbow.Framework.Settings.Path;

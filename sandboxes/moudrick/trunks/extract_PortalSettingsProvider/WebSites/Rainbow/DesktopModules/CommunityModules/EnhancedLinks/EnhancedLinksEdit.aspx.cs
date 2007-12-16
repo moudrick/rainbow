@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Web.UI;
 using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
 

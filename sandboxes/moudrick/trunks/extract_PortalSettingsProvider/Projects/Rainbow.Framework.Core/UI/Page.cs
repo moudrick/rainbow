@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;

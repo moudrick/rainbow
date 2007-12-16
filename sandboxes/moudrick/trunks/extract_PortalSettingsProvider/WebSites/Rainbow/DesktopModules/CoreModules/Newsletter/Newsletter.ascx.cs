@@ -6,10 +6,10 @@ using System.Web.Mail;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules

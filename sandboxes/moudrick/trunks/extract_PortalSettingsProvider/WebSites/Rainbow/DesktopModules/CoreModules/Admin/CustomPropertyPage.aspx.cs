@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;

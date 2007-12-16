@@ -3,6 +3,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using ActiveUp.WebControls.HtmlTextBox.Tools;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;

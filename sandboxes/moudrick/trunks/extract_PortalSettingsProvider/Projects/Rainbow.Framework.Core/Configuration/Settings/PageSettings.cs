@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Web;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Design;
 using Rainbow.Framework;
 using Rainbow.Framework.Configuration;

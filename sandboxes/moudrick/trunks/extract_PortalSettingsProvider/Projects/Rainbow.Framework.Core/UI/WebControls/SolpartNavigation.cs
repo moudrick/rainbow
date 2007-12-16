@@ -17,6 +17,7 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;

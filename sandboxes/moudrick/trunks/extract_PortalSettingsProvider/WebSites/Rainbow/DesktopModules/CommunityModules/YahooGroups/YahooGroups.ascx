@@ -1,3 +1,4 @@
+<%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
 <%@ control inherits="Rainbow.Content.Web.Modules.OneFileModule" language="c#" %>
 <%@ import namespace="System.Web.Mail" %>
 <%@ import namespace="Rainbow.Framework.Web.UI" %>

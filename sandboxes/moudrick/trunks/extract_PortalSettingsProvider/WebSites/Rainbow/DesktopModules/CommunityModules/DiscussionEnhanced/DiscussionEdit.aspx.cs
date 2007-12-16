@@ -5,8 +5,8 @@ using System.Web;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Content.Security;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 

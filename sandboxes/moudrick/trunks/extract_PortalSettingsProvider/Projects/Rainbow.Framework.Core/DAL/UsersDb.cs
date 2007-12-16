@@ -10,10 +10,10 @@ using System.Web;
 using System.Web.Security;
 
 using Rainbow.Framework.BLL.Utils;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
 

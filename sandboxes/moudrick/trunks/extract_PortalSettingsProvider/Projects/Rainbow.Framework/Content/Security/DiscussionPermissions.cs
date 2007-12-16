@@ -1,5 +1,5 @@
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Content.Security
 {

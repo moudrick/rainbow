@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Web;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core.Configuration.Settings;
 
 namespace Rainbow.Framework.Helpers
 {

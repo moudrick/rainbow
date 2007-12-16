@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Web;
 using System.Web.UI;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {

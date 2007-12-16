@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using Rainbow.Framework;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 

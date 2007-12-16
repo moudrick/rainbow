@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Data;
@@ -16,7 +17,6 @@ using Rainbow.Framework.Users.Data;
 using System.Text;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 
 namespace Rainbow.Content.Web.Modules {

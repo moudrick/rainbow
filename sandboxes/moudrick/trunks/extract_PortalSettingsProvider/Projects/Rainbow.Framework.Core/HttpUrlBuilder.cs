@@ -2,8 +2,8 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Web;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web;
 
 namespace Rainbow.Framework

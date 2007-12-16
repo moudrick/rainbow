@@ -1,6 +1,6 @@
 using System.Web;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.DataTypes
 {

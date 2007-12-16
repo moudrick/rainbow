@@ -4,8 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Web;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Users.Data;
 using Path=Rainbow.Framework.Settings.Path;
 

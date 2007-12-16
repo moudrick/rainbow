@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.UI;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;

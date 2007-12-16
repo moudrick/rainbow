@@ -3,8 +3,8 @@
 using System;
 using System.Drawing.Imaging;
 using System.Web;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 
 public class sitelogo : IHttpHandler {
 

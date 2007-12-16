@@ -1,5 +1,6 @@
 using System.Web;
 using DUEMETRI.UI.WebControls.HWMenu;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
 // mario@hartmann.net: 24/07/2003

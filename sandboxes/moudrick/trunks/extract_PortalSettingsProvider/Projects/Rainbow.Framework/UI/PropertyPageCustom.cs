@@ -1,4 +1,5 @@
 using System.Collections;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Site.Configuration;
 using System;
 

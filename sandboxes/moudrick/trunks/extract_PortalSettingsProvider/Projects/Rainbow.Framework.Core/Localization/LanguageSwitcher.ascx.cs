@@ -3,9 +3,9 @@ using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Web;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Framework.Localization
