@@ -1,8 +1,12 @@
 using System;
 using System.Data;
+using System.Data.Linq;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
+using Rainbow.Framework.Data.MsSql;
+using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using Path = Rainbow.Framework.Settings.Path;
@@ -108,6 +112,8 @@ namespace Rainbow.Framework.Helpers
         /// <param name="install">if set to <c>true</c> [install].</param>
         public static void Install(string friendlyName, string desktopSource, string mobileSource, bool install)
         {
+            DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString);
+
             ErrorHandler.Publish(LogLevel.Info,
                                  "Installing DesktopModule '" + friendlyName + "' from '" + desktopSource + "'");
             if (!string.IsNullOrEmpty(mobileSource))
@@ -167,9 +173,25 @@ namespace Rainbow.Framework.Helpers
                     throw new Exception("Exception occurred installing '" + portalModule.GuidID.ToString() + "'!", ex);
                 }
 
-                // Add a new module definition to the database
-                modules.AddGeneralModuleDefinitions(defID, friendlyName, desktopSource, mobileSource, assemblyName,
-                                                    className, portalModule.AdminModule, portalModule.Searchable);
+                var rows = db.rb_GeneralModuleDefinitions.Where(d => d.GeneralModDefID == defID);
+                if (rows.Count() > 0)
+                    ErrorHandler.Publish(LogLevel.Warn,
+                        string.Format("AddGeneralModuleDefinitions: The definition you tried to add already exists. {0} updating...",
+                            rows.Count()));
+
+                rb_GeneralModuleDefinition gmd = new rb_GeneralModuleDefinition()
+                {
+                    Admin = portalModule.AdminModule,
+                    AssemblyName = assemblyName,
+                    ClassName = className,
+                    DesktopSrc = desktopSource,
+                    FriendlyName = friendlyName,
+                    GeneralModDefID = defID,
+                    MobileSrc = mobileSource,
+                    Searchable = portalModule.Searchable
+                };
+                db.rb_GeneralModuleDefinitions.InsertOnSubmit(gmd);
+                db.SubmitChanges();
 
                 // All is fine: we can call Commit
                 portalModule.Commit(null);
@@ -180,9 +202,19 @@ namespace Rainbow.Framework.Helpers
                 try
                 {
                     ErrorHandler.Publish(LogLevel.Debug, "Updating '" + friendlyName + "' as new module.");
-                    modules.UpdateGeneralModuleDefinitions(defID, friendlyName, desktopSource, mobileSource,
-                                                           assemblyName, className, portalModule.AdminModule,
-                                                           portalModule.Searchable);
+
+                    var q = db.rb_GeneralModuleDefinitions.Where(gmd => gmd.GeneralModDefID == defID).Single();
+                    
+                    q.GeneralModDefID = defID;
+                    q.FriendlyName = friendlyName;
+                    q.DesktopSrc = desktopSource;
+                    q.MobileSrc = mobileSource;
+                    q.AssemblyName = assemblyName;
+                    q.ClassName = className;
+                    q.Admin = portalModule.AdminModule;
+                    q.Searchable = portalModule.Searchable;
+                    
+                    db.SubmitChanges(ConflictMode.ContinueOnConflict);
                 }
                 catch (Exception ex)
                 {
@@ -221,7 +253,9 @@ namespace Rainbow.Framework.Helpers
             }
 
             // Delete definition
-            new ModulesDB().DeleteModuleDefinition(portalModule.GuidID);
+            DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString);
+            db.rb_GeneralModuleDefinitions.DeleteAllOnSubmit(db.rb_GeneralModuleDefinitions.Where(g => g.GeneralModDefID == portalModule.GuidID));
+            db.SubmitChanges(ConflictMode.ContinueOnConflict);
         }
     }
 }

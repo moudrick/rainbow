@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using Rainbow.Framework.Core.BLL;
+using Rainbow.Framework.Data;
 using Rainbow.Framework.Data.MsSql;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Settings;
@@ -59,35 +60,8 @@ namespace Rainbow.Framework.Site.Data
 
         #endregion
 
+        //Rainbow.Framework.Data.Model.Entities edm = new Rainbow.Framework.Data.Model.Entities(Config.ConnectionString);
         DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString);
-
-        /// <summary>
-        /// AddGeneralModuleDefinitions
-        /// </summary>
-        /// <param name="GeneralModDefID">GeneralModDefID</param>
-        /// <param name="FriendlyName">Name of the friendly.</param>
-        /// <param name="DesktopSrc">The desktop SRC.</param>
-        /// <param name="MobileSrc">The mobile SRC.</param>
-        /// <param name="AssemblyName">Name of the assembly.</param>
-        /// <param name="ClassName">Name of the class.</param>
-        /// <param name="Admin">if set to <c>true</c> [admin].</param>
-        /// <param name="Searchable">if set to <c>true</c> [searchable].</param>
-        /// <returns>The newly created ID</returns>
-        [History("bill@improvtech.com", "2007/12/16", "Updated for LINQ")]
-        public Guid AddGeneralModuleDefinitions(Guid GeneralModDefID, string FriendlyName, string DesktopSrc,
-                                                string MobileSrc, string AssemblyName, string ClassName, bool Admin,
-                                                bool Searchable)
-        {
-            var rows = db.rb_GeneralModuleDefinitions.Where(d => d.GeneralModDefID == GeneralModDefID);
-            if (rows.Count() > 0)
-                ErrorHandler.Publish(LogLevel.Warn,
-                    "An Error Occurred in AddGeneralModuleDefinitions: The definition you tried to add already exists.");
-
-            db.rb_AddGeneralModuleDefinitions((Guid?)GeneralModDefID, FriendlyName, DesktopSrc, MobileSrc, AssemblyName,
-                ClassName, (bool?)Admin, (bool?)Searchable);
-
-            return GeneralModDefID;
-        }
 
         /// <summary>
         /// The AddModule method updates a specified Module within the Modules database table.
@@ -160,18 +134,6 @@ namespace Rainbow.Framework.Site.Data
             {
                 db.rb_DeleteModule((int?)moduleID);
             }
-        }
-
-        /// <summary>
-        /// The DeleteModuleDefinition method deletes the specified
-        /// module type definition from the portal.
-        /// </summary>
-        /// <param name="defID">The def ID.</param>
-        /// <remarks>Other relevant sources: DeleteModuleDefinition Stored Procedure</remarks>
-        [History("Bill - bill@improvtech.com", "2007/12/16", "Updated to use LINQ")]
-        public void DeleteModuleDefinition(Guid defID)
-        {
-            db.rb_DeleteModuleDefinition((Guid?)defID);
         }
 
         /// <summary>
@@ -381,46 +343,37 @@ namespace Rainbow.Framework.Site.Data
         }
 
         /// <summary>
-        /// GetModulesAllPortals
+        /// Get Modules in All Portals
         /// </summary>
-        /// <returns></returns>
-        [Obsolete("Replace me, bad design practive to pass SqlDataReaders to the UI")]
-        public DataTable GetModulesAllPortals()
+        /// <returns>List&lt;ModuleItem&gt;</returns>
+        public List<ModuleItem> GetModulesAllPortals()
         {
-            // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
-            {
-                using (SqlDataAdapter myCommand = new SqlDataAdapter("rb_GetModulesAllPortals", myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.SelectCommand.CommandType = CommandType.StoredProcedure;
+            List<ModuleItem> modules = new List<ModuleItem>();
 
-                    // Create and Fill the DataSet
-                    using (DataTable myDataTable = new DataTable())
+            modules.Add(new ModuleItem() { ID = 0, Title = General.GetString(strNoModule), Order = -1 });
+
+            var q = from mod in db.rb_Modules.Where(mod => mod.ModuleID > 0)
+                    join page in db.rb_Pages on mod.TabID equals page.PageID
+                    join portal in db.rb_Portals on page.PortalID equals portal.PortalID
+                    join modDef in db.rb_ModuleDefinitions on mod.ModuleDefID equals modDef.ModuleDefID
+                    join gmd in db.rb_GeneralModuleDefinitions.Where(gmd => (!gmd.Admin.Value) &&
+                        gmd.GeneralModDefID != new Guid("F9F9C3A4-6E16-43b4-B540-984DDB5F1CD2") &&
+                        gmd.GeneralModDefID != new Guid("F9F9C3A4-6E16-43b4-B540-984DDB5F1CD0"))
+                    on modDef.GeneralModDefID equals gmd.GeneralModDefID
+                    orderby portal.PortalAlias, mod.ModuleTitle
+                    select new ModuleItem()
                     {
-                        try
-                        {
-                            myCommand.Fill(myDataTable);
-                        }
-                        finally
-                        {
-                            myConnection.Close(); //by Manu fix close bug #2
-                        }
+                        ID = mod.ModuleID,
+                        Title = portal.PortalAlias + "/" + page.PageName + "/" + mod.ModuleTitle + " (" + gmd.FriendlyName + ")",
+                        //PortalAlias = portal.PortalAlias,
+                        Order = page.PageOrder,
+                        PaneName = mod.PaneName,
+                        ModuleDefID = mod.ModuleDefID
+                    };
 
-                        // Translate
-                        foreach (DataRow dr in myDataTable.Rows)
-                        {
-                            if (dr[1].ToString() == strNoModule)
-                            {
-                                dr[1] = General.GetString(strNoModule);
-                                break;
-                            }
-                        }
-                        // Return the datareader
-                        return myDataTable;
-                    }
-                }
-            }
+            modules.AddRange(q.ToList<ModuleItem>());
+
+            return modules;
         }
 
         /// <summary>
@@ -610,70 +563,6 @@ namespace Rainbow.Framework.Site.Data
         }
 
         /// <summary>
-        /// UpdateGeneralModuleDefinitions
-        /// </summary>
-        /// <param name="GeneralModDefID">GeneralModDefID</param>
-        /// <param name="FriendlyName">Name of the friendly.</param>
-        /// <param name="DesktopSrc">The desktop SRC.</param>
-        /// <param name="MobileSrc">The mobile SRC.</param>
-        /// <param name="AssemblyName">Name of the assembly.</param>
-        /// <param name="ClassName">Name of the class.</param>
-        /// <param name="Admin">if set to <c>true</c> [admin].</param>
-        /// <param name="Searchable">if set to <c>true</c> [searchable].</param>
-        public void UpdateGeneralModuleDefinitions(Guid GeneralModDefID, string FriendlyName, string DesktopSrc,
-                                                   string MobileSrc, string AssemblyName, string ClassName, bool Admin,
-                                                   bool Searchable)
-        {
-            // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
-            {
-                using (SqlCommand myCommand = new SqlCommand("rb_UpdateGeneralModuleDefinitions", myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Update Parameters to SPROC
-                    SqlParameter parameterGeneralModDefID =
-                        new SqlParameter(strATGeneralModDefID, SqlDbType.UniqueIdentifier);
-                    parameterGeneralModDefID.Value = GeneralModDefID;
-                    myCommand.Parameters.Add(parameterGeneralModDefID);
-                    SqlParameter parameterFriendlyName = new SqlParameter(strATFriendlyName, SqlDbType.NVarChar, 128);
-                    parameterFriendlyName.Value = FriendlyName;
-                    myCommand.Parameters.Add(parameterFriendlyName);
-                    SqlParameter parameterDesktopSrc = new SqlParameter(strATDesktopSrc, SqlDbType.NVarChar, 256);
-                    parameterDesktopSrc.Value = DesktopSrc;
-                    myCommand.Parameters.Add(parameterDesktopSrc);
-                    SqlParameter parameterMobileSrc = new SqlParameter(strATMobileSrc, SqlDbType.NVarChar, 256);
-                    parameterMobileSrc.Value = MobileSrc;
-                    myCommand.Parameters.Add(parameterMobileSrc);
-                    SqlParameter parameterAssemblyName = new SqlParameter(strATAssemblyName, SqlDbType.VarChar, 50);
-                    parameterAssemblyName.Value = AssemblyName;
-                    myCommand.Parameters.Add(parameterAssemblyName);
-                    SqlParameter parameterClassName = new SqlParameter(strATClassName, SqlDbType.NVarChar, 128);
-                    parameterClassName.Value = ClassName;
-                    myCommand.Parameters.Add(parameterClassName);
-                    SqlParameter parameterAdmin = new SqlParameter(strATAdmin, SqlDbType.Bit);
-                    parameterAdmin.Value = Admin;
-                    myCommand.Parameters.Add(parameterAdmin);
-                    SqlParameter parameterSearchable = new SqlParameter(strATSearchable, SqlDbType.Bit);
-                    parameterSearchable.Value = Searchable;
-                    myCommand.Parameters.Add(parameterSearchable);
-                    // Execute the command
-                    myConnection.Open();
-
-                    try
-                    {
-                        myCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        //ErrorHandler.Publish(Rainbow.Framework.LogLevel.Warn, "An Error Occurred in UpdateGeneralModuleDefinitions", ex));
-                        ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in UpdateGeneralModuleDefinitions", ex);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// The UpdateModule method updates a specified Module within the Modules database table.
         /// If the module does not yet exist, the stored procedure adds it.<br/>
         /// UpdateModule Stored Procedure
@@ -813,38 +702,14 @@ namespace Rainbow.Framework.Site.Data
         /// <param name="ischecked">if set to <c>true</c> [ischecked].</param>
         public void UpdateModuleDefinitions(Guid GeneralModDefID, int portalID, bool ischecked)
         {
-            // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            try
             {
-                using (SqlCommand myCommand = new SqlCommand("rb_UpdateModuleDefinitions", myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Add Parameters to SPROC
-                    SqlParameter parameterGeneralModDefID =
-                        new SqlParameter(strATGeneralModDefID, SqlDbType.UniqueIdentifier);
-                    parameterGeneralModDefID.Value = GeneralModDefID;
-                    myCommand.Parameters.Add(parameterGeneralModDefID);
-                    // Add Parameters to SPROC
-                    SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
-                    parameterPortalID.Value = portalID;
-                    myCommand.Parameters.Add(parameterPortalID);
-                    SqlParameter parameterischecked = new SqlParameter("@ischecked", SqlDbType.Bit);
-                    parameterischecked.Value = ischecked;
-                    myCommand.Parameters.Add(parameterischecked);
-
-                    myConnection.Open();
-
-                    try
-                    {
-                        myCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        //ErrorHandler.Publish(Rainbow.Framework.LogLevel.Warn, "An Error Occurred in UpdateModuleDefinitions", ex);
-                        ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in UpdateModuleDefinitions", ex);
-                    }
-                }
+                db.rb_UpdateModuleDefinitions((Guid?)GeneralModDefID, (int?)portalID, (bool?)ischecked);
+            }
+            catch (Exception ex)
+            {
+                //ErrorHandler.Publish(Rainbow.Framework.LogLevel.Warn, "An Error Occurred in UpdateModuleDefinitions", ex);
+                ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in UpdateModuleDefinitions", ex);
             }
         }
 

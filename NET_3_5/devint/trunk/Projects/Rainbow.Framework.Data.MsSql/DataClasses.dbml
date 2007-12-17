@@ -162,6 +162,7 @@
       <Column Name="AuthorizedDeleteModuleRoles" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Association Name="rb_Module_rb_ModuleSetting" Member="rb_ModuleSettings" OtherKey="ModuleID" Type="rb_ModuleSetting" />
       <Association Name="rb_ModuleDefinition_rb_Module" Member="rb_ModuleDefinition" ThisKey="ModuleDefID" Type="rb_ModuleDefinition" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="rb_Page_rb_Module" Member="rb_Page" ThisKey="TabID" Type="rb_Page" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
     <InsertFunction FunctionId="FunctionId4">
       <Argument Parameter="tabID" Member="TabID" />
@@ -223,6 +224,34 @@
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SettingName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="SettingValue" Type="System.String" DbType="NVarChar(1500) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.rb_Pages" Member="rb_Pages">
+    <Type Name="rb_Page">
+      <Column Name="PageID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ParentPageID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PageOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PortalID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PageName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MobilePageName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="AuthorizedRoles" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
+      <Column Name="ShowMobile" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PageLayout" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PageDescription" Type="System.String" DbType="NVarChar(512) NOT NULL" CanBeNull="false" />
+      <Association Name="rb_Page_rb_Module" Member="rb_Modules" OtherKey="TabID" Type="rb_Module" />
+      <Association Name="rb_Page_rb_Page" Member="rb_Pages" OtherKey="ParentPageID" Type="rb_Page" />
+      <Association Name="rb_Page_rb_Page" Member="rb_Page1" ThisKey="ParentPageID" Type="rb_Page" IsForeignKey="true" />
+      <Association Name="rb_Portal_rb_Page" Member="rb_Portal" ThisKey="PortalID" Type="rb_Portal" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.rb_Portals" Member="rb_Portals">
+    <Type Name="rb_Portal">
+      <Column Name="PortalID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PortalAlias" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="PortalName" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="PortalPath" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="AlwaysShowEditButton" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="rb_Portal_rb_Page" Member="rb_Pages" OtherKey="PortalID" Type="rb_Page" />
     </Type>
   </Table>
   <Function Name="dbo.aspnet_Membership_ChangePasswordQuestionAndAnswer" Method="aspnet_Membership_ChangePasswordQuestionAndAnswer">

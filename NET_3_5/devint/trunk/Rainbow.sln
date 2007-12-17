@@ -68,7 +68,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Rainbow", "WebSites\Rainbow
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "9389"
+		VWDPort = "55064"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Data.MsSql", "Projects\Rainbow.Framework.Data.MsSql\Rainbow.Framework.Data.MsSql.csproj", "{F3D1132B-139D-47FF-911E-10A950B572D0}"

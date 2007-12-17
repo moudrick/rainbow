@@ -49,6 +49,12 @@ namespace Rainbow.Framework.Data.MsSql
     partial void Insertrb_ModuleSetting(rb_ModuleSetting instance);
     partial void Updaterb_ModuleSetting(rb_ModuleSetting instance);
     partial void Deleterb_ModuleSetting(rb_ModuleSetting instance);
+    partial void Insertrb_Page(rb_Page instance);
+    partial void Updaterb_Page(rb_Page instance);
+    partial void Deleterb_Page(rb_Page instance);
+    partial void Insertrb_Portal(rb_Portal instance);
+    partial void Updaterb_Portal(rb_Portal instance);
+    partial void Deleterb_Portal(rb_Portal instance);
     #endregion
 		
 		public DataClassesDataContext() : 
@@ -158,6 +164,22 @@ namespace Rainbow.Framework.Data.MsSql
 			get
 			{
 				return this.GetTable<rb_ModuleUserSetting>();
+			}
+		}
+		
+		public System.Data.Linq.Table<rb_Page> rb_Pages
+		{
+			get
+			{
+				return this.GetTable<rb_Page>();
+			}
+		}
+		
+		public System.Data.Linq.Table<rb_Portal> rb_Portals
+		{
+			get
+			{
+				return this.GetTable<rb_Portal>();
 			}
 		}
 		
@@ -3133,6 +3155,8 @@ namespace Rainbow.Framework.Data.MsSql
 		
 		private EntityRef<rb_ModuleDefinition> _rb_ModuleDefinition;
 		
+		private EntityRef<rb_Page> _rb_Page;
+		
 		private bool serializing;
 		
     #region Extensibility Method Definitions
@@ -3231,6 +3255,10 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._TabID != value))
 				{
+					if (this._rb_Page.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnTabIDChanging(value);
 					this.SendPropertyChanging();
 					this._TabID = value;
@@ -3801,6 +3829,40 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
+		[Association(Name="rb_Page_rb_Module", Storage="_rb_Page", ThisKey="TabID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public rb_Page rb_Page
+		{
+			get
+			{
+				return this._rb_Page.Entity;
+			}
+			set
+			{
+				rb_Page previousValue = this._rb_Page.Entity;
+				if (((previousValue != value) 
+							|| (this._rb_Page.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._rb_Page.Entity = null;
+						previousValue.rb_Modules.Remove(this);
+					}
+					this._rb_Page.Entity = value;
+					if ((value != null))
+					{
+						value.rb_Modules.Add(this);
+						this._TabID = value.PageID;
+					}
+					else
+					{
+						this._TabID = default(int);
+					}
+					this.SendPropertyChanged("rb_Page");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -3837,6 +3899,7 @@ namespace Rainbow.Framework.Data.MsSql
 		{
 			this._rb_ModuleSettings = new EntitySet<rb_ModuleSetting>(new Action<rb_ModuleSetting>(this.attach_rb_ModuleSettings), new Action<rb_ModuleSetting>(this.detach_rb_ModuleSettings));
 			this._rb_ModuleDefinition = default(EntityRef<rb_ModuleDefinition>);
+			this._rb_Page = default(EntityRef<rb_Page>);
 			OnCreated();
 		}
 		
@@ -4112,6 +4175,699 @@ namespace Rainbow.Framework.Data.MsSql
 					this._SettingValue = value;
 				}
 			}
+		}
+	}
+	
+	[Table(Name="dbo.rb_Pages")]
+	[DataContract()]
+	public partial class rb_Page : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PageID;
+		
+		private System.Nullable<int> _ParentPageID;
+		
+		private int _PageOrder;
+		
+		private int _PortalID;
+		
+		private string _PageName;
+		
+		private string _MobilePageName;
+		
+		private string _AuthorizedRoles;
+		
+		private bool _ShowMobile;
+		
+		private System.Nullable<int> _PageLayout;
+		
+		private string _PageDescription;
+		
+		private EntitySet<rb_Module> _rb_Modules;
+		
+		private EntitySet<rb_Page> _rb_Pages;
+		
+		private EntityRef<rb_Page> _rb_Page1;
+		
+		private EntityRef<rb_Portal> _rb_Portal;
+		
+		private bool serializing;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPageIDChanging(int value);
+    partial void OnPageIDChanged();
+    partial void OnParentPageIDChanging(System.Nullable<int> value);
+    partial void OnParentPageIDChanged();
+    partial void OnPageOrderChanging(int value);
+    partial void OnPageOrderChanged();
+    partial void OnPortalIDChanging(int value);
+    partial void OnPortalIDChanged();
+    partial void OnPageNameChanging(string value);
+    partial void OnPageNameChanged();
+    partial void OnMobilePageNameChanging(string value);
+    partial void OnMobilePageNameChanged();
+    partial void OnAuthorizedRolesChanging(string value);
+    partial void OnAuthorizedRolesChanged();
+    partial void OnShowMobileChanging(bool value);
+    partial void OnShowMobileChanged();
+    partial void OnPageLayoutChanging(System.Nullable<int> value);
+    partial void OnPageLayoutChanged();
+    partial void OnPageDescriptionChanging(string value);
+    partial void OnPageDescriptionChanged();
+    #endregion
+		
+		public rb_Page()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_PageID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=1)]
+		public int PageID
+		{
+			get
+			{
+				return this._PageID;
+			}
+			set
+			{
+				if ((this._PageID != value))
+				{
+					this.OnPageIDChanging(value);
+					this.SendPropertyChanging();
+					this._PageID = value;
+					this.SendPropertyChanged("PageID");
+					this.OnPageIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ParentPageID", DbType="Int")]
+		[DataMember(Order=2)]
+		public System.Nullable<int> ParentPageID
+		{
+			get
+			{
+				return this._ParentPageID;
+			}
+			set
+			{
+				if ((this._ParentPageID != value))
+				{
+					if (this._rb_Page1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnParentPageIDChanging(value);
+					this.SendPropertyChanging();
+					this._ParentPageID = value;
+					this.SendPropertyChanged("ParentPageID");
+					this.OnParentPageIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PageOrder", DbType="Int NOT NULL")]
+		[DataMember(Order=3)]
+		public int PageOrder
+		{
+			get
+			{
+				return this._PageOrder;
+			}
+			set
+			{
+				if ((this._PageOrder != value))
+				{
+					this.OnPageOrderChanging(value);
+					this.SendPropertyChanging();
+					this._PageOrder = value;
+					this.SendPropertyChanged("PageOrder");
+					this.OnPageOrderChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PortalID", DbType="Int NOT NULL")]
+		[DataMember(Order=4)]
+		public int PortalID
+		{
+			get
+			{
+				return this._PortalID;
+			}
+			set
+			{
+				if ((this._PortalID != value))
+				{
+					if (this._rb_Portal.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPortalIDChanging(value);
+					this.SendPropertyChanging();
+					this._PortalID = value;
+					this.SendPropertyChanged("PortalID");
+					this.OnPortalIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PageName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=5)]
+		public string PageName
+		{
+			get
+			{
+				return this._PageName;
+			}
+			set
+			{
+				if ((this._PageName != value))
+				{
+					this.OnPageNameChanging(value);
+					this.SendPropertyChanging();
+					this._PageName = value;
+					this.SendPropertyChanged("PageName");
+					this.OnPageNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_MobilePageName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=6)]
+		public string MobilePageName
+		{
+			get
+			{
+				return this._MobilePageName;
+			}
+			set
+			{
+				if ((this._MobilePageName != value))
+				{
+					this.OnMobilePageNameChanging(value);
+					this.SendPropertyChanging();
+					this._MobilePageName = value;
+					this.SendPropertyChanged("MobilePageName");
+					this.OnMobilePageNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AuthorizedRoles", DbType="NVarChar(512)")]
+		[DataMember(Order=7)]
+		public string AuthorizedRoles
+		{
+			get
+			{
+				return this._AuthorizedRoles;
+			}
+			set
+			{
+				if ((this._AuthorizedRoles != value))
+				{
+					this.OnAuthorizedRolesChanging(value);
+					this.SendPropertyChanging();
+					this._AuthorizedRoles = value;
+					this.SendPropertyChanged("AuthorizedRoles");
+					this.OnAuthorizedRolesChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ShowMobile", DbType="Bit NOT NULL")]
+		[DataMember(Order=8)]
+		public bool ShowMobile
+		{
+			get
+			{
+				return this._ShowMobile;
+			}
+			set
+			{
+				if ((this._ShowMobile != value))
+				{
+					this.OnShowMobileChanging(value);
+					this.SendPropertyChanging();
+					this._ShowMobile = value;
+					this.SendPropertyChanged("ShowMobile");
+					this.OnShowMobileChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PageLayout", DbType="Int")]
+		[DataMember(Order=9)]
+		public System.Nullable<int> PageLayout
+		{
+			get
+			{
+				return this._PageLayout;
+			}
+			set
+			{
+				if ((this._PageLayout != value))
+				{
+					this.OnPageLayoutChanging(value);
+					this.SendPropertyChanging();
+					this._PageLayout = value;
+					this.SendPropertyChanged("PageLayout");
+					this.OnPageLayoutChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PageDescription", DbType="NVarChar(512) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=10)]
+		public string PageDescription
+		{
+			get
+			{
+				return this._PageDescription;
+			}
+			set
+			{
+				if ((this._PageDescription != value))
+				{
+					this.OnPageDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._PageDescription = value;
+					this.SendPropertyChanged("PageDescription");
+					this.OnPageDescriptionChanged();
+				}
+			}
+		}
+		
+		[Association(Name="rb_Page_rb_Module", Storage="_rb_Modules", OtherKey="TabID")]
+		[DataMember(Order=11, EmitDefaultValue=false)]
+		public EntitySet<rb_Module> rb_Modules
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._rb_Modules.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._rb_Modules;
+			}
+			set
+			{
+				this._rb_Modules.Assign(value);
+			}
+		}
+		
+		[Association(Name="rb_Page_rb_Page", Storage="_rb_Pages", OtherKey="ParentPageID")]
+		[DataMember(Order=12, EmitDefaultValue=false)]
+		public EntitySet<rb_Page> rb_Pages
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._rb_Pages.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._rb_Pages;
+			}
+			set
+			{
+				this._rb_Pages.Assign(value);
+			}
+		}
+		
+		[Association(Name="rb_Page_rb_Page", Storage="_rb_Page1", ThisKey="ParentPageID", IsForeignKey=true)]
+		public rb_Page rb_Page1
+		{
+			get
+			{
+				return this._rb_Page1.Entity;
+			}
+			set
+			{
+				rb_Page previousValue = this._rb_Page1.Entity;
+				if (((previousValue != value) 
+							|| (this._rb_Page1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._rb_Page1.Entity = null;
+						previousValue.rb_Pages.Remove(this);
+					}
+					this._rb_Page1.Entity = value;
+					if ((value != null))
+					{
+						value.rb_Pages.Add(this);
+						this._ParentPageID = value.PageID;
+					}
+					else
+					{
+						this._ParentPageID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("rb_Page1");
+				}
+			}
+		}
+		
+		[Association(Name="rb_Portal_rb_Page", Storage="_rb_Portal", ThisKey="PortalID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public rb_Portal rb_Portal
+		{
+			get
+			{
+				return this._rb_Portal.Entity;
+			}
+			set
+			{
+				rb_Portal previousValue = this._rb_Portal.Entity;
+				if (((previousValue != value) 
+							|| (this._rb_Portal.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._rb_Portal.Entity = null;
+						previousValue.rb_Pages.Remove(this);
+					}
+					this._rb_Portal.Entity = value;
+					if ((value != null))
+					{
+						value.rb_Pages.Add(this);
+						this._PortalID = value.PortalID;
+					}
+					else
+					{
+						this._PortalID = default(int);
+					}
+					this.SendPropertyChanged("rb_Portal");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_rb_Modules(rb_Module entity)
+		{
+			this.SendPropertyChanging();
+			entity.rb_Page = this;
+		}
+		
+		private void detach_rb_Modules(rb_Module entity)
+		{
+			this.SendPropertyChanging();
+			entity.rb_Page = null;
+		}
+		
+		private void attach_rb_Pages(rb_Page entity)
+		{
+			this.SendPropertyChanging();
+			entity.rb_Page1 = this;
+		}
+		
+		private void detach_rb_Pages(rb_Page entity)
+		{
+			this.SendPropertyChanging();
+			entity.rb_Page1 = null;
+		}
+		
+		private void Initialize()
+		{
+			this._rb_Modules = new EntitySet<rb_Module>(new Action<rb_Module>(this.attach_rb_Modules), new Action<rb_Module>(this.detach_rb_Modules));
+			this._rb_Pages = new EntitySet<rb_Page>(new Action<rb_Page>(this.attach_rb_Pages), new Action<rb_Page>(this.detach_rb_Pages));
+			this._rb_Page1 = default(EntityRef<rb_Page>);
+			this._rb_Portal = default(EntityRef<rb_Portal>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
+	}
+	
+	[Table(Name="dbo.rb_Portals")]
+	[DataContract()]
+	public partial class rb_Portal : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PortalID;
+		
+		private string _PortalAlias;
+		
+		private string _PortalName;
+		
+		private string _PortalPath;
+		
+		private bool _AlwaysShowEditButton;
+		
+		private EntitySet<rb_Page> _rb_Pages;
+		
+		private bool serializing;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPortalIDChanging(int value);
+    partial void OnPortalIDChanged();
+    partial void OnPortalAliasChanging(string value);
+    partial void OnPortalAliasChanged();
+    partial void OnPortalNameChanging(string value);
+    partial void OnPortalNameChanged();
+    partial void OnPortalPathChanging(string value);
+    partial void OnPortalPathChanged();
+    partial void OnAlwaysShowEditButtonChanging(bool value);
+    partial void OnAlwaysShowEditButtonChanged();
+    #endregion
+		
+		public rb_Portal()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_PortalID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=1)]
+		public int PortalID
+		{
+			get
+			{
+				return this._PortalID;
+			}
+			set
+			{
+				if ((this._PortalID != value))
+				{
+					this.OnPortalIDChanging(value);
+					this.SendPropertyChanging();
+					this._PortalID = value;
+					this.SendPropertyChanged("PortalID");
+					this.OnPortalIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PortalAlias", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=2)]
+		public string PortalAlias
+		{
+			get
+			{
+				return this._PortalAlias;
+			}
+			set
+			{
+				if ((this._PortalAlias != value))
+				{
+					this.OnPortalAliasChanging(value);
+					this.SendPropertyChanging();
+					this._PortalAlias = value;
+					this.SendPropertyChanged("PortalAlias");
+					this.OnPortalAliasChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PortalName", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=3)]
+		public string PortalName
+		{
+			get
+			{
+				return this._PortalName;
+			}
+			set
+			{
+				if ((this._PortalName != value))
+				{
+					this.OnPortalNameChanging(value);
+					this.SendPropertyChanging();
+					this._PortalName = value;
+					this.SendPropertyChanged("PortalName");
+					this.OnPortalNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PortalPath", DbType="NVarChar(128)")]
+		[DataMember(Order=4)]
+		public string PortalPath
+		{
+			get
+			{
+				return this._PortalPath;
+			}
+			set
+			{
+				if ((this._PortalPath != value))
+				{
+					this.OnPortalPathChanging(value);
+					this.SendPropertyChanging();
+					this._PortalPath = value;
+					this.SendPropertyChanged("PortalPath");
+					this.OnPortalPathChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AlwaysShowEditButton", DbType="Bit NOT NULL")]
+		[DataMember(Order=5)]
+		public bool AlwaysShowEditButton
+		{
+			get
+			{
+				return this._AlwaysShowEditButton;
+			}
+			set
+			{
+				if ((this._AlwaysShowEditButton != value))
+				{
+					this.OnAlwaysShowEditButtonChanging(value);
+					this.SendPropertyChanging();
+					this._AlwaysShowEditButton = value;
+					this.SendPropertyChanged("AlwaysShowEditButton");
+					this.OnAlwaysShowEditButtonChanged();
+				}
+			}
+		}
+		
+		[Association(Name="rb_Portal_rb_Page", Storage="_rb_Pages", OtherKey="PortalID")]
+		[DataMember(Order=6, EmitDefaultValue=false)]
+		public EntitySet<rb_Page> rb_Pages
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._rb_Pages.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._rb_Pages;
+			}
+			set
+			{
+				this._rb_Pages.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_rb_Pages(rb_Page entity)
+		{
+			this.SendPropertyChanging();
+			entity.rb_Portal = this;
+		}
+		
+		private void detach_rb_Pages(rb_Page entity)
+		{
+			this.SendPropertyChanging();
+			entity.rb_Portal = null;
+		}
+		
+		private void Initialize()
+		{
+			this._rb_Pages = new EntitySet<rb_Page>(new Action<rb_Page>(this.attach_rb_Pages), new Action<rb_Page>(this.detach_rb_Pages));
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
 		}
 	}
 	
