@@ -75,7 +75,7 @@
 			<Installer>DesktopModules/Shortcut/install.xml</Installer>
 			<Installer>DesktopModules/SignIn/install.xml</Installer>
 			<Installer>DesktopModules/SignInLdap/install.xml</Installer>
-			<Installer>DesktopModules/SimpleMenu/install.xml</Installer>
+			<!--Installer>DesktopModules/SimpleMenu/install.xml</Installer-->
 			<Installer>DesktopModules/SiteMap/install.xml</Installer>
 			<Installer>DesktopModules/SiteSettings/install.xml</Installer>
 			<Installer>DesktopModules/Survey/install.xml</Installer>
@@ -728,7 +728,7 @@
 		<Version>1.4.0.1769</Version>
 		<Date>2004-07-07T00:00:00.0000000+01:00</Date>
 		<Modules>
-			<Installer>DesktopModules/SimpleMenu/install.xml</Installer>
+			<!--Installer>DesktopModules/SimpleMenu/install.xml</Installer-->
 			<Installer>DesktopModules/Documents/install.xml</Installer>
 		</Modules>
 	</Release>
@@ -928,7 +928,7 @@
 			<Installer>DesktopModules/Shortcut/install.xml</Installer>
 			<Installer>DesktopModules/SignIn/install.xml</Installer>
 			<Installer>DesktopModules/SignInLdap/install.xml</Installer>
-			<Installer>DesktopModules/SimpleMenu/install.xml</Installer>
+			<!--Installer>DesktopModules/SimpleMenu/install.xml</Installer-->
 			<Installer>DesktopModules/SiteMap/install.xml</Installer>
 			<Installer>DesktopModules/SiteSettings/install.xml</Installer>
 			<Installer>DesktopModules/Survey/install.xml</Installer>
@@ -1084,5 +1084,11 @@
 		<Modules>
 			<Installer>DesktopModules/ContentManager/install.xml</Installer>
 		</Modules>
+	</Release>
+	<Release>
+		<ID>1881</ID>
+		<Version>2.0.0.1881</Version>
+		<Date>2007-06-20T00:00:00.0000000+01:00</Date>
+		
 	</Release>
 </History>

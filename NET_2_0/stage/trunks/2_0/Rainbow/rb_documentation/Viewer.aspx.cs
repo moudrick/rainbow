@@ -55,7 +55,7 @@ namespace Rainbow.Documentation
 			Environment.CurrentDirectory = this.Server.MapPath(this.TemplateSourceDirectory);
 
 			// set localized Page Title
-			this.PageTitle = Localize.GetString("TAB_TITLE_RAINBOW_HELP","Rainbow Help",this);
+			this.PageTitle = Esperantus.Localize.GetString("TAB_TITLE_RAINBOW_HELP","Rainbow Help",this);
 			// add the Help css
 			this.ClearCssFileList();
 			this.RegisterCssFile("help","css/help.css");

@@ -122,19 +122,19 @@ namespace Rainbow.Error
 					case (int)HttpStatusCode.Gone : // 410
 					case (int)HttpStatusCode.MovedPermanently : // 301
 					case (int)HttpStatusCode.TemporaryRedirect : // 307
-						sb.AppendFormat("<h3>{0}</h3>", Localize.GetString("SMARTERROR_404HEADING","Page Not Found", null));
-						sb.AppendFormat("<p>{0}</p>", Localize.GetString("SMARTERROR_404TEXT","We're sorry, but there is no page that matches your entry. It is possible you typed the address incorrectly, or the page may no longer exist. You may wish to try another entry or choose from the links below, which we hope will help you find what you’re looking for.", null));
+                        sb.AppendFormat("<h3>{0}</h3>", Esperantus.Localize.GetString("SMARTERROR_404HEADING", "Page Not Found", null));
+                        sb.AppendFormat("<p>{0}</p>", Esperantus.Localize.GetString("SMARTERROR_404TEXT", "We're sorry, but there is no page that matches your entry. It is possible you typed the address incorrectly, or the page may no longer exist. You may wish to try another entry or choose from the links below, which we hope will help you find what you’re looking for.", null));
 						break;
 					case (int)HttpStatusCode.Forbidden : // 403
-						sb.AppendFormat("<h3>{0}</h3>", Localize.GetString("SMARTERROR_403HEADING","Not Authorised", null));
-						sb.AppendFormat("<p>{0}</p>", Localize.GetString("SMARTERROR_403TEXT","You do not have the required authority for the requested page or action.", null));
+                        sb.AppendFormat("<h3>{0}</h3>", Esperantus.Localize.GetString("SMARTERROR_403HEADING", "Not Authorised", null));
+                        sb.AppendFormat("<p>{0}</p>", Esperantus.Localize.GetString("SMARTERROR_403TEXT", "You do not have the required authority for the requested page or action.", null));
 						break;
 					default :
-						sb.AppendFormat("<h3>{0}</h3>", Localize.GetString("SMARTERROR_500HEADING","Our Apologies", null));
-						sb.AppendFormat("<p>{0}</p>", Localize.GetString("SMARTERROR_500TEXT","We're sorry, but we were unable to service your request. It's possible that the problem is a temporary condition.", null));
+                        sb.AppendFormat("<h3>{0}</h3>", Esperantus.Localize.GetString("SMARTERROR_500HEADING", "Our Apologies", null));
+                        sb.AppendFormat("<p>{0}</p>", Esperantus.Localize.GetString("SMARTERROR_500TEXT", "We're sorry, but we were unable to service your request. It's possible that the problem is a temporary condition.", null));
 						break;
 				}
-				sb.AppendFormat("<p><a href=\"{0}\">{1}</a></p>", homeUrl, Localize.GetString("HOME","Home Page",null));
+                sb.AppendFormat("<p><a href=\"{0}\">{1}</a></p>", homeUrl, Esperantus.Localize.GetString("HOME", "Home Page", null));
 			}
 			catch // default to english message
 			{
@@ -177,7 +177,7 @@ namespace Rainbow.Error
 					if ( ipList.CheckNumber(Request.UserHostAddress) )
 					{
 						// we can show error details
-						sb.AppendFormat("<h3>{0} - {1}</h3>", Localize.GetString("SMARTERROR_SUPPORTDETAILS_HEADING","Support Details", null), _httpStatusCode.ToString());
+                        sb.AppendFormat("<h3>{0} - {1}</h3>", Esperantus.Localize.GetString("SMARTERROR_SUPPORTDETAILS_HEADING", "Support Details", null), _httpStatusCode.ToString());
 						sb.Append(_renderedEvent);
 					}
 				}
