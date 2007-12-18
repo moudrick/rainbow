@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
@@ -175,7 +176,7 @@ namespace Rainbow.Content.Web.Modules
                             //Add to linked
 
                             //Get default assignee from module setting
-                            Hashtable linkedModuleSettings = ModuleSettings.GetModuleSettings(linkedModuleID, this);
+                            Hashtable linkedModuleSettings = ModuleSettingsProvider.GetModuleSettings(linkedModuleID, this);
                             string linkedModuleAssignee = linkedModuleSettings["TASKS_DEFAULT_ASSIGNEE"].ToString();
 
                             tasks.AddTask(linkedModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email,

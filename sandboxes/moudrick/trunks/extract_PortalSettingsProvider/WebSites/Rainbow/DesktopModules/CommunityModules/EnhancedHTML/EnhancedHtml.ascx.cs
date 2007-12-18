@@ -8,6 +8,7 @@ using System.Web.UI;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
@@ -226,7 +227,7 @@ namespace Rainbow.Content.Web.Modules
         /// <returns></returns>
         private Control toShow(string text)
         {
-            int module = 0;
+            int module;
             if (text.StartsWith(tokenModule))
             {
                 module = int.Parse(text.Substring(tokenModule.Length));
@@ -235,51 +236,33 @@ namespace Rainbow.Content.Web.Modules
             {
                 module = int.Parse(text.Substring(tokenPortalModule.Length));
             }
-            else return new LiteralControl(text.ToString());
-
-            PortalModuleControl portalModule;
-            string ControlPath = string.Empty;
-            using (SqlDataReader dr = ModuleSettings.GetModuleDefinitionByID(module))
+            else
             {
-                if (dr.Read())
-                    ControlPath = Path.ApplicationRoot + "/" + dr["DesktopSrc"].ToString();
+                return new LiteralControl(text);
             }
+
+            ModuleSettings moduleSettings = ModuleSettingsProvider.InstantiateNewModuleSettings(module, ModuleConfiguration);
+            string controlPath = moduleSettings.DesktopSrc;
+            PortalModuleControl portalModule;
             try
             {
-                if (ControlPath == null || ControlPath.Length == 0)
+                if (controlPath == null || controlPath.Length == 0)
                 {
                     return new LiteralControl("Module '" + module + "' not found! ");
                 }
-                portalModule = (PortalModuleControl) Page.LoadControl(ControlPath);
+                portalModule = (PortalModuleControl) Page.LoadControl(controlPath);
 
                 //Sets portal ID
                 portalModule.PortalID = PortalID;
-
-                ModuleSettings m = new ModuleSettings();
-                m.ModuleID = module;
-                m.PageID = ModuleConfiguration.PageID;
-                m.PaneName = ModuleConfiguration.PaneName;
-                m.ModuleTitle = ModuleConfiguration.ModuleTitle;
-                m.AuthorizedEditRoles = string.Empty;
-                m.AuthorizedViewRoles = string.Empty;
-                m.AuthorizedAddRoles = string.Empty;
-                m.AuthorizedDeleteRoles = string.Empty;
-                m.AuthorizedPropertiesRoles = string.Empty;
-                m.CacheTime = ModuleConfiguration.CacheTime;
-                m.ModuleOrder = ModuleConfiguration.ModuleOrder;
-                m.ShowMobile = ModuleConfiguration.ShowMobile;
-                m.DesktopSrc = ControlPath;
-
-                portalModule.ModuleConfiguration = m;
-
+                portalModule.ModuleConfiguration = moduleSettings;
                 portalModule.Settings["MODULESETTINGS_APPLY_THEME"] = false;
                 portalModule.Settings["MODULESETTINGS_SHOW_TITLE"] = false;
             }
             catch (Exception ex)
             {
-                ErrorHandler.Publish(LogLevel.Warn, "Shortcut: Unable to load control '" + ControlPath + "'!", ex);
+                ErrorHandler.Publish(LogLevel.Warn, "Shortcut: Unable to load control '" + controlPath + "'!", ex);
                 return
-                    new LiteralControl("<br><span class=NormalRed>" + "Unable to load control '" + ControlPath + "'!" +
+                    new LiteralControl("<br><span class=NormalRed>" + "Unable to load control '" + controlPath + "'!" +
                                        "<br>");
             }
 

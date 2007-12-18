@@ -10,7 +10,7 @@ namespace Rainbow.Framework.Provider
     public class ProviderConfiguration
     {
         private string defaultProvider;
-        private Hashtable providers = new Hashtable();
+        private readonly Hashtable providers = new Hashtable();
 
         /// <summary>
         /// Gets the default provider

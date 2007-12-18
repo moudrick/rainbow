@@ -57,8 +57,8 @@ namespace Rainbow.Framework.Providers.Geographic {
         /// <summary>
         /// <see cref="Rainbow.Framework.Providers.Geographic.GeographicProvider.GetCountries( CountryFields )"/>
         /// </summary>
-        public override IList<Country> GetCountries( CountryFields sortBY ) {
-            return GetCountriesCore( countriesFilter, string.Empty, sortBY );
+        public override IList<Country> GetCountries( CountryFields sortBy ) {
+            return GetCountriesCore( countriesFilter, string.Empty, sortBy );
         }
 
         /// <summary>

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Web.UI;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
@@ -63,7 +63,7 @@ namespace Rainbow.Content.Web.Modules
         {
             EditTable.DataSource =
                 new SortedList(
-                    ModuleSettingsCustom.GetModuleUserSettings(this.ModuleID,
+                    ModuleSettingsProvider.GetModuleUserSettings(this.ModuleID,
                                                                (Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey, this));
             EditTable.DataBind();
         }
@@ -71,7 +71,7 @@ namespace Rainbow.Content.Web.Modules
         private void saveAndCloseButton_Click(object sender, EventArgs e)
         {
             OnUpdate(e);
-            if (Page.IsValid == true)
+            if (Page.IsValid)
                 Response.Redirect(Rainbow.Framework.HttpUrlBuilder.BuildUrl("~/Default.aspx", PageID));
         }
 
@@ -83,7 +83,7 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only Update if Input Data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 // Update settings in the database
                 EditTable.UpdateControls();
@@ -98,7 +98,7 @@ namespace Rainbow.Content.Web.Modules
         private void EditTable_UpdateControl(object sender,
                                              Rainbow.Framework.Web.UI.WebControls.SettingsTableEventArgs e)
         {
-            ModuleSettingsCustom.UpdateCustomModuleSetting(ModuleID, (Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey,
+            ModuleSettingsProvider.UpdateCustomModuleSetting(ModuleID, (Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey,
                                                            e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
     }

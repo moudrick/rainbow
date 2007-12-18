@@ -11,6 +11,7 @@ using System.Web.Security;
 using Rainbow.Context;
 using Rainbow.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Scheduler;
@@ -259,7 +260,7 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                 while (testsCounter <= testsToRun)
                 {
                     //try with current values from arrays
-                    portalSettings = new PortalSettings(testPageID[testsCounter - 1], testAlias[testsCounter - 1]);
+                    portalSettings = PortalSettingsProvider.InstantiateNewPortalSettings(testPageID[testsCounter - 1], testAlias[testsCounter - 1]);
 
                     // test returned result
                     if (portalSettings.PortalAlias != null)

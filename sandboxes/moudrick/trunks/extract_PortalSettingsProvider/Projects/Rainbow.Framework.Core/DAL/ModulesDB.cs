@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Settings.Cache;
@@ -1264,7 +1265,7 @@ namespace Rainbow.Framework.Site.Data
         [Obsolete("UpdateModuleSetting was moved in ModuleSettings.UpdateModuleSetting", false)]
         public void UpdateModuleSetting(int moduleID, string key, string value)
         {
-            ModuleSettings.UpdateModuleSetting(moduleID, key, value);
+            ModuleSettingsProvider.UpdateModuleSetting(moduleID, key, value);
         }
     }
 }

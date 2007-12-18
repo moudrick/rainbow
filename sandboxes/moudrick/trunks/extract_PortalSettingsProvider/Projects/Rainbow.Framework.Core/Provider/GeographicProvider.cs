@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Configuration.Provider;
-using System.Web;
 using System.Web.Caching;
 using Rainbow.Framework.Provider;
 using System.Configuration;
@@ -200,9 +198,9 @@ namespace Rainbow.Framework.Providers.Geographic {
         /// <summary>
         /// Gets the list of countries sorted by a certain field.
         /// This method takes into account the CountriesFilter property.</returns>
-        /// <param name="types">CountryTypes enum value</param>
+        /// <param name="sortBy">CountryTypes enum value</param>
         /// <returns>The list of countries</returns>
-        public abstract IList<Country> GetCountries( CountryFields sortBY );
+        public abstract IList<Country> GetCountries( CountryFields sortBy );
 
         /// <summary>
         /// Gets the list of countries filtered by the specified filter.

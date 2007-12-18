@@ -117,7 +117,8 @@ namespace Rainbow.Framework.Core.Configuration.Settings
         /// </summary>
         /// <param name="pageID">The page ID.</param>
         /// <param name="portalAlias">The portal alias.</param>
-        public PortalSettings(int pageID, string portalAlias) : this()
+        internal PortalSettings(int pageID, string portalAlias)
+            : this()
         {
             // Changes culture/language according to settings
             try
@@ -188,7 +189,6 @@ namespace Rainbow.Framework.Core.Configuration.Settings
             //	this.DesktopPagesXml = GetDesktopPagesXml();
         }
 
-
         /// <summary>
         /// The PortalSettings Constructor encapsulates all of the logic
         /// necessary to obtain configuration settings necessary to get
@@ -198,7 +198,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
         /// This overload it is used
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
-        public PortalSettings(int portalID) : this()
+        internal PortalSettings(int portalID) : this()
         {
             try
             {

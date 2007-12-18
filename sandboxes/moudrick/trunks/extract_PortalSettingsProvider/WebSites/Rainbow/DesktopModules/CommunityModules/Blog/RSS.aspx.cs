@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Xml;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 
@@ -68,7 +69,7 @@ namespace Rainbow.Content.Web.Modules
 
             Response.ContentType = "text/xml";
 
-            Hashtable moduleSettings = ModuleSettings.GetModuleSettings(moduleID);
+            Hashtable moduleSettings = ModuleSettingsProvider.GetModuleSettings(moduleID);
             Encoding encoding = new UTF8Encoding();
 
             XmlTextWriter xmlTextWriter = new XmlTextWriter(Response.OutputStream, encoding);

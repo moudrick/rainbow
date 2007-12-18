@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using ActiveUp.WebControls.HtmlTextBox.Tools;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -202,7 +203,7 @@ namespace Rainbow.Framework.DataTypes
                                      PortalSettings portalSettings)
         {
             IHtmlEditor DesktopText;
-            string moduleImageFolder = ModuleSettings.GetModuleSettings(moduleID)["MODULE_IMAGE_FOLDER"].ToString();
+            string moduleImageFolder = ModuleSettingsProvider.GetModuleSettings(moduleID)["MODULE_IMAGE_FOLDER"].ToString();
 
             // Grabs ID from the place holder so that a unique editor is on the page if more than one
             // But keeps same ID so that the information can be submitted to be saved. [CDT]

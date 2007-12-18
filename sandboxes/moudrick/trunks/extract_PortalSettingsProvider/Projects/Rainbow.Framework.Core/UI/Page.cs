@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
@@ -936,7 +937,7 @@ namespace Rainbow.Framework.Web.UI {
                 if ( _moduleSettings == null ) {
                     if ( ModuleID > 0 )
                         // Get settings from the database
-                        _moduleSettings = ModuleSettings.GetModuleSettings( ModuleID, this );
+                        _moduleSettings = ModuleSettingsProvider.GetModuleSettings( ModuleID, this );
                     else
                         // Or provides an empty hashtable
                         _moduleSettings = new Hashtable();

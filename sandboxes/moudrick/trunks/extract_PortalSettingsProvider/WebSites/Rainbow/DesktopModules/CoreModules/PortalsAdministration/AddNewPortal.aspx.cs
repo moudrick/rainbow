@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Rainbow.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
@@ -433,7 +434,7 @@ namespace Rainbow.AdminAll
 
                             while (dr.Read())
                             {
-                                ModuleSettings.UpdateModuleSetting(newModuleID, dr["SettingName"].ToString(),
+                                ModuleSettingsProvider.UpdateModuleSetting(newModuleID, dr["SettingName"].ToString(),
                                                                    dr["SettingValue"].ToString());
                             }
                             dr.Close();

@@ -2,6 +2,7 @@ using System.IO;
 using System.Web;
 using NUnit.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 
 namespace Rainbow.Tests
 {
@@ -43,7 +44,7 @@ namespace Rainbow.Tests
         public void PortalSettingsTest()
         {
             HttpContext.Current = FakeHttpContext.GetNew();
-            PortalSettings portalSettings = new PortalSettings(0, "Rainbow");
+            PortalSettings portalSettings = PortalSettingsProvider.InstantiateNewPortalSettings(0, "Rainbow");
             Assert.IsNotNull(portalSettings);
         }
     }

@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Settings.Cache;
@@ -155,7 +156,7 @@ namespace Rainbow.Content.Web.Modules
                 int moduleID = int.Parse(portalSettings.CustomSettings["SITESETTINGS_REGISTER_MODULEID"].ToString());
                 string moduleDesktopSrc = string.Empty;
                 if (moduleID > 0)
-                    moduleDesktopSrc = ModuleSettings.GetModuleDesktopSrc(moduleID);
+                    moduleDesktopSrc = ModuleSettingsProvider.GetModuleDesktopSrc(moduleID);
                 if (moduleDesktopSrc.Length == 0)
                     moduleDesktopSrc = RegisterPage;
                         //Changed by moudrick to fix the issue 27

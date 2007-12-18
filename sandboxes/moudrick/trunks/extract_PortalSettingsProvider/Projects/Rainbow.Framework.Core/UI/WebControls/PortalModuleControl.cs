@@ -15,6 +15,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using Rainbow.Framework.BLL.Utils;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Helpers;
@@ -402,7 +403,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 if (_settings == null)
                 {
-                    _settings = ModuleSettings.GetModuleSettings(ModuleID, _baseSettings);
+                    _settings = ModuleSettingsProvider.GetModuleSettings(ModuleID, _baseSettings);
                 }
                 return _settings;
             }
@@ -3077,7 +3078,7 @@ end of modification
             admin.UpdateModuleOrder(OriginalModuleID, 99, targetPane);
 
             // reload the portalSettings from the database
-            HttpContext.Current.Items["PortalSettings"] = new PortalSettings(PageID, portalSettings.PortalAlias);
+            HttpContext.Current.Items["PortalSettings"] = PortalSettingsProvider.InstantiateNewPortalSettings(PageID, portalSettings.PortalAlias);
             ((Page) Page).portalSettings = (PortalSettings) Context.Items["PortalSettings"];
 
             // reorder the modules in the source pane

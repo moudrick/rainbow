@@ -3,6 +3,7 @@ using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI;
 
@@ -73,8 +74,8 @@ namespace Rainbow.Content.Web.Modules
             if (Page.IsValid == true)
             {
                 // Update settings in the database
-                ModuleSettings.UpdateModuleSetting(ModuleID, "Zip", Zip.Text);
-                ModuleSettings.UpdateModuleSetting(ModuleID, "Option", Option.SelectedIndex.ToString());
+                ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "Zip", Zip.Text);
+                ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "Option", Option.SelectedIndex.ToString());
 
                 RedirectBackToReferringPage();
             }

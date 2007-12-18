@@ -1,5 +1,6 @@
 using System.Collections;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Site.Configuration;
 using System;
 
@@ -27,7 +28,7 @@ namespace Rainbow.Framework.Web.UI
                     if (ModuleID > 0)
                         // Get settings from the database
                         customUserSettings =
-                            ModuleSettingsCustom.GetModuleUserSettings(ModuleID,
+                            ModuleSettingsProvider.GetModuleUserSettings(ModuleID,
                                                                        (Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey,
                                                                        this);
                     else

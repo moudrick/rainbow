@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Settings.Cache;
@@ -51,7 +52,6 @@ namespace Rainbow.Admin
         /// The Page_Load server event handler on this page is used
         /// to populate a tab's layout settings on the page
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         protected override void OnLoad( EventArgs e ) {
             base.OnLoad( e );
@@ -245,7 +245,7 @@ namespace Rainbow.Admin
             // End Change Geert.Audenaert@Syntegra.Com
 
             // reload the portalSettings from the database
-            Context.Items["PortalSettings"] = new PortalSettings(PageID, portalSettings.PortalAlias);
+            Context.Items["PortalSettings"] = PortalSettingsProvider.InstantiateNewPortalSettings(PageID, portalSettings.PortalAlias);
             portalSettings = (PortalSettings) Context.Items["PortalSettings"];
 
             // reorder the modules in the content pane
@@ -357,7 +357,7 @@ namespace Rainbow.Admin
                     sourceList.RemoveAt(sourceBox.SelectedIndex);
 
                     // reload the portalSettings from the database
-                    HttpContext.Current.Items["PortalSettings"] = new PortalSettings(PageID, portalSettings.PortalAlias);
+                    HttpContext.Current.Items["PortalSettings"] = PortalSettingsProvider.InstantiateNewPortalSettings(PageID, portalSettings.PortalAlias);
                     portalSettings = (PortalSettings) Context.Items["PortalSettings"];
 
                     // reorder the modules in the source pane

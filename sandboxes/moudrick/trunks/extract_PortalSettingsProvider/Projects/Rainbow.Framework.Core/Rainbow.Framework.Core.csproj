@@ -90,10 +90,10 @@
     <Compile Include="Configuration\Provider\ProviderConfigurationHandler.cs" />
     <Compile Include="Configuration\Provider\ProviderHelper.cs" />
     <Compile Include="Configuration\Settings\ModuleSettings.cs" />
-    <Compile Include="Configuration\Settings\ModuleSettingsCustom.cs" />
     <Compile Include="Configuration\Settings\PageSettings.cs" />
     <Compile Include="Configuration\Settings\PageStripDetails.cs" />
     <Compile Include="Configuration\Settings\PortalSettings.cs" />
+    <Compile Include="Configuration\Settings\Providers\ModuleSettingsProvider.cs" />
     <Compile Include="Configuration\Settings\Providers\PortalSettingsProvider.cs" />
     <Compile Include="DAL\Database.cs" />
     <Compile Include="DAL\DBHelper.cs" />

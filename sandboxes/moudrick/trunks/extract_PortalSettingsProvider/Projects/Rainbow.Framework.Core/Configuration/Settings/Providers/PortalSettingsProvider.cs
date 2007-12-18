@@ -425,5 +425,15 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             }
             return langlist;
         }
+
+        public static PortalSettings InstantiateNewPortalSettings(int pageID, string portalAlias)
+        {
+            return new PortalSettings(pageID, portalAlias);
+        }
+
+        public static PortalSettings InstantiateNewPortalSettings(int portalID)
+        {
+            return new PortalSettings(portalID);
+        }
     }
 }
