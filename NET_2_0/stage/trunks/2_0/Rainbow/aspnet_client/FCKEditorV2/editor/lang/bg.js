@@ -1,14 +1,12 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2006 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2005 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
  * 
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
- * "Support Open Source software. What about a donation today?"
  * 
  * File Name: bg.js
  * 	Bulgarian language file.
@@ -43,8 +41,6 @@ RemoveLink			: "Изтрий връзка",
 Anchor				: "Добави/Редактирай котва",
 InsertImageLbl		: "Изображение",
 InsertImage			: "Добави/Редактирай изображение",
-InsertFlashLbl		: "Flash",
-InsertFlash			: "Добави/Редактиай Flash обект",
 InsertTableLbl		: "Таблица",
 InsertTable			: "Добави/Редактирай таблица",
 InsertLineLbl		: "Линия",
@@ -85,8 +81,6 @@ Find				: "Търси",
 Replace				: "Замести",
 SpellCheck			: "Провери правописа",
 UniversalKeyboard	: "Универсална клавиатура",
-PageBreakLbl		: "Нов ред",
-PageBreak			: "Вмъкни нов ред",
 
 Form			: "Формуляр",
 Checkbox		: "Поле за отметка",
@@ -98,13 +92,8 @@ Button			: "Бутон",
 SelectionField	: "Падащо меню с опции",
 ImageButton		: "Бутон-изображение",
 
-FitWindow		: "Maximize the editor size",	//MISSING
-
 // Context Menu
 EditLink			: "Редактирай връзка",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
 InsertRow			: "Добави ред",
 DeleteRows			: "Изтрий редовете",
 InsertColumn		: "Добави колона",
@@ -113,11 +102,9 @@ InsertCell			: "Добави клетка",
 DeleteCells			: "Изтрий клетките",
 MergeCells			: "Обедини клетките",
 SplitCell			: "Раздели клетката",
-TableDelete			: "Изтрий таблицата",
 CellProperties		: "Параметри на клетката",
 TableProperties		: "Параметри на таблицата",
 ImageProperties		: "Параметри на изображението",
-FlashProperties		: "Параметри на Flash обекта",
 
 AnchorProp			: "Параметри на котвата",
 ButtonProp			: "Параметри на бутона",
@@ -141,9 +128,6 @@ UnknownToolbarItem	: "Непознат инструмент \"%1\"",
 UnknownCommand		: "Непозната команда \"%1\"",
 NotImplemented		: "Командата не е имплементирана",
 UnknownToolbarSet	: "Панелът \"%1\" не съществува",
-NoActiveX			: "Your browser's security settings could limit some features of the editor. You must enable the option \"Run ActiveX controls and plug-ins\". You may experience errors and notice missing features.",	//MISSING
-BrowseServerBlocked : "The resources browser could not be opened. Make sure that all popup blockers are disabled.",	//MISSING
-DialogBlocked		: "It was not possible to open the dialog window. Make sure all popup blockers are disabled.",	//MISSING
 
 // Dialogs
 DlgBtnOK			: "ОК",
@@ -151,12 +135,10 @@ DlgBtnCancel		: "Отказ",
 DlgBtnClose			: "Затвори",
 DlgBtnBrowseServer	: "Разгледай сървъра",
 DlgAdvancedTag		: "Подробности...",
-DlgOpOther			: "<Друго>",
-DlgInfoTab			: "Информация",
-DlgAlertUrl			: "Моля, въведете пълния път (URL)",
+DlgOpOther			: "&lt;Друго&gt;",
 
 // General Dialogs Labels
-DlgGenNotSet		: "<не е настроен>",
+DlgGenNotSet		: "&lt;не е настроен&gt;",
 DlgGenId			: "Идентификатор",
 DlgGenLangDir		: "посока на речта",
 DlgGenLangDirLtr	: "От ляво на дясно",
@@ -198,17 +180,7 @@ DlgImgAlignTextTop	: "Върху текста",
 DlgImgAlignTop		: "Отгоре",
 DlgImgPreview		: "Изглед",
 DlgImgAlertUrl		: "Моля, въведете пълния път до изображението",
-DlgImgLinkTab		: "Връзка",
-
-// Flash Dialog
-DlgFlashTitle		: "Параметри на Flash обекта",
-DlgFlashChkPlay		: "Автоматично стартиране",
-DlgFlashChkLoop		: "Ново стартиране след завършването",
-DlgFlashChkMenu		: "Разрешено Flash меню",
-DlgFlashScale		: "Оразмеряване",
-DlgFlashScaleAll	: "Покажи целия обект",
-DlgFlashScaleNoBorder	: "Без рамка",
-DlgFlashScaleFit	: "Според мястото",
+DlgImgLinkTab		: "Link",	//MISSING
 
 // Link Dialog
 DlgLnkWindowTitle	: "Връзка",
@@ -219,13 +191,13 @@ DlgLnkType			: "Вид на връзката",
 DlgLnkTypeURL		: "Пълен път (URL)",
 DlgLnkTypeAnchor	: "Котва в текущата страница",
 DlgLnkTypeEMail		: "Е-поща",
-DlgLnkProto			: "Протокол",
-DlgLnkProtoOther	: "<друго>",
+DlgLnkProto			: "Прокотол",
+DlgLnkProtoOther	: "&lt;друго&gt;",
 DlgLnkURL			: "Пълен път (URL)",
 DlgLnkAnchorSel		: "Изберете котва",
 DlgLnkAnchorByName	: "По име на котвата",
 DlgLnkAnchorById	: "По идентификатор на елемент",
-DlgLnkNoAnchors		: "<Няма котви в текущия документ>",
+DlgLnkNoAnchors		: "&lt;Няма котви в текущия документ&gt;",
 DlgLnkEMail			: "Адрес за е-поща",
 DlgLnkEMailSubject	: "Тема на писмото",
 DlgLnkEMailBody		: "Текст на писмото",
@@ -233,13 +205,13 @@ DlgLnkUpload		: "Качи",
 DlgLnkBtnUpload		: "Прати на сървъра",
 
 DlgLnkTarget		: "Цел",
-DlgLnkTargetFrame	: "<рамка>",
-DlgLnkTargetPopup	: "<дъщерен прозорец>",
+DlgLnkTargetFrame	: "&lt;рамка&gt;",
+DlgLnkTargetPopup	: "&lt;дъщерен прозорец&gt;",
 DlgLnkTargetBlank	: "Нов прозорец (_blank)",
 DlgLnkTargetParent	: "Родителски прозорец (_parent)",
 DlgLnkTargetSelf	: "Активния прозорец (_self)",
 DlgLnkTargetTop		: "Целия прозорец (_top)",
-DlgLnkTargetFrameName	: "Име на целевия прозорец",
+DlgLnkTargetFrameName	: "Име на целиевия прозорец",
 DlgLnkPopWinName	: "Име на дъщерния прозорец",
 DlgLnkPopWinFeat	: "Параметри на дъщерния прозорец",
 DlgLnkPopResize		: "С променливи размери",
@@ -258,7 +230,6 @@ DlgLnkPopTop		: "Координати - Y",
 DlnLnkMsgNoUrl		: "Моля, напишете пълния път (URL)",
 DlnLnkMsgNoEMail	: "Моля, напишете адреса за е-поща",
 DlnLnkMsgNoAnchor	: "Моля, изберете котва",
-DlnLnkMsgInvPopName	: "The popup name must begin with an alphabetic character and must not contain spaces",	//MISSING
 
 // Color Dialog
 DlgColorTitle		: "Изберете цвят",
@@ -289,7 +260,6 @@ DlgTableHeight		: "Височина",
 DlgTableCellSpace	: "Разстояние между клетките",
 DlgTableCellPad		: "Отстъп на съдържанието в клетките",
 DlgTableCaption		: "Заглавие",
-DlgTableSummary		: "Резюме",
 
 // Table Cell Dialog
 DlgCellTitle		: "Параметри на клетката",
@@ -298,16 +268,16 @@ DlgCellWidthPx		: "пиксели",
 DlgCellWidthPc		: "проценти",
 DlgCellHeight		: "Височина",
 DlgCellWordWrap		: "пренасяне на нов ред",
-DlgCellWordWrapNotSet	: "<Не е настроено>",
+DlgCellWordWrapNotSet	: "&lt;Не е настроено&gt;",
 DlgCellWordWrapYes	: "Да",
 DlgCellWordWrapNo	: "не",
 DlgCellHorAlign		: "Хоризонтално подравняване",
-DlgCellHorAlignNotSet	: "<Не е настроено>",
+DlgCellHorAlignNotSet	: "&lt;Не е настроено&gt;",
 DlgCellHorAlignLeft	: "Ляво",
 DlgCellHorAlignCenter	: "Център",
 DlgCellHorAlignRight: "Дясно",
 DlgCellVerAlign		: "Вертикално подравняване",
-DlgCellVerAlignNotSet	: "<Не е настроено>",
+DlgCellVerAlignNotSet	: "&lt;Не е настроено&gt;",
 DlgCellVerAlignTop	: "Горе",
 DlgCellVerAlignMiddle	: "По средата",
 DlgCellVerAlignBottom	: "Долу",
@@ -340,10 +310,7 @@ PasteErrorCopy	: "Настройките за сигурност на вашия
 PasteAsText		: "Вмъкни като чист текст",
 PasteFromWord	: "Вмъкни от MS Word",
 
-DlgPasteMsg2	: "Вмъкнете тук съдъжанието с клавиатуарата (<STRONG>Ctrl+V</STRONG>) и натиснете <STRONG>OK</STRONG>.",
-DlgPasteIgnoreFont		: "Игнорирай шрифтовите дефиниции",
-DlgPasteRemoveStyles	: "Изтрий стиловите дефиниции",
-DlgPasteCleanBox		: "Изчисти",
+DlgPasteMsg		: "Редакторът не успя да изпълни автоматичното вмъкване заради <STRONG>настройките за сигурност</STRONG> на вашия браузър.<BR>Моля, изпълнете вмъкването, използвайки клавиатурата (<STRONG>Ctrl+V</STRONG>), след което изберете <STRONG>OK</STRONG>.",
 
 // Color Picker
 ColorAutomatic	: "По подразбиране",
@@ -375,11 +342,8 @@ DlgSpellManyChanges		: "Проверката за правопис завърш�
 IeSpellDownload			: "Инструментът за проверка на правопис не е инсталиран. Желаете ли да го инсталирате ?",
 
 // Button Dialog
-DlgButtonText		: "Текст (Стойност)",
-DlgButtonType		: "Тип",
-DlgButtonTypeBtn	: "Button",	//MISSING
-DlgButtonTypeSbm	: "Submit",	//MISSING
-DlgButtonTypeRst	: "Reset",	//MISSING
+DlgButtonText	: "Текст (Стойност)",
+DlgButtonType	: "Тип",
 
 // Checkbox and Radio Button Dialogs
 DlgCheckboxName		: "Име",
@@ -428,10 +392,9 @@ DlgHiddenValue	: "Стойност",
 // Bulleted List Dialog
 BulletedListProp	: "Параметри на ненумерирания списък",
 NumberedListProp	: "Параметри на нумерирания списък",
-DlgLstStart			: "Start",	//MISSING
 DlgLstType			: "Тип",
 DlgLstTypeCircle	: "Окръжност",
-DlgLstTypeDisc		: "Кръг",
+DlgLstTypeDisk		: "Диск",
 DlgLstTypeSquare	: "Квадрат",
 DlgLstTypeNumbers	: "Числа (1, 2, 3)",
 DlgLstTypeLCase		: "Малки букви (a, b, c)",
@@ -451,15 +414,6 @@ DlgDocLangDirLTR	: "От ляво на дясно",
 DlgDocLangDirRTL	: "От дясно на ляво",
 DlgDocLangCode		: "Код на езика",
 DlgDocCharSet		: "Кодиране на символите",
-DlgDocCharSetCE		: "Central European",	//MISSING
-DlgDocCharSetCT		: "Chinese Traditional (Big5)",	//MISSING
-DlgDocCharSetCR		: "Cyrillic",	//MISSING
-DlgDocCharSetGR		: "Greek",	//MISSING
-DlgDocCharSetJP		: "Japanese",	//MISSING
-DlgDocCharSetKR		: "Korean",	//MISSING
-DlgDocCharSetTR		: "Turkish",	//MISSING
-DlgDocCharSetUN		: "Unicode (UTF-8)",	//MISSING
-DlgDocCharSetWE		: "Western European",	//MISSING
 DlgDocCharSetOther	: "Друго кодиране на символите",
 
 DlgDocDocType		: "Тип на документа",
@@ -484,18 +438,16 @@ DlgDocMeCopy		: "Авторски права",
 DlgDocPreview		: "Изглед",
 
 // Templates Dialog
-Templates			: "Шаблони",
-DlgTemplatesTitle	: "Шаблони",
-DlgTemplatesSelMsg	: "Изберете шаблон <br>(текущото съдържание на редактора ще бъде загубено):",
-DlgTemplatesLoading	: "Зареждане на списъка с шаблоните. Моля изчакайте...",
-DlgTemplatesNoTpl	: "(Няма дефинирани шаблони)",
-DlgTemplatesReplace	: "Replace actual contents",	//MISSING
+Templates			: "Templates",	//MISSING
+DlgTemplatesTitle	: "Content Templates",	//MISSING
+DlgTemplatesSelMsg	: "Please select the template to open in the editor<br>(the actual contents will be lost):",	//MISSING
+DlgTemplatesLoading	: "Loading templates list. Please wait...",	//MISSING
+DlgTemplatesNoTpl	: "(No templates defined)",	//MISSING
 
 // About Dialog
 DlgAboutAboutTab	: "За",
 DlgAboutBrowserInfoTab	: "Информация за браузъра",
-DlgAboutLicenseTab	: "License",	//MISSING
 DlgAboutVersion		: "версия",
 DlgAboutLicense		: "Лиценз по условията на GNU Lesser General Public License",
-DlgAboutInfo		: "За повече информация посетете"
+DlgAboutInfo		: "За повече информация отидете на"
 }

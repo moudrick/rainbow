@@ -1,14 +1,12 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2006 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2005 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
  * 
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
- * "Support Open Source software. What about a donation today?"
  * 
  * File Name: bs.js
  * 	Bosnian language file.
@@ -43,8 +41,6 @@ RemoveLink			: "Izbriši link",
 Anchor				: "Insert/Edit Anchor",	//MISSING
 InsertImageLbl		: "Slika",
 InsertImage			: "Ubaci/Izmjeni sliku",
-InsertFlashLbl		: "Flash",	//MISSING
-InsertFlash			: "Insert/Edit Flash",	//MISSING
 InsertTableLbl		: "Tabela",
 InsertTable			: "Ubaci/Izmjeni tabelu",
 InsertLineLbl		: "Linija",
@@ -83,10 +79,8 @@ BGColor				: "Boja pozadine",
 Source				: "HTML kôd",
 Find				: "Naði",
 Replace				: "Zamjeni",
-SpellCheck			: "Check Spelling",	//MISSING
+SpellCheck			: "Check Spell",	//MISSING
 UniversalKeyboard	: "Universal Keyboard",	//MISSING
-PageBreakLbl		: "Page Break",	//MISSING
-PageBreak			: "Insert Page Break",	//MISSING
 
 Form			: "Form",	//MISSING
 Checkbox		: "Checkbox",	//MISSING
@@ -98,13 +92,8 @@ Button			: "Button",	//MISSING
 SelectionField	: "Selection Field",	//MISSING
 ImageButton		: "Image Button",	//MISSING
 
-FitWindow		: "Maximize the editor size",	//MISSING
-
 // Context Menu
 EditLink			: "Izmjeni link",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
 InsertRow			: "Ubaci red",
 DeleteRows			: "Briši redove",
 InsertColumn		: "Ubaci kolonu",
@@ -113,11 +102,9 @@ InsertCell			: "Ubaci æeliju",
 DeleteCells			: "Briši æelije",
 MergeCells			: "Spoji æelije",
 SplitCell			: "Razdvoji æeliju",
-TableDelete			: "Delete Table",	//MISSING
 CellProperties		: "Svojstva æelije",
 TableProperties		: "Svojstva tabele",
 ImageProperties		: "Svojstva slike",
-FlashProperties		: "Flash Properties",	//MISSING
 
 AnchorProp			: "Anchor Properties",	//MISSING
 ButtonProp			: "Button Properties",	//MISSING
@@ -141,9 +128,6 @@ UnknownToolbarItem	: "Nepoznata stavka sa trake sa alatima \"%1\"",
 UnknownCommand		: "Nepoznata komanda \"%1\"",
 NotImplemented		: "Komanda nije implementirana",
 UnknownToolbarSet	: "Traka sa alatima \"%1\" ne postoji",
-NoActiveX			: "Your browser's security settings could limit some features of the editor. You must enable the option \"Run ActiveX controls and plug-ins\". You may experience errors and notice missing features.",	//MISSING
-BrowseServerBlocked : "The resources browser could not be opened. Make sure that all popup blockers are disabled.",	//MISSING
-DialogBlocked		: "It was not possible to open the dialog window. Make sure all popup blockers are disabled.",	//MISSING
 
 // Dialogs
 DlgBtnOK			: "OK",
@@ -151,12 +135,10 @@ DlgBtnCancel		: "Odustani",
 DlgBtnClose			: "Zatvori",
 DlgBtnBrowseServer	: "Browse Server",	//MISSING
 DlgAdvancedTag		: "Naprednije",
-DlgOpOther			: "<Other>",	//MISSING
-DlgInfoTab			: "Info",	//MISSING
-DlgAlertUrl			: "Please insert the URL",	//MISSING
+DlgOpOther			: "&lt;Other&gt;",	//MISSING
 
 // General Dialogs Labels
-DlgGenNotSet		: "<nije podešeno>",
+DlgGenNotSet		: "&lt;nije podešeno&gt;",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Smjer pisanja",
 DlgGenLangDirLtr	: "S lijeva na desno (LTR)",
@@ -200,16 +182,6 @@ DlgImgPreview		: "Prikaz",
 DlgImgAlertUrl		: "Molimo ukucajte URL od slike.",
 DlgImgLinkTab		: "Link",	//MISSING
 
-// Flash Dialog
-DlgFlashTitle		: "Flash Properties",	//MISSING
-DlgFlashChkPlay		: "Auto Play",	//MISSING
-DlgFlashChkLoop		: "Loop",	//MISSING
-DlgFlashChkMenu		: "Enable Flash Menu",	//MISSING
-DlgFlashScale		: "Scale",	//MISSING
-DlgFlashScaleAll	: "Show all",	//MISSING
-DlgFlashScaleNoBorder	: "No Border",	//MISSING
-DlgFlashScaleFit	: "Exact Fit",	//MISSING
-
 // Link Dialog
 DlgLnkWindowTitle	: "Link",
 DlgLnkInfoTab		: "Link info",
@@ -220,12 +192,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Sidro na ovoj stranici",
 DlgLnkTypeEMail		: "E-Mail",
 DlgLnkProto			: "Protokol",
-DlgLnkProtoOther	: "<drugi>",
+DlgLnkProtoOther	: "&lt;drugi&gt;",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Izaberi sidro",
 DlgLnkAnchorByName	: "Po nazivu sidra",
 DlgLnkAnchorById	: "Po Id-u elementa",
-DlgLnkNoAnchors		: "<Nema dostupnih sidra na stranici>",
+DlgLnkNoAnchors		: "&lt;Nema dostupnih sidra na stranici&gt;",
 DlgLnkEMail			: "E-Mail Adresa",
 DlgLnkEMailSubject	: "Subjekt poruke",
 DlgLnkEMailBody		: "Poruka",
@@ -233,8 +205,8 @@ DlgLnkUpload		: "Šalji",
 DlgLnkBtnUpload		: "Šalji na server",
 
 DlgLnkTarget		: "Prozor",
-DlgLnkTargetFrame	: "<frejm>",
-DlgLnkTargetPopup	: "<popup prozor>",
+DlgLnkTargetFrame	: "&lt;frejm&gt;",
+DlgLnkTargetPopup	: "&lt;popup prozor&gt;",
 DlgLnkTargetBlank	: "Novi prozor (_blank)",
 DlgLnkTargetParent	: "Glavni prozor (_parent)",
 DlgLnkTargetSelf	: "Isti prozor (_self)",
@@ -258,7 +230,6 @@ DlgLnkPopTop		: "Gornja pozicija",
 DlnLnkMsgNoUrl		: "Molimo ukucajte URL link",
 DlnLnkMsgNoEMail	: "Molimo ukucajte e-mail adresu",
 DlnLnkMsgNoAnchor	: "Molimo izaberite sidro",
-DlnLnkMsgInvPopName	: "The popup name must begin with an alphabetic character and must not contain spaces",	//MISSING
 
 // Color Dialog
 DlgColorTitle		: "Izaberi boju",
@@ -289,7 +260,6 @@ DlgTableHeight		: "Visina",
 DlgTableCellSpace	: "Razmak æelija",
 DlgTableCellPad		: "Uvod æelija",
 DlgTableCaption		: "Naslov",
-DlgTableSummary		: "Summary",	//MISSING
 
 // Table Cell Dialog
 DlgCellTitle		: "Svojstva æelije",
@@ -340,10 +310,7 @@ PasteErrorCopy	: "Sigurnosne postavke Vašeg pretraživaèa ne dozvoljavaju oper
 PasteAsText		: "Zalijepi kao obièan tekst",
 PasteFromWord	: "Zalijepi iz Word-a",
 
-DlgPasteMsg2	: "Please paste inside the following box using the keyboard (<STRONG>Ctrl+V</STRONG>) and hit <STRONG>OK</STRONG>.",	//MISSING
-DlgPasteIgnoreFont		: "Ignore Font Face definitions",	//MISSING
-DlgPasteRemoveStyles	: "Remove Styles definitions",	//MISSING
-DlgPasteCleanBox		: "Clean Up Box",	//MISSING
+DlgPasteMsg		: "Editor nije mogao automatski zaljepiti zbog  <STRONG>sigurnosnih postavki</STRONG> vašeg pretraživaèa.<BR>Molimo zalijepite unutar slijedeæe kocke koristeæi tastaturu (<STRONG>Ctrl+V</STRONG>) i pritisnite <STRONG>OK</STRONG>.",
 
 // Color Picker
 ColorAutomatic	: "Automatska",
@@ -375,11 +342,8 @@ DlgSpellManyChanges		: "Spell check complete: %1 words changed",	//MISSING
 IeSpellDownload			: "Spell checker not installed. Do you want to download it now?",	//MISSING
 
 // Button Dialog
-DlgButtonText		: "Text (Value)",	//MISSING
-DlgButtonType		: "Type",	//MISSING
-DlgButtonTypeBtn	: "Button",	//MISSING
-DlgButtonTypeSbm	: "Submit",	//MISSING
-DlgButtonTypeRst	: "Reset",	//MISSING
+DlgButtonText	: "Text (Value)",	//MISSING
+DlgButtonType	: "Type",	//MISSING
 
 // Checkbox and Radio Button Dialogs
 DlgCheckboxName		: "Name",	//MISSING
@@ -428,10 +392,9 @@ DlgHiddenValue	: "Value",	//MISSING
 // Bulleted List Dialog
 BulletedListProp	: "Bulleted List Properties",	//MISSING
 NumberedListProp	: "Numbered List Properties",	//MISSING
-DlgLstStart			: "Start",	//MISSING
 DlgLstType			: "Type",	//MISSING
 DlgLstTypeCircle	: "Circle",	//MISSING
-DlgLstTypeDisc		: "Disc",	//MISSING
+DlgLstTypeDisk		: "Disk",	//MISSING
 DlgLstTypeSquare	: "Square",	//MISSING
 DlgLstTypeNumbers	: "Numbers (1, 2, 3)",	//MISSING
 DlgLstTypeLCase		: "Lowercase Letters (a, b, c)",	//MISSING
@@ -451,15 +414,6 @@ DlgDocLangDirLTR	: "Left to Right (LTR)",	//MISSING
 DlgDocLangDirRTL	: "Right to Left (RTL)",	//MISSING
 DlgDocLangCode		: "Language Code",	//MISSING
 DlgDocCharSet		: "Character Set Encoding",	//MISSING
-DlgDocCharSetCE		: "Central European",	//MISSING
-DlgDocCharSetCT		: "Chinese Traditional (Big5)",	//MISSING
-DlgDocCharSetCR		: "Cyrillic",	//MISSING
-DlgDocCharSetGR		: "Greek",	//MISSING
-DlgDocCharSetJP		: "Japanese",	//MISSING
-DlgDocCharSetKR		: "Korean",	//MISSING
-DlgDocCharSetTR		: "Turkish",	//MISSING
-DlgDocCharSetUN		: "Unicode (UTF-8)",	//MISSING
-DlgDocCharSetWE		: "Western European",	//MISSING
 DlgDocCharSetOther	: "Other Character Set Encoding",	//MISSING
 
 DlgDocDocType		: "Document Type Heading",	//MISSING
@@ -489,12 +443,10 @@ DlgTemplatesTitle	: "Content Templates",	//MISSING
 DlgTemplatesSelMsg	: "Please select the template to open in the editor<br>(the actual contents will be lost):",	//MISSING
 DlgTemplatesLoading	: "Loading templates list. Please wait...",	//MISSING
 DlgTemplatesNoTpl	: "(No templates defined)",	//MISSING
-DlgTemplatesReplace	: "Replace actual contents",	//MISSING
 
 // About Dialog
 DlgAboutAboutTab	: "About",	//MISSING
 DlgAboutBrowserInfoTab	: "Browser Info",	//MISSING
-DlgAboutLicenseTab	: "License",	//MISSING
 DlgAboutVersion		: "verzija",
 DlgAboutLicense		: "Licencirano pod uslovima GNU Lesser General Public License",
 DlgAboutInfo		: "Za više informacija posjetite"

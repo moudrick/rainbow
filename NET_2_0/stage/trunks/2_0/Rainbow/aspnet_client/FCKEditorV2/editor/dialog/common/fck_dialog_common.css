@@ -1,14 +1,12 @@
 /*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2006 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2005 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
  * 
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
- * "Support Open Source software. What about a donation today?"
  * 
  * File Name: fck_dialog_common.css
  * 	This is the CSS file used for interface details in some dialog
@@ -19,15 +17,6 @@
  */
 
 .ImagePreviewArea
-{
-	border: #000000 1px solid;
-	overflow: auto;
-	width: 100%;
-	height: 170px;
-	background-color: #ffffff;
-}
-
-.FlashPreviewArea
 {
 	border: #000000 1px solid;
 	padding: 5px;
@@ -57,7 +46,7 @@
 	width: 16px;
 	height: 16px;
 	background-repeat: no-repeat;
-	border: none 1px;
+	border: 1px none;
 	font-size: 1px ;
 }
 
@@ -68,12 +57,7 @@
 
 .BtnOver
 {
-	border: outset 1px;
+	border: 1px outset;
 	cursor: pointer;
 	cursor: hand;
-}
-
-.FCK__FieldNumeric
-{
-	behavior: url(common/fcknumericfield.htc) ;
 }

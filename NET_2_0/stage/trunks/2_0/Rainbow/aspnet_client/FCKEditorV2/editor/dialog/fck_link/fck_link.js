@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2006 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2005 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -8,14 +8,11 @@
  * For further information visit:
  * 		http://www.fckeditor.net/
  * 
- * "Support Open Source software. What about a donation today?"
- * 
  * File Name: fck_link.js
  * 	Scripts related to the Link dialog window (see fck_link.html).
  * 
  * File Authors:
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
- * 		Dominik Pesch ?dom? (empty selection patch) (d.pesch@11com7.de)
  */
 
 var oEditor		= window.parent.InnerDialogLoaded() ;
@@ -31,8 +28,8 @@ window.parent.AddTab( 'Info', FCKLang.DlgLnkInfoTab ) ;
 if ( !FCKConfig.LinkDlgHideTarget )
 	window.parent.AddTab( 'Target', FCKLang.DlgLnkTargetTab, true ) ;
 
-if ( FCKConfig.LinkUpload )
-	window.parent.AddTab( 'Upload', FCKLang.DlgLnkUpload, true ) ;
+// TODO : Enable File Upload (1/3).
+//window.parent.AddTab( 'Upload', 'Upload', true ) ;
 
 if ( !FCKConfig.LinkDlgHideAdvanced )
 	window.parent.AddTab( 'Advanced', FCKLang.DlgAdvancedTag ) ;
@@ -42,10 +39,8 @@ function OnDialogTabChange( tabCode )
 {
 	ShowE('divInfo'		, ( tabCode == 'Info' ) ) ;
 	ShowE('divTarget'	, ( tabCode == 'Target' ) ) ;
-	ShowE('divUpload'	, ( tabCode == 'Upload' ) ) ;
+//	ShowE('divUpload'	, ( tabCode == 'Upload' ) ) ;	// TODO : Enable File Upload (2/3).
 	ShowE('divAttribs'	, ( tabCode == 'Advanced' ) ) ;
-
-	window.parent.SetAutoSize( true ) ;
 }
 
 //#### Regular Expressions library.
@@ -58,8 +53,7 @@ oRegex.UrlOnChangeProtocol = new RegExp('') ;
 oRegex.UrlOnChangeProtocol.compile( '^(http|https|ftp|news)://(?=.)', 'gi' ) ;
 
 oRegex.UrlOnChangeTestOther = new RegExp('') ;
-//oRegex.UrlOnChangeTestOther.compile( '^(javascript:|#|/)', 'gi' ) ;
-oRegex.UrlOnChangeTestOther.compile( '^((javascript:)|[#/\.])', 'gi' ) ; 
+oRegex.UrlOnChangeTestOther.compile( '^(javascript:|#|/)', 'gi' ) ;
 
 oRegex.ReserveTarget = new RegExp('') ;
 oRegex.ReserveTarget.compile( '^_(blank|self|top|parent)$', 'i' ) ;
@@ -147,10 +141,6 @@ window.onload = function()
 	// Show the initial dialog content.
 	GetE('divInfo').style.display = '' ;
 
-	// Set the actual uploader URL.
-	if ( FCKConfig.LinkUpload )
-		GetE('frmUpload').action = FCKConfig.LinkUploadURL ;
-
 	// Activate the "OK" button.
 	window.parent.SetOkButton( true ) ;
 }
@@ -159,18 +149,8 @@ var bHasAnchors ;
 
 function LoadAnchorNamesAndIds()
 {
-	// Since version 2.0, the anchors are replaced in the DOM by IMGs so the user see the icon 
-	// to edit them. So, we must look for that images now.
-	var aAnchors = new Array() ;
-	
-	var oImages = oEditor.FCK.EditorDocument.getElementsByTagName( 'IMG' ) ;
-	for( var i = 0 ; i < oImages.length ; i++ )
-	{
-		if ( oImages[i].getAttribute('_fckanchor') )
-			aAnchors[ aAnchors.length ] = oEditor.FCK.GetRealElement( oImages[i] ) ;
-	}
-	
-	var aIds = oEditor.FCKTools.GetAllChildrenIds( oEditor.FCK.EditorDocument.body ) ;
+	var aAnchors	= oEditor.FCK.EditorDocument.anchors ;
+	var aIds		= oEditor.FCKTools.GetAllChildrenIds( oEditor.FCK.EditorDocument.body ) ;
 
 	bHasAnchors = ( aAnchors.length > 0 || aIds.length > 0 ) ;
 
@@ -178,12 +158,12 @@ function LoadAnchorNamesAndIds()
 	{
 		var sName = aAnchors[i].name ;
 		if ( sName && sName.length > 0 )
-			oEditor.FCKTools.AddSelectOption( GetE('cmbAnchorName'), sName, sName ) ;
+			oEditor.FCKTools.AddSelectOption( document, GetE('cmbAnchorName'), sName, sName ) ;
 	}
 
 	for ( var i = 0 ; i < aIds.length ; i++ )
 	{
-		oEditor.FCKTools.AddSelectOption( GetE('cmbAnchorId'), aIds[i], aIds[i] ) ;
+		oEditor.FCKTools.AddSelectOption( document, GetE('cmbAnchorId'), aIds[i], aIds[i] ) ;
 	}
 
 	ShowE( 'divSelAnchor'	, bHasAnchors ) ;
@@ -197,10 +177,12 @@ function LoadSelection()
 	var sType = 'url' ;
 
 	// Get the actual Link href.
-	var sHRef = oLink.getAttribute( '_fcksavedurl' ) ;
-	if ( sHRef == null )
-		sHRef = oLink.getAttribute( 'href' , 2 ) + '' ;
-	
+	var sHRef = oLink.getAttribute('href',2) + '' ;
+
+	// TODO: Wait stable version and remove the following commented lines.
+//	if ( sHRef.startsWith( FCK.BaseUrl ) )
+//		sHRef = sHRef.remove( 0, FCK.BaseUrl.length ) ;
+
 	// Look for a popup javascript link.
 	var oPopupMatch = oRegex.PopupUri.exec( sHRef ) ;
 	if( oPopupMatch )
@@ -237,7 +219,7 @@ function LoadSelection()
 			GetE('txtUrl').value = sUrl ;
 		}
 	}
-	else if ( sHRef.substr(0,1) == '#' && sHRef.length > 1 )	// It is an anchor link.
+	else if ( sHRef.substr(0,1) == '#' && sHRef.length > 2 )	// It is an anchor link.
 	{
 		sType = 'anchor' ;
 		GetE('cmbAnchorName').value = GetE('cmbAnchorId').value = sHRef.substr(1) ;
@@ -304,8 +286,8 @@ function SetLinkType( linkType )
 	if ( !FCKConfig.LinkDlgHideTarget )
 		window.parent.SetTabVisibility( 'Target'	, (linkType == 'url') ) ;
 
-	if ( FCKConfig.LinkUpload )
-		window.parent.SetTabVisibility( 'Upload'	, (linkType == 'url') ) ;
+// TODO : Enable File Upload (3/3).
+//	window.parent.SetTabVisibility( 'Upload'	, (linkType == 'url') ) ;
 
 	if ( !FCKConfig.LinkDlgHideAdvanced )
 		window.parent.SetTabVisibility( 'Advanced'	, (linkType != 'anchor' || bHasAnchors) ) ;
@@ -426,7 +408,7 @@ function FillPopupFields( windowName, features )
 //#### The OK button was hit.
 function Ok()
 {
-	var sUri, sInnerHtml ;
+	var sUri ;
 
 	switch ( GetE('cmbLinkType').value )
 	{
@@ -442,16 +424,7 @@ function Ok()
 			sUri = GetE('cmbLinkProtocol').value + sUri ;
 
 			if( GetE('cmbTarget').value == 'popup' )
-			{
-				// Check the window name, according to http://www.w3.org/TR/html4/types.html#type-frame-target (IE throw erros with spaces).
-				if ( /(^[^a-zA-Z])|(\s)/.test( GetE('txtPopupName').value ) )
-				{
-					alert( FCKLang.DlnLnkMsgInvPopName ) ;
-					return false ;
-				}
-				
 				sUri = BuildPopupUri( sUri ) ;
-			}
 
 			break ;
 
@@ -484,50 +457,17 @@ function Ok()
 			break ;
 	}
 
-	// No link selected, so try to create one.
-	if ( !oLink )
-		oLink = oEditor.FCK.CreateLink( sUri ) ;
-	
-	if ( oLink )
-		sInnerHtml = oLink.innerHTML ;		// Save the innerHTML (IE changes it if it is like an URL).
-	else
+	if ( oLink )	// Modifying an existent link.
 	{
-		// If no selection, use the uri as the link text (by dom, 2006-05-26)
-
-		sInnerHtml = sUri;
-
-		// Built a better text for empty links.
-		switch ( GetE('cmbLinkType').value )
-		{
-			// anchor: use old behavior --> return true
-			case 'anchor':
-				sInnerHtml = sInnerHtml.replace( /^#/, '' ) ;
-				break ;
-
-			// url: try to get path
-			case 'url':
-				var oLinkPathRegEx = new RegExp("//?([^?\"']+)([?].*)?$") ;
-				var asLinkPath = oLinkPathRegEx.exec( sUri ) ;
-				if (asLinkPath != null)
-					sInnerHtml = asLinkPath[1];  // use matched path
-				break ;
-
-			// mailto: try to get email address
-			case 'email':
-				sInnerHtml = GetE('txtEMailAddress').value ;
-				break ;
-		}
-
-		// Create a new (empty) anchor.
-		oLink = oEditor.FCK.CreateElement( 'a' ) ;
+		oEditor.FCKUndo.SaveUndoStep() ;
+		oLink.href = sUri ;
 	}
-
-	oEditor.FCKUndo.SaveUndoStep() ;
-
-	oLink.href = sUri ;
-	SetAttribute( oLink, '_fcksavedurl', sUri ) ;
-
-	oLink.innerHTML = sInnerHtml ;		// Set (or restore) the innerHTML
+	else			// Creating a new link.
+	{
+		oLink = oEditor.FCK.CreateLink( sUri ) ;
+		if ( ! oLink )
+			return true ;
+	}
 
 	// Target
 	if( GetE('cmbTarget').value != 'popup' )
@@ -543,88 +483,39 @@ function Ok()
 	SetAttribute( oLink, 'accesskey', GetE('txtAttAccessKey').value ) ;
 	SetAttribute( oLink, 'tabindex'	, ( GetE('txtAttTabIndex').value > 0 ? GetE('txtAttTabIndex').value : null ) ) ;
 	SetAttribute( oLink, 'title'	, GetE('txtAttTitle').value ) ;
+	SetAttribute( oLink, 'class'	, GetE('txtAttClasses').value ) ;
 	SetAttribute( oLink, 'type'		, GetE('txtAttContentType').value ) ;
 	SetAttribute( oLink, 'charset'	, GetE('txtAttCharSet').value ) ;
 
 	if ( oEditor.FCKBrowserInfo.IsIE )
-	{
-		SetAttribute( oLink, 'className', GetE('txtAttClasses').value ) ;
 		oLink.style.cssText = GetE('txtAttStyle').value ;
-	}
 	else
-	{
-		SetAttribute( oLink, 'class', GetE('txtAttClasses').value ) ;
 		SetAttribute( oLink, 'style', GetE('txtAttStyle').value ) ;
-	}
 
-	// Select the link.
-	oEditor.FCKSelection.SelectNode(oLink);
-	
 	return true ;
 }
 
 function BrowseServer()
 {
-	OpenFileBrowser( FCKConfig.LinkBrowserURL, FCKConfig.LinkBrowserWindowWidth, FCKConfig.LinkBrowserWindowHeight ) ;
+	// Set the browser window feature.
+	var iWidth	= FCKConfig.LinkBrowserWindowWidth ;
+	var iHeight	= FCKConfig.LinkBrowserWindowHeight ;
+
+	var iLeft = (screen.width  - iWidth) / 2 ;
+	var iTop  = (screen.height - iHeight) / 2 ;
+
+	var sOptions = "toolbar=no,status=no,resizable=yes,dependent=yes" ;
+	sOptions += ",width=" + iWidth ;
+	sOptions += ",height=" + iHeight ;
+	sOptions += ",left=" + iLeft ;
+	sOptions += ",top=" + iTop ;
+
+	// Open the browser window.
+	var oWindow = window.open( FCKConfig.LinkBrowserURL, "FCKBrowseWindow", sOptions ) ;
 }
 
 function SetUrl( url )
 {
 	document.getElementById('txtUrl').value = url ;
 	OnUrlChange() ;
-	window.parent.SetSelectedTab( 'Info' ) ;
-}
-
-function OnUploadCompleted( errorNumber, fileUrl, fileName, customMsg )
-{
-	switch ( errorNumber )
-	{
-		case 0 :	// No errors
-			alert( 'Your file has been successfully uploaded' ) ;
-			break ;
-		case 1 :	// Custom error
-			alert( customMsg ) ;
-			return ;
-		case 101 :	// Custom warning
-			alert( customMsg ) ;
-			break ;
-		case 201 :
-			alert( 'A file with the same name is already available. The uploaded file has been renamed to "' + fileName + '"' ) ;
-			break ;
-		case 202 :
-			alert( 'Invalid file type' ) ;
-			return ;
-		case 203 :
-			alert( "Security error. You probably don't have enough permissions to upload. Please check your server." ) ;
-			return ;
-		default :
-			alert( 'Error on file upload. Error number: ' + errorNumber ) ;
-			return ;
-	}
-
-	SetUrl( fileUrl ) ;
-	GetE('frmUpload').reset() ;
-}
-
-var oUploadAllowedExtRegex	= new RegExp( FCKConfig.LinkUploadAllowedExtensions, 'i' ) ;
-var oUploadDeniedExtRegex	= new RegExp( FCKConfig.LinkUploadDeniedExtensions, 'i' ) ;
-
-function CheckUpload()
-{
-	var sFile = GetE('txtUploadFile').value ;
-	
-	if ( sFile.length == 0 )
-	{
-		alert( 'Please select a file to upload' ) ;
-		return false ;
-	}
-	
-	if ( ( FCKConfig.LinkUploadAllowedExtensions.length > 0 && !oUploadAllowedExtRegex.test( sFile ) ) ||
-		( FCKConfig.LinkUploadDeniedExtensions.length > 0 && oUploadDeniedExtRegex.test( sFile ) ) )
-	{
-		OnUploadCompleted( 202 ) ;
-		return false ;
-	}
-	
-	return true ;
 }

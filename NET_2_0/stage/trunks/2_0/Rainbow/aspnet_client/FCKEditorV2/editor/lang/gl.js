@@ -1,14 +1,12 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2006 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2005 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
  * 
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
- * "Support Open Source software. What about a donation today?"
  * 
  * File Name: gl.js
  * 	Galician language file.
@@ -43,8 +41,6 @@ RemoveLink			: "Eliminar Ligazón",
 Anchor				: "Inserir/Editar Referencia",
 InsertImageLbl		: "Imaxe",
 InsertImage			: "Inserir/Editar Imaxe",
-InsertFlashLbl		: "Flash",
-InsertFlash			: "Inserir/Editar Flash",
 InsertTableLbl		: "Tabla",
 InsertTable			: "Inserir/Editar Tabla",
 InsertLineLbl		: "Liña",
@@ -72,7 +68,7 @@ NumberedListLbl		: "Lista Numerada",
 NumberedList		: "Inserir/Eliminar Lista Numerada",
 BulletedListLbl		: "Marcas",
 BulletedList		: "Inserir/Eliminar Marcas",
-ShowTableBorders	: "Mostrar Bordes das Táboas",
+ShowTableBorders	: "Mostrar Bordes das Taboas",
 ShowDetails			: "Mostrar Marcas Parágrafo",
 Style				: "Estilo",
 FontFormat			: "Formato",
@@ -85,8 +81,6 @@ Find				: "Procurar",
 Replace				: "Substituir",
 SpellCheck			: "Corrección Ortográfica",
 UniversalKeyboard	: "Teclado Universal",
-PageBreakLbl		: "Salto de Páxina",
-PageBreak			: "Inserir Salto de Páxina",
 
 Form			: "Formulario",
 Checkbox		: "Cadro de Verificación",
@@ -98,13 +92,8 @@ Button			: "Botón",
 SelectionField	: "Campo de Selección",
 ImageButton		: "Botón de Imaxe",
 
-FitWindow		: "Maximizar o tamaño do editor",
-
 // Context Menu
 EditLink			: "Editar Ligazón",
-CellCM				: "Cela",
-RowCM				: "Fila",
-ColumnCM			: "Columna",
 InsertRow			: "Inserir Fila",
 DeleteRows			: "Borrar Filas",
 InsertColumn		: "Inserir Columna",
@@ -113,11 +102,9 @@ InsertCell			: "Inserir Cela",
 DeleteCells			: "Borrar Cela",
 MergeCells			: "Unir Celas",
 SplitCell			: "Partir Celas",
-TableDelete			: "Borrar Táboa",
 CellProperties		: "Propriedades da Cela",
-TableProperties		: "Propriedades da Táboa",
+TableProperties		: "Propriedades da Taboa",
 ImageProperties		: "Propriedades Imaxe",
-FlashProperties		: "Propriedades Flash",
 
 AnchorProp			: "Propriedades da Referencia",
 ButtonProp			: "Propriedades do Botón",
@@ -141,9 +128,6 @@ UnknownToolbarItem	: "Ítem de ferramentas descoñecido \"%1\"",
 UnknownCommand		: "Nome de comando descoñecido \"%1\"",
 NotImplemented		: "Comando non implementado",
 UnknownToolbarSet	: "O conxunto de ferramentas \"%1\" non existe",
-NoActiveX			: "As opcións de seguridade do seu navegador poderían limitar algunha das características de editor. Debe activar a opción \"Executar controis ActiveX e plug-ins\". Pode notar que faltan características e experimentar erros",
-BrowseServerBlocked : "Non se poido abrir o navegador de recursos. Asegúrese de que están desactivados os bloqueadores de xanelas emerxentes",
-DialogBlocked		: "Non foi posible abrir a xanela de diálogo. Asegúrese de que están desactivados os bloqueadores de xanelas emerxentes",
 
 // Dialogs
 DlgBtnOK			: "OK",
@@ -151,12 +135,10 @@ DlgBtnCancel		: "Cancelar",
 DlgBtnClose			: "Pechar",
 DlgBtnBrowseServer	: "Navegar no Servidor",
 DlgAdvancedTag		: "Advanzado",
-DlgOpOther			: "<Outro>",
-DlgInfoTab			: "Info",
-DlgAlertUrl			: "Por favor, insira a URL",
+DlgOpOther			: "&lt;Outro&gt;",
 
 // General Dialogs Labels
-DlgGenNotSet		: "<non definido>",
+DlgGenNotSet		: "&lt;non definido&gt;",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Orientación do Idioma",
 DlgGenLangDirLtr	: "Esquerda a Dereita (LTR)",
@@ -200,16 +182,6 @@ DlgImgPreview		: "Vista Previa",
 DlgImgAlertUrl		: "Por favor, escriba a URL da imaxe",
 DlgImgLinkTab		: "Ligazón",
 
-// Flash Dialog
-DlgFlashTitle		: "Propriedades Flash",
-DlgFlashChkPlay		: "Auto Execución",
-DlgFlashChkLoop		: "Bucle",
-DlgFlashChkMenu		: "Activar Menú Flash",
-DlgFlashScale		: "Escalar",
-DlgFlashScaleAll	: "Amosar Todo",
-DlgFlashScaleNoBorder	: "Sen Borde",
-DlgFlashScaleFit	: "Encaixar axustando",
-
 // Link Dialog
 DlgLnkWindowTitle	: "Ligazón",
 DlgLnkInfoTab		: "Información da Ligazón",
@@ -220,12 +192,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Referencia nesta páxina",
 DlgLnkTypeEMail		: "E-Mail",
 DlgLnkProto			: "Protocolo",
-DlgLnkProtoOther	: "<outro>",
+DlgLnkProtoOther	: "&lt;outro&gt;",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Seleccionar unha Referencia",
 DlgLnkAnchorByName	: "Por Nome de Referencia",
 DlgLnkAnchorById	: "Por Element Id",
-DlgLnkNoAnchors		: "<Non hai referencias disponibles no documento>",
+DlgLnkNoAnchors		: "&lt;Non hai referencias disponibles no documento&gt;",
 DlgLnkEMail			: "Enderezo de E-Mail",
 DlgLnkEMailSubject	: "Asunto do Mensaxe",
 DlgLnkEMailBody		: "Corpo do Mensaxe",
@@ -233,8 +205,8 @@ DlgLnkUpload		: "Carregar",
 DlgLnkBtnUpload		: "Enviar ó servidor",
 
 DlgLnkTarget		: "Destino",
-DlgLnkTargetFrame	: "<frame>",
-DlgLnkTargetPopup	: "<Xanela Emerxente>",
+DlgLnkTargetFrame	: "&lt;frame&gt;",
+DlgLnkTargetPopup	: "&lt;Xanela Emerxente&gt;",
 DlgLnkTargetBlank	: "Nova Xanela (_blank)",
 DlgLnkTargetParent	: "Xanela Pai (_parent)",
 DlgLnkTargetSelf	: "Mesma Xanela (_self)",
@@ -258,7 +230,6 @@ DlgLnkPopTop		: "Posición dende Arriba",
 DlnLnkMsgNoUrl		: "Por favor, escriba a ligazón URL",
 DlnLnkMsgNoEMail	: "Por favor, escriba o enderezo de e-mail",
 DlnLnkMsgNoAnchor	: "Por favor, seleccione un destino",
-DlnLnkMsgInvPopName	: "The popup name must begin with an alphabetic character and must not contain spaces",	//MISSING
 
 // Color Dialog
 DlgColorTitle		: "Seleccionar Color",
@@ -273,7 +244,7 @@ DlgSmileyTitle		: "Inserte un Smiley",
 DlgSpecialCharTitle	: "Seleccione Caracter Especial",
 
 // Table Dialog
-DlgTableTitle		: "Propiedades da Táboa",
+DlgTableTitle		: "Propiedades da Taboa",
 DlgTableRows		: "Filas",
 DlgTableColumns		: "Columnas",
 DlgTableBorder		: "Tamaño do Borde",
@@ -289,7 +260,6 @@ DlgTableHeight		: "Altura",
 DlgTableCellSpace	: "Marxe entre Celas",
 DlgTableCellPad		: "Marxe interior",
 DlgTableCaption		: "Título",
-DlgTableSummary		: "Sumario",
 
 // Table Cell Dialog
 DlgCellTitle		: "Propriedades da Cela",
@@ -298,16 +268,16 @@ DlgCellWidthPx		: "pixels",
 DlgCellWidthPc		: "percent",
 DlgCellHeight		: "Altura",
 DlgCellWordWrap		: "Axustar Liñas",
-DlgCellWordWrapNotSet	: "<Non Definido>",
+DlgCellWordWrapNotSet	: "&lt;Non Definido&gt;",
 DlgCellWordWrapYes	: "Si",
 DlgCellWordWrapNo	: "Non",
 DlgCellHorAlign		: "Aliñamento Horizontal",
-DlgCellHorAlignNotSet	: "<Non definido>",
+DlgCellHorAlignNotSet	: "&lt;Non definido&gt;",
 DlgCellHorAlignLeft	: "Esquerda",
 DlgCellHorAlignCenter	: "Centro",
 DlgCellHorAlignRight: "Dereita",
 DlgCellVerAlign		: "Aliñamento Vertical",
-DlgCellVerAlignNotSet	: "<Non definido>",
+DlgCellVerAlignNotSet	: "&lt;Non definido&gt;",
 DlgCellVerAlignTop	: "Arriba",
 DlgCellVerAlignMiddle	: "Medio",
 DlgCellVerAlignBottom	: "Abaixo",
@@ -340,10 +310,7 @@ PasteErrorCopy	: "Os axustes de seguridade do seu navegador non permiten que o e
 PasteAsText		: "Pegar como texto plano",
 PasteFromWord	: "Pegar dende Word",
 
-DlgPasteMsg2	: "Por favor, pegue dentro do seguinte cadro usando o teclado (<STRONG>Ctrl+V</STRONG>) e pulse <STRONG>OK</STRONG>.",
-DlgPasteIgnoreFont		: "Ignorar as definicións de Tipografía",
-DlgPasteRemoveStyles	: "Eliminar as definicións de Estilos",
-DlgPasteCleanBox		: "Limpar o Cadro",
+DlgPasteMsg		: "O editor non pode executar automáticamente o pegado debido ós <STRONG>axustes de seguridade</STRONG> do seu navegador.<BR>Por favor, pegue dentro do seguinte cadro usando o atallo de teclado (<STRONG>Ctrl+V</STRONG>) e pulse <STRONG>OK</STRONG>.",
 
 // Color Picker
 ColorAutomatic	: "Automático",
@@ -375,11 +342,8 @@ DlgSpellManyChanges		: "Corrección ortográfica rematada: %1 verbas substituida
 IeSpellDownload			: "O corrector ortográfico non está instalado. ¿Quere descargalo agora?",
 
 // Button Dialog
-DlgButtonText		: "Texto (Valor)",
-DlgButtonType		: "Tipo",
-DlgButtonTypeBtn	: "Button",	//MISSING
-DlgButtonTypeSbm	: "Submit",	//MISSING
-DlgButtonTypeRst	: "Reset",	//MISSING
+DlgButtonText	: "Texto (Valor)",
+DlgButtonType	: "Tipo",
 
 // Checkbox and Radio Button Dialogs
 DlgCheckboxName		: "Nome",
@@ -428,10 +392,9 @@ DlgHiddenValue	: "Valor",
 // Bulleted List Dialog
 BulletedListProp	: "Propriedades das Marcas",
 NumberedListProp	: "Propriedades da Lista de Numeración",
-DlgLstStart			: "Start",	//MISSING
 DlgLstType			: "Tipo",
 DlgLstTypeCircle	: "Círculo",
-DlgLstTypeDisc		: "Disco",
+DlgLstTypeDisk		: "Disco",
 DlgLstTypeSquare	: "Cuadrado",
 DlgLstTypeNumbers	: "Números (1, 2, 3)",
 DlgLstTypeLCase		: "Letras Minúsculas (a, b, c)",
@@ -451,15 +414,6 @@ DlgDocLangDirLTR	: "Esquerda a Dereita (LTR)",
 DlgDocLangDirRTL	: "Dereita a Esquerda (RTL)",
 DlgDocLangCode		: "Código de Idioma",
 DlgDocCharSet		: "Codificación do Xogo de Caracteres",
-DlgDocCharSetCE		: "Central European",	//MISSING
-DlgDocCharSetCT		: "Chinese Traditional (Big5)",	//MISSING
-DlgDocCharSetCR		: "Cyrillic",	//MISSING
-DlgDocCharSetGR		: "Greek",	//MISSING
-DlgDocCharSetJP		: "Japanese",	//MISSING
-DlgDocCharSetKR		: "Korean",	//MISSING
-DlgDocCharSetTR		: "Turkish",	//MISSING
-DlgDocCharSetUN		: "Unicode (UTF-8)",	//MISSING
-DlgDocCharSetWE		: "Western European",	//MISSING
 DlgDocCharSetOther	: "Outra Codificación do Xogo de Caracteres",
 
 DlgDocDocType		: "Encabezado do Tipo de Documento",
@@ -489,12 +443,10 @@ DlgTemplatesTitle	: "Plantillas de Contido",
 DlgTemplatesSelMsg	: "Por favor, seleccione a plantilla a abrir no editor<br>(o contido actual perderase):",
 DlgTemplatesLoading	: "Cargando listado de plantillas. Por favor, espere...",
 DlgTemplatesNoTpl	: "(Non hai plantillas definidas)",
-DlgTemplatesReplace	: "Replace actual contents",	//MISSING
 
 // About Dialog
 DlgAboutAboutTab	: "Acerca de",
 DlgAboutBrowserInfoTab	: "Información do Navegador",
-DlgAboutLicenseTab	: "Licencia",
 DlgAboutVersion		: "versión",
 DlgAboutLicense		: "Licencia concedida baixo os termos da GNU Lesser General Public License",
 DlgAboutInfo		: "Para máis información visitar:"

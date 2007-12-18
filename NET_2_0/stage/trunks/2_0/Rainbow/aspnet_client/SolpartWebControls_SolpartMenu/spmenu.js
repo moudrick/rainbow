@@ -1,23 +1,17 @@
 //------------------------------------------------------//
 // Solution Partner's ASP.NET Hierarchical Menu Control //
-// Copyright (c) 2002-2005                              //
+// Copyright (c) 2002-2003                              //
 // Jon Henning - Solution Partner's Inc                 //  
 // jhenning@solpart.com   -   http://www.solpart.com    //
-// Compatible Menu Version:  <Min: 1400>             //
-//                           <Max: 1.6.1.0>             //
-// <Script Version: 1611>                               //
+// Compatible Menu Version: 1.1.0.0+										//
+// Script Version: 1101																  //
 //------------------------------------------------------//
-var m_oSolpartMenu;
-if (m_oSolpartMenu == null)
-	m_oSolpartMenu = new Array(); //stores all menu objects (SolpartMenu) in array 
-var m_spm_sBrowser;
-var m_spm_sVersion;
+
+var m_oSolpartMenu = new Array(); //stores all menu objects (SolpartMenu) in array 
 function spm_initMyMenu(oXML, oCtl)   //Creates SolpartMenu object and calls generate method
 {
-
   m_oSolpartMenu[oCtl.id] = new SolpartMenu(oCtl);
   m_oSolpartMenu[oCtl.id].GenerateMenuHTML(oXML);
- 
 }
   
 //------- Constructor -------//
@@ -26,9 +20,8 @@ function SolpartMenu(o)
 __db(o.id + ' - constructor');
 //  var me = this;  //allow attached events to reference this
   //--- Data Properties ---//
-  this.systemImagesPath=spm_getAttr(o, 'SysImgPath', '');  
-  this.iconImagesPath=spm_getAttr(o, 'IconImgPath', this.systemImagesPath);
-  
+  this.systemImagesPath = spm_getAttr(o, 'SystemImagesPath', '');  
+  this.iconImagesPath = spm_getAttr(o, 'IconImagesPath', this.systemImagesPath);
   this.xml = spm_getAttr(o, 'XML', '');
   this.xmlFileName = spm_getAttr(o, 'XMLFileName', '');
 
@@ -36,7 +29,7 @@ __db(o.id + ' - constructor');
   this.fontStyle=spm_getAttr(o, 'FontStyle', 'font-family: arial;');
   this.backColor=spm_getAttr(o, 'BackColor');  
   this.foreColor=spm_getAttr(o, 'ForeColor');
-  this.iconBackColor=spm_getAttr(o, 'IconBackColor');
+  this.iconBackColor=spm_getAttr(o, 'IconBackgroundColor');
   this.hlColor=spm_getAttr(o, 'HlColor', '');
   this.shColor=spm_getAttr(o, 'ShColor', ''); 
   this.selColor=spm_getAttr(o, 'SelColor');
@@ -52,8 +45,6 @@ __db(o.id + ' - constructor');
   this.arrowImage = spm_getAttr(o, 'ArrowImage', '');
   this.backImage=spm_getAttr(o, 'BackImage', '');
 
-	this.supportsTransitions = spm_getAttr(o, 'SupportsTrans', '0');
-
   //--- Transition Properteis ---//
   //this.menuEffectsStyle=spm_getAttr(o, 'MenuEffectsStyle', '');
   this.menuTransitionLength=spm_getAttr(o, 'MenuTransitionLength', .3);
@@ -66,16 +57,6 @@ __db(o.id + ' - constructor');
   this.moDisplay=spm_getAttr(o, 'MODisplay', 'HighLight');
   this.moExpand=spm_getAttr(o, 'MOExpand', "-1");
   this.moutDelay=spm_getAttr(o, 'MOutDelay', "0");
-  this.minDelay=spm_getAttr(o, 'MInDelay', "0");
-  this.minDelayType=null;
-	this.minDelayTimer=null;
-	this.minDelayObj=null;
-	  
-  if (spm_browserType() == 'safari')	//safari has issues with mouseoutdelay...
-		this.moutDelay = 5000;
-		
-  this.target=spm_getAttr(o, 'target', "");
-  this.moScroll=spm_getAttr(o, 'MOScroll', "-1");
 
   //--- Sizing Properties ---//
   this.menuBarHeight=spm_fixUnit(spm_getAttr(o, 'MenuBarHeight', '0'));
@@ -92,16 +73,7 @@ __db(o.id + ' - constructor');
   this.cssMenuBreak=spm_getAttr(o, 'CSSMenuBreak', '');
   this.cssMenuItemSel=spm_getAttr(o, 'CSSMenuItemSel', '');
   this.cssMenuArrow=spm_getAttr(o, 'CSSMenuArrow', '');
-  this.cssMenuRootArrow=spm_getAttr(o, 'CSSRootMenuArw', '');
-  this.cssMenuScrollItem=spm_getAttr(o, 'CSSScrollItem', '');
-
-	//for right to left (rtl) menus
-	this.direction = spm_getCurrentStyle(document.body, 'direction');
-
-	this.useIFrames=(spm_getAttr(o, 'useIFrames', '1') != '0' && spm_supportsIFrameTrick());	
-	
-	this.delaySubmenuLoad=(spm_getAttr(o, 'delaySubmenuLoad', '0') != '0' && spm_needsSubMenuDelay());	
-	
+  this.cssMenuRootArrow=spm_getAttr(o, 'CSSRootMenuArrow', '');
   
   //---- methods ---//
   //this.GenerateMenuHTML=__GenerateMenuHTML;
@@ -117,10 +89,37 @@ __db(o.id + ' - constructor');
 	this._m_aOpenMenuID = new Array();	  //stores list of menus that are currently displayed
 	this._m_bMoving=false;                //flag to determine menu is being dragged
   this._m_dHideTimer = null;            //used to time when mouse out occured to auto hide menu based on mouseoutdelay
-  this._m_oScrollingMenu = null;				//used in scrolling menu on mouse over
 
+	//--- Exposed Events ---//
+/*
+	this.onMenuComplete=spm_getAttr(o, 'OnMenuComplete', null);						//fires once menu is done loading
+	this.onMenuBarClick=spm_getAttr(o, 'OnMenuBarClick', null);						//fires once menu bar is clicked
+	this.onMenuItemClick=spm_getAttr(o, 'OnMenuItemClick', null);         //fires once menu item is clicked
+	this.onMenuBarMouseOver=spm_getAttr(o, 'OnMenuBarMouseOver', null);		//fires once mouse moves over menu bar
+	this.onMenuBarMouseOut=spm_getAttr(o, 'OnMenuBarMouseOut', null);			//fires once mouse moves out of menu bar
+	this.onMenuItemMouseOver=spm_getAttr(o, 'OnMenuItemMouseOver', null);	//fires once mouse moves over menu item
+	this.onMenuItemMouseOut=spm_getAttr(o, 'OnMenuItemMouseOut', null);		//fires once mouse moves out of menu bar
+*/
+
+//--- Menu Moving currently disabled ---//
+/*
+  this._menuhook_MouseMove=__menuhook_MouseMove;
+  this._menuhook_MouseDown=__menuhook_MouseDown;
+  this._menuhook_MouseUp=__menuhook_MouseUp;
+  this._document_MouseMove=__document_MouseMove;
+  this._document_MouseDown=__document_MouseDown;
+  this._document_MouseUp=__document_MouseUp;
+  this._bodyclick=__bodyclick;
+
+  this.menuhook_MouseMove=function(e) {me._menuhook_MouseMove(e);};
+  this.menuhook_MouseDown=function(e) {me._menuhook_MouseDown(e);};
+  this.menuhook_MouseUp=function(e) {me._menuhook_MouseUp(e);};
+  this.document_MouseMove=function(e) {me._document_MouseMove(e);};
+  this.document_MouseDown=function(e) {me._document_MouseDown(e);};
+  this.menuhook_MouseUp=function(e) {me._menuhook_MouseUp(e);};
+  this.bodyclick=function() {me._bodyclick();};
+*/ 
 __db(this._m_oMenu.id + ' - constructor end');
-
 }
 
 //--- Destroys interrnal object references ---//
@@ -179,6 +178,7 @@ SolpartMenu.prototype.destroy = function ()
   this.cssMenuRootArrow = null;
   
   //---- methods ---//
+  //this.GenerateMenuHTML=__GenerateMenuHTML = null;
 
   //----- private ----//
   m_oSolpartMenu[this._m_sNSpace] = null;
@@ -193,9 +193,18 @@ SolpartMenu.prototype.destroy = function ()
 	this._m_aOpenMenuID = null;	            //stores list of menus that are currently displayed
 	this._m_bMoving = null;                 //flag to determine menu is being dragged
   this._m_dHideTimer = null;              //used to time when mouse out occured to auto hide menu based on mouseoutdelay
-  this._m_oScrollingMenu = null;					//used in scrolling menu on mouse over
-  
 }
+
+//--- static/shared members ---//
+/*
+SolpartMenu.prototype.menuhook_MouseMove=__menuhook_MouseMove;
+SolpartMenu.prototype.menuhook_MouseDown=__menuhook_MouseDown;
+SolpartMenu.prototype.menuhook_MouseUp=__menuhook_MouseUp;
+
+SolpartMenu.prototype.document_MouseMove=__document_MouseMove;
+SolpartMenu.prototype.document_MouseDown=__document_MouseDown;
+SolpartMenu.prototype.document_MouseUp=__document_MouseUp;
+*/
 
 //--- xml document loaded (non-dataisland) ---//
 SolpartMenu.prototype.onXMLLoad = function ()
@@ -210,12 +219,17 @@ __db(this._m_oMenu.id + ' - GenerateMenuHTML');
     //'Generates the main menu bar
   var sHTML = '';
   this._m_sOuterTables = '';
+  //this._m_oMenu.insertAdjacentElement('beforeBegin', );
+
+  
+	//if (oXML.readyState != 'complete')
+	//	return;
 
 	if (oXML == null)
 	{
 	  if (this._m_oDOM == null)
 	  {
-	    oXML = spm_createDOMDoc();
+	    oXML = spm_createDOMDoc();//document.implementation.createDocument("", "", null);
 	    this._m_oDOM = oXML;
         	  
 	    if (this.xml.length)
@@ -223,7 +237,8 @@ __db(this._m_oMenu.id + ' - GenerateMenuHTML');
   	  
 	    if (this.xmlFileName.length)
 	    {
-	      oXML.onload = eval('onxmlload' + this._m_sNSpace); 
+	      //alert(m_oSolpartMenu.length);
+	      oXML.onload = eval('onxmlload' + this._m_sNSpace); //'m_oSolpartMenu["' + this._m_sNSpace + '"].onXMLLoad'; this.onXMLLoad;
 	      oXML.load(this.xmlFileName);
 	      return; //async load
 	    }
@@ -231,10 +246,9 @@ __db(this._m_oMenu.id + ' - GenerateMenuHTML');
 	}
 	else
 	  this._m_oDOM = oXML;
-
   if (this.display == "vertical")
   {
-      sHTML += '<table ID="tbl' + this._m_sNSpace + 'MenuBar" CELLPADDING=\'0\' CELLSPACING=\'0\' BORDER="0" CLASS="' + spm_fixCSSForMac(this.getIntCSSName('spmbctr') + this.cssMenuContainer) + '" HEIGHT="100%" STYLE="vertical-align: center;">\n';	//removed position: relative;  for IE and display: block; for Opera
+      sHTML += '<table ID="tbl' + this._m_sNSpace + 'MenuBar" CELLPADDING=\'0\' CELLSPACING=\'0\' BORDER="0" CLASS="' + spm_fixCSSForMac(this.getIntCSSName('spmbctr') + this.cssMenuContainer) + '" HEIGHT="100%" STYLE="position: relative; vertical-align: center; display: block;">\n';
       sHTML += MyIIf(this.MBLeftHTML.length, '<tr>\n       <td>' + this.MBLeftHTML + '</td>\n</tr>\n', '');
       sHTML += MyIIf(Number(this.moveable), '<tr>\n       <td ID="td' + this._m_sNSpace + 'MenuMove" height=\'3px\' style=\'cursor: move; ' + spm_getMenuBorderStyle(this) + '\'>' + spm_getSpacer(this) + '</td>\n</tr>\n', '');
       sHTML +=         this.GetMenuItems(this._m_oDOM.documentElement);
@@ -245,7 +259,7 @@ __db(this._m_oMenu.id + ' - GenerateMenuHTML');
   }
   else
   {
-      sHTML += '<table ID="tbl' + this._m_sNSpace + 'MenuBar" CELLPADDING=\'0\' CELLSPACING=\'0\' BORDER="0" CLASS="' + spm_fixCSSForMac(this.getIntCSSName('spmbctr') + this.cssMenuContainer) + '" WIDTH="100%" STYLE="vertical-align: center; ">\n';	//removed position: relative;  for IE and display: block; for Opera
+      sHTML += '<table ID="tbl' + this._m_sNSpace + 'MenuBar" CELLPADDING=\'0\' CELLSPACING=\'0\' BORDER="0" CLASS="' + spm_fixCSSForMac(this.getIntCSSName('spmbctr') + this.cssMenuContainer) + '" WIDTH="100%" STYLE="position: relative; vertical-align: center; display: block;">\n';
       sHTML += '	<tr>\n';
       sHTML += MyIIf(this.MBLeftHTML.length, '<td>' + this.MBLeftHTML + '</td>\n', '');
       sHTML += MyIIf(Number(this.moveable), '       <td ID="td' + this._m_sNSpace + 'MenuMove" width=\'3px\' style=\'cursor: move; ' + spm_getMenuBorderStyle(this) + '\'>' + spm_getSpacer(this) + '</td>\n', '');
@@ -256,41 +270,71 @@ __db(this._m_oMenu.id + ' - GenerateMenuHTML');
       sHTML += '   </tr>\n';
       sHTML += '</table>\n';
   }
-	
-	this._m_oMenu.innerHTML = sHTML;
+  
+	if (isOpera())
+	{
+		this._m_oMenu.innerHTML = sHTML;
+		var oDiv = document.createElement('div');
+		oDiv.innerHTML = this._m_sOuterTables;
+		document.body.appendChild(oDiv);
+	}
+	else  
+		sHTML = '<SPAN>' + this._m_sOuterTables + '</SPAN>' + sHTML;
+  //sHTML = "<table><tr><td>THIS IS A TEST</td></tr></table>";
 
-	this.GenerateSubMenus();
+  this._m_oMenu.innerHTML = sHTML;
+  //spm_getById('txtDebug').value = sHTML;
+  //if (spm_browserType() != 'ie')
+  //  this._m_oMenu.innerHTML = sHTML;  //Mozilla/NS issue with events not firing... why?
+    
+  //return '';
+  this._m_oMenuMove = spm_getById('td' + this._m_sNSpace + 'MenuMove')
 
-	
-  this._m_oMenuMove = spm_getById('td' + this._m_sNSpace + 'MenuMove');
+  //if (spm_browserType() == 'ie' && isMac() == false)
+  //  window.attachEvent("onunload", this.destroy);
+  //else
+  //  window.addEventListener("onunload", this.destroy, true);
 
-  spm_getTags("BODY")[0].onclick = spm_appendFunction(spm_getTags("BODY")[0].onclick, 'm_oSolpartMenu["' + this._m_sNSpace + '"].bodyclick();'); //document.body.onclick = this.bodyclick;
+/*
+this._m_oMenu.insertAdjacentHTML("afterend", "<TEXTAREA TYPE='txt' id='txtDebug' rows=50 cols=100></TEXTAREA>");
+document.all('txtDebug').innerText = this._m_oMenu.outerHTML;
+*/
+/*
+  //--- attach events for menu moving ---//
+  if (Number(this.moveable))
+  {
+    var oCtl = this._m_oMenuMove;  //this._m_oMenu
+    oCtl.onmousedown = this.menuhook_MouseDown;
+    oCtl.onmouseup = this.menuhook_MouseUp;
+    oCtl.onmousemove = this.menuhook_MouseMove;
 
-  this._m_oTblMenuBar = spm_getById('tbl' + this._m_sNSpace + 'MenuBar'); 
+    if (spm_browserType() == 'ie')
+    {
+      document.onmousemove = this.document_MouseMove;
+      document.onmousedown = this.document_MouseDown;
+      //spm_getTags("BODY")[0].onclick = this.bodyclick;
+      spm_getTags("BODY")[0].attachEvent('onclick', this.bodyclick);
+    }
+    else
+    {
+	    window.addEventListener("click", this.bodyclick, true);
+	    window.addEventListener("mousemove", this.document_MouseMove, true);
+	    window.addEventListener("mousedown", this.document_MouseDown, true);
+	    window.addEventListener("mouseup", this.document_MouseUp, true);
+    }
+
+  }
+*/
+  //if (spm_browserType() == 'ie')
+		spm_getTags("BODY")[0].onclick = spm_appendFunction(spm_getTags("BODY")[0].onclick, 'm_oSolpartMenu["' + this._m_sNSpace + '"].bodyclick();'); //document.body.onclick = this.bodyclick;
+	//else
+	//	window.addEventListener("click", this.bodyclick, true);
+
+  this._m_oTblMenuBar = spm_getById('tbl' + this._m_sNSpace + 'MenuBar'); //this._m_oMenu
   
   this.fireEvent('onMenuComplete');
 
 __db(this._m_oMenu.id + ' - GenerateMenuHTML end');    
-}
-
-SolpartMenu.prototype.GenerateSubMenus = function (oXML) 
-{
-	if (this._m_sOuterTables.length > 0)
-	{
-			var oDiv = spm_getById(this._m_sNSpace + '_divOuterTables');
-			if (oDiv == null)
-			{
-				alert('It appears that your menu dll is out of sync with your script file.');
-				return;
-			}
-			
-			if (this.delaySubmenuLoad != '0' && document.readyState != 'complete')
-				return;
-							
-			oDiv.innerHTML = this._m_sOuterTables;
-			
-	}
-	this._m_sOuterTables = '';
 }
 
 function spm_getMenuBarEvents(sCtl)
@@ -306,6 +350,7 @@ function spm_getMenuItemEvents(sCtl)
 //--- Returns HTML for menu items (recursive function) ---//
 SolpartMenu.prototype.GetMenuItems = function (oParent)
 {
+//return '';
   var oNode;
   var sHTML = '';
   var sID;
@@ -316,7 +361,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 	{
 		oNode = oParent.childNodes[i];
 
-		if (oNode.nodeType != 3 && oNode.nodeType != 8)  //exclude nodeType of Text (Netscape/Mozilla) issue!
+		if (oNode.nodeType != 3)  //exclude nodeType of Text (Netscape/Mozilla) issue!
 		{
 		  //'determine if root level item and set parent id accordingly
 		  if (oNode.parentNode.nodeName != "menuitem")
@@ -329,42 +374,22 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		  else
 			  sID = "";
 
-
   __db(sID + ' getmenuitems');
-			sClickAction = spm_getMenuClickAction(oNode, this);
 
+			sClickAction = spm_getMenuClickAction(oNode);
 
 		  if (sParentID == "-1")	//'if top level menu item
 		  {
-		
 			  if (this.display == "vertical")
 				  sHTML += "<tr>\n"; //'if vertical display then add rows for each top menuitem
-  			
-  			if (oNode.nodeName == 'menubreak')
-  			{
-					if (this.display == "vertical")
-						sHTML += "<tr>\n"; //'if vertical display then add rows for each top menuitem
-
- 					var sBreakHTML = spm_getAttr(oNode, 'lefthtml', '') + spm_getAttr(oNode, 'righthtml', '');
- 					if (sBreakHTML.length > 0)
- 						sHTML += '   <td class="' + spm_fixCSSForMac(this.getIntCSSName('spmbrk') + this.cssMenuBreak) + '">' + sBreakHTML + '</td>\n';
- 					else
- 						sHTML += '   <td class="' + spm_fixCSSForMac(this.getIntCSSName('spmbrk') + this.cssMenuBreak) + '">' + spm_getMenuImage('spacer.gif', this, true, ' ') + '</td>\n';
-
-					if (this.display == "vertical")
-						sHTML += "</tr>\n";
-  			}
-  			else
-  			{
-					sHTML += '<td>\n<table width="100%" CELLPADDING="0" CELLSPACING="0" border="0">\n<tr id="td' + this._m_sNSpace + sID + '" ' + spm_getMenuBarEvents(this._m_sNSpace) + '  class="' + spm_fixCSSForMac(this.getIntCSSName('spmbar spmitm') + this.cssMenuBar + ' ' + this.cssMenuItem + ' ' + spm_getMenuItemCSS(oNode)) + '" savecss="' + spm_getMenuItemCSS(oNode) + '" saveselcss="' + spm_getMenuItemSelCSS(oNode) + '" menuclick="' + sClickAction + '" style="' + spm_getMenuItemStyle('item', oNode) + '">\n';
-					var sAlign = this.display=='vertical' ? 'align="' + this.menuAlignment + '"' : '';
-					sHTML += '<td unselectable="on" NOWRAP="NOWRAP" ' + sAlign + ' TITLE="' + spm_getAttr(oNode, 'tooltip', '') + '">' + spm_getImage(oNode, this) + spm_getItemHTML(oNode, 'left', '&nbsp;') + spm_getAttr(oNode, 'title', '') + spm_getItemHTML(oNode, 'right') + MyIIf(Number(this.rootArrow) && spm_nodeHasChildren(oNode), '</td>\n<td align="right" class="' + spm_fixCSSForMac(this.getIntCSSName('spmrarw') + this.cssMenuRootArrow) + '">' + spm_getArrow(this.rootArrowImage, this) + "", '&nbsp;') + '\n</td>\n</tr>\n</table>\n</td>\n';
-				}
-				  	    
+  				
+			  sHTML += '<td>\n<table width="100%" CELLPADDING="0" CELLSPACING="0">\n<tr id="td' + this._m_sNSpace + sID + '" ' + spm_getMenuBarEvents(this._m_sNSpace) + '  class="' + spm_fixCSSForMac(this.getIntCSSName('spmbar spmitm') + this.cssMenuBar + ' ' + this.cssMenuItem + ' ' + spm_getMenuItemCSS(oNode)) + '" savecss="' + spm_getMenuItemCSS(oNode) + '" menuclick="' + sClickAction + '" style="' + spm_getMenuItemStyle('item', oNode) + '">\n<td NOWRAP="NOWRAP">' + spm_getImage(oNode, this) + spm_getItemHTML(oNode, 'left', '&nbsp;') + oNode.getAttribute('title') + spm_getItemHTML(oNode, 'right') + MyIIf(Number(this.rootArrow) && spm_nodeHasChildren(oNode), '</td>\n<td align="right" class="' + spm_fixCSSForMac(this.getIntCSSName('spmrarw') + this.cssMenuRootArrow) + '">' + spm_getArrow(this.rootArrowImage, this) + "", '&nbsp;') + '\n</td>\n</tr>\n</table>\n</td>\n';
+  	    
+	      //this._m_aMenuBarItems[this._m_aMenuBarItems.length] = 'td' + this._m_sNSpace + sID;
+  	    
 			  if (this.display == "vertical")
 				  sHTML += "</tr>\n";
 		  
-		 
 		  }
 		  else                        //'submenu - not top level menu item
 		  {
@@ -372,21 +397,22 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 			  {
 				  case "menuitem":
 				  {
-					  sHTML +=		'   <tr ID="tr' + this._m_sNSpace + sID + '" ' + spm_getMenuItemEvents(this._m_sNSpace) + ' parentID="' + sParentID + '" class="' + spm_fixCSSForMac(this.getIntCSSName('spmitm') + this.cssMenuItem + ' ' + spm_getMenuItemCSS(oNode)) + '" savecss="' + spm_getMenuItemCSS(oNode) + '" saveselcss="' + spm_getMenuItemSelCSS(oNode) + '" menuclick="' + sClickAction + '" style="' + spm_getMenuItemStyle('item', oNode) + '">\n';
-					  sHTML +=		'       <td unselectable="on" id="icon' + this._m_sNSpace + sID + '" class="' + spm_fixCSSForMac(this.getIntCSSName('spmicn') + this.cssMenuIcon) + '" style="' + spm_getMenuItemStyle('image', oNode) + '; ' + spm_getMenuItemStyle('item', oNode) + '">' + spm_getImage(oNode, this) + '</td>\n';
-					  sHTML +=		'       <td unselectable="on" id="td' + this._m_sNSpace + sID + '" class="' + spm_fixCSSForMac(this.getIntCSSName('spmitm') + this.cssMenuItem + ' ' + spm_getMenuItemCSS(oNode)) + '" savecss="' + spm_getMenuItemCSS(oNode) + '" NOWRAP="NOWRAP" TITLE="' + spm_getAttr(oNode, 'tooltip', '') + '" style="' + spm_getMenuItemStyle('item', oNode) + '">' + spm_getItemHTML(oNode, 'left', '') + spm_getAttr(oNode, 'title', '') + spm_getItemHTML(oNode, 'right', '') + '</td>\n';
-					  sHTML +=		'       <td unselectable="on" id="arrow' + this._m_sNSpace + sID + '" width="15px" CLASS="' + spm_fixCSSForMac(this.getIntCSSName('spmarw') + this.cssMenuArrow) + '" style="' + spm_getMenuItemStyle('item', oNode) + '">' + MyIIf(spm_nodeHasChildren(oNode), spm_getArrow(this.arrowImage, this), spm_getSpacer(this)) + '</td>\n';
+					  sHTML +=		'   <tr ID="tr' + this._m_sNSpace + sID + '" ' + spm_getMenuItemEvents(this._m_sNSpace) + ' parentID="' + sParentID + '" class="' + spm_fixCSSForMac(this.getIntCSSName('spmitm') + this.cssMenuItem + ' ' + spm_getMenuItemCSS(oNode)) + '" savecss="' + spm_getMenuItemCSS(oNode) + '" menuclick="' + sClickAction + '" style="' + spm_getMenuItemStyle('item', oNode) + '">\n';
+					  sHTML +=		'       <td id="icon' + this._m_sNSpace + sID + '" class="' + spm_fixCSSForMac(this.getIntCSSName('spmicn') + this.cssMenuIcon) + '" style="' + spm_getMenuItemStyle('image', oNode) + '">' + spm_getImage(oNode, this) + '</td>\n';
+					  sHTML +=		'       <td id="td' + this._m_sNSpace + sID + '" class="' + spm_fixCSSForMac(this.getIntCSSName('spmitm') + this.cssMenuItem + ' ' + spm_getMenuItemCSS(oNode)) + '" savecss="' + spm_getMenuItemCSS(oNode) + '" NOWRAP="NOWRAP" >' + oNode.getAttribute('title') + '</td>\n';
+					  sHTML +=		'       <td id="arrow' + this._m_sNSpace + sID + '" width="15px" CLASS="' + spm_fixCSSForMac(this.getIntCSSName('spmarw') + this.cssMenuArrow) + '">' + MyIIf(spm_nodeHasChildren(oNode), spm_getArrow(this.arrowImage, this), spm_getSpacer(this)) + '</td>\n';
 					  sHTML +=		'   </tr>\n';
+
+    	      //this._m_aMenuItems[this._m_aMenuItems.length] = 'tr' + this._m_sNSpace + sID;
 
 					  break;
 				  }
 				  case "menubreak":
 				  {
- 						var sBreakHTML = spm_getAttr(oNode, 'lefthtml', '') + spm_getAttr(oNode, 'righthtml', '');
- 						if (sBreakHTML.length > 0)
-							sHTML += '   <tr><td colspan="3" class="' + spm_fixCSSForMac(this.getIntCSSName('spmbrk') + this.cssMenuBreak) + '">' + sBreakHTML + '</td>\n</tr>\n';
- 						else
-							sHTML += '   <tr>\n<td style="height: 1px" class="' + spm_fixCSSForMac(this.getIntCSSName('spmicn') + this.cssMenuIcon) + '">' + spm_getMenuImage('spacer.gif', this, true, ' ') + '</td>\n<td colspan="2" class="' + spm_fixCSSForMac(this.getIntCSSName('spmbrk') + this.cssMenuBreak) + '">' + spm_getMenuImage('spacer.gif', this, true, ' ') + '</td>\n</tr>\n';
+					  //if (this._m_oMenu.IconBackgroundColor == this.backColor)
+						//  sHTML += '   <tr><td NOWRAP height="0px" colspan="3" class="spmbrk ' + this.cssMenuBreak + '">' + spm_getMenuImage('spacer.gif', this, true) + '</td></tr>';
+					  //else
+						  sHTML += '   <tr>\n<td style="height: 1px" class="' + spm_fixCSSForMac(this.getIntCSSName('spmicn') + this.cssMenuIcon) + '">' + spm_getMenuImage('spacer.gif', this, true) + '</td>\n<td colspan="2" class="' + spm_fixCSSForMac(this.getIntCSSName('spmbrk') + this.cssMenuBreak) + '">' + spm_getMenuImage('spacer.gif', this, true) + '</td>\n</tr>\n';
 
 					  break;
 				  }
@@ -396,17 +422,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		  //'Generate sub menu - note: we are recursively calling ourself
 		  //'netscape renders tables with display: block as having cellpadding!!! therefore using div outside table - LAME!
 		  if (oNode.childNodes.length > 0)
-		  {
-				var sTag = 'DIV';
-				var sStyle = '';
-
-				if (spm_isMac('ie'))
-				{
-					sTag = 'P';
-					sStyle = 'margin-top:0px; margin-left:0px;'
-				}
-			  this._m_sOuterTables = '\n<' + sTag + ' ID="tbl' + this._m_sNSpace + sID + '" CLASS="' + spm_fixCSSForMac(this.getIntCSSName('spmsub') + this.cssSubMenu) + '" STYLE="display:none; position: absolute;' + sStyle + this.menuTransitionStyle + '">\n<table CELLPADDING="0" CELLSPACING="0" BORDER="0">\n' + this.GetMenuItems(oNode) + '\n</table>\n</' + sTag + '>\n' + this._m_sOuterTables;
-			}
+			  this._m_sOuterTables = '\n<DIV ID="tbl' + this._m_sNSpace + sID + '" CLASS="' + spm_fixCSSForMac(this.getIntCSSName('spmsub') + this.cssSubMenu) + '" STYLE="display:none; position: absolute;' + this.menuTransitionStyle + '">\n<table CELLPADDING="0" CELLSPACING="0">\n' + this.GetMenuItems(oNode) + '\n</table>\n</DIV>\n' + this._m_sOuterTables;
 
     }
 	}
@@ -417,23 +433,18 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
   //--- menubar click event ---//
 	SolpartMenu.prototype.onMBC = function (e, evt)
 	{
-		this.GenerateSubMenus();
-
 		var oCell = e; //event.srcElement;
 		var sID = oCell.id.substr(2);
 
 		var oMenu = spm_getById("tbl" + sID);
-		
+    //var oMenu = spm_getById("td" + sID);
+
 		if (oMenu != null)
 		{
-			this.hideAllMenus();		//mindelay mod
 			if (oMenu.style.display == '')
 			{
 				this.hideAllMenus();		
-				if (this.useIFrames)
-					spm_iFrameIndex(oMenu, false, this.systemImagesPath);
-				else
-					spm_showElement("SELECT|OBJECT");
+				spm_showElement("SELECT");
 			}
 			else
 			{
@@ -442,10 +453,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 				this.doTransition(oMenu);
 				oMenu.style.display = "";
 				this._m_aOpenMenuID[0] = sID;
-				if (this.useIFrames)
-					spm_iFrameIndex(oMenu, true, this.systemImagesPath);
-				else
-					spm_hideElement("SELECT|OBJECT",oMenu);
+				spm_hideElement("SELECT",oMenu);
 			}
 		}
 		
@@ -475,9 +483,8 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 	}
   
   //--- menubar mouseover event ---//
-	SolpartMenu.prototype.onMBMO = function (e, bBypassDelay)
+	SolpartMenu.prototype.onMBMO = function (e)
 	{
-		this.GenerateSubMenus();
 		var oCell = e; //event.srcElement;
 		
 		if (oCell.id.length == 0) //cancelBubble
@@ -487,30 +494,16 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 
 		if (this._m_aOpenMenuID.length || this.moExpand != '0')
 		{
-			if (this.minDelay != 0 && bBypassDelay != true)
-			{
-				if (this.minDelayTimer != null)
-					window.clearTimeout(this.minDelayTimer);
-				this.minDelayType = 'root';
-				this.minDelayObj = e;
-				this.minDelayTimer = setTimeout('m_oSolpartMenu["' + this._m_sNSpace + '"].mouseInDelayHandler()', this.minDelay);
-			}
-			else
-			{
-				//--- if menu is shown then mouseover triggers the showing of all menus ---//
-				this.hideAllMenus();
+			//--- if menu is shown then mouseover triggers the showing of all menus ---//
+			this.hideAllMenus();
 
-				if (oMenu != null)
-				{
-					spm_positionMenu(this, oMenu, oCell);
-					this.doTransition(oMenu);
-					oMenu.style.display = "";
-					this._m_aOpenMenuID[0] = sID;
-					if (this.useIFrames)
-						spm_iFrameIndex(oMenu, true, this.systemImagesPath);
-					else
-						spm_hideElement("SELECT|OBJECT",oMenu);
-				}
+			if (oMenu != null)
+			{
+				spm_positionMenu(this, oMenu, oCell);
+				this.doTransition(oMenu);
+				oMenu.style.display = "";
+				this._m_aOpenMenuID[0] = sID;
+				spm_hideElement("SELECT",oMenu);
 			}
 			this.applyBorder(oCell, 1, this.shColor, this.hlColor);
 		}
@@ -518,8 +511,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		{
 			this.applyBorder(oCell, 1, this.hlColor, this.shColor);
 		}
-
-		oCell.className =  spm_fixCSSForMac(this.getIntCSSName('spmitmsel spmbar') + this.cssMenuBar + ' ' + this.cssMenuItemSel + ' ' + spm_getAttr(oCell, 'saveselcss', '') + ' ' + spm_getAttr(oCell, 'savecss', ''));
+		oCell.className =  spm_fixCSSForMac(this.getIntCSSName('spmitmsel spmbar') + this.cssMenuBar + ' ' + this.cssMenuItemSel);
 		
 		this._m_dHideTimer = null;
 		
@@ -533,13 +525,13 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		var sID = oCell.id.substr(2);
 		this.applyBorder(oCell, 1, spm_getCellBackColor(oCell), spm_getCellBackColor(oCell), "none");	
 		this._m_dHideTimer = new Date();
-
+		//setTimeout(this.hideMenuTime, this.moutDelay);
 		if (this.moutDelay != 0)
 		  setTimeout('m_oSolpartMenu["' + this._m_sNSpace + '"].hideMenuTime()', this.moutDelay);
 		  
-    oCell.className = spm_fixCSSForMac(this.getIntCSSName('spmbar spmitm') + this.cssMenuBar + ' ' + this.cssMenuItem + ' ' + spm_getAttr(e, 'savecss', ''));
+    oCell.className = spm_fixCSSForMac(this.getIntCSSName('spmbar spmitm') + this.cssMenuBar + ' ' + this.cssMenuItem + spm_getAttr(e, 'savecss', ''));
     this.stopTransition();
-    this.minDelayType = null;
+    
     this.fireEvent('onMenuBarMouseOut', oCell);
 	}
 	
@@ -558,16 +550,14 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
       eval(spm_getAttr(oRow, "menuclick", ''));
       this.hideAllMenus();
 		}
+		//window.event.cancelBubble = true;
 		spm_stopEventBubbling(evt);
-		
-		this.handlembi_mo(oRow, true);
 	}
 
   //--- menuitem mouseover event ---//
 	SolpartMenu.prototype.onMBIMO = function (e)
 	{		
 		this.handlembi_mo(spm_getSourceTR(e, this._m_sNSpace)); //event.srcElement
-
 		this._m_dHideTimer = null;
 	}
   //--- menuitem mouseout event ---//
@@ -578,9 +568,98 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		//setTimeout(this.hideMenuTime, this.moutDelay);
 		if (this.moutDelay != 0)
 		  setTimeout('m_oSolpartMenu["' + this._m_sNSpace + '"].hideMenuTime()', this.moutDelay);
-		 
-		this.minDelayType = null;
 	}
+	
+/*
+	function menuhook_KeyPress()
+	{
+    //not yet
+	}
+	function menuhook_KeyDown()
+	{
+    //not yet
+	}
+	
+	function menuhook_MenuFocus()
+	{
+		var tbl = event.srcElement;
+		mb_c(tbl.rows[0].cells[0]);
+	}
+*/
+/*	
+	function __menuhook_MouseMove(e) 
+	{
+		var iNewLeft=0, iNewTop = 0
+
+if (this._m_bMoving)
+{
+			if (spm_browserType() == 'ie')
+			{
+//		if ((event.button==1)) 
+//		{
+			  this.hideAllMenus();
+			  if (this._m_oTblMenuBar.startLeft == null)
+				  this._m_oTblMenuBar.startLeft = this._m_oTblMenuBar.offsetLeft;
+			  iNewLeft=event.clientX - this._m_oTblMenuBar.startLeft - 3;
+			  this._m_oTblMenuBar.style.pixelLeft= iNewLeft;
+			  if (this._m_oTblMenuBar.startTop == null)
+				  this._m_oTblMenuBar.startTop = this._m_oTblMenuBar.offsetTop;
+			  iNewTop=event.clientY - this._m_oTblMenuBar.startTop;
+			  this._m_oTblMenuBar.style.pixelTop = iNewTop - 10;
+			  event.returnValue = false
+			  event.cancelBubble = true
+//      }
+		}
+    else
+    {
+			this.hideAllMenus();
+  		
+			if (this._m_oTblMenuBar.startLeft == null)
+				this._m_oTblMenuBar.startLeft = this._m_oTblMenuBar.offsetLeft;
+
+			iNewLeft=e.clientX - this._m_oTblMenuBar.startLeft - 3;
+  		    
+			//if (iNewLeft&lt;0) 
+			//	iNewLeft=0;
+  		
+			this._m_oTblMenuBar.style.left = iNewLeft;
+  					    
+			if (this._m_oTblMenuBar.startTop == null)
+				this._m_oTblMenuBar.startTop = this._m_oTblMenuBar.offsetTop;
+
+			iNewTop=e.clientY - this._m_oTblMenuBar.startTop;
+			//if (iNewTop&lt;0) 
+			//	iNewTop=0;
+  			
+			this._m_oTblMenuBar.style.top = iNewTop - 10;    
+    }
+}
+
+	}
+	function __menuhook_MouseDown()
+	{
+		this._m_bMoving = true;
+	}
+	function __menuhook_MouseUp()
+	{
+	  this._m_bMoving = false;
+	}
+	function __document_MouseMove(e)
+	{
+		if (this._m_bMoving)
+		{
+			this.menuhook_MouseMove(e);
+	  }
+	}
+	function __document_MouseDown()
+	{
+		//this._m_bMoving = null;
+	}
+	function __document_MouseUp()
+	{
+		this._m_bMoving=false;
+	}
+*/
 
 	SolpartMenu.prototype.bodyclick = function()
 	{
@@ -596,11 +675,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		for (i=0; i<this._m_aOpenMenuID.length; i++)
 		{		
 			if (bDeleteRest)
-			{
 				spm_getById("tbl" + this._m_aOpenMenuID[i]).style.display = "none";
-				if (this.useIFrames)
-					spm_iFrameIndex(spm_getById("tbl" + this._m_aOpenMenuID[i]), false, this.systemImagesPath);
-			}
 			if (this._m_aOpenMenuID[i] == this._m_sNSpace + sID)
 			{
 				bDeleteRest=true;
@@ -615,19 +690,12 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 	SolpartMenu.prototype.hideAllMenus = function ()
 	{
 		var i;
-		var oMenu;
 		for (i=0; i<this._m_aOpenMenuID.length; i++)
 		{		
-			oMenu = spm_getById("tbl" + this._m_aOpenMenuID[i]);
-			oMenu.style.display = "none";
-
-			if (this.useIFrames)
-				spm_iFrameIndex(oMenu, false, this.systemImagesPath);
+			spm_getById("tbl" + this._m_aOpenMenuID[i]).style.display = "none";
 		}
-		if (this.useIFrames != true)
-			spm_showElement("SELECT|OBJECT");
-
 		this._m_aOpenMenuID.length = 0;
+		spm_showElement("SELECT");
 	}		
   
   
@@ -648,7 +716,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
   //--- starts menu transition effect ---//
   SolpartMenu.prototype.doTransition = function (oMenu)
   {
-    if (this.menuTransition == 'None' || this.supportsTransitions == '0')
+    if (this.menuTransition == 'None' || spm_browserType() != 'ie')
       return;
 
     var sID = this.SolpartMenuTransitionObject.id;
@@ -756,85 +824,55 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
       }
     }
   }          
+  
+
+
 
   //--- handles mouseover for menu item ---//
-	SolpartMenu.prototype.handlembi_mo = function (oRow, bBypassDelay)
+	SolpartMenu.prototype.handlembi_mo = function (oRow)
 	{
 		var sID = oRow.id.substr(2);
-
-		spm_getById("icon" + sID).className = spm_fixCSSForMac(this.getIntCSSName('spmitmsel spmicn') + this.cssMenuIcon + ' ' + this.cssMenuItemSel + ' ' + spm_getAttr(oRow, 'saveselcss', ''));
-		spm_getById("td" + sID).className = spm_fixCSSForMac(this.getIntCSSName('spmitmsel') + this.cssMenuItemSel + ' ' + spm_getAttr(oRow, 'saveselcss', ''));
-		spm_getById("arrow" + sID).className = spm_fixCSSForMac(this.getIntCSSName('spmitmsel spmarw') + this.cssMenuItemSel + ' ' + this.cssMenuArrow + ' ' + spm_getAttr(oRow, 'saveselcss', ''));
+		//oRow.className = 'spmitmsel';
+		spm_getById("icon" + sID).className = spm_fixCSSForMac(this.getIntCSSName('spmitmsel spmicn') + this.cssMenuIcon + ' ' + this.cssMenuItemSel);
+		spm_getById("td" + sID).className = spm_fixCSSForMac(this.getIntCSSName('spmitmsel') + this.cssMenuItemSel);
+		spm_getById("arrow" + sID).className = spm_fixCSSForMac(this.getIntCSSName('spmitmsel spmarw') + this.cssMenuItemSel + ' ' + this.cssMenuArrow);
 		
+		//oRow.style.backgroundColor = this.selColor;
+		//oRow.style.color = this.selForeColor;
+		//oRow.style.color = this.selForeColor;
+    //setClassColor(oRow, 'spmitm', this.selForeColor);
+    
+		//spm_getById("icon" + sID).style.backgroundColor = this.selColor;
 		spm_applyRowBorder(oRow, 1, this.selBorderColor, true);
 
-
-		if (this.minDelay != 0 && bBypassDelay != true)
-		{
-			if (this.minDelayTimer != null)
-				window.clearTimeout(this.minDelayTimer);
-			this.minDelayType = 'sub';
-			this.minDelayObj = oRow;
-			this.minDelayTimer = setTimeout('m_oSolpartMenu["' + this._m_sNSpace + '"].mouseInDelayHandler()', this.minDelay);
-			return;
-		}
-	
+		//if (this._m_aOpenMenuID.join(',').indexOf(oRow.id.replace('tr', '')) == -1)
 		if (this._m_aOpenMenuID[this._m_aOpenMenuID.length - 1] != oRow.id.replace('tr', ''))
 		{
 			this.handleNewItemSelect(spm_getAttr(oRow, "parentID", ""));
 		
 			if (spm_getById("tbl" + sID) != null)
 			{
-				var iWidth;
 				oMenu = spm_getById("tbl" + sID);
-
-				var oPDims = new spm_elementDims(oRow);
-				var oMDims = new spm_elementDims(oMenu);
-				        			
-				oMenu.style.top = spm_getCoord(oPDims.t);
+        //oMenu.style.position = "absolute";  //CSS FIX!				
+				oMenu.style.left = spm_elementLeft(oRow) + oRow.offsetWidth;
+				oMenu.style.top = spm_elementTop(oRow);
 				
-				spm_resetScroll(oMenu);
-
 				this.doTransition(oMenu);
 
-				oMDims = new spm_elementDims(oMenu);	//now that we moved need to reget dims
 				oMenu.style.display = "";
+				if (spm_elementLeft(oRow) + oRow.offsetWidth + oMenu.offsetWidth > document.body.clientWidth)
+				{
+					oMenu.style.left = spm_elementLeft(oRow) - oMenu.offsetWidth;
+					//oMenu.style.top = spm_elementTop(oRow);					
+				}
 
-			  if (oMDims.t - spm_getBodyScrollTop() + oMDims.h > spm_getViewPortHeight())
+			  if (spm_elementTop(oMenu) + oMenu.offsetHeight > document.body.clientHeight)
 			  {
-				  if (oMDims.h < spm_getViewPortHeight())
-						oMenu.style.top = spm_getCoord(spm_getViewPortHeight() + spm_getBodyScrollTop() - oMDims.h);
-					else
-					{
-						spm_handleScrollMenu(this, oMenu);
-						
-						oMDims = new spm_elementDims(oMenu);	//now that we moved need to reget dims
-					}
+				  oMenu.style.top = document.body.clientHeight - oMenu.offsetHeight;
 			  }
-
-				if (this.direction == 'rtl')
-					oMenu.style.left = spm_getCoord(oPDims.l - oMDims.w - spm_getBodyScrollLeft());
-				else
-					oMenu.style.left = spm_getCoord(oPDims.l + oPDims.w - spm_getBodyScrollLeft());
-
-				if (this.direction == 'rtl')
-				{
-					if (oMDims.l - spm_getBodyScrollLeft() < 0)
-						oMenu.style.left = spm_getCoord(oPDims.l + oPDims.w - spm_getBodyScrollLeft());
-				}
-				else  
-				{
-					if (oPDims.l - spm_getBodyScrollLeft() + oPDims.w + oMDims.w > spm_getViewPortWidth())
-						oMenu.style.left = spm_getCoord(oPDims.l - oMDims.w - spm_getBodyScrollLeft());
-				}
-					
 				this._m_aOpenMenuID[this._m_aOpenMenuID.length] = sID;
-				if (this.useIFrames)
-					spm_iFrameIndex(oMenu, true, this.systemImagesPath);
-				else
-					spm_hideElement("SELECT|OBJECT",oMenu);
-
-			}
+				spm_hideElement("SELECT",oMenu);
+			}	
 		}
 		this.fireEvent('onMenuItemMouseOver', oRow);
 		
@@ -844,12 +882,16 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 	SolpartMenu.prototype.handlembi_mout = function (oRow)
 	{
 			var sID = oRow.id.substr(2);
-
-			oRow.className = spm_fixCSSForMac(this.getIntCSSName('spmitm') + ' ' + this.cssMenuItem + ' ' + spm_getAttr(oRow, 'savecss', ''));
+			//oRow.style.backgroundColor = this.backColor;
+			//oRow.style.color = this.foreColor;	
+			//oRow.style.color = '';
+			//setClassColor(oRow, 'spmitm', '');
+			oRow.className = spm_fixCSSForMac(this.getIntCSSName('spmitm') + this.cssMenuItem + spm_getAttr(oRow, 'savecss', ''));
 		  spm_getById("icon" + sID).className = spm_fixCSSForMac(this.getIntCSSName('spmicn') + this.cssMenuIcon);
-		  spm_getById("td" + sID).className = spm_fixCSSForMac(this.getIntCSSName('spmitm') + ' ' + this.cssMenuItem + ' ' + spm_getAttr(oRow, 'savecss', ''));
+		  spm_getById("td" + sID).className = spm_fixCSSForMac(this.getIntCSSName('spmitm') + this.cssMenuItem + spm_getAttr(oRow, 'savecss', ''));
 		  spm_getById("arrow" + sID).className = spm_fixCSSForMac(this.getIntCSSName('spmarw') + this.cssMenuArrow);
 			
+			//spm_getById("icon" + sID).style.backgroundColor = this.iconBackColor;
 			spm_applyRowBorder(oRow, 1, "", false);
 
       this.stopTransition();
@@ -871,8 +913,8 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		}
   }
 
-	//--- called by setTimeOut to check mouseout hide delay ---//
-	SolpartMenu.prototype.hideMenuTime = function ()
+//--- called by setTimeOut to check mouseout hide delay ---//
+SolpartMenu.prototype.hideMenuTime = function ()
   {
     if (this._m_dHideTimer != null && this.moutDelay > 0)
     {
@@ -886,202 +928,93 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
     }
   }
 
-	SolpartMenu.prototype.mouseInDelayHandler = function ()
-	{
-		if (this.minDelayType == 'root')
-			this.onMBMO(this.minDelayObj, true);
-		else if (this.minDelayType == 'sub')
-			this.handlembi_mo(this.minDelayObj, true);
-		this.minDelayTimer = null;
-		this.minDelayObj = null;
-	}
 
-	//--- called by setTimeOut to check mouseout hide delay ---//
-	SolpartMenu.prototype.scrollMenu = function ()
+
+/*
+  function setClassColor(oCtl, sClass, sColor)
   {
-		if (this._m_oScrollingMenu != null)
-		{
-			if (spm_ScrollMenuClick(this._m_oScrollingMenu) == false)
-				setTimeout('m_oSolpartMenu["' + this._m_sNSpace + '"].scrollMenu()', 500);
-			else
-				this._m_oScrollingMenu = null;
-		}
+    var o;
+    for (var i=0; i<oCtl.childNodes.length; i++)
+    {
+      o = oCtl.childNodes[i];
+      if (o.className == sClass)
+        o.style.color = sColor;
+      
+      if (o.childNodes.length)
+        setClassColor(o, sClass, sColor)
+    }
   }
+*/
 
 //global
-	function spm_iFrameIndex(eMenu, bShow, sysImgPath)
-	{
-		if (spm_browserType() == 'op')
-			return;	//not needed
-		
-		if (document.readyState != 'complete')
-			return;	//avoid operation aborted
-		
-		if (bShow)
-		{
-			var oIFR=spm_getById('ifr' + eMenu.id);
-			if (oIFR == null)
-			{
-				var oIFR = document.createElement('iframe');
-				oIFR.id = 'ifr' + eMenu.id;
-				//oIFR.src = 'javascript: void(0);';
-				oIFR.src = sysImgPath + 'spacer.gif';
-				oIFR.style.top = spm_getCoord(0);
-				oIFR.style.left = spm_getCoord(0);
-				oIFR.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=0)";
-				oIFR.scrolling = 'no';
-				oIFR.frameBorder = 'no';
-				oIFR.style.display = 'none';
-				oIFR.style.position = 'absolute';
-				document.body.appendChild(oIFR);
-			}
-			var oMDims = new spm_elementDims(eMenu);
-			
-			oIFR.style.width=oMDims.w;
-			oIFR.style.height=oMDims.h;
-			oIFR.style.top=spm_getCoord(oMDims.t);
-			oIFR.style.left=spm_getCoord(oMDims.l);
-			
-			var iIndex = spm_getCurrentStyle(eMenu, 'zIndex');	//eMenu.style.zIndex;
-			if (iIndex == null || iIndex == 0)
-				eMenu.style.zIndex = 1;
-			oIFR.style.zIndex=iIndex-1;
-			oIFR.style.display="block";
-		}
-		else if (spm_getById('ifr' + eMenu.id) != null)
-		{
-			spm_getById('ifr' + eMenu.id).style.display='none';
-		}
-	}
 
 	function spm_showElement(elmID)
 	{
-		if (spm_browserType() == 'op')
-			return;	//not needed
-
 		// Display any element that was hidden
-		var sTags = elmID.split('|');
-		for (var x=0; x<sTags.length; x++)
+		for (i = 0; i < spm_getTags(elmID).length; i++)
 		{
-			elmID = sTags[x];
-			for (var i = 0; i < spm_getTags(elmID).length; i++)
-			{
-				obj = spm_getTags(elmID)[i];
-				if (! obj || ! obj.offsetParent)
-					continue;
-				obj.style.visibility = "";
-			}
+			obj = spm_getTags(elmID)[i];
+			if (! obj || ! obj.offsetParent)
+				continue;
+			obj.style.visibility = "";
 		}
 	}
 
 	function spm_hideElement(elmID, eMenu)
 	{
-		if (spm_browserType() == 'op')
-			return;	//not needed
-
 		var obj;
 		// Hide any element that overlaps with the dropdown menu
-		var sTags = elmID.split('|');
-		
-		var oMDims = new spm_elementDims(eMenu);
-		
-		for (var x=0; x<sTags.length; x++)
+		for (i = 0; i < spm_getTags(elmID).length; i++)
 		{
-			elmID = sTags[x];
-			for (var i = 0; i < spm_getTags(elmID).length; i++)
+			obj = spm_getTags(elmID)[i];
+			if (spm_elementTop(obj) > parseInt(eMenu.style.top) + eMenu.offsetHeight)
 			{
-				obj = spm_getTags(elmID)[i];
-				var oODims = new spm_elementDims(obj);
-				
-				if (oODims.t > oMDims.t + oMDims.h)
-				{
-					//if element is below bottom of menu then do nothing
-				}
-				else if (oODims.l > oMDims.l + oMDims.w)
-				{
-					//if element is to the right of menu then do nothing
-				}
-				else if (oODims.l + oODims.w < oMDims.l)
-				{
-					//if element is to the left of menu then do nothing
-				}
-				else if (oODims.t + oODims.h < oMDims.t)
-				{
-					//if element is to the top of menu then do nothing
-				}
-				else
-				{
-					obj.style.visibility = "hidden";
-				}
+				//if element is below bottom of menu then do nothing
+			}
+			else if (spm_elementLeft(obj) > parseInt(eMenu.style.left) + eMenu.offsetWidth)
+			{
+				//if element is to the right of menu then do nothing
+			}
+			else if (spm_elementLeft(obj) + obj.offsetWidth < parseInt(eMenu.style.left))
+			{
+				//if element is to the left of menu then do nothing
+			}
+			else if (spm_elementTop(obj) + obj.offsetHeight < parseInt(eMenu.style.top))
+			{
+				//if element is to the top of menu then do nothing
+			}
+			else
+			{
+				obj.style.visibility = "hidden";
 			}
 		}
 	}
 
 	function spm_positionMenu(me, oMenu, oCell)
 	{
-
-		spm_resetScroll(oMenu);
-
-		var oPDims = new spm_elementDims(oCell, false, me);
-		
 		if (me.display == 'vertical')
 		{
-			oMenu.style.top = spm_getCoord(oPDims.t);
-			var oMDims = new spm_elementDims(oMenu);
-
-			if (oMDims.t - spm_getBodyScrollTop() + oMDims.h >= spm_getViewPortHeight())
-			{
-				if (oMDims.h < spm_getViewPortHeight())
-					oMenu.style.top = spm_getCoord(spm_getViewPortHeight() - oMDims.h + spm_getBodyScrollTop());	
-				else
-					spm_handleScrollMenu(me, oMenu);
-			}
-			
-			var oOrigMDims;
-			
-			if (spm_browserType() != 'ie') //since mozilla doesn't set width greater than window size we need to store it here
-				 oOrigMDims = new spm_elementDims(oMenu);
-			
-			oMenu.style.left = spm_getCoord(oPDims.l + oPDims.w - spm_getBodyScrollLeft());
-			oMDims = new spm_elementDims(oMenu);
-			if (oOrigMDims == null)
-				oOrigMDims = oMDims;
-			
-			if (oMDims.l - spm_getBodyScrollLeft(true) + oOrigMDims.w > spm_getViewPortWidth())
-			{
-			  if (spm_getViewPortWidth() - oOrigMDims.w > 0)  //only do this if it fits
-				  oMenu.style.left = spm_getCoord(oPDims.l - oOrigMDims.w - spm_getBodyScrollLeft(true));
-			}
-
-			//oMenu.style.display = "";
+			oMenu.style.left = spm_elementLeft(oCell) + oCell.offsetWidth;
+			oMenu.style.top = spm_elementTop(oCell);
+			oMenu.style.display = "";
 		}
 		else
 		{
-			if (me.direction == 'rtl')			
+			oMenu.style.left = spm_elementLeft(oCell);
+			oMenu.style.top = spm_elementTop(oCell) + oCell.offsetHeight;
+			oMenu.style.display = "";
+			if (spm_elementLeft(oMenu) + oMenu.offsetWidth > document.body.clientWidth)
 			{
-				var oMDims2 = new spm_elementDims(oMenu);
-				oMenu.style.left = spm_getCoord((oPDims.l + oPDims.w) - oMDims2.w - spm_getBodyScrollLeft());
+			  if (document.body.clientWidth - oMenu.offsetWidth > 0)  //only do this if it fits
+				  oMenu.style.left = document.body.clientWidth - oMenu.offsetWidth;
+//				oMenu.style.top = spm_elementTop(oCell) + oCell.offsetHeight;
 			}
-			else			
-				oMenu.style.left = spm_getCoord(oPDims.l - spm_getBodyScrollLeft());
-				
-			oMenu.style.top = spm_getCoord(oPDims.t + oPDims.h);
-			var oMDims = new spm_elementDims(oMenu);
-			
-			if (oMDims.l - spm_getBodyScrollLeft(true) + oMDims.w > spm_getViewPortWidth())
+			if (spm_elementTop(oMenu) + oMenu.offsetHeight > document.body.clientHeight)
 			{
-			  if (spm_getViewPortWidth() - oMDims.w > 0)  //only do this if it fits
-				  oMenu.style.left = spm_getCoord(spm_getViewPortWidth() - oMDims.w + spm_getBodyScrollLeft(true));
+			  if (spm_elementTop(oCell) - oMenu.offsetHeight > 0) //only do this if it fits
+				  oMenu.style.top = spm_elementTop(oCell) - oMenu.offsetHeight;
 			}
-			
-			if (oMDims.t - spm_getBodyScrollTop() + oMDims.h > spm_getViewPortHeight())
-			{
-			  if (oPDims.t - oMDims.h - spm_getBodyScrollTop() > 0) //only do this if it fits
-				  oMenu.style.top = spm_getCoord(oPDims.t - oMDims.h);	//place above menu bar
-				else
-					spm_handleScrollMenu(me, oMenu);
-			}
-			//oMenu.style.display = "none";
+			oMenu.style.display = "none";
 		}
 	}
 
@@ -1110,45 +1043,40 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		{
 			if (sTopLeftColor == this.backColor)
 			{
-        oCell.className = spm_fixCSSForMac(this.getIntCSSName('spmbar spmitm') + ' ' + this.cssMenuItem + ' ' + spm_getAttr(oCell, 'savecss', ''));
+				//oCell.style.backgroundColor = '';
+        //setClassColor(oCell, 'spmitm', '');
+        oCell.className = spm_fixCSSForMac(this.getIntCSSName('spmbar spmitm') + this.cssMenuItem + spm_getAttr(oCell, 'savecss', ''));
 			}
 			else
 			{
-        oCell.className = spm_fixCSSForMac(this.getIntCSSName('spmbar spmitmsel') + ' ' + this.cssMenuItemSel + ' ' + spm_getAttr(oCell, 'saveselcss', ''));
+				//oCell.style.backgroundColor = this.selColor;
+        //setClassColor(oCell, 'spmitm', this.selForeColor);
+        oCell.className = spm_fixCSSForMac(this.getIntCSSName('spmbar spmitmsel') + this.cssMenuItemSel);
 			}
 		}		
 	}
 
 	function spm_applyRowBorder(oRow, iSize, sColor, bSelected, sStyle)
 	{
-		if (oRow.cells.length == 0) //(spm_browserType() == 'safari')
-			return;	//safari has issues with accessing cell
-		
 		var sColor2=sColor;
 		if (sStyle == null)
 			sStyle = "solid";
 
 		if (sColor == "")
 		{
+			//if (bSelected)
+			//	sColor2 = this.selColor;
+			//else
 				sColor2 = spm_getCurrentStyle(oRow.cells[0], 'background-Color');
-				if ((sColor2 == null || sColor2 == '') && spm_browserType() != 'ie')
-					sColor2 = 'transparent';
 		}
 
 		spm_applyBorders(oRow.cells[0], sStyle, iSize, sColor2, true, true, false, true);
 
 		if (sColor == "" && bSelected == false)
-    {
       sColor2 = spm_getCellBackColor(oRow.cells[1]);
-      if (sColor2 == null || sColor2 == '')
-				sColor2 = 'transparent';
-    }
-   
-    //if (sColor2 != 'transparent')
-    //{
-			spm_applyBorders(oRow.cells[1], sStyle, iSize, sColor2, true, false, false, true);
-			spm_applyBorders(oRow.cells[2], sStyle, iSize, sColor2, true, false, true, true);
-		//}
+    			
+		spm_applyBorders(oRow.cells[1], sStyle, iSize, sColor2, true, false, false, true);
+		spm_applyBorders(oRow.cells[2], sStyle, iSize, sColor2, true, false, true, true);
 	}
 	
 	function spm_getCellBackColor(o)
@@ -1161,8 +1089,6 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
       {
         sColor = spm_getCurrentStyle(o, 'background-Color');  
         o = o.parentElement;
-        if (o.id.indexOf('divOuterTables') != -1)	//if we are outside the realm of the menu then use transparency
-					break;
       }
     }
     return sColor;
@@ -1171,300 +1097,120 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 	function spm_applyBorders(o, sStyle, iSize, sColor, t, l, r, b)
 	{
 
+/*
+		if (t && sColor=='') o.style.paddingTop = iSize + "px ";
+		if (b && sColor=='') o.style.paddingBottom = iSize + "px ";
+		if (r && sColor=='') o.style.paddingRight = iSize + "px ";
+		if (l && sColor=='') o.style.paddingLeft = iSize + "px ";
+    if (sColor=='')
+      iSize = 0;
+ */     
 		if (t) o.style.borderTop = sStyle + " " + iSize + "px " + sColor;
 		if (b) o.style.borderBottom = sStyle + " " + iSize + "px " + sColor;
 		if (r) o.style.borderRight = sStyle + " " + iSize + "px " + sColor;
 		if (l) o.style.borderLeft = sStyle + " " + iSize + "px " + sColor;
 
 	}
-
-	function spm_resetScroll(oMenu)
+	
+	function spm_elementTop(eSrc)
 	{
-	
-		if (oMenu.scrollItems != null)
-		{
-			oMenu.scrollPos = 1;
-			oMenu.scrollItems = 9999;
-			spm_showScrolledItems(oMenu);
-		}	
-	}
-	
-	
-	function spm_handleScrollMenu(me, oMenu)
-	{
-		var oTbl = spm_getTags('table', oMenu)[0]; //oMenu.childNodes[1];	
-		oMenu.style.display = '';
-		if (oMenu.scrollPos == null)
-		{
-			oMenu.scrollPos = 1;			
-						
-			var oRow = spm_insertTableRow(oTbl);
-			var oCell = document.createElement('TD');		
-			oCell.id = 'dn' + oMenu.id.substring(3);
-			oCell.colSpan = 3;
-			oCell.align = 'center';
-			oCell.style.backgroundColor = 'gray';	//can be overridden by MenuScroll style
-			oCell.innerHTML='<div id="dn' + oMenu.id.substr(3) + '" onclick="return spm_ScrollMenuClick(this, event);" onmouseover="spm_ScrollMenuMO(this, m_oSolpartMenu[\'' + me._m_sNSpace + '\']);" onmouseout="spm_ScrollMenuMOUT(m_oSolpartMenu[\'' + me._m_sNSpace + '\']);" class="' + spm_fixCSSForMac(me.getIntCSSName('spmitmscr')) + ' ' + me.cssMenuScrollItem + '" style="width: 100%; font-size: 6pt;">...</div>';
-			oRow.appendChild(oCell);
-
-			oRow = spm_insertTableRow(oTbl, 0);
-			oCell = document.createElement('TD');		
-			oCell.id = 'up' + oMenu.id.substring(3);
-			oCell.colSpan = 3;
-			oCell.align = 'center';
-			oCell.style.backgroundColor = 'gray';	//can be overridden by MenuScroll style
-			oCell.innerHTML='<div id="up' + oMenu.id.substr(3) + '" onclick="return spm_ScrollMenuClick(this, event);" onmouseover="spm_ScrollMenuMO(this, m_oSolpartMenu[\'' + me._m_sNSpace + '\']);" onmouseout="spm_ScrollMenuMOUT(m_oSolpartMenu[\'' + me._m_sNSpace + '\']);" class="' + spm_fixCSSForMac(me.getIntCSSName('spmitmscr')) + ' ' + me.cssMenuScrollItem + '" style="width: 100%; font-size: 6pt;">...</div>';
-			oRow.style.display = 'none';
-			oRow.appendChild(oCell);
-		}	
-
-		if (oMenu.ScrollRowHeight == null)
-		{
-			spm_getTags('tr', oTbl)[0].style.display = '';
-			oMenu.ScrollItemHeight = (spm_getElementHeight(spm_getTags('tr', oTbl)[0]) * 2);
-			spm_getTags('tr', oTbl)[0].style.display = 'none';
-
-			oMenu.ScrollRowHeight = spm_getElementHeight(spm_getTags('tr', oTbl)[1]);
-		}
-
-		oMenu.scrollItems = parseInt((spm_getViewPortHeight() - spm_elementTop(oMenu) + spm_getBodyScrollTop() - oMenu.ScrollItemHeight) / (oMenu.ScrollRowHeight + 1));
-		spm_showScrolledItems(oMenu);
-
-	}
+	if (isMac())
+		return spm_elementTopMac(eSrc);
 		
-	function spm_ScrollMenuMO(e, me)
-	{
-		me._m_dHideTimer = null;
-		me._m_oScrollingMenu = e;
-		if (Number(me.moScroll))
-			setTimeout('m_oSolpartMenu["' + me._m_sNSpace + '"].scrollMenu()', 500);
-
-	}
-	
-	function spm_ScrollMenuMOUT(me)
-	{
-		me._m_oScrollingMenu = null;
-
-		me._m_dHideTimer = new Date();
-		if (me.moutDelay != 0)
-		  setTimeout('m_oSolpartMenu["' + me._m_sNSpace + '"].hideMenuTime()', me.moutDelay);
-		
-
-	}
-	
-	function spm_ScrollMenuClick(e, evt)
-	{		
-		if (e != null)
-		{	
-			var oCell = e.parentNode;
-			var oTbl = oCell.parentNode.parentNode.parentNode;
-			var oMenu = oTbl.parentNode;
-
-			if (oCell.id == 'up' + oMenu.id.substring(3))
-			{
-				if (oMenu.scrollPos > 1)
-					oMenu.scrollPos--;					
-				else
-					return true;
-			}
-			else 
-			{
-				if (oMenu.scrollPos + oMenu.scrollItems < oTbl.rows.length - 1)
-					oMenu.scrollPos++;
-				else
-					return true;
-			}
-				
-			spm_showScrolledItems(oMenu);
-			if (evt != null)
-				spm_stopEventBubbling(evt);
-		}
-		return false;
-	}
-
-	function spm_showScrolledItems(oMenu)
-	{
-		var oTbl = spm_getTags('table', oMenu)[0];
-		var oRows = spm_getTags('tr', oTbl);	//oTbl.rows.length
-		
-		for (var i=1; i < oRows.length; i++)	
-		{
-			//if row is not within display "window" then don't display it
-			if (i < oMenu.scrollPos || i >= oMenu.scrollPos + oMenu.scrollItems)
-				oRows[i].style.display = 'none';
-			else
-				oRows[i].style.display = '';			
-		}
-		
-		// if we are scrolled down at least one then display up scroll item
-		if (oMenu.scrollPos > 1)
-			oRows[0].style.display = '';
-		else
-			oRows[0].style.display = 'none';
-		
-		
-		// if there is at least one item not displayed then show down item
-		if (oMenu.scrollPos + oMenu.scrollItems < oTbl.rows.length - 1)
-			oRows[oRows.length-1].style.display = '';
-		else
-			oRows[oRows.length-1].style.display = 'none';
-			
-	}
-
-	function spm_insertTableRow(tbl, iPos)
-	{
-		var oRow;
-		var oTB;
-		oRow = document.createElement('TR');
-		if (tbl.getElementsByTagName('TBODY').length == 0)
-		{
-			oTB = document.createElement('TBODY');
-			tbl.appendChild(oTB);
-		}
-		else
-			oTB = tbl.getElementsByTagName('TBODY')[0];
-
-		if (iPos == null)
-			oTB.appendChild(oRow);
-		else
-			oTB.insertBefore(oRow, tbl.rows[iPos]);
-		return oRow;
-	
-	}
-
-	function spm_getElementHeight(o)
-	{	
-		if (o.offsetHeight == null || o.offsetHeight == 0)
-		{
-			if (o.offsetParent.offsetHeight == null || o.offsetParent.offsetHeight == 0)
-			{
-				if (o.offsetParent.offsetParent != null)
-					return o.offsetParent.offsetParent.offsetHeight; //needed for Konqueror
-				else
-					return 0;
-			}
-			else
-				return o.offsetParent.offsetHeight;
-		}
-		else
-			return o.offsetHeight;
-	}
-
-	function spm_getElementWidth(o)
-	{
-		if (o.offsetWidth == null || o.offsetWidth == 0)
-		{
-			if (o.offsetParent.offsetWidth == null || o.offsetParent.offsetWidth == 0)
-			{
-				if (o.offsetParent.offsetParent != null)
-					return o.offsetParent.offsetParent.offsetWidth; //needed for Konqueror
-				else
-					return 0;
-			}
-			else
-				return o.offsetParent.offsetWidth
-
-		}
-		else
-			return o.offsetWidth;
-	}
-	
-	//viewport logic taken from http://dhtmlkitchen.com/js/measurements/index.jsp
-	function spm_getViewPortWidth()
-	{
-		// supported in Mozilla, Opera, and Safari
-    if(window.innerWidth)
-			return window.innerWidth;
-    // supported in standards mode of IE, but not in any other mode
-    if(window.document.documentElement.clientWidth)
-			return document.documentElement.clientWidth;
-	
-    // supported in quirks mode, older versions of IE, and mac IE (anything else).
-    return window.document.body.clientWidth;
-	}
-	
-	function spm_getBodyScrollTop()
-	{
-		if ('|ie|op|mo|ns|'.indexOf('|' + spm_browserType() + '|') != -1)
-		{
-			if (document.body.scrollTop != null)
-				return document.body.scrollTop;
-		}
-		return 0;
-	}
-
-	function spm_getBodyScrollLeft(bOverride)
-	{
-		if ('|op|'.indexOf('|' + spm_browserType() + '|') != -1 || bOverride == true)
-		{
-			if (document.body.scrollLeft != null)
-			{
-				return document.body.scrollLeft;
-			}
-		}
-		return 0;
-	}
-	
-	function spm_getViewPortHeight()
-	{
-		// supported in Mozilla, Opera, and Safari
-    if(window.innerHeight)
-			return window.innerHeight;
-    // supported in standards mode of IE, but not in any other mode
-    if(window.document.documentElement.clientHeight)
-			return document.documentElement.clientHeight;
-	
-    // supported in quirks mode, older versions of IE, and mac IE (anything else).
-    return window.document.body.clientHeight;
-	}
-		
-	function spm_elementTop(eSrc, includeBody)
-	{
-		
-		var iTop = 0;
+	var iTop = 0;
 		var eParent;
 		eParent = eSrc;
-
 		while (eParent.tagName.toUpperCase() != "BODY")
 		{
-
-			//Safari incorrectly calculates the TR tag to be at the top of the table, so try and get child TD tag to use for measurement
-			//if (spm_browserType() == 'safari' && eParent.tagName.toUpperCase() == 'TR' && spm_getTags('TD', eParent).length)
-			//	eParent = spm_getTags('TD', eParent)[0];
-
 			iTop += eParent.offsetTop;
+			eParent = eParent.offsetParent;
+			if (eParent == null)
+				break;
+		}
+		return iTop;
+	}
+
+	function spm_elementTopMac(eSrc)
+	{
+		var iTop = 0;
+		var eParent;
+		var sDebug = new Array();
+
+		eParent = eSrc;
+		while (eParent.tagName.toUpperCase() != "BODY")
+		{
+			if ((eParent.tagName=="TABLE") && (eParent.offsetParent.tagName=="TD"))
+			{
+				iTop += eParent.clientTop;
+				sDebug[sDebug.length] = eParent.tagName + ' clientTop: ' + eParent.clientTop + ' offsetTop: ' + eParent.offsetTop + ' total: ' + iTop;
+			}
+			else//else if (eParent.tagName == 'TD')			//	iTop += eParent.parentElement.offsetTop;
+			{
+				iTop += eParent.offsetTop;
+				sDebug[sDebug.length] = eParent.tagName + ' offsetTop: ' + eParent.offsetTop + ' clientTop: ' + eParent.clientTop + ' total: ' + iTop;
+			}
 			
 			eParent = eParent.offsetParent;
 			if (eParent == null)
 				break;
 		}
-		if (includeBody != null && eParent != null && (spm_browserType() == 'safari' || spm_browserType() == 'kq')) 
-			iTop += eParent.offsetTop;
-		
+displayDebug(sDebug);
 		return iTop;
 	}
 
-
-	function spm_elementLeft(eSrc, includeBody)
+	function spm_elementLeft(eSrc)
 	{	
+		if (isMac())
+			return spm_elementLeftMac(eSrc);
+
 		var iLeft = 0;
 		var eParent;
 		eParent = eSrc;
 		while (eParent.tagName.toUpperCase() != "BODY")
 		{
-
 			iLeft += eParent.offsetLeft;
-				
 			eParent = eParent.offsetParent;
 			if (eParent == null)
 				break;
 		}
-		if (includeBody != null && eParent != null && (spm_browserType() == 'safari' || spm_browserType() == 'kq'))
-			iLeft += eParent.offsetLeft;
-
-		
 		return iLeft;
 	}
+
+	function spm_elementLeftMac(eSrc)
+	{
+		var iLeft = 0;
+		var eParent;
+		var sDebug = new Array();
+				
+		eParent = eSrc;
+		while (eParent.tagName.toUpperCase() != "BODY")
+		{
+			if ((eParent.tagName=="TABLE") && (eParent.offsetParent.tagName=="TD"))
+			{
+				iLeft += eParent.clientLeft;
+				sDebug[sDebug.length] = eParent.tagName + ' clientLeft: ' + eParent.clientLeft + ' offsetLeft: ' + eParent.offsetLeft + ' total: ' + iLeft;
+			}
+			else
+			{
+				iLeft += eParent.offsetLeft;
+				sDebug[sDebug.length] = eParent.tagName + ' offsetLeft: ' + eParent.offsetLeft + ' clientLeft: ' + eParent.clientLeft + ' total: ' + iLeft;
+			}
+			eParent = eParent.offsetParent;
+		}
+displayDebug(sDebug);
+		return iLeft;	
+	}
+
+function displayDebug(sDebug)
+{
+var sDebugDisp=''
+var sIndent='-----------------------------------------';
+for (var i=sDebug.length-1; i>=0; i--)
+{
+	sDebugDisp += sIndent.substr(0, sDebug.length - i) + sDebug[i] + '\n';
+}
+alert(sDebugDisp);
+}
 	
 	function spm_getElement(e, sID) 
 	{
@@ -1535,11 +1281,6 @@ function spm_getMenuItemCSS(oNode)
   return spm_getAttr(oNode, "css", '');
 }
 
-function spm_getMenuItemSelCSS(oNode)
-{
-  return spm_getAttr(oNode, "selcss", '');
-}
-
 SolpartMenu.prototype.getIntCSSName =  function(sClass)
 {
   var ary = sClass.split(' ');
@@ -1564,33 +1305,25 @@ function spm_fixCSSForMac(s)
 				sRet = ary[i];
 		}
 	}
+	//alert("'" + s + "'\n'" + sRet + "'");
 	return sRet;
 }
 
-function spm_getMenuClickAction(oNode, me)
+function spm_getMenuClickAction(oNode)
 {
   //'function to determine if menu item has action associated (URL)
-  var sName = spm_getAttr(me._m_oMenu, 'name', me._m_oMenu.name);
-
-  if (sName == null || sName.length == 0)	//opera fix for getting name
-		sName = spm_getAttr(me._m_oMenu, 'pbname', me._m_oMenu.pbname);
-	
   if (spm_getAttr(oNode, "runat", '').length)
-    return "__doPostBack('" + sName + "', '" + spm_getAttr(oNode, "id", "") + "');";
+    return "__doPostBack(this._m_sNSpace, '" + spm_getAttr(oNode, "id", "") + "');";
   if (spm_getAttr(oNode, "server", '').length)
-    return "__doPostBack('" + sName + "', '" + spm_getAttr(oNode, "id", "") + "');";
+    return "__doPostBack(this._m_sNSpace, '" + spm_getAttr(oNode, "id", "") + "');";
+
   var sURL = spm_getAttr(oNode, "url", "");
   if (sURL.length)
 	{
 		if (sURL.toLowerCase().substr(0, "javascript:".length) == "javascript:")
 			return sURL.substr("javascript:".length) + ";";
 		else
-		{
-			if (me.target.length > 0 && document.frames[me.target] != null)
-				return "document.frames['" + me.target + "'].location.href='" + sURL + "';";
-			else
-				return "document.location.href='" + sURL + "';";
-		}
+			return "document.location.href='" + sURL + "';"
 	}
 	return '';
 	
@@ -1598,12 +1331,12 @@ function spm_getMenuClickAction(oNode, me)
 
 function spm_getMenuSpacingImage(sPos, me)
 {
-  var sAlign = me.menuAlignment.toLowerCase();
+  var sAlign = me.menuAlignment;
 
-  if ((sPos == 'left' && sAlign == 'right') || (sPos == 'right' && sAlign == 'left'))
+  if ((sPos == 'left' && sAlign == 'Right') || (sPos == 'right' && sAlign == 'Left'))
 		return "       <td width=\"100%\">" + spm_getSpacer(me) + "</td>";
 
-  if ((sPos == 'right' && sAlign == 'left') || (sPos == 'left' && sAlign == 'right'))
+  if ((sPos == 'right' && sAlign == 'Left') || (sPos == 'left' && sAlign == 'Right'))
 		return "       <td width=\"3px\">" + spm_getSpacer(me) + "</td>";
 
 	if (sAlign == 'Center')
@@ -1614,7 +1347,7 @@ function spm_getMenuSpacingImage(sPos, me)
 
 function spm_getSpacer(me) 
 {
-  return spm_getMenuImage('spacer.gif', me, false, ' ');
+  return spm_getMenuImage('spacer.gif', me, false);
     //return '&nbsp;'; //"<IMG SRC=\"" + me.systemImagesPath + "spacer.gif\">";
 }
 
@@ -1625,10 +1358,10 @@ function spm_getImage(oAttr, me)
 
   if (sImage.length)
   {
-    return spm_getHTMLImage(sImage, spm_getAttr(oAttr, 'imagepath', me.iconImagesPath), null, spm_getAttr(oAttr, 'title', ''));
+    return spm_getHTMLImage(sImage, spm_getAttr(oAttr, 'imagepath', me.iconImagesPath));
   }
   else
-    return spm_getMenuImage('spacer.gif', me, null, ' ');
+    return spm_getMenuImage('spacer.gif', me);
 }
 
 function spm_getItemHTML(oNode, sSide, sDef)
@@ -1637,35 +1370,24 @@ function spm_getItemHTML(oNode, sSide, sDef)
   return spm_getAttr(oNode, sSide + "html", sDef);
 }
 
-function spm_getMenuImage(sImage, me, bForce, sAlt)
+function spm_getMenuImage(sImage, me, bForce)
 {
     //'generates html for image using the SystemImagesPath property
-    return spm_getHTMLImage(sImage, me.systemImagesPath, bForce, sAlt);
+    return spm_getHTMLImage(sImage, me.systemImagesPath, bForce);
 }
 
-function spm_getHTMLImage(sImage, sPath, bForce, sAlt)
+function spm_getHTMLImage(sImage, sPath, bForce)
 {
     //'generates html for image using the SystemImagesPath property
-    if (spm_browserNeedsSpacer() == false && sImage == 'spacer.gif' && bForce != true)
+    if (spm_browserNeedsSpacer() == false && sImage == 'spacer.gif' && bForce == null)
         return '&nbsp;'; 
     else
-        return "<IMG SRC=\"" + sPath + sImage + "\" " + spm_getAlt(sAlt) + ">";
-}
-
-function spm_getAlt(sAlt)
-{
-	if (sAlt != null && sAlt.rtrim().length > 0)
-		return ' ALT="' + sAlt + '" ';
-	else
-		return '';
+        return "<IMG SRC=\"" + sPath + sImage + "\" ALT=\"" + sImage + "\">";
 }
 
 function spm_browserNeedsSpacer()
 {
-	if (spm_browserType() == 'ie')
-		return false;
-	else
-		return true;
+  return true;
 }
 
 function MyIIf(bFlag, sTrue, sFalse) 
@@ -1680,14 +1402,10 @@ function spm_getArrow(sImg, me)
 {
   //FIX
     if (sImg.length)
-        return spm_getMenuImage(sImg, me, null, '>');
+        return spm_getMenuImage(sImg, me);
     else
-    {
-      if (me.direction == 'rtl')
-				return "3"; 
-      else
-				return "4"; //'defaults to using wingdings font (4 = arrow)
-    }
+        return "4"; //'defaults to using wingdings font (4 = arrow)
+    
 }
 
 function spm_getMenuBorderStyle(me, shColor, hlColor, width)
@@ -1713,10 +1431,7 @@ String.prototype.ltrim = function () { return this.replace(/^\s*/, "");}
 String.prototype.rtrim = function () { return this.replace(/\s*$/, "");}
 String.prototype.trim  = function () { return this.ltrim().rtrim(); }
 
-if (spm_browserType() == 'safari')	//Safari Hack
-	var Document = null;
-	
-if (spm_browserType() != 'ie' && spm_browserType() != 'op' && Document != null)
+if (spm_browserType() != 'ie')
 {
   Document.prototype.loadXML = function (s) 
     {
@@ -1782,77 +1497,33 @@ function spm_getTags(sTag, oCtl)
 
 function spm_browserType()
 {
-	if (m_spm_sBrowser == null)
-	{
-		var agt=navigator.userAgent.toLowerCase();
+  var agt=navigator.userAgent.toLowerCase();
 
-		if (agt.toLowerCase().indexOf('konqueror') != -1) 
-			m_spm_sBrowser = 'kq';
-		else if (agt.toLowerCase().indexOf('opera') != -1) 
-			m_spm_sBrowser = 'op';
-		else if (agt.toLowerCase().indexOf('netscape') != -1) 
-			m_spm_sBrowser = 'ns';
-		else if (agt.toLowerCase().indexOf('msie') != -1)
-			m_spm_sBrowser = 'ie';
-		else if (agt.toLowerCase().indexOf('safari') != -1)
-			m_spm_sBrowser = 'safari';
-	  
-		if (m_spm_sBrowser == null)
-			m_spm_sBrowser = 'mo';  
-	}
-	//window.status = m_spm_sBrowser;
-	return m_spm_sBrowser;
+  if (agt.indexOf('netscape') != -1) 
+    return 'ns'
+  if (agt.indexOf('msie') != -1)
+    return 'ie';
+  
+  return 'mo';  
 }
 
-function spm_browserVersion()
-{
-	//Please offer a better solution if you have one!
-	var sType = spm_browserType();
-	var iVersion = parseFloat(navigator.appVersion);
-	var sAgent = navigator.userAgent.toLowerCase();
-	if (sType == 'ie')
-	{
-		var temp=navigator.appVersion.split("MSIE");
-		iVersion=parseFloat(temp[1]);
-	}
-	if (sType == 'ns')
-	{
-		var temp=sAgent.split("netscape");
-		iVersion=parseFloat(temp[1].split("/")[1]);	
-	}
-	return iVersion;
-}
-
-function spm_needsSubMenuDelay()
-{
-	if (spm_browserType() == 'ie')
-		return true;
-	else
-		return false;
-
-}
-
-function spm_supportsIFrameTrick()
-{
-	var sType = spm_browserType();
-	var sVersion = spm_browserVersion();
-	
-	if ((sType == 'ie' && sVersion < 5.5) || (sType == 'ns' && sVersion < 7) || (spm_browserType() == 'safari') || spm_isMac('ie'))
-	{
-		return false;
-	}
-	return true;
-}
-
-function spm_isMac(sType)
+function isMac()
 {
 //return true;
   var agt=navigator.userAgent.toLowerCase();
   if (agt.indexOf('mac') != -1) 
-  {
-		if (sType == null || spm_browserType() == sType)
-			return true;
-  }
+    return true;
+  else
+    return false;
+  
+}
+
+function isOpera()
+{
+//return true;
+  var agt=navigator.userAgent.toLowerCase();
+  if (agt.indexOf('opera') != -1) 
+    return true;
   else
     return false;
   
@@ -1862,8 +1533,7 @@ function spm_isMac(sType)
 function spm_getCurrentStyle(el, property) {
   if (document.defaultView) 
   {
-   // Get computed style information:
-
+    // Get computed style information:
     if (el.nodeType != el.ELEMENT_NODE) return null;
     return document.defaultView.getComputedStyle(el,'').getPropertyValue(property.split('-').join(''));
   }
@@ -1986,8 +1656,11 @@ function spm_parseFunctionContents(fnc)
   return s;
 }
 
+
+
+
 //--- For JS DOM ---//
-function SPJSXMLNode(sNodeName, sID, oParent, sTitle, sURL, sImage, sImagePath, sRightHTML, sLeftHTML, sRunAtServer, sItemStyle, sImageStyle, sToolTip, sItemCSS, sItemSelCSS) 
+function SPJSXMLNode(sNodeName, sID, oParent, sTitle, sURL, sImage, sImagePath, sRightHTML, sLeftHTML, sRunAtServer, sItemStyle, sImageStyle) 
 { 
   this.nodeName = sNodeName;
   this.id=sID;
@@ -2017,11 +1690,7 @@ function SPJSXMLNode(sNodeName, sID, oParent, sTitle, sURL, sImage, sImagePath, 
   this.server = sRunAtServer;
   this.itemstyle = sItemStyle;
   this.imagestyle = sImageStyle;
-  this.tooltip = sToolTip;
-  this.css = sItemCSS;
-  this.selcss = sItemSelCSS;
 }      
-
 SPJSXMLNode.prototype.getAttribute = function(s)
 {
   return this[s];
@@ -2042,7 +1711,7 @@ SPJSXMLNode.prototype.getAttribute = function(s)
     var sT = new Date() - m_iSPTimer;
     if (sT > 120000)
     {
-      sT = '';
+      sT = ''
       m_oSPDebugCtl.value = '---reset---';
       m_iSPTotalTimer=0;
     }
@@ -2061,7 +1730,7 @@ SPJSXMLNode.prototype.getAttribute = function(s)
       
     if (document.forms.length > 0 && m_oSPDebugCtl == null)
     {      
-      document.forms(0).insertAdjacentHTML('afterEnd', '<br><TEXTAREA ID="my__Debug" STYLE="WIDTH: 100%; HEIGHT: 100px"></TEXTAREA>');
+      document.forms(0).all(0).insertAdjacentHTML('afterEnd', '<TEXTAREA ID="my__Debug" STYLE="WIDTH: 100%; HEIGHT: 300px"></TEXTAREA>');
       m_oSPDebugCtl = document.all('my__Debug');
     }
 
@@ -2073,62 +1742,3 @@ SPJSXMLNode.prototype.getAttribute = function(s)
     m_iSPTimer = new Date();
   }
 
-	if (window.__smartNav != null)
-		window.setTimeout(spm_fixSmartNav, 1000);
-	function spm_fixSmartNav()
-	{
-		if (window.__smartNav != null)
-		{
-			if (document.readyState == 'complete')
-			{
-				var o = spm_getById('SolpartMenuDI');
-				if (o != null)
-				{
-					if (o.length == null)
-					{
-							if (o.xml != null)
-								spm_initMyMenu(o, o.parentElement);
-					}
-					else
-					{
-						for (var i=0; i<o.length; i++)
-						{
-							if (o[i].xml != null)
-								spm_initMyMenu(o[i], o.parentElement);
-						}
-					}
-				}
-			}
-			else
-				window.setTimeout(spm_fixSmartNav, 1000);
-		}
-	}
-
-	function spm_elementDims(o, bIncludeBody, me)
-	{
-		var bHidden = (o.style.display == 'none');
-		
-		if (bHidden)
-			o.style.display = "";
-		this.t = spm_elementTop(o, bIncludeBody);
-		this.l = spm_elementLeft(o, bIncludeBody);
-		if (!spm_isMac('ie'))
-		{
-			o.style.top = spm_getCoord(0);
-			o.style.left = spm_getCoord(0);
-		}
-		this.w = spm_getElementWidth(o);
-		this.h = spm_getElementHeight(o);
-		if (!spm_isMac('ie'))
-		{
-			o.style.top = spm_getCoord(this.t);
-			o.style.left = spm_getCoord(this.l);
-		}
-		if (bHidden)
-			o.style.display = "none";
-	}
-
-function spm_getCoord(i)
-{
-	return i + 'px';
-}

@@ -1,14 +1,12 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2006 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2005 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
  * 
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
- * "Support Open Source software. What about a donation today?"
  * 
  * File Name: uk.js
  * 	Ukrainian language file.
@@ -43,8 +41,6 @@ RemoveLink			: "Знищити посилання",
 Anchor				: "Вставити/Редагувати якір",
 InsertImageLbl		: "Зображення",
 InsertImage			: "Вставити/Редагувати зображення",
-InsertFlashLbl		: "Flash",
-InsertFlash			: "Вставити/Редагувати Flash",
 InsertTableLbl		: "Таблиця",
 InsertTable			: "Вставити/Редагувати таблицю",
 InsertLineLbl		: "Лінія",
@@ -85,8 +81,6 @@ Find				: "Пошук",
 Replace				: "Заміна",
 SpellCheck			: "Перевірити орфографію",
 UniversalKeyboard	: "Універсальна клавіатура",
-PageBreakLbl		: "Page Break",	//MISSING
-PageBreak			: "Insert Page Break",	//MISSING
 
 Form			: "Форма",
 Checkbox		: "Флагова кнопка",
@@ -98,13 +92,8 @@ Button			: "Кнопка",
 SelectionField	: "Список",
 ImageButton		: "Кнопка із зображенням",
 
-FitWindow		: "Maximize the editor size",	//MISSING
-
 // Context Menu
 EditLink			: "Вставити посилання",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
 InsertRow			: "Вставити строку",
 DeleteRows			: "Видалити строки",
 InsertColumn		: "Вставити колонку",
@@ -113,11 +102,9 @@ InsertCell			: "Вставити комірку",
 DeleteCells			: "Видалити комірки",
 MergeCells			: "Об'єднати комірки",
 SplitCell			: "Роз'єднати комірку",
-TableDelete			: "Delete Table",	//MISSING
 CellProperties		: "Властивості комірки",
 TableProperties		: "Властивості таблиці",
 ImageProperties		: "Властивості зображення",
-FlashProperties		: "Властивості Flash",
 
 AnchorProp			: "Властивості якоря",
 ButtonProp			: "Властивості кнопки",
@@ -141,9 +128,6 @@ UnknownToolbarItem	: "Невідомий елемент панелі інстр�
 UnknownCommand		: "Невідоме ім'я команди \"%1\"",
 NotImplemented		: "Команда не реалізована",
 UnknownToolbarSet	: "Панель інструментів \"%1\" не існує",
-NoActiveX			: "Your browser's security settings could limit some features of the editor. You must enable the option \"Run ActiveX controls and plug-ins\". You may experience errors and notice missing features.",	//MISSING
-BrowseServerBlocked : "The resources browser could not be opened. Make sure that all popup blockers are disabled.",	//MISSING
-DialogBlocked		: "It was not possible to open the dialog window. Make sure all popup blockers are disabled.",	//MISSING
 
 // Dialogs
 DlgBtnOK			: "ОК",
@@ -151,12 +135,10 @@ DlgBtnCancel		: "Скасувати",
 DlgBtnClose			: "Зачинити",
 DlgBtnBrowseServer	: "Передивитися на сервері",
 DlgAdvancedTag		: "Розширений",
-DlgOpOther			: "<Інше>",
-DlgInfoTab			: "Інфо",
-DlgAlertUrl			: "Вставте, будь-ласка, URL",
+DlgOpOther			: "&lt;Інше&gt;",
 
 // General Dialogs Labels
-DlgGenNotSet		: "<не визначено>",
+DlgGenNotSet		: "&lt;не визначено&gt;",
 DlgGenId			: "Ідентифікатор",
 DlgGenLangDir		: "Напрямок мови",
 DlgGenLangDirLtr	: "Зліва на право (LTR)",
@@ -200,16 +182,6 @@ DlgImgPreview		: "Попередній перегляд",
 DlgImgAlertUrl		: "Будь ласка, введіть URL зображення",
 DlgImgLinkTab		: "Посилання",
 
-// Flash Dialog
-DlgFlashTitle		: "Властивості Flash",
-DlgFlashChkPlay		: "Авто програвання",
-DlgFlashChkLoop		: "Зациклити",
-DlgFlashChkMenu		: "Дозволити меню Flash",
-DlgFlashScale		: "Масштаб",
-DlgFlashScaleAll	: "Показати всі",
-DlgFlashScaleNoBorder	: "Без рамки",
-DlgFlashScaleFit	: "Дійсний розмір",
-
 // Link Dialog
 DlgLnkWindowTitle	: "Посилання",
 DlgLnkInfoTab		: "Інформація посилання",
@@ -220,12 +192,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Якір на цю сторінку",
 DlgLnkTypeEMail		: "Эл. пошта",
 DlgLnkProto			: "Протокол",
-DlgLnkProtoOther	: "<інше>",
+DlgLnkProtoOther	: "&lt;інше&gt;",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Оберіть якір",
 DlgLnkAnchorByName	: "За ім'ям якоря",
 DlgLnkAnchorById	: "За ідентифікатором елемента",
-DlgLnkNoAnchors		: "<Немає якорів доступних в цьому документі>",
+DlgLnkNoAnchors		: "&lt;Немає якорів доступних в цьому документі&gt;",
 DlgLnkEMail			: "Адреса ел. пошти",
 DlgLnkEMailSubject	: "Тема листа",
 DlgLnkEMailBody		: "Тіло повідомлення",
@@ -233,8 +205,8 @@ DlgLnkUpload		: "Закачати",
 DlgLnkBtnUpload		: "Переслати на сервер",
 
 DlgLnkTarget		: "Ціль",
-DlgLnkTargetFrame	: "<фрейм>",
-DlgLnkTargetPopup	: "<спливаюче вікно>",
+DlgLnkTargetFrame	: "&lt;фрейм&gt;",
+DlgLnkTargetPopup	: "&lt;спливаюче вікно&gt;",
 DlgLnkTargetBlank	: "Нове вікно (_blank)",
 DlgLnkTargetParent	: "Батьківське вікно (_parent)",
 DlgLnkTargetSelf	: "Теж вікно (_self)",
@@ -258,7 +230,6 @@ DlgLnkPopTop		: "Позиція зверху",
 DlnLnkMsgNoUrl		: "Будь ласка, занесіть URL посилання",
 DlnLnkMsgNoEMail	: "Будь ласка, занесіть адрес эл. почты",
 DlnLnkMsgNoAnchor	: "Будь ласка, оберіть якір",
-DlnLnkMsgInvPopName	: "The popup name must begin with an alphabetic character and must not contain spaces",	//MISSING
 
 // Color Dialog
 DlgColorTitle		: "Оберіть колір",
@@ -288,8 +259,7 @@ DlgTableWidthPc		: "відсотків",
 DlgTableHeight		: "Висота",
 DlgTableCellSpace	: "Проміжок (spacing)",
 DlgTableCellPad		: "Відступ (padding)",
-DlgTableCaption		: "Заголовок (Caption)",
-DlgTableSummary		: "Summary",	//MISSING
+DlgTableCaption		: "Заголовок",
 
 // Table Cell Dialog
 DlgCellTitle		: "Властивості комірки",
@@ -340,10 +310,7 @@ PasteErrorCopy	: "Настройки безпеки вашого браузер�
 PasteAsText		: "Вставити тільки текст",
 PasteFromWord	: "Вставити з Word",
 
-DlgPasteMsg2	: "Будь-ласка, вставте з буфера обміну в цю область, користуючись комбінацією клавіш (<STRONG>Ctrl+V</STRONG>) та натисніть <STRONG>OK</STRONG>.",
-DlgPasteIgnoreFont		: "Ігнорувати налаштування шрифтів",
-DlgPasteRemoveStyles	: "Видалити налаштування стилів",
-DlgPasteCleanBox		: "Очистити область",
+DlgPasteMsg		: "Редактор не може автоматично виконати операцію вставки  внаслідок <STRONG>налаштування безпеки</STRONG> вашого браузера.<BR> Будь ласка, вставте текст в наступне поле введення, використовуючи клавіатуру (<STRONG>Ctrl+V</STRONG>),  і натисніть <STRONG>ОК</STRONG>.",
 
 // Color Picker
 ColorAutomatic	: "Автоматичний",
@@ -375,11 +342,8 @@ DlgSpellManyChanges		: "Перевірку орфографії завершен
 IeSpellDownload			: "Модуль перевірки орфографії не встановлено. Бажаєтн завантажити його зараз?",
 
 // Button Dialog
-DlgButtonText		: "Текст (Значення)",
-DlgButtonType		: "Тип",
-DlgButtonTypeBtn	: "Button",	//MISSING
-DlgButtonTypeSbm	: "Submit",	//MISSING
-DlgButtonTypeRst	: "Reset",	//MISSING
+DlgButtonText	: "Текст (Значення)",
+DlgButtonType	: "Тип",
 
 // Checkbox and Radio Button Dialogs
 DlgCheckboxName		: "Ім'я",
@@ -428,10 +392,9 @@ DlgHiddenValue	: "Значення",
 // Bulleted List Dialog
 BulletedListProp	: "Властивості маркованого списка",
 NumberedListProp	: "Властивості нумерованного списка",
-DlgLstStart			: "Start",	//MISSING
 DlgLstType			: "Тип",
 DlgLstTypeCircle	: "Коло",
-DlgLstTypeDisc		: "Disc",	//MISSING
+DlgLstTypeDisk		: "Диск",
 DlgLstTypeSquare	: "Квадрат",
 DlgLstTypeNumbers	: "Номери (1, 2, 3)",
 DlgLstTypeLCase		: "Літери нижнього регістра(a, b, c)",
@@ -451,15 +414,6 @@ DlgDocLangDirLTR	: "Зліва на право (LTR)",
 DlgDocLangDirRTL	: "Зправа на лево (RTL)",
 DlgDocLangCode		: "Код мови",
 DlgDocCharSet		: "Кодування набору символів",
-DlgDocCharSetCE		: "Central European",	//MISSING
-DlgDocCharSetCT		: "Chinese Traditional (Big5)",	//MISSING
-DlgDocCharSetCR		: "Cyrillic",	//MISSING
-DlgDocCharSetGR		: "Greek",	//MISSING
-DlgDocCharSetJP		: "Japanese",	//MISSING
-DlgDocCharSetKR		: "Korean",	//MISSING
-DlgDocCharSetTR		: "Turkish",	//MISSING
-DlgDocCharSetUN		: "Unicode (UTF-8)",	//MISSING
-DlgDocCharSetWE		: "Western European",	//MISSING
 DlgDocCharSetOther	: "Інше кодування набору символів",
 
 DlgDocDocType		: "Заголовок типу документу",
@@ -489,12 +443,10 @@ DlgTemplatesTitle	: "Шаблони змісту",
 DlgTemplatesSelMsg	: "Оберіть, будь ласка, шаблон для відкриття в редакторі<br>(поточний зміст буде втрачено):",
 DlgTemplatesLoading	: "Завантаження списку шаблонів. Зачекайте, будь ласка...",
 DlgTemplatesNoTpl	: "(Не визначено жодного шаблону)",
-DlgTemplatesReplace	: "Replace actual contents",	//MISSING
 
 // About Dialog
 DlgAboutAboutTab	: "Про програму",
 DlgAboutBrowserInfoTab	: "Інформація браузера",
-DlgAboutLicenseTab	: "License",	//MISSING
 DlgAboutVersion		: "Версія",
 DlgAboutLicense		: "Ліцензовано згідно умовам GNU Lesser General Public License",
 DlgAboutInfo		: "Додаткову інформацію дивіться на "

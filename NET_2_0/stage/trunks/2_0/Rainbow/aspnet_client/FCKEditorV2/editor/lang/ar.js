@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2006 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2005 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -8,14 +8,11 @@
  * For further information visit:
  * 		http://www.fckeditor.net/
  * 
- * "Support Open Source software. What about a donation today?"
- * 
  * File Name: ar.js
  * 	Arabic language file.
  * 
  * File Authors:
  * 		Abdul-Aziz Abdul-Kareem Al-Oraij (http://aziz.oraij.com)
- * 		Abu Faisal (http://www.24at24.com)
  */
 
 var FCKLang =
@@ -44,8 +41,6 @@ RemoveLink			: "إزالة رابط",
 Anchor				: "إدراج/تحرير إشارة مرجعية",
 InsertImageLbl		: "صورة",
 InsertImage			: "إدراج/تحرير صورة",
-InsertFlashLbl		: "فلاش",
-InsertFlash			: "إدراج/تحرير فيلم فلاش",
 InsertTableLbl		: "جدول",
 InsertTable			: "إدراج/تحرير جدول",
 InsertLineLbl		: "خط فاصل",
@@ -83,14 +78,12 @@ TextColor			: "لون النص",
 BGColor				: "لون الخلفية",
 Source				: "شفرة المصدر",
 Find				: "بحث",
-Replace				: "إستبدال",
+Replace				: "استبدال",
 SpellCheck			: "تدقيق إملائي",
 UniversalKeyboard	: "لوحة المفاتيح العالمية",
-PageBreakLbl		: "فصل الصفحة",
-PageBreak			: "إدخال صفحة جديدة",
 
 Form			: "نموذج",
-Checkbox		: "خانة إختيار",
+Checkbox		: "خانة اختيار",
 RadioButton		: "زر خيار",
 TextField		: "مربع نص",
 Textarea		: "ناحية نص",
@@ -99,13 +92,8 @@ Button			: "زر ضغط",
 SelectionField	: "قائمة منسدلة",
 ImageButton		: "زر صورة",
 
-FitWindow		: "تكبير حجم المحرر",
-
 // Context Menu
 EditLink			: "تحرير رابط",
-CellCM				: "خلية",
-RowCM				: "صف",
-ColumnCM			: "عمود",
 InsertRow			: "إدراج صف",
 DeleteRows			: "حذف صفوف",
 InsertColumn		: "إدراج عمود",
@@ -114,15 +102,13 @@ InsertCell			: "إدراج خلية",
 DeleteCells			: "حذف خلايا",
 MergeCells			: "دمج خلايا",
 SplitCell			: "تقسيم خلية",
-TableDelete			: "حذف الجدول",
 CellProperties		: "خصائص الخلية",
 TableProperties		: "خصائص الجدول",
 ImageProperties		: "خصائص الصورة",
-FlashProperties		: "خصائص فيلم الفلاش",
 
 AnchorProp			: "خصائص الإشارة المرجعية",
 ButtonProp			: "خصائص زر الضغط",
-CheckboxProp		: "خصائص خانة الإختيار",
+CheckboxProp		: "خصائص خانة الاختيار",
 HiddenFieldProp		: "خصائص الحقل الخفي",
 RadioButtonProp		: "خصائص زر الخيار",
 ImageButtonProp		: "خصائص زر الصورة",
@@ -134,7 +120,7 @@ FormProp			: "خصائص النموذج",
 FontFormats			: "عادي;منسّق;دوس;العنوان 1;العنوان  2;العنوان  3;العنوان  4;العنوان  5;العنوان  6",
 
 // Alerts and Messages
-ProcessingXHTML		: "إنتظر قليلاً ريثما تتم   معالَجة‏ XHTML. لن يستغرق طويلاً...",
+ProcessingXHTML		: "انتظر قليلاً ريثما تتم   معالَجة‏ XHTML. لن يستغرق طويلاً...",
 Done				: "تم",
 PasteWordConfirm	: "يبدو أن النص المراد لصقه منسوخ من برنامج وورد. هل تود تنظيفه قبل الشروع في عملية اللصق؟",
 NotCompatiblePaste	: "هذه الميزة تحتاج لمتصفح من النوعInternet Explorer إصدار 5.5 فما فوق. هل تود اللصق دون تنظيف الكود؟",
@@ -142,9 +128,6 @@ UnknownToolbarItem	: "عنصر شريط أدوات غير معروف \"%1\"",
 UnknownCommand		: "أمر غير معروف \"%1\"",
 NotImplemented		: "لم يتم دعم هذا الأمر",
 UnknownToolbarSet	: "لم أتمكن من العثور على طقم الأدوات \"%1\" ",
-NoActiveX			: "لتأمين متصفحك يجب أن تحدد بعض مميزات المحرر. يتوجب عليك تمكين الخيار \"Run ActiveX controls and plug-ins\". قد تواجة أخطاء وتلاحظ مميزات مفقودة",
-BrowseServerBlocked : "لايمكن فتح مصدر المتصفح. فضلا يجب التأكد بأن جميع موانع النوافذ المنبثقة معطلة",
-DialogBlocked		: "لايمكن فتح نافذة الحوار . فضلا تأكد من أن  مانع النوافذ المنبثة معطل .",
 
 // Dialogs
 DlgBtnOK			: "موافق",
@@ -152,25 +135,23 @@ DlgBtnCancel		: "إلغاء الأمر",
 DlgBtnClose			: "إغلاق",
 DlgBtnBrowseServer	: "تصفح الخادم",
 DlgAdvancedTag		: "متقدم",
-DlgOpOther			: "<أخرى>",
-DlgInfoTab			: "معلومات",
-DlgAlertUrl			: "الرجاء كتابة عنوان الإنترنت",
+DlgOpOther			: "&lt;أخرى&gt;",
 
 // General Dialogs Labels
-DlgGenNotSet		: "<بدون تحديد>",
-DlgGenId			: "الرقم",
-DlgGenLangDir		: "إتجاه النص",
+DlgGenNotSet		: "&lt;بدون تحديد&gt;",
+DlgGenId			: "Id",
+DlgGenLangDir		: "اتجاه النص",
 DlgGenLangDirLtr	: "اليسار لليمين (LTR)",
 DlgGenLangDirRtl	: "اليمين لليسار (RTL)",
 DlgGenLangCode		: "رمز اللغة",
-DlgGenAccessKey		: "مفاتيح الإختصار",
+DlgGenAccessKey		: "مفاتيح الاختصار",
 DlgGenName			: "الاسم",
 DlgGenTabIndex		: "الترتيب",
 DlgGenLongDescr		: "عنوان الوصف المفصّل",
 DlgGenClass			: "فئات التنسيق",
 DlgGenTitle			: "تلميح الشاشة",
 DlgGenContType		: "نوع التلميح",
-DlgGenLinkCharset	: "ترميز المادة المطلوبة",
+DlgGenLinkCharset	: "ترميز المادة المرطلوبة",
 DlgGenStyle			: "نمط",
 
 // Image Dialog
@@ -181,9 +162,9 @@ DlgImgURL			: "موقع الصورة",
 DlgImgUpload		: "رفع",
 DlgImgAlt			: "الوصف",
 DlgImgWidth			: "العرض",
-DlgImgHeight		: "الإرتفاع",
+DlgImgHeight		: "الارتفاع",
 DlgImgLockRatio		: "تناسق الحجم",
-DlgBtnResetSize		: "إستعادة الحجم الأصلي",
+DlgBtnResetSize		: "استعادة الحجم الأصلي",
 DlgImgBorder		: "سمك الحدود",
 DlgImgHSpace		: "تباعد أفقي",
 DlgImgVSpace		: "تباعد عمودي",
@@ -198,21 +179,11 @@ DlgImgAlignRight	: "يمين",
 DlgImgAlignTextTop	: "أعلى النص",
 DlgImgAlignTop		: "أعلى",
 DlgImgPreview		: "معاينة",
-DlgImgAlertUrl		: "فضلاً أكتب الموقع الذي توجد عليه هذه الصورة.",
-DlgImgLinkTab		: "الرابط",
-
-// Flash Dialog
-DlgFlashTitle		: "خصائص فيلم الفلاش",
-DlgFlashChkPlay		: "تشغيل تلقائي",
-DlgFlashChkLoop		: "تكرار",
-DlgFlashChkMenu		: "تمكين قائمة فيلم الفلاش",
-DlgFlashScale		: "الحجم",
-DlgFlashScaleAll	: "إظهار الكل",
-DlgFlashScaleNoBorder	: "بلا حدود",
-DlgFlashScaleFit	: "ضبط تام",
+DlgImgAlertUrl		: "فضلاً اكتب الموقع الذي توجد عليه هذه الصورة.",
+DlgImgLinkTab		: "Link",	//MISSING
 
 // Link Dialog
-DlgLnkWindowTitle	: "إرتباط تشعبي",
+DlgLnkWindowTitle	: "ارتباط تشعبي",
 DlgLnkInfoTab		: "معلومات الرابط",
 DlgLnkTargetTab		: "الهدف",
 
@@ -221,12 +192,12 @@ DlgLnkTypeURL		: "العنوان",
 DlgLnkTypeAnchor	: "مكان في هذا المستند",
 DlgLnkTypeEMail		: "بريد إلكتروني",
 DlgLnkProto			: "البروتوكول",
-DlgLnkProtoOther	: "<أخرى>",
+DlgLnkProtoOther	: "&lt;أخرى&gt;",
 DlgLnkURL			: "الموقع",
 DlgLnkAnchorSel		: "اختر علامة مرجعية",
 DlgLnkAnchorByName	: "حسب اسم العلامة",
 DlgLnkAnchorById	: "حسب تعريف العنصر",
-DlgLnkNoAnchors		: "<لا يوجد علامات مرجعية في هذا المستند>",
+DlgLnkNoAnchors		: "&lt;لا يوجد علامات مرجعية في هذا المستند&gt;",
 DlgLnkEMail			: "عنوان بريد إلكتروني",
 DlgLnkEMailSubject	: "موضوع الرسالة",
 DlgLnkEMailBody		: "محتوى الرسالة",
@@ -234,8 +205,8 @@ DlgLnkUpload		: "رفع",
 DlgLnkBtnUpload		: "أرسلها للخادم",
 
 DlgLnkTarget		: "الهدف",
-DlgLnkTargetFrame	: "<إطار>",
-DlgLnkTargetPopup	: "<نافذة منبثقة>",
+DlgLnkTargetFrame	: "&lt;إطار&gt;",
+DlgLnkTargetPopup	: "&lt;نافذة منبثقة&gt;",
 DlgLnkTargetBlank	: "إطار جديد (_blank)",
 DlgLnkTargetParent	: "الإطار الأصل (_parent)",
 DlgLnkTargetSelf	: "نفس الإطار (_self)",
@@ -252,23 +223,22 @@ DlgLnkPopToolbar	: "شريط الأدوات",
 DlgLnkPopFullScrn	: "ملئ الشاشة (IE)",
 DlgLnkPopDependent	: "تابع (Netscape)",
 DlgLnkPopWidth		: "العرض",
-DlgLnkPopHeight		: "الإرتفاع",
+DlgLnkPopHeight		: "الارتفاع",
 DlgLnkPopLeft		: "التمركز لليسار",
 DlgLnkPopTop		: "التمركز للأعلى",
 
 DlnLnkMsgNoUrl		: "فضلاً أدخل عنوان الموقع الذي يشير إليه الرابط",
 DlnLnkMsgNoEMail	: "فضلاً أدخل عنوان البريد الإلكتروني",
 DlnLnkMsgNoAnchor	: "فضلاً حدد العلامة المرجعية المرغوبة",
-DlnLnkMsgInvPopName	: "The popup name must begin with an alphabetic character and must not contain spaces",	//MISSING
 
 // Color Dialog
 DlgColorTitle		: "اختر لوناً",
 DlgColorBtnClear	: "مسح",
 DlgColorHighlight	: "تحديد",
-DlgColorSelected	: "إختيار",
+DlgColorSelected	: "اختيار",
 
 // Smiley Dialog
-DlgSmileyTitle		: "إدراج إبتسامات ",
+DlgSmileyTitle		: "إدراج ابتسامات ",
 
 // Special Character Dialog
 DlgSpecialCharTitle	: "إدراج رمز",
@@ -286,18 +256,17 @@ DlgTableAlignRight	: "يمين",
 DlgTableWidth		: "العرض",
 DlgTableWidthPx		: "بكسل",
 DlgTableWidthPc		: "بالمئة",
-DlgTableHeight		: "الإرتفاع",
+DlgTableHeight		: "الارتفاع",
 DlgTableCellSpace	: "تباعد الخلايا",
 DlgTableCellPad		: "المسافة البادئة",
 DlgTableCaption		: "الوصف",
-DlgTableSummary		: "الخلاصة",
 
 // Table Cell Dialog
 DlgCellTitle		: "خصائص الخلية",
 DlgCellWidth		: "العرض",
 DlgCellWidthPx		: "بكسل",
 DlgCellWidthPc		: "بالمئة",
-DlgCellHeight		: "الإرتفاع",
+DlgCellHeight		: "الارتفاع",
 DlgCellWordWrap		: "التفاف النص",
 DlgCellWordWrapNotSet	: "<بدون تحديد>",
 DlgCellWordWrapYes	: "نعم",
@@ -313,8 +282,8 @@ DlgCellVerAlignTop	: "أعلى",
 DlgCellVerAlignMiddle	: "وسط",
 DlgCellVerAlignBottom	: "أسفل",
 DlgCellVerAlignBaseline	: "على السطر",
-DlgCellRowSpan		: "إمتداد الصفوف",
-DlgCellCollSpan		: "إمتداد الأعمدة",
+DlgCellRowSpan		: "امتداد الصفوف",
+DlgCellCollSpan		: "امتداد الأعمدة",
 DlgCellBackColor	: "لون الخلفية",
 DlgCellBorderColor	: "لون الحدود",
 DlgCellBtnSelect	: "حدّد...",
@@ -325,26 +294,23 @@ DlgFindFindBtn		: "ابحث",
 DlgFindNotFoundMsg	: "لم يتم العثور على النص المحدد.",
 
 // Replace Dialog
-DlgReplaceTitle			: "إستبدال",
+DlgReplaceTitle			: "استبدال",
 DlgReplaceFindLbl		: "البحث عن:",
-DlgReplaceReplaceLbl	: "إستبدال بـ:",
+DlgReplaceReplaceLbl	: "استبدال بـ:",
 DlgReplaceCaseChk		: "مطابقة حالة الأحرف",
-DlgReplaceReplaceBtn	: "إستبدال",
-DlgReplaceReplAllBtn	: "إستبدال الكل",
+DlgReplaceReplaceBtn	: "استبدال",
+DlgReplaceReplAllBtn	: "استبدال الكل",
 DlgReplaceWordChk		: "الكلمة بالكامل فقط",
 
 // Paste Operations / Dialog
-PasteErrorPaste	: "الإعدادات الأمنية للمتصفح الذي تستخدمه تمنع اللصق التلقائي. فضلاً إستخدم لوحة المفاتيح لفعل ذلك (Ctrl+V).",
-PasteErrorCut	: "الإعدادات الأمنية للمتصفح الذي تستخدمه تمنع القص التلقائي. فضلاً إستخدم لوحة المفاتيح لفعل ذلك (Ctrl+X).",
-PasteErrorCopy	: "الإعدادات الأمنية للمتصفح الذي تستخدمه تمنع النسخ التلقائي. فضلاً إستخدم لوحة المفاتيح لفعل ذلك (Ctrl+C).",
+PasteErrorPaste	: "الإعدادات الأمنية للمتصفح الذي تستخدمه تمنع اللصق التلقائي. فضلاً استخدم لوحة المفاتيح لفعل ذلك (Ctrl+V).",
+PasteErrorCut	: "الإعدادات الأمنية للمتصفح الذي تستخدمه تمنع القص التلقائي. فضلاً استخدم لوحة المفاتيح لفعل ذلك (Ctrl+X).",
+PasteErrorCopy	: "الإعدادات الأمنية للمتصفح الذي تستخدمه تمنع النسخ التلقائي. فضلاً استخدم لوحة المفاتيح لفعل ذلك (Ctrl+C).",
 
 PasteAsText		: "لصق كنص بسيط",
 PasteFromWord	: "لصق من وورد",
 
-DlgPasteMsg2	: "الصق داخل الصندوق بإستخدام زرّي (<STRONG>Ctrl+V</STRONG>) في لوحة المفاتيح، ثم اضغط زر  <STRONG>موافق</STRONG>.",
-DlgPasteIgnoreFont		: "تجاهل تعريفات أسماء الخطوط",
-DlgPasteRemoveStyles	: "إزالة تعريفات الأنماط",
-DlgPasteCleanBox		: "نظّف محتوى الصندوق",
+DlgPasteMsg		: "لم يتمكن المحرر من القيام باللصق تلقائياً، نظراً <STRONG>لإعدادت متصفحك الأمنية</STRONG>.<BR>فضلاً إلصق داخل المربع التالي باستخدام لوحة المفاتيح (<STRONG>Ctrl+V</STRONG>) ثم اضغط <STRONG>موافق</STRONG>.",
 
 // Color Picker
 ColorAutomatic	: "تلقائي",
@@ -366,7 +332,7 @@ DlgSpellBtnIgnoreAll	: "تجاهل الكل",
 DlgSpellBtnReplace		: "تغيير",
 DlgSpellBtnReplaceAll	: "تغيير الكل",
 DlgSpellBtnUndo			: "تراجع",
-DlgSpellNoSuggestions	: "- لا توجد إقتراحات -",
+DlgSpellNoSuggestions	: "- لا توجد اقتراحات -",
 DlgSpellProgress		: "جاري التدقيق إملائياً",
 DlgSpellNoMispell		: "تم إكمال التدقيق الإملائي: لم يتم العثور على أي أخطاء إملائية",
 DlgSpellNoChanges		: "تم إكمال التدقيق الإملائي: لم يتم تغيير أي كلمة",
@@ -376,11 +342,8 @@ DlgSpellManyChanges		: "تم إكمال التدقيق الإملائي: تم ت
 IeSpellDownload			: "المدقق الإملائي (الإنجليزي) غير مثبّت. هل تود تحميله الآن؟",
 
 // Button Dialog
-DlgButtonText		: "القيمة/التسمية",
-DlgButtonType		: "نوع الزر",
-DlgButtonTypeBtn	: "Button",	//MISSING
-DlgButtonTypeSbm	: "Submit",	//MISSING
-DlgButtonTypeRst	: "Reset",	//MISSING
+DlgButtonText	: "القيمة/التسمية",
+DlgButtonType	: "نوع الزر",
 
 // Checkbox and Radio Button Dialogs
 DlgCheckboxName		: "الاسم",
@@ -405,7 +368,7 @@ DlgSelectBtnAdd		: "إضافة",
 DlgSelectBtnModify	: "تعديل",
 DlgSelectBtnUp		: "تحريك لأعلى",
 DlgSelectBtnDown	: "تحريك لأسفل",
-DlgSelectBtnSetValue : "إجعلها محددة",
+DlgSelectBtnSetValue : "اجعلها محددة",
 DlgSelectBtnDelete	: "إزالة",
 
 // Textarea Dialog
@@ -429,10 +392,9 @@ DlgHiddenValue	: "القيمة",
 // Bulleted List Dialog
 BulletedListProp	: "خصائص التعداد النقطي",
 NumberedListProp	: "خصائص التعداد الرقمي",
-DlgLstStart			: "Start",	//MISSING
 DlgLstType			: "النوع",
 DlgLstTypeCircle	: "دائرة",
-DlgLstTypeDisc		: "قرص",
+DlgLstTypeDisk		: "قرص",
 DlgLstTypeSquare	: "مربع",
 DlgLstTypeNumbers	: "أرقام (1، 2، 3)َ",
 DlgLstTypeLCase		: "حروف صغيرة (a, b, c)َ",
@@ -447,20 +409,11 @@ DlgDocColorsTab		: "الألوان والهوامش",
 DlgDocMetaTab		: "المعرّفات الرأسية",
 
 DlgDocPageTitle		: "عنوان الصفحة",
-DlgDocLangDir		: "إتجاه اللغة",
+DlgDocLangDir		: "اتجاه اللغة",
 DlgDocLangDirLTR	: "اليسار لليمين (LTR)",
 DlgDocLangDirRTL	: "اليمين لليسار (RTL)",
 DlgDocLangCode		: "رمز اللغة",
 DlgDocCharSet		: "ترميز الحروف",
-DlgDocCharSetCE		: "Central European",	//MISSING
-DlgDocCharSetCT		: "Chinese Traditional (Big5)",	//MISSING
-DlgDocCharSetCR		: "Cyrillic",	//MISSING
-DlgDocCharSetGR		: "Greek",	//MISSING
-DlgDocCharSetJP		: "Japanese",	//MISSING
-DlgDocCharSetKR		: "Korean",	//MISSING
-DlgDocCharSetTR		: "Turkish",	//MISSING
-DlgDocCharSetUN		: "Unicode (UTF-8)",	//MISSING
-DlgDocCharSetWE		: "Western European",	//MISSING
 DlgDocCharSetOther	: "ترميز حروف آخر",
 
 DlgDocDocType		: "ترويسة نوع  الصفحة",
@@ -485,17 +438,15 @@ DlgDocMeCopy		: "المالك",
 DlgDocPreview		: "معاينة",
 
 // Templates Dialog
-Templates			: "القوالب",
-DlgTemplatesTitle	: "قوالب المحتوى",
-DlgTemplatesSelMsg	: "اختر القالب الذي تود وضعه في المحرر <br>(سيتم فقدان المحتوى الحالي):",
-DlgTemplatesLoading	: "جاري تحميل قائمة القوالب، الرجاء الإنتظار...",
-DlgTemplatesNoTpl	: "(لم يتم تعريف أي قالب)",
-DlgTemplatesReplace	: "Replace actual contents",	//MISSING
+Templates			: "Templates",	//MISSING
+DlgTemplatesTitle	: "Content Templates",	//MISSING
+DlgTemplatesSelMsg	: "Please select the template to open in the editor<br>(the actual contents will be lost):",	//MISSING
+DlgTemplatesLoading	: "Loading templates list. Please wait...",	//MISSING
+DlgTemplatesNoTpl	: "(No templates defined)",	//MISSING
 
 // About Dialog
 DlgAboutAboutTab	: "نبذة",
 DlgAboutBrowserInfoTab	: "معلومات متصفحك",
-DlgAboutLicenseTab	: "الترخيص",
 DlgAboutVersion		: "الإصدار",
 DlgAboutLicense		: "مرخّص بحسب قانون  GNU LGPL",
 DlgAboutInfo		: "لمزيد من المعلومات تفضل بزيارة"

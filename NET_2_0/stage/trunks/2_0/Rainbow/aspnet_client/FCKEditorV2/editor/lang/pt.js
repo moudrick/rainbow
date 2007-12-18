@@ -1,14 +1,12 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2006 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2005 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
  * 
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
- * "Support Open Source software. What about a donation today?"
  * 
  * File Name: pt.js
  * 	Portuguese language file.
@@ -43,8 +41,6 @@ RemoveLink			: "Eliminar Hiperligação",
 Anchor				: " Inserir/Editar Âncora",
 InsertImageLbl		: "Imagem",
 InsertImage			: "Inserir/Editar Imagem",
-InsertFlashLbl		: "Flash",
-InsertFlash			: "Inserir/Editar Flash",
 InsertTableLbl		: "Tabela",
 InsertTable			: "Inserir/Editar Tabela",
 InsertLineLbl		: "Linha",
@@ -85,8 +81,6 @@ Find				: "Procurar",
 Replace				: "Substituir",
 SpellCheck			: "Verificação Ortográfica",
 UniversalKeyboard	: "Teclado Universal",
-PageBreakLbl		: "Quebra de Página",
-PageBreak			: "Inserir Quebra de Página",
 
 Form			: "Formulário",
 Checkbox		: "Caixa de Verificação",
@@ -98,13 +92,8 @@ Button			: "Botão",
 SelectionField	: "Caixa de Combinação",
 ImageButton		: "Botão de Imagem",
 
-FitWindow		: "Maximizar o tamanho do editor",
-
 // Context Menu
 EditLink			: "Editar Hiperligação",
-CellCM				: "Célula",
-RowCM				: "Linha",
-ColumnCM			: "Coluna",
 InsertRow			: "Inserir Linha",
 DeleteRows			: "Eliminar Linhas",
 InsertColumn		: "Inserir Coluna",
@@ -113,18 +102,16 @@ InsertCell			: "Inserir Célula",
 DeleteCells			: "Eliminar Célula",
 MergeCells			: "Unir Células",
 SplitCell			: "Dividir Célula",
-TableDelete			: "Eliminar Tabela",
 CellProperties		: "Propriedades da Célula",
 TableProperties		: "Propriedades da Tabela",
 ImageProperties		: "Propriedades da Imagem",
-FlashProperties		: "Propriedades do Flash",
 
 AnchorProp			: "Propriedades da Âncora",
 ButtonProp			: "Propriedades do Botão",
 CheckboxProp		: "Propriedades da Caixa de Verificação",
 HiddenFieldProp		: "Propriedades do Campo Escondido",
 RadioButtonProp		: "Propriedades do Botão de Opção",
-ImageButtonProp		: "Propriedades do Botão de imagens",
+ImageButtonProp		: " Propriedades do Botão de imagens",
 TextFieldProp		: "Propriedades do Campo de Texto",
 SelectionFieldProp	: "Propriedades da Caixa de Combinação",
 TextareaProp		: "Propriedades da Área de Texto",
@@ -141,9 +128,6 @@ UnknownToolbarItem	: "Item de barra desconhecido \"%1\"",
 UnknownCommand		: "Nome de comando desconhecido \"%1\"",
 NotImplemented		: "Comando não implementado",
 UnknownToolbarSet	: "Nome de barra \"%1\" não definido",
-NoActiveX			: "As definições de segurança do navegador podem limitar algumas potencalidades do editr. Deve activar a opção \"Executar controlos e extensões ActiveX\". Pode ocorrer erros ou verificar que faltam potencialidades.",
-BrowseServerBlocked : "Não foi possível abrir o navegador de recursos. Certifique-se que todos os bloqueadores de popup estão desactivados.",
-DialogBlocked		: "Não foi possível abrir a janela de diálogo. Certifique-se que todos os bloqueadores de popup estão desactivados.",
 
 // Dialogs
 DlgBtnOK			: "OK",
@@ -151,12 +135,10 @@ DlgBtnCancel		: "Cancelar",
 DlgBtnClose			: "Fechar",
 DlgBtnBrowseServer	: "Navegar no Servidor",
 DlgAdvancedTag		: "Avançado",
-DlgOpOther			: "<Outro>",
-DlgInfoTab			: "Informação",
-DlgAlertUrl			: "Por favor introduza o URL",
+DlgOpOther			: "&lt;Outro&gt;",
 
 // General Dialogs Labels
-DlgGenNotSet		: "<Não definido>",
+DlgGenNotSet		: "&lt;Não definido&gt;",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Orientação de idioma",
 DlgGenLangDirLtr	: "Esquerda à Direita (LTR)",
@@ -200,16 +182,6 @@ DlgImgPreview		: "Pré-visualizar",
 DlgImgAlertUrl		: "Por favor introduza o URL da imagem",
 DlgImgLinkTab		: "Hiperligação",
 
-// Flash Dialog
-DlgFlashTitle		: "Propriedades do Flash",
-DlgFlashChkPlay		: "Reproduzir automaticamente",
-DlgFlashChkLoop		: "Loop",
-DlgFlashChkMenu		: "Permitir Menu do Flash",
-DlgFlashScale		: "Escala",
-DlgFlashScaleAll	: "Mostrar tudo",
-DlgFlashScaleNoBorder	: "Sem Limites",
-DlgFlashScaleFit	: "Tamanho Exacto",
-
 // Link Dialog
 DlgLnkWindowTitle	: "Hiperligação",
 DlgLnkInfoTab		: "Informação de Hiperligação",
@@ -220,12 +192,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Referência a esta página",
 DlgLnkTypeEMail		: "E-Mail",
 DlgLnkProto			: "Protocolo",
-DlgLnkProtoOther	: "<outro>",
+DlgLnkProtoOther	: "&lt;outro&gt;",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Seleccionar una referência",
 DlgLnkAnchorByName	: "Por Nome de Referência",
 DlgLnkAnchorById	: "Por ID de elemento",
-DlgLnkNoAnchors		: "<Não há referências disponíveis no documento>",
+DlgLnkNoAnchors		: "&lt;Não há referências disponíveis no documento&gt;",
 DlgLnkEMail			: "Endereço de E-Mail",
 DlgLnkEMailSubject	: "Título de Mensagem",
 DlgLnkEMailBody		: "Corpo da Mensagem",
@@ -233,8 +205,8 @@ DlgLnkUpload		: "Carregar",
 DlgLnkBtnUpload		: "Enviar ao Servidor",
 
 DlgLnkTarget		: "Destino",
-DlgLnkTargetFrame	: "<Frame>",
-DlgLnkTargetPopup	: "<Janela de popup>",
+DlgLnkTargetFrame	: "&lt;Frame&gt;",
+DlgLnkTargetPopup	: "&lt;Janela de popup&gt;",
 DlgLnkTargetBlank	: "Nova Janela(_blank)",
 DlgLnkTargetParent	: "Janela Pai (_parent)",
 DlgLnkTargetSelf	: "Mesma janela (_self)",
@@ -255,10 +227,9 @@ DlgLnkPopHeight		: "Altura",
 DlgLnkPopLeft		: "Posição Esquerda",
 DlgLnkPopTop		: "Posição Direita",
 
-DlnLnkMsgNoUrl		: "Por favor introduza a hiperligação URL",
-DlnLnkMsgNoEMail	: "Por favor introduza o endereço de e-mail",
+DlnLnkMsgNoUrl		: "Por favor insira a hiperligação URL",
+DlnLnkMsgNoEMail	: "Por favor insira o endereço de e-mail",
 DlnLnkMsgNoAnchor	: "Por favor seleccione uma referência",
-DlnLnkMsgInvPopName	: "The popup name must begin with an alphabetic character and must not contain spaces",	//MISSING
 
 // Color Dialog
 DlgColorTitle		: "Seleccionar Cor",
@@ -289,7 +260,6 @@ DlgTableHeight		: "Altura",
 DlgTableCellSpace	: "Esp. e/células",
 DlgTableCellPad		: "Esp. interior",
 DlgTableCaption		: "Título",
-DlgTableSummary		: "Sumário",
 
 // Table Cell Dialog
 DlgCellTitle		: "Propriedades da Célula",
@@ -340,10 +310,7 @@ PasteErrorCopy	: "A configuração de segurança do navegador não permite a exe
 PasteAsText		: "Colar como Texto Simples",
 PasteFromWord	: "Colar do Word",
 
-DlgPasteMsg2	: "Por favor, cole dentro da seguinte caixa usando o teclado (<STRONG>Ctrl+V</STRONG>) e prima <STRONG>OK</STRONG>.",
-DlgPasteIgnoreFont		: "Ignorar da definições do Tipo de Letra ",
-DlgPasteRemoveStyles	: "Remover as definições de Estilos",
-DlgPasteCleanBox		: "Caixa de Limpeza",
+DlgPasteMsg		: "O editor não pode executar automaticamente o colar devido à <STRONG>configuração de segurança</STRONG> do navegador.<BR>Por favor cole dentro do seguinte quadro usando o teclado (<STRONG>Ctrl+V</STRONG>) e pressione <STRONG>OK</STRONG>.",
 
 // Color Picker
 ColorAutomatic	: "Automático",
@@ -375,11 +342,8 @@ DlgSpellManyChanges		: "Verificação ortográfica completa: %1 palavras alterad
 IeSpellDownload			: " Verificação ortográfica não instalada. Quer descarregar agora?",
 
 // Button Dialog
-DlgButtonText		: "Texto (Valor)",
-DlgButtonType		: "Tipo",
-DlgButtonTypeBtn	: "Button",	//MISSING
-DlgButtonTypeSbm	: "Submit",	//MISSING
-DlgButtonTypeRst	: "Reset",	//MISSING
+DlgButtonText	: "Texto (Valor)",
+DlgButtonType	: "Tipo",
 
 // Checkbox and Radio Button Dialogs
 DlgCheckboxName		: "Nome",
@@ -428,10 +392,9 @@ DlgHiddenValue	: "Valor",
 // Bulleted List Dialog
 BulletedListProp	: "Propriedades da Marca",
 NumberedListProp	: "Propriedades da Numeração",
-DlgLstStart			: "Start",	//MISSING
 DlgLstType			: "Tipo",
 DlgLstTypeCircle	: "Circulo",
-DlgLstTypeDisc		: "Disco",
+DlgLstTypeDisk		: "Disco",
 DlgLstTypeSquare	: "Quadrado",
 DlgLstTypeNumbers	: "Números (1, 2, 3)",
 DlgLstTypeLCase		: "Letras Minúsculas (a, b, c)",
@@ -451,15 +414,6 @@ DlgDocLangDirLTR	: "Esquerda à Direita (LTR)",
 DlgDocLangDirRTL	: "Direita à Esquerda (RTL)",
 DlgDocLangCode		: "Código de Idioma",
 DlgDocCharSet		: "Codificação de Caracteres",
-DlgDocCharSetCE		: "Central European",	//MISSING
-DlgDocCharSetCT		: "Chinese Traditional (Big5)",	//MISSING
-DlgDocCharSetCR		: "Cyrillic",	//MISSING
-DlgDocCharSetGR		: "Greek",	//MISSING
-DlgDocCharSetJP		: "Japanese",	//MISSING
-DlgDocCharSetKR		: "Korean",	//MISSING
-DlgDocCharSetTR		: "Turkish",	//MISSING
-DlgDocCharSetUN		: "Unicode (UTF-8)",	//MISSING
-DlgDocCharSetWE		: "Western European",	//MISSING
 DlgDocCharSetOther	: "Outra Codificação de Caracteres",
 
 DlgDocDocType		: "Tipo de Cabeçalho do Documento",
@@ -489,12 +443,10 @@ DlgTemplatesTitle	: "Modelo de Conteúdo",
 DlgTemplatesSelMsg	: "Por favor, seleccione o modelo a abrir no editor<br>(o conteúdo actual será perdido):",
 DlgTemplatesLoading	: "A carregar a lista de modelos. Aguarde por favor...",
 DlgTemplatesNoTpl	: "(Sem modelos definidos)",
-DlgTemplatesReplace	: "Replace actual contents",	//MISSING
 
 // About Dialog
 DlgAboutAboutTab	: "Acerca",
 DlgAboutBrowserInfoTab	: "Informação do Nevegador",
-DlgAboutLicenseTab	: "Licença",
 DlgAboutVersion		: "versão",
 DlgAboutLicense		: "Licenciado segundo os términos de GNU Lesser General Public License",
 DlgAboutInfo		: "Para mais informações por favor dirija-se a"

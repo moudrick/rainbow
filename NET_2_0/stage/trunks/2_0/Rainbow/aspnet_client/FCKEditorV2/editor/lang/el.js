@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2006 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2005 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -8,13 +8,10 @@
  * For further information visit:
  * 		http://www.fckeditor.net/
  * 
- * "Support Open Source software. What about a donation today?"
- * 
  * File Name: el.js
  * 	Greek language file.
  * 
  * File Authors:
- * 		Vangelis Bibakis (bibakisv[-a-t-]yahoo.com)
  * 		Spyros Barbatos (sbarbatos{at}users.sourceforge.net)
  */
 
@@ -41,11 +38,9 @@ RemoveFormat		: "Αφαίρεση Μορφοποίησης",
 InsertLinkLbl		: "Σύνδεσμος (Link)",
 InsertLink			: "Εισαγωγή/Μεταβολή Συνδέσμου (Link)",
 RemoveLink			: "Αφαίρεση Συνδέσμου (Link)",
-Anchor				: "Εισαγωγή/επεξεργασία Anchor",
+Anchor				: "Insert/Edit Anchor",	//MISSING
 InsertImageLbl		: "Εικόνα",
 InsertImage			: "Εισαγωγή/Μεταβολή Εικόνας",
-InsertFlashLbl		: "Εισαγωγή Flash",
-InsertFlash			: "Εισαγωγή/επεξεργασία Flash",
 InsertTableLbl		: "Πίνακας",
 InsertTable			: "Εισαγωγή/Μεταβολή Πίνακα",
 InsertLineLbl		: "Γραμμή",
@@ -67,15 +62,15 @@ RightJustify		: "Στοίχιση Δεξιά",
 BlockJustify		: "Πλήρης Στοίχιση (Block)",
 DecreaseIndent		: "Μείωση Εσοχής",
 IncreaseIndent		: "Αύξηση Εσοχής",
-Undo				: "Αναίρεση",
-Redo				: "Επαναφορά",
+Undo				: "Undo",
+Redo				: "Redo",
 NumberedListLbl		: "Λίστα με Αριθμούς",
 NumberedList		: "Εισαγωγή/Διαγραφή Λίστας με Αριθμούς",
 BulletedListLbl		: "Λίστα με Bullets",
 BulletedList		: "Εισαγωγή/Διαγραφή Λίστας με Bullets",
 ShowTableBorders	: "Προβολή Ορίων Πίνακα",
 ShowDetails			: "Προβολή Λεπτομερειών",
-Style				: "Στυλ",
+Style				: "Style",
 FontFormat			: "Μορφή Γραμματοσειράς",
 Font				: "Γραμματοσειρά",
 FontSize			: "Μέγεθος",
@@ -84,28 +79,21 @@ BGColor				: "Χρώμα Υποβάθρου",
 Source				: "HTML κώδικας",
 Find				: "Αναζήτηση",
 Replace				: "Αντικατάσταση",
-SpellCheck			: "Ορθογραφικός έλεγχος",
-UniversalKeyboard	: "Διεθνής πληκτρολόγιο",
-PageBreakLbl		: "Τέλος σελίδας",
-PageBreak			: "Εισαγωγή τέλους σελίδας",
+SpellCheck			: "Check Spell",	//MISSING
+UniversalKeyboard	: "Universal Keyboard",	//MISSING
 
-Form			: "Φόρμα",
-Checkbox		: "Κουτί επιλογής",
-RadioButton		: "Κουμπί Radio",
-TextField		: "Πεδίο κειμένου",
-Textarea		: "Περιοχή κειμένου",
-HiddenField		: "Κρυφό πεδίο",
-Button			: "Κουμπί",
-SelectionField	: "Πεδίο επιλογής",
-ImageButton		: "Κουμπί εικόνας",
-
-FitWindow		: "Μεγιστοποίηση προγράμματος",
+Form			: "Form",	//MISSING
+Checkbox		: "Checkbox",	//MISSING
+RadioButton		: "Radio Button",	//MISSING
+TextField		: "Text Field",	//MISSING
+Textarea		: "Textarea",	//MISSING
+HiddenField		: "Hidden Field",	//MISSING
+Button			: "Button",	//MISSING
+SelectionField	: "Selection Field",	//MISSING
+ImageButton		: "Image Button",	//MISSING
 
 // Context Menu
 EditLink			: "Μεταβολή Συνδέσμου (Link)",
-CellCM				: "Κελί",
-RowCM				: "Σειρά",
-ColumnCM			: "Στήλη",
 InsertRow			: "Εισαγωγή Γραμμής",
 DeleteRows			: "Διαγραφή Γραμμών",
 InsertColumn		: "Εισαγωγή Κολώνας",
@@ -114,24 +102,22 @@ InsertCell			: "Εισαγωγή Κελιού",
 DeleteCells			: "Διαγραφή Κελιών",
 MergeCells			: "Ενοποίηση Κελιών",
 SplitCell			: "Διαχωρισμός Κελιού",
-TableDelete			: "Διαγραφή πίνακα",
 CellProperties		: "Ιδιότητες Κελιού",
 TableProperties		: "Ιδιότητες Πίνακα",
 ImageProperties		: "Ιδιότητες Εικόνας",
-FlashProperties		: "Ιδιότητες Flash",
 
-AnchorProp			: "Ιδιότητες άγκυρας",
-ButtonProp			: "Ιδιότητες κουμπιού",
-CheckboxProp		: "Ιδιότητες κουμπιού επιλογής",
-HiddenFieldProp		: "Ιδιότητες κρυφού πεδίου",
-RadioButtonProp		: "Ιδιότητες κουμπιού radio",
-ImageButtonProp		: "Ιδιότητες κουμπιού εικόνας",
-TextFieldProp		: "Ιδιότητες πεδίου κειμένου",
-SelectionFieldProp	: "Ιδιότητες πεδίου επιλογής",
-TextareaProp		: "Ιδιότητες περιοχής κειμένου",
-FormProp			: "Ιδιότητες φόρμας",
+AnchorProp			: "Anchor Properties",	//MISSING
+ButtonProp			: "Button Properties",	//MISSING
+CheckboxProp		: "Checkbox Properties",	//MISSING
+HiddenFieldProp		: "Hidden Field Properties",	//MISSING
+RadioButtonProp		: "Radio Button Properties",	//MISSING
+ImageButtonProp		: "Image Button Properties",	//MISSING
+TextFieldProp		: "Text Field Properties",	//MISSING
+SelectionFieldProp	: "Selection Field Properties",	//MISSING
+TextareaProp		: "Textarea Properties",	//MISSING
+FormProp			: "Form Properties",	//MISSING
 
-FontFormats			: "Κανονικό;Μορφοποιημένο;Διεύθυνση;Επικεφαλίδα 1;Επικεφαλίδα 2;Επικεφαλίδα 3;Επικεφαλίδα 4;Επικεφαλίδα 5;Επικεφαλίδα 6",
+FontFormats			: "Normal;Formatted;Address;Heading 1;Heading 2;Heading 3;Heading 4;Heading 5;Heading 6",
 
 // Alerts and Messages
 ProcessingXHTML		: "Επεξεργασία XHTML. Παρακαλώ περιμένετε...",
@@ -142,36 +128,31 @@ UnknownToolbarItem	: "Άγνωστο αντικείμενο της μπάρας 
 UnknownCommand		: "Άγνωστή εντολή \"%1\"",
 NotImplemented		: "Η εντολή δεν έχει ενεργοποιηθεί",
 UnknownToolbarSet	: "Η μπάρα εργαλείων \"%1\" δεν υπάρχει",
-NoActiveX			: "Οι ρυθμίσεις ασφαλείας του browser σας μπορεί να περιορίσουν κάποιες ρυθμίσεις του προγράμματος. Χρειάζεται να ενεργοποιήσετε την επιλογή \"Run ActiveX controls and plug-ins\". Ίσως παρουσιαστούν λάθη και παρατηρήσετε ελειπείς λειτουργίες.",
-BrowseServerBlocked : "Οι πόροι του browser σας δεν είναι προσπελάσιμοι. Σιγουρευτείτε ότι δεν υπάρχουν ενεργοί popup blockers.",
-DialogBlocked		: "Δεν ήταν δυνατό να ανοίξει το παράθυρο διαλόγου. Σιγουρευτείτε ότι δεν υπάρχουν ενεργοί popup blockers.",
 
 // Dialogs
 DlgBtnOK			: "OK",
 DlgBtnCancel		: "Ακύρωση",
 DlgBtnClose			: "Κλείσιμο",
-DlgBtnBrowseServer	: "Εξερεύνηση διακομιστή",
+DlgBtnBrowseServer	: "Browse Server",	//MISSING
 DlgAdvancedTag		: "Για προχωρημένους",
-DlgOpOther			: "<Άλλα>",
-DlgInfoTab			: "Πληροφορίες",
-DlgAlertUrl			: "Παρακαλώ εισάγετε URL",
+DlgOpOther			: "&lt;Other&gt;",	//MISSING
 
 // General Dialogs Labels
-DlgGenNotSet		: "<χωρίς>",
+DlgGenNotSet		: "&lt;χωρίς&gt;",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Κατεύθυνση κειμένου",
 DlgGenLangDirLtr	: "Αριστερά προς Δεξιά (LTR)",
 DlgGenLangDirRtl	: "Δεξιά προς Αριστερά (RTL)",
 DlgGenLangCode		: "Κωδικός Γλώσσας",
 DlgGenAccessKey		: "Συντόμευση (Access Key)",
-DlgGenName			: "Όνομα",
+DlgGenName			: "Name",
 DlgGenTabIndex		: "Tab Index",
-DlgGenLongDescr		: "Αναλυτική περιγραφή URL",
+DlgGenLongDescr		: "Long Description URL",
 DlgGenClass			: "Stylesheet Classes",
-DlgGenTitle			: "Συμβουλευτικός τίτλος",
-DlgGenContType		: "Συμβουλευτικός τίτλος περιεχομένου",
+DlgGenTitle			: "Advisory Title",
+DlgGenContType		: "Advisory Content Type",
 DlgGenLinkCharset	: "Linked Resource Charset",
-DlgGenStyle			: "Στύλ",
+DlgGenStyle			: "Style",
 
 // Image Dialog
 DlgImgTitle			: "Ιδιότητες Εικόνας",
@@ -199,34 +180,24 @@ DlgImgAlignTextTop	: "Κορυφή Κειμένου (Text Top)",
 DlgImgAlignTop		: "Πάνω (Top)",
 DlgImgPreview		: "Προεπισκόπιση",
 DlgImgAlertUrl		: "Εισάγετε την τοποθεσία (URL) της εικόνας",
-DlgImgLinkTab		: "Σύνδεσμος",
-
-// Flash Dialog
-DlgFlashTitle		: "Ιδιότητες flash",
-DlgFlashChkPlay		: "Αυτόματη έναρξη",
-DlgFlashChkLoop		: "Επανάληψη",
-DlgFlashChkMenu		: "Ενεργοποίηση Flash Menu",
-DlgFlashScale		: "Κλίμακα",
-DlgFlashScaleAll	: "Εμφάνιση όλων",
-DlgFlashScaleNoBorder	: "Χωρίς όρια",
-DlgFlashScaleFit	: "Ακριβής εφαρμογή",
+DlgImgLinkTab		: "Link",	//MISSING
 
 // Link Dialog
-DlgLnkWindowTitle	: "Σύνδεσμος (Link)",
+DlgLnkWindowTitle	: "Υπερσύνδεσμος (Link)",
 DlgLnkInfoTab		: "Link",
 DlgLnkTargetTab		: "Παράθυρο Στόχος (Target)",
 
-DlgLnkType			: "Τύπος συνδέσμου (Link)",
+DlgLnkType			: "Τύπος Υπερσυνδέσμου (Link)",
 DlgLnkTypeURL		: "URL",
-DlgLnkTypeAnchor	: "Άγκυρα σε αυτή τη σελίδα",
+DlgLnkTypeAnchor	: "Anchor in this page",
 DlgLnkTypeEMail		: "E-Mail",
-DlgLnkProto			: "Προτόκολο",
-DlgLnkProtoOther	: "<άλλο>",
+DlgLnkProto			: "Protocol",
+DlgLnkProtoOther	: "&lt;άλλο&gt;",
 DlgLnkURL			: "URL",
-DlgLnkAnchorSel		: "Επιλέξτε μια άγκυρα",
-DlgLnkAnchorByName	: "Βάσει του Ονόματος (Name) της άγκυρας",
+DlgLnkAnchorSel		: "Επιλέξτε ένα Anchor",
+DlgLnkAnchorByName	: "Βάσει του Ονόματος (Name)του Anchor",
 DlgLnkAnchorById	: "Βάσει του Element Id",
-DlgLnkNoAnchors		: "<Δεν υπάρχουν άγκυρες στο κείμενο>",
+DlgLnkNoAnchors		: "&lt;Δεν υπάρχουν Anchors στο κείμενο&gt;",
 DlgLnkEMail			: "Διεύθυνση Ηλεκτρονικού Ταχυδρομείου",
 DlgLnkEMailSubject	: "Θέμα Μηνύματος",
 DlgLnkEMailBody		: "Κείμενο Μηνύματος",
@@ -234,13 +205,13 @@ DlgLnkUpload		: "Αποστολή",
 DlgLnkBtnUpload		: "Αποστολή στον Διακομιστή",
 
 DlgLnkTarget		: "Παράθυρο Στόχος (Target)",
-DlgLnkTargetFrame	: "<πλαίσιο>",
-DlgLnkTargetPopup	: "<παράθυρο popup>",
+DlgLnkTargetFrame	: "&lt;frame&gt;",
+DlgLnkTargetPopup	: "&lt;popup window&gt;",
 DlgLnkTargetBlank	: "Νέο Παράθυρο (_blank)",
 DlgLnkTargetParent	: "Γονικό Παράθυρο (_parent)",
 DlgLnkTargetSelf	: "Ίδιο Παράθυρο (_self)",
 DlgLnkTargetTop		: "Ανώτατο Παράθυρο (_top)",
-DlgLnkTargetFrameName	: "Όνομα πλαισίου στόχου",
+DlgLnkTargetFrameName	: "Target Frame Name",	//MISSING
 DlgLnkPopWinName	: "Όνομα Popup Window",
 DlgLnkPopWinFeat	: "Επιλογές Popup Window",
 DlgLnkPopResize		: "Με αλλαγή Μεγέθους",
@@ -259,7 +230,6 @@ DlgLnkPopTop		: "Τοποθεσία Πάνω Άκρης",
 DlnLnkMsgNoUrl		: "Εισάγετε την τοποθεσία (URL) του υπερσυνδέσμου (Link)",
 DlnLnkMsgNoEMail	: "Εισάγετε την διεύθυνση ηλεκτρονικού ταχυδρομείου",
 DlnLnkMsgNoAnchor	: "Επιλέξτε ένα Anchor",
-DlnLnkMsgInvPopName	: "Το όνομα του popup πρέπει να αρχίζει με χαρακτήρα της αλφαβήτου και να μην περιέχει κενά",
 
 // Color Dialog
 DlgColorTitle		: "Επιλογή χρώματος",
@@ -287,10 +257,9 @@ DlgTableWidth		: "Πλάτος",
 DlgTableWidthPx		: "pixels",
 DlgTableWidthPc		: "\%",
 DlgTableHeight		: "Ύψος",
-DlgTableCellSpace	: "Απόσταση κελιών",
-DlgTableCellPad		: "Γέμισμα κελιών",
+DlgTableCellSpace	: "Cell spacing",
+DlgTableCellPad		: "Cell padding",
 DlgTableCaption		: "Υπέρτιτλος",
-DlgTableSummary		: "Περίληψη",
 
 // Table Cell Dialog
 DlgCellTitle		: "Ιδιότητες Κελιού",
@@ -341,161 +310,143 @@ PasteErrorCopy	: "Οι ρυθμίσεις ασφαλείας του φυλλομ
 PasteAsText		: "Επικόλληση ως Απλό Κείμενο",
 PasteFromWord	: "Επικόλληση από το Word",
 
-DlgPasteMsg2	: "Παρακαλώ επικολήστε στο ακόλουθο κουτί χρησιμοποιόντας το πληκτρολόγιο (<STRONG>Ctrl+V</STRONG>) και πατήστε <STRONG>OK</STRONG>.",
-DlgPasteIgnoreFont		: "Αγνόηση προδιαγραφών γραμματοσειράς",
-DlgPasteRemoveStyles	: "Αφαίρεση προδιαγραφών στύλ",
-DlgPasteCleanBox		: "Κουτί εκαθάρισης",
+DlgPasteMsg		: "Ο επεξεργαστής κειμένου δεν μπορεί να εκτελέσει αυτόματα την επικόλληση λόγω των <STRONG>τυθμίσεων ασφαλείας</STRONG> του φυλλομετρητή σας.<BR>Εισάγετε το κείμενο στο πιο κάτω περιθώριο χρησιμοποιώντας το πληκτρολόγιο (<STRONG>Ctrl+V</STRONG>) και πιέστε <STRONG>OK</STRONG>.",
 
 // Color Picker
 ColorAutomatic	: "Αυτόματο",
 ColorMoreColors	: "Περισσότερα χρώματα...",
 
 // Document Properties
-DocProps		: "Ιδιότητες εγγράφου",
+DocProps		: "Document Properties",	//MISSING
 
 // Anchor Dialog
-DlgAnchorTitle		: "Ιδιότητες άγκυρας",
-DlgAnchorName		: "Όνομα άγκυρας",
-DlgAnchorErrorName	: "Παρακαλούμε εισάγετε όνομα άγκυρας",
+DlgAnchorTitle		: "Anchor Properties",	//MISSING
+DlgAnchorName		: "Anchor Name",	//MISSING
+DlgAnchorErrorName	: "Please type the anchor name",	//MISSING
 
 // Speller Pages Dialog
-DlgSpellNotInDic		: "Δεν υπάρχει στο λεξικό",
-DlgSpellChangeTo		: "Αλλαγή σε",
-DlgSpellBtnIgnore		: "Αγνόηση",
-DlgSpellBtnIgnoreAll	: "Αγνόηση όλων",
-DlgSpellBtnReplace		: "Αντικατάσταση",
-DlgSpellBtnReplaceAll	: "Αντικατάσταση όλων",
-DlgSpellBtnUndo			: "Αναίρεση",
-DlgSpellNoSuggestions	: "- Δεν υπάρχουν προτάσεις -",
-DlgSpellProgress		: "Ορθογραφικός έλεγχος σε εξέλιξη...",
-DlgSpellNoMispell		: "Ο ορθογραφικός έλεγχος ολοκληρώθηκε: Δεν βρέθηκαν λάθη",
-DlgSpellNoChanges		: "Ο ορθογραφικός έλεγχος ολοκληρώθηκε: Δεν άλλαξαν λέξεις",
-DlgSpellOneChange		: "Ο ορθογραφικός έλεγχος ολοκληρώθηκε: Μια λέξη άλλαξε",
-DlgSpellManyChanges		: "Ο ορθογραφικός έλεγχος ολοκληρώθηκε: %1 λέξεις άλλαξαν",
+DlgSpellNotInDic		: "Not in dictionary",	//MISSING
+DlgSpellChangeTo		: "Change to",	//MISSING
+DlgSpellBtnIgnore		: "Ignore",	//MISSING
+DlgSpellBtnIgnoreAll	: "Ignore All",	//MISSING
+DlgSpellBtnReplace		: "Replace",	//MISSING
+DlgSpellBtnReplaceAll	: "Replace All",	//MISSING
+DlgSpellBtnUndo			: "Undo",	//MISSING
+DlgSpellNoSuggestions	: "- No suggestions -",	//MISSING
+DlgSpellProgress		: "Spell check in progress...",	//MISSING
+DlgSpellNoMispell		: "Spell check complete: No misspellings found",	//MISSING
+DlgSpellNoChanges		: "Spell check complete: No words changed",	//MISSING
+DlgSpellOneChange		: "Spell check complete: One word changed",	//MISSING
+DlgSpellManyChanges		: "Spell check complete: %1 words changed",	//MISSING
 
-IeSpellDownload			: "Δεν υπάρχει εγκατεστημένος ορθογράφος. Θέλετε να τον κατεβάσετε τώρα;",
+IeSpellDownload			: "Spell checker not installed. Do you want to download it now?",	//MISSING
 
 // Button Dialog
-DlgButtonText		: "Κείμενο (Τιμή)",
-DlgButtonType		: "Τύπος",
-DlgButtonTypeBtn	: "Κουμπί",
-DlgButtonTypeSbm	: "Καταχώρηση",
-DlgButtonTypeRst	: "Επαναφορά",
+DlgButtonText	: "Text (Value)",	//MISSING
+DlgButtonType	: "Type",	//MISSING
 
 // Checkbox and Radio Button Dialogs
-DlgCheckboxName		: "Όνομα",
-DlgCheckboxValue	: "Τιμή",
-DlgCheckboxSelected	: "Επιλεγμένο",
+DlgCheckboxName		: "Name",	//MISSING
+DlgCheckboxValue	: "Value",	//MISSING
+DlgCheckboxSelected	: "Selected",	//MISSING
 
 // Form Dialog
-DlgFormName		: "Όνομα",
-DlgFormAction	: "Δράση",
-DlgFormMethod	: "Μάθοδος",
+DlgFormName		: "Name",	//MISSING
+DlgFormAction	: "Action",	//MISSING
+DlgFormMethod	: "Method",	//MISSING
 
 // Select Field Dialog
-DlgSelectName		: "Όνομα",
-DlgSelectValue		: "Τιμή",
-DlgSelectSize		: "Μέγεθος",
-DlgSelectLines		: "γραμμές",
-DlgSelectChkMulti	: "Πολλαπλές επιλογές",
-DlgSelectOpAvail	: "Διαθέσιμες επιλογές",
-DlgSelectOpText		: "Κείμενο",
-DlgSelectOpValue	: "Τιμή",
-DlgSelectBtnAdd		: "Προσθήκη",
-DlgSelectBtnModify	: "Αλλαγή",
-DlgSelectBtnUp		: "Πάνω",
-DlgSelectBtnDown	: "Κάτω",
-DlgSelectBtnSetValue : "Προεπιλεγμένη επιλογή",
-DlgSelectBtnDelete	: "Διαγραφή",
+DlgSelectName		: "Name",	//MISSING
+DlgSelectValue		: "Value",	//MISSING
+DlgSelectSize		: "Size",	//MISSING
+DlgSelectLines		: "lines",	//MISSING
+DlgSelectChkMulti	: "Allow multiple selections",	//MISSING
+DlgSelectOpAvail	: "Available Options",	//MISSING
+DlgSelectOpText		: "Text",	//MISSING
+DlgSelectOpValue	: "Value",	//MISSING
+DlgSelectBtnAdd		: "Add",	//MISSING
+DlgSelectBtnModify	: "Modify",	//MISSING
+DlgSelectBtnUp		: "Up",	//MISSING
+DlgSelectBtnDown	: "Down",	//MISSING
+DlgSelectBtnSetValue : "Set as selected value",	//MISSING
+DlgSelectBtnDelete	: "Delete",	//MISSING
 
 // Textarea Dialog
-DlgTextareaName	: "Όνομα",
-DlgTextareaCols	: "Στήλες",
-DlgTextareaRows	: "Σειρές",
+DlgTextareaName	: "Name",	//MISSING
+DlgTextareaCols	: "Columns",	//MISSING
+DlgTextareaRows	: "Rows",	//MISSING
 
 // Text Field Dialog
-DlgTextName			: "Όνομα",
-DlgTextValue		: "Τιμή",
-DlgTextCharWidth	: "Μήκος χαρακτήρων",
-DlgTextMaxChars		: "Μέγιστοι χαρακτήρες",
-DlgTextType			: "Τύπος",
-DlgTextTypeText		: "Κείμενο",
-DlgTextTypePass		: "Κωδικός",
+DlgTextName			: "Name",	//MISSING
+DlgTextValue		: "Value",	//MISSING
+DlgTextCharWidth	: "Character Width",	//MISSING
+DlgTextMaxChars		: "Maximum Characters",	//MISSING
+DlgTextType			: "Type",	//MISSING
+DlgTextTypeText		: "Text",	//MISSING
+DlgTextTypePass		: "Password",	//MISSING
 
 // Hidden Field Dialog
-DlgHiddenName	: "Όνομα",
-DlgHiddenValue	: "Τιμή",
+DlgHiddenName	: "Name",	//MISSING
+DlgHiddenValue	: "Value",	//MISSING
 
 // Bulleted List Dialog
-BulletedListProp	: "Ιδιότητες λίστας Bulleted",
-NumberedListProp	: "Ιδιότητες αριθμημένης λίστας ",
-DlgLstStart			: "Αρχή",
-DlgLstType			: "Τύπος",
-DlgLstTypeCircle	: "Κύκλος",
-DlgLstTypeDisc		: "Δίσκος",
-DlgLstTypeSquare	: "Τετράγωνο",
-DlgLstTypeNumbers	: "Αριθμοί (1, 2, 3)",
-DlgLstTypeLCase		: "Πεζά γράμματα (a, b, c)",
-DlgLstTypeUCase		: "Κεφαλαία γράμματα (A, B, C)",
-DlgLstTypeSRoman	: "Μικρά λατινικά αριθμητικά (i, ii, iii)",
-DlgLstTypeLRoman	: "Μεγάλα λατινικά αριθμητικά (I, II, III)",
+BulletedListProp	: "Bulleted List Properties",	//MISSING
+NumberedListProp	: "Numbered List Properties",	//MISSING
+DlgLstType			: "Type",	//MISSING
+DlgLstTypeCircle	: "Circle",	//MISSING
+DlgLstTypeDisk		: "Disk",	//MISSING
+DlgLstTypeSquare	: "Square",	//MISSING
+DlgLstTypeNumbers	: "Numbers (1, 2, 3)",	//MISSING
+DlgLstTypeLCase		: "Lowercase Letters (a, b, c)",	//MISSING
+DlgLstTypeUCase		: "Uppercase Letters (A, B, C)",	//MISSING
+DlgLstTypeSRoman	: "Small Roman Numerals (i, ii, iii)",	//MISSING
+DlgLstTypeLRoman	: "Large Roman Numerals (I, II, III)",	//MISSING
 
 // Document Properties Dialog
-DlgDocGeneralTab	: "Γενικά",
-DlgDocBackTab		: "Φόντο",
-DlgDocColorsTab		: "Χρώματα και περιθώρια",
-DlgDocMetaTab		: "Δεδομένα Meta",
+DlgDocGeneralTab	: "General",	//MISSING
+DlgDocBackTab		: "Background",	//MISSING
+DlgDocColorsTab		: "Colors and Margins",	//MISSING
+DlgDocMetaTab		: "Meta Data",	//MISSING
 
-DlgDocPageTitle		: "Τίτλος σελίδας",
-DlgDocLangDir		: "Κατεύθυνση γραφής",
-DlgDocLangDirLTR	: "αριστερά προς δεξιά (LTR)",
-DlgDocLangDirRTL	: "δεξιά προς αριστερά (RTL)",
-DlgDocLangCode		: "Κωδικός γλώσσας",
-DlgDocCharSet		: "Κωδικοποίηση χαρακτήρων",
-DlgDocCharSetCE		: "Κεντρικής Ευρώπης",
-DlgDocCharSetCT		: "Παραδοσιακά κινέζικα (Big5)",
-DlgDocCharSetCR		: "Κυριλλική",
-DlgDocCharSetGR		: "Ελληνική",
-DlgDocCharSetJP		: "Ιαπωνική",
-DlgDocCharSetKR		: "Κορεάτικη",
-DlgDocCharSetTR		: "Τουρκική",
-DlgDocCharSetUN		: "Διεθνής (UTF-8)",
-DlgDocCharSetWE		: "Δυτικής Ευρώπης",
-DlgDocCharSetOther	: "Άλλη κωδικοποίηση χαρακτήρων",
+DlgDocPageTitle		: "Page Title",	//MISSING
+DlgDocLangDir		: "Language Direction",	//MISSING
+DlgDocLangDirLTR	: "Left to Right (LTR)",	//MISSING
+DlgDocLangDirRTL	: "Right to Left (RTL)",	//MISSING
+DlgDocLangCode		: "Language Code",	//MISSING
+DlgDocCharSet		: "Character Set Encoding",	//MISSING
+DlgDocCharSetOther	: "Other Character Set Encoding",	//MISSING
 
-DlgDocDocType		: "Επικεφαλίδα τύπου εγγράφου",
-DlgDocDocTypeOther	: "Άλλη επικεφαλίδα τύπου εγγράφου",
-DlgDocIncXHTML		: "Να συμπεριληφθούν οι δηλώσεις XHTML",
-DlgDocBgColor		: "Χρώμα φόντου",
-DlgDocBgImage		: "Διεύθυνση εικόνας φόντου",
-DlgDocBgNoScroll	: "Φόντο χωρίς κύλιση",
-DlgDocCText			: "Κείμενο",
-DlgDocCLink			: "Σύνδεσμος",
-DlgDocCVisited		: "Σύνδεσμος που έχει επισκευθεί",
-DlgDocCActive		: "Ενεργός σύνδεσμος",
-DlgDocMargins		: "Περιθώρια σελίδας",
-DlgDocMaTop			: "Κορυφή",
-DlgDocMaLeft		: "Αριστερά",
-DlgDocMaRight		: "Δεξιά",
-DlgDocMaBottom		: "Κάτω",
-DlgDocMeIndex		: "Λέξεις κλειδιά δείκτες εγγράφου (διαχωρισμός με κόμμα)",
-DlgDocMeDescr		: "Περιγραφή εγγράφου",
-DlgDocMeAuthor		: "Συγγραφέας",
-DlgDocMeCopy		: "Πνευματικά δικαιώματα",
-DlgDocPreview		: "Προεπισκόπηση",
+DlgDocDocType		: "Document Type Heading",	//MISSING
+DlgDocDocTypeOther	: "Other Document Type Heading",	//MISSING
+DlgDocIncXHTML		: "Include XHTML Declarations",	//MISSING
+DlgDocBgColor		: "Background Color",	//MISSING
+DlgDocBgImage		: "Background Image URL",	//MISSING
+DlgDocBgNoScroll	: "Nonscrolling Background",	//MISSING
+DlgDocCText			: "Text",	//MISSING
+DlgDocCLink			: "Link",	//MISSING
+DlgDocCVisited		: "Visited Link",	//MISSING
+DlgDocCActive		: "Active Link",	//MISSING
+DlgDocMargins		: "Page Margins",	//MISSING
+DlgDocMaTop			: "Top",	//MISSING
+DlgDocMaLeft		: "Left",	//MISSING
+DlgDocMaRight		: "Right",	//MISSING
+DlgDocMaBottom		: "Bottom",	//MISSING
+DlgDocMeIndex		: "Document Indexing Keywords (comma separated)",	//MISSING
+DlgDocMeDescr		: "Document Description",	//MISSING
+DlgDocMeAuthor		: "Author",	//MISSING
+DlgDocMeCopy		: "Copyright",	//MISSING
+DlgDocPreview		: "Preview",	//MISSING
 
 // Templates Dialog
-Templates			: "Πρότυπα",
-DlgTemplatesTitle	: "Πρότυπα περιεχομένου",
-DlgTemplatesSelMsg	: "Παρακαλώ επιλέξτε πρότυπο για εισαγωγή στο πρόγραμμα<br>(τα υπάρχοντα περιεχόμενα θα χαθούν):",
-DlgTemplatesLoading	: "Φόρτωση καταλόγου προτύπων. Παρακαλώ περιμένετε...",
-DlgTemplatesNoTpl	: "(Δεν έχουν καθοριστεί πρότυπα)",
-DlgTemplatesReplace	: "Αντικατάσταση υπάρχοντων περιεχομένων",
+Templates			: "Templates",	//MISSING
+DlgTemplatesTitle	: "Content Templates",	//MISSING
+DlgTemplatesSelMsg	: "Please select the template to open in the editor<br>(the actual contents will be lost):",	//MISSING
+DlgTemplatesLoading	: "Loading templates list. Please wait...",	//MISSING
+DlgTemplatesNoTpl	: "(No templates defined)",	//MISSING
 
 // About Dialog
-DlgAboutAboutTab	: "Σχετικά",
-DlgAboutBrowserInfoTab	: "Πληροφορίες Browser",
-DlgAboutLicenseTab	: "Άδεια",
+DlgAboutAboutTab	: "About",	//MISSING
+DlgAboutBrowserInfoTab	: "Browser Info",	//MISSING
 DlgAboutVersion		: "έκδοση",
 DlgAboutLicense		: "Άδεια χρήσης υπό τους όρους της GNU Lesser General Public License",
 DlgAboutInfo		: "Για περισσότερες πληροφορίες"

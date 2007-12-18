@@ -5,7 +5,7 @@
 // jhenning@solpart.com   -   http://www.solpart.com    //
 // Compatible Menu Version:  <Min: 1400>             //
 //                           <Max: 1.6.1.0>             //
-// <Script Version: 1611>                               //
+// <Script Version: 1610>                               //
 //------------------------------------------------------//
 var m_oSolpartMenu;
 if (m_oSolpartMenu == null)
@@ -119,6 +119,35 @@ __db(o.id + ' - constructor');
   this._m_dHideTimer = null;            //used to time when mouse out occured to auto hide menu based on mouseoutdelay
   this._m_oScrollingMenu = null;				//used in scrolling menu on mouse over
 
+	//--- Exposed Events ---//
+/*
+	this.onMenuComplete=spm_getAttr(o, 'OnMenuComplete', null);						//fires once menu is done loading
+	this.onMenuBarClick=spm_getAttr(o, 'OnMenuBarClick', null);						//fires once menu bar is clicked
+	this.onMenuItemClick=spm_getAttr(o, 'OnMenuItemClick', null);         //fires once menu item is clicked
+	this.onMenuBarMouseOver=spm_getAttr(o, 'OnMenuBarMouseOver', null);		//fires once mouse moves over menu bar
+	this.onMenuBarMouseOut=spm_getAttr(o, 'OnMenuBarMouseOut', null);			//fires once mouse moves out of menu bar
+	this.onMenuItemMouseOver=spm_getAttr(o, 'OnMenuItemMouseOver', null);	//fires once mouse moves over menu item
+	this.onMenuItemMouseOut=spm_getAttr(o, 'OnMenuItemMouseOut', null);		//fires once mouse moves out of menu bar
+*/
+
+//--- Menu Moving currently disabled ---//
+/*
+  this._menuhook_MouseMove=__menuhook_MouseMove;
+  this._menuhook_MouseDown=__menuhook_MouseDown;
+  this._menuhook_MouseUp=__menuhook_MouseUp;
+  this._document_MouseMove=__document_MouseMove;
+  this._document_MouseDown=__document_MouseDown;
+  this._document_MouseUp=__document_MouseUp;
+  this._bodyclick=__bodyclick;
+
+  this.menuhook_MouseMove=function(e) {me._menuhook_MouseMove(e);};
+  this.menuhook_MouseDown=function(e) {me._menuhook_MouseDown(e);};
+  this.menuhook_MouseUp=function(e) {me._menuhook_MouseUp(e);};
+  this.document_MouseMove=function(e) {me._document_MouseMove(e);};
+  this.document_MouseDown=function(e) {me._document_MouseDown(e);};
+  this.menuhook_MouseUp=function(e) {me._menuhook_MouseUp(e);};
+  this.bodyclick=function() {me._bodyclick();};
+*/ 
 __db(this._m_oMenu.id + ' - constructor end');
 
 }
@@ -179,6 +208,7 @@ SolpartMenu.prototype.destroy = function ()
   this.cssMenuRootArrow = null;
   
   //---- methods ---//
+  //this.GenerateMenuHTML=__GenerateMenuHTML = null;
 
   //----- private ----//
   m_oSolpartMenu[this._m_sNSpace] = null;
@@ -197,6 +227,17 @@ SolpartMenu.prototype.destroy = function ()
   
 }
 
+//--- static/shared members ---//
+/*
+SolpartMenu.prototype.menuhook_MouseMove=__menuhook_MouseMove;
+SolpartMenu.prototype.menuhook_MouseDown=__menuhook_MouseDown;
+SolpartMenu.prototype.menuhook_MouseUp=__menuhook_MouseUp;
+
+SolpartMenu.prototype.document_MouseMove=__document_MouseMove;
+SolpartMenu.prototype.document_MouseDown=__document_MouseDown;
+SolpartMenu.prototype.document_MouseUp=__document_MouseUp;
+*/
+
 //--- xml document loaded (non-dataisland) ---//
 SolpartMenu.prototype.onXMLLoad = function ()
 {
@@ -210,12 +251,17 @@ __db(this._m_oMenu.id + ' - GenerateMenuHTML');
     //'Generates the main menu bar
   var sHTML = '';
   this._m_sOuterTables = '';
+  //this._m_oMenu.insertAdjacentElement('beforeBegin', );
+
+  
+	//if (oXML.readyState != 'complete')
+	//	return;
 
 	if (oXML == null)
 	{
 	  if (this._m_oDOM == null)
 	  {
-	    oXML = spm_createDOMDoc();
+	    oXML = spm_createDOMDoc();//document.implementation.createDocument("", "", null);
 	    this._m_oDOM = oXML;
         	  
 	    if (this.xml.length)
@@ -223,7 +269,7 @@ __db(this._m_oMenu.id + ' - GenerateMenuHTML');
   	  
 	    if (this.xmlFileName.length)
 	    {
-	      oXML.onload = eval('onxmlload' + this._m_sNSpace); 
+	      oXML.onload = eval('onxmlload' + this._m_sNSpace); //'m_oSolpartMenu["' + this._m_sNSpace + '"].onXMLLoad'; this.onXMLLoad;
 	      oXML.load(this.xmlFileName);
 	      return; //async load
 	    }
@@ -256,17 +302,62 @@ __db(this._m_oMenu.id + ' - GenerateMenuHTML');
       sHTML += '   </tr>\n';
       sHTML += '</table>\n';
   }
+
+/*    
+	if (spm_browserType() == 'op')
+	{
+		this._m_oMenu.innerHTML = sHTML;
+		var oDiv = document.createElement('div');
+		oDiv.innerHTML = this._m_sOuterTables;
+		document.body.appendChild(oDiv);
+	}
+	else  
+*/
+		//sHTML = '<SPAN>' + this._m_sOuterTables + '</SPAN>' + sHTML;
+		//this._m_sOuterTables = '';
+	
 	
 	this._m_oMenu.innerHTML = sHTML;
 
 	this.GenerateSubMenus();
 
+	//this._m_oMenu.style.height = '100%';
+
 	
   this._m_oMenuMove = spm_getById('td' + this._m_sNSpace + 'MenuMove');
 
-  spm_getTags("BODY")[0].onclick = spm_appendFunction(spm_getTags("BODY")[0].onclick, 'm_oSolpartMenu["' + this._m_sNSpace + '"].bodyclick();'); //document.body.onclick = this.bodyclick;
+/*
+  //--- attach events for menu moving ---//
+  if (Number(this.moveable))
+  {
+    var oCtl = this._m_oMenuMove;  //this._m_oMenu
+    oCtl.onmousedown = this.menuhook_MouseDown;
+    oCtl.onmouseup = this.menuhook_MouseUp;
+    oCtl.onmousemove = this.menuhook_MouseMove;
 
-  this._m_oTblMenuBar = spm_getById('tbl' + this._m_sNSpace + 'MenuBar'); 
+    if (spm_browserType() == 'ie')
+    {
+      document.onmousemove = this.document_MouseMove;
+      document.onmousedown = this.document_MouseDown;
+      //spm_getTags("BODY")[0].onclick = this.bodyclick;
+      spm_getTags("BODY")[0].attachEvent('onclick', this.bodyclick);
+    }
+    else
+    {
+	    window.addEventListener("click", this.bodyclick, true);
+	    window.addEventListener("mousemove", this.document_MouseMove, true);
+	    window.addEventListener("mousedown", this.document_MouseDown, true);
+	    window.addEventListener("mouseup", this.document_MouseUp, true);
+    }
+
+  }
+*/
+  //if (spm_browserType() == 'ie')
+		spm_getTags("BODY")[0].onclick = spm_appendFunction(spm_getTags("BODY")[0].onclick, 'm_oSolpartMenu["' + this._m_sNSpace + '"].bodyclick();'); //document.body.onclick = this.bodyclick;
+	//else
+	//	window.addEventListener("click", this.bodyclick, true);
+
+  this._m_oTblMenuBar = spm_getById('tbl' + this._m_sNSpace + 'MenuBar'); //this._m_oMenu
   
   this.fireEvent('onMenuComplete');
 
@@ -350,6 +441,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
  						sHTML += '   <td class="' + spm_fixCSSForMac(this.getIntCSSName('spmbrk') + this.cssMenuBreak) + '">' + sBreakHTML + '</td>\n';
  					else
  						sHTML += '   <td class="' + spm_fixCSSForMac(this.getIntCSSName('spmbrk') + this.cssMenuBreak) + '">' + spm_getMenuImage('spacer.gif', this, true, ' ') + '</td>\n';
+// 						sHTML += '   <td style="height: 1px" class="' + spm_fixCSSForMac(this.getIntCSSName('spmicn') + this.cssMenuIcon) + '">' + spm_getMenuImage('spacer.gif', this, true, ' ') + '</td>\n<td colspan="2" class="' + spm_fixCSSForMac(this.getIntCSSName('spmbrk') + this.cssMenuBreak) + '">' + spm_getMenuImage('spacer.gif', this, true, ' ') + '</td>\n';
 
 					if (this.display == "vertical")
 						sHTML += "</tr>\n";
@@ -423,6 +515,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		var sID = oCell.id.substr(2);
 
 		var oMenu = spm_getById("tbl" + sID);
+    //var oMenu = spm_getById("td" + sID);
 		
 		if (oMenu != null)
 		{
@@ -558,6 +651,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
       eval(spm_getAttr(oRow, "menuclick", ''));
       this.hideAllMenus();
 		}
+		//window.event.cancelBubble = true;
 		spm_stopEventBubbling(evt);
 		
 		this.handlembi_mo(oRow, true);
@@ -581,6 +675,97 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		 
 		this.minDelayType = null;
 	}
+	
+/*
+	function menuhook_KeyPress()
+	{
+    //not yet
+	}
+	function menuhook_KeyDown()
+	{
+    //not yet
+	}
+	
+	function menuhook_MenuFocus()
+	{
+		var tbl = event.srcElement;
+		mb_c(tbl.rows[0].cells[0]);
+	}
+*/
+/*	
+	function __menuhook_MouseMove(e) 
+	{
+		var iNewLeft=0, iNewTop = 0
+
+if (this._m_bMoving)
+{
+			if (spm_browserType() == 'ie')
+			{
+//		if ((event.button==1)) 
+//		{
+			  this.hideAllMenus();
+			  if (this._m_oTblMenuBar.startLeft == null)
+				  this._m_oTblMenuBar.startLeft = this._m_oTblMenuBar.offsetLeft;
+			  iNewLeft=event.clientX - this._m_oTblMenuBar.startLeft - 3;
+			  this._m_oTblMenuBar.style.pixelLeft= iNewLeft;
+			  if (this._m_oTblMenuBar.startTop == null)
+				  this._m_oTblMenuBar.startTop = this._m_oTblMenuBar.offsetTop;
+			  iNewTop=event.clientY - this._m_oTblMenuBar.startTop;
+			  this._m_oTblMenuBar.style.pixelTop = iNewTop - 10;
+			  event.returnValue = false
+			  event.cancelBubble = true
+//      }
+		}
+    else
+    {
+			this.hideAllMenus();
+  		
+			if (this._m_oTblMenuBar.startLeft == null)
+				this._m_oTblMenuBar.startLeft = this._m_oTblMenuBar.offsetLeft;
+
+			iNewLeft=e.clientX - this._m_oTblMenuBar.startLeft - 3;
+  		    
+			//if (iNewLeft&lt;0) 
+			//	iNewLeft=0;
+  		
+			this._m_oTblMenuBar.style.left = iNewLeft;
+  					    
+			if (this._m_oTblMenuBar.startTop == null)
+				this._m_oTblMenuBar.startTop = this._m_oTblMenuBar.offsetTop;
+
+			iNewTop=e.clientY - this._m_oTblMenuBar.startTop;
+			//if (iNewTop&lt;0) 
+			//	iNewTop=0;
+  			
+			this._m_oTblMenuBar.style.top = iNewTop - 10;    
+    }
+}
+
+	}
+	function __menuhook_MouseDown()
+	{
+		this._m_bMoving = true;
+	}
+	function __menuhook_MouseUp()
+	{
+	  this._m_bMoving = false;
+	}
+	function __document_MouseMove(e)
+	{
+		if (this._m_bMoving)
+		{
+			this.menuhook_MouseMove(e);
+	  }
+	}
+	function __document_MouseDown()
+	{
+		//this._m_bMoving = null;
+	}
+	function __document_MouseUp()
+	{
+		this._m_bMoving=false;
+	}
+*/
 
 	SolpartMenu.prototype.bodyclick = function()
 	{
@@ -756,6 +941,9 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
       }
     }
   }          
+  
+
+
 
   //--- handles mouseover for menu item ---//
 	SolpartMenu.prototype.handlembi_mo = function (oRow, bBypassDelay)
@@ -791,7 +979,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 				var oPDims = new spm_elementDims(oRow);
 				var oMDims = new spm_elementDims(oMenu);
 				        			
-				oMenu.style.top = spm_getCoord(oPDims.t);
+				oMenu.style.top = oPDims.t;
 				
 				spm_resetScroll(oMenu);
 
@@ -803,7 +991,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 			  if (oMDims.t - spm_getBodyScrollTop() + oMDims.h > spm_getViewPortHeight())
 			  {
 				  if (oMDims.h < spm_getViewPortHeight())
-						oMenu.style.top = spm_getCoord(spm_getViewPortHeight() + spm_getBodyScrollTop() - oMDims.h);
+						oMenu.style.top = spm_getViewPortHeight() + spm_getBodyScrollTop() - oMDims.h;
 					else
 					{
 						spm_handleScrollMenu(this, oMenu);
@@ -813,19 +1001,19 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 			  }
 
 				if (this.direction == 'rtl')
-					oMenu.style.left = spm_getCoord(oPDims.l - oMDims.w - spm_getBodyScrollLeft());
+					oMenu.style.left = oPDims.l - oMDims.w - spm_getBodyScrollLeft();
 				else
-					oMenu.style.left = spm_getCoord(oPDims.l + oPDims.w - spm_getBodyScrollLeft());
+					oMenu.style.left = oPDims.l + oPDims.w - spm_getBodyScrollLeft();
 
 				if (this.direction == 'rtl')
 				{
 					if (oMDims.l - spm_getBodyScrollLeft() < 0)
-						oMenu.style.left = spm_getCoord(oPDims.l + oPDims.w - spm_getBodyScrollLeft());
+						oMenu.style.left = oPDims.l + oPDims.w - spm_getBodyScrollLeft();
 				}
 				else  
 				{
 					if (oPDims.l - spm_getBodyScrollLeft() + oPDims.w + oMDims.w > spm_getViewPortWidth())
-						oMenu.style.left = spm_getCoord(oPDims.l - oMDims.w - spm_getBodyScrollLeft());
+						oMenu.style.left = oPDims.l - oMDims.w - spm_getBodyScrollLeft();
 				}
 					
 				this._m_aOpenMenuID[this._m_aOpenMenuID.length] = sID;
@@ -926,8 +1114,8 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 				oIFR.id = 'ifr' + eMenu.id;
 				//oIFR.src = 'javascript: void(0);';
 				oIFR.src = sysImgPath + 'spacer.gif';
-				oIFR.style.top = spm_getCoord(0);
-				oIFR.style.left = spm_getCoord(0);
+				oIFR.style.top = 0;
+				oIFR.style.left = 0;
 				oIFR.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=0)";
 				oIFR.scrolling = 'no';
 				oIFR.frameBorder = 'no';
@@ -939,8 +1127,8 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 			
 			oIFR.style.width=oMDims.w;
 			oIFR.style.height=oMDims.h;
-			oIFR.style.top=spm_getCoord(oMDims.t);
-			oIFR.style.left=spm_getCoord(oMDims.l);
+			oIFR.style.top=oMDims.t;
+			oIFR.style.left=oMDims.l;
 			
 			var iIndex = spm_getCurrentStyle(eMenu, 'zIndex');	//eMenu.style.zIndex;
 			if (iIndex == null || iIndex == 0)
@@ -1026,13 +1214,13 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		
 		if (me.display == 'vertical')
 		{
-			oMenu.style.top = spm_getCoord(oPDims.t);
+			oMenu.style.top = oPDims.t;
 			var oMDims = new spm_elementDims(oMenu);
 
 			if (oMDims.t - spm_getBodyScrollTop() + oMDims.h >= spm_getViewPortHeight())
 			{
 				if (oMDims.h < spm_getViewPortHeight())
-					oMenu.style.top = spm_getCoord(spm_getViewPortHeight() - oMDims.h + spm_getBodyScrollTop());	
+					oMenu.style.top = spm_getViewPortHeight() - oMDims.h + spm_getBodyScrollTop();	
 				else
 					spm_handleScrollMenu(me, oMenu);
 			}
@@ -1042,7 +1230,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 			if (spm_browserType() != 'ie') //since mozilla doesn't set width greater than window size we need to store it here
 				 oOrigMDims = new spm_elementDims(oMenu);
 			
-			oMenu.style.left = spm_getCoord(oPDims.l + oPDims.w - spm_getBodyScrollLeft());
+			oMenu.style.left = oPDims.l + oPDims.w - spm_getBodyScrollLeft();
 			oMDims = new spm_elementDims(oMenu);
 			if (oOrigMDims == null)
 				oOrigMDims = oMDims;
@@ -1050,7 +1238,7 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 			if (oMDims.l - spm_getBodyScrollLeft(true) + oOrigMDims.w > spm_getViewPortWidth())
 			{
 			  if (spm_getViewPortWidth() - oOrigMDims.w > 0)  //only do this if it fits
-				  oMenu.style.left = spm_getCoord(oPDims.l - oOrigMDims.w - spm_getBodyScrollLeft(true));
+				  oMenu.style.left = oPDims.l - oOrigMDims.w - spm_getBodyScrollLeft(true);
 			}
 
 			//oMenu.style.display = "";
@@ -1060,24 +1248,24 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 			if (me.direction == 'rtl')			
 			{
 				var oMDims2 = new spm_elementDims(oMenu);
-				oMenu.style.left = spm_getCoord((oPDims.l + oPDims.w) - oMDims2.w - spm_getBodyScrollLeft());
+				oMenu.style.left = (oPDims.l + oPDims.w) - oMDims2.w - spm_getBodyScrollLeft();
 			}
 			else			
-				oMenu.style.left = spm_getCoord(oPDims.l - spm_getBodyScrollLeft());
+				oMenu.style.left = oPDims.l - spm_getBodyScrollLeft();
 				
-			oMenu.style.top = spm_getCoord(oPDims.t + oPDims.h);
+			oMenu.style.top = oPDims.t + oPDims.h;
 			var oMDims = new spm_elementDims(oMenu);
 			
 			if (oMDims.l - spm_getBodyScrollLeft(true) + oMDims.w > spm_getViewPortWidth())
 			{
 			  if (spm_getViewPortWidth() - oMDims.w > 0)  //only do this if it fits
-				  oMenu.style.left = spm_getCoord(spm_getViewPortWidth() - oMDims.w + spm_getBodyScrollLeft(true));
+				  oMenu.style.left = spm_getViewPortWidth() - oMDims.w + spm_getBodyScrollLeft(true);
 			}
 			
 			if (oMDims.t - spm_getBodyScrollTop() + oMDims.h > spm_getViewPortHeight())
 			{
 			  if (oPDims.t - oMDims.h - spm_getBodyScrollTop() > 0) //only do this if it fits
-				  oMenu.style.top = spm_getCoord(oPDims.t - oMDims.h);	//place above menu bar
+				  oMenu.style.top = oPDims.t - oMDims.h;	//place above menu bar
 				else
 					spm_handleScrollMenu(me, oMenu);
 			}
@@ -1110,10 +1298,14 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		{
 			if (sTopLeftColor == this.backColor)
 			{
+				//oCell.style.backgroundColor = '';
+        //setClassColor(oCell, 'spmitm', '');
         oCell.className = spm_fixCSSForMac(this.getIntCSSName('spmbar spmitm') + ' ' + this.cssMenuItem + ' ' + spm_getAttr(oCell, 'savecss', ''));
 			}
 			else
 			{
+				//oCell.style.backgroundColor = this.selColor;
+        //setClassColor(oCell, 'spmitm', this.selForeColor);
         oCell.className = spm_fixCSSForMac(this.getIntCSSName('spmbar spmitmsel') + ' ' + this.cssMenuItemSel + ' ' + spm_getAttr(oCell, 'saveselcss', ''));
 			}
 		}		
@@ -1130,12 +1322,16 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 
 		if (sColor == "")
 		{
+			//if (bSelected)
+			//	sColor2 = this.selColor;
+			//else
 				sColor2 = spm_getCurrentStyle(oRow.cells[0], 'background-Color');
 				if ((sColor2 == null || sColor2 == '') && spm_browserType() != 'ie')
 					sColor2 = 'transparent';
 		}
 
-		spm_applyBorders(oRow.cells[0], sStyle, iSize, sColor2, true, true, false, true);
+		//if (sColor2 != 'transparent')
+			spm_applyBorders(oRow.cells[0], sStyle, iSize, sColor2, true, true, false, true);
 
 		if (sColor == "" && bSelected == false)
     {
@@ -1171,6 +1367,14 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 	function spm_applyBorders(o, sStyle, iSize, sColor, t, l, r, b)
 	{
 
+/*
+		if (t && sColor=='') o.style.paddingTop = iSize + "px ";
+		if (b && sColor=='') o.style.paddingBottom = iSize + "px ";
+		if (r && sColor=='') o.style.paddingRight = iSize + "px ";
+		if (l && sColor=='') o.style.paddingLeft = iSize + "px ";
+    if (sColor=='')
+      iSize = 0;
+ */     
 		if (t) o.style.borderTop = sStyle + " " + iSize + "px " + sColor;
 		if (b) o.style.borderBottom = sStyle + " " + iSize + "px " + sColor;
 		if (r) o.style.borderRight = sStyle + " " + iSize + "px " + sColor;
@@ -1228,6 +1432,8 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
 		}
 
 		oMenu.scrollItems = parseInt((spm_getViewPortHeight() - spm_elementTop(oMenu) + spm_getBodyScrollTop() - oMenu.ScrollItemHeight) / (oMenu.ScrollRowHeight + 1));
+		//alert(oMenu.ScrollRowHeight);
+		//alert(oMenu.ScrollItemHeight);
 		spm_showScrolledItems(oMenu);
 
 	}
@@ -1858,6 +2064,20 @@ function spm_isMac(sType)
   
 }
 
+
+/*
+function isOpera()
+{
+//return true;
+  var agt=navigator.userAgent.toLowerCase();
+  if (agt.indexOf('opera') != -1) 
+    return true;
+  else
+    return false;
+  
+}
+*/
+
 //taken from http://groups.google.com/groups?hl=en&lr=&ie=UTF-8&oe=UTF-8&safe=off&threadm=b42qj3%24r8s1%40ripley.netscape.com&rnum=1&prev=/groups%3Fq%3Dmozilla%2B%2522currentstyle%2522%26hl%3Den%26lr%3D%26ie%3DUTF-8%26oe%3DUTF-8%26safe%3Doff%26scoring%3Dd 
 function spm_getCurrentStyle(el, property) {
   if (document.defaultView) 
@@ -1985,6 +2205,9 @@ function spm_parseFunctionContents(fnc)
 		s = s.substring(s.indexOf('{') + 1, s.length - 1);
   return s;
 }
+
+
+
 
 //--- For JS DOM ---//
 function SPJSXMLNode(sNodeName, sID, oParent, sTitle, sURL, sImage, sImagePath, sRightHTML, sLeftHTML, sRunAtServer, sItemStyle, sImageStyle, sToolTip, sItemCSS, sItemSelCSS) 
@@ -2114,21 +2337,18 @@ SPJSXMLNode.prototype.getAttribute = function(s)
 		this.l = spm_elementLeft(o, bIncludeBody);
 		if (!spm_isMac('ie'))
 		{
-			o.style.top = spm_getCoord(0);
-			o.style.left = spm_getCoord(0);
+			o.style.top = 0;
+			o.style.left = 0;
 		}
 		this.w = spm_getElementWidth(o);
 		this.h = spm_getElementHeight(o);
 		if (!spm_isMac('ie'))
 		{
-			o.style.top = spm_getCoord(this.t);
-			o.style.left = spm_getCoord(this.l);
+			o.style.top = this.t;
+			o.style.left = this.l;
 		}
 		if (bHidden)
 			o.style.display = "none";
 	}
 
-function spm_getCoord(i)
-{
-	return i + 'px';
-}
+

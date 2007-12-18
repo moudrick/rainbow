@@ -1,14 +1,12 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2006 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2005 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
  * 
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
- * "Support Open Source software. What about a donation today?"
  * 
  * File Name: sv.js
  * 	Swedish language file.
@@ -38,15 +36,13 @@ Print				: "Skriv ut",
 SelectAll			: "Markera allt",
 RemoveFormat		: "Radera formatering",
 InsertLinkLbl		: "Länk",
-InsertLink			: "Infoga/Redigera länk",
+InsertLink			: "Infoga/Editera länk",
 RemoveLink			: "Radera länk",
-Anchor				: "Infoga/Redigera ankarlänk",
+Anchor				: "Infoga/Editera ankarlänk",
 InsertImageLbl		: "Bild",
-InsertImage			: "Infoga/Redigera bild",
-InsertFlashLbl		: "Flash",
-InsertFlash			: "Infoga/Redigera Flash",
+InsertImage			: "Infoga/Editera bild",
 InsertTableLbl		: "Tabell",
-InsertTable			: "Infoga/Redigera tabell",
+InsertTable			: "Infoga/Editera tabell",
 InsertLineLbl		: "Linje",
 InsertLine			: "Infoga horisontal linje",
 InsertSpecialCharLbl: "Utökade tecken",
@@ -84,9 +80,7 @@ Source				: "Källa",
 Find				: "Sök",
 Replace				: "Ersätt",
 SpellCheck			: "Stavningskontroll",
-UniversalKeyboard	: "Universellt tangentbord",
-PageBreakLbl		: "Sidbrytning",
-PageBreak			: "Infoga sidbrytning",
+UniversalKeyboard	: "Universalt tangentbord",
 
 Form			: "Formulär",
 Checkbox		: "Kryssruta",
@@ -98,13 +92,8 @@ Button			: "Knapp",
 SelectionField	: "Flervalslista",
 ImageButton		: "Bildknapp",
 
-FitWindow		: "Maximize the editor size",	//MISSING
-
 // Context Menu
-EditLink			: "Redigera länk",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
+EditLink			: "Editera länk",
 InsertRow			: "Infoga rad",
 DeleteRows			: "Radera rad",
 InsertColumn		: "Infoga kolumn",
@@ -113,11 +102,9 @@ InsertCell			: "Infoga cell",
 DeleteCells			: "Radera celler",
 MergeCells			: "Sammanfoga celler",
 SplitCell			: "Separera celler",
-TableDelete			: "Radera tabell",
 CellProperties		: "Cellegenskaper",
 TableProperties		: "Tabellegenskaper",
 ImageProperties		: "Bildegenskaper",
-FlashProperties		: "Flashegenskaper",
 
 AnchorProp			: "Egenskaper för ankarlänk",
 ButtonProp			: "Egenskaper för knapp",
@@ -141,9 +128,6 @@ UnknownToolbarItem	: "Okänt verktygsfält \"%1\"",
 UnknownCommand		: "Okänt kommando \"%1\"",
 NotImplemented		: "Kommandot finns ej",
 UnknownToolbarSet	: "Verktygsfält \"%1\" finns ej",
-NoActiveX			: "Din webläsares säkerhetsinställningar kan begränsa funktionaliteten. Du bör aktivera \"Kör ActiveX kontroller och plug-ins\". Fel och avsaknad av funktioner kan annars uppstå.",
-BrowseServerBlocked : "Kunde Ej öppna resursfönstret. Var god och avaktivera alla popup-blockerare.",
-DialogBlocked		: "Kunde Ej öppna dialogfönstret. Var god och avaktivera alla popup-blockerare.",
 
 // Dialogs
 DlgBtnOK			: "OK",
@@ -152,11 +136,9 @@ DlgBtnClose			: "Stäng",
 DlgBtnBrowseServer	: "Bläddra på server",
 DlgAdvancedTag		: "Avancerad",
 DlgOpOther			: "Övrigt",
-DlgInfoTab			: "Information",
-DlgAlertUrl			: "Var god och ange en URL",
 
 // General Dialogs Labels
-DlgGenNotSet		: "<ej angivet>",
+DlgGenNotSet		: "&lt;ej angivet&gt;",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Språkriktning",
 DlgGenLangDirLtr	: "Vänster till Höger (VTH)",
@@ -200,16 +182,6 @@ DlgImgPreview		: "Förhandsgranska",
 DlgImgAlertUrl		: "Var god och ange bildens URL",
 DlgImgLinkTab		: "Länk",
 
-// Flash Dialog
-DlgFlashTitle		: "Flashegenskaper",
-DlgFlashChkPlay		: "Automatisk uppspelning",
-DlgFlashChkLoop		: "Upprepa/Loopa",
-DlgFlashChkMenu		: "Aktivera Flashmeny",
-DlgFlashScale		: "Skala",
-DlgFlashScaleAll	: "Visa allt",
-DlgFlashScaleNoBorder	: "Ingen ram",
-DlgFlashScaleFit	: "Exakt passning",
-
 // Link Dialog
 DlgLnkWindowTitle	: "Länk",
 DlgLnkInfoTab		: "Länkinformation",
@@ -220,21 +192,21 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Ankare i sidan",
 DlgLnkTypeEMail		: "E-post",
 DlgLnkProto			: "Protokoll",
-DlgLnkProtoOther	: "<övrigt>",
+DlgLnkProtoOther	: "&lt;övrigt&gt;",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Välj ett ankare",
 DlgLnkAnchorByName	: "efter ankarnamn",
 DlgLnkAnchorById	: "efter objektid",
-DlgLnkNoAnchors		: "<Inga ankare kunde hittas>",
-DlgLnkEMail			: "E-postadress",
+DlgLnkNoAnchors		: "&lt;Inga ankare kunde hittas&gt;",
+DlgLnkEMail			: "E-post adress",
 DlgLnkEMailSubject	: "Ämne",
 DlgLnkEMailBody		: "Innehåll",
 DlgLnkUpload		: "Ladda upp",
 DlgLnkBtnUpload		: "Skicka till servern",
 
 DlgLnkTarget		: "Mål",
-DlgLnkTargetFrame	: "<ram>",
-DlgLnkTargetPopup	: "<popup-fönster>",
+DlgLnkTargetFrame	: "&lt;ram&gt;",
+DlgLnkTargetPopup	: "&lt;popup-fönster&gt;",
 DlgLnkTargetBlank	: "Nytt fönster (_blank)",
 DlgLnkTargetParent	: "Föregående Window (_parent)",
 DlgLnkTargetSelf	: "Detta fönstret (_self)",
@@ -258,7 +230,6 @@ DlgLnkPopTop		: "Position från sidans topp",
 DlnLnkMsgNoUrl		: "Var god ange länkens URL",
 DlnLnkMsgNoEMail	: "Var god ange E-postadress",
 DlnLnkMsgNoAnchor	: "Var god ange ett ankare",
-DlnLnkMsgInvPopName	: "The popup name must begin with an alphabetic character and must not contain spaces",	//MISSING
 
 // Color Dialog
 DlgColorTitle		: "Välj färg",
@@ -267,7 +238,7 @@ DlgColorHighlight	: "Markera",
 DlgColorSelected	: "Vald",
 
 // Smiley Dialog
-DlgSmileyTitle		: "Infoga smiley",
+DlgSmileyTitle		: "Infoga en smiley",
 
 // Special Character Dialog
 DlgSpecialCharTitle	: "Välj utökat tecken",
@@ -289,7 +260,6 @@ DlgTableHeight		: "Höjd",
 DlgTableCellSpace	: "Cellavstånd",
 DlgTableCellPad		: "Cellutfyllnad",
 DlgTableCaption		: "Rubrik",
-DlgTableSummary		: "Sammanfattning",
 
 // Table Cell Dialog
 DlgCellTitle		: "Cellegenskaper",
@@ -340,10 +310,7 @@ PasteErrorCopy	: "Säkerhetsinställningar i Er webläsare tillåter inte åtgå
 PasteAsText		: "Klistra in som vanlig text",
 PasteFromWord	: "Klistra in från Word",
 
-DlgPasteMsg2	: "Var god och klistra in Er text i rutan nedan genom att använda (<STRONG>Ctrl+V</STRONG>) klicka sen på <STRONG>OK</STRONG>.",
-DlgPasteIgnoreFont		: "Ignorera typsnittsdefinitioner",
-DlgPasteRemoveStyles	: "Radera Stildefinitioner",
-DlgPasteCleanBox		: "Töm rutans innehåll",
+DlgPasteMsg		: "Editorn tilläts ej att Klistra in p.g.a webläsarens <STRONG>säkerhetsinställning</STRONG>.<BR>Var god och Klistra in i fältet nedan genom att använda (<STRONG>Ctrl+V</STRONG>). Klicka sen på <STRONG>OK</STRONG>",
 
 // Color Picker
 ColorAutomatic	: "Automatisk",
@@ -375,11 +342,8 @@ DlgSpellManyChanges		: "Stavningskontroll slutförd: %1 ord rättades.",
 IeSpellDownload			: "Stavningskontrollen är ej installerad. Vill du göra det nu?",
 
 // Button Dialog
-DlgButtonText		: "Text (Värde)",
-DlgButtonType		: "Typ",
-DlgButtonTypeBtn	: "Button",	//MISSING
-DlgButtonTypeSbm	: "Submit",	//MISSING
-DlgButtonTypeRst	: "Reset",	//MISSING
+DlgButtonText	: "Text (Värde)",
+DlgButtonType	: "Typ",
 
 // Checkbox and Radio Button Dialogs
 DlgCheckboxName		: "Namn",
@@ -401,7 +365,7 @@ DlgSelectOpAvail	: "Befintliga val",
 DlgSelectOpText		: "Text",
 DlgSelectOpValue	: "Värde",
 DlgSelectBtnAdd		: "Lägg till",
-DlgSelectBtnModify	: "Redigera",
+DlgSelectBtnModify	: "Editera",
 DlgSelectBtnUp		: "Upp",
 DlgSelectBtnDown	: "Ner",
 DlgSelectBtnSetValue : "Markera som valt värde",
@@ -428,22 +392,21 @@ DlgHiddenValue	: "Värde",
 // Bulleted List Dialog
 BulletedListProp	: "Egenskaper för punktlista",
 NumberedListProp	: "Egenskaper för numrerad lista",
-DlgLstStart			: "Start",	//MISSING
 DlgLstType			: "Typ",
 DlgLstTypeCircle	: "Cirkel",
-DlgLstTypeDisc		: "Punkt",
+DlgLstTypeDisk		: "Skiva",
 DlgLstTypeSquare	: "Ruta",
 DlgLstTypeNumbers	: "Nummer (1, 2, 3)",
 DlgLstTypeLCase		: "Gemener (a, b, c)",
 DlgLstTypeUCase		: "Versaler (A, B, C)",
 DlgLstTypeSRoman	: "Små romerska siffror (i, ii, iii)",
-DlgLstTypeLRoman	: "Stora romerska siffror (I, II, III)",
+DlgLstTypeLRoman	: "Stora romerska siffror (I,II,II)",
 
 // Document Properties Dialog
 DlgDocGeneralTab	: "Allmän",
 DlgDocBackTab		: "Bakgrund",
 DlgDocColorsTab		: "Färg och marginal",
-DlgDocMetaTab		: "Metadata",
+DlgDocMetaTab		: "Meta data",
 
 DlgDocPageTitle		: "Sidtitel",
 DlgDocLangDir		: "Språkriktning",
@@ -451,15 +414,6 @@ DlgDocLangDirLTR	: "Vänster till Höger",
 DlgDocLangDirRTL	: "Höger till Vänster",
 DlgDocLangCode		: "Språkkod",
 DlgDocCharSet		: "Teckenuppsättningar",
-DlgDocCharSetCE		: "Central European",	//MISSING
-DlgDocCharSetCT		: "Chinese Traditional (Big5)",	//MISSING
-DlgDocCharSetCR		: "Cyrillic",	//MISSING
-DlgDocCharSetGR		: "Greek",	//MISSING
-DlgDocCharSetJP		: "Japanese",	//MISSING
-DlgDocCharSetKR		: "Korean",	//MISSING
-DlgDocCharSetTR		: "Turkish",	//MISSING
-DlgDocCharSetUN		: "Unicode (UTF-8)",	//MISSING
-DlgDocCharSetWE		: "Western European",	//MISSING
 DlgDocCharSetOther	: "Övriga teckenuppsättningar",
 
 DlgDocDocType		: "Sidhuvud",
@@ -489,12 +443,10 @@ DlgTemplatesTitle	: "Sidmallar",
 DlgTemplatesSelMsg	: "Var god välj en mall att använda med editorn<br>(allt nuvarande innehåll raderas):",
 DlgTemplatesLoading	: "Laddar mallar. Var god vänta...",
 DlgTemplatesNoTpl	: "(Ingen mall är vald)",
-DlgTemplatesReplace	: "Replace actual contents",	//MISSING
 
 // About Dialog
 DlgAboutAboutTab	: "Om",
-DlgAboutBrowserInfoTab	: "Webläsare",
-DlgAboutLicenseTab	: "License",	//MISSING
+DlgAboutBrowserInfoTab	: "Webläsarinfo",
 DlgAboutVersion		: "version",
 DlgAboutLicense		: "Licensierad under villkoren av GNU Lesser General Public License",
 DlgAboutInfo		: "För mer information se"
