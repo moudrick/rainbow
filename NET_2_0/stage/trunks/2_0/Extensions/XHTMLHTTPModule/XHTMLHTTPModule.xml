@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>XHTMLHTTPModule</name>
+    </assembly>
+    <members>
+        <member name="T:AspNetResources.Web.PageFilterStream">
+            <summary>
+            PageFilterStream does all the dirty work of tinkering the 
+            outgoing HTML stream. This is a good place to add keywords and
+            enforce some compilancy with web standards.
+            </summary>
+        </member>
+        <member name="M:AspNetResources.Web.PageFilterStream.#ctor(System.IO.Stream)">
+            <summary>
+            
+            </summary>
+            <param name="inputStream"></param>
+        </member>
+        <member name="M:AspNetResources.Web.PageFilterStream.Close">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AspNetResources.Web.PageFilterStream.Flush">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AspNetResources.Web.PageFilterStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            
+            </summary>
+            <param name="offset"></param>
+            <param name="origin"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetResources.Web.PageFilterStream.SetLength(System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="length"></param>
+        </member>
+        <member name="M:AspNetResources.Web.PageFilterStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="buffer"></param>
+            <param name="offset"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetResources.Web.PageFilterStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="buffer"></param>
+            <param name="offset"></param>
+            <param name="count"></param>
+        </member>
+        <member name="P:AspNetResources.Web.PageFilterStream.CanRead">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AspNetResources.Web.PageFilterStream.CanSeek">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AspNetResources.Web.PageFilterStream.CanWrite">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AspNetResources.Web.PageFilterStream.Length">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AspNetResources.Web.PageFilterStream.Position">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:AspNetResources.Web.XHTMLHTTPModule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AspNetResources.Web.XHTMLHTTPModule.Init(System.Web.HttpApplication)">
+            <summary>
+            
+            </summary>
+            <param name="app"></param>
+        </member>
+        <member name="M:AspNetResources.Web.XHTMLHTTPModule.InstallResponseFilter(System.Object,System.EventArgs)">
+            <summary>
+            Use this event to wire a page filter.
+            </summary>
+        </member>
+        <member name="M:AspNetResources.Web.XHTMLHTTPModule.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>

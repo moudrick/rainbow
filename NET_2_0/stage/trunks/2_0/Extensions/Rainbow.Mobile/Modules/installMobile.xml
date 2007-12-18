@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Modules>
+	<Module>
+		<FriendlyName>Announcements</FriendlyName>
+		<DesktopSource>DesktopModules/Announcements/Announcements.ascx</DesktopSource>
+		<MobileSource>Modules/Announcements/AnnouncementsMobile.ascx</MobileSource>
+	</Module>
+	<Module>
+		<FriendlyName>Contacts</FriendlyName>
+		<DesktopSource>DesktopModules/Contacts/Contacts.ascx</DesktopSource>
+		<MobileSource>Modules/Contacts/ContactsMobile.ascx</MobileSource>
+	</Module>
+	<Module>
+		<FriendlyName>Events</FriendlyName>
+		<DesktopSource>DesktopModules/Events/Events.ascx</DesktopSource>
+		<MobileSource>Modules/Events/EventsMobile.ascx</MobileSource>
+	</Module>
+	<Module>
+		<FriendlyName>HTML Document</FriendlyName>
+		<DesktopSource>DesktopModules/HTMLDocument/HTMLModule.ascx</DesktopSource>
+		<MobileSource>Modules/HTMLDocument/TextMobile.ascx</MobileSource>
+	</Module>
+</Modules>
