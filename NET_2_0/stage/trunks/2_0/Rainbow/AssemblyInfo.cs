@@ -13,12 +13,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Rainbow")]
-[assembly: AssemblyDescription("Rainbow portal solution")]
+[assembly: AssemblyTitle("Rainbow 2.0")]
+[assembly: AssemblyDescription("Rainbow portal .NET 2.0 solution")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DUEMETRI")]
+[assembly: AssemblyCompany("The Apache Foundation")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("(C) 2002-2004 DUEMETRI")]
+[assembly: AssemblyCopyright("(C) 2002-2007 The Rainbow Portal Project")]
 [assembly: AssemblyTrademark("Rainbow")]
 [assembly: AssemblyCulture("")]		
 
@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 
 
-[assembly: AssemblyVersion("1.6.0.1880")]
+[assembly: AssemblyVersion("2.0.0.1881")]
 
 // In order to sign your assembly you must specify a key to use. Refer to the 
 // Microsoft .NET Framework documentation for more information on assembly signing.
