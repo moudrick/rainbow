@@ -94,6 +94,7 @@
     <Compile Include="Configuration\Settings\PageStripDetails.cs" />
     <Compile Include="Configuration\Settings\PortalSettings.cs" />
     <Compile Include="Configuration\Settings\Providers\ModuleSettingsProvider.cs" />
+    <Compile Include="Configuration\Settings\Providers\PageSettingsProvider.cs" />
     <Compile Include="Configuration\Settings\Providers\PortalSettingsProvider.cs" />
     <Compile Include="DAL\Database.cs" />
     <Compile Include="DAL\DBHelper.cs" />

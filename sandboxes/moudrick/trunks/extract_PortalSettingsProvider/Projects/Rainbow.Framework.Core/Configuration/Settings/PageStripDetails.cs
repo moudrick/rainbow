@@ -1,10 +1,10 @@
 using System.Threading;
 using System.Xml.Serialization;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Settings.Cache;
 
 namespace Rainbow.Framework.Site.Configuration
 {
-
 	/// <summary>
 	/// PageStripDetails Class encapsulates the tabstrip details
 	/// -- PageName, PageID and PageOrder -- for a specific Page in the Portal
@@ -111,7 +111,7 @@ namespace Rainbow.Framework.Site.Configuration
 
 				if (!CurrentCache.Exists(cacheKey))
 				{
-					tabs = PageSettings.GetPageSettingsPagesBox(pageID);
+					tabs = PageSettingsProvider.GetPageSettingsPagesBox(pageID);
 					CurrentCache.Insert(cacheKey, tabs);
 				}
 				else

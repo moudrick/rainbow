@@ -426,11 +426,31 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             return langlist;
         }
 
+        /// <summary>
+        /// The PortalSettings Factory Method encapsulates all of the logic
+        /// necessary to obtain configuration settings necessary to render
+        /// a Portal Page view for a given request.<br/>
+        /// These Portal Settings are stored within a SQL database, and are
+        /// fetched below by calling the "GetPortalSettings" stored procedure.<br/>
+        /// This stored procedure returns values as SPROC output parameters,
+        /// and using three result sets.
+        /// </summary>
+        /// <param name="pageID">The page ID.</param>
+        /// <param name="portalAlias">The portal alias.</param>
         public static PortalSettings InstantiateNewPortalSettings(int pageID, string portalAlias)
         {
             return new PortalSettings(pageID, portalAlias);
         }
 
+        /// <summary>
+        /// The PortalSettings Factory Method encapsulates all of the logic
+        /// necessary to obtain configuration settings necessary to get
+        /// custom setting for a different portal than current (EditPortal.aspx.cs)<br/>
+        /// These Portal Settings are stored within a SQL database, and are
+        /// fetched below by calling the "GetPortalSettings" stored procedure.<br/>
+        /// This overload it is used
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
         public static PortalSettings InstantiateNewPortalSettings(int portalID)
         {
             return new PortalSettings(portalID);

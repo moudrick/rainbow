@@ -1,21 +1,13 @@
-//This include provides to get CurrentUserInterface language from the current thread.
-using System;
 using System.Collections;
-using System.Data;
-using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
-using System.Threading;
 using System.Web;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Design;
 using Rainbow.Framework;
-using Rainbow.Framework.Configuration;
-using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Web.UI.WebControls;
 using Path = Rainbow.Framework.Settings.Path;
 
 namespace Rainbow.Framework.Site.Configuration
@@ -66,20 +58,9 @@ namespace Rainbow.Framework.Site.Configuration
 		/// </summary>
 		public int PageOrder;
 
-		/// <summary>
-		///     
-		/// </summary>
-		private PortalSettings _portalSettings;
-
-		/// <summary>
-		///     
-		/// </summary>
-		private Hashtable customSettings;
-
-		/// <summary>
-		///     
-		/// </summary>
-		private string m_tabName;
+		PortalSettings portalSettings;
+		Hashtable customSettings;
+		string tabName;
 
 		// Jes1111
 		//		public int			TemplateId;
@@ -89,7 +70,27 @@ namespace Rainbow.Framework.Site.Configuration
 		/// we need the portalPath here for this use and it has to be set from the current portalSettings before getting the
 		/// CustomSettings for a tab
 		/// </remarks>
-		private string portalPath = null;
+		string portalPath = null;
+
+        /// <summary>
+        /// Stores current portal settings
+        /// </summary>
+        /// <value>The portal settings.</value>
+        PortalSettings PortalSettings
+        {
+            get
+            {
+                if (portalSettings == null)
+                {
+                    // Obtain PortalSettings from Current Context
+                    if (HttpContext.Current != null)
+                    {
+                        portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                    }
+                }
+                return portalSettings;
+            }
+        }
 
         /// <summary>
         /// The PageSettings.GetPageCustomSettings Method returns a hashtable of
@@ -100,168 +101,41 @@ namespace Rainbow.Framework.Site.Configuration
         /// <returns></returns>
 		public Hashtable GetPageCustomSettings(int pageID)
 		{
-			Hashtable _baseSettings;
+			Hashtable baseSettings;
+            if (CurrentCache.Exists(Key.TabSettings(pageID)))
+            {
+                baseSettings = (Hashtable) CurrentCache.Get(Key.TabSettings(pageID));
+            }
+            else
+            {
+                baseSettings = GetPageBaseSettings();
+                Hashtable settings = PageSettingsProvider.GetPageCustomSettings(pageID);
 
-			if (!CurrentCache.Exists(Key.TabSettings(pageID)))
-			{
-				_baseSettings = GetPageBaseSettings();
-				// Get Settings for this Page from the database
-				Hashtable _settings = new Hashtable();
+                // Thierry (Tiptopweb)
+                // TODO : put back the cache in GetPageBaseSettings() and reset values not found in the database
+                foreach (string key in baseSettings.Keys)
+                {
+                    if (settings[key] != null)
+                    {
+                        SettingItem s = ((SettingItem) baseSettings[key]);
 
-				// Create Instance of Connection and Command Object
-				using (SqlConnection myConnection = Config.SqlConnectionString)
-				{
-					using (SqlCommand myCommand = new SqlCommand("rb_GetTabCustomSettings", myConnection))
-					{
-						// Mark the Command as a SPROC
-						myCommand.CommandType = CommandType.StoredProcedure;
-						// Add Parameters to SPROC
-						SqlParameter parameterPageID = new SqlParameter("@TabID", SqlDbType.Int, 4);
-						parameterPageID.Value = pageID;
-						myCommand.Parameters.Add(parameterPageID);
-						// Execute the command
-						myConnection.Open();
-						SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-
-						try
-						{
-							while (dr.Read())
-							{
-								_settings[dr["SettingName"].ToString()] = dr["SettingValue"].ToString();
-							}
-						}
-
-						finally
-						{
-							dr.Close(); //by Manu, fixed bug 807858
-							myConnection.Close();
-						}
-					}
-				}
-
-				// Thierry (Tiptopweb)
-				// TODO : put back the cache in GetPageBaseSettings() and reset values not found in the database
-				foreach (string key in _baseSettings.Keys)
-				{
-					if (_settings[key] != null)
-					{
-						SettingItem s = ((SettingItem)_baseSettings[key]);
-
-						if (_settings[key].ToString().Length != 0)
-							s.Value = _settings[key].ToString();
-					}
-
-					else //by Manu
-					// Thierry (Tiptopweb), see the comment in Hashtable GetPageBaseSettings()
-					// this is not resetting key not found in the database
-					{
-						SettingItem s = ((SettingItem)_baseSettings[key]);
-						//s.Value = string.Empty; 3_aug_2004 Cory Isakson.  This line caused an error with booleans
-					}
-				}
-				CurrentCache.Insert(Key.TabSettings(pageID), _baseSettings);
-			}
-
-			else
-			{
-				_baseSettings = (Hashtable)CurrentCache.Get(Key.TabSettings(pageID));
-			}
-			return _baseSettings;
+                        if (settings[key].ToString().Length != 0)
+                            s.Value = settings[key].ToString();
+                    }
+                    else //by Manu
+                        // Thierry (Tiptopweb), see the comment in Hashtable GetPageBaseSettings()
+                        // this is not resetting key not found in the database
+                    {
+                        //SettingItem s = ((SettingItem)_baseSettings[key]);
+                        //s.Value = string.Empty; 3_aug_2004 Cory Isakson.  This line caused an error with booleans
+                    }
+                }
+                CurrentCache.Insert(Key.TabSettings(pageID), baseSettings);
+            }
+            return baseSettings;
 		}
 
-        /// <summary>
-        /// Read Current Page subtabs
-        /// </summary>
-        /// <param name="PageID">The page ID.</param>
-        /// <returns></returns>
-		[Obsolete("Replace me and move to DAL")]
-		public static SqlDataReader GetPageSettings(int PageID)
-		{
-			// Create Instance of Connection and Command Object
-			using (SqlConnection myConnection = Config.SqlConnectionString)
-			{
-				using (SqlCommand myCommand = new SqlCommand("rb_GetTabSettings", myConnection))
-				{
-					// Mark the Command as a SPROC
-					myCommand.CommandType = CommandType.StoredProcedure;
-					//PageID passed type FIXED by Bill Anderson (reedtek)
-					//see: http://sourceforge.net/tracker/index.php?func=detail&aid=813789&group_id=66837&atid=515929
-					// Add Parameters to SPROC
-					SqlParameter parameterPageID = new SqlParameter("@TabID", SqlDbType.Int);
-					parameterPageID.Value = PageID;
-					myCommand.Parameters.Add(parameterPageID);
-					// The new paramater "PortalLanguage" has been added to sp rb_GetPageSettings  
-					// Onur Esnaf
-					SqlParameter parameterPortalLanguage = new SqlParameter("@PortalLanguage", SqlDbType.NVarChar, 12);
-					parameterPortalLanguage.Value = Thread.CurrentThread.CurrentUICulture.Name;
-					myCommand.Parameters.Add(parameterPortalLanguage);
-					// Open the database connection and execute the command
-					myConnection.Open();
-					SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-					return dr;
-				}
-			}
-		}
-
-        /// <summary>
-        /// Read Current Page subtabs
-        /// </summary>
-        /// <param name="PageID">The page ID.</param>
-        /// <returns>PagesBox</returns>
-        public static PagesBox GetPageSettingsPagesBox(int PageID)
-		{
-			// Create Instance of Connection and Command Object
-			using (SqlConnection myConnection = Config.SqlConnectionString)
-			{
-				using (SqlCommand myCommand = new SqlCommand("rb_GetTabSettings", myConnection))
-				{
-					// Mark the Command as a SPROC
-					myCommand.CommandType = CommandType.StoredProcedure;
-					//PageID passed type FIXED by Bill Anderson (reedtek)
-					//see: http://sourceforge.net/tracker/index.php?func=detail&aid=813789&group_id=66837&atid=515929
-					// Add Parameters to SPROC
-					SqlParameter parameterPageID = new SqlParameter("@PageID", SqlDbType.Int);
-					parameterPageID.Value = PageID;
-					myCommand.Parameters.Add(parameterPageID);
-					// The new paramater "PortalLanguage" has been added to sp rb_GetPageSettings  
-					// Onur Esnaf
-					SqlParameter parameterPortalLanguage = new SqlParameter("@PortalLanguage", SqlDbType.NVarChar, 12);
-					parameterPortalLanguage.Value = Thread.CurrentThread.CurrentUICulture.Name;
-					myCommand.Parameters.Add(parameterPortalLanguage);
-					// Open the database connection and execute the command
-					myConnection.Open();
-
-					using (SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection))
-					{
-						PagesBox tabs = new PagesBox();
-
-						try
-						{
-							while (result.Read())
-							{
-								PageStripDetails tabDetails = new PageStripDetails();
-								tabDetails.PageID = (int)result["PageID"];
-								Hashtable cts = new PageSettings().GetPageCustomSettings(tabDetails.PageID);
-								tabDetails.PageImage = cts["CustomMenuImage"].ToString();
-								tabDetails.ParentPageID = Int32.Parse("0" + result["ParentPageID"]);
-								tabDetails.PageName = (string)result["PageName"];
-								tabDetails.PageOrder = (int)result["PageOrder"];
-								tabDetails.AuthorizedRoles = (string)result["AuthorizedRoles"];
-								tabs.Add(tabDetails);
-							}
-						}
-
-						finally
-						{
-							result.Close(); //by Manu, fixed bug 807858
-						}
-						return tabs;
-					}
-				}
-			}
-		}
-
-		/// <summary>
+	    /// <summary>
 		/// Update Page Custom Settings
 		/// </summary>
 		/// <param name="pageID">The page ID.</param>
@@ -269,46 +143,19 @@ namespace Rainbow.Framework.Site.Configuration
 		/// <param name="value">The value.</param>
 		public static void UpdatePageSettings(int pageID, string key, string value)
 		{
-			// Create Instance of Connection and Command Object
-			using (SqlConnection myConnection = Config.SqlConnectionString)
-			{
-				using (SqlCommand myCommand = new SqlCommand("rb_UpdateTabCustomSettings", myConnection))
-				{
-					// Mark the Command as a SPROC
-					myCommand.CommandType = CommandType.StoredProcedure;
-					// Add Parameters to SPROC            
-					SqlParameter parameterPageID = new SqlParameter("@TabID", SqlDbType.Int, 4);
-					parameterPageID.Value = pageID;
-					myCommand.Parameters.Add(parameterPageID);
-					SqlParameter parameterKey = new SqlParameter("@SettingName", SqlDbType.NVarChar, 50);
-					parameterKey.Value = key;
-					myCommand.Parameters.Add(parameterKey);
-					SqlParameter parameterValue = new SqlParameter("@SettingValue", SqlDbType.NVarChar, 1500);
-					parameterValue.Value = value;
-					myCommand.Parameters.Add(parameterValue);
-					myConnection.Open();
+			PageSettingsProvider.UpdatePageSettings(pageID, key, value);
 
-					try
-					{
-						myCommand.ExecuteNonQuery();
-					}
+	        //Invalidate cache
+            if (CurrentCache.Exists(Key.TabSettings(pageID)))
+            {
+                CurrentCache.Remove(Key.TabSettings(pageID));
+            }
 
-					finally
-					{
-						myConnection.Close();
-					}
-				}
-			}
-
-			//Invalidate cache
-			if (CurrentCache.Exists(Key.TabSettings(pageID)))
-				CurrentCache.Remove(Key.TabSettings(pageID));
-
-			// Clear url builder elements
+	        // Clear url builder elements
 			HttpUrlBuilder.Clear(pageID);
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the image menu.
 		/// </summary>
 		/// <returns>A System.Collections.Hashtable value...</returns>
@@ -316,21 +163,20 @@ namespace Rainbow.Framework.Site.Configuration
 		{
 			Hashtable imageMenuFiles;
 
-			if (!CurrentCache.Exists(Key.ImageMenuList(portalSettings.CurrentLayout)))
+			if (!CurrentCache.Exists(Key.ImageMenuList(PortalSettings.CurrentLayout)))
 			{
 				imageMenuFiles = new Hashtable();
 				imageMenuFiles.Add("-Default-", string.Empty);
-				string menuDirectory = string.Empty;
-				LayoutManager layoutManager = new LayoutManager(PortalPath);
+			    LayoutManager layoutManager = new LayoutManager(PortalPath);
 
-				menuDirectory = Path.WebPathCombine(layoutManager.PortalLayoutPath, portalSettings.CurrentLayout);
+				string menuDirectory = Path.WebPathCombine(layoutManager.PortalLayoutPath, PortalSettings.CurrentLayout);
 				if (Directory.Exists(menuDirectory))
 				{
 					menuDirectory = Path.WebPathCombine(menuDirectory, "menuimages");
 				}
 				else
 				{
-					menuDirectory = Path.WebPathCombine(LayoutManager.Path, portalSettings.CurrentLayout, "menuimages");
+					menuDirectory = Path.WebPathCombine(LayoutManager.Path, PortalSettings.CurrentLayout, "menuimages");
 				}
 
 				if (Directory.Exists(menuDirectory))
@@ -343,11 +189,11 @@ namespace Rainbow.Framework.Site.Configuration
 							imageMenuFiles.Add(fi.Name, fi.Name);
 					}
 				}
-				CurrentCache.Insert(Key.ImageMenuList(portalSettings.CurrentLayout), imageMenuFiles, null);
+				CurrentCache.Insert(Key.ImageMenuList(PortalSettings.CurrentLayout), imageMenuFiles, null);
 			}
 			else
 			{
-				imageMenuFiles = (Hashtable)CurrentCache.Get(Key.ImageMenuList(portalSettings.CurrentLayout));
+				imageMenuFiles = (Hashtable)CurrentCache.Get(Key.ImageMenuList(PortalSettings.CurrentLayout));
 			}
 			return imageMenuFiles;
 		}
@@ -363,168 +209,172 @@ namespace Rainbow.Framework.Site.Configuration
 		private Hashtable GetPageBaseSettings()
 		{
 			//Define base settings
-			Hashtable _baseSettings = new Hashtable();
-			int _groupOrderBase;
-			SettingItemGroup _Group;
+			Hashtable baseSettings = new Hashtable();
+			int groupOrderBase;
+			SettingItemGroup group;
 
 			#region Navigation Settings
 
 			// 2_aug_2004 Cory Isakson
-			_groupOrderBase = (int)SettingItemGroup.NAVIGATION_SETTINGS;
-			_Group = SettingItemGroup.NAVIGATION_SETTINGS;
+			groupOrderBase = (int)SettingItemGroup.NAVIGATION_SETTINGS;
+			group = SettingItemGroup.NAVIGATION_SETTINGS;
 
-			SettingItem TabPlaceholder = new SettingItem(new BooleanDataType());
-			TabPlaceholder.Group = _Group;
-			TabPlaceholder.Order = _groupOrderBase;
-			TabPlaceholder.Value = "False";
-			TabPlaceholder.EnglishName = "Act as a Placeholder?";
-			TabPlaceholder.Description = "Allows this tab to act as a navigation placeholder only.";
-			_baseSettings.Add("TabPlaceholder", TabPlaceholder);
+			SettingItem tabPlaceholder = new SettingItem(new BooleanDataType());
+			tabPlaceholder.Group = group;
+			tabPlaceholder.Order = groupOrderBase;
+			tabPlaceholder.Value = "False";
+			tabPlaceholder.EnglishName = "Act as a Placeholder?";
+			tabPlaceholder.Description = "Allows this tab to act as a navigation placeholder only.";
+			baseSettings.Add("TabPlaceholder", tabPlaceholder);
 
-			SettingItem TabLink = new SettingItem(new StringDataType());
-			TabLink.Group = _Group;
-			TabLink.Value = string.Empty;
-			TabLink.Order = _groupOrderBase + 1;
-			TabLink.EnglishName = "Static Link URL";
-			TabLink.Description = "Allows this tab to act as a navigation link to any URL.";
-			_baseSettings.Add("TabLink", TabLink);
+			SettingItem tabLink = new SettingItem(new StringDataType());
+			tabLink.Group = group;
+			tabLink.Value = string.Empty;
+			tabLink.Order = groupOrderBase + 1;
+			tabLink.EnglishName = "Static Link URL";
+			tabLink.Description = "Allows this tab to act as a navigation link to any URL.";
+			baseSettings.Add("TabLink", tabLink);
 
-			SettingItem TabUrlKeyword = new SettingItem(new StringDataType());
-			TabUrlKeyword.Group = _Group;
-			TabUrlKeyword.Order = _groupOrderBase + 2;
-			TabUrlKeyword.EnglishName = "Url Keyword";
-			TabUrlKeyword.Description = "Allows you to specify a keyword that would appear in your url.";
-			_baseSettings.Add("TabUrlKeyword", TabUrlKeyword);
+			SettingItem tabUrlKeyword = new SettingItem(new StringDataType());
+			tabUrlKeyword.Group = group;
+			tabUrlKeyword.Order = groupOrderBase + 2;
+			tabUrlKeyword.EnglishName = "Url Keyword";
+			tabUrlKeyword.Description = "Allows you to specify a keyword that would appear in your url.";
+			baseSettings.Add("TabUrlKeyword", tabUrlKeyword);
 
-			SettingItem UrlPageName = new SettingItem(new StringDataType());
-			UrlPageName.Group = _Group;
-			UrlPageName.Order = _groupOrderBase + 3;
-			UrlPageName.EnglishName = "Url Page Name";
-			UrlPageName.Description = "This setting allows you to specify a name for this tab that will show up in the url instead of default.aspx";
-			_baseSettings.Add("UrlPageName", UrlPageName);
+			SettingItem urlPageName = new SettingItem(new StringDataType());
+			urlPageName.Group = group;
+			urlPageName.Order = groupOrderBase + 3;
+			urlPageName.EnglishName = "Url Page Name";
+			urlPageName.Description = "This setting allows you to specify a name for this tab that will show up in the url instead of default.aspx";
+			baseSettings.Add("UrlPageName", urlPageName);
 
 			#endregion
 
 			#region Metadata Management
 
-			_groupOrderBase = (int)SettingItemGroup.META_SETTINGS;
-			_Group = SettingItemGroup.META_SETTINGS;
-			SettingItem TabTitle = new SettingItem(new StringDataType());
-			TabTitle.Group = _Group;
-			TabTitle.EnglishName = "Tab / Page Title";
-			TabTitle.Description = "Allows you to enter a title (Shows at the top of your browser) for this specific Tab / Page. Enter something here to override the default portal wide setting.";
-			_baseSettings.Add("TabTitle", TabTitle);
+			//_groupOrderBase = (int)SettingItemGroup.META_SETTINGS;
+			group = SettingItemGroup.META_SETTINGS;
+			SettingItem tabTitle = new SettingItem(new StringDataType());
+			tabTitle.Group = group;
+			tabTitle.EnglishName = "Tab / Page Title";
+			tabTitle.Description = "Allows you to enter a title (Shows at the top of your browser) for this specific Tab / Page. Enter something here to override the default portal wide setting.";
+			baseSettings.Add("TabTitle", tabTitle);
 
-			SettingItem TabMetaKeyWords = new SettingItem(new StringDataType());
-			TabMetaKeyWords.Group = _Group;
-			TabMetaKeyWords.EnglishName = "Tab / Page Keywords";
-			TabMetaKeyWords.Description = "This setting is to help with search engine optimisation. Enter 1-15 Default Keywords that represent what this Tab / Page is about.Enter something here to override the default portal wide setting.";
-			_baseSettings.Add("TabMetaKeyWords", TabMetaKeyWords);
-			SettingItem TabMetaDescription = new SettingItem(new StringDataType());
-			TabMetaDescription.Group = _Group;
-			TabMetaDescription.EnglishName = "Tab / Page Description";
-			TabMetaDescription.Description = "This setting is to help with search engine optimisation. Enter a description (Not too long though. 1 paragraph is enough) that describes this particular Tab / Page. Enter something here to override the default portal wide setting.";
-			_baseSettings.Add("TabMetaDescription", TabMetaDescription);
-			SettingItem TabMetaEncoding = new SettingItem(new StringDataType());
-			TabMetaEncoding.Group = _Group;
-			TabMetaEncoding.EnglishName = "Tab / Page Encoding";
-			TabMetaEncoding.Description = "Every time your browser returns a page it looks to see what format it is retrieving. This allows you to specify the content type for this particular Tab / Page. Enter something here to override the default portal wide setting.";
-			_baseSettings.Add("TabMetaEncoding", TabMetaEncoding);
-			SettingItem TabMetaOther = new SettingItem(new StringDataType());
-			TabMetaOther.Group = _Group;
-			TabMetaOther.EnglishName = "Additional Meta Tag Entries";
-			TabMetaOther.Description = "This setting allows you to enter new tags into this Tab / Page's HEAD Tag. Enter something here to override the default portal wide setting.";
-			_baseSettings.Add("TabMetaOther", TabMetaOther);
+			SettingItem tabMetaKeyWords = new SettingItem(new StringDataType());
+			tabMetaKeyWords.Group = group;
+			tabMetaKeyWords.EnglishName = "Tab / Page Keywords";
+			tabMetaKeyWords.Description = "This setting is to help with search engine optimisation. Enter 1-15 Default Keywords that represent what this Tab / Page is about.Enter something here to override the default portal wide setting.";
+			baseSettings.Add("TabMetaKeyWords", tabMetaKeyWords);
+
+			SettingItem tabMetaDescription = new SettingItem(new StringDataType());
+			tabMetaDescription.Group = group;
+			tabMetaDescription.EnglishName = "Tab / Page Description";
+			tabMetaDescription.Description = "This setting is to help with search engine optimisation. Enter a description (Not too long though. 1 paragraph is enough) that describes this particular Tab / Page. Enter something here to override the default portal wide setting.";
+			baseSettings.Add("TabMetaDescription", tabMetaDescription);
+
+			SettingItem tabMetaEncoding = new SettingItem(new StringDataType());
+			tabMetaEncoding.Group = group;
+			tabMetaEncoding.EnglishName = "Tab / Page Encoding";
+			tabMetaEncoding.Description = "Every time your browser returns a page it looks to see what format it is retrieving. This allows you to specify the content type for this particular Tab / Page. Enter something here to override the default portal wide setting.";
+			baseSettings.Add("TabMetaEncoding", tabMetaEncoding);
+
+			SettingItem tabMetaOther = new SettingItem(new StringDataType());
+			tabMetaOther.Group = group;
+			tabMetaOther.EnglishName = "Additional Meta Tag Entries";
+			tabMetaOther.Description = "This setting allows you to enter new tags into this Tab / Page's HEAD Tag. Enter something here to override the default portal wide setting.";
+            baseSettings.Add("TabMetaOther", tabMetaOther);
+
 			SettingItem TabKeyPhrase = new SettingItem(new StringDataType());
-			TabKeyPhrase.Group = _Group;
+			TabKeyPhrase.Group = group;
 			TabKeyPhrase.EnglishName = "Tab / Page Keyphrase";
 			TabKeyPhrase.Description = "This setting can be used by a module or by a control. It allows you to define a message/phrase for this particular Tab / Page This can be used for search engine optimisation. Enter something here to override the default portal wide setting.";
-			_baseSettings.Add("TabKeyPhrase", TabKeyPhrase);
+			baseSettings.Add("TabKeyPhrase", TabKeyPhrase);
 
 			#endregion
 
 			#region Layout and Theme
 
 			// changed Thierry (Tiptopweb) : have a dropdown menu to select layout and themes
-			_groupOrderBase = (int)SettingItemGroup.THEME_LAYOUT_SETTINGS;
-			_Group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
+			groupOrderBase = (int)SettingItemGroup.THEME_LAYOUT_SETTINGS;
+			group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
 			// get the list of available layouts
 			// changed: Jes1111 - 2004-08-06
-			ArrayList layoutsList = new ArrayList(new LayoutManager(portalSettings.PortalPath).GetLayouts());
-			LayoutItem _noCustomLayout = new LayoutItem();
-			_noCustomLayout.Name = string.Empty;
-			layoutsList.Insert(0, _noCustomLayout);
+			ArrayList layoutsList = new ArrayList(new LayoutManager(PortalSettings.PortalPath).GetLayouts());
+			LayoutItem noCustomLayout = new LayoutItem();
+			noCustomLayout.Name = string.Empty;
+			layoutsList.Insert(0, noCustomLayout);
 			// get the list of available themes
 			// changed: Jes1111 - 2004-08-06
-			ArrayList themesList = new ArrayList(new ThemeManager(portalSettings.PortalPath).GetThemes());
-			ThemeItem _noCustomTheme = new ThemeItem();
-			_noCustomTheme.Name = string.Empty;
-			themesList.Insert(0, _noCustomTheme);
+			ArrayList themesList = new ArrayList(new ThemeManager(PortalSettings.PortalPath).GetThemes());
+			ThemeItem noCustomTheme = new ThemeItem();
+			noCustomTheme.Name = string.Empty;
+			themesList.Insert(0, noCustomTheme);
 			// changed: Jes1111 - 2004-08-06
-			SettingItem CustomLayout = new SettingItem(new CustomListDataType(layoutsList, "Name", "Name"));
-			CustomLayout.Group = _Group;
-			CustomLayout.Order = _groupOrderBase + 11;
-			CustomLayout.EnglishName = "Custom Layout";
-			CustomLayout.Description = "Set a custom layout for this tab only";
-			_baseSettings.Add("CustomLayout", CustomLayout);
+			SettingItem customLayout = new SettingItem(new CustomListDataType(layoutsList, "Name", "Name"));
+			customLayout.Group = group;
+			customLayout.Order = groupOrderBase + 11;
+			customLayout.EnglishName = "Custom Layout";
+			customLayout.Description = "Set a custom layout for this tab only";
+			baseSettings.Add("CustomLayout", customLayout);
 			//SettingItem CustomTheme = new SettingItem(new StringDataType());
 			// changed: Jes1111 - 2004-08-06
-			SettingItem CustomTheme = new SettingItem(new CustomListDataType(themesList, "Name", "Name"));
-			CustomTheme.Group = _Group;
-			CustomTheme.Order = _groupOrderBase + 12;
-			CustomTheme.EnglishName = "Custom Theme";
-			CustomTheme.Description = "Set a custom theme for the modules in this tab only";
-			_baseSettings.Add("CustomTheme", CustomTheme);
+			SettingItem customTheme = new SettingItem(new CustomListDataType(themesList, "Name", "Name"));
+			customTheme.Group = group;
+			customTheme.Order = groupOrderBase + 12;
+			customTheme.EnglishName = "Custom Theme";
+			customTheme.Description = "Set a custom theme for the modules in this tab only";
+			baseSettings.Add("CustomTheme", customTheme);
 			//SettingItem CustomThemeAlt = new SettingItem(new StringDataType());
 			// changed: Jes1111 - 2004-08-06
-			SettingItem CustomThemeAlt = new SettingItem(new CustomListDataType(themesList, "Name", "Name"));
-			CustomThemeAlt.Group = _Group;
-			CustomThemeAlt.Order = _groupOrderBase + 13;
-			CustomThemeAlt.EnglishName = "Custom Alt Theme";
-			CustomThemeAlt.Description = "Set a custom alternate theme for the modules in this tab only";
-			_baseSettings.Add("CustomThemeAlt", CustomThemeAlt);
+			SettingItem customThemeAlt = new SettingItem(new CustomListDataType(themesList, "Name", "Name"));
+			customThemeAlt.Group = group;
+			customThemeAlt.Order = groupOrderBase + 13;
+			customThemeAlt.EnglishName = "Custom Alt Theme";
+			customThemeAlt.Description = "Set a custom alternate theme for the modules in this tab only";
+			baseSettings.Add("CustomThemeAlt", customThemeAlt);
 
-			SettingItem CustomMenuImage = new SettingItem(new CustomListDataType(GetImageMenu(), "Key", "Value"));
-			CustomMenuImage.Group = _Group;
-			CustomMenuImage.Order = _groupOrderBase + 14;
-			CustomMenuImage.EnglishName = "Custom Image Menu";
-			CustomMenuImage.Description = "Set a custom menu image for this tab";
-			_baseSettings.Add("CustomMenuImage", CustomMenuImage);
+			SettingItem customMenuImage = new SettingItem(new CustomListDataType(GetImageMenu(), "Key", "Value"));
+			customMenuImage.Group = group;
+			customMenuImage.Order = groupOrderBase + 14;
+			customMenuImage.EnglishName = "Custom Image Menu";
+			customMenuImage.Description = "Set a custom menu image for this tab";
+			baseSettings.Add("CustomMenuImage", customMenuImage);
 
 			#endregion
 
 			#region Language/Culture Management
 
-			_groupOrderBase = (int)SettingItemGroup.CULTURE_SETTINGS;
-			_Group = SettingItemGroup.CULTURE_SETTINGS;
+			groupOrderBase = (int)SettingItemGroup.CULTURE_SETTINGS;
+			group = SettingItemGroup.CULTURE_SETTINGS;
             CultureInfo[] cultureList = Rainbow.Framework.Localization.LanguageSwitcher.GetLanguageList(true);
 			//Localized tab title
-			int counter = _groupOrderBase + 11;
+			int counter = groupOrderBase + 11;
 
 			foreach (CultureInfo c in cultureList)
 			{
 				//Ignore invariant
-				if (c != CultureInfo.InvariantCulture && !_baseSettings.ContainsKey(c.Name))
+				if (c != CultureInfo.InvariantCulture && !baseSettings.ContainsKey(c.Name))
 				{
-					SettingItem LocalizedTabKeyPhrase = new SettingItem(new StringDataType());
-					LocalizedTabKeyPhrase.Order = counter;
-					LocalizedTabKeyPhrase.Group = _Group;
-					LocalizedTabKeyPhrase.EnglishName = "Tab Key Phrase (" + c.Name + ")";
-					LocalizedTabKeyPhrase.Description = "Key Phrase this Tab/Page for " + c.EnglishName + " culture.";
-					_baseSettings.Add("TabKeyPhrase_" + c.Name, LocalizedTabKeyPhrase);
+					SettingItem localizedTabKeyPhrase = new SettingItem(new StringDataType());
+					localizedTabKeyPhrase.Order = counter;
+					localizedTabKeyPhrase.Group = group;
+					localizedTabKeyPhrase.EnglishName = "Tab Key Phrase (" + c.Name + ")";
+					localizedTabKeyPhrase.Description = "Key Phrase this Tab/Page for " + c.EnglishName + " culture.";
+					baseSettings.Add("TabKeyPhrase_" + c.Name, localizedTabKeyPhrase);
 					SettingItem LocalizedTitle = new SettingItem(new StringDataType());
 					LocalizedTitle.Order = counter;
-					LocalizedTitle.Group = _Group;
+					LocalizedTitle.Group = group;
 					LocalizedTitle.EnglishName = "Title (" + c.Name + ")";
 					LocalizedTitle.Description = "Set title for " + c.EnglishName + " culture.";
-					_baseSettings.Add(c.Name, LocalizedTitle);
+					baseSettings.Add(c.Name, LocalizedTitle);
 					counter++;
 				}
 			}
 
 			#endregion
 
-			return _baseSettings;
+			return baseSettings;
 		}
 
 		/// <summary>
@@ -535,9 +385,11 @@ namespace Rainbow.Framework.Site.Configuration
 		{
 			get
 			{
-				if (customSettings == null)
-					customSettings = GetPageCustomSettings(PageID);
-				return customSettings;
+                if (customSettings == null)
+                {
+                    customSettings = GetPageCustomSettings(PageID);
+                }
+			    return customSettings;
 			}
 		}
 
@@ -559,25 +411,6 @@ namespace Rainbow.Framework.Site.Configuration
 		}
 
 		/// <summary>
-		/// Stores current portal settings
-		/// </summary>
-		/// <value>The portal settings.</value>
-		public PortalSettings portalSettings
-		{
-			get
-			{
-				if (_portalSettings == null)
-				{
-					// Obtain PortalSettings from Current Context
-					if (HttpContext.Current != null)
-						_portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-				}
-				return _portalSettings;
-			}
-			set { _portalSettings = value; }
-		}
-
-		/// <summary>
 		/// Gets or sets the name of the page.
 		/// </summary>
 		/// <value>The name of the page.</value>
@@ -585,8 +418,8 @@ namespace Rainbow.Framework.Site.Configuration
 		/// </remarks>
 		public string PageName
 		{
-			get { return m_tabName; }
-			set { m_tabName = value; }
+			get { return tabName; }
+			set { tabName = value; }
 		}
 	}
 }
