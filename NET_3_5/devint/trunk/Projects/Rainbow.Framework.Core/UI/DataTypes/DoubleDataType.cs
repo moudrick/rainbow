@@ -1,4 +1,4 @@
-namespace Rainbow.Framework.DataTypes
+namespace Rainbow.Framework.Data.Types
 {
     /// <summary>
     /// DoubleDataType

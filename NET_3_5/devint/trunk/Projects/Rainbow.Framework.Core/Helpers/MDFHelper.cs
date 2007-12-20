@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using Rainbow.Framework.Data;
-using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Users.Data;

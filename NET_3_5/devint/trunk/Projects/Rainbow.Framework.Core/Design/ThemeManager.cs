@@ -6,7 +6,8 @@ using System.Web;
 using System.Web.Caching;
 using System.Xml;
 using System.Xml.Serialization;
-using Rainbow.Framework.Settings.Cache;
+using Rainbow.Framework.Configuration.Cache;
+using System.Diagnostics;
 // using System.Diagnostics;
 
 namespace Rainbow.Framework.Design
@@ -94,7 +95,7 @@ namespace Rainbow.Framework.Design
 
             else
             {
-                baseThemeList = (ArrayList) CurrentCache.Get(Key.ThemeList(Path));
+                baseThemeList = (ArrayList)CurrentCache.Get(Key.ThemeList(Path));
             }
             return baseThemeList;
         }
@@ -139,7 +140,7 @@ namespace Rainbow.Framework.Design
             }
             else
             {
-                privateThemeList = (ArrayList) CurrentCache.Get(Key.ThemeList(PortalThemePath));
+                privateThemeList = (ArrayList)CurrentCache.Get(Key.ThemeList(PortalThemePath));
                 //Debug.WriteLine("Retrieving privateThemeList from Cache: item count is " + privateThemeList.Count.ToString());
             }
             return privateThemeList;
@@ -155,7 +156,7 @@ namespace Rainbow.Framework.Design
             ArrayList themeList;
             ArrayList themeListPrivate;
 
-            themeList = (ArrayList) GetPublicThemes().Clone();
+            themeList = (ArrayList)GetPublicThemes().Clone();
             themeListPrivate = GetPrivateThemes();
 
             themeList.AddRange(themeListPrivate);
@@ -174,16 +175,16 @@ namespace Rainbow.Framework.Design
             CurrentTheme.Name = ThemeName;
 
             //Try loading private theme first
-            if (LoadTheme(Settings.Path.WebPathCombine(PortalWebPath, ThemeName)))
+            if (LoadTheme(Configuration.Path.WebPathCombine(PortalWebPath, ThemeName)))
                 return;
 
             //Try loading public theme
-            if (LoadTheme(Settings.Path.WebPathCombine(WebPath, ThemeName)))
+            if (LoadTheme(Configuration.Path.WebPathCombine(WebPath, ThemeName)))
                 return;
             //Try default
             CurrentTheme.Name = "default";
 
-            if (LoadTheme(Settings.Path.WebPathCombine(WebPath, "default")))
+            if (LoadTheme(Configuration.Path.WebPathCombine(WebPath, "default")))
                 return;
             string errormsg = General.GetString("LOAD_THEME_ERROR");
             throw new FileNotFoundException(errormsg.Replace("%1%", "'" + ThemeName + "'"), WebPath + "/" + ThemeName);
@@ -197,9 +198,11 @@ namespace Rainbow.Framework.Design
         /// <param name="reason">The reason.</param>
         public static void OnRemove(string key, object cacheItem, CacheItemRemovedReason reason)
         {
-            ErrorHandler.Publish(LogLevel.Info,
-                                 "The cached value with key '" + key + "' was removed from the cache.  Reason: " +
-                                 reason.ToString());
+            Trace.WriteLine("The cached value with key '" + key + "' was removed from the cache.  Reason: " +
+                            reason.ToString());
+            //ErrorHandler.Publish(LogLevel.Info,
+            //                     "The cached value with key '" + key + "' was removed from the cache.  Reason: " +
+            //                     reason.ToString());
         }
 
         /// <summary>
@@ -209,8 +212,8 @@ namespace Rainbow.Framework.Design
         public void Save(string ThemeName)
         {
             CurrentTheme.Name = ThemeName;
-            CurrentTheme.WebPath = Settings.Path.WebPathCombine(WebPath, ThemeName);
-            XmlSerializer serializer = new XmlSerializer(typeof (Theme));
+            CurrentTheme.WebPath = Configuration.Path.WebPathCombine(WebPath, ThemeName);
+            XmlSerializer serializer = new XmlSerializer(typeof(Theme));
 
             // Create an XmlTextWriter using a FileStream.
             using (Stream fs = new FileStream(CurrentTheme.ThemeFileName, FileMode.Create))
@@ -262,7 +265,7 @@ namespace Rainbow.Framework.Design
             else
             {
                 //CurrentTheme = (Theme) Rainbow.Framework.Settings.Cache.CurrentCache.Get (Rainbow.Framework.Settings.Cache.Key.CurrentTheme(CurrentWebPath));
-                CurrentTheme = (Theme) CurrentCache.Get(Key.CurrentTheme(CurrentTheme.Path));
+                CurrentTheme = (Theme)CurrentCache.Get(Key.CurrentTheme(CurrentTheme.Path));
             }
             CurrentTheme.WebPath = CurrentWebPath;
             return true;
@@ -390,8 +393,9 @@ namespace Rainbow.Framework.Design
 
                     catch (Exception ex)
                     {
-                        ErrorHandler.Publish(LogLevel.Error,
-                                             "Failed to Load XML Theme : " + filename + " Message was: " + ex.Message);
+                        Debug.WriteLine("Failed to Load XML Theme : " + filename + " Message was: " + ex.Message);
+                        //ErrorHandler.Publish(LogLevel.Error,
+                        //                     "Failed to Load XML Theme : " + filename + " Message was: " + ex.Message);
                     }
 
                     finally
@@ -403,8 +407,9 @@ namespace Rainbow.Framework.Design
 
             catch (Exception ex)
             {
-                ErrorHandler.Publish(LogLevel.Error,
-                                     "Failed to open XML Theme : " + filename + " Message was: " + ex.Message);
+                Debug.WriteLine("Failed to open XML Theme : " + filename + " Message was: " + ex.Message);
+                //ErrorHandler.Publish(LogLevel.Error,
+                //                     "Failed to open XML Theme : " + filename + " Message was: " + ex.Message);
             }
             return returnValue;
         }
@@ -439,7 +444,7 @@ namespace Rainbow.Framework.Design
             get
             {
                 string myPortalWebPath =
-                    Settings.Path.WebPathCombine(Settings.Path.ApplicationRoot, _portalPath, "/Themes");
+                    Configuration.Path.WebPathCombine(Configuration.Path.ApplicationRoot, _portalPath, "/Themes");
                 return myPortalWebPath;
             }
         }
@@ -451,7 +456,7 @@ namespace Rainbow.Framework.Design
         /// <value>The web path.</value>
         public static string WebPath
         {
-            get { return Settings.Path.WebPathCombine(Settings.Path.ApplicationRoot, "/Design/Themes"); }
+            get { return Configuration.Path.WebPathCombine(Configuration.Path.ApplicationRoot, "/Design/Themes"); }
         }
     }
 }

@@ -98,13 +98,13 @@ namespace Rainbow.Framework.Design
             if (ThemeImages.ContainsKey(name))
             {
                 img = ((ThemeImage) ThemeImages[name]).GetImage();
-                img.ImageUrl = Settings.Path.WebPathCombine(WebPath, img.ImageUrl);
+                img.ImageUrl = Configuration.Path.WebPathCombine(WebPath, img.ImageUrl);
             }
             else
             {
                 img = new Image();
                 img.ImageUrl =
-                    Settings.Path.WebPathCombine(DefaultButtonPath.Replace("~", Settings.Path.ApplicationRoot),
+                    Configuration.Path.WebPathCombine(DefaultButtonPath.Replace("~", Configuration.Path.ApplicationRoot),
                                                  defaultImagePath);
             }
             return img;
@@ -125,12 +125,12 @@ namespace Rainbow.Framework.Design
             // else use default spacer img
             if (File.Exists(HttpContext.Current.Server.MapPath(WebPath + "/img/" + image_file_name)))
             {
-                imagePath = Settings.Path.WebPathCombine(WebPath, "/img/" + image_file_name);
+                imagePath = Configuration.Path.WebPathCombine(WebPath, "/img/" + image_file_name);
             }
             else if (File.Exists(HttpContext.Current.Server.MapPath(DefaultModuleImagePath + image_file_name)))
             {
                 imagePath =
-                    Settings.Path.WebPathCombine(DefaultModuleImagePath.Replace("~", Settings.Path.ApplicationRoot),
+                    Configuration.Path.WebPathCombine(DefaultModuleImagePath.Replace("~", Configuration.Path.ApplicationRoot),
                                                  image_file_name);
             }
                 // TODO: Not Sure how to get current module path here
@@ -138,12 +138,12 @@ namespace Rainbow.Framework.Design
                 //{
                 // DefaultModuleImagePath = "~/Design/Themes/Default/img";
                 // Not Sure how to get current module path here
-                // imagePath = Settings.Path.WebPathCombine(Settings.Path.ApplicationRoot, "/desktopmodules/"+   ;			
+                // imagePath = Configuration.Path.WebPathCombine(Configuration.Path.ApplicationRoot, "/desktopmodules/"+   ;			
                 //}
             else
             {
                 imagePath =
-                    Settings.Path.WebPathCombine(DefaultModuleImagePath.Replace("~", Settings.Path.ApplicationRoot),
+                    Configuration.Path.WebPathCombine(DefaultModuleImagePath.Replace("~", Configuration.Path.ApplicationRoot),
                                                  "1x1.gif");
             }
 
@@ -226,7 +226,7 @@ namespace Rainbow.Framework.Design
         /// </summary>
         public string CssFile
         {
-            get { return Settings.Path.WebPathCombine(WebPath, _Css); }
+            get { return Configuration.Path.WebPathCombine(WebPath, _Css); }
         }
 
         /// <summary>
@@ -240,10 +240,10 @@ namespace Rainbow.Framework.Design
             string cssfilPath = string.Empty;
 
             if (File.Exists(HttpContext.Current.Server.MapPath(WebPath + "/mod/" + cssfilename)))
-                cssfilPath = Settings.Path.WebPathCombine(WebPath, "/mod/" + cssfilename);
+                cssfilPath = Configuration.Path.WebPathCombine(WebPath, "/mod/" + cssfilename);
             else if (File.Exists(HttpContext.Current.Server.MapPath(DefaultModuleCSSPath + "/" + cssfilename)))
                 cssfilPath =
-                    Settings.Path.WebPathCombine(DefaultModuleCSSPath.Replace("~", Settings.Path.ApplicationRoot),
+                    Configuration.Path.WebPathCombine(DefaultModuleCSSPath.Replace("~", Configuration.Path.ApplicationRoot),
                                                  cssfilename);
 
             return cssfilPath;

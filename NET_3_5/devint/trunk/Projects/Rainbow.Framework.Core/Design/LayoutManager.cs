@@ -2,7 +2,7 @@ using System.Collections;
 using System.IO;
 using System.Web;
 using System.Web.Caching;
-using Rainbow.Framework.Settings.Cache;
+using Rainbow.Framework.Configuration.Cache;
 
 namespace Rainbow.Framework.Design
 {
@@ -25,13 +25,13 @@ namespace Rainbow.Framework.Design
         private string _portalPath;
 
         // Jes1111 - not needed for new version ... see below
-//		/// <summary>
-//		///     
-//		/// </summary>
-//		/// <remarks>
-//		///     
-//		/// </remarks>
-//		private static ArrayList cachedLayoutsList;
+        //		/// <summary>
+        //		///     
+        //		/// </summary>
+        //		/// <remarks>
+        //		///     
+        //		/// </remarks>
+        //		private static ArrayList cachedLayoutsList;
 
         /// <summary>
         ///     
@@ -59,7 +59,7 @@ namespace Rainbow.Framework.Design
         public void ClearCacheList()
         {
             //Clear cache
-            lock (typeof (LayoutManager))
+            lock (typeof(LayoutManager))
             {
                 // Jes1111
                 //LayoutManager.cachedLayoutsList = null;
@@ -85,7 +85,7 @@ namespace Rainbow.Framework.Design
             get
             {
                 if (innerWebPath == null)
-                    innerWebPath = Settings.Path.WebPathCombine(Settings.Path.ApplicationRoot, "/Design/DesktopLayouts");
+                    innerWebPath = Configuration.Path.WebPathCombine(Configuration.Path.ApplicationRoot, "/Design/DesktopLayouts");
                 return innerWebPath;
             }
         }
@@ -100,7 +100,7 @@ namespace Rainbow.Framework.Design
             {
                 // FIX by George James (ghjames)
                 // http://sourceforge.net/tracker/index.php?func=detail&aid=735716&group_id=66837&atid=515929
-                return Settings.Path.WebPathCombine(Settings.Path.ApplicationRoot, _portalPath, "/DesktopLayouts");
+                return Configuration.Path.WebPathCombine(Configuration.Path.ApplicationRoot, _portalPath, "/DesktopLayouts");
             }
         }
 
@@ -133,7 +133,7 @@ namespace Rainbow.Framework.Design
             ArrayList layoutList;
             ArrayList layoutListPrivate;
 
-            layoutList = (ArrayList) GetPublicLayouts().Clone();
+            layoutList = (ArrayList)GetPublicLayouts().Clone();
             layoutListPrivate = GetPrivateLayouts();
 
             layoutList.AddRange(layoutListPrivate);
@@ -141,43 +141,43 @@ namespace Rainbow.Framework.Design
             return layoutList;
 
             // Jes1111 - old version
-//			//Initialize array
-//			ArrayList layoutsList;
-//
-//			if (!Rainbow.Framework.Settings.Cache.CurrentCache.Exists (Rainbow.Framework.Settings.Cache.Key.LayoutList(PortalLayoutPath)))
-//			{
-//				//Initialize array
-//				//It is very important to use the clone here 
-//				//or we get duplicated Custom list each time
-//				layoutsList = (ArrayList) GetPublicLayouts().Clone();
-//
-//				string[] layouts;
-//
-//				// Try to read directories from private Layout path
-//				if (Directory.Exists(PortalLayoutPath))
-//				{
-//					layouts = Directory.GetDirectories(PortalLayoutPath);
-//				}
-//				else
-//				{
-//					layouts = new string[0];
-//				}
-//
-//				for (int i = 0; i <= layouts.GetUpperBound(0); i++)
-//				{
-//					LayoutItem t = new LayoutItem();
-//					t.Name = layouts[i].Substring(PortalLayoutPath.Length + 1);
-//					if(t.Name != "CVS") //Ignore CVS
-//						layoutsList.Add(t);
-//				}
-//		
-//				Rainbow.Framework.Settings.Cache.CurrentCache.Insert (Rainbow.Framework.Settings.Cache.Key.LayoutList(PortalLayoutPath), layoutsList);
-//			}
-//			else
-//			{
-//				layoutsList = (ArrayList) Rainbow.Framework.Settings.Cache.CurrentCache.Get (Rainbow.Framework.Settings.Cache.Key.LayoutList(PortalLayoutPath));
-//			}
-//			return layoutsList;
+            //			//Initialize array
+            //			ArrayList layoutsList;
+            //
+            //			if (!Rainbow.Framework.Settings.Cache.CurrentCache.Exists (Rainbow.Framework.Settings.Cache.Key.LayoutList(PortalLayoutPath)))
+            //			{
+            //				//Initialize array
+            //				//It is very important to use the clone here 
+            //				//or we get duplicated Custom list each time
+            //				layoutsList = (ArrayList) GetPublicLayouts().Clone();
+            //
+            //				string[] layouts;
+            //
+            //				// Try to read directories from private Layout path
+            //				if (Directory.Exists(PortalLayoutPath))
+            //				{
+            //					layouts = Directory.GetDirectories(PortalLayoutPath);
+            //				}
+            //				else
+            //				{
+            //					layouts = new string[0];
+            //				}
+            //
+            //				for (int i = 0; i <= layouts.GetUpperBound(0); i++)
+            //				{
+            //					LayoutItem t = new LayoutItem();
+            //					t.Name = layouts[i].Substring(PortalLayoutPath.Length + 1);
+            //					if(t.Name != "CVS") //Ignore CVS
+            //						layoutsList.Add(t);
+            //				}
+            //		
+            //				Rainbow.Framework.Settings.Cache.CurrentCache.Insert (Rainbow.Framework.Settings.Cache.Key.LayoutList(PortalLayoutPath), layoutsList);
+            //			}
+            //			else
+            //			{
+            //				layoutsList = (ArrayList) Rainbow.Framework.Settings.Cache.CurrentCache.Get (Rainbow.Framework.Settings.Cache.Key.LayoutList(PortalLayoutPath));
+            //			}
+            //			return layoutsList;
         }
 
         /// <summary>
@@ -217,47 +217,47 @@ namespace Rainbow.Framework.Design
             }
             else
             {
-                baseLayoutList = (ArrayList) CurrentCache.Get(Key.LayoutList(Path));
+                baseLayoutList = (ArrayList)CurrentCache.Get(Key.LayoutList(Path));
             }
             return baseLayoutList;
 
             // Jes1111 - old version
-//			if (LayoutManager.cachedLayoutsList == null)
-//			{
-//				//Initialize array
-//				ArrayList layoutsList = new ArrayList();
-//
-//				string[] layouts;
-//
-//				// Try to read directories from public Layout path
-//				if (Directory.Exists(Path))
-//				{
-//					layouts = Directory.GetDirectories(Path);
-//				}
-//				else
-//				{
-//					layouts = new string[0];
-//				}
-//
-//				for (int i = 0; i < layouts.Length; i++)
-//				{
-//					LayoutItem t = new LayoutItem();
-//					t.Name = layouts[i].Substring(Path.Length + 1);
-//					if(t.Name != "CVS") //Ignore CVS
-//						layoutsList.Add(t);
-//				}
-//
-//				//store list in cache
-//				lock (typeof(LayoutManager))
-//				{
-//					if (LayoutManager.cachedLayoutsList == null) 
-//					{
-//						LayoutManager.cachedLayoutsList = layoutsList;
-//					}
-//				}
-//			}
-//
-//			return LayoutManager.cachedLayoutsList;
+            //			if (LayoutManager.cachedLayoutsList == null)
+            //			{
+            //				//Initialize array
+            //				ArrayList layoutsList = new ArrayList();
+            //
+            //				string[] layouts;
+            //
+            //				// Try to read directories from public Layout path
+            //				if (Directory.Exists(Path))
+            //				{
+            //					layouts = Directory.GetDirectories(Path);
+            //				}
+            //				else
+            //				{
+            //					layouts = new string[0];
+            //				}
+            //
+            //				for (int i = 0; i < layouts.Length; i++)
+            //				{
+            //					LayoutItem t = new LayoutItem();
+            //					t.Name = layouts[i].Substring(Path.Length + 1);
+            //					if(t.Name != "CVS") //Ignore CVS
+            //						layoutsList.Add(t);
+            //				}
+            //
+            //				//store list in cache
+            //				lock (typeof(LayoutManager))
+            //				{
+            //					if (LayoutManager.cachedLayoutsList == null) 
+            //					{
+            //						LayoutManager.cachedLayoutsList = layoutsList;
+            //					}
+            //				}
+            //			}
+            //
+            //			return LayoutManager.cachedLayoutsList;
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace Rainbow.Framework.Design
             }
             else
             {
-                privateLayoutList = (ArrayList) CurrentCache.Get(Key.LayoutList(PortalLayoutPath));
+                privateLayoutList = (ArrayList)CurrentCache.Get(Key.LayoutList(PortalLayoutPath));
             }
             return privateLayoutList;
         }

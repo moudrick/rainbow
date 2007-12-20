@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Linq;
+using System.Data.Linq;
 using System.IO;
 using System.Resources;
 using System.Text;
@@ -16,8 +18,11 @@ using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Path = Rainbow.Framework.Settings.Path;
 using Rainbow.Framework.Web.UI.WebControls;
+using Rainbow.Framework.Data.MsSql;
+using System.Collections.Generic;
 
-namespace Rainbow.Framework.Web.UI {
+namespace Rainbow.Framework.Web.UI
+{
     // TODO: this class needs a better write-up ;-)
     /// <summary>
     /// A template page useful for constructing custom edit pages for module settings.<br/>
@@ -28,19 +33,22 @@ namespace Rainbow.Framework.Web.UI {
     /// It is named USECURE becuse no check about security is made.
     /// Usencure page reminds you that you have to do your own security on it.
     /// </summary>
-    [History( "ozan@rainbow.web.tr", "2005/06/01", "Added new overload for RegisterCSSFile" )]
-    [History( "jminond", "2005/03/10", "Tab to page conversion" )]
-    [History( "Jes1111", "2004/08/18", "Extensive changes - new way to build head element, support for multiple CSS stylesheets, etc." )]
-    [History( "jviladiu@portalServices.net", "2004/07/22", "Added Security Access." )]
-    [History( "John.Mandia@whitelightsolutions.com", "2003/10/11", "Added ability for each portal to have it's own custom icon instead of sharing one icon among many." )]
-    [History( "mario@hartmann.net", "2003/09/08", "Solpart Menu stylesheet support added." )]
-    [History( "Jes1111", "2003/03/04", "Smoothed out page event inheritance hierarchy - placed security checks and cache flushing" )]
-    public class Page : System.Web.UI.Page {
+    [History("ozan@rainbow.web.tr", "2005/06/01", "Added new overload for RegisterCSSFile")]
+    [History("jminond", "2005/03/10", "Tab to page conversion")]
+    [History("Jes1111", "2004/08/18", "Extensive changes - new way to build head element, support for multiple CSS stylesheets, etc.")]
+    [History("jviladiu@portalServices.net", "2004/07/22", "Added Security Access.")]
+    [History("John.Mandia@whitelightsolutions.com", "2003/10/11", "Added ability for each portal to have it's own custom icon instead of sharing one icon among many.")]
+    [History("mario@hartmann.net", "2003/09/08", "Solpart Menu stylesheet support added.")]
+    [History("Jes1111", "2003/03/04", "Smoothed out page event inheritance hierarchy - placed security checks and cache flushing")]
+    public class Page : System.Web.UI.Page
+    {
 
         /// <summary>
         /// The default constructor initializes all fields to their default values.
         /// </summary>
-        public Page() : base() {
+        public Page()
+            : base()
+        {
             EnsureChildControls();
         }
 
@@ -70,7 +78,8 @@ namespace Rainbow.Framework.Web.UI {
         /// Gets the user culture.
         /// </summary>
         /// <value>The user culture.</value>
-        public string UserCulture {
+        public string UserCulture
+        {
             get { return userCulture; }
         }
 
@@ -78,10 +87,13 @@ namespace Rainbow.Framework.Web.UI {
         /// Gets the user culture set.
         /// </summary>
         /// <value>The user culture set.</value>
-        public ResourceSet UserCultureSet {
-            get {
+        public ResourceSet UserCultureSet
+        {
+            get
+            {
                 // TODO: Leverage HttpContext.GetGlobalResourceObject(key, key); ???
-                if ( userCultureSet == null ) {
+                if (userCultureSet == null)
+                {
                     userCulture = Thread.CurrentThread.CurrentCulture.Name;
                     //if (Cache.Get("Culture_" + userCulture) == null)
                     //userCultureSet = new ResourceSet(Rainbow.Framework.Settings.Path.ApplicationRoot + "\\App_GlobalResources\\Resource" + userCulture + ".resx");
@@ -99,8 +111,9 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void CancelBtn_Click( Object sender, EventArgs e ) {
-            OnCancel( e );
+        private void CancelBtn_Click(Object sender, EventArgs e)
+        {
+            OnCancel(e);
         }
 
         /// <summary>
@@ -108,8 +121,9 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void UpdateBtn_Click( Object sender, EventArgs e ) {
-            OnUpdate( e );
+        private void UpdateBtn_Click(Object sender, EventArgs e)
+        {
+            OnUpdate(e);
         }
 
         /// <summary>
@@ -117,19 +131,21 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void DeleteBtn_Click( Object sender, EventArgs e ) {
-            OnDelete( e );
+        private void DeleteBtn_Click(Object sender, EventArgs e)
+        {
+            OnDelete(e);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnPreInit( EventArgs e ) {
+        protected override void OnPreInit(EventArgs e)
+        {
             // TODO : Assign masters and themes here... :-)
             // this.Theme = "Default";
 
-            base.OnPreInit( e );
+            base.OnPreInit(e);
         }
 
         /// <summary>
@@ -138,63 +154,72 @@ namespace Rainbow.Framework.Web.UI {
         /// Can be overridden
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data.</param>
-        protected override void OnInit( EventArgs e ) {
+        protected override void OnInit(EventArgs e)
+        {
             LoadSettings();
 
             //if (cancelButton != null)
             Control myControl = null;
 
-            if ( cancelButton != null || ( myControl = Page.FindControl( "cancelButton" ) ) != null )
+            if (cancelButton != null || (myControl = Page.FindControl("cancelButton")) != null)
 
             //if ((myControl=Page.FindControl("cancelButton")) != null)
             {
-                if ( cancelButton == null ) {
-                    cancelButton = ( System.Web.UI.WebControls.LinkButton )myControl;
+                if (cancelButton == null)
+                {
+                    cancelButton = (System.Web.UI.WebControls.LinkButton)myControl;
                 }
 
-                cancelButton.Click += new EventHandler( CancelBtn_Click );
-                cancelButton.Text = General.GetString( "CANCEL", "Cancel" );
+                cancelButton.Click += new EventHandler(CancelBtn_Click);
+                cancelButton.Text = General.GetString("CANCEL", "Cancel");
                 cancelButton.CausesValidation = false;
                 cancelButton.EnableViewState = false;
             }
             //if (updateButton != null)
-            if ( updateButton != null || ( myControl = Page.FindControl( "updateButton" ) ) != null ) {
-                if ( updateButton == null ) {
-                    updateButton = ( System.Web.UI.WebControls.LinkButton )myControl;
+            if (updateButton != null || (myControl = Page.FindControl("updateButton")) != null)
+            {
+                if (updateButton == null)
+                {
+                    updateButton = (System.Web.UI.WebControls.LinkButton)myControl;
                 }
 
-                updateButton.Click += new EventHandler( UpdateBtn_Click );
-                updateButton.Text = General.GetString( "APPLY", "Apply", updateButton );
+                updateButton.Click += new EventHandler(UpdateBtn_Click);
+                updateButton.Text = General.GetString("APPLY", "Apply", updateButton);
                 updateButton.EnableViewState = false;
             }
             //if (deleteButton != null)
-            if ( deleteButton != null || ( myControl = Page.FindControl( "deleteButton" ) ) != null ) {
-                if ( deleteButton == null ) {
-                    deleteButton = ( System.Web.UI.WebControls.LinkButton )myControl;
+            if (deleteButton != null || (myControl = Page.FindControl("deleteButton")) != null)
+            {
+                if (deleteButton == null)
+                {
+                    deleteButton = (System.Web.UI.WebControls.LinkButton)myControl;
                 }
 
-                deleteButton.Click += new EventHandler( DeleteBtn_Click );
-                deleteButton.Text = General.GetString( "DELETE", "Delete", deleteButton );
+                deleteButton.Click += new EventHandler(DeleteBtn_Click);
+                deleteButton.Text = General.GetString("DELETE", "Delete", deleteButton);
                 deleteButton.EnableViewState = false;
 
                 // Assign current permissions to Delete button
-                if ( PortalSecurity.HasDeletePermissions( ModuleID ) == false ) {
+                if (PortalSecurity.HasDeletePermissions(ModuleID) == false)
+                {
                     deleteButton.Visible = false;
                 }
-                else {
-                    if ( !( ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) ) {
+                else
+                {
+                    if (!(ClientScript.IsClientScriptBlockRegistered("confirmDelete")))
+                    {
                         string[] s = { "CONFIRM_DELETE" };
-                        ClientScript.RegisterClientScriptBlock( GetType(), "confirmDelete",
+                        ClientScript.RegisterClientScriptBlock(GetType(), "confirmDelete",
                                                                PortalSettings.GetStringResource(
                                                                    "CONFIRM_DELETE_SCRIPT",
-                                                                   s ) );
+                                                                   s));
                     }
-                    deleteButton.Attributes.Add( "OnClick", "return confirmDelete()" );
+                    deleteButton.Attributes.Add("OnClick", "return confirmDelete()");
                 }
             }
             ModuleGuidInCookie();
 
-            base.OnInit( e );
+            base.OnInit(e);
         }
 
         /// <summary>
@@ -202,21 +227,25 @@ namespace Rainbow.Framework.Web.UI {
         /// Performs OnLoad actions that are common to all Pages.
         /// </summary>
         /// <param name="e">The <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
-        protected override void OnLoad( EventArgs e ) {
+        protected override void OnLoad(EventArgs e)
+        {
             // add CurrentTheme CSS
-            RegisterCssFile( CurrentTheme.Name, CurrentTheme.CssFile );
+            RegisterCssFile(CurrentTheme.Name, CurrentTheme.CssFile);
 
-            if ( Request.Cookies["Rainbow_" + portalSettings.PortalAlias] != null ) {
-                if ( !Config.ForceExpire ) {
+            if (Request.Cookies["Rainbow_" + portalSettings.PortalAlias] != null)
+            {
+                if (!Config.ForceExpire)
+                {
                     //jminond - option to kill cookie after certain time always
                     int minuteAdd = Config.CookieExpire;
-                    PortalSecurity.ExtendCookie( portalSettings, minuteAdd );
+                    PortalSecurity.ExtendCookie(portalSettings, minuteAdd);
                 }
             }
 
             // Stores referring URL in viewstate
-            if ( !Page.IsPostBack ) {
-                if ( Request.UrlReferrer != null )
+            if (!Page.IsPostBack)
+            {
+                if (Request.UrlReferrer != null)
                     UrlReferrer = Request.UrlReferrer.ToString();
             }
 
@@ -245,7 +274,7 @@ namespace Rainbow.Framework.Web.UI {
             //    }
             //}
 
-            base.OnLoad( e );
+            base.OnLoad(e);
         }
 
         /// <summary>
@@ -259,8 +288,9 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        protected void OnAdd( object source, EventArgs e ) {
-            OnAdd( e );
+        protected void OnAdd(object source, EventArgs e)
+        {
+            OnAdd(e);
         }
 
         /// <summary>
@@ -269,15 +299,16 @@ namespace Rainbow.Framework.Web.UI {
         /// Can be overridden
         /// </summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected virtual void OnAdd( EventArgs e ) {
-            if ( Add != null )
-                Add( this, e ); //Invokes the delegates
+        protected virtual void OnAdd(EventArgs e)
+        {
+            if (Add != null)
+                Add(this, e); //Invokes the delegates
 
             //Flush cache
             OnFlushCache();
 
             // Verify that the current user has access to edit this module
-            if ( PortalSecurity.HasAddPermissions( ModuleID ) == false )
+            if (PortalSecurity.HasAddPermissions(ModuleID) == false)
                 PortalSecurity.AccessDeniedEdit();
 
             // any other code goes here
@@ -294,8 +325,9 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        protected virtual void OnUpdate( object source, EventArgs e ) {
-            OnUpdate( e );
+        protected virtual void OnUpdate(object source, EventArgs e)
+        {
+            OnUpdate(e);
         }
 
         /// <summary>
@@ -304,9 +336,10 @@ namespace Rainbow.Framework.Web.UI {
         /// Can be overridden
         /// </summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected virtual void OnUpdate( EventArgs e ) {
-            if ( Update != null )
-                Update( this, e ); //Invokes the delegates
+        protected virtual void OnUpdate(EventArgs e)
+        {
+            if (Update != null)
+                Update(this, e); //Invokes the delegates
 
             //Flush cache
             OnFlushCache();
@@ -314,8 +347,8 @@ namespace Rainbow.Framework.Web.UI {
             // Verify that the current user has access to edit this module
             // June 23, 2003: Mark McFarlane made change to check for both Add AND Edit permissions
             // Since UI.Page.EditPage and UI.Page.AddPage both inherit from this UI.Page class
-            if ( PortalSecurity.HasEditPermissions( ModuleID ) == false &&
-                PortalSecurity.HasAddPermissions( ModuleID ) == false )
+            if (PortalSecurity.HasEditPermissions(ModuleID) == false &&
+                PortalSecurity.HasAddPermissions(ModuleID) == false)
                 PortalSecurity.AccessDeniedEdit();
 
             // any other code goes here
@@ -332,27 +365,29 @@ namespace Rainbow.Framework.Web.UI {
         /// Performs FlushCache actions that are common to all Pages<br/>
         /// Can be overridden
         /// </summary>
-        protected virtual void OnFlushCache() {
-            if ( FlushCache != null )
-                FlushCache( this, new EventArgs() ); //Invokes the delegates
+        protected virtual void OnFlushCache()
+        {
+            if (FlushCache != null)
+                FlushCache(this, new EventArgs()); //Invokes the delegates
 
             // remove module output from cache, if it's there
             StringBuilder sb = new StringBuilder();
-            sb.Append( "rb_" );
-            sb.Append( portalSettings.PortalAlias.ToLower() );
-            sb.Append( "_mid" );
-            sb.Append( ModuleID.ToString() );
-            sb.Append( "[" );
-            sb.Append( portalSettings.PortalContentLanguage );
-            sb.Append( "+" );
-            sb.Append( portalSettings.PortalUILanguage );
-            sb.Append( "+" );
-            sb.Append( portalSettings.PortalDataFormattingCulture );
-            sb.Append( "]" );
+            sb.Append("rb_");
+            sb.Append(portalSettings.PortalAlias.ToLower());
+            sb.Append("_mid");
+            sb.Append(ModuleID.ToString());
+            sb.Append("[");
+            sb.Append(portalSettings.PortalContentLanguage);
+            sb.Append("+");
+            sb.Append(portalSettings.PortalUILanguage);
+            sb.Append("+");
+            sb.Append(portalSettings.PortalDataFormattingCulture);
+            sb.Append("]");
 
-            if ( Context.Cache[sb.ToString()] != null ) {
-                Context.Cache.Remove( sb.ToString() );
-                Debug.WriteLine( "************* Remove " + sb.ToString() );
+            if (Context.Cache[sb.ToString()] != null)
+            {
+                Context.Cache.Remove(sb.ToString());
+                Debug.WriteLine("************* Remove " + sb.ToString());
             }
 
             // any other code goes here
@@ -369,8 +404,9 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        protected void OnDelete( object source, EventArgs e ) {
-            OnDelete( e );
+        protected void OnDelete(object source, EventArgs e)
+        {
+            OnDelete(e);
         }
 
         /// <summary>
@@ -379,15 +415,16 @@ namespace Rainbow.Framework.Web.UI {
         /// Can be overridden
         /// </summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected virtual void OnDelete( EventArgs e ) {
-            if ( Delete != null )
-                Delete( this, e ); //Invokes the delegates
+        protected virtual void OnDelete(EventArgs e)
+        {
+            if (Delete != null)
+                Delete(this, e); //Invokes the delegates
 
             //Flush cache
             OnFlushCache();
 
             // Verify that the current user has access to delete in this module
-            if ( PortalSecurity.HasDeletePermissions( ModuleID ) == false )
+            if (PortalSecurity.HasDeletePermissions(ModuleID) == false)
                 PortalSecurity.AccessDeniedEdit();
 
             // any other code goes here
@@ -402,8 +439,9 @@ namespace Rainbow.Framework.Web.UI {
         /// <summary>
         /// Called when [cancel].
         /// </summary>
-        protected virtual void OnCancel() {
-            OnCancel( new EventArgs() );
+        protected virtual void OnCancel()
+        {
+            OnCancel(new EventArgs());
         }
 
         /// <summary>
@@ -411,8 +449,9 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        protected void OnCancel( object source, EventArgs e ) {
-            OnCancel( e );
+        protected void OnCancel(object source, EventArgs e)
+        {
+            OnCancel(e);
         }
 
         /// <summary>
@@ -421,9 +460,10 @@ namespace Rainbow.Framework.Web.UI {
         /// Can be overridden
         /// </summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected virtual void OnCancel( EventArgs e ) {
-            if ( Cancel != null )
-                Cancel( this, e ); //Invokes the delegates
+        protected virtual void OnCancel(EventArgs e)
+        {
+            if (Cancel != null)
+                Cancel(this, e); //Invokes the delegates
 
             // any other code goes here
 
@@ -440,12 +480,15 @@ namespace Rainbow.Framework.Web.UI {
         /// Stores current portal settings
         /// </summary>
         /// <value>The portal settings.</value>
-        public PortalSettings portalSettings {
-            get {
-                if ( _portalSettings == null ) {
+        public PortalSettings portalSettings
+        {
+            get
+            {
+                if (_portalSettings == null)
+                {
                     // Obtain PortalSettings from Current Context
-                    if ( HttpContext.Current != null )
-                        _portalSettings = ( PortalSettings )HttpContext.Current.Items["PortalSettings"];
+                    if (HttpContext.Current != null)
+                        _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
                 }
                 return _portalSettings;
             }
@@ -462,27 +505,32 @@ namespace Rainbow.Framework.Web.UI {
         /// Page Title
         /// </summary>
         /// <value>The page title.</value>
-        public string PageTitle {
-            get {
-                if ( !setTitle && ( HttpContext.Current != null ) ) {
+        public string PageTitle
+        {
+            get
+            {
+                if (!setTitle && (HttpContext.Current != null))
+                {
                     // see if we have a value somewhere to put.
                     string tabTitle;
 
-                    if ( portalSettings.ActivePage.CustomSettings["TabTitle"].ToString().Length != 0 )
+                    if (portalSettings.ActivePage.CustomSettings["TabTitle"].ToString().Length != 0)
                         tabTitle = portalSettings.ActivePage.CustomSettings["TabTitle"].ToString();
-                    else if ( portalSettings.CustomSettings["SITESETTINGS_PAGE_TITLE"].ToString().Length != 0 )
+                    else if (portalSettings.CustomSettings["SITESETTINGS_PAGE_TITLE"].ToString().Length != 0)
                         tabTitle = portalSettings.CustomSettings["SITESETTINGS_PAGE_TITLE"].ToString();
                     else
                         tabTitle = portalSettings.PortalTitle;
 
-                    if ( tabTitle.Length > 0 ) {
+                    if (tabTitle.Length > 0)
+                    {
                         Title = tabTitle;
                         setTitle = true;
                     }
                 }
                 return Title;
             }
-            set {
+            set
+            {
                 Title = value;
                 setTitle = true;
             }
@@ -494,16 +542,19 @@ namespace Rainbow.Framework.Web.UI {
         /// "keywords" meta element
         /// </summary>
         /// <value>The page meta key words.</value>
-        public string PageMetaKeyWords {
-            get {
+        public string PageMetaKeyWords
+        {
+            get
+            {
                 // Try saved viewstate value
                 // tabMetaKeyWords = (string) ViewState["PageMetaKeyWords"];
-                if ( pageMetaKeyWords == null ) {
-                    if ( HttpContext.Current != null &&
-                        portalSettings.ActivePage.CustomSettings["TabMetaKeyWords"].ToString().Length != 0 )
+                if (pageMetaKeyWords == null)
+                {
+                    if (HttpContext.Current != null &&
+                        portalSettings.ActivePage.CustomSettings["TabMetaKeyWords"].ToString().Length != 0)
                         pageMetaKeyWords = portalSettings.ActivePage.CustomSettings["TabMetaKeyWords"].ToString();
-                    else if ( HttpContext.Current != null &&
-                             portalSettings.CustomSettings["SITESETTINGS_PAGE_META_KEYWORDS"].ToString().Length != 0 )
+                    else if (HttpContext.Current != null &&
+                             portalSettings.CustomSettings["SITESETTINGS_PAGE_META_KEYWORDS"].ToString().Length != 0)
                         pageMetaKeyWords =
                             portalSettings.CustomSettings["SITESETTINGS_PAGE_META_KEYWORDS"].ToString();
                     else
@@ -521,16 +572,19 @@ namespace Rainbow.Framework.Web.UI {
         /// "description" meta element
         /// </summary>
         /// <value>The page meta description.</value>
-        public string PageMetaDescription {
-            get {
+        public string PageMetaDescription
+        {
+            get
+            {
                 // Try saved viewstate value
                 // tabMetaDescription = (string) ViewState["PageMetaDescription"];
-                if ( pageMetaDescription == null ) {
-                    if ( HttpContext.Current != null &&
-                        portalSettings.ActivePage.CustomSettings["TabMetaDescription"].ToString().Length != 0 )
+                if (pageMetaDescription == null)
+                {
+                    if (HttpContext.Current != null &&
+                        portalSettings.ActivePage.CustomSettings["TabMetaDescription"].ToString().Length != 0)
                         pageMetaDescription = portalSettings.ActivePage.CustomSettings["TabMetaDescription"].ToString();
-                    else if ( HttpContext.Current != null &&
-                             portalSettings.CustomSettings["SITESETTINGS_PAGE_META_DESCRIPTION"].ToString().Length != 0 )
+                    else if (HttpContext.Current != null &&
+                             portalSettings.CustomSettings["SITESETTINGS_PAGE_META_DESCRIPTION"].ToString().Length != 0)
                         pageMetaDescription =
                             portalSettings.CustomSettings["SITESETTINGS_PAGE_META_DESCRIPTION"].ToString();
                     else
@@ -548,16 +602,19 @@ namespace Rainbow.Framework.Web.UI {
         /// "encoding" meta element
         /// </summary>
         /// <value>The page meta encoding.</value>
-        public string PageMetaEncoding {
-            get {
+        public string PageMetaEncoding
+        {
+            get
+            {
                 // Try saved viewstate value
                 // tabMetaEncoding = (string) ViewState["PageMetaEncoding"];
-                if ( pageMetaEncoding == null ) {
-                    if ( HttpContext.Current != null &&
-                        portalSettings.ActivePage.CustomSettings["TabMetaEncoding"].ToString().Length != 0 )
+                if (pageMetaEncoding == null)
+                {
+                    if (HttpContext.Current != null &&
+                        portalSettings.ActivePage.CustomSettings["TabMetaEncoding"].ToString().Length != 0)
                         pageMetaEncoding = portalSettings.ActivePage.CustomSettings["TabMetaEncoding"].ToString();
-                    else if ( HttpContext.Current != null &&
-                             portalSettings.CustomSettings["SITESETTINGS_PAGE_META_ENCODING"].ToString().Length != 0 )
+                    else if (HttpContext.Current != null &&
+                             portalSettings.CustomSettings["SITESETTINGS_PAGE_META_ENCODING"].ToString().Length != 0)
                         pageMetaEncoding =
                             portalSettings.CustomSettings["SITESETTINGS_PAGE_META_ENCODING"].ToString();
                     else
@@ -575,16 +632,19 @@ namespace Rainbow.Framework.Web.UI {
         /// Gets the page meta other.
         /// </summary>
         /// <value>The page meta other.</value>
-        public string PageMetaOther {
-            get {
+        public string PageMetaOther
+        {
+            get
+            {
                 // Try saved viewstate value
                 // tabMetaOther = (string) ViewState["PageMetaOther"];
-                if ( pageMetaOther == null ) {
-                    if ( HttpContext.Current != null &&
-                        portalSettings.ActivePage.CustomSettings["TabMetaOther"].ToString().Length != 0 )
+                if (pageMetaOther == null)
+                {
+                    if (HttpContext.Current != null &&
+                        portalSettings.ActivePage.CustomSettings["TabMetaOther"].ToString().Length != 0)
                         pageMetaOther = portalSettings.ActivePage.CustomSettings["TabMetaOther"].ToString();
-                    else if ( HttpContext.Current != null &&
-                             portalSettings.CustomSettings["SITESETTINGS_PAGE_META_OTHERS"].ToString().Length != 0 )
+                    else if (HttpContext.Current != null &&
+                             portalSettings.CustomSettings["SITESETTINGS_PAGE_META_OTHERS"].ToString().Length != 0)
                         pageMetaOther = portalSettings.CustomSettings["SITESETTINGS_PAGE_META_OTHERS"].ToString();
                     else
                         pageMetaOther = string.Empty;
@@ -600,7 +660,7 @@ namespace Rainbow.Framework.Web.UI {
         /// <summary>
         /// List of CSS files to be applied to this page
         /// </summary>
-        private Hashtable cssFileList = new Hashtable( 3 );
+        private Hashtable cssFileList = new Hashtable(3);
 
         /// <summary>
         /// Determines whether [is CSS file registered] [the specified key].
@@ -609,8 +669,9 @@ namespace Rainbow.Framework.Web.UI {
         /// <returns>
         /// 	<c>true</c> if [is CSS file registered] [the specified key]; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsCssFileRegistered( string key ) {
-            if ( cssFileList.ContainsKey( key.ToLower() ) )
+        public bool IsCssFileRegistered(string key)
+        {
+            if (cssFileList.ContainsKey(key.ToLower()))
                 return true;
             else
                 return false;
@@ -621,33 +682,38 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="file">The file.</param>
-        public void RegisterCssFile( string key, string file ) {
-            cssFileList.Add( key.ToLower(), file );
+        public void RegisterCssFile(string key, string file)
+        {
+            cssFileList.Add(key.ToLower(), file);
         }
 
         /// <summary>
         /// Registers CSS file in which current theme folder or Default theme folder
         /// </summary>
         /// <param name="key">CSS file name</param>
-        public void RegisterCssFile( string key ) {
+        public void RegisterCssFile(string key)
+        {
             string path = CurrentTheme.WebPath + "/" + key + ".css";
             string filePath = CurrentTheme.Path + "/" + key + ".css";
-            if ( !File.Exists( filePath ) ) {
+            if (!File.Exists(filePath))
+            {
                 //jes 11111 - path=ThemeManager.WebPath+"/Default/"+key+".css";
                 //filePath=ThemeManager.Path+"/Default/"+key+".css";
                 path = ThemeManager.WebPath + "/" + "Default" + "/" + key + ".css";
                 filePath = ThemeManager.Path + "/Default/" + key + ".css";
-                if ( !File.Exists( filePath ) ) {
+                if (!File.Exists(filePath))
+                {
                     return;
                 }
             }
-            cssFileList.Add( key.ToLower(), path );
+            cssFileList.Add(key.ToLower(), path);
         }
 
         /// <summary>
         /// Clears registered css files
         /// </summary>
-        public void ClearCssFileList() {
+        public void ClearCssFileList()
+        {
             cssFileList.Clear();
         }
 
@@ -657,15 +723,18 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="folderModuleName">The name of module directory</param>
         /// <param name="file">The Css file</param>
-        public void RegisterCssModule( string folderModuleName, string file ) {
-            if ( !IsCssFileRegistered( file ) ) {
-                string cssFile = currentTheme.Module_CssFile( file );
-                if ( cssFile.Equals( string.Empty ) ) {
-                    cssFile = Path.WebPathCombine( Path.ApplicationRoot, "DesktopModules", folderModuleName, file );
-                    if ( !File.Exists( HttpContext.Current.Server.MapPath( cssFile ) ) ) cssFile = string.Empty;
+        public void RegisterCssModule(string folderModuleName, string file)
+        {
+            if (!IsCssFileRegistered(file))
+            {
+                string cssFile = currentTheme.Module_CssFile(file);
+                if (cssFile.Equals(string.Empty))
+                {
+                    cssFile = Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules", folderModuleName, file);
+                    if (!File.Exists(HttpContext.Current.Server.MapPath(cssFile))) cssFile = string.Empty;
                 }
-                if ( !cssFile.Equals( string.Empty ) )
-                    RegisterCssFile( file, cssFile );
+                if (!cssFile.Equals(string.Empty))
+                    RegisterCssFile(file, cssFile);
             }
         }
 
@@ -675,7 +744,7 @@ namespace Rainbow.Framework.Web.UI {
         /// Strings added to this list will injected into a &lt;style&gt;
         /// block in the page head.
         /// </summary>
-        private Hashtable cssImportList = new Hashtable( 3 );
+        private Hashtable cssImportList = new Hashtable(3);
 
         /// <summary>
         /// Determines whether [is CSS import registered] [the specified key].
@@ -684,8 +753,9 @@ namespace Rainbow.Framework.Web.UI {
         /// <returns>
         /// 	<c>true</c> if [is CSS import registered] [the specified key]; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsCssImportRegistered( string key ) {
-            if ( cssImportList.ContainsKey( key.ToLower() ) )
+        public bool IsCssImportRegistered(string key)
+        {
+            if (cssImportList.ContainsKey(key.ToLower()))
                 return true;
             else
                 return false;
@@ -696,8 +766,9 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="import">The import.</param>
-        public void RegisterCssImport( string key, string import ) {
-            cssImportList.Add( key.ToLower(), import );
+        public void RegisterCssImport(string key, string import)
+        {
+            cssImportList.Add(key.ToLower(), import);
         }
 
         private string docType;
@@ -706,11 +777,14 @@ namespace Rainbow.Framework.Web.UI {
         /// page DOCTYPE
         /// </summary>
         /// <value>The type of the doc.</value>
-        public string DocType {
-            get {
-                if ( docType == null ) {
-                    if ( portalSettings.CustomSettings.ContainsKey( "SITESETTINGS_DOCTYPE" ) &&
-                        portalSettings.CustomSettings["SITESETTINGS_DOCTYPE"].ToString().Trim().Length > 0 )
+        public string DocType
+        {
+            get
+            {
+                if (docType == null)
+                {
+                    if (portalSettings.CustomSettings.ContainsKey("SITESETTINGS_DOCTYPE") &&
+                        portalSettings.CustomSettings["SITESETTINGS_DOCTYPE"].ToString().Trim().Length > 0)
                         docType = portalSettings.CustomSettings["SITESETTINGS_DOCTYPE"].ToString();
                     else
                         docType = string.Empty;
@@ -722,7 +796,7 @@ namespace Rainbow.Framework.Web.UI {
         /// <summary>
         /// Holds a list of javascript function calls which will be output to the body tag as a semicolon-delimited list in the 'onload' attribute
         /// </summary>
-        private Hashtable bodyOnLoadList = new Hashtable( 3 );
+        private Hashtable bodyOnLoadList = new Hashtable(3);
 
         /// <summary>
         /// Determines whether [is body on load registered] [the specified key].
@@ -731,8 +805,9 @@ namespace Rainbow.Framework.Web.UI {
         /// <returns>
         /// 	<c>true</c> if [is body on load registered] [the specified key]; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsBodyOnLoadRegistered( string key ) {
-            if ( bodyOnLoadList.ContainsKey( key.ToLower() ) )
+        public bool IsBodyOnLoadRegistered(string key)
+        {
+            if (bodyOnLoadList.ContainsKey(key.ToLower()))
                 return true;
             else
                 return false;
@@ -743,11 +818,12 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="functionCall">The function call.</param>
-        public void RegisterBodyOnLoad( string key, string functionCall ) {
-            bodyOnLoadList.Add( key.ToLower(), functionCall );
+        public void RegisterBodyOnLoad(string key, string functionCall)
+        {
+            bodyOnLoadList.Add(key.ToLower(), functionCall);
         }
 
-        private Hashtable clientScripts = new Hashtable( 3 );
+        private Hashtable clientScripts = new Hashtable(3);
 
         /// <summary>
         /// Determines whether [is client script registered] [the specified key].
@@ -756,8 +832,9 @@ namespace Rainbow.Framework.Web.UI {
         /// <returns>
         /// 	<c>true</c> if [is client script registered] [the specified key]; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsClientScriptRegistered( string key ) {
-            if ( clientScripts.ContainsKey( key.ToLower() ) )
+        public bool IsClientScriptRegistered(string key)
+        {
+            if (clientScripts.ContainsKey(key.ToLower()))
                 return true;
             else
                 return false;
@@ -768,15 +845,16 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="filePath">The file path.</param>
-        public void RegisterClientScript( string key, string filePath ) {
-            clientScripts.Add( key.ToLower(), filePath );
+        public void RegisterClientScript(string key, string filePath)
+        {
+            clientScripts.Add(key.ToLower(), filePath);
         }
 
         // Jes1111
         /// <summary>
         /// Stores any additional Meta entries requested by modules or other code.
         /// </summary>
-        private Hashtable additionalMetaElements = new Hashtable( 3 );
+        private Hashtable additionalMetaElements = new Hashtable(3);
 
         /// <summary>
         /// Determines whether [is additional meta element registered] [the specified key].
@@ -785,8 +863,9 @@ namespace Rainbow.Framework.Web.UI {
         /// <returns>
         /// 	<c>true</c> if [is additional meta element registered] [the specified key]; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsAdditionalMetaElementRegistered( string key ) {
-            if ( additionalMetaElements.ContainsKey( key.ToLower() ) )
+        public bool IsAdditionalMetaElementRegistered(string key)
+        {
+            if (additionalMetaElements.ContainsKey(key.ToLower()))
                 return true;
             else
                 return false;
@@ -797,8 +876,9 @@ namespace Rainbow.Framework.Web.UI {
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="element">The element.</param>
-        public void RegisterAdditionalMetaElement( string key, string element ) {
-            additionalMetaElements.Add( key.ToLower(), element );
+        public void RegisterAdditionalMetaElement(string key, string element)
+        {
+            additionalMetaElements.Add(key.ToLower(), element);
         }
 
         private string bodyOtherAttributes = string.Empty;
@@ -807,10 +887,12 @@ namespace Rainbow.Framework.Web.UI {
         /// Referring URL
         /// </summary>
         /// <value>The URL referrer.</value>
-        protected string UrlReferrer {
-            get {
-                if ( ViewState["UrlReferrer"] != null )
-                    return ( string )ViewState["UrlReferrer"];
+        protected string UrlReferrer
+        {
+            get
+            {
+                if (ViewState["UrlReferrer"] != null)
+                    return (string)ViewState["UrlReferrer"];
                 else
                     return HttpUrlBuilder.BuildUrl();
             }
@@ -828,14 +910,17 @@ namespace Rainbow.Framework.Web.UI {
         /// Stores current linked module ID if applicable
         /// </summary>
         /// <value>The page ID.</value>
-        public int PageID {
-            get {
-                if ( _tabID == 0 ) {
+        public int PageID
+        {
+            get
+            {
+                if (_tabID == 0)
+                {
                     // Determine PageID if specified
-                    if ( HttpContext.Current != null && Request.Params["PageID"] != null )
-                        _tabID = Int32.Parse( Request.Params["PageID"] );
-                    else if ( HttpContext.Current != null && Request.Params["TabID"] != null )
-                        _tabID = Int32.Parse( Request.Params["TabID"] );
+                    if (HttpContext.Current != null && Request.Params["PageID"] != null)
+                        _tabID = Int32.Parse(Request.Params["PageID"]);
+                    else if (HttpContext.Current != null && Request.Params["TabID"] != null)
+                        _tabID = Int32.Parse(Request.Params["TabID"]);
                 }
                 return _tabID;
             }
@@ -845,15 +930,20 @@ namespace Rainbow.Framework.Web.UI {
         /// Stores current tab settings
         /// </summary>
         /// <value>The page settings.</value>
-        public Hashtable pageSettings {
-            get {
-                if ( _Page == null ) {
-                    if ( PageID > 0 ) {
+        public Hashtable pageSettings
+        {
+            get
+            {
+                if (_Page == null)
+                {
+                    if (PageID > 0)
+                    {
                         // thierry@tiptopweb.com.au : custom page layout, cannot be static
                         //_Page = Page.GetPageCustomSettings(PageID);
-                        _Page = portalSettings.ActivePage.GetPageCustomSettings( PageID );
+                        _Page = portalSettings.ActivePage.GetPageCustomSettings(PageID);
                     }
-                    else {
+                    else
+                    {
                         // Or provides an empty hashtable
                         _Page = new Hashtable();
                     }
@@ -868,9 +958,11 @@ namespace Rainbow.Framework.Web.UI {
         /// Current page theme
         /// </summary>
         /// <value>The current theme.</value>
-        public Theme CurrentTheme {
-            get {
-                if ( currentTheme == null )
+        public Theme CurrentTheme
+        {
+            get
+            {
+                if (currentTheme == null)
                     currentTheme = portalSettings.GetCurrentTheme();
                 return currentTheme;
             }
@@ -886,12 +978,15 @@ namespace Rainbow.Framework.Web.UI {
         /// Stores current linked module ID if applicable
         /// </summary>
         /// <value>The module ID.</value>
-        public int ModuleID {
-            get {
-                if ( _moduleID == 0 ) {
+        public int ModuleID
+        {
+            get
+            {
+                if (_moduleID == 0)
+                {
                     // Determine ModuleID if specified
-                    if ( HttpContext.Current != null && Request.Params["Mid"] != null )
-                        _moduleID = Int32.Parse( Request.Params["Mid"] );
+                    if (HttpContext.Current != null && Request.Params["Mid"] != null)
+                        _moduleID = Int32.Parse(Request.Params["Mid"]);
                 }
                 return _moduleID;
             }
@@ -903,19 +998,21 @@ namespace Rainbow.Framework.Web.UI {
         /// Stores current module if applicable
         /// </summary>
         /// <value>The module.</value>
-        public ModuleSettings Module {
-            get {
-                if ( _module == null ) {
-                    if ( ModuleID > 0 ) {
+        public ModuleSettings Module
+        {
+            get
+            {
+                if (_module == null)
+                {
+                    if (ModuleID > 0)
+                    {
                         // Obtain selected module data
-                        foreach ( ModuleSettings _mod in portalSettings.ActivePage.Modules ) {
-                            if ( _mod.ModuleID == ModuleID ) {
-                                _module = _mod;
-                                return _module;
-                            }
-                        }
+                        var q = from mod in portalSettings.ActivePage.Modules.Single().ModuleSettings where mod.ModuleId == ModuleID select mod;
+
+                        return _module;
                     }
-                    else {
+                    else
+                    {
                         // Return null
                         return null;
                     }
@@ -930,12 +1027,15 @@ namespace Rainbow.Framework.Web.UI {
         /// Stores current module settings
         /// </summary>
         /// <value>The module settings.</value>
-        public Hashtable moduleSettings {
-            get {
-                if ( _moduleSettings == null ) {
-                    if ( ModuleID > 0 )
+        public Hashtable moduleSettings
+        {
+            get
+            {
+                if (_moduleSettings == null)
+                {
+                    if (ModuleID > 0)
                         // Get settings from the database
-                        _moduleSettings = ModuleSettings.GetModuleSettings( ModuleID, this );
+                        _moduleSettings = ModuleSettings.GetModuleSettings(ModuleID, this);
                     else
                         // Or provides an empty hashtable
                         _moduleSettings = new Hashtable();
@@ -954,12 +1054,15 @@ namespace Rainbow.Framework.Web.UI {
         /// Stores current item id
         /// </summary>
         /// <value>The item ID.</value>
-        public int ItemID {
-            get {
-                if ( _itemID == 0 ) {
+        public int ItemID
+        {
+            get
+            {
+                if (_itemID == 0)
+                {
                     // Determine ItemID if specified
-                    if ( HttpContext.Current != null && Request.Params["ItemID"] != null )
-                        _itemID = Int32.Parse( Request.Params["ItemID"] );
+                    if (HttpContext.Current != null && Request.Params["ItemID"] != null)
+                        _itemID = Int32.Parse(Request.Params["ItemID"]);
                 }
                 return _itemID;
             }
@@ -973,13 +1076,15 @@ namespace Rainbow.Framework.Web.UI {
         /// <summary>
         /// Load settings
         /// </summary>
-        protected virtual void LoadSettings() {
+        protected virtual void LoadSettings()
+        {
         }
 
         /// <summary>
         /// Redirect back to the referring page
         /// </summary>
-        public void RedirectBackToReferringPage() {
+        public void RedirectBackToReferringPage()
+        {
             // Response.Redirect throws a ThreadAbortException to make it work,
             // which is handled by the ASP.NET runtime.
             // By catching an Exception (not a specialized exception, just the
@@ -988,10 +1093,12 @@ namespace Rainbow.Framework.Web.UI {
             // catches this exception and handles it itself, hence your page never really
             // realized an exception occurred. So by catching this exception, you stop the
             // normal order of events that happen when redirecting.
-            try {
-                Response.Redirect( UrlReferrer );
+            try
+            {
+                Response.Redirect(UrlReferrer);
             }
-            catch ( ThreadAbortException ) {
+            catch (ThreadAbortException)
+            {
             } //Do nothing it is normal
         }
 
@@ -999,18 +1106,21 @@ namespace Rainbow.Framework.Web.UI {
         /// Overrides Render() and writes out &lt;html&gt;, &lt;head&gt; and &lt;body&gt; elements along with page contents.
         /// </summary>
         /// <param name="writer">the HtmlTextWriter connected to the output stream</param>
-        protected override void Render( HtmlTextWriter writer ) {
+        protected override void Render(HtmlTextWriter writer)
+        {
             BuildDocType();
             BuildHead();
             BuildBody();
-            base.Render( writer );
+            base.Render(writer);
         }
 
         /// <summary>
         /// Builds the DOCTYPE statement when requested by the Render() override.
         /// </summary>
-        protected virtual void BuildDocType() {
-            if ( string.IsNullOrEmpty( this.DocType ) && ( CurrentTheme.Type == "zen" || Request.Url.PathAndQuery.IndexOf( "Viewer" ) > 0 ) ) {
+        protected virtual void BuildDocType()
+        {
+            if (string.IsNullOrEmpty(this.DocType) && (CurrentTheme.Type == "zen" || Request.Url.PathAndQuery.IndexOf("Viewer") > 0))
+            {
                 //this.DocType = Server.HtmlDecode( Config.DefaultDOCTYPE );
             }
         }
@@ -1018,70 +1128,84 @@ namespace Rainbow.Framework.Web.UI {
         /// <summary>
         /// Builds the HTML &lt;body&gt; element, adding meta tags, stylesheets and client scripts
         /// </summary>
-        protected virtual void BuildHead() {
+        protected virtual void BuildHead()
+        {
             this.Title = PageTitle;
-            this.Header.Controls.Add( new LiteralControl( "<meta name=\"generator\" content=\"Rainbow Portal - see http://www.rainbowportal.net\"/>\n" ) );
+            this.Header.Controls.Add(new LiteralControl("<meta name=\"generator\" content=\"Rainbow Portal - see http://www.rainbowportal.net\"/>\n"));
 
-            if ( PageMetaKeyWords.Length != 0 ) {
-                this.Header.Controls.Add( new LiteralControl( string.Format( "<meta name=\"keywords\" content=\"{0}\"/>\n", PageMetaKeyWords ) ) );
+            if (PageMetaKeyWords.Length != 0)
+            {
+                this.Header.Controls.Add(new LiteralControl(string.Format("<meta name=\"keywords\" content=\"{0}\"/>\n", PageMetaKeyWords)));
             }
 
-            if ( PageMetaDescription.Length != 0 ) {
-                this.Header.Controls.Add( new LiteralControl( string.Format( "<meta name=\"description\" content=\"{0}\"/>\n", PageMetaDescription ) ) );
+            if (PageMetaDescription.Length != 0)
+            {
+                this.Header.Controls.Add(new LiteralControl(string.Format("<meta name=\"description\" content=\"{0}\"/>\n", PageMetaDescription)));
             }
 
-            if ( PageMetaEncoding.Length != 0 ) {
-                this.Header.Controls.Add( new LiteralControl( PageMetaEncoding + "\n" ) );
+            if (PageMetaEncoding.Length != 0)
+            {
+                this.Header.Controls.Add(new LiteralControl(PageMetaEncoding + "\n"));
             }
 
-            if ( PageMetaOther.Length != 0 ) {
-                this.Header.Controls.Add( new LiteralControl( PageMetaOther + "\n" ) );
+            if (PageMetaOther.Length != 0)
+            {
+                this.Header.Controls.Add(new LiteralControl(PageMetaOther + "\n"));
             }
 
             // additional metas (added by code)
-            foreach ( string _metaElement in additionalMetaElements.Values ) {
-                this.Header.Controls.Add( new LiteralControl( _metaElement + "\n" ) );
+            foreach (string _metaElement in additionalMetaElements.Values)
+            {
+                this.Header.Controls.Add(new LiteralControl(_metaElement + "\n"));
             }
 
             // ADD THE CSS <LINK> ELEMENT(S)
-            foreach ( string _cssFile in cssFileList.Values ) {
-                this.Header.Controls.Add( new LiteralControl( string.Format( "<link rel=\"stylesheet\" href=\"{0}\" type=\"text/css\"/>\n", _cssFile ) ) );
+            foreach (string _cssFile in cssFileList.Values)
+            {
+                this.Header.Controls.Add(new LiteralControl(string.Format("<link rel=\"stylesheet\" href=\"{0}\" type=\"text/css\"/>\n", _cssFile)));
             }
 
-            this.Header.Controls.Add( new LiteralControl( string.Format( "<link rel=\"SHORTCUT ICON\" href=\"{0}/portalicon.ico\"/>\n",
-                             Path.WebPathCombine( Path.ApplicationRoot, portalSettings.PortalPath ) ) ) );
+            this.Header.Controls.Add(new LiteralControl(string.Format("<link rel=\"SHORTCUT ICON\" href=\"{0}/portalicon.ico\"/>\n",
+                             Path.WebPathCombine(Path.ApplicationRoot, portalSettings.PortalPath))));
 
-            if ( cssImportList.Count > 0 ) {
+            if (cssImportList.Count > 0)
+            {
                 StringBuilder sb = new StringBuilder();
 
-                sb.AppendLine( "<style type=\"text/css\">" );
-                sb.AppendLine( "<!--" );
-                foreach ( string _cssBlock in cssImportList.Values ) {
-                    sb.AppendLine( _cssBlock );
+                sb.AppendLine("<style type=\"text/css\">");
+                sb.AppendLine("<!--");
+                foreach (string _cssBlock in cssImportList.Values)
+                {
+                    sb.AppendLine(_cssBlock);
                 }
-                sb.AppendLine( "-->" );
-                sb.AppendLine( "</style>" );
+                sb.AppendLine("-->");
+                sb.AppendLine("</style>");
 
-                this.Header.Controls.Add( new LiteralControl( sb.ToString() + "\n" ) );
+                this.Header.Controls.Add(new LiteralControl(sb.ToString() + "\n"));
             }
 
             // ADD CLIENTSCRIPTS 
-            foreach ( string _script in clientScripts.Values ) {
-                this.Header.Controls.Add( new LiteralControl( string.Format( "<script type=\"text/javascript\" src=\"{0}\"></script>\n", _script ) ) );
+            foreach (string _script in clientScripts.Values)
+            {
+                this.Header.Controls.Add(new LiteralControl(string.Format("<script type=\"text/javascript\" src=\"{0}\"></script>\n", _script)));
             }
         }
 
         /// <summary>
         /// Builds the HTML &lt;head&gt; element, adding body's onload event listeners
         /// </summary>
-        protected virtual void BuildBody() {
+        protected virtual void BuildBody()
+        {
             HtmlGenericControl body = null;
 
-            foreach ( Control c in Controls ) {
-                if ( c is HtmlGenericControl ) {
-                    HtmlGenericControl myControl = ( HtmlGenericControl )c;
+            foreach (Control c in Controls)
+            {
+                if (c is HtmlGenericControl)
+                {
+                    HtmlGenericControl myControl = (HtmlGenericControl)c;
 
-                    if ( myControl.TagName.ToLower() == "body" ) {
+                    if (myControl.TagName.ToLower() == "body")
+                    {
                         body = myControl;
                         break;
                     }
@@ -1089,11 +1213,13 @@ namespace Rainbow.Framework.Web.UI {
             }
 
             // output onload attribute
-            if ( this.bodyOnLoadList.Count > 0 ) {
+            if (this.bodyOnLoadList.Count > 0)
+            {
                 StringBuilder sb = new StringBuilder();
 
-                foreach ( string _functionCall in this.bodyOnLoadList.Values ) {
-                    sb.Append( _functionCall );
+                foreach (string _functionCall in this.bodyOnLoadList.Values)
+                {
+                    sb.Append(_functionCall);
                 }
 
                 body.Attributes["onload"] = sb.ToString();
@@ -1110,7 +1236,8 @@ namespace Rainbow.Framework.Web.UI {
         /// jviladiu@portalServices.net (2004/07/22)
         /// </summary>
         /// <value>The allowed modules.</value>
-        protected virtual ArrayList AllowedModules {
+        protected virtual ArrayList AllowedModules
+        {
             get { return null; }
         }
 
@@ -1121,7 +1248,8 @@ namespace Rainbow.Framework.Web.UI {
         /// and pass or denied access to edit or view module.
         /// jviladiu@portalServices.net (2004/07/22)
         /// </summary>
-        protected virtual void ModuleGuidInCookie() {
+        protected virtual void ModuleGuidInCookie()
+        {
             HttpCookie cookie;
             DateTime time;
             TimeSpan span;
@@ -1130,17 +1258,19 @@ namespace Rainbow.Framework.Web.UI {
 
             ModulesDB mdb = new ModulesDB();
 
-            if ( portalSettings.ActivePage.Modules.Count > 0 ) {
-                foreach ( ModuleSettings ms in portalSettings.ActivePage.Modules ) {
-                    guid = mdb.GetModuleGuid( ms.ModuleID );
-                    if ( guid != Guid.Empty ) guidsInUse += guid.ToString().ToUpper() + "@";
+            if (portalSettings.ActivePage.Modules.Count > 0)
+            {
+                foreach (ModuleSettings ms in portalSettings.ActivePage.Modules)
+                {
+                    guid = mdb.GetModuleGuid(ms.ModuleID);
+                    if (guid != Guid.Empty) guidsInUse += guid.ToString().ToUpper() + "@";
                 }
             }
-            cookie = new HttpCookie( "RainbowSecurity", guidsInUse );
+            cookie = new HttpCookie("RainbowSecurity", guidsInUse);
             time = DateTime.Now;
-            span = new TimeSpan( 0, 2, 0, 0, 0 ); // 120 minutes to expire
-            cookie.Expires = time.Add( span );
-            Response.AppendCookie( cookie );
+            span = new TimeSpan(0, 2, 0, 0, 0); // 120 minutes to expire
+            cookie.Expires = time.Add(span);
+            Response.AppendCookie(cookie);
         }
 
         #endregion

@@ -1,5 +1,6 @@
 using System;
 using System.Web;
+using System.Diagnostics;
 
 namespace Rainbow.Framework
 {
@@ -49,7 +50,8 @@ namespace Rainbow.Framework
             if (HttpContext.Current == null)
             {
                 Exception ne = new Exception("HttpContext.Current not an object");
-                ErrorHandler.Publish(LogLevel.Warn, "Problem with Global Resources - could not get key: " + key, ne);
+                //TODO: Fix the error handler so it isn't dependent creating circular references
+                //ErrorHandler.Publish(LogLevel.Warn, "Problem with Global Resources - could not get key: " + key, ne);
                 return "<span class='error'>Could not get key: " + key + "</span>";
             }
 
@@ -84,7 +86,8 @@ namespace Rainbow.Framework
             }
             catch (Exception ex)
             {
-                ErrorHandler.Publish(LogLevel.Warn, "Problem with Global Resources - could not get key: " + key, ex);
+                Debug.WriteLine("Problem with Global Resources - could not get key: " + key + Environment.NewLine + ex.Message);
+                //ErrorHandler.Publish(LogLevel.Warn, "Problem with Global Resources - could not get key: " + key, ex);
                 return defaultValue;
             }
         }

@@ -87,7 +87,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             switch (Type)
             {
-                    //Drop down list
+                //Drop down list
                 case LanguageSwitcherType.DropDownList:
 
                     TableRow myTableRowDD = new TableRow();
@@ -126,7 +126,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     myRows.Add(myTableRowDD);
                     break;
 
-                    // Links
+                // Links
                 case LanguageSwitcherType.VerticalLinksList:
 
                     foreach (LanguageCultureItem l in LanguageList)
@@ -141,7 +141,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     }
                     break;
 
-                    // Horizontal links
+                // Horizontal links
                 case LanguageSwitcherType.HorizontalLinksList:
 
                     TableRow myTableRowLinksHorizontal = new TableRow();
@@ -286,7 +286,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (ChangeLanguageAction == LanguageSwitcherAction.LinkRedirect)
                 return ChangeLanguageUrl + "?lang=" + language; //TODO replace lang if present
             else
-                return "javascript:" + Page.GetPostBackEventReference(this, language);
+                return "javascript:" + Page.ClientScript.GetPostBackEventReference(this, language);
         }
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <returns></returns>
         private string GetLangAction()
         {
-            return Page.GetPostBackEventReference(this);
+            return Page.ClientScript.GetPostBackEventReference(this, string.Empty);
         }
 
         private string GetName(LanguageCultureItem languageItem)
@@ -448,7 +448,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         }
                     }
                 }
-                userLangs = (CultureInfo[]) arrUserLangs.ToArray(typeof (CultureInfo));
+                userLangs = (CultureInfo[])arrUserLangs.ToArray(typeof(CultureInfo));
 
                 // Try to match browser "accept languages" list
                 return myLanguagesCultureList.GetBestMatching(userLangs);
@@ -518,8 +518,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (switcher != null && switcher.ViewState["RB_Language_CurrentUICulture"] != null &&
                 switcher.ViewState["RB_Language_CurrentCulture"] != null)
                 return
-                    new LanguageCultureItem((CultureInfo) switcher.ViewState["RB_Language_CurrentUICulture"],
-                                            (CultureInfo) switcher.ViewState["RB_Language_CurrentCulture"]);
+                    new LanguageCultureItem((CultureInfo)switcher.ViewState["RB_Language_CurrentUICulture"],
+                                            (CultureInfo)switcher.ViewState["RB_Language_CurrentCulture"]);
             else
                 return null;
         }
@@ -579,7 +579,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="switcher">A referenct to a Switcher control for accessing viewstate</param>
         internal static void ProcessCultures(string langList, string cookieAlias, LanguageSwitcher switcher)
         {
-            LanguageCultureCollection myLanguagesCultureList = (LanguageCultureCollection) langList;
+            LanguageCultureCollection myLanguagesCultureList = (LanguageCultureCollection)langList;
 
             //Verify that at least on language is provided
             if (myLanguagesCultureList.Count <= 0)
@@ -610,7 +610,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             // Default
             langItem = InternalGetDefault(myLanguagesCultureList);
-            //Trace.WriteLine("Evaluated InternalGetDefault: '" + (langItem == null ? "null" : langItem) + "'");
+        //Trace.WriteLine("Evaluated InternalGetDefault: '" + (langItem == null ? "null" : langItem) + "'");
 
             setLanguage:
             // Updates current cultures
@@ -631,7 +631,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             get
             {
                 if (ViewState["ShowNameAs"] != null)
-                    return (LanguageSwitcherName) ViewState["ShowNameAs"];
+                    return (LanguageSwitcherName)ViewState["ShowNameAs"];
                 return LanguageSwitcherName.NativeName;
             }
             set
@@ -653,7 +653,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             get
             {
                 if (ViewState["Labels"] != null)
-                    return (LanguageSwitcherDisplay) ViewState["Labels"];
+                    return (LanguageSwitcherDisplay)ViewState["Labels"];
                 return LanguageSwitcherDisplay.DisplayUICultureList;
             }
             set
@@ -676,7 +676,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             get
             {
                 if (ViewState["Flags"] != null)
-                    return ((LanguageSwitcherDisplay) ViewState["Flags"]);
+                    return ((LanguageSwitcherDisplay)ViewState["Flags"]);
                 return LanguageSwitcherDisplay.DisplayCultureList;
             }
             set
@@ -696,7 +696,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             get
             {
                 if (ViewState["Type"] != null)
-                    return (LanguageSwitcherType) ViewState["Type"];
+                    return (LanguageSwitcherType)ViewState["Type"];
                 return LanguageSwitcherType.DropDownList;
             }
             set
@@ -715,7 +715,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             get
             {
-                string imagePath = ((string) ViewState["ImagePath"]);
+                string imagePath = ((string)ViewState["ImagePath"]);
                 if (imagePath != null)
                     return imagePath;
                 return "images/flags/"; //TODO: point to aspnet
@@ -732,7 +732,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             get
             {
-                string changeLanguageUrl = ((string) ViewState["ChangeLanguageUrl"]);
+                string changeLanguageUrl = ((string)ViewState["ChangeLanguageUrl"]);
                 if (changeLanguageUrl != null)
                     return changeLanguageUrl;
                 return string.Empty;
@@ -753,7 +753,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             get
             {
                 if (ViewState["ChangeLanguageAction"] != null)
-                    return (LanguageSwitcherAction) ViewState["ChangeLanguageAction"];
+                    return (LanguageSwitcherAction)ViewState["ChangeLanguageAction"];
                 return LanguageSwitcherAction.PostBack;
             }
             set { ViewState["ChangeLanguageAction"] = value; }
@@ -771,7 +771,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         //		[MergableProperty(false)]
         private LanguageCultureCollection LanguageList
         {
-            get { return (LanguageCultureCollection) LanguageListString; }
+            get { return (LanguageCultureCollection)LanguageListString; }
             //			set
             //			{
             //				Trace.WriteLine("LanguageList");
@@ -798,14 +798,14 @@ namespace Rainbow.Framework.Web.UI.WebControls
             get
             {
                 if (ViewState["LanguageList"] != null)
-                    return (string) ViewState["LanguageList"];
+                    return (string)ViewState["LanguageList"];
                 return "en=en-US;it=it-IT";
                 //return strLanguageList;
             }
             set
             {
                 //strLanguageList = value;
-                ViewState["LanguageList"] = (string) value;
+                ViewState["LanguageList"] = (string)value;
                 ChildControlsCreated = false;
                 //EnsureChildControls();
             }

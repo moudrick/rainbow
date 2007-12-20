@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Security.Principal;
+using System.Linq;
+using System.Data.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -10,6 +12,8 @@ using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
+using System.Collections.Generic;
+using Rainbow.Framework.Data.MsSql;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -190,53 +194,53 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <returns></returns>
         private string GetHelpLink()
         {
-//			string helpTarget = "RainbowHelp";
-//			string helpText = Esperantus.General.GetString("HEADER_HELP", "Help");
-//
-//			StringBuilder sb = new StringBuilder();
-//			sb.Append("<a href=\"");
-//			sb.Append(Rainbow.Framework.Settings.Path.ApplicationRoot);
-//			sb.Append("/rb_documentation/Viewer.aspx\"	target=\"");
-//			sb.Append(helpTarget);
-//			sb.Append("\" class=\"");
-//			sb.Append(helpTarget);
-//			sb.Append("\">");
-//			sb.Append(helpText);
-//			sb.Append("</a>");
-//
-//			//popup removed until fixed
-//			//			string helpPopUpOptions = "toolbar=1,location=0,directories=0,status=0,menubar=1,scrollbars=1,resizable=1,width=600,height=400,screenX=15,screenY=15,top=15,left=15";
-//			//			if(this.Page is Rainbow.Framework.Web.UI.Page)
-//			//			{
-//			//				Rainbow.Framework.Web.UI.Page myPage = (Rainbow.Framework.Web.UI.Page) this.Page;
-//			//				if ( !myPage.IsClientScriptRegistered("rb-popup") )
-//			//					myPage.RegisterClientScript("rb-popup",Rainbow.Framework.Settings.Path.ApplicationRoot + "/aspnet_client/popupHelper/popup.js");
-//			//
-//			//				if ( !myPage.IsClientPopUpEventListenerRegistered(helpTarget) )
-//			//				{
-//			//					StringBuilder sbj = new StringBuilder();
-//			//					sbj.Append("mlisten('click', getElementsByClass('");
-//			//					sbj.Append(helpTarget);
-//			//					sbj.Append("','a')");
-//			//					if ( helpPopUpOptions.Length != 0 )
-//			//					{
-//			//						sbj.Append(", event_popup_features('");
-//			//						sbj.Append(helpPopUpOptions);
-//			//						sbj.Append("')");
-//			//					}
-//			//					sbj.Append(");");
-//			//					myPage.RegisterClientPopUpEventListener(helpTarget, sbj.ToString());
-//			//				}
-//			//			}
-//			//			else
-//			//			{
-//			//				//Avoid errors when page is not a rainbow page
-//			//				if (this.Page.IsClientScriptBlockRegistered("rb-popup"))
-//			//					this.Page.RegisterClientScriptBlock("rb-popup", Rainbow.Framework.Settings.Path.ApplicationRoot + "/aspnet_client/popupHelper/popup.js");
-//			//			}
-//			//end popup removed until fixed
-//
-//			return sb.ToString();
+            //			string helpTarget = "RainbowHelp";
+            //			string helpText = Esperantus.General.GetString("HEADER_HELP", "Help");
+            //
+            //			StringBuilder sb = new StringBuilder();
+            //			sb.Append("<a href=\"");
+            //			sb.Append(Rainbow.Framework.Settings.Path.ApplicationRoot);
+            //			sb.Append("/rb_documentation/Viewer.aspx\"	target=\"");
+            //			sb.Append(helpTarget);
+            //			sb.Append("\" class=\"");
+            //			sb.Append(helpTarget);
+            //			sb.Append("\">");
+            //			sb.Append(helpText);
+            //			sb.Append("</a>");
+            //
+            //			//popup removed until fixed
+            //			//			string helpPopUpOptions = "toolbar=1,location=0,directories=0,status=0,menubar=1,scrollbars=1,resizable=1,width=600,height=400,screenX=15,screenY=15,top=15,left=15";
+            //			//			if(this.Page is Rainbow.Framework.Web.UI.Page)
+            //			//			{
+            //			//				Rainbow.Framework.Web.UI.Page myPage = (Rainbow.Framework.Web.UI.Page) this.Page;
+            //			//				if ( !myPage.IsClientScriptRegistered("rb-popup") )
+            //			//					myPage.RegisterClientScript("rb-popup",Rainbow.Framework.Settings.Path.ApplicationRoot + "/aspnet_client/popupHelper/popup.js");
+            //			//
+            //			//				if ( !myPage.IsClientPopUpEventListenerRegistered(helpTarget) )
+            //			//				{
+            //			//					StringBuilder sbj = new StringBuilder();
+            //			//					sbj.Append("mlisten('click', getElementsByClass('");
+            //			//					sbj.Append(helpTarget);
+            //			//					sbj.Append("','a')");
+            //			//					if ( helpPopUpOptions.Length != 0 )
+            //			//					{
+            //			//						sbj.Append(", event_popup_features('");
+            //			//						sbj.Append(helpPopUpOptions);
+            //			//						sbj.Append("')");
+            //			//					}
+            //			//					sbj.Append(");");
+            //			//					myPage.RegisterClientPopUpEventListener(helpTarget, sbj.ToString());
+            //			//				}
+            //			//			}
+            //			//			else
+            //			//			{
+            //			//				//Avoid errors when page is not a rainbow page
+            //			//				if (this.Page.IsClientScriptBlockRegistered("rb-popup"))
+            //			//					this.Page.RegisterClientScriptBlock("rb-popup", Rainbow.Framework.Settings.Path.ApplicationRoot + "/aspnet_client/popupHelper/popup.js");
+            //			//			}
+            //			//end popup removed until fixed
+            //
+            //			return sb.ToString();
 
             // Jes1111 - 27/Nov/2004 - simplified help popup scheme (echoes changes in ModuleButton.cs)
             string helpTarget = "RainbowHelp";
@@ -269,8 +273,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             if (Page is Page)
             {
-                if (!((Page) Page).ClientScript.IsClientScriptIncludeRegistered("rb-popup"))
-                    ((Page) Page).ClientScript.RegisterClientScriptInclude(((Page) Page).GetType(), "rb-popup",
+                if (!((Page)Page).ClientScript.IsClientScriptIncludeRegistered("rb-popup"))
+                    ((Page)Page).ClientScript.RegisterClientScriptInclude(((Page)Page).GetType(), "rb-popup",
                                                                            Path.ApplicationRoot +
                                                                            "/aspnet_client/popupHelper/popup.js");
             }
@@ -289,7 +293,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 ArrayList list = new ArrayList();
 
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
 
                 string homeLink = "<a";
                 string menuLink;
@@ -320,26 +324,33 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         list.Add(GetHelpLink());
                     }
 
+                    DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString);
+
                     // Added by Mario Endara <mario@softworks.com.uy> (2004/11/06)
                     // Find Tab module to see if the user has add/edit rights
-                    ModulesDB modules = new ModulesDB();
+                    //ModulesDB modules = new ModulesDB();
                     Guid TabGuid = new Guid("{1C575D94-70FC-4A83-80C3-2087F726CBB3}");
                     // Added by Xu Yiming <ymhsu@ms2.hinet.net> (2004/12/6)
                     // Modify for support Multi or zero Pages Modules in a single portal.
                     bool HasEditPermissionsOnTabs = false;
                     int TabModuleID = 0;
 
-//					SqlDataReader result = modules.FindModulesByGuid(portalSettings.PortalID, TabGuid);
-//					while(result.Read()) 
-//					{
-//						TabModuleID=(int)result["ModuleId"];
+                    //					SqlDataReader result = modules.FindModulesByGuid(portalSettings.PortalID, TabGuid);
+                    //					while(result.Read()) 
+                    //					{
+                    //						TabModuleID=(int)result["ModuleId"];
 
-                    foreach (ModuleItem m in modules.FindModuleItemsByGuid(portalSettings.PortalID, TabGuid))
+                    var q = from m in db.Modules
+                            join md in db.ModuleDefinitions on m.ModuleDefId equals md.ModuleDefId
+                            where md.PortalId == portalSettings.PortalID && md.GeneralModDefId == TabGuid
+                            select m;
+
+                    foreach (var mod in q)
                     {
-                        HasEditPermissionsOnTabs = PortalSecurity.HasEditPermissions(m.ID);
+                        HasEditPermissionsOnTabs = PortalSecurity.HasEditPermissions(mod.ModuleId);
                         if (HasEditPermissionsOnTabs)
                         {
-                            TabModuleID = m.ID;
+                            TabModuleID = mod.ModuleId;
                             break;
                         }
                     }
@@ -350,8 +361,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         // added by Mario Endara 2004/08/06 so PageLayout can return to this page
                         // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
                         menuLink = "<a";
+
                         if (CssClass.Length != 0)
-                            menuLink = menuLink + " class=\"" + CssClass + "\"";
+                            menuLink = string.Format("{0} class=\"{1}\"", menuLink, CssClass);
 
                         // added mID by Mario Endara <mario@softworks.com.uy> to support security check (2004/11/09)
                         menuLink = menuLink + " href='" +
@@ -367,38 +379,40 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     {
                         // 19/08/2004 Jonathan Fong
                         // www.gt.com.au
-                        if ( Context.User.Identity.AuthenticationType == "LDAP" ) {
+                        if (Context.User.Identity.AuthenticationType == "LDAP")
+                        {
                             // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
                             menuLink = "<a";
-                            if ( CssClass.Length != 0 )
-                                menuLink = menuLink + " class=\"" + CssClass + "\"";
+                            if (CssClass.Length != 0)
+                                menuLink = string.Format("{0} class=\"{1}\"", menuLink, CssClass);
 
                             menuLink = menuLink + " href='" +
-                                       HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
+                                       HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
                                                                                                           PortalSettings
                                                                                                               .CurrentUser
                                                                                                               .Identity.
-                                                                                                              Email ) +
+                                                                                                              Email) +
                                        "'>" + "Profile" + "</a>";
-                            list.Add( menuLink );
+                            list.Add(menuLink);
                         }
                         // If user is form add edit user link
-                        else if ( !( HttpContext.Current.User is WindowsPrincipal ) ) {
+                        else if (!(HttpContext.Current.User is WindowsPrincipal))
+                        {
                             // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
                             menuLink = "<a";
-                            if ( CssClass.Length != 0 )
-                                menuLink = menuLink + " class=\"" + CssClass + "\"";
+                            if (CssClass.Length != 0)
+                                menuLink = string.Format("{0} class=\"{1}\"", menuLink, CssClass);
 
                             menuLink = menuLink + " href='" +
-                                       HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
+                                       HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
                                                                                                           PortalSettings
                                                                                                               .
                                                                                                               CurrentUser
                                                                                                               .Identity.
-                                                                                                              Email ) +
+                                                                                                              Email) +
                                        "'>" +
-                                       General.GetString( "HEADER_EDIT_PROFILE", "Edit profile", this ) + "</a>";
-                            list.Add( menuLink );
+                                       General.GetString("HEADER_EDIT_PROFILE", "Edit profile", this) + "</a>";
+                            list.Add(menuLink);
                         }
                     }
 
@@ -446,7 +460,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
                         menuLink = "<a";
                         if (CssClass.Length != 0)
-                            menuLink = menuLink + " class=\"" + CssClass + "\"";
+                            menuLink = string.Format("{0} class=\"{1}\"", menuLink, CssClass);
 
                         menuLink = menuLink + " href='" + HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Admin/Logon.aspx") +
                                    "'>" + General.GetString("LOGON", "Logon", null) + "</a>";
@@ -459,7 +473,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
                         menuLink = "<a";
                         if (CssClass.Length != 0)
-                            menuLink = menuLink + " class=\"" + CssClass + "\"";
+                            menuLink = string.Format("{0} class=\"{1}\"", menuLink, CssClass);
 
                         menuLink = menuLink + " href='" + portalSettings.PortalSecurePath + "/Logon.aspx'>" +
                                    General.GetString("LOGON", "Logon", null) + "</a>";

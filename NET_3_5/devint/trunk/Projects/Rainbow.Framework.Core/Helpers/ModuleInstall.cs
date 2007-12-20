@@ -5,11 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
-using Rainbow.Framework.Data.MsSql;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Data;
+using Rainbow.Framework.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Configuration.Path;
+using System.Diagnostics;
 
 namespace Rainbow.Framework.Helpers
 {
@@ -44,7 +43,8 @@ namespace Rainbow.Framework.Helpers
             else
             {
                 Exception ex = new Exception("Tried to install 0 modules in groupFileName:" + groupFileName);
-                ErrorHandler.Publish(LogLevel.Warn, ex);
+                //ErrorHandler.Publish(LogLevel.Warn, ex);
+                Debug.WriteLine(ex.Message);
             }
         }
 
@@ -66,7 +66,8 @@ namespace Rainbow.Framework.Helpers
                 }
                 catch (Exception ex)
                 {
-                    ErrorHandler.Publish(LogLevel.Error, "Exception installing module: " + installer, ex);
+                    //ErrorHandler.Publish(LogLevel.Error, "Exception installing module: " + installer, ex);
+                    Debug.WriteLine(ex.Message);
                     return null;
                 }
 
@@ -112,7 +113,7 @@ namespace Rainbow.Framework.Helpers
         /// <param name="install">if set to <c>true</c> [install].</param>
         public static void Install(string friendlyName, string desktopSource, string mobileSource, bool install)
         {
-            DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString);
+            Rainbow.Framework.Data.MsSql.DataClassesDataContext db = new Rainbow.Framework.Data.MsSql.DataClassesDataContext(Config.ConnectionString);
 
             ErrorHandler.Publish(LogLevel.Info,
                                  "Installing DesktopModule '" + friendlyName + "' from '" + desktopSource + "'");
@@ -173,24 +174,24 @@ namespace Rainbow.Framework.Helpers
                     throw new Exception("Exception occurred installing '" + portalModule.GuidID.ToString() + "'!", ex);
                 }
 
-                var rows = db.rb_GeneralModuleDefinitions.Where(d => d.GeneralModDefID == defID);
+                var rows = db.GeneralModuleDefinitions.Where(d => d.GeneralModDefId == defID);
                 if (rows.Count() > 0)
                     ErrorHandler.Publish(LogLevel.Warn,
                         string.Format("AddGeneralModuleDefinitions: The definition you tried to add already exists. {0} updating...",
                             rows.Count()));
 
-                rb_GeneralModuleDefinition gmd = new rb_GeneralModuleDefinition()
+                Rainbow.Framework.Data.MsSql.GeneralModuleDefinition gmd = new Rainbow.Framework.Data.MsSql.GeneralModuleDefinition()
                 {
-                    Admin = portalModule.AdminModule,
+                    IsAdmin = portalModule.AdminModule,
                     AssemblyName = assemblyName,
                     ClassName = className,
-                    DesktopSrc = desktopSource,
+                    DesktopSource = desktopSource,
                     FriendlyName = friendlyName,
                     GeneralModDefID = defID,
-                    MobileSrc = mobileSource,
-                    Searchable = portalModule.Searchable
+                    MobileSource = mobileSource,
+                    IsSearchable = portalModule.Searchable
                 };
-                db.rb_GeneralModuleDefinitions.InsertOnSubmit(gmd);
+                db.GeneralModuleDefinitions.InsertOnSubmit(gmd);
                 db.SubmitChanges();
 
                 // All is fine: we can call Commit
@@ -204,7 +205,7 @@ namespace Rainbow.Framework.Helpers
                     ErrorHandler.Publish(LogLevel.Debug, "Updating '" + friendlyName + "' as new module.");
 
                     var q = db.rb_GeneralModuleDefinitions.Where(gmd => gmd.GeneralModDefID == defID).Single();
-                    
+
                     q.GeneralModDefID = defID;
                     q.FriendlyName = friendlyName;
                     q.DesktopSrc = desktopSource;
@@ -213,7 +214,7 @@ namespace Rainbow.Framework.Helpers
                     q.ClassName = className;
                     q.Admin = portalModule.AdminModule;
                     q.Searchable = portalModule.Searchable;
-                    
+
                     db.SubmitChanges(ConflictMode.ContinueOnConflict);
                 }
                 catch (Exception ex)

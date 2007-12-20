@@ -3,7 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Web;
-using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Data.Types;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;

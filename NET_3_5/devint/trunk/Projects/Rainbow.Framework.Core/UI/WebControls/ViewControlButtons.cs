@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.BLL.Utils;
 using Rainbow.Framework.Design;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Configuration;
 //
 // This Namespace holds the information to manage the viewable controls;
 // namely, min., max. and close buttons

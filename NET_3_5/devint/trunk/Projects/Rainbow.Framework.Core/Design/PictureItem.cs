@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Configuration;
 
 namespace Rainbow.Framework.Design
 {

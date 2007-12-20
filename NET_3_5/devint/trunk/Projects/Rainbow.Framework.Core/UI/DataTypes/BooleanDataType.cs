@@ -2,7 +2,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Rainbow.Framework.DataTypes
+namespace Rainbow.Framework.Data.Types
 {
 	/// <summary>
 	/// BooleanDataType

@@ -105,92 +105,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\Base\BLLBase.cs" />
-    <Compile Include="BLL\GeneralModuleDefinition.cs" />
     <Compile Include="BLL\MergeEngine.cs" />
     <Compile Include="BLL\Utils\BagHolder.cs" />
     <Compile Include="BLL\Utils\CookieUtil.cs" />
     <Compile Include="BLL\Utils\GlobalResources.cs" />
-    <Compile Include="Configuration\Items\PagesBox.cs" />
-    <Compile Include="Configuration\Items\SettingItem.cs" />
-    <Compile Include="Configuration\Items\SettingItemGroups.cs" />
-    <Compile Include="Configuration\LogLevel.cs" />
-    <Compile Include="Configuration\LogProperties.cs" />
-    <Compile Include="Configuration\LogProvider.cs" />
-    <Compile Include="Configuration\Provider\ProviderConfiguration.cs" />
-    <Compile Include="Configuration\Provider\ProviderConfigurationHandler.cs" />
-    <Compile Include="Configuration\Provider\ProviderHelper.cs" />
-    <Compile Include="Configuration\Settings\ModuleSettings.cs" />
-    <Compile Include="Configuration\Settings\ModuleSettingsCustom.cs" />
-    <Compile Include="Configuration\Settings\PageSettings.cs" />
-    <Compile Include="Configuration\Settings\PageStripDetails.cs" />
-    <Compile Include="Configuration\Settings\PortalSettings.cs" />
-    <Compile Include="DAL\Database.cs" />
-    <Compile Include="DAL\DBHelper.cs" />
-    <Compile Include="DAL\ModulesDB.cs" />
-    <Compile Include="DAL\PagesDB.cs" />
-    <Compile Include="DAL\PortalsDB.cs" />
-    <Compile Include="DAL\RecyclerDB.cs" />
-    <Compile Include="DAL\UsersDb.cs" />
-    <Compile Include="DAL\WorkFlowDB.cs" />
     <Compile Include="Design\Layout.cs" />
     <Compile Include="Design\LayoutItem.cs" />
     <Compile Include="Design\LayoutManager.cs" />
-    <Compile Include="Design\PictureItem.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Design\Theme.cs" />
     <Compile Include="Design\ThemeImage.cs" />
     <Compile Include="Design\ThemeItem.cs" />
     <Compile Include="Design\ThemeManager.cs" />
     <Compile Include="Design\ThemePart.cs" />
-    <Compile Include="ErrorHandler.cs" />
-    <Compile Include="Exceptions\CodeVersionException.cs" />
-    <Compile Include="Exceptions\DatabaseUnreachableException.cs" />
-    <Compile Include="Exceptions\DatabaseVersionException.cs" />
-    <Compile Include="Exceptions\PortalsLockedException.cs" />
-    <Compile Include="Exceptions\RainbowException.cs" />
-    <Compile Include="Exceptions\RainbowRedirect.cs" />
     <Compile Include="General.cs" />
-    <Compile Include="Helpers\ADHelper.cs" />
-    <Compile Include="Helpers\CryptoHelper.cs" />
-    <Compile Include="Helpers\CssHelper.cs" />
     <Compile Include="Helpers\HTMLText.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />
     <Compile Include="Helpers\IOHelper.cs" />
     <Compile Include="Helpers\IPList.cs" />
     <Compile Include="Helpers\JavaScriptBuilder.cs" />
-    <Compile Include="Helpers\LogHelper.cs" />
-    <Compile Include="Helpers\MailHelper.cs" />
-    <Compile Include="Helpers\MDFHelper.cs" />
-    <Compile Include="Helpers\ModuleInstall.cs" />
-    <Compile Include="Helpers\SearchDefinition.cs" />
-    <Compile Include="Helpers\SearchHelper.cs" />
     <Compile Include="Helpers\Utilities.cs" />
     <Compile Include="Helpers\WebPartHelper.cs" />
-    <Compile Include="Helpers\XslHelper.cs" />
-    <Compile Include="HttpUrlBuilder.cs" />
-    <Compile Include="Configuration\Items\ModuleItem.cs" />
-    <Compile Include="Configuration\Items\PageItem.cs" />
-    <Compile Include="Configuration\Items\PortalItem.cs" />
     <Compile Include="KickStarter\CommonClasses\DataChangeEventArgs.cs" />
     <Compile Include="KickStarter\CommonClasses\Error.cs" />
     <Compile Include="KickStarter\CommonClasses\SQLHelper.cs" />
-    <Compile Include="Monitoring\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="GlobalEnums.cs" />
-    <Compile Include="Configuration\Log4NetLogProvider.cs" />
-    <Compile Include="Provider\GeographicProvider.cs" />
-    <Compile Include="Provider\Geographic\Country.cs" />
-    <Compile Include="Provider\Geographic\CountryNotFoundException.cs" />
-    <Compile Include="Provider\Geographic\SqlGeographicProvider.cs" />
-    <Compile Include="Provider\Geographic\State.cs" />
-    <Compile Include="Provider\Geographic\StateNotFoundException.cs" />
-    <Compile Include="Provider\NotSupportedByProviderException.cs" />
-    <Compile Include="Provider\Web\SqlUrlBuilderProvider.cs" />
-    <Compile Include="Provider\Web\UrlBuilderHelper.cs" />
     <Compile Include="Scheduler\CachedScheduler.cs" />
     <Compile Include="Scheduler\ISchedulable.cs" />
     <Compile Include="Scheduler\IScheduler.cs" />
@@ -198,117 +139,41 @@
     <Compile Include="Scheduler\SchedulerException.cs" />
     <Compile Include="Scheduler\SchedulerTask.cs" />
     <Compile Include="Scheduler\SimpleScheduler.cs" />
-    <Compile Include="Security\IEditUserProfile.cs" />
-    <Compile Include="Security\Monitoring.cs" />
-    <Compile Include="Security\RainbowPrincipal.cs" />
-    <Compile Include="Security\Security.cs" />
-    <Compile Include="Security\SpecialRoles.cs" />
     <Compile Include="Service\Client\communityService.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Service\ServiceClasses.cs" />
-    <Compile Include="Service\ServiceHelper.cs" />
-    <Compile Include="Settings\Cache\CurrentCache.cs" />
-    <Compile Include="Settings\Cache\Key.cs" />
-    <Compile Include="Settings\Config.cs" />
-    <Compile Include="Settings\GlobalInternalStrings.cs" />
     <Compile Include="Attributes\History.cs" />
-    <Compile Include="Settings\Isolators\ConfigReader.cs" />
-    <Compile Include="Settings\Isolators\ContextReader.cs" />
-    <Compile Include="Settings\Path.cs" />
-    <Compile Include="Settings\Portal.cs" />
-    <Compile Include="Provider\UrlBuilderProvider.cs" />
     <Compile Include="Setup\IInstaller.cs" />
-    <Compile Include="UI\DataTypes\ApplicationUrlDataType.cs" />
-    <Compile Include="UI\DataTypes\BaseDataType.cs" />
-    <Compile Include="UI\DataTypes\BooleanDataType.cs" />
-    <Compile Include="UI\DataTypes\CheckBoxListDataType.cs" />
     <Compile Include="UI\DataTypes\CultureItem.cs" />
-    <Compile Include="UI\DataTypes\CustomListDataType.cs" />
-    <Compile Include="UI\DataTypes\DateDataType.cs" />
-    <Compile Include="UI\DataTypes\DoubleDataType.cs" />
-    <Compile Include="UI\DataTypes\EmailAddressList.cs" />
-    <Compile Include="UI\DataTypes\FolderDataType.cs" />
-    <Compile Include="UI\DataTypes\HtmlEditorDataType.cs" />
-    <Compile Include="UI\DataTypes\IntegerDataType.cs" />
-    <Compile Include="UI\DataTypes\ListDataType_Original.cs" />
-    <Compile Include="UI\DataTypes\ModuleListDataType.cs" />
-    <Compile Include="UI\DataTypes\MultiSelectListDataType.cs" />
-    <Compile Include="UI\DataTypes\NumericDataType.cs" />
-    <Compile Include="UI\DataTypes\PathDataType.cs" />
-    <Compile Include="UI\DataTypes\Percentage.cs" />
-    <Compile Include="UI\DataTypes\PortalUrlDataType.cs" />
-    <Compile Include="UI\DataTypes\PropertiesDataType.cs" />
-    <Compile Include="UI\DataTypes\SettingOption.cs" />
-    <Compile Include="UI\DataTypes\StringDataType.cs" />
-    <Compile Include="UI\DataTypes\UploadedFileDataType.cs" />
-    <Compile Include="UI\DataTypes\UrlDataType.cs" />
     <Compile Include="Localization\LanguageCultureCollection.cs" />
     <Compile Include="Localization\LanguageCultureItem.cs" />
     <Compile Include="Localization\LanguageGrid.cs" />
     <Compile Include="Localization\LanguagesTemplateDropDown.cs" />
     <Compile Include="Localization\LanguagesWebDataGrid.cs" />
-    <Compile Include="Localization\LanguageSwitcher.ascx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Localization\LanguageSwitcher.cs" />
     <Compile Include="Localization\LanguageSwitcherDesigner.cs" />
     <Compile Include="Localization\LanguageSwitcherEventArgs.cs" />
     <Compile Include="Localization\LanguageSwitcherEventHandler.cs" />
     <Compile Include="Localization\LanguageSwitcherTypes.cs" />
     <Compile Include="Localization\TypeConvertLanguageCultureCollection.cs" />
-    <Compile Include="UI\Page.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="UI\WebControls\BindEnum.cs" />
-    <Compile Include="UI\WebControls\BreadCrumbs.cs" />
-    <Compile Include="UI\WebControls\CachedPortalModuleControl.cs" />
     <Compile Include="UI\WebControls\CustomForm.cs" />
     <Compile Include="UI\WebControls\DesktopModuleTitle.cs" />
-    <Compile Include="UI\WebControls\DesktopNavigation.cs" />
-    <Compile Include="UI\WebControls\DesktopPanes.cs" />
-    <Compile Include="UI\WebControls\FCKTextBox.cs" />
     <Compile Include="UI\WebControls\FlashMovie.cs" />
-    <Compile Include="UI\WebControls\FreeTextBox.cs" />
-    <Compile Include="UI\WebControls\HeaderImage.cs" />
-    <Compile Include="UI\WebControls\HeaderMenu.cs" />
-    <Compile Include="UI\WebControls\HeaderTitle.cs" />
-    <Compile Include="UI\WebControls\HtmlTextBox.cs" />
     <Compile Include="UI\WebControls\IEditModule.cs" />
     <Compile Include="UI\WebControls\IHtmlEditor.cs" />
     <Compile Include="UI\WebControls\INavigation.cs" />
     <Compile Include="UI\WebControls\IPaging.cs" />
     <Compile Include="UI\WebControls\ISearchable.cs" />
-    <Compile Include="UI\WebControls\ItemNavigation.cs" />
-    <Compile Include="UI\WebControls\MenuNavigation.cs" />
-    <Compile Include="UI\WebControls\ModuleButton.cs" />
-    <Compile Include="UI\WebControls\PageKeyPhrase.cs" />
     <Compile Include="UI\WebControls\Paging.cs" />
-    <Compile Include="UI\WebControls\PortalModuleControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\WebControls\PortalModuleControlCustom.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="UI\WebControls\PowerGrid.cs" />
-    <Compile Include="UI\WebControls\ShopNavigation.cs" />
     <Compile Include="UI\WebControls\SmartScroller.cs" />
-    <Compile Include="UI\WebControls\SolpartNavigation.cs" />
     <Compile Include="UI\WebControls\TextEditor.cs" />
     <Compile Include="UI\WebControls\UploadDialogTextBox.cs" />
-    <Compile Include="UI\WebControls\ViewControlButtons.cs" />
-    <Compile Include="UI\WebControls\XmlEditGrid.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="docs\ProviderHistory.txt" />
-    <Content Include="docs\ProviderReadme.txt" />
-    <Content Include="Helpers\ModuleInstall.txt" />
-    <Content Include="Settings\History.txt" />
-    <Content Include="UI\WebControls\BreadCrumbs_readme.txt" />
     <Content Include="UI\WebControls\DesktopModuleTitle.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Settings\Rainbow.Settings.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DUEMETRI.UI.WebControls.DesktopPanes\DesktopPanes\DUEMETRI.UI.WebControls.Panes.csproj">
@@ -319,9 +184,9 @@
       <Project>{DCDA0619-FD70-42B6-B2DA-78EAFA4BE955}</Project>
       <Name>DUEMETRI.UI.WebControls.HWMenu</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Rainbow.Framework.Data.MsSql\Rainbow.Framework.Data.MsSql.csproj">
-      <Project>{F3D1132B-139D-47FF-911E-10A950B572D0}</Project>
-      <Name>Rainbow.Framework.Data.MsSql</Name>
+    <ProjectReference Include="..\Rainbow.Framework.Configuration\Rainbow.Framework.Configuration.csproj">
+      <Project>{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}</Project>
+      <Name>Rainbow.Framework.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowMembershipProvider\Rainbow.Framework.Providers.RainbowMembershipProvider.csproj">
       <Project>{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}</Project>
