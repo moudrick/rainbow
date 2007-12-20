@@ -47,12 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Cache\CurrentCache.cs" />
     <Compile Include="Cache\Key.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ConfigReader.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="Portal.cs" />
+    <Compile Include="Provider\NotSupportedByProviderException.cs" />
     <Compile Include="Web\ContextReader.cs" />
     <Compile Include="GlobalEnums.cs" />
     <Compile Include="GlobalInternalStrings.cs" />
@@ -60,6 +64,14 @@
     <Compile Include="Provider\ProviderConfiguration.cs" />
     <Compile Include="Provider\ProviderConfigurationHandler.cs" />
     <Compile Include="Provider\ProviderHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Provider\Docs\ProviderHistory.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Provider\Docs\ProviderReadme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
