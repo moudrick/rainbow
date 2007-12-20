@@ -49,14 +49,17 @@
   <ItemGroup>
     <Compile Include="Cache\CurrentCache.cs" />
     <Compile Include="Cache\Key.cs" />
-    <Compile Include="Config\Config.cs" />
-    <Compile Include="Config\ConfigReader.cs" />
-    <Compile Include="Config\Path.cs" />
-    <Compile Include="Config\Portal.cs" />
-    <Compile Include="Config\Web\ContextReader.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="ConfigReader.cs" />
+    <Compile Include="Path.cs" />
+    <Compile Include="Portal.cs" />
+    <Compile Include="Web\ContextReader.cs" />
     <Compile Include="GlobalEnums.cs" />
     <Compile Include="GlobalInternalStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\ProviderConfiguration.cs" />
+    <Compile Include="Provider\ProviderConfigurationHandler.cs" />
+    <Compile Include="Provider\ProviderHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

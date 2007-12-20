@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Web;
+using System.Net;
 
 namespace Rainbow.Framework.Configuration
 {
@@ -283,6 +284,35 @@ namespace Rainbow.Framework.Configuration
                 alias = defaultPortal;
                 return true;
             }
+        }
+
+        /// <summary>
+        /// Get the proxy parameters as configured in web.config by Phillo 22/01/2003
+        /// </summary>
+        /// <returns></returns>
+        public static WebProxy GetProxy()
+        {
+            //jes1111 - if(ConfigurationSettings.AppSettings["ProxyServer"].Length > 0) 
+            //if(Config.ProxyServer.Length > 0) 
+            //{ 
+            WebProxy myProxy = new WebProxy();
+            NetworkCredential myCredential = new NetworkCredential();
+            //myCredential.Domain = ConfigurationSettings.AppSettings["ProxyDomain"]; 
+            //myCredential.UserName = ConfigurationSettings.AppSettings["ProxyUserID"]; 
+            //myCredential.Password = ConfigurationSettings.AppSettings["ProxyPassword"]; 
+            myCredential.Domain = Config.ProxyDomain;
+            myCredential.UserName = Config.ProxyUserID;
+            myCredential.Password = Config.ProxyPassword;
+            myProxy.Credentials = myCredential;
+            //myProxy.Address = new Uri(ConfigurationSettings.AppSettings["ProxyServer"]); 
+            myProxy.Address = new Uri(Config.ProxyServer);
+            return (myProxy);
+            //} 
+
+            //else 
+            //{ 
+            //	return(null); 
+            //} 
         }
     }
 }
