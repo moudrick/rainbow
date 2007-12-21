@@ -16,10 +16,19 @@ namespace Rainbow.Framework.Data.Types
         private int _order = 0;
         private bool _required = false;
 
+        /// <summary>
+        /// Gets or sets the name of the setting.
+        /// </summary>
+        /// <value>The name of the setting.</value>
+        /// <remarks>
+        /// Added by Bill
+        /// </remarks>
+        public string SettingName { get; set; }
+
         //by Manu
         private string m_description = string.Empty;
         private string m_englishName = string.Empty;
-        private SettingGroup m_Group = SettingGroup.MODULE_SPECIAL_SETTINGS;
+        private int m_Group = 7000; //SettingGroup.MODULE_SPECIAL_SETTINGS;
 
         // Jes1111
         /// <summary>
@@ -27,7 +36,7 @@ namespace Rainbow.Framework.Data.Types
         /// Rainbow.Framework.Configuration.SettingGroup enum (convert to string)
         /// </summary>
         /// <value>The group.</value>
-        public SettingGroup Group
+        public int Group
         {
             get { return m_Group; }
             set { m_Group = value; }
@@ -42,38 +51,38 @@ namespace Rainbow.Framework.Data.Types
         {
             get
             {
-                switch (m_Group)
-                {
-                    case SettingGroup.NONE:
-                        return "Generic settings";
+                //switch (m_Group)
+                //{
+                    //case SettingGroup.NONE:
+                    //    return "Generic settings";
 
-                    case SettingGroup.THEME_LAYOUT_SETTINGS:
-                        return "Theme and layout settings";
+                    //case SettingGroup.THEME_LAYOUT_SETTINGS:
+                    //    return "Theme and layout settings";
 
-                    case SettingGroup.SECURITY_USER_SETTINGS:
-                        return "Users and Security settings";
+                    //case SettingGroup.SECURITY_USER_SETTINGS:
+                    //    return "Users and Security settings";
 
-                    case SettingGroup.CULTURE_SETTINGS:
-                        return "Culture settings";
+                    //case SettingGroup.CULTURE_SETTINGS:
+                    //    return "Culture settings";
 
-                    case SettingGroup.BUTTON_DISPLAY_SETTINGS:
-                        return "Buttons and Display settings";
+                    //case SettingGroup.BUTTON_DISPLAY_SETTINGS:
+                    //    return "Buttons and Display settings";
 
-                    case SettingGroup.MODULE_SPECIAL_SETTINGS:
-                        return "Specific Module settings";
+                    //case SettingGroup.MODULE_SPECIAL_SETTINGS:
+                    //    return "Specific Module settings";
 
-                    case SettingGroup.META_SETTINGS:
-                        return "Meta settings";
+                    //case SettingGroup.META_SETTINGS:
+                    //    return "Meta settings";
 
-                    case SettingGroup.MISC_SETTINGS:
-                        return "Miscellaneous settings";
+                    //case SettingGroup.MISC_SETTINGS:
+                    //    return "Miscellaneous settings";
 
-                    case SettingGroup.NAVIGATION_SETTINGS:
-                        return "Navigation settings";
+                    //case SettingGroup.NAVIGATION_SETTINGS:
+                    //    return "Navigation settings";
 
-                    case SettingGroup.CUSTOM_USER_SETTINGS:
-                        return "Custom User Settings";
-                }
+                    //case SettingGroup.CUSTOM_USER_SETTINGS:
+                    //    return "Custom User Settings";
+                //}
                 return "Settings";
             }
         }
@@ -152,6 +161,16 @@ namespace Rainbow.Framework.Data.Types
         {
             get { return _datatype.Value; }
             set { _datatype.Value = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the setting value.
+        /// </summary>
+        /// <value>The setting value.</value>
+        public string SettingValue
+        {
+            get { return Value; }
+            set { Value = value; }
         }
 
         /// <summary>
@@ -243,7 +262,7 @@ namespace Rainbow.Framework.Data.Types
             //Modified by Hongwei Shen(hongwei.shen@gmail.com) 10/9/2005
             // the "value" should be casted to Setting instead of ModuleItem 
             //			int compareOrder = ((ModuleItem) value).Order;
-            int compareOrder = ((Setting) value).Order;
+            int compareOrder = ((Setting)value).Order;
             // end of modification            
             if (Order == compareOrder) return 0;
             if (Order < compareOrder) return -1;
