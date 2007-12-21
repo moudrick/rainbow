@@ -18,6 +18,8 @@
 // Emmanuele De Andreis (manu-dea@hotmail dot it)
 
 using System;
+using System.Linq;
+using System.Data.Linq;
 using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
@@ -25,6 +27,7 @@ using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Collections.Generic;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -412,7 +415,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private static LanguageCultureItem InternalGetUserLanguages(LanguageCultureCollection myLanguagesCultureList)
         {
             //Get userLangs
-            CultureInfo[] userLangs;
+            List<CultureInfo> userLangs = new List<CultureInfo>();
 
             if (HttpContext.Current != null && HttpContext.Current.Request.UserLanguages != null &&
                 HttpContext.Current.Request.UserLanguages.Length > 0)
@@ -432,6 +435,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         {
                             // We try the full one... if this fails we catch it
                             arrUserLangs[i] = new CultureInfo(currentLanguage);
+                            userLangs.Add(arrUserLangs[i] as CultureInfo);
                         }
                         catch (ArgumentException)
                         {
@@ -440,6 +444,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                                 // Some browsers can send an invalid language
                                 // we try to get first two letters.. this is usually valid
                                 arrUserLangs[i] = new CultureInfo(currentLanguage.Substring(2));
+                                userLangs.Add(arrUserLangs[i] as CultureInfo);
                             }
                             catch (ArgumentException)
                             {
@@ -448,8 +453,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         }
                     }
                 }
-                userLangs = (CultureInfo[])arrUserLangs.ToArray(typeof(CultureInfo));
-
+                
                 // Try to match browser "accept languages" list
                 return myLanguagesCultureList.GetBestMatching(userLangs);
             }
