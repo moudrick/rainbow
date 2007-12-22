@@ -3,10 +3,13 @@ using System.Collections;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Web;
 using System.Xml;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework;
+using Rainbow.Framework.Settings;
+using Subtext.TestLibrary;
 
 namespace Rainbow.Tests {
     [Serializable]
@@ -61,15 +64,26 @@ namespace Rainbow.Tests {
             
         }
 
-        private static void InitializeScriptList() {
-          
-            int dbVersion = 0;
+        private static int DatabaseVersion
+        {
+            get
+            {
+                //Clear version cache so we are sure we update correctly
+                HttpContext.Current.Application.Lock();
+                HttpContext.Current.Application[Database.dbKey] = null;
+                HttpContext.Current.Application.UnLock();
+                return Database.DatabaseVersion;
+            }
+        }
 
+
+        private static void InitializeScriptList() 
+        {
             XmlDocument myDoc = new XmlDocument();
             ArrayList tempScriptsList = new ArrayList();
 
             // load the history file
-            string myDocPath = ConfigurationManager.AppSettings["RainbowSetupScriptsPath"] + "History.xml"; 
+            string myDocPath = ConfigurationManager.AppSettings["RainbowWebApplicationRoot"] + @"\Setup\Scripts\History.xml"; 
             myDoc.Load( myDocPath );
 
             // get a list of <Release> nodes
@@ -95,10 +109,23 @@ namespace Rainbow.Tests {
                 if ( release.SelectSingleNode( "Date" ) != null ) {
                     myUpdate.Date = DateTime.Parse( release.SelectSingleNode( "Date/text()" ).Value );
                 }
-
+                int dbVersion = DatabaseVersion;
                 //We should apply this patch
                 if ( dbVersion < myUpdate.VersionNumber ) {
                     //Rainbow.Framework.Helpers.LogHelper.Logger.Log(Rainbow.Framework.Site.Configuration.LogLevel.Debug, "Detected version to apply: " + myUpdate.Version);
+
+                    if (dbVersion > 1114 && dbVersion < 1519)
+                    {
+                        continue;
+//                        ErrorHandler.Publish(LogLevel.Error, "Unsupported version " + dbVersion + " detected.");
+//                        throw new Exception("Version before 1519 are not supported anymore. Please upgrade to a newer version or upgrade manually.");
+                    }
+
+                    if (dbVersion < 1114)
+                        Console.WriteLine("Empty/New database - CodeVersion: " + Portal.CodeVersion);
+                    else
+                        Console.WriteLine("dbVersion: " + dbVersion.ToString() + " - CodeVersion: " +
+                                          Portal.CodeVersion.ToString()); ;
 
                     myUpdate.Apply = true;
 
@@ -123,8 +150,8 @@ namespace Rainbow.Tests {
                         myUpdate.scriptNames.Add( sqlScript.Value );
                         //Rainbow.Framework.Helpers.LogHelper.Logger.Log(Rainbow.Framework.Site.Configuration.LogLevel.Debug, "Detected script to run: " + sqlScript.Value);
                     }
-
                     tempScriptsList.Add( myUpdate );
+
                 }
             }
 
@@ -164,69 +191,60 @@ namespace Rainbow.Tests {
             XmlDocument dataScriptsDoc = new XmlDocument();
             dataScriptsDoc.Load( ConfigurationManager.AppSettings["DataScriptsDefinitionFile"] );
             
-            int DatabaseVersion = 0;
+            int databaseVersion = 0;
             ArrayList errors = new ArrayList();
 
-            foreach ( UpdateEntry myUpdate in scriptsList ) {
-                //Version check (a script may update more than one version at once)
-                if ( myUpdate.Apply && DatabaseVersion < myUpdate.VersionNumber ) {
-                    foreach ( string scriptName in myUpdate.scriptNames ) {
-                        //It may be a module update only
-                        if ( scriptName.Length > 0 ) {
-                            string currentScriptName = scriptName;
-                            Console.WriteLine(  "DB: " + DatabaseVersion + " - CURR: " +
-                                               myUpdate.VersionNumber + " - Applying: " + currentScriptName );
+            foreach (UpdateEntry myUpdate in scriptsList)
+            {
+                using (HttpSimulator simulator = new HttpSimulator())
+                {
+                    simulator.SimulateRequest(new Uri("http://localhost/Setup/Update.aspx"));
 
-                            RunRainbowScript( currentScriptName );
+                    //Version check (a script may update more than one version at once)
+                    if (myUpdate.Apply && databaseVersion <= myUpdate.VersionNumber)
+                    {
+
+                        foreach (string scriptName in myUpdate.scriptNames)
+                        {
+                            //It may be a module update only
+                            if (scriptName.Length > 0)
+                            {
+                                string currentScriptName = scriptName;
+                                Console.WriteLine("DB: " + databaseVersion + " - CURR: " +
+                                                  myUpdate.VersionNumber + " - Applying: " + currentScriptName);
+
+                                RunRainbowScript(currentScriptName);
+                            }
+                        }
+
+                        if (Equals(errors.Count, 0))
+                        {
+                            //Update db with version
+                            databaseVersion = myUpdate.VersionNumber;
+                            Console.WriteLine("Version number: " + myUpdate.Version + " applied successfully.");
+
+                            // apply any additional data scripts after applying version
+                            XmlNodeList dataScriptsNodeList =
+                                dataScriptsDoc.SelectNodes("/SqlDataScripts/SqlDataScript[@runAfterVersion=" +
+                                                           myUpdate.VersionNumber + "]");
+                            foreach (XmlNode node in dataScriptsNodeList)
+                            {
+                                Console.WriteLine("Running data script " + node.Attributes["fileName"].Value +
+                                                  " after version " + myUpdate.VersionNumber);
+                                RunDataScript(node.Attributes["fileName"].Value);
+                            }
+
+                            //Mark this update as done
+                            Console.WriteLine("Sucessfully applied version: " + myUpdate.Version);
+                            Console.WriteLine(
+                                string.Format("DatabaseVersion: {0} / {1}", databaseVersion, Database.DatabaseVersion));
                         }
                     }
-
-                    ////Installing modules
-                    //foreach ( string moduleInstaller in myUpdate.Modules ) {
-                    //    string currentModuleInstaller =
-                    //        Server.MapPath( System.IO.Path.Combine( Path.ApplicationRoot + "/", moduleInstaller ) );
-
-                    //    try {
-                    //        ModuleInstall.InstallGroup( currentModuleInstaller, true );
-                    //    }
-                    //    catch ( Exception ex ) {
-                    //        Console.WriteLine( "Exception in UpdateDatabaseCommand installing module: " +
-                    //                           currentModuleInstaller, ex );
-                    //        if ( ex.InnerException != null ) {
-                    //            // Display more meaningful error message if InnerException is defined
-                    //            Console.WriteLine( "Exception in UpdateDatabaseCommand installing module: " +
-                    //                               currentModuleInstaller, ex.InnerException );
-                    //            errors.Add( "Exception in UpdateDatabaseCommand installing module: " +
-                    //                        currentModuleInstaller + "<br/>" + ex.InnerException.Message + "<br/>" +
-                    //                        ex.InnerException.StackTrace );
-                    //        }
-                    //        else {
-                    //            Console.WriteLine( "Exception in UpdateDatabaseCommand installing module: " +
-                    //                               currentModuleInstaller, ex );
-                    //            errors.Add( ex.Message );
-                    //        }
-                    //    }
-                    //}
-
-                    if ( Equals( errors.Count, 0 ) ) {
-                        //Update db with version
-                        DatabaseVersion = myUpdate.VersionNumber;
-                        Console.WriteLine(  "Version number: " + myUpdate.Version + " applied successfully." );
-
-                        // apply any additional data scripts after applying version
-                        XmlNodeList dataScriptsNodeList = dataScriptsDoc.SelectNodes( "/SqlDataScripts/SqlDataScript[@runAfterVersion=" + myUpdate.VersionNumber + "]" );
-                        foreach ( XmlNode node in dataScriptsNodeList ) {
-                            Console.WriteLine(  "Running data script " + node.Attributes["fileName"].Value + " after version " + myUpdate.VersionNumber );
-                            RunDataScript( node.Attributes["fileName"].Value );
-                        }
-                        
-                        //Mark this update as done
-                        Console.WriteLine(  "Sucessfully applied version: " + myUpdate.Version );
+                    else
+                    {
+                        Console.WriteLine("DB: " + databaseVersion + " - CURR: " +
+                                          myUpdate.VersionNumber + " - Skipping: " + myUpdate.Version);
                     }
-                }
-                else {
-                    Console.WriteLine(  "DB: " + DatabaseVersion + " - CURR: " +
-                                       myUpdate.VersionNumber + " - Skipping: " + myUpdate.Version );
                 }
             }
         }

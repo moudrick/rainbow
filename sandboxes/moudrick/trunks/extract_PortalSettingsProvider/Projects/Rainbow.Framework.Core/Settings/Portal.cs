@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
 using System.Web;
 using Rainbow.Context;
 
@@ -38,10 +40,25 @@ namespace Rainbow.Framework.Settings
         {
             get
             {
-                if (context.Current != null && context.Current.Application["CodeVersion"] != null)
-                    return (int) context.Current.Application["CodeVersion"];
+                const string codeVersionParameterName = "CodeVersion";
+                if (context.Current != null)
+                {
+                    if (context.Current.Application[codeVersionParameterName] == null)
+                    {
+                        // moved from PortalSettings
+                        FileVersionInfo f =
+                            FileVersionInfo.GetVersionInfo(
+                                Assembly.GetAssembly(typeof (Rainbow.Framework.Settings.Portal)).Location);
+                        HttpContext.Current.Application.Lock();
+                        HttpContext.Current.Application[codeVersionParameterName] = f.FilePrivatePart;
+                        HttpContext.Current.Application.UnLock();
+                    }
+                    return (int)context.Current.Application[codeVersionParameterName];
+                }
                 else
+                {
                     return 0;
+                }
             }
         }
 
@@ -56,9 +73,13 @@ namespace Rainbow.Framework.Settings
                 string strPageID = null;
 
                 if (FindPageIdFromQueryString(context.Current.Request.QueryString, ref strPageID))
+                {
                     return Config.GetIntegerFromString(false, strPageID, 0);
+                }
                 else
+                {
                     return 0;
+                }
             }
         }
 
@@ -201,7 +222,9 @@ namespace Rainbow.Framework.Settings
                 string queryStringValue = string.Empty;
 
                 if (queryStringValues != null && queryStringValues.Length > 0)
+                {
                     queryStringValue = queryStringValues[0].Trim().ToLower(CultureInfo.InvariantCulture);
+                }
 
                 if (queryStringValue.Length != 0)
                 {

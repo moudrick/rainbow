@@ -14,13 +14,13 @@
 
 	<appSettings>
 		<!-- base directory of the rainbow setup scripts (ans history.xml).  -->
-		<add key="RainbowSetupScriptsPath" value="[[your.branch.root]]\WebSites\Rainbow\Setup\Scripts\" />
+		<add key="RainbowWebApplicationRoot" value="[[your.branch.root]]WebSites\Rainbow\" />
 
 		<!-- base directory of the additional data scripts -->
-		<add key="DataScriptsPath" value="[[your.branch.root]]\Projects\Rainbow.Tests\Scripts\" />
+		<add key="DataScriptsPath" value="[[your.branch.root]]Projects\Rainbow.Tests\Scripts\" />
 
 		<!-- XML definition of the data SQL scripts to excecute between rainbow scripts -->
-		<add key="DataScriptsDefinitionFile" value="[[your.branch.root]]\Projects\Rainbow.Tests\Scripts\SqlDataScriptsDefinition.xml" />
+		<add key="DataScriptsDefinitionFile" value="[[your.branch.root]]Projects\Rainbow.Tests\Scripts\SqlDataScriptsDefinition.xml" />
 	</appSettings>
 
 	<system.web>

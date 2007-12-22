@@ -56,6 +56,10 @@
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Tests\HttpSimulator\HttpSimulator.csproj">
+      <Project>{BE2546BF-F026-4F21-B1B5-9995852D62B0}</Project>
+      <Name>HttpSimulator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rainbow.Framework.Core\Rainbow.Framework.Core.csproj">
       <Project>{552CCD6F-0A37-4366-9E3E-22B2A0221584}</Project>
       <Name>Rainbow.Framework.Core</Name>

@@ -97,6 +97,7 @@
     <Compile Include="Configuration\Settings\Providers\PageSettingsProvider.cs" />
     <Compile Include="Configuration\Settings\Providers\PortalSettingsProvider.cs" />
     <Compile Include="DAL\Database.cs" />
+    <Compile Include="DAL\DatabaseUpdater.cs" />
     <Compile Include="DAL\DBHelper.cs" />
     <Compile Include="DAL\ModulesDB.cs" />
     <Compile Include="DAL\PagesDB.cs" />

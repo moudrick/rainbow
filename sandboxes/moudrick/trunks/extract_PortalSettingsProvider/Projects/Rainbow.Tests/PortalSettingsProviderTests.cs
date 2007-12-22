@@ -1,51 +1,71 @@
-using System.IO;
+using System;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Web;
 using NUnit.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Core.DAL;
+using Rainbow.Framework.Settings;
+using Subtext.TestLibrary;
 
 namespace Rainbow.Tests
 {
-    public static class FakeHttpContext
-    {
-        public static HttpContext GetNew()
-        {
-            return new HttpContext(GetFakeHttpRequest(), GetFakeHttpResponse());
-        }
-
-        private static HttpResponse GetFakeHttpResponse()
-        {
-            TextWriter writer = TextWriter.Null;
-            return new HttpResponse(writer);
-        }
-
-        static HttpRequest GetFakeHttpRequest()
-        {
-            //http://kntajus.blogspot.com/2007/04/manually-creating-httprequest-for.html#links
-            //HttpRequest httpRequest = new HttpRequest("default.aspx", "http://www.diuturnal.com/default.aspx", string.Empty);
-            HttpRequest request = new HttpRequest("index.html", "http://localhost/fake/index.html", string.Empty);
-            return request;
-        }
-    }
-
     [TestFixture]
     public class PortalSettingsProviderTests
     {
         [TestFixtureSetUp]
         public void FixtureSetUp()
         {
-            // Set up initial database environment for testing purposes
-            TestHelper.TearDownDB();
-            TestHelper.RecreateDBSchema();
+            using (HttpSimulator simulator = new HttpSimulator())
+            {
+                simulator.SimulateRequest();
+                // Set up initial database environment for testing purposes
+                TestHelper.TearDownDB();
+
+                DatabaseUpdater updater = new DatabaseUpdater(ConfigurationManager.AppSettings["RainbowWebApplicationRoot"]);
+                updater.PreviewUpdate();
+                updater.PerformUpdate();
+                Assert.AreEqual(0, updater.Errors.Count);
+                //TestHelper.RecreateDBSchema();
+            }   
         }
 
         [Test]
-        [Ignore("NotWorking")]
         public void PortalSettingsTest()
         {
-            HttpContext.Current = FakeHttpContext.GetNew();
-            PortalSettings portalSettings = PortalSettingsProvider.InstantiateNewPortalSettings(0, "Rainbow");
-            Assert.IsNotNull(portalSettings);
+            using (HttpSimulator simulator = new HttpSimulator())
+            {
+                simulator.SimulateRequest(new Uri("http://localhost/Test.aspx"));
+                Assert.AreEqual(1882, Database.DatabaseVersion);
+                PortalSettings portalSettings = PortalSettingsProvider.InstantiateNewPortalSettings(0, "Rainbow");
+                Assert.IsNotNull(portalSettings);
+            }
+        }
+
+        [Test]
+        public void CanSimulateFormPost()
+        {
+            using (HttpSimulator simulator = new HttpSimulator())
+            {
+                NameValueCollection form = new NameValueCollection();
+                form.Add("Test1", "Value1");
+                form.Add("Test2", "Value2");
+                simulator.SimulateRequest(new Uri("http://localhost/Test.aspx"), form);
+
+                Assert.AreEqual("Value1", HttpContext.Current.Request.Form["Test1"]);
+                Assert.AreEqual("Value2", HttpContext.Current.Request.Form["Test2"]);
+            }
+
+            using (HttpSimulator simulator = new HttpSimulator())
+            {
+                simulator.SetFormVariable("Test1", "Value1")
+                  .SetFormVariable("Test2", "Value2")
+                  .SimulateRequest(new Uri("http://localhost/Test.aspx"));
+
+                Assert.AreEqual("Value1", HttpContext.Current.Request.Form["Test1"]);
+                Assert.AreEqual("Value2", HttpContext.Current.Request.Form["Test2"]);
+            }
         }
     }
 }
