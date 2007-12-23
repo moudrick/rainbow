@@ -38,6 +38,7 @@ namespace Rainbow.Tests
         [TestFixtureSetUp]
         public void FixtureSetUp()
         {
+            /*
             TestHelper.TearDownDB();
             //TestHelper.RecreateDBSchema();
             string mapPath = ConfigurationManager.AppSettings["RainbowWebApplicationRoot"];
@@ -49,7 +50,7 @@ namespace Rainbow.Tests
                 updater.PreviewUpdate();
                 updater.PerformUpdate();
                 //Assert.AreEqual(0, updater.Errors.Count);
-            }
+            } */
         }
 
         [Test]

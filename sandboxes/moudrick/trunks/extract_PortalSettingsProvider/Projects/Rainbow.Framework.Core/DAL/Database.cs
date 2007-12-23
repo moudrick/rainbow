@@ -69,12 +69,13 @@ namespace Rainbow.Framework.Settings
                         //If this fails most likely cannot connect to db or no permission
                         //throw;
                     }
-                    object version =
-                        DBHelper.ExecuteSQLScalar("SELECT TOP 1 Release FROM rb_Versions ORDER BY Release DESC");
+                    object version = DBHelper.ExecuteSQLScalar(
+                        "SELECT TOP 1 Release FROM rb_Versions ORDER BY Release DESC");
 
                     if (version != null)
+                    {
                         curVersion = Int32.Parse(version.ToString());
-
+                    }
                     else
                     {
                         curVersion = 1110;
