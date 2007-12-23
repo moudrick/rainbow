@@ -47,7 +47,7 @@
 
   <property name="sql.db.user.name" value="rainbow" readonly="true" />
   <property name="sql.db.user.password" value="rainbow_" readonly="true" />
-  <property name="sql.recreate.confirmation" value="false" />
+  <property name="sql.recreate.showCaution" value="false" />
 
   <!-- ************************* -->
   <!-- **  deploy section     ** -->
@@ -748,6 +748,8 @@ Then break script execution (CTRL-C)
   </target>
 
   <target name="tests.prepare">
+    <property if="${not property::exists('sql.db.name')}" 
+      name="sql.db.name" value="Rainbow" dynamic="true" />
     <call target="sql.tests.db.recreate" />
     <call target="tests.updateConfig" />
   </target>

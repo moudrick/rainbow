@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Web;
 using System.Xml;
 using Rainbow.Framework.Helpers;
@@ -8,17 +9,22 @@ using Rainbow.Framework.Settings;
 namespace Rainbow.Framework.Core.DAL
 {
     ///<summary>
+    ///</summary>
+    ///<param name="updateEntry"></param>
+    public delegate void OnSuccessfulUpdateEntry(UpdateEntry updateEntry);
+
+    ///<summary>
     /// Updates database to the latest version
     ///</summary>
     public class DatabaseUpdater
     {
-        readonly string webApplicationRootPhysicalPath;
+        readonly string updateScriptPath;
+        readonly string moduleScriptBasePath;
 
         ///<summary>
         /// List of actions to perform update
         ///</summary>
         public readonly ArrayList UpdateList = new ArrayList();
-
 
         ///<summary>
         /// List of update error messages
@@ -30,8 +36,10 @@ namespace Rainbow.Framework.Core.DAL
         ///</summary>
         public readonly ArrayList Messages = new ArrayList();
 
-        DatabaseUpdater.UpdateEntry[] scriptsList;
+        UpdateEntry[] scriptsList;
         string initialStatusReport;
+
+        public OnSuccessfulUpdateEntry OnSuccessfulUpdateEntry = null;
 
         ///<summary>
         /// Database staatus beofre any operation
@@ -44,43 +52,16 @@ namespace Rainbow.Framework.Core.DAL
             }
         }
 
-
         ///<summary>
         /// Creates an updater
         ///</summary>
-        ///<param name="webApplicationRootPhysicalPath">Web Applcation Root Physical Path</param>
-        public DatabaseUpdater(string webApplicationRootPhysicalPath)
+        ///<param name="updateScriptPath">Update Script Path</param>
+        ///<param name="moduleScriptBasePath"></param>
+        public DatabaseUpdater(string updateScriptPath,
+            string moduleScriptBasePath)
         {
-            this.webApplicationRootPhysicalPath = webApplicationRootPhysicalPath;
-        }
-
-        [Serializable]
-        class UpdateEntry : IComparable {
-            /// <summary>
-            /// IComparable.CompareTo implementation.
-            /// </summary>
-            /// <param name="obj">An object to compare with this instance.</param>
-            /// <returns>
-            /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This instance is less than obj. Zero This instance is equal to obj. Greater than zero This instance is greater than obj.
-            /// </returns>
-            /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance. </exception>
-            public int CompareTo( object obj ) {
-                if ( obj is UpdateEntry ) {
-                    UpdateEntry upd = ( UpdateEntry )obj;
-                    if ( VersionNumber.CompareTo( upd.VersionNumber ) == 0 ) //Version numbers are equal
-                        return Version.CompareTo( upd.Version );
-                    else
-                        return VersionNumber.CompareTo( upd.VersionNumber );
-                }
-                throw new ArgumentException( "object is not a UpdateEntry" );
-            }
-
-            public int VersionNumber = 0;
-            public string Version = string.Empty;
-            public readonly ArrayList scriptNames = new ArrayList();
-            public DateTime Date;
-            public readonly ArrayList Modules = new ArrayList();
-            public bool Apply = false;
+            this.updateScriptPath = updateScriptPath;
+            this.moduleScriptBasePath = moduleScriptBasePath;
         }
 
         /// <summary>
@@ -96,7 +77,9 @@ namespace Rainbow.Framework.Core.DAL
                 HttpContext.Current.Application.Lock();
                 HttpContext.Current.Application[Database.dbKey] = null;
                 HttpContext.Current.Application.UnLock();
-                return Database.DatabaseVersion;
+                int version = Database.DatabaseVersion;
+                Debug.WriteLine("DatabaseVersion: " + version);
+                return version;
             }
         }
 
@@ -106,7 +89,7 @@ namespace Rainbow.Framework.Core.DAL
         ///<exception cref="Exception"></exception>
         public void PreviewUpdate()
         {
-            int dbVersion = DatabaseUpdater.DatabaseVersion;
+            int dbVersion = DatabaseVersion;
 
             if (dbVersion > 1114 && dbVersion < 1519)
             {
@@ -136,7 +119,7 @@ namespace Rainbow.Framework.Core.DAL
                 ErrorHandler.Publish(LogLevel.Debug, "db:" + dbVersion + " Code:" + Portal.CodeVersion);
 
                 // load the history file
-                string filename = System.IO.Path.Combine(webApplicationRootPhysicalPath, @"Setup\Scripts\History.xml");
+                string filename = System.IO.Path.Combine(updateScriptPath, "History.xml");
                 xmlDocument.Load(filename);
 
                 // get a list of <Release> nodes
@@ -146,7 +129,7 @@ namespace Rainbow.Framework.Core.DAL
                 // (we can do this because XmlNodeList implements IEnumerable)
                 foreach (XmlNode release in releases)
                 {
-                    DatabaseUpdater.UpdateEntry updateEntry = new DatabaseUpdater.UpdateEntry();
+                    UpdateEntry updateEntry = new UpdateEntry();
 
                     // get the header information
                     // we check for null to avoid exception if any of these nodes are not present
@@ -208,14 +191,14 @@ namespace Rainbow.Framework.Core.DAL
                 //If we have some version to apply...
                 if (tempScriptsList.Count > 0)
                 {
-                    scriptsList = (DatabaseUpdater.UpdateEntry[])tempScriptsList.ToArray(typeof(DatabaseUpdater.UpdateEntry));
+                    scriptsList = (UpdateEntry[])tempScriptsList.ToArray(typeof(UpdateEntry));
 
                     //by Manu. Versions are sorted by version number
                     Array.Sort(scriptsList);
 
                     //Create a flat version for binding
                     int currentVersion = 0;
-                    foreach (DatabaseUpdater.UpdateEntry updateEntry in scriptsList)
+                    foreach (UpdateEntry updateEntry in scriptsList)
                     {
                         if (updateEntry.Apply)
                         {
@@ -251,22 +234,21 @@ namespace Rainbow.Framework.Core.DAL
         ///</summary>
         public void PerformUpdate()
         {
-            foreach (DatabaseUpdater.UpdateEntry updateEntry in scriptsList)
+            foreach (UpdateEntry updateEntry in scriptsList)
             {
                 //Version check (a script may update more than one version at once)
-                if (updateEntry.Apply && DatabaseUpdater.DatabaseVersion < updateEntry.VersionNumber && DatabaseVersion < Portal.CodeVersion)
+                if (updateEntry.Apply && DatabaseVersion < updateEntry.VersionNumber && DatabaseVersion < Portal.CodeVersion)
                 {
                     foreach (string scriptName in updateEntry.scriptNames)
                     {
                         //It may be a module update only
                         if (scriptName.Length > 0)
                         {
-                            string currentScriptName =
-                                System.IO.Path.Combine(webApplicationRootPhysicalPath + "/Setup/Scripts/", scriptName);
+                            string currentScriptName = System.IO.Path.Combine(updateScriptPath, scriptName);
                             ErrorHandler.Publish(LogLevel.Info,
                                 string.Format("CODE: {0} - DB: {1} - CURR: {2} - Applying: {3}",
                                     Portal.CodeVersion,
-                                    DatabaseUpdater.DatabaseVersion,
+                                    DatabaseVersion,
                                     updateEntry.VersionNumber,
                                     currentScriptName));
                             ArrayList currentErrors = Rainbow.Framework.Data.DBHelper.ExecuteScript(currentScriptName, true);
@@ -276,10 +258,9 @@ namespace Rainbow.Framework.Core.DAL
                             {
                                 Errors.Insert(0, "<P>" + scriptName + "</P>");
                                 ErrorHandler.Publish(LogLevel.Error,
-                                    "Version " + updateEntry.Version + " completed with errors.  - " +
-                                    scriptName);
-                                Console.WriteLine("Version " + updateEntry.Version + " completed with errors.  - " +
-                                    scriptName);
+                                    "Version " + updateEntry.Version + " completed with errors.  - " + scriptName);
+                                Debug.WriteLine(
+                                    "Version " + updateEntry.Version + " completed with errors.  - " + scriptName);
                                 break;
                             }
                         }
@@ -289,7 +270,7 @@ namespace Rainbow.Framework.Core.DAL
                     foreach (string moduleInstaller in updateEntry.Modules)
                     {
                         string currentModuleInstaller =
-                            System.IO.Path.Combine(webApplicationRootPhysicalPath + "/", moduleInstaller);
+                            System.IO.Path.Combine(moduleScriptBasePath, moduleInstaller);
 
                         try
                         {
@@ -317,12 +298,12 @@ namespace Rainbow.Framework.Core.DAL
                                                      currentModuleInstaller, ex);
                                 Errors.Add(ex.Message);
                             }
-                            Console.WriteLine("Version " + updateEntry.Version + " completed with errors.  - " +
-                                currentModuleInstaller);
+                            Debug.WriteLine(
+                                "Version " + updateEntry.Version + " completed with errors.  - " + currentModuleInstaller);
                         }
                     }
 
-                    if (Equals(Errors.Count, 0))
+                    if (Errors.Count == 0)
                     {
                         //Update db with version
                         string versionUpdater;
@@ -335,6 +316,10 @@ namespace Rainbow.Framework.Core.DAL
 
                         //Mark this update as done
                         ErrorHandler.Publish(LogLevel.Info, "Sucessfully applied version: " + updateEntry.Version);
+                        if (OnSuccessfulUpdateEntry != null)
+                        {
+                            OnSuccessfulUpdateEntry.Invoke(updateEntry);
+                        }
                     }
                 }
                 else
@@ -347,8 +332,13 @@ namespace Rainbow.Framework.Core.DAL
                     //	+ ")";
                     // messages.Add(skippedMessage);
                     ErrorHandler.Publish(LogLevel.Info,
-                                         "CODE: " + Portal.CodeVersion + " - DB: " + DatabaseUpdater.DatabaseVersion + " - CURR: " +
-                                         updateEntry.VersionNumber + " - Skipping: " + updateEntry.Version);
+                        string.Format("CODE: {0} - DB: {1} - CURR: {2} - Skipping: {3}",
+                            Portal.CodeVersion,
+                            DatabaseVersion,
+                            updateEntry.VersionNumber,
+                            updateEntry.Version));
+//                                         "CODE: " + Portal.CodeVersion + " - DB: " + DatabaseVersion + " - CURR: " +
+//                                         updateEntry.VersionNumber + " - Skipping: " + updateEntry.Version);
                 }
             }
         }

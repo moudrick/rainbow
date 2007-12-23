@@ -31,11 +31,10 @@ namespace Rainbow.Framework.Settings
 				//Build the relative Application Path
 				if (applicationRoot == null)
 				{
-					HttpRequest req = HttpContext.Current.Request;
+					HttpRequest request = HttpContext.Current.Request;
 					applicationRoot =
-						(req.ApplicationPath == "/")
-							? ""
-							: req.ApplicationPath;
+						(request.ApplicationPath == "/")
+							? string.Empty : request.ApplicationPath;
 				}
 				return applicationRoot;
 			}

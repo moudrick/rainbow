@@ -13,15 +13,16 @@ namespace Rainbow.Tests {
     public class DiagnoseEnvironment {
 
         [TestFixtureSetUp]
-        public void FixtureSetUp() {
-
+        public void FixtureSetUp() 
+        {
             // Set up initial database environment for testing purposes
             TestHelper.TearDownDB();
             TestHelper.RecreateDBSchema();
         }
 
         [Test]
-        public void SimpleRun() {
+        public void SimpleRun() 
+        {
             Console.WriteLine( "This should pass. It only writes to the Console." );
         }
 

@@ -115,7 +115,7 @@ namespace Rainbow.Framework.Helpers
                                      "Installing MobileModule '" + friendlyName + "' from '" + mobileSource + "'");
 
             string controlFullPath = Path.ApplicationRoot + "/" + desktopSource;
-
+            
             // Instantiate the module
             Page page = new Page();
             //http://sourceforge.net/tracker/index.php?func=detail&aid=738670&group_id=66837&atid=515929

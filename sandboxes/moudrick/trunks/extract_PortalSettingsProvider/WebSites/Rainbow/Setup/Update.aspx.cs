@@ -15,6 +15,7 @@ namespace Rainbow.Setup
     /// Exclusive use with Rainbowportal
     /// Any other use strictly prohibited
     /// </summary>
+    [History( "moudrick", "2007/12/22", "extracted DatabaseUpdater" )]
     [History( "jminond", "2006/02/22", "Converted to partial class" )]
     public partial class Update : Page 
     {
@@ -74,7 +75,10 @@ namespace Rainbow.Setup
 
             dbNeedsUpdate.Visible = false;
 
-            updater = new DatabaseUpdater(Server.MapPath(Path.ApplicationRoot));
+            string mapPath = Server.MapPath(Path.ApplicationRoot);
+            updater = new DatabaseUpdater(
+                System.IO.Path.Combine(mapPath, @"Setup\Scripts\"),
+                mapPath + @"\");
             updater.PreviewUpdate();
             lblVersion.Text = updater.InitialStatusReport;
             if (updater.UpdateList.Count > 0)
