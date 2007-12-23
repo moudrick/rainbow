@@ -64,6 +64,15 @@
     <call target="app.sql2k5.export.fixup" />
   </target>
 
+  <target name="deploy.preview.nobuild">
+    <call target="wc.info" />
+    <call target="svn.info" />
+    <call target="tests.prepare" />
+    <call target="config.update" />
+    <call target="app.sql2k5.export.prepare" />
+    <call target="app.sql2k5.export.fixup" />
+  </target>
+
   <target name="deploy.preview.cleanup">
     <!-- exec program="svn.exe" commandline="revert -R ." / -->
     <property name="local.filename" value=".remove" />

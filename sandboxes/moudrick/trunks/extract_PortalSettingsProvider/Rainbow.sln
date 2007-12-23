@@ -72,6 +72,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B9FA2DF7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpSimulator", "Tests\HttpSimulator\HttpSimulator.csproj", "{BE2546BF-F026-4F21-B1B5-9995852D62B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Tests.WebSite", "Tests\Rainbow.Tests.WebSite\Rainbow.Tests.WebSite.csproj", "{D10995F0-11E4-43DD-96D1-7970CA432399}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -232,6 +234,16 @@ Global
 		{BE2546BF-F026-4F21-B1B5-9995852D62B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE2546BF-F026-4F21-B1B5-9995852D62B0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BE2546BF-F026-4F21-B1B5-9995852D62B0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D10995F0-11E4-43DD-96D1-7970CA432399}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{D10995F0-11E4-43DD-96D1-7970CA432399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D10995F0-11E4-43DD-96D1-7970CA432399}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D10995F0-11E4-43DD-96D1-7970CA432399}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D10995F0-11E4-43DD-96D1-7970CA432399}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D10995F0-11E4-43DD-96D1-7970CA432399}.Release|.NET.ActiveCfg = Release|Any CPU
+		{D10995F0-11E4-43DD-96D1-7970CA432399}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D10995F0-11E4-43DD-96D1-7970CA432399}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D10995F0-11E4-43DD-96D1-7970CA432399}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D10995F0-11E4-43DD-96D1-7970CA432399}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -247,6 +259,7 @@ Global
 		{2F8EA798-5AD7-44BA-A062-8B5721D9CFD1} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
 		{B1021322-5BD0-454F-9C38-F9565C71C2CF} = {B9FA2DF7-1830-41C8-ACBD-2C1D7B7E1FA4}
 		{BE2546BF-F026-4F21-B1B5-9995852D62B0} = {B9FA2DF7-1830-41C8-ACBD-2C1D7B7E1FA4}
+		{D10995F0-11E4-43DD-96D1-7970CA432399} = {B9FA2DF7-1830-41C8-ACBD-2C1D7B7E1FA4}
 		{F67D24F2-C7E6-4C2E-B7FC-BD99E5754E5D} = {DCD8AFCE-7572-4A1D-AD78-0A6469A415C0}
 	EndGlobalSection
 EndGlobal
