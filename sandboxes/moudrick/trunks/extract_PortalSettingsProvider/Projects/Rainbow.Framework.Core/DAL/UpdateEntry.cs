@@ -3,11 +3,16 @@ using System.Collections;
 
 namespace Rainbow.Framework.Core.DAL
 {
-    ///<summary>
-    ///</summary>
     [Serializable]
-    public class UpdateEntry : IComparable 
+    class UpdateEntry : IComparable 
     {
+        public int VersionNumber = 0;
+        public string Version = string.Empty;
+        public readonly ArrayList scriptNames = new ArrayList();
+        public DateTime Date;
+        public readonly ArrayList Modules = new ArrayList();
+        public bool Apply = false;
+
         /// <summary>
         /// IComparable.CompareTo implementation.
         /// </summary>
@@ -32,12 +37,5 @@ namespace Rainbow.Framework.Core.DAL
             }
             throw new ArgumentException("object is not a UpdateEntry");
         }
-
-        public int VersionNumber = 0;
-        public string Version = string.Empty;
-        public readonly ArrayList scriptNames = new ArrayList();
-        public DateTime Date;
-        public readonly ArrayList Modules = new ArrayList();
-        public bool Apply = false;
     }
 }

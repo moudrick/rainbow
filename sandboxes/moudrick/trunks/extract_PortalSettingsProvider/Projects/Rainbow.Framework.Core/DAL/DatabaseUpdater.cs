@@ -9,11 +9,6 @@ using Rainbow.Framework.Settings;
 namespace Rainbow.Framework.Core.DAL
 {
     ///<summary>
-    ///</summary>
-    ///<param name="updateEntry"></param>
-    public delegate void OnSuccessfulUpdateEntry(UpdateEntry updateEntry);
-
-    ///<summary>
     /// Updates database to the latest version
     ///</summary>
     public class DatabaseUpdater
@@ -38,8 +33,6 @@ namespace Rainbow.Framework.Core.DAL
 
         UpdateEntry[] scriptsList;
         string initialStatusReport;
-
-        public OnSuccessfulUpdateEntry OnSuccessfulUpdateEntry = null;
 
         ///<summary>
         /// Database staatus beofre any operation
@@ -316,10 +309,6 @@ namespace Rainbow.Framework.Core.DAL
 
                         //Mark this update as done
                         ErrorHandler.Publish(LogLevel.Info, "Sucessfully applied version: " + updateEntry.Version);
-                        if (OnSuccessfulUpdateEntry != null)
-                        {
-                            OnSuccessfulUpdateEntry.Invoke(updateEntry);
-                        }
                     }
                 }
                 else

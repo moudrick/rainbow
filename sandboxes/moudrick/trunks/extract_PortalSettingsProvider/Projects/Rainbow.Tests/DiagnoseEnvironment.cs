@@ -10,6 +10,7 @@ namespace Rainbow.Tests {
     /// Summary description for DiagnoseEnvironment.
     /// </summary>
     [TestFixture]
+    [Ignore("no more need these tests")]
     public class DiagnoseEnvironment {
 
         [TestFixtureSetUp]

@@ -5,36 +5,30 @@ using NUnit.Framework;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
 
-namespace Rainbow.Tests {
+namespace Rainbow.Tests 
+{
     [TestFixture]
-    public class RoleProviderTest {
+    public class RoleProviderTest 
+    {
         [TestFixtureSetUp]
         public void FixtureSetUp() {
             // Set up initial database environment for testing purposes
-            TestHelper.TearDownDB();
-            TestHelper.RecreateDBSchema();
+//            TestHelper.TearDownDB();
+//            TestHelper.RecreateDBSchema();
         }
 
         [Test]
-        public void Foo() {
+        public void Foo() 
+        {
             Console.WriteLine( "This should pass. It only writes to the Console." );
         }
 
-        #region Config properties
-
         [Test]
-        public void ApplicationNameTest() {
-            try {
-                string appName = Membership.ApplicationName;
-                Assert.AreEqual( appName, "Rainbow" );
-            }
-            catch ( Exception ex ) {
-                Console.WriteLine( ex.Message );
-                Assert.Fail( "Error retrieving ApplicationName property" + ex.Message, ex );
-            }
+        public void ApplicationNameTest() 
+        {
+            string appName = Membership.ApplicationName;
+            Assert.AreEqual(appName, "Rainbow", "Error retrieving ApplicationName property");
         }
-
-        #endregion
 
         [Test]
         public void GetAllRolesTest1() {
@@ -262,7 +256,6 @@ namespace Rainbow.Tests {
                 Assert.Fail( "Error in GetUsersInRoleTest1" + ex.Message, ex );
             }
         }
-
 
         [Test]
         public void GetUsersInRoleTest2() {
@@ -667,12 +660,7 @@ namespace Rainbow.Tests {
             }
         }
 
-        /* 
-
-        public abstract string[] FindUsersInRole( string portalAlias, string roleName, string usernameToMatch );
-
-        rename role
-         
-         */
+//        public abstract string[] FindUsersInRole( string portalAlias, string roleName, string usernameToMatch );
+//        rename role
     }
 }

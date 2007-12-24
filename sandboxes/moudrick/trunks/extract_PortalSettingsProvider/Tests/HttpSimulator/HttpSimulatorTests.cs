@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Specialized;
+using System.IO;
 using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
@@ -309,6 +310,24 @@ namespace UnitTests.SUbtext
         public void CanStripTrailing()
         {
             Assert.AreEqual(@"c:\blah\blah2", HttpSimulatorTester.CallStripTrailingBackSlashes(@"c:\blah\blah2\"));
+        }
+
+        [Test]
+        [Ignore("NotWorking")]
+        public void LoadControl()
+        {
+            string mapPath = AppDomain.CurrentDomain.BaseDirectory;
+            string controlFullPath = @"/Control.ascx";
+            File.WriteAllText(mapPath + controlFullPath, @"");
+            using (HttpSimulator simulator = new HttpSimulator(@"/", mapPath))
+            {
+                simulator.SimulateRequest();
+                
+                System.Web.UI.Page page = new System.Web.UI.Page();
+                Assert.IsNotNull(page);
+                System.Web.UI.Control control = page.LoadControl(controlFullPath);
+                Assert.IsNotNull(control);
+            }
         }
     }
 

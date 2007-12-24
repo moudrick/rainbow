@@ -4,33 +4,28 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B1021322-5BD0-454F-9C38-F9565C71C2CF}</ProjectGuid>
+    <ProjectGuid>{1C88C0DD-E893-456B-9CB8-24B349C3FEE6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rainbow.Tests</RootNamespace>
-    <AssemblyName>Rainbow.Tests</AssemblyName>
+    <RootNamespace>Rainbow.Tests.Data.MsSql</RootNamespace>
+    <AssemblyName>Rainbow.Tests.Data.MsSql</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <DocumentationFile>
-    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.2.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -44,51 +39,51 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiagnoseEnvironment.cs" />
-    <Compile Include="LoadRainbowControlTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="App.config" />
+    <None Include="App.config.standard" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="RoleProviderTest.cs" />
-    <Compile Include="TestHelper.cs" />
+    <Compile Include="GeographicProviderTests.cs" />
+    <Compile Include="MembershipProviderTests.cs" />
+    <Compile Include="PortalSettingsProviderTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Tests\HttpSimulator\HttpSimulator.csproj">
-      <Project>{BE2546BF-F026-4F21-B1B5-9995852D62B0}</Project>
-      <Name>HttpSimulator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Rainbow.Framework.Core\Rainbow.Framework.Core.csproj">
+    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Core\Rainbow.Framework.Core.csproj">
       <Project>{552CCD6F-0A37-4366-9E3E-22B2A0221584}</Project>
       <Name>Rainbow.Framework.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowMembershipProvider\Rainbow.Framework.Providers.RainbowMembershipProvider.csproj">
+    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowMembershipProvider\Rainbow.Framework.Providers.RainbowMembershipProvider.csproj">
       <Project>{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}</Project>
       <Name>Rainbow.Framework.Providers.RainbowMembershipProvider</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowRoleProvider\Rainbow.Framework.Providers.RainbowRoleProvider.csproj">
+    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowRoleProvider\Rainbow.Framework.Providers.RainbowRoleProvider.csproj">
       <Project>{599A82DE-6BBE-47D2-BB28-190ABD3CD702}</Project>
       <Name>Rainbow.Framework.Providers.RainbowRoleProvider</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowSqlMembershipProvider\Rainbow.Framework.Providers.RainbowSqlMembershipProvider.csproj">
+    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowSiteMapProvider\Rainbow.Framework.Providers.RainbowSiteMapProvider.csproj">
+      <Project>{C667C927-2E8B-44C6-BAC8-85EC9447C2C4}</Project>
+      <Name>Rainbow.Framework.Providers.RainbowSiteMapProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowSqlMembershipProvider\Rainbow.Framework.Providers.RainbowSqlMembershipProvider.csproj">
       <Project>{2F8EA798-5AD7-44BA-A062-8B5721D9CFD1}</Project>
       <Name>Rainbow.Framework.Providers.RainbowSqlMembershipProvider</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowSqlRoleProvider\Rainbow.Framework.Providers.RainbowSqlRoleProvider.csproj">
+    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowSqlRoleProvider\Rainbow.Framework.Providers.RainbowSqlRoleProvider.csproj">
       <Project>{2C0213D4-00E2-4AD6-B82A-0D42ADAB3FAA}</Project>
       <Name>Rainbow.Framework.Providers.RainbowSqlRoleProvider</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="App.config.standard" />
-    <None Include="Scripts\MembershipRoleProvidersData.sql" />
-    <None Include="Scripts\SetUp.sql" />
-    <None Include="Scripts\TearDown.sql" />
-    <None Include="Scripts\Test.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\SqlDataScriptsDefinition.xml" />
+    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowSqlSiteMapProvider\Rainbow.Framework.Providers.RainbowSqlSiteMapProvider.csproj">
+      <Project>{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF}</Project>
+      <Name>Rainbow.Framework.Providers.RainbowSqlSiteMapProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HttpSimulator\HttpSimulator.csproj">
+      <Project>{BE2546BF-F026-4F21-B1B5-9995852D62B0}</Project>
+      <Name>HttpSimulator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

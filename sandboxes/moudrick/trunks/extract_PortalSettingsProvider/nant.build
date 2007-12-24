@@ -655,8 +655,6 @@ Then break script execution (CTRL-C)
     <call target="sql.grantLogin.aspnet" />
   </target>
 
-
-
   <target name="sql.tests.restore">
     <call target="sql.setBackupProperties" />
     
@@ -869,17 +867,20 @@ Then break script execution (CTRL-C)
   </target>
 
   <target name="tests.updateConfig">
-    <property name="relativeTestsPath" value="Projects\Rainbow.Tests\" />
-    <copy file="${wc.dir}${relativeTestsPath}App.config.standard" 
-        tofile="${wc.dir}${relativeTestsPath}App.config" overwrite="true">
-      <filterchain>
-        <replacestring from="[[RainbowTestDBUser]]" to="${sql.db.user.name}" />
-        <replacestring from="[[RainbowTestDBUserPwd]]" to="${sql.db.user.password}" />
-        <replacestring from="[[RainbowTestDBServer]]" to="${sql.tests.instance}" />
-        <replacestring from="[[your.branch.root]]" to="${wc.dir}" />
-        <replacestring from="[[RainbowTestDBConnectionString]]" to="${sql.tests.connectionString}" />
-      </filterchain>
-    </copy>
+    <foreach item="String" property="relativeTestsPath" 
+        in="Projects\Rainbow.Tests\;Tests\Rainbow.Tests.Data.MsSql\" delim=";">
+      <copy file="${wc.dir}${relativeTestsPath}App.config.standard" 
+          tofile="${wc.dir}${relativeTestsPath}App.config" overwrite="true">
+        <filterchain>
+          <replacestring from="[[your.branch.root]]" to="${wc.dir}" />
+          <replacestring from="[[RainbowTestDBConnectionString]]" to="${sql.tests.connectionString}" />
+
+          <replacestring from="[[RainbowTestDBUser]]" to="${sql.db.user.name}" />
+          <replacestring from="[[RainbowTestDBUserPwd]]" to="${sql.db.user.password}" />
+          <replacestring from="[[RainbowTestDBServer]]" to="${sql.tests.instance}" />
+        </filterchain>
+      </copy>
+    </foreach>
   </target>
 
   <fileset id="tests.assemblies">
@@ -906,6 +907,11 @@ Then break script execution (CTRL-C)
   </target>
 
   <target name="tests.run.prepare">
+    <call target="tests.run.prepare.backup" />
+    <call target="tests.run.prepare.restore" />
+  </target>
+
+  <target name="tests.run.prepare.backup">
     <call target="svn.setDefaults" />
     <call target="svn.setProperties" />
     <call target="app.sql2k5.export.prepare" />
@@ -930,10 +936,17 @@ Then break script execution (CTRL-C)
     </nunit2>
 
     <call target="sql.backup" />
+  </target>
+
+  <target name="tests.run.prepare.restore">
+    <call target="svn.setDefaults" />
+    <call target="svn.setProperties" />
+    <call target="app.sql2k5.export.prepare" />
 
     <call target="tests.setProperties" />
     <call target="sql.tests.restore" />
     <call target="sql.tests.changeOwner" />
+    <call target="tests.updateConfig" />
   </target>
 
   <target name="tests.run">
