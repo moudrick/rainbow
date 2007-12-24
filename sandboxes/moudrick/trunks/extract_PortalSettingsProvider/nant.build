@@ -29,7 +29,7 @@
   <property if="${not property::exists('build.version.minor')}" name="build.version.minor" value="1" />
   <property if="${not property::exists('build.version.build')}" name="build.version.build" value="0" />
   <property if="${not property::exists('build.version.revision')}" name="build.version.revision" value="0" />
-  <property if="${not property::exists('build.configurations')}" name="build.configurations" value="Release" /> <!-- Release;Debug -->
+  <property if="${not property::exists('build.configuration')}" name="build.configuration" value="Release" />
   <property if="${not property::exists('wc.indicator')}" name="wc.indicator" value="" />
 
   <property name="wc.dir" value="${project::get-base-directory()}\" />
@@ -164,7 +164,7 @@
     <echo-property property="CCNetLabel" />
     <echo message="" />
     <echo message="** build related information **" />
-    <echo-property property="${build.configurations}" />
+    <echo-property property="${build.configuration}" />
     <echo-property property="" />
   </target>
 
@@ -271,20 +271,28 @@
       <property name="svn.branch.encoded" value="${string::replace(svn.branch, '/', '$')}" dynamic="true" />
     </if>
     <if test="${not svn.isWorkingCopy}" >
-      <property name="build.version.revision" value="0" />
-
-      <property name="svn.branch" value="${wc.indicator}${svn.branch.default}" />
-      <property name="svn.branch.encoded" value="${svn.branch}" dynamic="true" />
+      <call target="svn.setDefaults" />
     </if>
-    <property name="sql.db.name" value="${svn.branch.encoded}" dynamic="true" />
-    <xmlpeek file="${web.rainbow.dir}${sql.relativePath}history.xml" property="sql.version"
-      xpath="/History/Release[last()]/Version" />
+    <call target="svn.setProperties" />
 
     <echo-property property="build.version.revision" />
     <echo-property property="svn.branch" />
     <echo-property property="svn.branch.encoded" />
     <echo-property property="sql.db.name" />
     <echo-property property="sql.version" />
+  </target>
+
+  <target name="svn.setDefaults">
+      <property name="build.version.revision" value="0" />
+
+      <property name="svn.branch" value="${wc.indicator}${svn.branch.default}" />
+      <property name="svn.branch.encoded" value="${svn.branch}" dynamic="true" />
+  </target>
+
+  <target name="svn.setProperties">
+    <property name="sql.db.name" value="${svn.branch.encoded}" dynamic="true" />
+    <xmlpeek file="${web.rainbow.dir}${sql.relativePath}history.xml" property="sql.version"
+      xpath="/History/Release[last()]/Version" />
   </target>
 
   <!-- ************** -->
@@ -529,14 +537,12 @@ End Sub
 
   <target name="build.processSolution">
     <call target="build.prepareBranchSolution" />
-    <foreach item="String" property="configuration" in="${build.configurations}" delim=";"> 
-      <exec program="msbuild.exe" basedir="${this.netFrameworkPath}" workingdir=".">
-        <arg value="${build.solution.filename}" />
-        <arg value="/property:Configuration=${configuration};Platform=Mixed Platforms" />
-        <arg value="/target:${build.targets}" />
-        <arg value="/verbosity:quiet" />
-      </exec>
-    </foreach>
+    <exec program="msbuild.exe" basedir="${this.netFrameworkPath}" workingdir=".">
+      <arg value="${build.solution.filename}" />
+      <arg value="/property:Configuration=${build.configuration};Platform=Mixed Platforms" />
+      <arg value="/target:${build.targets}" />
+      <arg value="/verbosity:quiet" />
+    </exec>
   </target>
 
   <!-- *********** -->
@@ -649,8 +655,67 @@ Then break script execution (CTRL-C)
     <call target="sql.grantLogin.aspnet" />
   </target>
 
+
+
+  <target name="sql.tests.restore">
+    <call target="sql.setBackupProperties" />
+    
+    <delete file="${sql.backupFileName}" failonerror="false" />
+    <unzip zipfile="${sql.backupFileName}.zip" todir="${sql.dir.backup}" />
+
+    <!-- killQuery -->
+    <property name="sql.query"
+      value="USE [master]; DECLARE @sql VARCHAR(8000); SET @sql = ''; SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '${sql.tests.db.name}'; EXEC(@sql)" />
+    <call target="sql.run.query.trusted" />
+
+    <!-- physicalNameQuery -->
+    <!-- 2k: USE [master]; DECLARE @physical_name VARCHAR(8000); SELECT @physical_name=[filename] FROM dbo.sysfiles WHERE [name] = 'master'; PRINT @physical_name -->
+    <!-- 2k5: USE [master]; DECLARE @physical_name VARCHAR(MAX); SELECT @physical_name=physical_name FROM sys.database_files WHERE [name] = 'master'; PRINT @physical_name -->
+    <property name="sql.query"
+      value="USE [master]; DECLARE @physical_name VARCHAR(8000); SELECT @physical_name=[filename] FROM dbo.sysfiles WHERE [name] = 'master'; PRINT @physical_name" />
+    <call target="sql.run.query.trusted" />
+    <property name="sql.instance.dir.data" value="${path::get-directory-name(string::trim(sql.run.query.output))}\" />
+    <echo-property property="sql.instance.dir.data" />
+
+    <!-- restoreQuery -->
+    <property name="sql.query" 
+      value="USE [master]; RESTORE DATABASE [${sql.tests.db.name}] FROM DISK = N'${sql.backupFileName}' WITH  FILE = 1,  MOVE N'${sql.db.name}' TO N'${sql.instance.dir.data}${sql.tests.db.name}.mdf',  MOVE N'${sql.db.name}_log' TO N'${sql.instance.dir.data}${sql.tests.db.name}_log.ldf', NOUNLOAD, REPLACE, STATS = 10" />
+    <call target="sql.run.query.trusted" />
+
+    <call target="sql.tests.grantLogin" />
+  </target>
+
+  <target name="sql.tests.grantLogin">
+    <description>To run the queries below and successfully use the result, you have to create the 'rainbow' database instance user with 'rainbow_'</description>
+    <property name="createLoginQueryFilename" value=".create.login.sql" />
+    <echo file="${createLoginQueryFilename}">
+USE [master]
+GO
+
+if not exists (select * from master.dbo.syslogins where loginname = N'${sql.db.user.name}')
+BEGIN
+  declare @logindb nvarchar(132), @loginlang nvarchar(132) select @logindb = N'master', @loginlang = N'us_english'
+  if @logindb is null or not exists (select * from master.dbo.sysdatabases where name = @logindb)
+    select @logindb = N'master'
+  if @loginlang is null or (not exists (select * from master.dbo.syslanguages where name = @loginlang) and @loginlang &lt;&gt; N'us_english')
+    select @loginlang = @@language
+  exec sp_addlogin N'${sql.db.user.name}', ${sql.db.user.password}, @logindb, @loginlang
+END
+GO
+-- SQL 2005
+--CREATE LOGIN [${sql.db.user.name}] WITH PASSWORD=N'${sql.db.user.password}', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
+GO
+    </echo>
+    <exec program="osql" commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -i ${createLoginQueryFilename}" />
+    <property name="grantQuery" value="USE [${sql.tests.db.name}]; CREATE USER [${sql.db.user.name}] FOR LOGIN [${sql.db.user.name}]; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}'; --SQL 2005 only" />
+    <property name="grantQuery" value="USE [${sql.tests.db.name}]; if not exists (select * from dbo.sysusers where name = N'${sql.db.user.name}') EXEC sp_grantdbaccess N'${sql.db.user.name}', N'${sql.db.user.name}'; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}';" />
+
+    <echo-property property="grantQuery" />
+    <exec program="osql" commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -Q &quot;${grantQuery}&quot;" />
+  </target>
+
   <target name="sql.grantLogin">
-    <description>To run the quries below and successfully use the result, you have to create the 'rainbow' database instance user with 'rainbow_'</description>
+    <description>To run the queries below and successfully use the result, you have to create the 'rainbow' database instance user with 'rainbow_'</description>
     <property name="createLoginQueryFilename" value=".create.login.sql" />
     <echo file="${createLoginQueryFilename}">
 USE [master]
@@ -678,19 +743,59 @@ GO
     <exec program="osql" commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -Q &quot;${grantQuery}&quot;" />
   </target>
 
+  <property name="sql.aspnetAccount" value="${environment::get-variable('COMPUTERNAME')}\ASPNET" />
   <target name="sql.grantLogin.aspnet">
-    <property name="aspnetAccount" value="${environment::get-variable('COMPUTERNAME')}\ASPNET" />
 
     <!-- removeUserQuery -->
-    <!-- 2k: USE [${sql.db.name}]; EXEC sp_droprolemember 'db_owner', '${aspnetAccount}'; IF EXISTS (SELECT * FROM [sysusers] WHERE [name] = N'${aspnetAccount}') EXEC sp_dropuser '${aspnetAccount}' -->
-    <!-- 2k5: IF EXISTS (SELECT * FROM sys.schemas WHERE name = N'${aspnetAccount}') DROP SCHEMA [${aspnetAccount}]; IF EXISTS (SELECT * FROM sys.database_principals WHERE name = N'${aspnetAccount}') DROP USER [${aspnetAccount}] -->
+    <!-- 2k: USE [${sql.db.name}]; EXEC sp_droprolemember 'db_owner', '${sql.aspnetAccount}'; IF EXISTS (SELECT * FROM [sysusers] WHERE [name] = N'${sql.aspnetAccount}') EXEC sp_dropuser '${sql.aspnetAccount}' -->
+    <!-- 2k5: IF EXISTS (SELECT * FROM sys.schemas WHERE name = N'${sql.aspnetAccount}') DROP SCHEMA [${sql.aspnetAccount}]; IF EXISTS (SELECT * FROM sys.database_principals WHERE name = N'${sql.aspnetAccount}') DROP USER [${sql.aspnetAccount}] -->
     <property name="sql.query" 
-      value="USE [${sql.db.name}]; EXEC sp_droprolemember 'db_owner', '${aspnetAccount}'; IF EXISTS (SELECT * FROM [sysusers] WHERE [name] = N'${aspnetAccount}') EXEC sp_dropuser '${aspnetAccount}'" />
+      value="USE [${sql.db.name}]; EXEC sp_droprolemember 'db_owner', '${sql.aspnetAccount}'; IF EXISTS (SELECT * FROM [sysusers] WHERE [name] = N'${sql.aspnetAccount}') EXEC sp_dropuser '${sql.aspnetAccount}'" />
     <call target="sql.run.query.trusted" />
 
     <property name="sql.query" 
-      value="use [${sql.db.name}]; EXEC sp_grantlogin '${aspnetAccount}'; EXEC sp_addrolemember 'db_owner', '${aspnetAccount}'; EXEC sp_grantdbaccess '${aspnetAccount}';" />
+      value="use [${sql.db.name}]; EXEC sp_grantlogin '${sql.aspnetAccount}'; EXEC sp_addrolemember 'db_owner', '${sql.aspnetAccount}'; EXEC sp_grantdbaccess '${sql.aspnetAccount}';" />
     <call target="sql.run.query.trusted" />
+  </target>
+
+  <target name="sql.tests.changeOwner" >
+    <description>To run the queries below and successfully use the result, you have to create the 'rainbow' database instance user with 'rainbow_'</description>
+    <property name="changeOwnerQueryFilename" value=".change.owner.sql" />
+    <echo file="${changeOwnerQueryFilename}">
+USE [${sql.tests.db.name}]
+GO
+
+DECLARE @owner nvarchar(128), @name nvarchar(128)
+
+DECLARE owner_cursor CURSOR FOR
+SELECT s.name [owner], o.name [name]
+FROM sys.objects o INNER JOIN sys.schemas s
+    ON o.schema_id = s.schema_id
+WHERE s.name='${sql.aspnetAccount}' AND o.type_desc NOT LIKE '%_CONSTRAINT'
+    --AND o.type_desc NOT IN ('DEFAULT_CONSTRAINT', 'FOREIGN_KEY_CONSTRAINT', 'PRIMARY_KEY_CONSTRAINT', 'UNIQUE_CONSTRAINT')
+
+OPEN owner_cursor
+
+FETCH NEXT FROM owner_cursor
+INTO @owner, @name
+
+DECLARE @fullname nvarchar(256)
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SET @fullname = @owner + '.' +  @name
+    PRINT 'OBJECT: ' + @fullname
+    EXEC sp_changeobjectowner @fullname, '${sql.db.user.name}'
+    FETCH NEXT FROM owner_cursor
+    INTO @owner, @name
+END
+
+CLOSE owner_cursor
+DEALLOCATE owner_cursor
+
+GO
+    </echo>
+    <exec program="osql" commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -i ${changeOwnerQueryFilename}" />
   </target>
 
   <target name="wc.notepadSpecifics">
@@ -766,7 +871,7 @@ Then break script execution (CTRL-C)
   <target name="tests.updateConfig">
     <property name="relativeTestsPath" value="Projects\Rainbow.Tests\" />
     <copy file="${wc.dir}${relativeTestsPath}App.config.standard" 
-      tofile="${wc.dir}${relativeTestsPath}App.config" overwrite="true">
+        tofile="${wc.dir}${relativeTestsPath}App.config" overwrite="true">
       <filterchain>
         <replacestring from="[[RainbowTestDBUser]]" to="${sql.db.user.name}" />
         <replacestring from="[[RainbowTestDBUserPwd]]" to="${sql.db.user.password}" />
@@ -787,23 +892,61 @@ Then break script execution (CTRL-C)
     <include name="${tests.results.dir}**\*.xml" />
   </fileset>
 
+  <target name="tests.run.assembly.standard">
+    <echo message="Running test assembly: ${tests.currentAssembly}" />
+    <nunit2 haltonfailure="false" failonerror="false">
+      <formatter type="Xml" usefile="true" extension=".xml" outputdir="${tests.results.dir}" />
+      <formatter type="Plain" usefile="false" />
+      <test assemblyname="${tests.currentAssembly}" >
+        <categories>
+          <exclude name="NotWorking" />
+        </categories>
+      </test>
+    </nunit2>
+  </target>
+
+  <target name="tests.run.prepare">
+    <call target="svn.setDefaults" />
+    <call target="svn.setProperties" />
+    <call target="app.sql2k5.export.prepare" />
+
+    <call target="sql.recreate" />
+
+    <property name="tests.prepare.assembly" value="Rainbow.Tests.WebSite" />
+    <exec program="msbuild.exe" basedir="${this.netFrameworkPath}" workingdir=".">
+      <arg value="Tests\${tests.prepare.assembly}\${tests.prepare.assembly}.csproj" />
+      <arg value="/t:Rebuild" />
+      <arg value="/p:Configuration=Release" />
+    </exec>
+
+    <nunit2 haltonfailure="false" failonerror="false">
+      <formatter type="Xml" usefile="true" extension=".xml" outputdir="${tests.results.dir}" />
+      <formatter type="Plain" usefile="false" />
+      <test assemblyname="Tests\${tests.prepare.assembly}\bin\${build.configuration}\${tests.prepare.assembly}.dll" >
+        <categories>
+          <include name="Prepare" />
+        </categories>
+      </test>
+    </nunit2>
+
+    <call target="sql.backup" />
+
+    <call target="tests.setProperties" />
+    <call target="sql.tests.restore" />
+    <call target="sql.tests.changeOwner" />
+  </target>
+
   <target name="tests.run">
     <echo message="Running nunit2 task" />
+    <call target="tests.run.prepare" />
+
     <foreach item="File" property="testAssembly">
       <in>
         <items refid="tests.assemblies" />
       </in>
       <do>
-        <echo message="Running test assembly: ${testAssembly}" />
-        <nunit2 haltonfailure="false" failonerror="false">
-          <formatter type="Xml" usefile="true" extension=".xml" outputdir="${tests.results.dir}" />
-          <formatter type="Plain" usefile="false" />
-          <test assemblyname="${testAssembly}" >
-            <categories>
-              <exclude name="NotWorking" />
-            </categories>
-          </test>
-        </nunit2>
+        <property name="tests.currentAssembly" value="${testAssembly}" />
+        <call target="tests.run.assembly.standard" />
       </do>
     </foreach>
     <property name="customTestsSummary" value="" />

@@ -10,13 +10,15 @@ namespace Rainbow.Tests.WebSite
     public class Install
     {
         [Test]
+        [Category("Prepare")]
         public void Simple()
         {
             IE.Settings.WaitForCompleteTimeOut = 300;
-            IE ie = new IE("http://localhost/Rainbow/Setup/Update.aspx");
+            IE ie = new IE();
+            ie.ClearCookies("http://localhost/Rainbow/");
             ie.GoTo("http://localhost/Rainbow/");
             ie.WaitForComplete();
-            //Assert http://localhost/Rainbow/Setup/Update.aspx
+            Assert.AreEqual(ie.Url, "http://localhost/Rainbow/Setup/Update.aspx");
             ie.Button(Find.ByName("UpdateDatabaseCommand")).Click();
             ie.WaitForComplete();
             ie.Button(Find.ByName("FinishButton")).Click();
@@ -28,6 +30,7 @@ namespace Rainbow.Tests.WebSite
             Assert.AreEqual("Administration ", 
                 ie.Link(Find.ByUrl("http://localhost/Rainbow/site/100/Default.aspx")).Text, 
                 @"innerText does not match");
+            ie.Close();
         }
     }
 }
