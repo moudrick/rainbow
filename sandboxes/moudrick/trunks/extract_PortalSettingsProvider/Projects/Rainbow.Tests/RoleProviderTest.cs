@@ -13,8 +13,8 @@ namespace Rainbow.Tests
         [TestFixtureSetUp]
         public void FixtureSetUp() {
             // Set up initial database environment for testing purposes
-//            TestHelper.TearDownDB();
-//            TestHelper.RecreateDBSchema();
+            TestHelper.TearDownDB();
+            TestHelper.RecreateDBSchema();
         }
 
         [Test]

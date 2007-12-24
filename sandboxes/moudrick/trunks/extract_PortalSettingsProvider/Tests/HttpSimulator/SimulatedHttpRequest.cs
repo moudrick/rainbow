@@ -27,10 +27,10 @@ namespace Subtext.TestLibrary
 	public class SimulatedHttpRequest : SimpleWorkerRequest
 	{
 	    Uri _referer;
-		string _host;
-		string _verb;
-        int _port;
-	    string _physicalFilePath;
+	    readonly string _host;
+	    readonly string _verb;
+	    readonly int _port;
+	    readonly string _physicalFilePath;
 
         /// <summary>
         /// Creates a new <see cref="SimulatedHttpRequest"/> instance.

@@ -318,7 +318,9 @@ namespace UnitTests.SUbtext
         {
             string mapPath = AppDomain.CurrentDomain.BaseDirectory;
             string controlFullPath = @"/Control.ascx";
-            File.WriteAllText(mapPath + controlFullPath, @"");
+            File.WriteAllText(mapPath + controlFullPath, @"
+<%@ control autoeventwireup=""false"" language=""c#"" %>
+<span>test</span>");
             using (HttpSimulator simulator = new HttpSimulator(@"/", mapPath))
             {
                 simulator.SimulateRequest();
