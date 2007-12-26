@@ -47,7 +47,7 @@
 
   <property name="sql.db.user.name" value="rainbow" readonly="true" />
   <property name="sql.db.user.password" value="rainbow_" readonly="true" />
-  <property name="sql.recreate.confirmation" value="false" />
+  <property name="sql.recreate.showCaution" value="false" />
 
   <!-- ************************* -->
   <!-- **  deploy section     ** -->
