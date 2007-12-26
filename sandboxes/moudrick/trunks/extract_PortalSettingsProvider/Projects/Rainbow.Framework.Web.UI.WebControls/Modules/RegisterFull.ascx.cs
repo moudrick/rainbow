@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using System.Data.SqlClient;
 using System.Security.Principal;
 using System.Text;
@@ -8,7 +7,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Data;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
@@ -17,12 +16,11 @@ using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
-using System.Web.Security;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using Rainbow.Framework.Providers.Geographic;
 
-
-namespace Rainbow.Content.Web.Modules {
+namespace Rainbow.Content.Web.Modules 
+{
     /// <summary>
     /// Placeable Registration (Full) module
     /// </summary>
@@ -438,7 +436,7 @@ namespace Rainbow.Content.Web.Modules {
                     if ( userName == string.Empty ) {
                         // Add New User to Portal User Database
                         returnID =
-                            accountSystem.AddUser( NameField.Text, CompanyField.Text,
+                            accountSystem.AddUser(PortalProvider.Instance.CurrentPortal.PortalAlias, NameField.Text, CompanyField.Text,
                                                   AddressField.Text, CityField.Text, ZipField.Text, CountryID, StateID,
                                                   PhoneField.Text, FaxField.Text,
                                                   PasswordField.Text, EmailField.Text, SendNewsletter.Checked );
@@ -498,7 +496,7 @@ namespace Rainbow.Content.Web.Modules {
             sb.Append( "                 " + PhoneField.Text + "\n" );
             sb.Append( "Fax            : " + FaxField.Text + "\n" );
             sb.Append( "Email          : " + EmailField.Text + "\n" );
-            sb.Append( "Send Newsletter: " + SendNewsletter.Checked.ToString() + "\n" );
+            sb.Append( "Send Newsletter: " + SendNewsletter.Checked + "\n" );
 
             MailHelper.SendMailNoAttachment(
                 portalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
@@ -641,7 +639,7 @@ namespace Rainbow.Content.Web.Modules {
                             originalPassword = memberUser.GetPassword();
                             originalUserID = memberUser.ProviderUserKey;
                         }
-                        catch ( System.ArgumentNullException error ) {
+                        catch ( System.ArgumentNullException ) {
                             // user doesn't exist
                         }
                     }

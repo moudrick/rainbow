@@ -1,19 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Configuration.Provider;
-using System.Data;
-using System.Data.SqlClient;
-using System.Threading;
-using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
-
-using Rainbow.Framework.BLL.Utils;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
 
@@ -31,6 +21,7 @@ namespace Rainbow.Framework.Users.Data {
     /// </summary>
     [History( "jminond", "2005/03/10", "Tab to page conversion" )]
     [History( "gman3001", "2004/09/29", "Added the UpdateLastVisit method to update the user's last visit date indicator." )]
+    //[Obsolete("//TODO: Get rid of this class")]
     public class UsersDB {
 
         #region Properties
@@ -55,7 +46,7 @@ namespace Rainbow.Framework.Users.Data {
 
         private PortalSettings CurrentPortalSettings {
             get {
-                return ( PortalSettings )HttpContext.Current.Items["PortalSettings"];
+                return (PortalSettings) HttpContext.Current.Items["PortalSettings"];
             }
         }
 
@@ -73,13 +64,15 @@ namespace Rainbow.Framework.Users.Data {
         /// + <a href="AddRole.htm" style="color:green">AddRole Stored Procedure</a>
         /// </summary>
         /// <param name="roleName">Name of the role.</param>
-        public Guid AddRole( string roleName ) {
-            return RoleProvider.CreateRole( CurrentPortalSettings.PortalAlias, roleName );
+        public Guid AddRole(string roleName)
+        {
+            return RoleProvider.CreateRole(PortalProvider.Instance.CurrentPortal.PortalAlias, roleName);
         }
 
         /// <summary>
         /// AddUser
         /// </summary>
+        /// <param name="portalAlias">Portal alias where user to be added</param>
         /// <param name="name">The name.</param>
         /// <param name="company">The company.</param>
         /// <param name="address">The address.</param>
@@ -93,36 +86,55 @@ namespace Rainbow.Framework.Users.Data {
         /// <param name="email">The email.</param>
         /// <param name="sendNewsletter">if set to <c>true</c> [send newsletter].</param>
         /// <returns>The newly created ID</returns>
-        public Guid AddUser( string name, string company, string address, string city, string zip,
-                           string countryID, int stateID, string phone, string fax,
-                           string password, string email, bool sendNewsletter ) {
-
+        public Guid AddUser(string portalAlias, string name, string company, string address, string city, string zip, string countryID, int stateID, string phone, string fax, string password, string email, bool sendNewsletter)
+        {
             MembershipCreateStatus status;
-            MembershipUser user = MembershipProvider.CreateUser( CurrentPortalSettings.PortalAlias, name,
-                password, email, "vacia", "llena", true, out status );
+            MembershipUser user = MembershipProvider.CreateUser(portalAlias,
+                                                                name,
+                                                                password,
+                                                                email,
+                                                                "vacia",
+                                                                "llena",
+                                                                true,
+                                                                out status);
 
-            if ( user == null ) {
-                throw new ApplicationException( MembershipProvider.GetErrorMessage( status ) );
+            if (user == null)
+            {
+                throw new ApplicationException(MembershipProvider.GetErrorMessage(status));
             }
-
-            return ( Guid )user.ProviderUserKey;
+            return (Guid) user.ProviderUserKey;
         }
 
         /// <summary>
         /// Adds the user.
         /// </summary>
-        /// <param name="fullName">The full name.</param>(6)
+        /// <param name="portalAlias">Portal alias where user to be added</param>
         /// <param name="email">The email.</param>
         /// <param name="password">The password.</param>
+        /// <param name="fullName">The full name.</param>
         /// <returns></returns>
-        public Guid AddUser( string fullName, string email, string password ) {
-
-            Guid newUserId = AddUser( email, string.Empty, string.Empty, string.Empty,
-                string.Empty, string.Empty, 0, string.Empty, string.Empty, password, email, false );
-            RainbowUser user = MembershipProvider.GetUser( newUserId, false ) as RainbowUser; 
-
+        public Guid AddUser(string portalAlias, string email, string password, string fullName)
+        {
+            Guid newUserId = AddUser(portalAlias,
+                                     email,
+                                     string.Empty,
+                                     string.Empty,
+                                     string.Empty,
+                                     string.Empty,
+                                     string.Empty,
+                                     0,
+                                     string.Empty,
+                                     string.Empty,
+                                     password,
+                                     email,
+                                     false);
+            RainbowUser user = MembershipProvider.GetUser(newUserId, false) as RainbowUser;
+            if (user == null)
+            {
+                throw new RainbowMembershipProviderException("Could not load user");
+            }
             user.Name = fullName;
-            MembershipProvider.UpdateUser( user );
+            MembershipProvider.UpdateUser(user);
             return newUserId;
         }
 
@@ -177,7 +189,7 @@ namespace Rainbow.Framework.Users.Data {
         /// <summary>
         /// Get Current UserID
         /// </summary>
-        /// <param name="portalID">The portal ID.</param>
+        /// <pa ram name="portalID">The portal ID.</param>
         /// <returns></returns>
         //public Guid GetCurrentUserID( int portalID ) {
         //    MembershipUser user = Membership.GetUser();
@@ -348,14 +360,30 @@ namespace Rainbow.Framework.Users.Data {
         /// <param name="fax">The fax.</param>
         /// <param name="email">The email.</param>
         /// <param name="sendNewsletter">if set to <c>true</c> [send newsletter].</param>
-        public void UpdateUser( Guid oldUserID, Guid userID, string name, string company, string address,
-                               string city, string zip, string countryID, int stateID,
-                               string phone, string fax, string email, bool sendNewsletter ) {
-            if ( oldUserID != userID ) {
-                throw new ApplicationException( "UpdateUser: oldUserID != userID" );
+        public void UpdateUser(Guid oldUserID,
+                               Guid userID,
+                               string name,
+                               string company,
+                               string address,
+                               string city,
+                               string zip,
+                               string countryID,
+                               int stateID,
+                               string phone,
+                               string fax,
+                               string email,
+                               bool sendNewsletter)
+        {
+            if (oldUserID != userID)
+            {
+                throw new ApplicationException("UpdateUser: oldUserID != userID");
             }
 
-            RainbowUser user = MembershipProvider.GetUser( userID, true ) as RainbowUser;
+            RainbowUser user = MembershipProvider.GetUser(userID, true) as RainbowUser;
+            if (user == null)
+            {
+                throw new RainbowMembershipProviderException("Could not load user");
+            }
             user.Email = email;
             user.Name = name;
             user.Company = company;
@@ -368,7 +396,7 @@ namespace Rainbow.Framework.Users.Data {
             user.Phone = phone;
             user.SendNewsletter = sendNewsletter;
 
-            MembershipProvider.UpdateUser( user );
+            MembershipProvider.UpdateUser(user);
         }
 
         /// <summary>
@@ -388,11 +416,25 @@ namespace Rainbow.Framework.Users.Data {
         /// <param name="password">The password.</param>
         /// <param name="email">The email.</param>
         /// <param name="sendNewsletter">if set to <c>true</c> [send newsletter].</param>
-        public void UpdateUser( Guid userID, string name, string company, string address, string city,
-                               string zip, string countryID, int stateID, string phone,
-                               string fax, string password, string email, bool sendNewsletter ) {
-
-            RainbowUser user = MembershipProvider.GetUser( userID, true ) as RainbowUser;
+        public void UpdateUser(Guid userID,
+                               string name,
+                               string company,
+                               string address,
+                               string city,
+                               string zip,
+                               string countryID,
+                               int stateID,
+                               string phone,
+                               string fax,
+                               string password,
+                               string email,
+                               bool sendNewsletter)
+        {
+            RainbowUser user = MembershipProvider.GetUser(userID, true) as RainbowUser;
+            if (user == null)
+            {
+                throw new RainbowMembershipProviderException("Could not load user");
+            }
             user.Email = email;
             user.Name = name;
             user.Company = company;
@@ -404,9 +446,12 @@ namespace Rainbow.Framework.Users.Data {
             user.Fax = fax;
             user.Phone = phone;
             user.SendNewsletter = sendNewsletter;
-            
-            MembershipProvider.ChangePassword( CurrentPortalSettings.PortalAlias, user.UserName, user.GetPassword(), password );            
-            MembershipProvider.UpdateUser( user );
+
+            MembershipProvider.ChangePassword(CurrentPortalSettings.PortalAlias,
+                                              user.UserName,
+                                              user.GetPassword(),
+                                              password);
+            MembershipProvider.UpdateUser(user);
         }
 
         /// <summary>
@@ -425,11 +470,24 @@ namespace Rainbow.Framework.Users.Data {
         /// <param name="fax">The fax.</param>
         /// <param name="email">The email.</param>
         /// <param name="sendNewsletter">if set to <c>true</c> [send newsletter].</param>
-        public void UpdateUser( Guid userID, string name, string company, string address, string city,
-                               string zip, string countryID, int stateID, string phone,
-                               string fax, string email, bool sendNewsletter ) {
-
-            RainbowUser user = MembershipProvider.GetUser( userID, true ) as RainbowUser;
+        public void UpdateUser(Guid userID,
+                               string name,
+                               string company,
+                               string address,
+                               string city,
+                               string zip,
+                               string countryID,
+                               int stateID,
+                               string phone,
+                               string fax,
+                               string email,
+                               bool sendNewsletter)
+        {
+            RainbowUser user = MembershipProvider.GetUser(userID, true) as RainbowUser;
+            if (user == null)
+            {
+                throw new RainbowMembershipProviderException("Could not load user");
+            }
             user.Email = email;
             user.Name = name;
             user.Company = company;
@@ -442,7 +500,7 @@ namespace Rainbow.Framework.Users.Data {
             user.Phone = phone;
             user.SendNewsletter = sendNewsletter;
 
-            MembershipProvider.UpdateUser( user );
+            MembershipProvider.UpdateUser(user);
         }
 
         /// <summary>

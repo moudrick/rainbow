@@ -46,9 +46,11 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Hepler.cs" />
+    <Compile Include="PortalSettingsTests\PortalCrudTests.cs" />
     <Compile Include="GeographicProviderTests.cs" />
     <Compile Include="MembershipProviderTests.cs" />
-    <Compile Include="PortalSettingsProviderTests.cs" />
+    <Compile Include="PortalSettingsTests\DefaultPortalSettingsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

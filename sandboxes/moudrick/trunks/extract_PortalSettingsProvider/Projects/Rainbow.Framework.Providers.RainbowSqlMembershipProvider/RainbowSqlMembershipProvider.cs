@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Collections.Generic;
 using System.Text;
 
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
@@ -23,8 +22,8 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
 
         private const int _newPasswordLength = 8;
         private const string _encryptionKey = "BE09F72BFF7A4566";
-        private string eventSource = "RainbowSqlMembershipProvider";
-        private string eventLog = "Application";
+        const string eventSource = "RainbowSqlMembershipProvider";
+        const string eventLog = "Application";
 
         protected string connectionString;
         protected string pApplicationName;
@@ -282,67 +281,85 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
             return UnlockUser( ApplicationName, userName );
         }
 
-        public override MembershipUser GetUser( object providerUserKey, bool userIsOnline ) {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "aspnet_Membership_GetUserByUserId";
-            cmd.CommandType = CommandType.StoredProcedure;
+        public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
+        {
+            SqlCommand sqlCommand = new SqlCommand();
+            sqlCommand.CommandText = "aspnet_Membership_GetUserByUserId";
+            sqlCommand.CommandType = CommandType.StoredProcedure;
 
-            cmd.Connection = new SqlConnection( connectionString );
+            sqlCommand.Connection = new SqlConnection(connectionString);
 
-            cmd.Parameters.Add( "@UserId", SqlDbType.UniqueIdentifier ).Value = providerUserKey;
-            cmd.Parameters.Add( "@CurrentTimeUtc", SqlDbType.DateTime ).Value = DateTime.Now;
-            if ( userIsOnline ) {
-                cmd.Parameters.Add( "@UpdateLastActivity", SqlDbType.Bit ).Value = 1;
+            sqlCommand.Parameters.Add("@UserId", SqlDbType.UniqueIdentifier).Value = providerUserKey;
+            sqlCommand.Parameters.Add("@CurrentTimeUtc", SqlDbType.DateTime).Value = DateTime.Now;
+            if (userIsOnline)
+            {
+                sqlCommand.Parameters.Add("@UpdateLastActivity", SqlDbType.Bit).Value = 1;
             }
-            else {
-                cmd.Parameters.Add( "@UpdateLastActivity", SqlDbType.Bit ).Value = 0;
+            else
+            {
+                sqlCommand.Parameters.Add("@UpdateLastActivity", SqlDbType.Bit).Value = 0;
             }
 
-            RainbowUser u = null;
+            RainbowUser user = null;
             SqlDataReader reader = null;
 
-            try {
-                cmd.Connection.Open();
+            try
+            {
+                sqlCommand.Connection.Open();
 
-                using ( reader = cmd.ExecuteReader() ) {
-                    if ( reader.HasRows ) {
+                using (reader = sqlCommand.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
                         reader.Read();
 
-                        string email = reader.IsDBNull( 0 ) ? string.Empty : reader.GetString( 0 );
-                        string passwordQuestion = reader.IsDBNull( 1 ) ? string.Empty : reader.GetString( 1 );
-                        string comment = reader.IsDBNull( 2 ) ? string.Empty : reader.GetString( 2 );
-                        bool isApproved = reader.IsDBNull( 3 ) ? false : reader.GetBoolean( 3 );
-                        DateTime creationDate = reader.IsDBNull( 4 ) ? DateTime.Now : reader.GetDateTime( 4 );
-                        DateTime lastLoginDate = reader.IsDBNull( 5 ) ? DateTime.Now : reader.GetDateTime( 5);
-                        DateTime lastActivityDate = reader.IsDBNull( 6 ) ? DateTime.Now : reader.GetDateTime( 6 );
-                        DateTime lastPasswordChangedDate = reader.IsDBNull( 7 ) ? DateTime.Now : reader.GetDateTime( 7 );
-                        string userName = reader.IsDBNull( 8 ) ? string.Empty : reader.GetString( 8 );
-                        bool isLockedOut = reader.IsDBNull( 9 ) ? false : reader.GetBoolean( 9 );
-                        DateTime lastLockedOutDate = reader.IsDBNull( 10 ) ? DateTime.Now : reader.GetDateTime( 10 );
+                        string email = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
+                        string passwordQuestion = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+                        string comment = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                        bool isApproved = reader.IsDBNull(3) ? false : reader.GetBoolean(3);
+                        DateTime creationDate = reader.IsDBNull(4) ? DateTime.Now : reader.GetDateTime(4);
+                        DateTime lastLoginDate = reader.IsDBNull(5) ? DateTime.Now : reader.GetDateTime(5);
+                        DateTime lastActivityDate = reader.IsDBNull(6) ? DateTime.Now : reader.GetDateTime(6);
+                        DateTime lastPasswordChangedDate = reader.IsDBNull(7) ? DateTime.Now : reader.GetDateTime(7);
+                        string userName = reader.IsDBNull(8) ? string.Empty : reader.GetString(8);
+                        bool isLockedOut = reader.IsDBNull(9) ? false : reader.GetBoolean(9);
+                        DateTime lastLockedOutDate = reader.IsDBNull(10) ? DateTime.Now : reader.GetDateTime(10);
 
-                        u = InstanciateNewUser( this.Name, userName, ( Guid )providerUserKey, email, passwordQuestion, comment, isApproved,
-                             isLockedOut, creationDate, lastLoginDate, lastActivityDate, lastPasswordChangedDate, lastLockedOutDate );
-
-                        LoadUserProfile( u );
-
+                        user = InstanciateNewUser(this.Name,
+                                               userName,
+                                               (Guid) providerUserKey,
+                                               email,
+                                               passwordQuestion,
+                                               comment,
+                                               isApproved,
+                                               isLockedOut,
+                                               creationDate,
+                                               lastLoginDate,
+                                               lastActivityDate,
+                                               lastPasswordChangedDate,
+                                               lastLockedOutDate);
+                        LoadUserProfile(user);
                     }
                 }
             }
-            catch ( SqlException e ) {
-                if ( WriteExceptionsToEventLog ) {
-                    WriteToEventLog( e, "GetUser(object, Boolean)" );
+            catch (SqlException e)
+            {
+                if (WriteExceptionsToEventLog)
+                {
+                    WriteToEventLog(e, "GetUser(object, Boolean)");
                 }
-                throw new RainbowMembershipProviderException( "Error executing aspnet_Membership_GetUserByUserId stored proc", e );
+                throw new RainbowMembershipProviderException(
+                    "Error executing aspnet_Membership_GetUserByUserId stored proc", e);
             }
-            finally {
-                if ( reader != null ) {
+            finally
+            {
+                if (reader != null)
+                {
                     reader.Close();
                 }
-
-                cmd.Connection.Close();
+                sqlCommand.Connection.Close();
             }
-
-            return u;
+            return user;
         }
 
         public override MembershipUser GetUser( string username, bool userIsOnline ) {
@@ -473,77 +490,92 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
             }
         }
 
-        public override MembershipUser CreateUser( string portalAlias, string username, string password, string email,
-            string passwordQuestion, string passwordAnswer, bool isApproved, out MembershipCreateStatus status ) {
+        public override MembershipUser CreateUser(string portalAlias,
+                                                  string username,
+                                                  string password,
+                                                  string email,
+                                                  string passwordQuestion,
+                                                  string passwordAnswer,
+                                                  bool isApproved,
+                                                  out MembershipCreateStatus status)
+        {
+            ValidatePasswordEventArgs args = new ValidatePasswordEventArgs(username, password, true);
+            OnValidatingPassword(args);
 
-            ValidatePasswordEventArgs args = new ValidatePasswordEventArgs( username, password, true );
-            OnValidatingPassword( args );
-
-            if ( args.Cancel ) {
+            if (args.Cancel)
+            {
                 status = MembershipCreateStatus.InvalidPassword;
                 return null;
             }
 
             string passwordSalt = string.Empty;
             string encodedPassword;
-            if ( PasswordFormat == MembershipPasswordFormat.Hashed ) {
-                encodedPassword = EncodePassword( passwordSalt + password );
+            if (PasswordFormat == MembershipPasswordFormat.Hashed)
+            {
+                encodedPassword = EncodePassword(passwordSalt + password);
             }
-            else {
-                encodedPassword = EncodePassword( password );
+            else
+            {
+                encodedPassword = EncodePassword(password);
             }
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = "aspnet_Membership_CreateUser";
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Connection = new SqlConnection( connectionString );
+            cmd.Connection = new SqlConnection(connectionString);
 
-            cmd.Parameters.Add( "@ApplicationName", SqlDbType.NVarChar, 256 ).Value = portalAlias;
-            cmd.Parameters.Add( "@Username", SqlDbType.NVarChar, 255 ).Value = username;
-            cmd.Parameters.Add( "@Password", SqlDbType.NVarChar, 255 ).Value = encodedPassword;
-            cmd.Parameters.Add( "@PasswordSalt", SqlDbType.NVarChar, 255 ).Value = passwordSalt;
-            cmd.Parameters.Add( "@Email", SqlDbType.NVarChar, 256 ).Value = email;
-            cmd.Parameters.Add( "@PasswordQuestion", SqlDbType.NVarChar, 255 ).Value = passwordQuestion;
-            cmd.Parameters.Add( "@PasswordAnswer", SqlDbType.NVarChar, 255 ).Value = passwordAnswer == null ? null : passwordAnswer;
-            cmd.Parameters.Add( "@IsApproved", SqlDbType.Bit ).Value = isApproved;
-            cmd.Parameters.Add( "@UniqueEmail", SqlDbType.Int ).Value = RequiresUniqueEmail;
-            cmd.Parameters.Add( "@PasswordFormat", SqlDbType.Int ).Value = PasswordFormat;
-            cmd.Parameters.Add( "@CreateDate", SqlDbType.DateTime ).Value = DateTime.Now;
-            cmd.Parameters.Add( "@CurrentTimeUTC", SqlDbType.DateTime ).Value = DateTime.Now;
+            cmd.Parameters.Add("@ApplicationName", SqlDbType.NVarChar, 256).Value = portalAlias;
+            cmd.Parameters.Add("@Username", SqlDbType.NVarChar, 255).Value = username;
+            cmd.Parameters.Add("@Password", SqlDbType.NVarChar, 255).Value = encodedPassword;
+            cmd.Parameters.Add("@PasswordSalt", SqlDbType.NVarChar, 255).Value = passwordSalt;
+            cmd.Parameters.Add("@Email", SqlDbType.NVarChar, 256).Value = email;
+            cmd.Parameters.Add("@PasswordQuestion", SqlDbType.NVarChar, 255).Value = passwordQuestion;
+            cmd.Parameters.Add("@PasswordAnswer", SqlDbType.NVarChar, 255).Value = passwordAnswer ?? null;
+            cmd.Parameters.Add("@IsApproved", SqlDbType.Bit).Value = isApproved;
+            cmd.Parameters.Add("@UniqueEmail", SqlDbType.Int).Value = RequiresUniqueEmail;
+            cmd.Parameters.Add("@PasswordFormat", SqlDbType.Int).Value = PasswordFormat;
+            cmd.Parameters.Add("@CreateDate", SqlDbType.DateTime).Value = DateTime.Now;
+            cmd.Parameters.Add("@CurrentTimeUTC", SqlDbType.DateTime).Value = DateTime.Now;
 
-            SqlParameter newUserIdParam = cmd.Parameters.Add( "@UserId", SqlDbType.UniqueIdentifier );
+            SqlParameter newUserIdParam = cmd.Parameters.Add("@UserId", SqlDbType.UniqueIdentifier);
             newUserIdParam.Direction = ParameterDirection.Output;
 
-            SqlParameter returnCode = cmd.Parameters.Add( "@ReturnCode", SqlDbType.Int );
+            SqlParameter returnCode = cmd.Parameters.Add("@ReturnCode", SqlDbType.Int);
             returnCode.Direction = ParameterDirection.ReturnValue;
 
-            try {
+            try
+            {
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
 
-                status = ( MembershipCreateStatus )Enum.Parse( typeof( MembershipCreateStatus ), returnCode.Value.ToString() );
+                status = (MembershipCreateStatus) Enum.Parse(typeof (MembershipCreateStatus), 
+                    returnCode.Value.ToString());
 
-                if ( ( ( int )returnCode.Value ) == 0 ) {
+                if (((int) returnCode.Value) == 0)
+                {
                     // everything went OK
 
-                    RainbowUser user = ( RainbowUser )this.GetUser( newUserIdParam.Value, false );
-                    this.SaveUserProfile( user );
+                    RainbowUser user = (RainbowUser) this.GetUser(newUserIdParam.Value, false);
+                    this.SaveUserProfile(user);
                     return user;
                 }
-                else {
+                else
+                {
                     return null;
                 }
             }
-            catch ( SqlException e ) {
-                if ( WriteExceptionsToEventLog ) {
-                    WriteToEventLog( e, "CreateUser" );
+            catch (SqlException e)
+            {
+                if (WriteExceptionsToEventLog)
+                {
+                    WriteToEventLog(e, "CreateUser");
                 }
-
                 status = MembershipCreateStatus.ProviderError;
                 return null;
             }
-            finally {
+            finally
+            {
                 cmd.Connection.Close();
             }
         }

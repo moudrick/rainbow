@@ -14,23 +14,23 @@ namespace Rainbow.Framework.Settings
     /// </summary>
     public sealed class Portal
     {
-        private static Context.Reader context = new Context.Reader(new WebContextReader());
+        static readonly Context.Reader context = new Context.Reader(new WebContextReader());
 
-        /// <summary>
-        /// Sets reader for context in this class
-        /// </summary>
-        /// <param name="reader">an instance of a Concrete Strategy Reader</param>
-        public static void SetReader(Context.Reader reader)
-        {
-            context = reader;
-        }
+//        /// <summary>
+//        /// Sets reader for context in this class
+//        /// </summary>
+//        /// <param name="reader">an instance of a Concrete Strategy Reader</param>
+//        public static void SetReader(Context.Reader reader)
+//        {
+//            context = reader;
+//        }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        private Portal()
-        {
-        }
+//        /// <summary>
+//        /// Constructor
+//        /// </summary>
+//        private Portal()
+//        {
+//        }
 
         /// <summary>
         /// Gets the code version.
@@ -114,7 +114,7 @@ namespace Rainbow.Framework.Settings
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="alias">The alias.</param>
-        private static void FindAlias(HttpRequest request, ref string alias)
+        static void FindAlias(HttpRequest request, ref string alias)
         {
             if (FindAliasFromQueryString(request.QueryString, ref alias))
             {
@@ -138,7 +138,7 @@ namespace Rainbow.Framework.Settings
         /// <param name="cookies">The cookies.</param>
         /// <param name="alias">The alias.</param>
         /// <returns></returns>
-        public static bool FindAliasFromCookies(HttpCookieCollection cookies, ref string alias)
+        static bool FindAliasFromCookies(HttpCookieCollection cookies, ref string alias)
         {
             if (cookies["PortalAlias"] != null)
             {
@@ -164,7 +164,7 @@ namespace Rainbow.Framework.Settings
         /// <param name="queryString">The query string.</param>
         /// <param name="alias">The alias.</param>
         /// <returns></returns>
-        public static bool FindAliasFromQueryString(NameValueCollection queryString, ref string alias)
+        static bool FindAliasFromQueryString(NameValueCollection queryString, ref string alias)
         {
             if (queryString != null)
             {
@@ -200,7 +200,7 @@ namespace Rainbow.Framework.Settings
         /// <param name="queryString">The query string.</param>
         /// <param name="pageID">The page ID.</param>
         /// <returns></returns>
-        public static bool FindPageIdFromQueryString(NameValueCollection queryString, ref string pageID)
+        static bool FindPageIdFromQueryString(NameValueCollection queryString, ref string pageID)
         {
             string[] queryStringValues;
             // tabID = 240
@@ -251,14 +251,14 @@ namespace Rainbow.Framework.Settings
         /// <param name="removeTLD">if set to <c>true</c> [remove TLD].</param>
         /// <param name="secondLevelDomains">The second level domains.</param>
         /// <returns></returns>
-        public static bool FindAliasFromUri(Uri requestUri, ref string alias, string defaultPortal, bool removeWWW,
+        static void FindAliasFromUri(Uri requestUri, ref string alias, string defaultPortal, bool removeWWW,
                                             bool removeTLD, string secondLevelDomains)
         {
             // if request is to localhost, return default portal 
             if (requestUri.IsLoopback)
             {
                 alias = defaultPortal;
-                return true;
+                //return true;
             }
             else if (requestUri.HostNameType == UriHostNameType.Dns) // get it from hostname
             {
@@ -293,33 +293,33 @@ namespace Rainbow.Framework.Settings
 
                 // step 4: re-assemble the remaining parts
                 alias = String.Join(".", (string[]) hostPartsList.ToArray(typeof (String)));
-                return true;
+                //return true;
             }
             else
             {
                 alias = defaultPortal;
-                return true;
+                //return true;
             }
         }
 
-        /// <summary>
-        /// Database connection
-        /// </summary>
-        /// <value>The connection string.</value>
-        [Obsolete("Please use Rainbow.Framework.Settings.Config.ConnectionString")]
-        public static string ConnectionString
-        {
-            get { return Config.ConnectionString; }
-        }
-
-        /// <summary>
-        /// SmtpServer
-        /// </summary>
-        /// <value>The SMTP server.</value>
-        [Obsolete("Please use Rainbow.Framework.Settings.Config.SmtpServer")]
-        public static string SmtpServer
-        {
-            get { return Config.SmtpServer; }
-        }
+//        /// <summary>
+//        /// Database connection
+//        /// </summary>
+//        /// <value>The connection string.</value>
+//        [Obsolete("Please use Rainbow.Framework.Settings.Config.ConnectionString")]
+//        public static string ConnectionString
+//        {
+//            get { return Config.ConnectionString; }
+//        }
+//
+//        /// <summary>
+//        /// SmtpServer
+//        /// </summary>
+//        /// <value>The SMTP server.</value>
+//        [Obsolete("Please use Rainbow.Framework.Settings.Config.SmtpServer")]
+//        public static string SmtpServer
+//        {
+//            get { return Config.SmtpServer; }
+//        }
     }
 }

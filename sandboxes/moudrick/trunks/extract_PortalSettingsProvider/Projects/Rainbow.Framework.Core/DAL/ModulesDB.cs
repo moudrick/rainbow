@@ -1173,10 +1173,10 @@ namespace Rainbow.Framework.Site.Data
         /// The UpdateModuleDefinitions method updates
         /// all module definitions in every portal
         /// </summary>
-        /// <param name="GeneralModDefID">The general mod def ID.</param>
+        /// <param name="generalModDefID">The general mod def ID.</param>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="ischecked">if set to <c>true</c> [ischecked].</param>
-        public void UpdateModuleDefinitions(Guid GeneralModDefID, int portalID, bool ischecked)
+        public void UpdateModuleDefinitions(Guid generalModDefID, int portalID, bool ischecked)
         {
             // Create Instance of Connection and Command Object
             using (SqlConnection myConnection = Config.SqlConnectionString)
@@ -1188,7 +1188,7 @@ namespace Rainbow.Framework.Site.Data
                     // Add Parameters to SPROC
                     SqlParameter parameterGeneralModDefID =
                         new SqlParameter(strATGeneralModDefID, SqlDbType.UniqueIdentifier);
-                    parameterGeneralModDefID.Value = GeneralModDefID;
+                    parameterGeneralModDefID.Value = generalModDefID;
                     myCommand.Parameters.Add(parameterGeneralModDefID);
                     // Add Parameters to SPROC
                     SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
@@ -1213,6 +1213,26 @@ namespace Rainbow.Framework.Site.Data
             }
         }
 
+        public void UpdateSolutionModuleDefinition(int solutionID, int portalID)
+        {
+            // get module definitions
+            SqlDataReader myReader;
+            myReader = GetSolutionModuleDefinitions(solutionID);
+
+            // Always call Read before accessing data.
+            try
+            {
+                while (myReader.Read())
+                {
+                    UpdateModuleDefinitions(new Guid(myReader["GeneralModDefID"].ToString()), portalID, true);
+                }
+            }
+            finally
+            {
+                myReader.Close(); //by Manu, fixed bug 807858
+            }
+        }
+ 
         /// <summary>
         /// The UpdateModuleOrder method update Modules Order.<br/>
         /// UpdateModuleOrder Stored Procedure

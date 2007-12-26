@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Data;
@@ -181,7 +182,7 @@ namespace Rainbow.Content.Web.Modules {
                     if ( userName == string.Empty ) {
                         // Add New User to Portal User Database
                         returnID =
-                            accountSystem.AddUser( NameField.Text, CompanyField.Text,
+                            accountSystem.AddUser(PortalProvider.Instance.CurrentPortal.PortalAlias, NameField.Text, CompanyField.Text,
                                                   AddressField.Text, CityField.Text, ZipField.Text, CountryID, StateID,
                                                   PhoneField.Text, FaxField.Text,
                                                   PasswordField.Text, EmailField.Text, SendNewsletter.Checked );

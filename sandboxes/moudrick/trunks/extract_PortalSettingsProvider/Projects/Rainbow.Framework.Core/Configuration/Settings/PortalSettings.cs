@@ -130,7 +130,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
 
             try
             {
-                PortalSettingsProvider.FillPortalSettingsFull(this, pageID, portalAlias);
+                PortalProvider.Instance.FillPortalSettingsFull(this, pageID, portalAlias);
             }
             catch (ProviderException ex)
             {
@@ -196,7 +196,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
         {
             try
             {
-                PortalSettingsProvider.Instance.FillPortalSettingsBrief(this, portalID);
+                PortalProvider.Instance.FillPortalSettingsBrief(this, portalID);
             }
             catch (ProviderException)
             {
@@ -773,7 +773,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
             if (!CurrentCache.Exists(Key.PortalSettings()))
             {
                 // Get Settings for this Portal from the database
-                Hashtable settings = PortalSettingsProvider.Instance.GetPortalCustomSettings(portalID);
+                Hashtable settings = PortalProvider.Instance.GetPortalCustomSettings(portalID);
                 foreach (string key in baseSettings.Keys)
                 {
                     if (settings[key] != null)
@@ -961,7 +961,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
         /// <param name="value">The value.</param>
         public static void UpdatePortalSetting(int portalID, string key, string value)
         {
-            PortalSettingsProvider.Instance.UpdatePortalSetting(portalID, key, value);
+            PortalProvider.Instance.UpdatePortalSetting(portalID, key, value);
             CurrentCache.Remove(Key.PortalSettings());
         }
         #endregion
@@ -981,7 +981,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
             }
             else
             {
-                langlist = PortalSettingsProvider.Instance.GetLanguageList(portalAlias);
+                langlist = PortalProvider.Instance.GetLanguageList(portalAlias);
                 if (langlist.Length == 0)
                 {
                     //jes1111 - langlist = ConfigurationSettings.AppSettings["DefaultLanguage"]; //default

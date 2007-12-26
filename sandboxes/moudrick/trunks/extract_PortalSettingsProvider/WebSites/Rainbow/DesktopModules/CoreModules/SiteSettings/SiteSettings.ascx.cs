@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Site.Data;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -49,10 +49,10 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only Update if Input Data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 //Update main settings and Tab info in the database
-                new PortalsDB().UpdatePortalInfo(portalSettings.PortalID, siteName.Text, sitePath.Text, false);
+                PortalProvider.Instance.UpdatePortalInfo(portalSettings.PortalID, siteName.Text, sitePath.Text, false);
 
                 // Update custom settings in the database
                 EditTable.UpdateControls();

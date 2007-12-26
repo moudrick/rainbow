@@ -18,10 +18,7 @@ namespace Rainbow.Framework.Settings
 		// isolates Config reader for testing purposes
 		private static Reader config = new Reader(new ConfigReader());
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		private Config()
+		Config()
 		{
 			//SetReader();
 		}
@@ -51,26 +48,34 @@ namespace Rainbow.Framework.Settings
 			const int minChar = 48;
 			const int maxChar = 57;
 			const int hyphenMinus = 45;
-			int isNegative;
 
-			if (settingValue != null && settingValue.Length != 0)
+		    if (settingValue != null && settingValue.Length != 0)
 			{
 				settingValue = settingValue.Trim();
 
-				if (allowNegative && settingValue[0] == hyphenMinus)
-					isNegative = 1;
-				else
-					isNegative = 0;
+			    int isNegative;
+                if (allowNegative && settingValue[0] == hyphenMinus)
+                {
+                    isNegative = 1;
+                }
+                else
+                {
+                    isNegative = 0;
+                }
 
-				int adjustedLength = settingValue.Length - isNegative;
+			    int adjustedLength = settingValue.Length - isNegative;
 
-				if (adjustedLength == 0 || adjustedLength > 9)
-					return defaultValue;
+                if (adjustedLength == 0 || adjustedLength > 9)
+                {
+                    return defaultValue;
+                }
 
-				for (int i = isNegative; i < settingValue.Length; i++)
+			    for (int i = isNegative; i < settingValue.Length; i++)
 				{
-					if (settingValue[i] > maxChar || settingValue[i] < minChar)
-						return defaultValue; // return defaultValue
+                    if (settingValue[i] > maxChar || settingValue[i] < minChar)
+                    {
+                        return defaultValue;
+                    }
 				}
 				return Int32.Parse(settingValue); // return parsed int
 			}
@@ -259,18 +264,24 @@ namespace Rainbow.Framework.Settings
                 // TODO: ENABLE Multi DB SUpport?
                 
 				string keyConnection = String.Concat(Portal.UniqueID, "_ConnectionString");
-				string siteConnectionString;
 
-				// check cache first
+			    // check cache first
 				if (!CurrentCache.Exists(keyConnection)) // not in cache
 				{
-					if (EnableMultiDbSupport)
-						// look in web.config for key="[uniqueID]_ConnectionString", default to key="ConnectionString"
-						siteConnectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-					else 
-						// look in web.config for key="ConnectionString"
-						siteConnectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-					// add to cache
+				    string siteConnectionString;
+                    if (EnableMultiDbSupport)
+                    {
+                        // look in web.config for key="[uniqueID]_ConnectionString", default to key="ConnectionString"
+                        siteConnectionString =
+                            ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+                    }
+                    else
+                    {
+                        // look in web.config for key="ConnectionString"
+                        siteConnectionString =
+                            ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+                    }
+				    // add to cache
 					CurrentCache.Insert(keyConnection, siteConnectionString);
 					// return the right connection string for this portal
 					return siteConnectionString;

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web.Security;
 using System.Web.Profile;
 
@@ -9,8 +7,8 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
     /// <summary>
     /// Rainbow-specific membership provider API, implements ASP.NET's membership plus extra funcionality Rainbow needs.
     /// </summary>
-    public abstract class RainbowMembershipProvider : MembershipProvider {
-
+    public abstract class RainbowMembershipProvider : MembershipProvider 
+    {
         /// <summary>
         /// Gets the error message.
         /// </summary>
@@ -54,21 +52,21 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
         /// Loads the user profile.
         /// </summary>
         /// <param name="user">The user.</param>
-        protected virtual void LoadUserProfile( RainbowUser user ) {
-            ProfileBase profile = ProfileBase.Create( user.UserName );
+        protected virtual void LoadUserProfile(RainbowUser user)
+        {
+            ProfileBase profile = ProfileBase.Create(user.UserName);
 
-            user.Name = profile.GetPropertyValue( "Name" ).ToString();
-            user.Company = profile.GetPropertyValue( "Company" ).ToString();
-            user.Address = profile.GetPropertyValue( "Address" ).ToString();
-            user.Zip = profile.GetPropertyValue( "Zip" ).ToString();
-            user.City = profile.GetPropertyValue( "City" ).ToString();
-            user.CountryID = profile.GetPropertyValue( "CountryID" ).ToString();
-            user.StateID = Convert.ToInt32( profile.GetPropertyValue( "StateID" ) );
-            user.Fax = profile.GetPropertyValue( "Fax" ).ToString();
-            user.Phone = profile.GetPropertyValue( "Phone" ).ToString();
-            user.SendNewsletter = Convert.ToBoolean( profile.GetPropertyValue( "SendNewsletter" ) );
+            user.Name = profile.GetPropertyValue("Name").ToString();
+            user.Company = profile.GetPropertyValue("Company").ToString();
+            user.Address = profile.GetPropertyValue("Address").ToString();
+            user.Zip = profile.GetPropertyValue("Zip").ToString();
+            user.City = profile.GetPropertyValue("City").ToString();
+            user.CountryID = profile.GetPropertyValue("CountryID").ToString();
+            user.StateID = Convert.ToInt32(profile.GetPropertyValue("StateID"));
+            user.Fax = profile.GetPropertyValue("Fax").ToString();
+            user.Phone = profile.GetPropertyValue("Phone").ToString();
+            user.SendNewsletter = Convert.ToBoolean(profile.GetPropertyValue("SendNewsletter"));
         }
-
 
         /// <summary>
         /// Saves the user profile.
@@ -77,15 +75,15 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
         protected virtual void SaveUserProfile( RainbowUser user ) {
             ProfileBase profile = ProfileBase.Create( user.UserName );
 
-            profile.SetPropertyValue( "Name", user.Name == null ? string.Empty : user.Name );
-            profile.SetPropertyValue( "Company", user.Company == null ? string.Empty : user.Company);
-            profile.SetPropertyValue( "Address", user.Address == null ? string.Empty : user.Address );
-            profile.SetPropertyValue( "Zip", user.Zip == null ? string.Empty : user.Zip );
-            profile.SetPropertyValue( "City", user.City == null ? string.Empty : user.City );
-            profile.SetPropertyValue( "CountryID", user.CountryID == null ? string.Empty : user.CountryID );
+            profile.SetPropertyValue( "Name", user.Name ?? string.Empty );
+            profile.SetPropertyValue( "Company", user.Company ?? string.Empty);
+            profile.SetPropertyValue( "Address", user.Address ?? string.Empty );
+            profile.SetPropertyValue( "Zip", user.Zip ?? string.Empty );
+            profile.SetPropertyValue( "City", user.City ?? string.Empty );
+            profile.SetPropertyValue( "CountryID", user.CountryID ?? string.Empty );
             profile.SetPropertyValue( "StateID", user.StateID );
-            profile.SetPropertyValue( "Fax", user.Fax == null ? string.Empty : user.Fax );
-            profile.SetPropertyValue( "Phone", user.Phone == null ? string.Empty : user.Phone );
+            profile.SetPropertyValue( "Fax", user.Fax ?? string.Empty );
+            profile.SetPropertyValue( "Phone", user.Phone ?? string.Empty );
             profile.SetPropertyValue( "SendNewsletter", user.SendNewsletter );
             profile.Save();
         }
@@ -374,6 +372,5 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
         /// <param name="password">The user's password</param>
         /// <returns></returns>
         public abstract bool ValidateUser( string portalAlias, string username, string password );
-
     }
 }

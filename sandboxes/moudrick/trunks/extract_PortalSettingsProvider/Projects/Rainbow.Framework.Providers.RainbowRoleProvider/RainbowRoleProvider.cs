@@ -18,6 +18,22 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         public const string AuthenticatedUsersRoleName = "Authenticated Users";
         public const string UnauthenticatedUsersRoleName = "Unauthenticated Users";
 
+        ///<summary>
+        /// Singleton pattern standard member
+        ///</summary>
+        ///<exception cref="RainbowRoleProviderException"></exception>
+        public static RainbowRoleProvider Instance
+        {
+            get
+            {
+                if (!(Roles.Provider is RainbowRoleProvider))
+                {
+                    throw new RainbowRoleProviderException("The role provider must be a RainbowRoleProvider implementation");
+                }
+                return Roles.Provider as RainbowRoleProvider;
+            }
+        }
+
         /// <summary>
         /// Takes, as input, a list of user names and a list of role ids and adds the specified users to the specified roles.  
         /// </summary>

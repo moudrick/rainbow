@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Configuration.Provider;
 using System.Web.Security;
-
 using Rainbow.Framework.Providers.RainbowRoleProvider;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -10,7 +9,6 @@ using System.Data;
 using System.Diagnostics;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using System.Collections;
-using System.Configuration.Provider;
 
 namespace Rainbow.Framework.Providers.RainbowRoleProvider {
 
@@ -19,8 +17,8 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         protected string pApplicationName;
         protected string connectionString;
 
-        private string eventSource = "RainbowSqlRoleProvider";
-        private string eventLog = "Application";
+        const string eventSource = "RainbowSqlRoleProvider";
+        const string eventLog = "Application";
 
         public override void Initialize( string name, System.Collections.Specialized.NameValueCollection config ) {
 
@@ -221,12 +219,12 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
             string roleIdsStr = string.Empty;
 
             foreach ( Guid userId in userIds ) {
-                userIdsStr += userId.ToString() + ",";
+                userIdsStr += userId + ",";
             }
             userIdsStr = userIdsStr.Substring( 0, userIdsStr.Length - 1 );
 
             foreach ( Guid roleId in roleIds ) {
-                roleIdsStr += roleId.ToString() + ",";
+                roleIdsStr += roleId + ",";
             }
             roleIdsStr = roleIdsStr.Substring( 0, roleIdsStr.Length - 1 );
 
@@ -274,52 +272,57 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
             }
         }
 
-        public override Guid CreateRole( string portalAlias, string roleName ) {
-
-            if ( roleName.IndexOf( ',' ) != -1 ) {
-                throw new RainbowRoleProviderException( "Role name can't contain commas" );
+        /// <summary>
+        /// Takes, as input, a role name and creates the specified role.
+        /// </summary>
+        /// <param name="portalAlias">Rainbow's portal alias</param>
+        /// <param name="roleName">A role name</param>
+        /// <returns>The new role ID</returns>
+        /// <exception cref="ProviderException">CreateRole throws a ProviderException if the role already exists, the role 
+        /// name contains a comma, or the role name exceeds the maximum length allowed by the data source.</exception>
+        public override Guid CreateRole(string portalAlias, string roleName)
+        {
+            if (roleName.IndexOf(',') != -1)
+            {
+                throw new RainbowRoleProviderException("Role name can't contain commas");
             }
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = "aspnet_Roles_CreateRole";
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Connection = new SqlConnection( connectionString );
+            cmd.Connection = new SqlConnection(connectionString);
 
-            cmd.Parameters.Add( "@ApplicationName", SqlDbType.NVarChar, 256 ).Value = portalAlias;
-            cmd.Parameters.Add( "@RoleName", SqlDbType.NVarChar, 256 ).Value = roleName;
+            cmd.Parameters.Add("@ApplicationName", SqlDbType.NVarChar, 256).Value = portalAlias;
+            cmd.Parameters.Add("@RoleName", SqlDbType.NVarChar, 256).Value = roleName;
 
-            SqlParameter newRoleIdParam = cmd.Parameters.Add( "@NewRoleId", SqlDbType.UniqueIdentifier );
+            SqlParameter newRoleIdParam = cmd.Parameters.Add("@NewRoleId", SqlDbType.UniqueIdentifier);
             newRoleIdParam.Direction = ParameterDirection.Output;
 
-            SqlParameter returnCodeParam = cmd.Parameters.Add( "@ReturnCode", SqlDbType.Int );
+            SqlParameter returnCodeParam = cmd.Parameters.Add("@ReturnCode", SqlDbType.Int);
             returnCodeParam.Direction = ParameterDirection.ReturnValue;
 
-            SqlDataReader reader = null;
-            try {
+            try
+            {
                 cmd.Connection.Open();
-
                 cmd.ExecuteNonQuery();
-
-                int returnCode = ( int )returnCodeParam.Value;
-
-                if ( returnCode != 0 ) {
-                    throw new RainbowRoleProviderException( "Error creating role " + roleName );
+                int returnCode = (int) returnCodeParam.Value;
+                if (returnCode != 0)
+                {
+                    throw new RainbowRoleProviderException("Error creating role " + roleName);
                 }
-
-                return ( Guid )newRoleIdParam.Value;
+                return (Guid) newRoleIdParam.Value;
             }
-            catch ( SqlException e ) {
-                if ( WriteExceptionsToEventLog ) {
-                    WriteToEventLog( e, "CreateRole" );
+            catch (SqlException e)
+            {
+                if (WriteExceptionsToEventLog)
+                {
+                    WriteToEventLog(e, "CreateRole");
                 }
-
-                throw new RainbowRoleProviderException( "Error executing aspnet_Roles_CreateRole stored proc", e );
+                throw new RainbowRoleProviderException("Error executing aspnet_Roles_CreateRole stored proc", e);
             }
-            finally {
-                if ( reader != null ) {
-                    reader.Close();
-                }
+            finally
+            {
                 cmd.Connection.Close();
             }
         }

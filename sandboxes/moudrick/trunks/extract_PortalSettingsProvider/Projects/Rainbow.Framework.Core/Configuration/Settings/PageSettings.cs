@@ -300,7 +300,7 @@ namespace Rainbow.Framework.Site.Configuration
 			group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
 			// get the list of available layouts
 			// changed: Jes1111 - 2004-08-06
-			ArrayList layoutsList = new ArrayList(new LayoutManager(PortalSettings.PortalPath).GetLayouts());
+			ArrayList layoutsList = new ArrayList(new LayoutManager(PortalSettings.PortalPath).GetLayouts());   
 			LayoutItem noCustomLayout = new LayoutItem();
 			noCustomLayout.Name = string.Empty;
 			layoutsList.Insert(0, noCustomLayout);

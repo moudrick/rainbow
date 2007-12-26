@@ -1,10 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Reflection;
-using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
@@ -182,8 +179,8 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                             _databaseUpdateRedirect.ToLower(CultureInfo.InvariantCulture)))
                     {
                         // ...and this is not DB Update page
-                        string errorMessage = "Database version: " + Database.DatabaseVersion.ToString() + " Code version: " +
-                                              Portal.CodeVersion.ToString();
+                        string errorMessage = "Database version: " + Database.DatabaseVersion + " Code version: " +
+                                              Portal.CodeVersion;
                         if (versionDelta < 0) // DB Version is behind Code Version
                         {
                             // Jonathan : WHy wouldnt we redirect to update page?
@@ -260,13 +257,17 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                 while (testsCounter <= testsToRun)
                 {
                     //try with current values from arrays
-                    portalSettings = PortalSettingsProvider.InstantiateNewPortalSettings(testPageID[testsCounter - 1], testAlias[testsCounter - 1]);
+                    portalSettings = PortalProvider.Instance.InstantiateNewPortalSettings(testPageID[testsCounter - 1], testAlias[testsCounter - 1]);
 
                     // test returned result
                     if (portalSettings.PortalAlias != null)
+                    {
                         break; // successful hit
+                    }
                     else
+                    {
                         testsCounter++; // increment the test counter and continue
+                    }
                 }
 
                 if (portalSettings.PortalAlias == null)

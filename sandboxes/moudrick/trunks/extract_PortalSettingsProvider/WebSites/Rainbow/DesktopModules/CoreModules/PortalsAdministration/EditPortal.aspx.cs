@@ -4,7 +4,6 @@ using Rainbow.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Settings.Cache;
-using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -15,7 +14,7 @@ namespace Rainbow.AdminAll
     /// </summary>
     public partial class EditPortal : EditItemPage
     {
-        private int currentPortalID = -1;
+        int currentPortalID = -1;
 
         /// <summary>
         /// Handles the Load event of the Page control.
@@ -34,10 +33,12 @@ namespace Rainbow.AdminAll
             {
                 // Remove cache for reload settings
                 if (!Page.IsPostBack)
+                {
                     CurrentCache.Remove(Key.PortalSettings());
+                }
 
                 // Obtain PortalSettings of this Portal
-                PortalSettings currentPortalSettings = PortalSettingsProvider.InstantiateNewPortalSettings(currentPortalID);
+                PortalSettings currentPortalSettings = PortalProvider.Instance.InstantiateNewPortalSettings(currentPortalID);
 
                 // If this is the first visit to the page, populate the site data
                 if (!Page.IsPostBack)
@@ -81,7 +82,7 @@ namespace Rainbow.AdminAll
             if (Page.IsValid)
             {
                 //Update main settings and Tab info in the database
-                new PortalsDB().UpdatePortalInfo(currentPortalID, TitleField.Text, PathField.Text, false);
+                PortalProvider.Instance.UpdatePortalInfo(currentPortalID, TitleField.Text, PathField.Text, false);
 
                 // Update custom settings in the database
                 EditTable.ObjectID = currentPortalID;

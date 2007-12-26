@@ -30,6 +30,7 @@ namespace Rainbow.Framework
         /// </summary>
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
+        /// /// <param name="o">//TODO: get rid of this parameter on the first opportunity</param>
         /// <returns></returns>
         public static string GetString(string key, string defaultValue, object o)
         {
