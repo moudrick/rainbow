@@ -218,7 +218,7 @@ namespace Rainbow.Content.Web.Modules
             SqlDataReader r = null;
             try
             {
-                r = m.GetModulesByName("Tasks", portalSettings.PortalID);
+                r = m.GetModulesByName("Tasks", PortalSettings.PortalID);
                 while (r.Read())
                 {
                     taskModulesListOptions.Add(

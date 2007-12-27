@@ -83,11 +83,11 @@ namespace Rainbow.Content.Web.Modules
                 string auxImage;
                 if ((imageStr != null) && (imageStr.Length > 0))
                 {
-                    auxImage = portalSettings.PortalFullPath + "/" + iconContainer + "/" + imageStr;
+                    auxImage = PortalSettings.PortalFullPath + "/" + iconContainer + "/" + imageStr;
                 }
                 else if ((defaultImage != null) && (defaultImage.Length > 0))
                 {
-                    auxImage = portalSettings.PortalFullPath + "/" + iconContainer + "/" + defaultImage;
+                    auxImage = PortalSettings.PortalFullPath + "/" + iconContainer + "/" + defaultImage;
                 }
                 else
                 {
@@ -268,11 +268,11 @@ namespace Rainbow.Content.Web.Modules
             // end of modification
 
             SettingItem IconPath = null;
-            if (portalSettings != null)
+            if (PortalSettings != null)
             {
                 IconPath =
                     new SettingItem(
-                        new FolderDataType(HttpContext.Current.Server.MapPath(portalSettings.PortalFullPath),
+                        new FolderDataType(HttpContext.Current.Server.MapPath(PortalSettings.PortalFullPath),
                                            "IconContainer"));
                 IconPath.Value = "IconContainer";
                 // Modified by Hongwei Shen

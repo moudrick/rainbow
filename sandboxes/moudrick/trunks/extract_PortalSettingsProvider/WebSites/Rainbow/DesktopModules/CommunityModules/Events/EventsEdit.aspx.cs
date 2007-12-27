@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -191,7 +191,7 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only	Update if the Entered Data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 // Create an instance of the Event DB component
                 EventsDB events = new EventsDB();
@@ -220,14 +220,14 @@ namespace Rainbow.Content.Web.Modules
                 if (ItemID == 0)
                 {
                     // Add the event within	the	Events table
-                    events.AddEvent(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email, TitleField.Text,
+                    events.AddEvent(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email, TitleField.Text,
                                     DateTime.Parse(ExpireField.Text), DescriptionField.Text, WhereWhenField.Text,
                                     IsAllDay, StartDate.Text, StartTime);
                 }
                 else
                 {
                     // Update the event	within the Events table
-                    events.UpdateEvent(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email, TitleField.Text,
+                    events.UpdateEvent(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email, TitleField.Text,
                                        DateTime.Parse(ExpireField.Text), DescriptionField.Text, WhereWhenField.Text,
                                        IsAllDay, StartDate.Text, StartTime);
                 }
@@ -275,8 +275,8 @@ namespace Rainbow.Content.Web.Modules
             RequiredExpireDate.ErrorMessage = General.GetString("EVENTS_VALID_EXPIRE");
             VerifyExpireDate.ErrorMessage = General.GetString("EVENTS_VALID_EXPIRE");
 
-            AllDay.SelectedIndexChanged += new EventHandler(AllDay_SelectedIndexChanged);
-            Load += new EventHandler(Page_Load);
+            AllDay.SelectedIndexChanged += AllDay_SelectedIndexChanged;
+            Load += Page_Load;
 
             base.OnInit(e);
         }

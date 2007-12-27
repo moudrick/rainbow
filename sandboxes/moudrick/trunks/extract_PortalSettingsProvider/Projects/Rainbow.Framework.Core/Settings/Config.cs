@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Net;
 using System.Web;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Settings.Cache;
 
 namespace Rainbow.Framework.Settings
@@ -263,7 +264,7 @@ namespace Rainbow.Framework.Settings
 			{
                 // TODO: ENABLE Multi DB SUpport?
                 
-				string keyConnection = String.Concat(Portal.UniqueID, "_ConnectionString");
+				string keyConnection = String.Concat(RainbowContext.Current.UniqueID, "_ConnectionString");
 
 			    // check cache first
 				if (!CurrentCache.Exists(keyConnection)) // not in cache

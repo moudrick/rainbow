@@ -222,14 +222,14 @@ namespace Rainbow.Content.Web.Modules
                 DataSet monitorData = Utility.GetMonitoringStats(startDate,
                                                                  endDate,
                                                                  cboReportType.SelectedItem.Value,
-                                                                 portalSettings.ActivePage.PageID,
+                                                                 PortalSettings.ActivePage.PageID,
                                                                  CheckBoxIncludeMonitorPage.Checked,
                                                                  CheckBoxIncludeAdminUser.Checked,
                                                                  CheckBoxPageRequests.Checked,
                                                                  CheckBoxLogons.Checked,
                                                                  CheckBoxLogouts.Checked,
                                                                  CheckBoxIncludeMyIPAddress.Checked,
-                                                                 portalSettings.PortalID);
+                                                                 PortalSettings.PortalID);
                 myDataView = monitorData.Tables[0].DefaultView;
                 myDataView.Sort = sortField + " " + sortDirection;
                 myDataGrid.DataSource = myDataView;

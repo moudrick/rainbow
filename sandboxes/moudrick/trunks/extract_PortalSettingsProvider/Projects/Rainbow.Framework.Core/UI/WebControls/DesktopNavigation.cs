@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
 
@@ -24,7 +25,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             EnableViewState = false;
             RepeatDirection = RepeatDirection.Horizontal;
-            Load += new EventHandler(LoadControl);
+            Load += LoadControl;
         }
 
         /// <summary>
@@ -35,7 +36,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private void LoadControl(object sender, EventArgs e)
         {
             if (AutoBind)
+            {
                 DataBind();
+            }
         }
 
         private RepeatDirection rd = RepeatDirection.Horizontal;
@@ -176,7 +179,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     case BindOption.BindOptionCurrentChilds:
                         {
                             int currentTabRoot =
-                                PortalSettings.GetRootPage(portalSettings.ActivePage, portalSettings.DesktopPages).
+                                PortalProvider.Instance.GetRootPage(portalSettings.ActivePage, portalSettings.DesktopPages).
                                     PageID;
                             authorizedTabs =
                                 GetTabs(currentTabRoot, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);

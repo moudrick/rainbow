@@ -18,6 +18,7 @@ using System.Web;
 using System.Web.UI;
 using System.Xml;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
@@ -46,7 +47,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         public SolpartNavigation()
         {
             EnableViewState = false;
-            Load += new EventHandler(LoadControl);
+            Load += LoadControl;
         }
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void LoadControl(object sender, EventArgs e)
         {
-            base.SystemScriptPath =
+            SystemScriptPath =
                 string.Concat(Path.ApplicationRoot, "/aspnet_client/SolpartWebControls_SolpartMenu/1_4_0_0/");
             PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
             string solpart =
@@ -64,7 +65,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             if (ShowIconMenu)
             {
-                base.SystemImagesPath = Path.WebPathCombine(portalSettings.PortalLayoutPath, "menuimages/");
+                SystemImagesPath = Path.WebPathCombine(portalSettings.PortalLayoutPath, "menuimages/");
                 string menuDirectory = HttpContext.Current.Server.MapPath(base.SystemImagesPath);
 
                 // Create directory and copy standard images for solpart
@@ -81,13 +82,15 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         File.Copy(solpartPhysicalDir + "/icon_arrow.gif", menuDirectory + "/icon_arrow.gif");
                 }
             }
-            else base.SystemImagesPath = solpart;
+            else SystemImagesPath = solpart;
 
-            base.MenuCSSPlaceHolderControl = "spMenuStyle";
-            base.SeparateCSS = true;
+            MenuCSSPlaceHolderControl = "spMenuStyle";
+            SeparateCSS = true;
 
             if (AutoBind)
+            {
                 DataBind();
+            }
         }
 
         #region INavigation implementation
@@ -266,7 +269,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private bool isActiveTabIn(int activePageID, PageStripDetails PageStripDetails)
         {
             if (PageStripDetails.PageID == activePageID)
+            {
                 return true;
+            }
             PagesBox childTabs = PageStripDetails.Pages;
             if (childTabs.Count > 0)
             {
@@ -276,10 +281,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     if (PortalSecurity.IsInRoles(mySubTab.AuthorizedRoles))
                     {
                         if (isActiveTabIn(activePageID, mySubTab))
+                        {
                             return true;
+                        }
                     }
                 }
-                childTabs = null;
             }
             return false;
         }
@@ -319,11 +325,10 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         AddGraphMenuItem(PageStripDetails.PageID.ToString(), mySubTab.PageID.ToString(),
                                          mySubTab.PageName, mySubTab.PageImage,
                                          HttpUrlBuilder.BuildUrl("~/" + HttpUrlBuilder.DefaultPage, activePageID,
-                                                                 "ItemID=" + mySubTab.PageID.ToString()), false);
+                                                                 "ItemID=" + mySubTab.PageID), false);
                         ShopMenu(mySubTab, activePageID);
                     }
                 }
-                childTabs = null;
             }
         }
 
@@ -380,7 +385,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         }
                     }
                 }
-                childTabs = null;
             }
         }
 
@@ -423,11 +427,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
             XmlNode padre = null;
 
             // gman3001: Line added 2004/10/06
-            XmlNode newNode = null;
+            XmlNode newNode;
 
             if (parent != null)
             {
-                padre = base.FindMenuItem(parent).Node;
+                padre = FindMenuItem(parent).Node;
             }
 
             if (ShowIconMenu)
@@ -436,7 +440,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 {
                     // gman3001: Line modified 2004/10/06, added assignment to newNode
                     newNode =
-                        base.AddMenuItem(padre, tab, tabTranslation, url, iconfile, false, string.Empty, string.Empty);
+                        AddMenuItem(padre, tab, tabTranslation, url, iconfile, false, string.Empty, string.Empty);
                 }
                 else
                 {
@@ -444,14 +448,14 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     {
                         // gman3001: Line modified 2004/10/06, added assignment to newNode
                         newNode =
-                            base.AddMenuItem(padre, tab, tabTranslation, url, "menu.gif", false, string.Empty,
+                            AddMenuItem(padre, tab, tabTranslation, url, "menu.gif", false, string.Empty,
                                              string.Empty);
                     }
                     else
                     {
                         // gman3001: Line modified 2004/10/06, added assignment to newNode
                         newNode =
-                            base.AddMenuItem(padre, tab, tabTranslation, url, string.Empty, false, string.Empty,
+                            AddMenuItem(padre, tab, tabTranslation, url, string.Empty, false, string.Empty,
                                              string.Empty);
                     }
                 }
@@ -460,7 +464,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 // gman3001: Line modified 2004/10/06, added assignment to newNode
                 newNode =
-                    base.AddMenuItem(padre, tab, tabTranslation, url, string.Empty, false, string.Empty, string.Empty);
+                    AddMenuItem(padre, tab, tabTranslation, url, string.Empty, false, string.Empty, string.Empty);
             }
 
             // gman3001: Added 2004/10/06
@@ -523,7 +527,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     case BindOption.BindOptionCurrentChilds:
                         {
                             int currentTabRoot =
-                                PortalSettings.GetRootPage(portalSettings.ActivePage, portalSettings.DesktopPages).
+                                PortalProvider.Instance.GetRootPage(portalSettings.ActivePage, portalSettings.DesktopPages).
                                     PageID;
                             authorizedTabs =
                                 GetTabs(currentTabRoot, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);

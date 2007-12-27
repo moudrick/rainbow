@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -110,23 +110,31 @@ namespace Rainbow.Content.Web.Modules
 
             // Don't Allow empty data
             if (Question.Text == string.Empty || DesktopText.Text == string.Empty)
+            {
                 return;
+            }
 
             //  Update only if entered data is valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 FAQsDB questions = new FAQsDB();
 
                 if (itemID == -1)
                 {
                     //  Add the question within the questions table
-                    questions.AddFAQ(ModuleID, itemID, PortalSettings.CurrentUser.Identity.Email, Question.Text,
+                    questions.AddFAQ(ModuleID,
+                                     itemID,
+                                     RainbowContext.CurrentUser.Identity.Email,
+                                     Question.Text,
                                      DesktopText.Text);
                 }
                 else
                 {
                     //  Update the question within the questions table
-                    questions.UpdateFAQ(ModuleID, itemID, PortalSettings.CurrentUser.Identity.Email, Question.Text,
+                    questions.UpdateFAQ(ModuleID,
+                                        itemID,
+                                        RainbowContext.CurrentUser.Identity.Email,
+                                        Question.Text,
                                         DesktopText.Text);
                 }
 

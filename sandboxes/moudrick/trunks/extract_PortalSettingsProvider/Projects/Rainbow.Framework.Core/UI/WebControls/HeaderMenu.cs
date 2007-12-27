@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
@@ -302,12 +303,12 @@ namespace Rainbow.Framework.Web.UI.WebControls
                            General.GetString("Rainbow", "HOME") + "</a>";
 
                 // If user logged in, customize welcome message
-                if (HttpContext.Current.Request.IsAuthenticated == true)
+                if (HttpContext.Current.Request.IsAuthenticated)
                 {
                     if (ShowWelcome)
                     {
                         list.Add(General.GetString("HEADER_WELCOME", "Welcome", this) + "&#160;" +
-                                 PortalSettings.CurrentUser.Identity.Name + "!");
+                                 RainbowContext.CurrentUser.Identity.Name + "!");
                     }
 
                     if (ShowHome)
@@ -356,7 +357,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         // added mID by Mario Endara <mario@softworks.com.uy> to support security check (2004/11/09)
                         menuLink = menuLink + " href='" +
                                    HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Pages/PageLayout.aspx?PageID=") +
-                                   portalSettings.ActivePage.PageID + "&amp;mID=" + TabModuleID.ToString() +
+                                   portalSettings.ActivePage.PageID + "&amp;mID=" + TabModuleID +
                                    "&amp;Alias=" + portalSettings.PortalAlias + "&amp;lang=" + portalSettings.PortalUILanguage +
                                    "&amp;returntabid=" + portalSettings.ActivePage.PageID + "'>" +
                                    General.GetString("HEADER_MANAGE_TAB", "Edit This Page", null) + "</a>";
@@ -375,7 +376,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                             menuLink = menuLink + " href='" +
                                        HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
-                                                                                                          PortalSettings
+                                                                                                          RainbowContext
                                                                                                               .CurrentUser
                                                                                                               .Identity.
                                                                                                               Email ) +
@@ -391,7 +392,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                             menuLink = menuLink + " href='" +
                                        HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
-                                                                                                          PortalSettings
+                                                                                                          RainbowContext
                                                                                                               .
                                                                                                               CurrentUser
                                                                                                               .Identity.

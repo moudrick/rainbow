@@ -58,7 +58,7 @@ namespace Rainbow.Admin
             if ( !( ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) ) {
                 string[] s = { "CONFIRM_DELETE" };
                 ClientScript.RegisterClientScriptBlock( this.GetType(), "confirmDelete",
-                                                       PortalSettings.GetStringResource(
+                                                       General.GetStringResource(
                                                            "CONFIRM_DELETE_SCRIPT", s ) );
             }
 

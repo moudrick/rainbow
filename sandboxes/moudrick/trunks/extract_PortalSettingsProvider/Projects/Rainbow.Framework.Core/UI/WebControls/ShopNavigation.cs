@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using DUEMETRI.UI.WebControls.HWMenu;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
@@ -40,7 +41,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private void LoadControl(object sender, EventArgs e)
         {
             if (AutoBind)
+            {
                 DataBind();
+            }
         }
 
         #region INavigation implementation
@@ -130,7 +133,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 PageStripDetails tab = (PageStripDetails) portalSettings.DesktopPages[i];
 
                 if (PortalSecurity.IsInRoles(tab.AuthorizedRoles))
+                {
                     authorizedTabs.Add(tab);
+                }
 
                 addedTabs++;
             }
@@ -152,7 +157,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 if (authorizedTabs.Count >= 0)
                 {
-                    PageStripDetails myTab = PortalSettings.GetRootPage(portalSettings.ActivePage, authorizedTabs);
+                    PageStripDetails myTab = PortalProvider.Instance.GetRootPage(portalSettings.ActivePage, authorizedTabs);
 
                     if (myTab.Pages.Count > 0)
                     {

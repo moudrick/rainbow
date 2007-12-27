@@ -5,7 +5,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Web.UI;
@@ -88,7 +88,7 @@ namespace Rainbow.Content.Web.Modules
                 {
                     //New article - set defaults
                     StartField.Text = DateTime.Now.ToString();
-                    CreatedBy.Text = PortalSettings.CurrentUser.Identity.Email;
+                    CreatedBy.Text = RainbowContext.CurrentUser.Identity.Email;
                     CreatedDate.Text = DateTime.Now.ToString();
                 }
             }
@@ -117,7 +117,7 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only Update if Input Data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 BlogDB blogData = new BlogDB();
                 // Provide Excerpt if not present
@@ -127,13 +127,13 @@ namespace Rainbow.Content.Web.Modules
                 }
                 if (ItemID == 0)
                 {
-                    blogData.AddBlog(ModuleID, PortalSettings.CurrentUser.Identity.Email,
+                    blogData.AddBlog(ModuleID, RainbowContext.CurrentUser.Identity.Email,
                                      ((HTMLText) TitleField.Text).InnerText, ((HTMLText) ExcerptField.Text).InnerText,
                                      Server.HtmlEncode(DesktopText.Text), DateTime.Parse(StartField.Text), true);
                 }
                 else
                 {
-                    blogData.UpdateBlog(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email,
+                    blogData.UpdateBlog(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email,
                                         ((HTMLText) TitleField.Text).InnerText, ((HTMLText) ExcerptField.Text).InnerText,
                                         Server.HtmlEncode(DesktopText.Text), DateTime.Parse(StartField.Text), true);
                 }

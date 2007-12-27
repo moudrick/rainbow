@@ -4,11 +4,10 @@ using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -153,7 +152,7 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only Update if the Entered Data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 // Create an instance of the Task DB component
                 TasksDB tasks = new TasksDB();
@@ -179,7 +178,7 @@ namespace Rainbow.Content.Web.Modules
                             Hashtable linkedModuleSettings = ModuleSettingsProvider.GetModuleSettings(linkedModuleID, this);
                             string linkedModuleAssignee = linkedModuleSettings["TASKS_DEFAULT_ASSIGNEE"].ToString();
 
-                            tasks.AddTask(linkedModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email,
+                            tasks.AddTask(linkedModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email,
                                           TitleField.Text, DateTime.Parse(StartField.Text), DesktopText.Text,
                                           StatusField.SelectedItem.Value, PriorityField.SelectedItem.Value,
                                           linkedModuleAssignee, DateTime.Parse(DueField.Text),
@@ -188,7 +187,7 @@ namespace Rainbow.Content.Web.Modules
                     }
 
                     //Add to current
-                    tasks.AddTask(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email, TitleField.Text,
+                    tasks.AddTask(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email, TitleField.Text,
                                   DateTime.Parse(StartField.Text), DesktopText.Text, StatusField.SelectedItem.Value,
                                   PriorityField.SelectedItem.Value, AssignedField.Text, DateTime.Parse(DueField.Text),
                                   Int16.Parse(PercentCompleteField.Text));
@@ -196,7 +195,7 @@ namespace Rainbow.Content.Web.Modules
                 else
                 {
                     // Update the task within the Tasks table
-                    tasks.UpdateTask(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email, TitleField.Text,
+                    tasks.UpdateTask(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email, TitleField.Text,
                                      DateTime.Parse(StartField.Text), DesktopText.Text, StatusField.SelectedItem.Value,
                                      PriorityField.SelectedItem.Value, AssignedField.Text, DateTime.Parse(DueField.Text),
                                      Int16.Parse(PercentCompleteField.Text));

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Web.UI;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
@@ -64,15 +64,17 @@ namespace Rainbow.Content.Web.Modules
             EditTable.DataSource =
                 new SortedList(
                     ModuleSettingsProvider.GetModuleUserSettings(this.ModuleID,
-                                                               (Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey, this));
+                                                               (Guid)RainbowContext.CurrentUser.Identity.ProviderUserKey, this));
             EditTable.DataBind();
         }
 
-        private void saveAndCloseButton_Click(object sender, EventArgs e)
+        void saveAndCloseButton_Click(object sender, EventArgs e)
         {
             OnUpdate(e);
             if (Page.IsValid)
+            {
                 Response.Redirect(Rainbow.Framework.HttpUrlBuilder.BuildUrl("~/Default.aspx", PageID));
+            }
         }
 
         /// <summary>
@@ -98,7 +100,7 @@ namespace Rainbow.Content.Web.Modules
         private void EditTable_UpdateControl(object sender,
                                              Rainbow.Framework.Web.UI.WebControls.SettingsTableEventArgs e)
         {
-            ModuleSettingsProvider.UpdateCustomModuleSetting(ModuleID, (Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey,
+            ModuleSettingsProvider.UpdateCustomModuleSetting(ModuleID, (Guid)RainbowContext.CurrentUser.Identity.ProviderUserKey,
                                                            e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
     }

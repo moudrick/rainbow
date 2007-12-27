@@ -1,17 +1,15 @@
 using System;
 using System.Data.SqlClient;
+using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Content.Web.Modules
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public partial class AmazonBooksEdit : EditItemPage
     {
-        private void Page_Load(Object sender, EventArgs e)
+        void Page_Load(Object sender, EventArgs e)
         {
             if (Page.IsPostBack == false)
             {
@@ -24,9 +22,13 @@ namespace Rainbow.Content.Web.Modules
                     while (dr.Read())
                     {
                         if (dr["ISBN"] != DBNull.Value)
+                        {
                             ISBNField.Text = dr["ISBN"].ToString();
+                        }
                         if (dr["Caption"] != DBNull.Value)
+                        {
                             CaptionTextBox.Text = dr["Caption"].ToString();
+                        }
                         CreatedBy.Text = dr["CreatedByUser"].ToString();
                         CreatedDate.Text = ((DateTime) dr["CreatedDate"]).ToShortDateString();
                     }
@@ -55,7 +57,7 @@ namespace Rainbow.Content.Web.Modules
             {
                 string[] s = {"CONFIRM_DELETE"};
                 this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "confirmDelete",
-                                                                 PortalSettings.GetStringResource(
+                                                                 General.GetStringResource(
                                                                      "CONFIRM_DELETE_SCRIPT",
                                                                      s));
             }
@@ -91,20 +93,20 @@ namespace Rainbow.Content.Web.Modules
         protected override void OnUpdate(EventArgs e)
         {
             // Only Update if the Entered Data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 Rainbow.Framework.Content.Data.BooksDB bookDB = new Rainbow.Framework.Content.Data.BooksDB();
 
                 if (ItemID == 0)
                 {
                     // Add the book within the books table
-                    bookDB.Addrb_BookList(ModuleID, PortalSettings.CurrentUser.Identity.Email, ISBNField.Text,
+                    bookDB.Addrb_BookList(ModuleID, RainbowContext.CurrentUser.Identity.Email, ISBNField.Text,
                                           CaptionTextBox.Text);
                 }
                 else
                 {
                     // Update the book
-                    bookDB.Updaterb_BookList(ItemID, PortalSettings.CurrentUser.Identity.Email, ISBNField.Text,
+                    bookDB.Updaterb_BookList(ItemID, RainbowContext.CurrentUser.Identity.Email, ISBNField.Text,
                                              CaptionTextBox.Text);
                 }
 
@@ -128,17 +130,17 @@ namespace Rainbow.Content.Web.Modules
             this.RedirectBackToReferringPage();
         }
 
-        private void UpdateButton_Click(object sender, EventArgs e)
+        void UpdateButton_Click(object sender, EventArgs e)
         {
             this.OnUpdate(e);
         }
 
-        private void CancelButton_Click(object sender, EventArgs e)
+        void CancelButton_Click(object sender, EventArgs e)
         {
             this.OnCancel(e);
         }
 
-        private void DeleteButton_Click(object sender, EventArgs e)
+        void DeleteButton_Click(object sender, EventArgs e)
         {
             this.OnDelete(e);
         }

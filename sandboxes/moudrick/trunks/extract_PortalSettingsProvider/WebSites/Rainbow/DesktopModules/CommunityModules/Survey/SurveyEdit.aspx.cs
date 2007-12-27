@@ -4,8 +4,7 @@ using System.Data.SqlClient;
 using System.Web.UI;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using ImageButton=System.Web.UI.WebControls.ImageButton;
@@ -49,7 +48,7 @@ namespace Rainbow.Content.Web.Modules
             //*********************************************************
             SurveyDB SurveyCheck = new SurveyDB();
             // puts the desc of Survey in the title
-            lblDescSurvey.Text = SurveyCheck.ExistAddSurvey(ModuleID, PortalSettings.CurrentUser.Identity.Email);
+            lblDescSurvey.Text = SurveyCheck.ExistAddSurvey(ModuleID, RainbowContext.CurrentUser.Identity.Email);
 
             //TBD: Create a sproc that gets these fields:
             //CreatedBy.Text = (string) dr["CreatedByUser"];
@@ -57,24 +56,24 @@ namespace Rainbow.Content.Web.Modules
 
 
             // Fill the Question Listbox
-            SurveyDB QuestionList = new SurveyDB();
-            SqlDataReader QList = QuestionList.GetQuestionList(ModuleID);
+            SurveyDB questionList = new SurveyDB();
+            SqlDataReader qList = questionList.GetQuestionList(ModuleID);
 
             try
             {
-                while (QList.Read())
+                while (qList.Read())
                 {
                     QuestionItem t = new QuestionItem();
-                    t.QuestionName = QList["Question"].ToString();
-                    t.QuestionID = (int) QList["QuestionID"];
-                    t.QuestionOrder = (int) QList["ViewOrder"];
-                    t.TypeOption = QList["TypeOption"].ToString();
+                    t.QuestionName = qList["Question"].ToString();
+                    t.QuestionID = (int) qList["QuestionID"];
+                    t.QuestionOrder = (int) qList["ViewOrder"];
+                    t.TypeOption = qList["TypeOption"].ToString();
                     portalQuestion.Add(t);
                 }
             }
             finally
             {
-                QList.Close(); //by Manu, fixed bug 807858
+                qList.Close(); //by Manu, fixed bug 807858
             }
 
             // if ( this is the first visit to the page, bind the tab data to the page listbox
@@ -317,7 +316,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         protected void btnBackSurvey_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/" + Portal.PageID.ToString() + ".aspx");
+            Response.Redirect("~/" + RainbowContext.Current.PageID + ".aspx");
         }
 
         #region Web Form Designer generated code

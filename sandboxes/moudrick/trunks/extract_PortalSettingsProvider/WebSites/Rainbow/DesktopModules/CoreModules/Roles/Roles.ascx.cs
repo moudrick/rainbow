@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using Rainbow.Framework;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -102,7 +103,7 @@ namespace Rainbow.Content.Web.Modules {
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.Web.UI.WebControls.DataListCommandEventArgs"/> instance containing the event data.</param>
-        protected void rolesList_ItemCommand( object source, DataListCommandEventArgs e ) {
+        protected void rolesList_ItemCommand( object sender, DataListCommandEventArgs e ) {
             //http://sourceforge.net/tracker/index.php?func=detail&aid=828580&group_id=66837&atid=515929
             UsersDB users = new UsersDB();
 
@@ -110,7 +111,7 @@ namespace Rainbow.Content.Web.Modules {
             RainbowRole selectedRole = ( RainbowRole )e.Item.DataItem;
 
             bool enable = true; // enable add - bja
-
+            string portalAlias = PortalProvider.Instance.CurrentPortal.PortalAlias;
             if ( e.CommandName == "edit" ) {
                 // Set editable list item index if "edit" button clicked next to the item
                 rolesList.EditItemIndex = e.Item.ItemIndex;
@@ -125,7 +126,7 @@ namespace Rainbow.Content.Web.Modules {
                 string _roleName = ( ( TextBox )e.Item.FindControl( "roleName" ) ).Text;
 
                 // update database
-                users.UpdateRole( selectedRole.Id, _roleName, portalSettings.PortalAlias );
+                users.UpdateRole( selectedRole.Id, _roleName, PortalSettings.PortalAlias );
 
                 // Disable editable list item access
                 rolesList.EditItemIndex = -1;
@@ -137,7 +138,8 @@ namespace Rainbow.Content.Web.Modules {
                 // john.mandia@whitelightsolutions.com: 30th May 2004: Added Try And Catch To Delete Role
                 // update database
                 try {
-                    users.DeleteRole( new Guid( e.CommandArgument.ToString() ) );
+                    Guid roleID = new Guid( e.CommandArgument.ToString() );
+                    RainbowRoleProvider.Instance.DeleteRole(portalAlias, roleID, false);
                 }
                 catch {
                     labelError.Visible = true;
@@ -176,7 +178,7 @@ namespace Rainbow.Content.Web.Modules {
             // Get the portal's roles from the database
             UsersDB users = new UsersDB();
 
-            IList<RainbowRole> roles = users.GetPortalRoles( portalSettings.PortalAlias );
+            IList<RainbowRole> roles = users.GetPortalRoles( PortalSettings.PortalAlias );
 
             // remove "All Users", "Authenticated Users" and "Unauthenticated Users" pseudo-roles
             RainbowRole pseudoRole = new RainbowRole( RainbowRoleProvider.AllUsersGuid, RainbowRoleProvider.AllUsersRoleName );

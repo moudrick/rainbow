@@ -1,7 +1,6 @@
 using System.Collections;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
-using Rainbow.Framework.Site.Configuration;
 using System;
 
 namespace Rainbow.Framework.Web.UI
@@ -29,7 +28,7 @@ namespace Rainbow.Framework.Web.UI
                         // Get settings from the database
                         customUserSettings =
                             ModuleSettingsProvider.GetModuleUserSettings(ModuleID,
-                                                                       (Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey,
+                                                                       (Guid)RainbowContext.CurrentUser.Identity.ProviderUserKey,
                                                                        this);
                     else
                         // Or provides an empty hashtable

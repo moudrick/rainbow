@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
@@ -105,7 +105,7 @@ namespace Rainbow
                 try
                 {
                     
-                    Monitoring.LogEntry((Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey, portalSettings.PortalID,
+                    Monitoring.LogEntry((Guid)RainbowContext.CurrentUser.Identity.ProviderUserKey, portalSettings.PortalID,
                                         Convert.ToInt32(PageID), Rainbow.Framework.Monitoring.MonitoringAction.PageRequest, string.Empty);
                 }
                 catch (System.Data.SqlClient.SqlException sqex)

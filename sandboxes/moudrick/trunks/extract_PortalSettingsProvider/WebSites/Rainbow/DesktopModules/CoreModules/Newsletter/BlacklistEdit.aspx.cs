@@ -5,7 +5,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Admin
@@ -92,7 +92,7 @@ namespace Rainbow.Admin
         /// <returns></returns>
         public string GetDate(object data)
         {
-            string date = DataBinder.Eval(data, "Date", "{0:yyyy-MM-dd}").ToString();
+            string date = DataBinder.Eval(data, "Date", "{0:yyyy-MM-dd}");
 
             if (date.Length > 0)
                 return date;
@@ -106,14 +106,13 @@ namespace Rainbow.Admin
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         protected override void OnUpdate(EventArgs e)
         {
-            string email;
             Label lblEMail;
             CheckBox chkSelect;
 
             foreach (RepeaterItem SelectItem in repListItem.Items)
             {
                 lblEMail = (Label) SelectItem.FindControl("lblEMail");
-                email = lblEMail.Text;
+                string email = lblEMail.Text;
                 chkSelect = (CheckBox) SelectItem.FindControl("chkSelect");
 
                 if (chkSelect.Checked)
@@ -121,12 +120,15 @@ namespace Rainbow.Admin
                     //BlacklistDB.AddToBlackList(this.portalSettings.PortalID, email, "Blacklisted by " +  Context.User.Identity.Name);
                     // Added EsperantusKeys for Localization 
                     // Mario Endara mario@softworks.com.uy june-1-2004 
-                    BlacklistDB.AddToBlackList(portalSettings.PortalID, email,
+                    BlacklistDB.AddToBlackList(portalSettings.PortalID,
+                                               email,
                                                General.GetString("NEWSLETTER_BLACKLISTED") +
-                                               PortalSettings.CurrentUser.Identity.Email);
+                                               RainbowContext.CurrentUser.Identity.Email);
                 }
                 else
+                {
                     BlacklistDB.DeleteFromBlackList(portalSettings.PortalID, email);
+                }
             }
 
             // Redirect back to the portal home page

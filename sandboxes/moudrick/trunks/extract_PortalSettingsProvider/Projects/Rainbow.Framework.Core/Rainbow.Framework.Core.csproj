@@ -96,7 +96,6 @@
     <Compile Include="Configuration\Settings\Providers\ModuleSettingsProvider.cs" />
     <Compile Include="Configuration\Settings\Providers\PageSettingsProvider.cs" />
     <Compile Include="Configuration\Settings\Providers\PortalProvider.cs" />
-    <Compile Include="DAL\Database.cs" />
     <Compile Include="DAL\DatabaseUpdater.cs" />
     <Compile Include="DAL\DBHelper.cs" />
     <Compile Include="DAL\ModulesDB.cs" />
@@ -164,6 +163,7 @@
     <Compile Include="Provider\NotSupportedByProviderException.cs" />
     <Compile Include="Provider\Web\SqlUrlBuilderProvider.cs" />
     <Compile Include="Provider\Web\UrlBuilderHelper.cs" />
+    <Compile Include="RainbowContext.cs" />
     <Compile Include="Scheduler\CachedScheduler.cs" />
     <Compile Include="Scheduler\ISchedulable.cs" />
     <Compile Include="Scheduler\IScheduler.cs" />
@@ -189,7 +189,6 @@
     <Compile Include="Settings\Isolators\ConfigReader.cs" />
     <Compile Include="Settings\Isolators\ContextReader.cs" />
     <Compile Include="Settings\Path.cs" />
-    <Compile Include="Settings\Portal.cs" />
     <Compile Include="Provider\UrlBuilderProvider.cs" />
     <Compile Include="Setup\IInstaller.cs" />
     <Compile Include="UI\DataTypes\ApplicationUrlDataType.cs" />
@@ -284,6 +283,10 @@
     <None Include="Settings\Rainbow.Settings.cd" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Providers\Rainbow.Framework.Providers\Rainbow.Framework.Providers.csproj">
+      <Project>{4F237CAF-5CE8-451D-9FAC-9CEBD5561643}</Project>
+      <Name>Rainbow.Framework.Providers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DUEMETRI.UI.WebControls.DesktopPanes\DesktopPanes\DUEMETRI.UI.WebControls.Panes.csproj">
       <Project>{BA2ED003-058E-418B-B0DD-FB7D4D4B2329}</Project>
       <Name>DUEMETRI.UI.WebControls.Panes</Name>

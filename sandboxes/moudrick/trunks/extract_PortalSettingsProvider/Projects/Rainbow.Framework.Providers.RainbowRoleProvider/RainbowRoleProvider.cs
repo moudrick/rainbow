@@ -18,8 +18,8 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         public const string AuthenticatedUsersRoleName = "Authenticated Users";
         public const string UnauthenticatedUsersRoleName = "Unauthenticated Users";
 
-        ///<summary>
-        /// Singleton pattern standard member
+        /// Gets default configured role provider.
+        /// Singleton pattern standard member.
         ///</summary>
         ///<exception cref="RainbowRoleProviderException"></exception>
         public static RainbowRoleProvider Instance

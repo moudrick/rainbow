@@ -5,7 +5,7 @@ using System.Collections;
 using System.Data.SqlClient;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 // End Change Geert.Audenaert@Syntegra.Com
@@ -105,7 +105,7 @@ namespace Rainbow.Content.Web.Modules
         {
             base.OnUpdate(e);
 
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 // Create an instance of the Link DB component
                 LinkDB links = new LinkDB();
@@ -113,14 +113,14 @@ namespace Rainbow.Content.Web.Modules
                 if (ItemID == 0)
                 {
                     // Add the link within the Links table
-                    links.AddLink(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email, TitleField.Text,
+                    links.AddLink(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email, TitleField.Text,
                                   UrlField.Text, MobileUrlField.Text, Int32.Parse(ViewOrderField.Text),
                                   DescriptionField.Text, TargetField.SelectedItem.Text);
                 }
                 else
                 {
                     // Update the link within the Links table
-                    links.UpdateLink(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email, TitleField.Text,
+                    links.UpdateLink(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email, TitleField.Text,
                                      UrlField.Text, MobileUrlField.Text, Int32.Parse(ViewOrderField.Text),
                                      DescriptionField.Text, TargetField.SelectedItem.Text);
                 }

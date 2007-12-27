@@ -69,7 +69,7 @@ namespace Rainbow.Content.Web.Modules
 
             int anonUserCount, regUsersOnlineCount;
             string regUsersString;
-            Utility.FillUsersOnlineCache(portalSettings.PortalID,
+            Utility.FillUsersOnlineCache(PortalSettings.PortalID,
                                          minutesToCheckForUsers,
                                          cacheTime,
                                          out anonUserCount,

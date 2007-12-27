@@ -234,7 +234,7 @@ namespace Rainbow.Framework.Localization
                 //LanguageSwitcher1.ChangeLanguageUrl = Page.Request.RawUrl;
 
                 if (bool.Parse(Settings["LANGUAGESWITCHER_CUSTOMFLAGS"].ToString()))
-                    LanguageSwitcher1.ImagePath = portalSettings.PortalFullPath + "/images/flags/";
+                    LanguageSwitcher1.ImagePath = PortalSettings.PortalFullPath + "/images/flags/";
                 else
                     LanguageSwitcher1.ImagePath = Path.WebPathCombine(Path.ApplicationRoot, "aspnet_client/flags/");
             }

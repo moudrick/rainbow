@@ -1,11 +1,6 @@
 using System;
-using System.Collections;
-using System.Security.Principal;
-using System.Web;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
@@ -19,16 +14,13 @@ namespace Rainbow.Admin
 {
     public partial class AddPage : EditItemPage
     {
-
-        #region Page_Load
-
         /// <summary>
         /// The Page_Load server event handler on this page is used
         /// to populate a tab's layout settings on the page
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
             // If first visit to the page, update all entries
             if (!Page.IsPostBack)
@@ -37,11 +29,7 @@ namespace Rainbow.Admin
                 BindData();
             }
         }
-
-        #endregion
-
-        #region Events
-
+ 
         /// <summary>
         /// The cancelButton_Click is used to return to the
         /// previous page if present
@@ -49,7 +37,7 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void cancelButton_Click(object sender, EventArgs e)
+        void cancelButton_Click(object sender, EventArgs e)
         {
             string returnPage =
                 HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", int.Parse(Request.QueryString["returntabid"]));
@@ -64,17 +52,15 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void SaveButton_Click(object sender, EventArgs e)
+        void SaveButton_Click(object sender, EventArgs e)
         {
             //Only Save if Input Data is Valid
-            int NewPageID = 0;
-            string returnPage;
 
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 try
                 {
-                    NewPageID = SavePageData();
+                    int newPageID = SavePageData();
 
                     // Flush all tab navigation cache keys. Very important for recovery the changes
                     // made in all languages and not get a error if user change the tab parent.
@@ -83,12 +69,13 @@ namespace Rainbow.Admin
                     CurrentCache.RemoveAll("_PageNavigationSettings_");
 
                     //Jump to Page option
-                    if (cb_JumpToPage.Checked == true)
+                    string returnPage;
+                    if (cb_JumpToPage.Checked)
                     {
                         // Redirect to New Form - Mike Stone 19/12/2004
                         returnPage =
-                            HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", NewPageID,
-                                                    "SelectedPageID=" + NewPageID.ToString());
+                            HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", newPageID,
+                                                    "SelectedPageID=" + newPageID);
                     }
                     else
                     {
@@ -110,22 +97,21 @@ namespace Rainbow.Admin
             }
         }
 
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The SavePageData helper method is used to persist the
         /// current tab settings to the database.
         /// </summary>
         /// <returns></returns>
-        private int SavePageData()
+        int SavePageData()
         {
             // Construct Authorized User Roles string
             string authorizedRoles = "";
 
-            foreach ( ListItem item in authRoles.Items ) {
-                if ( item.Selected == true ) {
+            foreach (ListItem item in authRoles.Items)
+            {
+                if (item.Selected)
+                {
                     authorizedRoles = authorizedRoles + item.Text + ";";
                 }
             }
@@ -146,7 +132,7 @@ namespace Rainbow.Admin
         /// The BindData helper method is used to update the tab's
         /// layout panes with the current configuration information
         /// </summary>
-        private void BindData() {
+        void BindData() {
             PageSettings tab = portalSettings.ActivePage;
 
             // Populate Page Names, etc.
@@ -185,8 +171,6 @@ namespace Rainbow.Admin
             }
         }
 
-        #endregion
-
         #region Web Form Designer generated code
 
         /// <summary>
@@ -204,7 +188,7 @@ namespace Rainbow.Admin
             {
                 string[] s = {"CONFIRM_DELETE"};
                 ClientScript.RegisterClientScriptBlock(this.GetType(), "confirmDelete",
-                                                       PortalSettings.GetStringResource(
+                                                       General.GetStringResource(
                                                            "CONFIRM_DELETE_SCRIPT", s));
             }
 

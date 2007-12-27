@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
@@ -275,7 +276,7 @@ namespace Rainbow.Content.Web.Modules
             // Bind the Email and Password
             UsersDB users = new UsersDB();
 
-            Guid currentUserID = PortalSettings.CurrentUser.Identity.ProviderUserKey;
+            Guid currentUserID = RainbowContext.CurrentUser.Identity.ProviderUserKey;
             // bind users in role to DataList
             IList<RainbowRole> roles = users.GetRolesByUser( currentUserID, portalSettings.PortalAlias);
             userRoles.DataSource = roles;

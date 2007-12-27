@@ -52,49 +52,31 @@ namespace Rainbow.Framework.DataTypes
         /// Should be overrided from inherited classes
         /// </summary>
         /// <value>The data source.</value>
-		public virtual object DataSource
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+        public virtual object DataSource
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
 
 		/// <summary>
 		/// Gets or sets the data value field.
 		/// </summary>
 		/// <value>The data value field.</value>
-		public virtual string DataValueField
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+        public virtual string DataValueField
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
 
 		/// <summary>
 		/// Gets or sets the data text field.
 		/// </summary>
 		/// <value>The data text field.</value>
-		public virtual string DataTextField
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+        public virtual string DataTextField
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
 
 		/// <summary>
 		/// Not Implemented
@@ -124,17 +106,18 @@ namespace Rainbow.Framework.DataTypes
 				//Return control
 				return innerControl;
 			}
-			set
-			{
-				if (value.GetType().Name == "TextBox")
-				{
-					innerControl = value;
-					//Update value from control
-					Value = ((TextBox)innerControl).Text;
-				}
-				else
-					throw new ArgumentException("A TextBox values is required, a '" + value.GetType().Name + "' is given.", "EditControl");
-			}
+		    set
+		    {
+		        if (value.GetType().Name != "TextBox")
+		        {
+		            throw new ArgumentException(
+                        "A TextBox values is required, a '" + value.GetType().Name + "' is given.",
+                        "EditControl");
+		        }
+	            innerControl = value;
+	            //Update value from control
+	            Value = ((TextBox) innerControl).Text;
+		    }
 		}
 
 		/// <summary>

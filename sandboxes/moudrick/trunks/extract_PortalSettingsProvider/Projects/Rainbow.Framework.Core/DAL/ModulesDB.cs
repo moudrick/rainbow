@@ -260,12 +260,10 @@ namespace Rainbow.Framework.Site.Data
         {
             //BOWEN 11 June 2005 - BEGIN
             PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-            bool useRecycler =
-                bool.Parse(
-                    PortalSettings.GetPortalCustomSettings(portalSettings.PortalID,
-                                                           PortalSettings.GetPortalBaseSettings(
-                                                               portalSettings.PortalPath))["SITESETTINGS_USE_RECYCLER"].
-                        ToString());
+            bool useRecycler = bool.Parse(
+                    PortalProvider.Instance.GetPortalCustomSettings(portalSettings.PortalID,
+                    PortalProvider.Instance.GetPortalBaseSettings(
+                    portalSettings.PortalPath))["SITESETTINGS_USE_RECYCLER"].ToString());
 
 			// TODO: THIS LINE DISABLES THE RECYCLER DUE SOME TROUBLES WITH IT !!!!!! Fix those troubles and then discomment.
 			useRecycler = false;

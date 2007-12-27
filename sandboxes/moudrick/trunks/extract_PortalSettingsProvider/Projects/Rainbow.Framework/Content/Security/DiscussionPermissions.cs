@@ -1,4 +1,4 @@
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Security;
 
 namespace Rainbow.Framework.Content.Security
@@ -11,35 +11,28 @@ namespace Rainbow.Framework.Content.Security
         /// <summary>
         /// See whether the current user has permissions to add a post to the discussion thread
         /// </summary>
-        /// <param name="ModuleID">ID of the current Discussion Module</param>
+        /// <param name="moduleID">ID of the current Discussion Module</param>
         /// <returns>Returns true or flase</returns>
-        public static bool HasAddPermissions(int ModuleID)
+        public static bool HasAddPermissions(int moduleID)
         {
-            if (PortalSecurity.HasAddPermissions(ModuleID) == true)
-                return true;
-            else
-                return false;
+            return PortalSecurity.HasAddPermissions(moduleID);
         }
 
         /// <summary>
         /// Determines whether [has edit permissions] [the specified module ID].
         /// </summary>
-        /// <param name="ModuleID">The module ID.</param>
+        /// <param name="moduleID">The module ID.</param>
         /// <param name="itemUserEmail">The item user email.</param>
         /// <returns>
         /// 	<c>true</c> if [has edit permissions] [the specified module ID]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool HasEditPermissions(int ModuleID, string itemUserEmail)
+        public static bool HasEditPermissions(int moduleID, string itemUserEmail)
         {
             // this approach willnot be safe when we change from UserEmail to UserID
             // if UserID is not unique accross ALL portal instances on a given database
-            string currentUserEmail = PortalSettings.CurrentUser.Identity.Email;
-
-            if (PortalSecurity.HasEditPermissions(ModuleID) == true
-                || currentUserEmail == itemUserEmail)
-                return true;
-            else
-                return false;
+            string currentUserEmail = RainbowContext.CurrentUser.Identity.Email;
+            return PortalSecurity.HasEditPermissions(moduleID) 
+                || currentUserEmail == itemUserEmail;
         }
 
         /// <summary>
@@ -54,15 +47,17 @@ namespace Rainbow.Framework.Content.Security
         public static bool HasDeletePermissions(int ModuleID, int itemID, string itemUserEmail)
         {
             //string currentUserEmail = PortalSettings.CurrentUser.Identity.Email;
-
-            if (PortalSecurity.HasDeletePermissions(ModuleID) == true)
+            if (PortalSecurity.HasDeletePermissions(ModuleID))
+            {
                 // || currentUserEmail == itemUserEmail))
                 // also need to check for NUMBER of children
                 // so someone doesn't delte a post with children
                 // or just reattach the children
                 return true;
+            }
             else
-                return false;
+            {
+                return false;}
         }
     }
 }

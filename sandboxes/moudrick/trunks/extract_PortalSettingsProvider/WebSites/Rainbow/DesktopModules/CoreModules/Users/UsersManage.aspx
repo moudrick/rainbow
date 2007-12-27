@@ -48,7 +48,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <asp:DropDownList ID="allRoles" runat="server" DataTextField="Name" />
+                            <asp:DropDownList ID="allRoles" runat="server" DataTextField="Name" DataValueField="Id" />
                             <rbfwebui:LinkButton ID="addExisting" runat="server" CssClass="CommandButton" Text="Add user to this role" TextKey="ADDUSER" />
                         </td>
                     </tr>

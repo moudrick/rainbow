@@ -55,7 +55,7 @@
                             </tr>
                             <tr>
                                 <td align="right" class="headerUserInfo" nowrap="nowrap">
-                                    <%=PortalSettings.CurrentUser.Identity.UserName%>
+                                    <%=RainbowContext.CurrentUser.Identity.UserName%>
                                     <br />
                                     <%=userProfile["Title"]%>
                                 </td>

@@ -22,7 +22,7 @@ namespace Rainbow.Content.Web.Modules
         private void Page_Load(object sender, EventArgs e)
         {
             string imageSrc =
-                Path.WebPathCombine(Path.ApplicationRoot, portalSettings.PortalPath, Settings["src"].ToString());
+                Path.WebPathCombine(Path.ApplicationRoot, PortalSettings.PortalPath, Settings["src"].ToString());
             string imageHeight = Settings["height"].ToString();
             string imageWidth = Settings["width"].ToString();
 

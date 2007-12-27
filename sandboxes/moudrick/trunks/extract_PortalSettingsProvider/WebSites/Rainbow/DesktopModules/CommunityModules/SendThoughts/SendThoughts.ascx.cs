@@ -2,7 +2,7 @@ using System;
 using System.Net.Mail;
 using System.Text;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -42,7 +42,7 @@ namespace Rainbow.Content.Web.Modules
                     EditPanel.Visible = false;
                 }
 
-                txtEMail.Text = PortalSettings.CurrentUser.Identity.Email;
+                txtEMail.Text = RainbowContext.CurrentUser.Identity.Email;
             }
 
             if (!(DescText == null) && DescText.Length != 0)
@@ -78,7 +78,7 @@ namespace Rainbow.Content.Web.Modules
                 txtBody.Text + "<br><br>" +
                 General.GetString("SENDTHTS_NAME", "Name", this) + ": " + txtName.Text + "<br>" +
                 General.GetString("SENDTHTS_REMAIL", "Real EMail Address", this) + ": " +
-                PortalSettings.CurrentUser.Identity.Email + "<br><br>" +
+                RainbowContext.CurrentUser.Identity.Email + "<br><br>" +
                 strServerVariables;
 
             SmtpClient smtp = new SmtpClient(Config.SmtpServer);

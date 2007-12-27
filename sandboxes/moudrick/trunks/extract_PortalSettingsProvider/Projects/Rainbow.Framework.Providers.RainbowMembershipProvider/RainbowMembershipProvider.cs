@@ -9,6 +9,24 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
     /// </summary>
     public abstract class RainbowMembershipProvider : MembershipProvider 
     {
+        ///<summary>
+        /// Gets default configured membership provider
+        /// Singleton pattern standard member
+        ///</summary>
+        ///<exception cref="RainbowMembershipProviderException"></exception>
+        public static RainbowMembershipProvider Instance
+        {
+            get
+            {
+                if (!(Membership.Provider is RainbowMembershipProvider))
+                {
+                    throw new RainbowMembershipProviderException("The membership provider must be a RainbowMembershipProvider implementation");
+                }
+                return Membership.Provider as RainbowMembershipProvider;
+            }
+        }
+
+
         /// <summary>
         /// Gets the error message.
         /// </summary>
@@ -372,5 +390,15 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
         /// <param name="password">The user's password</param>
         /// <returns></returns>
         public abstract bool ValidateUser( string portalAlias, string username, string password );
+
+        /// <summary>
+        /// The GetUser method returns the collection of users.
+        /// </summary>
+        /// <returns></returns>
+        public MembershipUserCollection GetUsers(string portalAlias)
+        {
+            int totalRecords;
+            return GetAllUsers(portalAlias, 0, int.MaxValue, out totalRecords);
+        }
     }
 }

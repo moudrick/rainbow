@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;
@@ -380,7 +380,7 @@ namespace Rainbow.Content.Web.Modules
                     break;
             }
 
-            string user = PortalSettings.CurrentUser.Identity.Email;
+            string user = RainbowContext.CurrentUser.Identity.Email;
             EnhancedHtmlDB tdb1 = new EnhancedHtmlDB();
             if (lstPages.SelectedIndex >= 0)
             {

@@ -52,7 +52,7 @@ namespace Rainbow.Content.Web.Modules
                 xd = new XPathDocument(xmlsrc);
                 xs = new XslTransform();
                 xs.Load(xslsrc);
-                xa.AddParam("Lang", string.Empty, portalSettings.PortalContentLanguage.Name.ToLower());
+                xa.AddParam("Lang", string.Empty, PortalSettings.PortalContentLanguage.Name.ToLower());
                 xa.AddExtensionObject("urn:rainbow", xh);
 #if FW10
 				xs.Transform(xd, xa, tw);

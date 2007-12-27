@@ -5,11 +5,10 @@ using System.Web;
 using System.Web.UI;
 using DUEMETRI.UI.WebControls.HWMenu;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Site.Data;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -43,7 +42,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private void LoadControl(object sender, EventArgs e)
         {
             if (AutoBind)
+            {
                 DataBind();
+            }
         }
 
         #region INavigation implementation
@@ -147,21 +148,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
         public override void DataBind()
         {
             base.DataBind();
-
-
-            // Obtain PortalSettings from Current Context 
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-
             // Build list of tabs to be shown to user 
-            ArrayList authorizedTabs = new ArrayList();
-
-            authorizedTabs = (ArrayList) GetInnerDataSource();
-
+            ArrayList authorizedTabs = (ArrayList) GetInnerDataSource();
             for (int i = 0; i < authorizedTabs.Count; i++)
             {
-                PageStripDetails myTab = (PageStripDetails) authorizedTabs[i];
- 
-                AddMenuTreeNode(0, myTab);
+                AddMenuTreeNode(0, (PageStripDetails) authorizedTabs[i]);
             }
         }
 
@@ -303,30 +294,29 @@ namespace Rainbow.Framework.Web.UI.WebControls
                             authorizedTabs = GetTabs(0, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
                             break;
                         }
-
                     case BindOption.BindOptionCurrentChilds:
                         {
-                            int currentTabRoot =
-                                PortalSettings.GetRootPage(portalSettings.ActivePage, portalSettings.DesktopPages).
-                                    PageID;
-                            authorizedTabs =
-                                GetTabs(currentTabRoot, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
+                            int currentTabRoot = PortalProvider.Instance.GetRootPage(
+                                portalSettings.ActivePage, portalSettings.DesktopPages).PageID;
+                            authorizedTabs = GetTabs(currentTabRoot, 
+                                portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
                             break;
                         }
-
-                    case BindOption.BindOptionSubtabSibling:
+                      case BindOption.BindOptionSubtabSibling:
                         {
                             int currentTabRoot;
                             if (portalSettings.ActivePage.ParentPageID == 0)
+                            {
                                 currentTabRoot = portalSettings.ActivePage.PageID;
+                            }
                             else
+                            {
                                 currentTabRoot = portalSettings.ActivePage.ParentPageID;
-
-                            authorizedTabs =
-                                GetTabs(currentTabRoot, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
+                            }
+                            authorizedTabs = GetTabs(currentTabRoot, 
+                                portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
                             break;
                         }
-
                     case BindOption.BindOptionChildren:
                         {
                             authorizedTabs =
@@ -334,7 +324,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
                                         portalSettings.DesktopPages);
                             break;
                         }
-
                     case BindOption.BindOptionSiblings:
                         {
                             authorizedTabs =
@@ -342,7 +331,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
                                         portalSettings.DesktopPages);
                             break;
                         }
-
                         //MH: added 19/09/2003 by mario@hartmann.net
                     case BindOption.BindOptionTabSibling:
                         {
@@ -357,7 +345,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                             break;
                         }
-
                         //MH: added 29/04/2003 by mario@hartmann.net
                     case BindOption.BindOptionDefinedParent:
                         if (ParentPageID != -1)

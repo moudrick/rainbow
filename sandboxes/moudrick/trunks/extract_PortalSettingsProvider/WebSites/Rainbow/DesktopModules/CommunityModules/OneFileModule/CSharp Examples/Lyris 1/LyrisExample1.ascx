@@ -36,7 +36,7 @@
         if (IsPostBack == false)
         {
             // prepopulate box
-            email.Text = PortalSettings.CurrentUser.Identity.Email;
+            email.Text = RainbowContext.CurrentUser.Identity.Email;
         }
     }
 

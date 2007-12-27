@@ -748,7 +748,7 @@ end of modification
                     {
                         string[] s = {"CONFIRM_DELETE"};
                         Page.ClientScript.RegisterClientScriptBlock(GetType(), "confirmDelete",
-                                                                    PortalSettings.GetStringResource(
+                                                                    General.GetStringResource(
                                                                         "CONFIRM_DELETE_SCRIPT",
                                                                         s));
                     }
@@ -917,9 +917,9 @@ end of modification
             {
                 bool returnValue = _supportsArrows;
 
-                if (portalSettings.CustomSettings["SITESETTINGS_SHOW_MODULE_ARROWS"] != null)
+                if (PortalSettings.CustomSettings["SITESETTINGS_SHOW_MODULE_ARROWS"] != null)
                     returnValue = returnValue &&
-                                  bool.Parse(portalSettings.CustomSettings["SITESETTINGS_SHOW_MODULE_ARROWS"].ToString());
+                                  bool.Parse(PortalSettings.CustomSettings["SITESETTINGS_SHOW_MODULE_ARROWS"].ToString());
 
                 if (Settings["MODULESETTINGS_SHOW_ARROW_BUTTONS"] != null)
                     returnValue = returnValue && bool.Parse(Settings["MODULESETTINGS_SHOW_ARROW_BUTTONS"].ToString());
@@ -984,7 +984,7 @@ end of modification
         /// <summary>
         /// Stores current portal settings 
         /// </summary>
-        public PortalSettings portalSettings
+        public PortalSettings PortalSettings
         {
             get
             {
@@ -1151,13 +1151,13 @@ end of modification
                 if (HttpContext.Current != null && titleText == string.Empty)
                     // if it is not design time (and not overriden - Jes1111)
                 {
-                    if (portalSettings.PortalContentLanguage != CultureInfo.InvariantCulture &&
-                        Settings["MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name] != null &&
-                        Settings["MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name].ToString().Length >
+                    if (PortalSettings.PortalContentLanguage != CultureInfo.InvariantCulture &&
+                        Settings["MODULESETTINGS_TITLE_" + PortalSettings.PortalContentLanguage.Name] != null &&
+                        Settings["MODULESETTINGS_TITLE_" + PortalSettings.PortalContentLanguage.Name].ToString().Length >
                         0)
                     {
                         titleText =
-                            Settings["MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name].ToString();
+                            Settings["MODULESETTINGS_TITLE_" + PortalSettings.PortalContentLanguage.Name].ToString();
                     }
                     else
                     {
@@ -1481,7 +1481,7 @@ end of modification
                             {
                             string[] s = { "CONFIRM_DELETE" };
                             Page.ClientScript.RegisterClientScriptBlock( this.Page.GetType(), "confirmDelete",
-                                                                        PortalSettings.GetStringResource(
+                                                                        General.GetStringResource(
                                                                             "CONFIRM_DELETE_SCRIPT",
                                                                             s ) );
                         }
@@ -2356,7 +2356,7 @@ end of modification
             get
             {
                 if (PortalSecurity.IsInRoles(ModuleConfiguration.AuthorizedDeleteModuleRoles) &&
-                    portalSettings.ActivePage.PageID == ModuleConfiguration.PageID)
+                    PortalSettings.ActivePage.PageID == ModuleConfiguration.PageID)
                     return true;
                 else
                     return false;
@@ -2427,7 +2427,7 @@ end of modification
         {
             get
             {
-                if (ModuleConfiguration == null || portalSettings.ActivePage.PageID != ModuleConfiguration.PageID)
+                if (ModuleConfiguration == null || PortalSettings.ActivePage.PageID != ModuleConfiguration.PageID)
                     return false;
 
                 if ((SupportsWorkflow && Version == WorkFlowVersion.Staging) || !SupportsWorkflow)
@@ -2456,7 +2456,7 @@ end of modification
         {
             get
             {
-                if (ModuleConfiguration == null || portalSettings.ActivePage.PageID != ModuleConfiguration.PageID)
+                if (ModuleConfiguration == null || PortalSettings.ActivePage.PageID != ModuleConfiguration.PageID)
                     return false;
 
                 if ((SupportsWorkflow && Version == WorkFlowVersion.Staging) || !SupportsWorkflow)
@@ -2574,7 +2574,7 @@ end of modification
                 if (ModuleConfiguration == null || ModuleID == 0)
                     return false;
 
-                if (SupportsArrows && portalSettings.ActivePage.PageID == ModuleConfiguration.PageID &&
+                if (SupportsArrows && PortalSettings.ActivePage.PageID == ModuleConfiguration.PageID &&
                     PortalSecurity.IsInRoles(ModuleConfiguration.AuthorizedMoveModuleRoles))
                     return true;
                 else
@@ -2594,7 +2594,7 @@ end of modification
                     return false;
 
                 if (PortalSecurity.IsInRoles(ModuleConfiguration.AuthorizedPropertiesRoles) &&
-                    portalSettings.ActivePage.PageID == ModuleConfiguration.PageID && SecurityUrl != null &&
+                    PortalSettings.ActivePage.PageID == ModuleConfiguration.PageID && SecurityUrl != null &&
                     SecurityUrl.Length != 0)
                     return true;
                 else
@@ -2614,7 +2614,7 @@ end of modification
                     return false;
 
                 if (PortalSecurity.IsInRoles(ModuleConfiguration.AuthorizedPropertiesRoles) &&
-                    portalSettings.ActivePage.PageID == ModuleConfiguration.PageID && PropertiesUrl != null &&
+                    PortalSettings.ActivePage.PageID == ModuleConfiguration.PageID && PropertiesUrl != null &&
                     PropertiesUrl.Length != 0)
                     return true;
                 else
@@ -2916,7 +2916,7 @@ end of modification
         public string GetLastModified()
         {
             // CHANGE by david.verberckmoes@syntegra.com on june, 2 2003
-            if (bool.Parse(((SettingItem) portalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
+            if (bool.Parse(((SettingItem) PortalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
                 bool.Parse(((SettingItem) Settings["MODULESETTINGS_SHOW_MODIFIED_BY"]).Value))
             {
                 // Get stuff from database
@@ -2990,7 +2990,7 @@ end of modification
             // get the portal setting at the Tab level and not from this class as it is not refreshed
             foreach (ModuleSettings _module in ((Page) Page).portalSettings.ActivePage.Modules)
             {
-                if (portalSettings.ActivePage.PageID == _module.PageID && _module.PaneName.ToLower() == pane.ToLower())
+                if (PortalSettings.ActivePage.PageID == _module.PageID && _module.PaneName.ToLower() == pane.ToLower())
                 {
                     ModuleItem m = new ModuleItem();
                     m.Title = _module.ModuleTitle;
@@ -3079,7 +3079,7 @@ end of modification
             admin.UpdateModuleOrder(OriginalModuleID, 99, targetPane);
 
             // reload the portalSettings from the database
-            HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortalSettings(PageID, portalSettings.PortalAlias);
+            HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortalSettings(PageID, PortalSettings.PortalAlias);
             ((Page) Page).portalSettings = (PortalSettings) Context.Items["PortalSettings"];
 
             // reorder the modules in the source pane
@@ -3164,7 +3164,7 @@ end of modification
             {
                 string[] s = {"CONFIRM_DELETE"};
                 Page.ClientScript.RegisterClientScriptBlock(GetType(), "confirmDelete",
-                                                            PortalSettings.GetStringResource(
+                                                            General.GetStringResource(
                                                                 "CONFIRM_DELETE_SCRIPT",
                                                                 s));
             }
@@ -4043,7 +4043,7 @@ end of modification
                     break;
                 case "ShowModifiedBy":
                     if (
-                        bool.Parse(((SettingItem) portalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
+                        bool.Parse(((SettingItem) PortalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
                         bool.Parse(((SettingItem) Settings["MODULESETTINGS_SHOW_MODIFIED_BY"]).Value))
                         _returnVal = true;
                     break;
@@ -4073,14 +4073,14 @@ end of modification
             // end: Jes1111
 
             // added: Jes1111 - 2004-08-05 - supports custom theme per module
-            if (portalSettings.CustomSettings.ContainsKey("SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES") &&
-                portalSettings.CustomSettings["SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES"].ToString().Length != 0 &&
-                bool.Parse(portalSettings.CustomSettings["SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES"].ToString()) &&
+            if (PortalSettings.CustomSettings.ContainsKey("SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES") &&
+                PortalSettings.CustomSettings["SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES"].ToString().Length != 0 &&
+                bool.Parse(PortalSettings.CustomSettings["SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES"].ToString()) &&
                 Settings.ContainsKey("MODULESETTINGS_MODULE_THEME") &&
                 Settings["MODULESETTINGS_MODULE_THEME"].ToString().Trim().Length > 0)
             {
                 // substitute custom theme for this module
-                ThemeManager _tm = new ThemeManager(portalSettings.PortalPath);
+                ThemeManager _tm = new ThemeManager(PortalSettings.PortalPath);
                 _tm.Load(Settings["MODULESETTINGS_MODULE_THEME"].ToString());
                 CurrentTheme = _tm.CurrentTheme;
                 // get CSS file, add ModuleID to each line and add resulting string to CssImportList
@@ -4096,13 +4096,13 @@ end of modification
                     ErrorHandler.Publish(LogLevel.Error,
                                          "Failed to load custom theme '" + CurrentTheme.CssFile + "' for ModuleID " +
                                          ModuleID + ". Continuing with default tab theme. Message was: " + ex.Message);
-                    CurrentTheme = portalSettings.GetCurrentTheme(themeName);
+                    CurrentTheme = PortalSettings.GetCurrentTheme(themeName);
                 }
             }
             else
             {
                 // original behaviour unchanged
-                CurrentTheme = portalSettings.GetCurrentTheme(themeName);
+                CurrentTheme = PortalSettings.GetCurrentTheme(themeName);
             }
             // end change: Jes1111
         }

@@ -87,8 +87,8 @@ namespace Rainbow.Content.Web.Modules
 //			if (!IsPostBack) //Or it does not work with singon...
 //			{
             string flashSrc = ((SettingItem) Settings["src"]).Value;
-            flashSrc = flashSrc.Replace("~~", portalSettings.PortalFullPath);
-            flashSrc = flashSrc.Replace("~", portalSettings.PortalPath);
+            flashSrc = flashSrc.Replace("~~", PortalSettings.PortalFullPath);
+            flashSrc = flashSrc.Replace("~", PortalSettings.PortalPath);
 
             string flashHeight = (SettingItem) Settings["height"];
             string flashWidth = (SettingItem) Settings["width"];
@@ -99,7 +99,7 @@ namespace Rainbow.Content.Web.Modules
 
             //Always make sure you have a valid movie or your browser will hang.
             if (flashSrc == null || flashSrc.Length == 0)
-                flashSrc = Path.WebPathCombine(portalSettings.PortalFullPath, "/FlashGallery/effect2-marquee.swf");
+                flashSrc = Path.WebPathCombine(PortalSettings.PortalFullPath, "/FlashGallery/effect2-marquee.swf");
 
             string movieName = string.Empty;
             try

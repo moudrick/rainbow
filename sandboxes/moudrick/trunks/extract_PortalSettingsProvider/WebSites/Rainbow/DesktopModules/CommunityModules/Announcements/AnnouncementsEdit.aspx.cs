@@ -5,7 +5,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -132,7 +132,7 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only Update if the Entered Data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 // Create an instance of the Announcement DB component
                 AnnouncementsDB announcementDB = new AnnouncementsDB();
@@ -140,14 +140,14 @@ namespace Rainbow.Content.Web.Modules
                 if (ItemID == 0)
                 {
                     // Add the announcement within the Announcements table
-                    announcementDB.AddAnnouncement(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email,
+                    announcementDB.AddAnnouncement(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email,
                                                    TitleField.Text, DateTime.Parse(ExpireField.Text), DesktopText.Text,
                                                    MoreLinkField.Text, MobileMoreField.Text);
                 }
                 else
                 {
                     // Update the announcement within the Announcements table
-                    announcementDB.UpdateAnnouncement(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email,
+                    announcementDB.UpdateAnnouncement(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email,
                                                       TitleField.Text, DateTime.Parse(ExpireField.Text),
                                                       DesktopText.Text, MoreLinkField.Text, MobileMoreField.Text);
                 }

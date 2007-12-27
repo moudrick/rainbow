@@ -148,7 +148,7 @@ namespace Rainbow.Content.Web.Modules
         /// <returns></returns>
         private string DefaultDir()
         {
-            string tmpDir = Path.WebPathCombine(Path.ApplicationPhysicalPath, portalSettings.PortalPath);
+            string tmpDir = Path.WebPathCombine(Path.ApplicationPhysicalPath, PortalSettings.PortalPath);
             tmpDir = tmpDir.Replace("\\/", "\\");
             tmpDir = tmpDir.Replace("/", "\\");
             return tmpDir;
@@ -168,8 +168,8 @@ namespace Rainbow.Content.Web.Modules
             directory.Required = false;
             directory.Group = group;
             directory.Order = groupBase + 20; //1;
-            if (portalSettings != null)
-                directory.Value = portalSettings.PortalPath;
+            if (PortalSettings != null)
+                directory.Value = PortalSettings.PortalPath;
             else
                 directory.Value = string.Empty;
             _baseSettings.Add("FM_DIRECTORY", directory);

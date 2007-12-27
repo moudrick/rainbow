@@ -117,10 +117,12 @@ namespace Rainbow.Content.Web.Modules
             }
             base.OnEdit();
         }
+
         protected void EditBtn_Click(object sender, ImageClickEventArgs e)
         {
             OnEdit();
         }
+
         protected void DeleteBtn_Click(object sender, ImageClickEventArgs e)
         {
             OnDelete();

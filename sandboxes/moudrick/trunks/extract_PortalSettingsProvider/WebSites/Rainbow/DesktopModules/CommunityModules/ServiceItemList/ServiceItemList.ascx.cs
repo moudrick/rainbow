@@ -1,8 +1,7 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Services;
@@ -95,11 +94,11 @@ namespace Rainbow.Content.Web.Modules
             string status = "Dialing...";
             try
             {
-                int portalID = portalSettings.PortalID;
+                int portalID = PortalSettings.PortalID;
                 Guid userID = Guid.Empty;
 
                 UsersDB u = new UsersDB();
-                RainbowUser s = u.GetSingleUser(PortalSettings.CurrentUser.Identity.Email);
+                RainbowUser s = u.GetSingleUser(RainbowContext.CurrentUser.Identity.Email);
                 try
                 {                    
                         userID = (Guid)s.ProviderUserKey;

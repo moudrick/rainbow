@@ -115,7 +115,9 @@ namespace Rainbow.Framework.Logging
             if (log.IsFatalEnabled)
             {
                 if (level == LogLevel.Fatal)
+                {
                     log.Fatal(message);
+                }
             }
         }
 

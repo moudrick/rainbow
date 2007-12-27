@@ -38,7 +38,7 @@ namespace Rainbow.Context
 	/// </summary>
 	public class Reader
 	{
-		private Strategy strategy;
+		readonly Strategy strategy;
 
 		/// <summary>
 		/// Constructor
@@ -50,7 +50,6 @@ namespace Rainbow.Context
 		}
 
 		/// <summary>
-		/// 
 		/// </summary>
 		public HttpContext Current
 		{
@@ -58,7 +57,6 @@ namespace Rainbow.Context
 			{
 				return strategy.Current;
 			}
-			
 		}
 	}
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Web.UI;
@@ -48,7 +48,7 @@ namespace Rainbow.AdminAll
                 // Don't use a template portal, so show the EditTable
                 // Remove the cache that can be setted by the new Portal, to get a "clean" PortalBaseSetting
                 CurrentCache.Remove(Key.PortalBaseSettings());
-                EditTable.DataSource = new SortedList(PortalSettings.GetPortalBaseSettings(null));
+                EditTable.DataSource = new SortedList(PortalProvider.Instance.GetPortalBaseSettings(null));
                 EditTable.DataBind();
                 EditTable.Visible = true;
                 SolutionsList.Enabled = false;
@@ -136,7 +136,7 @@ namespace Rainbow.AdminAll
         private void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
         {
             SettingsTable edt = (SettingsTable) sender;
-            PortalSettings.UpdatePortalSetting(edt.ObjectID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
+            RainbowContext.Current.UpdatePortalSetting(edt.ObjectID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
 
         #region Web Form Designer generated code

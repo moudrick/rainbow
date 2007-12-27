@@ -79,14 +79,14 @@ namespace Rainbow.Content.Web.Modules
             // Set the link image type
             if (IsEditable)
             {
-                Image myImage = portalSettings.GetCurrentTheme().GetImage("Buttons_Edit", "edit.gif");
+                Image myImage = PortalSettings.GetCurrentTheme().GetImage("Buttons_Edit", "edit.gif");
                 linkImage = myImage.ImageUrl;
                 linkTextKey = "EDIT_THIS_ITEM";
                 linkAlternateText = "Edit this item";
             }
             else
             {
-                Image myImage = portalSettings.GetCurrentTheme().GetImage("NavLink", "navlink.gif");
+                Image myImage = PortalSettings.GetCurrentTheme().GetImage("NavLink", "navlink.gif");
                 linkImage = myImage.ImageUrl;
                 linkTextKey = string.Empty;
                 linkAlternateText = string.Empty;

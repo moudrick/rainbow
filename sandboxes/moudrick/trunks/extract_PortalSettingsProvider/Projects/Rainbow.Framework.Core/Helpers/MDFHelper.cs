@@ -2,7 +2,6 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
-using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
@@ -357,20 +356,29 @@ namespace Rainbow.Framework.Core.Helpers
         /// <param name="selectFieldList">The select field list.</param>
         /// <param name="searchFieldList">The search field list.</param>
         /// <returns></returns>
-        public bool Populate(PortalModuleControl pmc, string itemTableName, string titleFieldName, string selectFieldList, string searchFieldList)
+        public bool Populate(PortalModuleControl pmc,
+                             string itemTableName,
+                             string titleFieldName,
+                             string selectFieldList,
+                             string searchFieldList)
         {
-            bool PopulateDone;
+            bool populateDone;
             try
             {
                 _applyMDF = bool.Parse(pmc.Settings[NameApplyMDF].ToString());
 
                 string ds = pmc.Settings[NameDataSource].ToString();
                 if (ds == DataSourceType.This.ToString())
+                {
                     _dataSource = DataSourceType.This;
+                }
                 else if (ds == DataSourceType.All.ToString())
+                {
                     _dataSource = DataSourceType.All;
+                }
                 else if (ds == DataSourceType.List.ToString())
-                    _dataSource = DataSourceType.List;
+                {
+                    _dataSource = DataSourceType.List;}
 
                 _maxHits = int.Parse(pmc.Settings[NameMaxHits].ToString());
                 _moduleList = pmc.Settings[NameModuleList].ToString();
@@ -404,28 +412,22 @@ namespace Rainbow.Framework.Core.Helpers
                 _portalID = pmc.PortalID;
                 UsersDB u = new UsersDB();
 
-                RainbowUser user = u.GetSingleUser(PortalSettings.CurrentUser.Identity.Email);
-                try
-                {                    
-                    //_userID = (Guid)user.ProviderUserKey;
-                    _userID = (Guid)user.ProviderUserKey;
-                }
-                finally
-                {
-                    //   s.Close();
-                }
+                RainbowUser user = u.GetSingleUser(RainbowContext.CurrentUser.Identity.Email);
+                //_userID = (Guid)user.ProviderUserKey;
+                _userID = (Guid)user.ProviderUserKey;
+
                 /*
                 SqlDataReader dr = u.GetSingleUser(PortalSettings.CurrentUser.Identity.Email);
                 if (dr.Read())
                     _userID = Int32.Parse(dr["UserID"].ToString());
                 */
-                PopulateDone = true;
+                populateDone = true;
             }
             catch (Exception)
             {
-                PopulateDone = false;
+                populateDone = false;
             }
-            return PopulateDone;
+            return populateDone;
         }
 
         /// <summary>
@@ -661,22 +663,34 @@ namespace Rainbow.Framework.Core.Helpers
             else
             {
                 select.Append(", rb_Modules mod, rb_ModuleDefinitions modDef");
-                if (_userID != Guid.Empty )//(_userID > -1)
+                if (_userID != Guid.Empty) //(_userID > -1)
+                {
                     select.Append(", rb_Roles, rb_UserRoles");
+                }
 
                 if (DataSource == DataSourceType.List)
+                {
                     if (AllNotInList)
+                    {
                         select.Append(" WHERE itm.ModuleID NOT IN (" + ModuleList + ")");
+                    }
                     else
+                    {
                         select.Append(" WHERE itm.ModuleID IN (" + ModuleList + ")");
+                    }
+                }
+                else if (AllNotInList)
+                {
+                    select.Append(" WHERE itm.ModuleID NOT IN (" + ModuleList + ")");
+                }
                 else
-                    if (AllNotInList)
-                        select.Append(" WHERE itm.ModuleID NOT IN (" + ModuleList + ")");
-                    else
-                        select.Append(" WHERE 1=1");
+                {
+                    select.Append(" WHERE 1=1");
+                }
 
                 if (MobileOnly)
-                    select.Append(" AND Mod.ShowMobile=1");
+                {
+                    select.Append(" AND Mod.ShowMobile=1");}
 
                 select.Append(" AND itm.ModuleID = mod.ModuleID");
                 select.Append(" AND mod.ModuleDefID = modDef.ModuleDefID");

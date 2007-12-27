@@ -52,7 +52,7 @@ namespace Rainbow.Content.Web.Modules
         {
             base.OnInit(e);
 
-            int p = portalSettings.PortalID;
+            int p = PortalSettings.PortalID;
         }
 
         #endregion

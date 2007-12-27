@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Settings;
@@ -39,13 +40,6 @@ namespace Rainbow.Framework
             "Commented out obsolete code or marked as obsolete. Will be removed in future versions.")]
     public class ErrorHandler
     {
-        //		const string strTOE = "Time of Error: ";
-        //		const string strSrvName = "SERVER_NAME";
-        //		const string strSrc = "Source: ";
-        //		const string strErrMsg = "Error Message: ";
-        //		const string strTgtSite = "Target Site: ";
-        //		const string strStkTrace = "Stack Trace: ";
-
         /// <summary>
         /// Called only by Application_Error in global.asax.cs to deal with unhandled exceptions.
         /// </summary>
@@ -53,156 +47,154 @@ namespace Rainbow.Framework
         {
             try
             {
-                Exception e = HttpContext.Current.Server.GetLastError();
-
-                string _myGuid;
-                string _auxMessage;
-                string _redirectUrl = Config.SmartErrorRedirect; // default value
-                LogLevel _logLevel = LogLevel.Fatal; // default value
-                HttpStatusCode _httpStatusCode = HttpStatusCode.InternalServerError; // default value
-                string myCacheKey = string.Empty;
-                StringBuilder sb;
-
-                if (HttpContext.Current.Request != null &&
-                    HttpContext.Current.Request.Url.AbsolutePath.EndsWith(Config.SmartErrorRedirect.Substring(2)))
+                HttpContext httpContext = HttpContext.Current;
+                if (httpContext.Request != null &&
+                    httpContext.Request.Url.AbsolutePath.EndsWith(
+                        Config.SmartErrorRedirect.Substring(2)))
                 {
-                    HttpContext.Current.Response.Write("Sorry - a critical error has occurred - unable to continue");
-                    HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.ServiceUnavailable;
-                    HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                    HttpContext.Current.Response.End();
+                    httpContext.Response.Write("Sorry - a critical error has occurred - unable to continue");
+                    httpContext.Response.StatusCode = (int) HttpStatusCode.ServiceUnavailable;
+                    httpContext.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    httpContext.Response.End();
                 }
 
+                Exception lastError = httpContext.Server.GetLastError();
+                string redirectUrl = Config.SmartErrorRedirect; // default value
+                HttpStatusCode httpStatusCode = HttpStatusCode.InternalServerError; // default value
+                string cacheKey = string.Empty;
+                StringBuilder stringBuilder;
 
                 try
                 {
-                    if (e is DatabaseUnreachableException || e is SqlException)
+                    LogLevel logLevel;
+                    if (lastError is DatabaseUnreachableException || lastError is SqlException)
                     {
-                        _logLevel = LogLevel.Fatal;
-                        _redirectUrl = Config.DatabaseErrorRedirect;
-                        _httpStatusCode = Config.DatabaseErrorResponse;
+                        logLevel = LogLevel.Fatal;
+                        redirectUrl = Config.DatabaseErrorRedirect;
+                        httpStatusCode = Config.DatabaseErrorResponse;
                     }
-                    else if (e is DatabaseVersionException) // db version is behind code version
+                    else if (lastError is DatabaseVersionException) // db version is behind code version
                     {
-                        _logLevel = LogLevel.Fatal;
-                        _httpStatusCode = Config.DatabaseUpdateResponse;
-                        _redirectUrl = Config.DatabaseUpdateRedirect;
+                        logLevel = LogLevel.Fatal;
+                        httpStatusCode = Config.DatabaseUpdateResponse;
+                        redirectUrl = Config.DatabaseUpdateRedirect;
                     }
-                    else if (e is CodeVersionException) // code version is behind db version
+                    else if (lastError is CodeVersionException) // code version is behind db version
                     {
-                        _logLevel = LogLevel.Fatal;
-                        _httpStatusCode = Config.CodeUpdateResponse;
-                        _redirectUrl = Config.CodeUpdateRedirect;
+                        logLevel = LogLevel.Fatal;
+                        httpStatusCode = Config.CodeUpdateResponse;
+                        redirectUrl = Config.CodeUpdateRedirect;
                     }
-                    else if (e is PortalsLockedException) // AllPortals lock is "on"
+                    else if (lastError is PortalsLockedException) // AllPortals lock is "on"
                     {
-                        _logLevel = ((PortalsLockedException) e).Level;
-                        _auxMessage = "Attempt to access locked portal by non-keyholder.";
-                        _httpStatusCode = ((PortalsLockedException) e).StatusCode;
-                        _redirectUrl = Config.LockRedirect;
-                        e = null;
+                        logLevel = ((PortalsLockedException) lastError).Level;
+                        //_auxMessage = "Attempt to access locked portal by non-keyholder.";
+                        httpStatusCode = ((PortalsLockedException) lastError).StatusCode;
+                        redirectUrl = Config.LockRedirect;
+                        lastError = null;
                     }
-                    else if (e is RainbowRedirect)
+                    else if (lastError is RainbowRedirect)
                     {
-                        _logLevel = ((RainbowRedirect) e).Level;
-                        _httpStatusCode = ((RainbowRedirect) e).StatusCode;
-                        _redirectUrl = ((RainbowRedirect) e).RedirectUrl;
+                        logLevel = ((RainbowRedirect) lastError).Level;
+                        httpStatusCode = ((RainbowRedirect) lastError).StatusCode;
+                        redirectUrl = ((RainbowRedirect) lastError).RedirectUrl;
                     }
-                    else if (e is RainbowException)
+                    else if (lastError is RainbowException)
                     {
-                        _logLevel = ((RainbowException) e).Level;
-                        _httpStatusCode = ((RainbowException) e).StatusCode;
+                        logLevel = ((RainbowException) lastError).Level;
+                        httpStatusCode = ((RainbowException) lastError).StatusCode;
                     }
-                    else if (e is HttpException)
+                    else if (lastError is HttpException)
                     {
-                        _logLevel = LogLevel.Fatal;
-                        _httpStatusCode = (HttpStatusCode) ((HttpException) e).GetHttpCode();
+                        logLevel = LogLevel.Fatal;
+                        httpStatusCode = (HttpStatusCode) ((HttpException) lastError).GetHttpCode();
                     }
                     else
                     {
-                        _logLevel = LogLevel.Fatal; // default value
-                        _httpStatusCode = HttpStatusCode.InternalServerError; // default value
+                        logLevel = LogLevel.Fatal; // default value
+                        httpStatusCode = HttpStatusCode.InternalServerError; // default value
                     }
 
                     // create unique id
-                    _myGuid = Guid.NewGuid().ToString("N");
-                    _auxMessage = string.Format("errorGUID: {0}", _myGuid);
+                    string guid = Guid.NewGuid().ToString("N");
+                    string auxMessage = string.Format("errorGUID: {0}", guid);
 
                     // log it
-                    StringWriter sw = new StringWriter();
-                    PublishToLog(_logLevel, _auxMessage, e, sw);
+                    StringWriter stringWriter = new StringWriter();
+                    LogHelper.Logger.Log(logLevel, auxMessage, lastError, stringWriter);
 
                     // bundle the info
                     ArrayList storedError = new ArrayList(3);
-                    storedError.Add(_logLevel);
-                    storedError.Add(_myGuid);
-                    storedError.Add(sw);
+                    storedError.Add(logLevel);
+                    storedError.Add(guid);
+                    storedError.Add(stringWriter);
                     // cache it
-                    sb = new StringBuilder(Portal.UniqueID);
-                    sb.Append("_rb_error_");
-                    sb.Append(_myGuid);
-                    myCacheKey = sb.ToString();
-                    CurrentCache.Insert(myCacheKey, storedError);
+                    stringBuilder = new StringBuilder(RainbowContext.Current.UniqueID);
+                    stringBuilder.Append("_rb_error_");
+                    stringBuilder.Append(guid);
+                    cacheKey = stringBuilder.ToString();
+                    CurrentCache.Insert(cacheKey, storedError);
                 }
                 catch
                 {
                     try
                     {
-                        HttpContext.Current.Response.WriteFile(Config.CriticalErrorRedirect);
-                        HttpContext.Current.Response.StatusCode = (int) Config.CriticalErrorResponse;
+                        httpContext.Response.WriteFile(Config.CriticalErrorRedirect);
+                        httpContext.Response.StatusCode = (int) Config.CriticalErrorResponse;
                     }
                     catch
                     {
-                        HttpContext.Current.Response.Write("Sorry - a critical error has occurred - unable to continue");
-                        HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.ServiceUnavailable;
+                        httpContext.Response.Write("Sorry - a critical error has occurred - unable to continue");
+                        httpContext.Response.StatusCode = (int) HttpStatusCode.ServiceUnavailable;
                     }
                 }
                 finally
                 {
-                    if (_redirectUrl.StartsWith("http://"))
+                    if (redirectUrl.StartsWith("http://"))
                     {
-                        HttpContext.Current.Response.Redirect(_redirectUrl, true);
+                        httpContext.Response.Redirect(redirectUrl, true);
                     }
-                    else if (_redirectUrl.StartsWith("~/") && _redirectUrl.IndexOf(".aspx") > 0)
+                    else if (redirectUrl.StartsWith("~/") && redirectUrl.IndexOf(".aspx") > 0)
                     {
                         // append params to redirect url
-                        if (!_redirectUrl.StartsWith(@"http://"))
+                        if (!redirectUrl.StartsWith(@"http://"))
                         {
-                            sb = new StringBuilder();
-                            if (_redirectUrl.IndexOf("?") != -1)
+                            stringBuilder = new StringBuilder();
+                            if (redirectUrl.IndexOf("?") != -1)
                             {
-                                sb.Append(_redirectUrl.Substring(0, _redirectUrl.IndexOf("?") + 1));
-                                sb.Append(((int) _httpStatusCode).ToString());
-                                sb.Append("&eid=");
-                                sb.Append(myCacheKey);
-                                sb.Append("&");
-                                sb.Append(_redirectUrl.Substring(_redirectUrl.IndexOf("?") + 1));
-                                _redirectUrl = sb.ToString();
+                                stringBuilder.Append(redirectUrl.Substring(0, redirectUrl.IndexOf("?") + 1));
+                                stringBuilder.Append(((int) httpStatusCode).ToString());
+                                stringBuilder.Append("&eid=");
+                                stringBuilder.Append(cacheKey);
+                                stringBuilder.Append("&");
+                                stringBuilder.Append(redirectUrl.Substring(redirectUrl.IndexOf("?") + 1));
+                                redirectUrl = stringBuilder.ToString();
                             }
                             else
                             {
-                                sb.Append(_redirectUrl);
-                                sb.Append("?");
-                                sb.Append(((int) _httpStatusCode).ToString());
-                                sb.Append("&eid=");
-                                sb.Append(myCacheKey);
-                                _redirectUrl = sb.ToString();
+                                stringBuilder.Append(redirectUrl);
+                                stringBuilder.Append("?");
+                                stringBuilder.Append(((int) httpStatusCode).ToString());
+                                stringBuilder.Append("&eid=");
+                                stringBuilder.Append(cacheKey);
+                                redirectUrl = stringBuilder.ToString();
                             }
                         }
-                        HttpContext.Current.Response.Redirect(_redirectUrl, true);
+                        httpContext.Response.Redirect(redirectUrl, true);
                     }
-                    else if (_redirectUrl.StartsWith("~/") && _redirectUrl.IndexOf(".htm") > 0)
+                    else if (redirectUrl.StartsWith("~/") && redirectUrl.IndexOf(".htm") > 0)
                     {
-                        HttpContext.Current.Response.WriteFile(_redirectUrl);
-                        HttpContext.Current.Response.StatusCode = (int) _httpStatusCode;
-                        HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                        HttpContext.Current.Response.End();
+                        httpContext.Response.WriteFile(redirectUrl);
+                        httpContext.Response.StatusCode = (int) httpStatusCode;
+                        httpContext.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                        httpContext.Response.End();
                     }
                     else
                     {
-                        HttpContext.Current.Response.Write("Sorry - a critical error has occurred - unable to continue");
-                        HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.ServiceUnavailable;
-                        HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                        HttpContext.Current.Response.End();
+                        httpContext.Response.Write("Sorry - a critical error has occurred - unable to continue");
+                        httpContext.Response.StatusCode = (int) HttpStatusCode.ServiceUnavailable;
+                        httpContext.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                        httpContext.Response.End();
                     }
                 }
             }
@@ -210,46 +202,6 @@ namespace Rainbow.Framework
             {
                 Publish(LogLevel.Fatal, "Unexpected error in ErrorHandler", ex);
             }
-        }
-
-        /// <summary>
-        /// Handles the exception.
-        /// </summary>
-        [Obsolete("use one of the Publish() overloads")]
-        public static void HandleException()
-        {
-            Exception e = HttpContext.Current.Server.GetLastError();
-
-            if (e == null)
-                return;
-
-            e = e.GetBaseException();
-
-            if (e != null)
-                HandleException(e);
-        }
-
-        /// <summary>
-        /// Handles the exception.
-        /// </summary>
-        /// <param name="e">The e.</param>
-        [Obsolete("use one of the Publish() overloads")]
-        public static void HandleException(Exception e)
-        {
-            //InnerHandleException(FormatExceptionDescription(e), e);
-            Publish(LogLevel.Error, e);
-        }
-
-        /// <summary>
-        /// Handles the exception.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="e">The e.</param>
-        [Obsolete("use one of the Publish() overloads")]
-        public static void HandleException(string message, Exception e)
-        {
-            //InnerHandleException(message + Environment.NewLine + FormatExceptionDescription(e), e);
-            Publish(LogLevel.Error, message, e);
         }
 
         /// <summary>
@@ -289,23 +241,9 @@ namespace Rainbow.Framework
         /// <param name="_logLevel">Rainbow.Framework.Configuration.LogLevel enumerator</param>
         /// <param name="_auxMessage">Text message to be shown in log entry</param>
         /// <param name="e">Exception object (can be null)</param>
-        private static void PublishToLog(LogLevel _logLevel, string _auxMessage, Exception e)
+        static void PublishToLog(LogLevel _logLevel, string _auxMessage, Exception e)
         {
-            // log it
             LogHelper.Logger.Log(_logLevel, _auxMessage, e);
-        }
-
-        /// <summary>
-        /// Publishes the exception.
-        /// </summary>
-        /// <param name="_logLevel">Rainbow.Framework.Configuration.LogLevel enumerator</param>
-        /// <param name="_auxMessage">Text message to be shown in log entry</param>
-        /// <param name="e">Exception object (can be null)</param>
-        /// <param name="sw">A StringWriter object which will be filled with a formatted verion of the log entry</param>
-        private static void PublishToLog(LogLevel _logLevel, string _auxMessage, Exception e, StringWriter sw)
-        {
-            // log it
-            LogHelper.Logger.Log(_logLevel, _auxMessage, e, sw);
         }
     }
 }

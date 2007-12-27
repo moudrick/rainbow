@@ -26,33 +26,29 @@ namespace Rainbow.Framework.Users.Data {
 
         #region Properties
 
-        private RainbowMembershipProvider MembershipProvider {
-            get {
-                if ( !( Membership.Provider is RainbowMembershipProvider ) ) {
-                    throw new RainbowMembershipProviderException( "The membership provider must be a RainbowMembershipProvider implementation" );
-                }
-                return Membership.Provider as RainbowMembershipProvider;
+        static RainbowMembershipProvider MembershipProvider
+        {
+            get
+            {
+                return RainbowMembershipProvider.Instance;
             }
         }
 
-        private RainbowRoleProvider RoleProvider {
-            get {
-                if ( !( Roles.Provider is RainbowRoleProvider ) ) {
-                    throw new RainbowRoleProviderException( "The role provider must be a RainbowRoleProvider implementation" );
-                }
-                return Roles.Provider as RainbowRoleProvider;
+        static RainbowRoleProvider RoleProvider {
+            get 
+            {
+                return RainbowRoleProvider.Instance;
             }
         }
 
-        private PortalSettings CurrentPortalSettings {
-            get {
-                return (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+        static PortalSettings CurrentPortalSettings {
+            get 
+            {
+                return PortalProvider.Instance.CurrentPortal;
             }
         }
 
         #endregion
-
-        //private CryptoHelper cryphelp = null;
 
         #region Add Roles and Users
 
@@ -207,16 +203,6 @@ namespace Rainbow.Framework.Users.Data {
         }
 
         /// <summary>
-        /// The GetRoleMembers method returns a list of all members in the specified security role.
-        /// </summary>
-        /// <param name="roleId">The role id.</param>
-        /// <returns>a <code>string[]</code> of user names
-        /// </returns>
-        public string[] GetRoleMembers( Guid roleId ) {
-            return RoleProvider.GetUsersInRole( CurrentPortalSettings.PortalAlias, roleId );
-        }
-
-        /// <summary>
         /// The GetUsersNoRole method retuns a list of all members that doesn´t have any roles.
         /// </summary>
         /// <param name="PortalID">The portal id</param>
@@ -295,26 +281,6 @@ namespace Rainbow.Framework.Users.Data {
         }
 
         /// <summary>
-        /// The GetUser method returns the collection of users.
-        /// </summary>
-        /// <returns></returns>
-        public MembershipUserCollection GetUsers() {
-            int totalRecords;
-            return MembershipProvider.GetAllUsers( CurrentPortalSettings.PortalAlias, 0, int.MaxValue, out totalRecords );
-        }
-
-        /// <summary>
-        /// The GetUsersCount method returns the users count.
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <returns></returns>
-        public int GetUsersCount( int portalID ) {
-            int totalRecords;
-            MembershipProvider.GetAllUsers( CurrentPortalSettings.PortalAlias, 0, 1, out totalRecords );
-            return totalRecords;
-        }
-
-        /// <summary>
         /// UsersDB.Login() Method.
         /// The Login method validates a email/password hash pair against credentials
         /// stored in the users database.  If the email/password hash pair is valid,
@@ -341,7 +307,6 @@ namespace Rainbow.Framework.Users.Data {
                 return null;
             }
         }
-
 
         /// <summary>
         /// UpdateUser
@@ -501,30 +466,6 @@ namespace Rainbow.Framework.Users.Data {
             user.SendNewsletter = sendNewsletter;
 
             MembershipProvider.UpdateUser(user);
-        }
-
-        /// <summary>
-        /// The UpdateUserCheckEmail sets the user email as trusted and verified
-        /// </summary>
-        /// <param name="userID">The user ID.</param>
-        /// <param name="CheckedEmail">The checked email.</param>
-      public void UpdateUserCheckEmail( int userID, bool CheckedEmail ) {
-            MembershipUser user = Membership.GetUser( userID );
-            user.IsApproved = CheckedEmail;
-
-            Membership.UpdateUser( user );
-        }
-
-        /// <summary>
-        /// Change the user password with a new one
-        /// </summary>
-        /// <param name="userID">The user ID.</param>
-        /// <param name="password">The password.</param>
-      public void UpdateUserSetPassword( int userID, string password ) {
-            MembershipUser user = Membership.GetUser( userID );
-            user.ChangePassword( user.GetPassword(), password );
-
-            Membership.UpdateUser( user );
         }
     }
 }

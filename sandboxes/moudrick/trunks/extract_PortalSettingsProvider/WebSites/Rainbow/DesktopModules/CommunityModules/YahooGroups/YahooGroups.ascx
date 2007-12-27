@@ -31,7 +31,7 @@
                 Message.Text = "Debug info: " + yahooGroupName + " - " + yahooServerName;
         }
 
-        email.Text = PortalSettings.CurrentUser.Identity.Email;
+        email.Text = RainbowContext.CurrentUser.Identity.Email;
     }
 
     void SubscribeBtn_Click(Object sender, EventArgs e)

@@ -129,7 +129,7 @@ namespace Rainbow.Content.Web.Modules
 			try
 			{
                 SimpleMenuType theMenu = (SimpleMenuType)this.LoadControl(Path.ApplicationRoot + "/DesktopModules/CommunityModules/SimpleMenu/SimpleMenuTypes/" + menuType);
-				theMenu.GlobalPortalSettings = this.portalSettings;
+				theMenu.GlobalPortalSettings = this.PortalSettings;
 				theMenu.ModuleSettings	 = this.Settings;
 				theMenu.DataBind();
 				PlaceHolder.Controls.Add(theMenu);   

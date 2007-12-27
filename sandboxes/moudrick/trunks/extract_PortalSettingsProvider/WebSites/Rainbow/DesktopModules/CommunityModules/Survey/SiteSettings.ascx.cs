@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
-using Literal = System.Web.UI.WebControls.Literal;
+using Label=Rainbow.Framework.Web.UI.WebControls.Label;
+using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -38,12 +41,12 @@ namespace Rainbow.Content.Web.Modules
             if (Page.IsPostBack == false) 
             {
 				//We flush cache for enable correct localization of items
-				PortalSettings.FlushBaseSettingsCache(portalSettings.PortalPath);
+				PortalProvider.Instance.FlushBaseSettingsCache(PortalSettings.PortalPath);
 
-                siteName.Text = portalSettings.PortalName;
-                sitePath.Text = portalSettings.PortalPath;
+                siteName.Text = PortalSettings.PortalName;
+                sitePath.Text = PortalSettings.PortalPath;
 			}
-			EditTable.DataSource = new SortedList(portalSettings.CustomSettings);
+			EditTable.DataSource = new SortedList(PortalSettings.CustomSettings);
 			EditTable.DataBind();
         }
 		        
@@ -54,15 +57,15 @@ namespace Rainbow.Content.Web.Modules
         protected override void OnUpdate(EventArgs e) 
         {
 			// Flush the cache for recovery the changes. jviladiu@portalServices.net (30/07/2004)
-			PortalSettings.FlushBaseSettingsCache(portalSettings.PortalPath);
+			PortalProvider.Instance.FlushBaseSettingsCache(PortalSettings.PortalPath);
 			//Call base
 			base.OnUpdate(e);
 
             // Only Update if Input Data is Valid
-            if (Page.IsValid == true) 
+            if (Page.IsValid) 
             {
                 //Update main settings and Tab info in the database
-                new PortalsDB().UpdatePortalInfo(portalSettings.PortalID, siteName.Text, sitePath.Text, false);
+                PortalProvider.Instance.UpdatePortalInfo(PortalSettings.PortalID, siteName.Text, sitePath.Text, false);
 
                 // Update custom settings in the database
                 EditTable.UpdateControls();
@@ -74,7 +77,7 @@ namespace Rainbow.Content.Web.Modules
 
         private void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
         {
-            PortalSettings.UpdatePortalSetting(portalSettings.PortalID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);        
+            RainbowContext.Current.UpdatePortalSetting(PortalSettings.PortalID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);        
         }
 
 		public override Guid GuidID 

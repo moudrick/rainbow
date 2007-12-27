@@ -147,7 +147,7 @@ namespace Rainbow.Content.Web.Modules
                 SourcePortal.SelectedIndex = i;
                 DestinationPortal.SelectedIndex = i;
 
-                if (SourcePortal.SelectedItem.Value == (portalSettings.PortalID).ToString())
+                if (SourcePortal.SelectedItem.Value == (PortalSettings.PortalID).ToString())
                     return;
             } //end for
         }

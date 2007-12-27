@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Web;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Settings.Cache;
-using Rainbow.Framework.Site.Configuration;
 using System;
 
 namespace Rainbow.Framework.Web.UI.WebControls
@@ -16,7 +15,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
     {
         // provide a custom Hashtable that will store user-specific settings for this instance
         // of the module.  
-        protected Hashtable _customUserSettings;
+        protected Hashtable customUserSettings;
 
         /// <summary>
         /// Gets a value indicating whether this instance has customizeable settings.
@@ -38,9 +37,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             get
             {
-                if (_customUserSettings != null)
+                if (customUserSettings != null)
                 {
-                    return _customUserSettings;
+                    return customUserSettings;
                 }
                 else
                 {
@@ -66,7 +65,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     //Now, replace the default settings with the custom settings for this user from the database.
                     return
                         ModuleSettingsProvider.GetModuleUserSettings(ModuleConfiguration.ModuleID,
-                                                                   (Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey,
+                                                                   (Guid)RainbowContext.CurrentUser.Identity.ProviderUserKey,
                                                                    tempSettings);
                 }
             }
@@ -87,7 +86,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 if (customizeButton == null && HttpContext.Current != null)
                 {
                     // check authority
-                    if (HasCustomizeableSettings && PortalSettings.CurrentUser.Identity.IsOnline)
+                    if (HasCustomizeableSettings && RainbowContext.CurrentUser.Identity.IsOnline)
                     {
                         // create the button
                         customizeButton = new ModuleButton();
@@ -102,7 +101,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         else
                             customizeButton.HRef =
                                 HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Admin/CustomPropertyPage.aspx", PageID,
-                                                        "mID=" + ModuleID.ToString());
+                                                        "mID=" + ModuleID);
                         customizeButton.Target = PropertiesTarget;
                         customizeButton.RenderAs = ButtonsRenderAs;
                     }
@@ -117,7 +116,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
         protected override void BuildButtonLists()
         {
             if (CustomizeButton != null)
+            {
                 ButtonListAdmin.Add(CustomizeButton);
+            }
 
             base.BuildButtonLists();
         }

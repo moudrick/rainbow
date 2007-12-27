@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
@@ -484,7 +484,7 @@ namespace Rainbow.Content.Web.Modules
 
             sb.Append( "New User Registration\n" );
             sb.Append( "---------------------\n" );
-            sb.Append( "PORTAL         : " + portalSettings.PortalTitle + "\n" );
+            sb.Append( "PORTAL         : " + PortalSettings.PortalTitle + "\n" );
             sb.Append( "Name           : " + NameField.Text + "\n" );
             sb.Append( "Company        : " + CompanyField.Text + "\n" );
             sb.Append( "Address        : " + AddressField.Text + "\n" );
@@ -499,9 +499,9 @@ namespace Rainbow.Content.Web.Modules
             sb.Append( "Send Newsletter: " + SendNewsletter.Checked + "\n" );
 
             MailHelper.SendMailNoAttachment(
-                portalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
-                portalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
-                "New User Registration for " + portalSettings.PortalAlias,
+                PortalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
+                PortalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
+                "New User Registration for " + PortalSettings.PortalAlias,
                 sb.ToString(),
                 string.Empty,
                 string.Empty,
@@ -521,7 +521,7 @@ namespace Rainbow.Content.Web.Modules
             Guid returnID = SaveUserData();
 
             if ( returnID != Guid.Empty ) {
-                if ( portalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString().Length > 0 )
+                if ( PortalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString().Length > 0 )
                     SendRegistrationNoticeToAdmin();
                 //Full signon
                 PortalSecurity.SignOn( EmailField.Text, PasswordField.Text, false, RedirectPage );
@@ -595,7 +595,7 @@ namespace Rainbow.Content.Web.Modules
                 if ( EditMode ) // Someone requested edit this record
                 {
                     //True is use is editing himself, false if is edited by an admin
-                    selfEdit = ( userName == PortalSettings.CurrentUser.Identity.UserName );
+                    selfEdit = ( userName == RainbowContext.CurrentUser.Identity.UserName );
 
                     // Removed by Mario Endara <mario@softworks.com.uy> (2004/11/04)
                     //					if (PortalSecurity.IsInRoles("Admins") || selfEdit)
@@ -659,7 +659,7 @@ namespace Rainbow.Content.Web.Modules
                     RegisterBtn.Visible = true;
                 }
 
-                string termsOfService = portalSettings.GetTermsOfService;
+                string termsOfService = PortalSettings.GetTermsOfService;
 
                 //Verify if we have to show conditions
                 if ( termsOfService.Length != 0 ) {

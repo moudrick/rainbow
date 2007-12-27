@@ -3,15 +3,12 @@ using System.Collections;
 using System.Data.SqlClient;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 
 namespace Rainbow.Content.Web.Modules
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [History("jminond", "2006/2/23", "Converted to partial class")]
     public partial class ComponentModuleEdit : AddEditItemPage
     {
@@ -77,12 +74,12 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only Update if the Entered Data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 // Create an instance of the Event DB component
                 ComponentModuleDB comp = new ComponentModuleDB();
 
-                comp.UpdateComponentModule(ModuleID, PortalSettings.CurrentUser.Identity.Email, TitleField.Text,
+                comp.UpdateComponentModule(ModuleID, RainbowContext.CurrentUser.Identity.Email, TitleField.Text,
                                            ComponentField.Text);
 
                 // Redirect back to the portal home page

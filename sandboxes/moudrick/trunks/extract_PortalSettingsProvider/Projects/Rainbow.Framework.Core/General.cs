@@ -13,8 +13,6 @@ namespace Rainbow.Framework
     /// </remarks>
     public static class General
     {
-        #region Get Strings
-
         /// <summary>
         /// Get a resource string value
         /// </summary>
@@ -70,14 +68,20 @@ namespace Rainbow.Framework
                     ret = str.ToString();
 #if DEBUG
                     if (ret.Length > 0)
+                    {
                         HttpContext.Current.Trace.Warn("We got localized  version");
+                    }
                     else
+                    {
                         HttpContext.Current.Trace.Warn("Localized return empty, use default");
+                    }
 #endif
                 }
 
                 if (ret.Length == 0)
+                {
                     return defaultValue;
+                }
 
                 HttpContext.Current.Trace.Warn("GetString  = " + ret);
                 return ret;
@@ -89,6 +93,22 @@ namespace Rainbow.Framework
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Get resource
+        /// </summary>
+        /// <param name="resourceID">The resource ID.</param>
+        /// <param name="localize">The _localize.</param>
+        /// <returns></returns>
+        public static string GetStringResource(string resourceID, string[] localize)
+        {
+            string res = General.GetString(resourceID);
+
+            for (int i = 0; i <= localize.GetUpperBound(0); i++)
+            {
+                string thisparam = "%" + i + "%";
+                res = res.Replace(thisparam, General.GetString(localize[i]));
+            }
+            return res;
+        }
     }
 }

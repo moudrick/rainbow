@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Rainbow.Framework;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Settings.Cache;
@@ -50,8 +51,8 @@ namespace Rainbow.AdminAll
                 }
                 EditTable.DataSource =
                     new SortedList(
-                        PortalSettings.GetPortalCustomSettings(currentPortalSettings.PortalID,
-                                                               PortalSettings.GetPortalBaseSettings(null)));
+                        PortalProvider.Instance.GetPortalCustomSettings(currentPortalSettings.PortalID,
+                            PortalProvider.Instance.GetPortalBaseSettings(null)));
                 EditTable.DataBind();
                 EditTable.ObjectID = currentPortalID;
             }
@@ -103,7 +104,7 @@ namespace Rainbow.AdminAll
         private void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
         {
             SettingsTable edt = (SettingsTable) sender;
-            PortalSettings.UpdatePortalSetting(edt.ObjectID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
+            RainbowContext.Current.UpdatePortalSetting(edt.ObjectID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
 
         #region Web Form Designer generated code

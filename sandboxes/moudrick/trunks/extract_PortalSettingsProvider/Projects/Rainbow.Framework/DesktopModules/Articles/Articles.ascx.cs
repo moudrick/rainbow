@@ -67,7 +67,7 @@ namespace Rainbow.Content.Web.Modules
         {
             SupportsWorkflow = true;
 
-            if (portalSettings != null) //check for avoid design time errors
+            if (PortalSettings != null) //check for avoid design time errors
             {
                 // modified by Hongwei Shen(hongwei.shen@gmail.com) 12/9/2005
                 SettingItemGroup group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
@@ -119,7 +119,7 @@ namespace Rainbow.Content.Web.Modules
                 UsersDB users = new UsersDB();
                 SettingItem RolesViewExpiredItems =
                     new SettingItem(
-                        new CheckBoxListDataType(users.GetPortalRoles(portalSettings.PortalAlias), "RoleName", "RoleName"));
+                        new CheckBoxListDataType(users.GetPortalRoles(PortalSettings.PortalAlias), "RoleName", "RoleName"));
                 RolesViewExpiredItems.Value = "Admins";
                 RolesViewExpiredItems.EnglishName = "Expired items visible to";
                 RolesViewExpiredItems.Description = "Role that can see expire items";

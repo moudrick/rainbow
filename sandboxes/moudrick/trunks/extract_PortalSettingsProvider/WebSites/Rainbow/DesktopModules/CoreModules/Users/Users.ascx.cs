@@ -2,6 +2,8 @@ using System;
 using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Users.Data;
@@ -106,10 +108,7 @@ namespace Rainbow.Content.Web.Modules
                 UserDomain.Visible = true;
                 UserForm.Visible = false;
             }
-
-            // Get the list of registered users from the database
-            allUsers.DataSource = new UsersDB().GetUsers();
-            // bind all portal users to dropdownlist
+            allUsers.DataSource = RainbowMembershipProvider.Instance.GetUsers(PortalProvider.Instance.CurrentPortal.PortalAlias);
             allUsers.DataBind();
         }
 

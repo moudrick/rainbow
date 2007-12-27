@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 
@@ -128,7 +128,7 @@ namespace Rainbow.Content.Web.Modules
                 {
                     Metadata.AppendChild(Metadata.CreateElement("Metadata"));
                     MetadataXml = Metadata.OuterXml;
-                    if (bool.Parse((SettingItem) moduleSettings["AllowBulkLoad"]) == true)
+                    if (bool.Parse((SettingItem) moduleSettings["AllowBulkLoad"]))
                     {
                         // Esperantus.Esperantus.Localize.y are adding, and we are allowed to bulk load so
                         // make Esperantus.Esperantus.Localize. controls visible
@@ -169,11 +169,11 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only Update if Entered data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 // Create an instance of Esperantus.Esperantus.Localize. PicturesDB component
                 PicturesDB pictures = new PicturesDB();
-                Bitmap fullPicture = null;
+                Bitmap fullPicture;
 
                 //Get Esperantus.Esperantus.Localize. resize option for Esperantus.Esperantus.Localize. thumbnail
                 Pictures.ResizeOption thumbnailResize =
@@ -222,10 +222,10 @@ namespace Rainbow.Content.Web.Modules
                         FileInfo fileInfo = new FileInfo(file);
 
                         //Create new filenames for Esperantus.Esperantus.Localize. thumbnail and Esperantus.Esperantus.Localize. original picture
-                        ModifiedFilename = ModuleID.ToString() + "m" + Guid.NewGuid().ToString() + ".jpg";
+                        ModifiedFilename = ModuleID + "m" + Guid.NewGuid() + ".jpg";
                         SetMetadata("ModifiedFilename", ModifiedFilename);
 
-                        ThumbnailFilename = ModuleID.ToString() + "m" + Guid.NewGuid().ToString() + ".jpg";
+                        ThumbnailFilename = ModuleID + "m" + Guid.NewGuid() + ".jpg";
                         SetMetadata("ThumbnailFilename", ThumbnailFilename);
 
                         //Full path of Esperantus.Esperantus.Localize. original picture
@@ -275,7 +275,7 @@ namespace Rainbow.Content.Web.Modules
                             return;
                         }
 
-                        Bitmap modified = null;
+                        Bitmap modified;
 
                         try
                         {
@@ -318,13 +318,13 @@ namespace Rainbow.Content.Web.Modules
                         SetMetadata("Caption", Caption.Text);
                         SetMetadata("Keywords", Keywords.Text);
                         SetMetadata("UploadDate", DateTime.Now.ToString());
-                        SetMetadata("CreatedBy", PortalSettings.CurrentUser.Identity.Email);
+                        SetMetadata("CreatedBy", RainbowContext.CurrentUser.Identity.Email);
                         SetMetadata("DisplayOrder", displayOrder.ToString());
 
                         //Add new picture to Esperantus.Esperantus.Localize. database
                         ItemID =
                             pictures.AddPicture(ModuleID, ItemID, displayOrder, MetadataXml, ShortDescription.Text,
-                                                Keywords.Text, PortalSettings.CurrentUser.Identity.Email, DateTime.Now);
+                                                Keywords.Text, RainbowContext.CurrentUser.Identity.Email, DateTime.Now);
                     }
                 }
                 else
@@ -333,10 +333,10 @@ namespace Rainbow.Content.Web.Modules
                     if (flPicture.PostedFile.FileName.Length != 0)
                     {
                         //Create new filenames for Esperantus.Esperantus.Localize. thumbnail and Esperantus.Esperantus.Localize. original picture
-                        ModifiedFilename = ModuleID.ToString() + "m" + Guid.NewGuid().ToString() + ".jpg";
+                        ModifiedFilename = ModuleID + "m" + Guid.NewGuid() + ".jpg";
                         SetMetadata("ModifiedFilename", ModifiedFilename);
 
-                        ThumbnailFilename = ModuleID.ToString() + "m" + Guid.NewGuid().ToString() + ".jpg";
+                        ThumbnailFilename = ModuleID + "m" + Guid.NewGuid() + ".jpg";
                         SetMetadata("ThumbnailFilename", ThumbnailFilename);
 
                         //Full path of Esperantus.Esperantus.Localize. original picture
@@ -405,7 +405,7 @@ namespace Rainbow.Content.Web.Modules
                             return;
                         }
 
-                        Bitmap modified = null;
+                        Bitmap modified;
 
                         try
                         {
@@ -458,7 +458,7 @@ namespace Rainbow.Content.Web.Modules
                     SetMetadata("Caption", Caption.Text);
                     SetMetadata("Keywords", Keywords.Text);
                     SetMetadata("UploadDate", DateTime.Now.ToString());
-                    SetMetadata("CreatedBy", PortalSettings.CurrentUser.Identity.Email);
+                    SetMetadata("CreatedBy", RainbowContext.CurrentUser.Identity.Email);
                     SetMetadata("DisplayOrder", displayOrder.ToString());
 
                     if (ItemID == 0)
@@ -466,13 +466,13 @@ namespace Rainbow.Content.Web.Modules
                         //If this is a new picture add it to Esperantus.Esperantus.Localize. database
                         ItemID =
                             pictures.AddPicture(ModuleID, ItemID, displayOrder, MetadataXml, ShortDescription.Text,
-                                                Keywords.Text, PortalSettings.CurrentUser.Identity.Email, DateTime.Now);
+                                                Keywords.Text, RainbowContext.CurrentUser.Identity.Email, DateTime.Now);
                     }
                     else
                     {
                         //Update Esperantus.Esperantus.Localize. existing one
                         pictures.UpdatePicture(ModuleID, ItemID, displayOrder, MetadataXml, ShortDescription.Text,
-                                               Keywords.Text, PortalSettings.CurrentUser.Identity.Email, DateTime.Now);
+                                               Keywords.Text, RainbowContext.CurrentUser.Identity.Email, DateTime.Now);
                     }
                 }
                 // Redirect back to Esperantus.Esperantus.Localize. portal home page
@@ -542,7 +542,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         public PicturesEdit()
         {
-            Page.Init += new EventHandler(Page_Init);
+            Page.Init += Page_Init;
         }
 
         /// <summary>

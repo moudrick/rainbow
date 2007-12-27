@@ -158,7 +158,7 @@ namespace Rainbow.Content.Web.Modules
             // Get the portal's roles from the database
             Rainbow.Framework.Users.Data.UsersDB users = new Rainbow.Framework.Users.Data.UsersDB();
 
-            IList<RainbowRole> roles = users.GetPortalRoles(portalSettings.PortalAlias);
+            IList<RainbowRole> roles = users.GetPortalRoles(PortalSettings.PortalAlias);
             ddlRoles.DataSource = roles;
             ddlRoles.DataBind();
 

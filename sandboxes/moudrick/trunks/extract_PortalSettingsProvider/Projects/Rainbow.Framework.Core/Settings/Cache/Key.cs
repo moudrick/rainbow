@@ -1,3 +1,5 @@
+using Rainbow.Framework.Core;
+
 namespace Rainbow.Framework.Settings.Cache
 {
 	/// <summary>
@@ -5,14 +7,7 @@ namespace Rainbow.Framework.Settings.Cache
 	/// </summary>
 	public sealed class Key
 	{
-		/// <summary>
-		///     ctor
-		/// </summary>
-		/// 
-		/// <returns>
-		///     A void value...
-		/// </returns>
-		private Key() {}
+		Key() {}
 
 		/// <summary>
 		/// This method allows you to create a custom cache key for a modules' specific settings
@@ -21,7 +16,7 @@ namespace Rainbow.Framework.Settings.Cache
 		/// <returns>The generated cache key for the module you specified</returns>
 		public static string ModuleSettings(int moduleID)
 		{
-			return string.Concat(Portal.UniqueID, "_ModuleSettings_", moduleID.ToString());
+            return string.Concat(RainbowContext.Current.UniqueID, "_ModuleSettings_", moduleID.ToString());
 		}
 
 		/// <summary>
@@ -30,7 +25,7 @@ namespace Rainbow.Framework.Settings.Cache
 		/// <returns>Cache Key For Portal Settings</returns>
 		public static string PortalSettings()
 		{
-			return string.Concat(Portal.UniqueID, "_PortalSettings");
+            return string.Concat(RainbowContext.Current.UniqueID, "_PortalSettings");
 		}
 
 		/// <summary>
@@ -39,7 +34,7 @@ namespace Rainbow.Framework.Settings.Cache
 		/// <returns>Cache Key For Portal Base Settings</returns>
 		public static string PortalBaseSettings()
 		{
-			return string.Concat(Portal.UniqueID, "_PortalBaseSettings");
+            return string.Concat(RainbowContext.Current.UniqueID, "_PortalBaseSettings");
 		}
 
 		/// <summary>
@@ -49,7 +44,7 @@ namespace Rainbow.Framework.Settings.Cache
 		/// <returns>The generated cache key for the tab you specified</returns>
 		public static string TabSettings(int tabID)
 		{
-			return string.Concat(Portal.UniqueID, "_TabSettings_", tabID.ToString());
+            return string.Concat(RainbowContext.Current.UniqueID, "_TabSettings_", tabID.ToString());
 		}
 
 		/// <summary>
@@ -60,7 +55,7 @@ namespace Rainbow.Framework.Settings.Cache
 		/// <returns>The generated cache key for the tab navigation you specified</returns>
 		public static string TabNavigationSettings(int tabID, string language)
 		{
-			return string.Concat(Portal.UniqueID, "_TabNavigationSettings_", tabID.ToString(), language);
+            return string.Concat(RainbowContext.Current.UniqueID, "_TabNavigationSettings_", tabID.ToString(), language);
 		}
 
 		/// <summary>
@@ -69,7 +64,7 @@ namespace Rainbow.Framework.Settings.Cache
 		/// <returns>The generated cache key</returns>
 		public static string LanguageList()
 		{
-			return string.Concat(Portal.UniqueID, "_LanguageList");
+            return string.Concat(RainbowContext.Current.UniqueID, "_LanguageList");
 		}
 
 		/// <summary>
@@ -79,7 +74,7 @@ namespace Rainbow.Framework.Settings.Cache
 		/// <returns>The generated cache key</returns>
 		public static string ImageMenuList(string currentLayout)
 		{
-			return string.Concat(Portal.UniqueID, "_ImageMenuList_", currentLayout);
+            return string.Concat(RainbowContext.Current.UniqueID, "_ImageMenuList_", currentLayout);
 		}
 
 		/// <summary>
@@ -89,7 +84,7 @@ namespace Rainbow.Framework.Settings.Cache
 		/// <returns>The generated cache key</returns>
 		public static string LayoutList(string pathname)
 		{
-			return string.Concat(Portal.UniqueID, "_LayoutList_", pathname);
+            return string.Concat(RainbowContext.Current.UniqueID, "_LayoutList_", pathname);
 		}
 
 		/// <summary>
@@ -99,7 +94,7 @@ namespace Rainbow.Framework.Settings.Cache
 		/// <returns>The generated cache key</returns>
 		public static string ThemeList(string pathname)
 		{
-			return string.Concat(Portal.UniqueID, "_ThemeList_", pathname);
+            return string.Concat(RainbowContext.Current.UniqueID, "_ThemeList_", pathname);
 		}
 
 		/// <summary>
@@ -109,10 +104,7 @@ namespace Rainbow.Framework.Settings.Cache
 		/// <returns>The generated cache key</returns>
 		public static string CurrentTheme(string pathname)
 		{
-			return string.Concat(Portal.UniqueID, "_CurrentTheme_", pathname);
+            return string.Concat(RainbowContext.Current.UniqueID, "_CurrentTheme_", pathname);
 		}
-
-
-
 	}
 }

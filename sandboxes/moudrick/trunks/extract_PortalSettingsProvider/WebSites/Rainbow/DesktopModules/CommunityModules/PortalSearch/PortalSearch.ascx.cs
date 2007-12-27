@@ -4,7 +4,8 @@ using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Users.Data;
@@ -113,32 +114,31 @@ namespace Rainbow.Content.Web.Modules
         {
             try
             {
-                Guid userID = Guid.Empty;
+                Guid userID;
                 if (testUserID != Guid.Empty)
+                {
                     userID = testUserID;
+                }
                 else
                 {
                     UsersDB u = new UsersDB();
-                    System.Web.Security.MembershipUser s = u.GetSingleUser(PortalSettings.CurrentUser.Identity.Email);
-                    try
-                    {
-                            userID =  (Guid) s.ProviderUserKey;
-                    }
-                    finally
-                    {
-                    //    s.Close(); //by Manu, fixed bug 807858
-                    }
+                    System.Web.Security.MembershipUser s = u.GetSingleUser(RainbowContext.CurrentUser.Identity.Email);
+                    userID = (Guid) s.ProviderUserKey;
                 }
 
                 //Get topic
                 string topicName = ddTopics.SelectedItem.Value;
                 //All = no filter
                 if (topicName == General.GetString("PORTALSEARCH_ALL", "All", null))
+                {
                     topicName = string.Empty;
+                }
 
                 if (txtSearchString.Text.Length <= 2)
+                {
                     throw new Exception(
                         General.GetString("PORTALSEARCH_TONARROW", "Search string to narrow to be searched", null));
+                }
 
                 SqlDataReader r =
                     SearchHelper.SearchPortal(PortalID, userID, ddSearchModule.SelectedItem.Value, txtSearchString.Text,
@@ -148,10 +148,12 @@ namespace Rainbow.Content.Web.Modules
                 int hits;
                 DataSet ds = FillPortalDS(PortalID, userID, r, out hits);
 
-                DataView myDataView = new DataView();
-                myDataView = ds.Tables[0].DefaultView;
+                DataView myDataView = ds.Tables[0].DefaultView;
 
-                if (sortOrder.Equals("Title")) sortOrder = "cleanTitle";
+                if (sortOrder.Equals("Title"))
+                {
+                    sortOrder = "cleanTitle";
+                }
 
                 for (int i = 0; i < myDataView.Table.Columns.Count; i++)
                 {
@@ -267,25 +269,25 @@ namespace Rainbow.Content.Web.Modules
             {
                 ds = CreatePortalDS(ds);
 
-                string strTmp, strLink, strModuleName;
-                string strModuleID, strItemID, strLocate;
-                string strTabID, strTabName;
-                string strModuleGuidID, strModuleTitle;
-                DataRow dr;
 
                 try
 
                 {
                     while (hits <= maxHits && portalSearchResult.Read())
                     {
-                        dr = ds.Tables["PortalSearch"].NewRow();
+                        string strTmp, strLink, strModuleName;
+                        string strModuleID, strItemID, strLocate;
+                        string strTabID, strTabName;
+                        string strModuleGuidID, strModuleTitle;
+
+                        DataRow dr = ds.Tables["PortalSearch"].NewRow();
 
                         strModuleName = portalSearchResult.GetString(0);
                         strModuleID = portalSearchResult.GetInt32(3).ToString();
                         strItemID = portalSearchResult.GetInt32(4).ToString();
                         strLocate = "mID=" + strModuleID + "&ItemID=" + strItemID;
                         strTabID = portalSearchResult.GetInt32(7).ToString();
-                        strTabName = portalSearchResult.GetString(8).ToString();
+                        strTabName = portalSearchResult.GetString(8);
                         strModuleGuidID = portalSearchResult.GetGuid(9).ToString().ToUpper();
                         strModuleTitle = portalSearchResult.GetString(10);
                         //strLink = Rainbow.Framework.Settings.Path.ApplicationRoot;
@@ -316,7 +318,7 @@ namespace Rainbow.Content.Web.Modules
                             case "EC24FABD-FB16-4978-8C81-1ADD39792377": //Products
                                 // Manu
                                 int tabID =
-                                    PortalSettings.GetRootPage(Convert.ToInt32(strTabID), portalSettings.DesktopPages).
+                                    PortalProvider.Instance.GetRootPage(Convert.ToInt32(strTabID), PortalSettings.DesktopPages).
                                         PageID;
                                 strLink =
                                     HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", tabID,
@@ -437,7 +439,7 @@ namespace Rainbow.Content.Web.Modules
                         {
                             dr["TestInfo"] = "ModuleGuidID=" + strModuleGuidID + "<br>" +
                                              "ModuleID=" + strModuleID + ", ItemID=" + strItemID + "<br>" +
-                                             "PortalID=" + portalID.ToString() + ", UserID=" + userID.ToString() +
+                                             "PortalID=" + portalID + ", UserID=" + userID +
                                              "<br>" +
                                              "TabID=" + strTabID + ", TabName=" + strTabName;
                         }

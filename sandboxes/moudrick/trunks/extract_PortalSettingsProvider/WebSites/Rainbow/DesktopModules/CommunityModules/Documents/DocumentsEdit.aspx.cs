@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.IO;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 using Path=Rainbow.Framework.Settings.Path;
@@ -182,7 +182,7 @@ namespace Rainbow.Content.Web.Modules
                 // Change for save contenType and document buffer
                 // documents.UpdateDocument(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email, NameField.Text, PathField.Text, CategoryField.Text, new byte[0], 0, string.Empty );
                 string contentType = PathField.Text.Substring(PathField.Text.LastIndexOf(".") + 1).ToLower();
-                documents.UpdateDocument(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email, NameField.Text,
+                documents.UpdateDocument(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email, NameField.Text,
                                          PathField.Text, CategoryField.Text, buffer, size, contentType);
 
                 RedirectBackToReferringPage();

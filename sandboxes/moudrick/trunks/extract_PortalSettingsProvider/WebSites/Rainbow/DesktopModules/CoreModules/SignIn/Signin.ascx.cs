@@ -87,7 +87,7 @@ namespace Rainbow.Content.Web.Modules
 
             if ( true ) {
                 string Pswrd;
-                string AppName = portalSettings.PortalName;
+                string AppName = PortalSettings.PortalName;
                 bool encrypted = Config.EncryptPassword;
                 string Name = memberUser.Email;
                 if ( encrypted ) {
@@ -98,7 +98,7 @@ namespace Rainbow.Content.Web.Modules
                     Pswrd = memberUser.GetPassword();
                 }
                 string LoginUrl = Path.ApplicationFullPath + "DesktopModules/Admin/Logon.aspx?Usr=" + Name + "&Pwd=" +
-                                  Pswrd + "&Alias=" + portalSettings.PortalAlias;
+                                  Pswrd + "&Alias=" + PortalSettings.PortalAlias;
                 MailMessage mail = new MailMessage();
 
                 // Geert.Audenaert@Syntegra.Com
@@ -249,8 +249,8 @@ namespace Rainbow.Content.Web.Modules
             if (this.ModuleID == 0)
                 ((SettingItem) Settings["MODULESETTINGS_SHOW_TITLE"]).Value = "false";
 
-            if (portalSettings.CustomSettings["SITESETTINGS_ALLOW_NEW_REGISTRATION"] != null)
-                if (!bool.Parse(portalSettings.CustomSettings["SITESETTINGS_ALLOW_NEW_REGISTRATION"].ToString()))
+            if (PortalSettings.CustomSettings["SITESETTINGS_ALLOW_NEW_REGISTRATION"] != null)
+                if (!bool.Parse(PortalSettings.CustomSettings["SITESETTINGS_ALLOW_NEW_REGISTRATION"].ToString()))
                     RegisterBtn.Visible = false;
 
             if (Settings["SIGNIN_AUTOMATICALLYHIDE"] != null)

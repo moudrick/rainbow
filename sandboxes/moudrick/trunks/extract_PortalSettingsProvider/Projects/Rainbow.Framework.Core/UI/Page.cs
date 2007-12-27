@@ -187,7 +187,7 @@ namespace Rainbow.Framework.Web.UI {
                     if ( !( ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) ) {
                         string[] s = { "CONFIRM_DELETE" };
                         ClientScript.RegisterClientScriptBlock( GetType(), "confirmDelete",
-                                                               PortalSettings.GetStringResource(
+                                                               General.GetStringResource(
                                                                    "CONFIRM_DELETE_SCRIPT",
                                                                    s ) );
                     }

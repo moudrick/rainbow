@@ -59,7 +59,7 @@ namespace Rainbow.Content.Web.Modules.AddModule
             // Populate the "Add Module" Data
             ModulesDB m = new ModulesDB();
 
-            SqlDataReader drCurrentModuleDefinitions = m.GetCurrentModuleDefinitions(portalSettings.PortalID);
+            SqlDataReader drCurrentModuleDefinitions = m.GetCurrentModuleDefinitions(PortalSettings.PortalID);
 
             try
             {

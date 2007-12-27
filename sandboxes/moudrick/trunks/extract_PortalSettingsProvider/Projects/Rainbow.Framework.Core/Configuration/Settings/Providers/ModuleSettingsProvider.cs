@@ -261,7 +261,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             try
             {
                 PortalModuleControlCustom portalModule = (PortalModuleControlCustom)page.LoadControl(controlPath);
-                Hashtable setting = GetModuleUserSettings(moduleID, (Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey, portalModule.CustomizedUserSettings);
+                Hashtable setting = GetModuleUserSettings(moduleID, (Guid)RainbowContext.CurrentUser.Identity.ProviderUserKey, portalModule.CustomizedUserSettings);
                 return setting;
             }
             catch (Exception ex)

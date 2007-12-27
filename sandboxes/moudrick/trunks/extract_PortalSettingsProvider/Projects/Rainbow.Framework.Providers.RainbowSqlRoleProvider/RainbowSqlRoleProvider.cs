@@ -73,15 +73,11 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         // exceptions are written to the event log.
         //
 
-        private bool pWriteExceptionsToEventLog;
+        bool pWriteExceptionsToEventLog;
 
-        public bool WriteExceptionsToEventLog {
-            get {
-                return pWriteExceptionsToEventLog;
-            }
-            set {
-                pWriteExceptionsToEventLog = value;
-            }
+        bool WriteExceptionsToEventLog
+        {
+            get { return pWriteExceptionsToEventLog; }
         }
 
         #endregion
@@ -214,61 +210,71 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
 
         #region Rainbow-specific Provider methods
 
-        public override void AddUsersToRoles( string portalAlias, Guid[] userIds, Guid[] roleIds ) {
+        public override void AddUsersToRoles(string portalAlias, Guid[] userIds, Guid[] roleIds)
+        {
             string userIdsStr = string.Empty;
             string roleIdsStr = string.Empty;
 
-            foreach ( Guid userId in userIds ) {
+            foreach (Guid userId in userIds)
+            {
                 userIdsStr += userId + ",";
             }
-            userIdsStr = userIdsStr.Substring( 0, userIdsStr.Length - 1 );
+            userIdsStr = userIdsStr.Substring(0, userIdsStr.Length - 1);
 
-            foreach ( Guid roleId in roleIds ) {
+            foreach (Guid roleId in roleIds)
+            {
                 roleIdsStr += roleId + ",";
             }
-            roleIdsStr = roleIdsStr.Substring( 0, roleIdsStr.Length - 1 );
+            roleIdsStr = roleIdsStr.Substring(0, roleIdsStr.Length - 1);
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "aspnet_UsersInRoles_AddUsersToRoles";
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlCommand sqlCommand = new SqlCommand();
+            sqlCommand.CommandText = "aspnet_UsersInRoles_AddUsersToRoles";
+            sqlCommand.CommandType = CommandType.StoredProcedure;
 
-            cmd.Connection = new SqlConnection( connectionString );
+            sqlCommand.Connection = new SqlConnection(connectionString);
 
-            cmd.Parameters.Add( "@ApplicationName", SqlDbType.NVarChar, 256 ).Value = portalAlias;
-            cmd.Parameters.Add( "@UserIds", SqlDbType.VarChar, 4000 ).Value = userIdsStr;
-            cmd.Parameters.Add( "@RoleIds", SqlDbType.VarChar, 4000 ).Value = roleIdsStr;
+            sqlCommand.Parameters.Add("@ApplicationName", SqlDbType.NVarChar, 256).Value = portalAlias;
+            sqlCommand.Parameters.Add("@UserIds", SqlDbType.VarChar, 4000).Value = userIdsStr;
+            sqlCommand.Parameters.Add("@RoleIds", SqlDbType.VarChar, 4000).Value = roleIdsStr;
 
-            SqlParameter returnCodeParam = cmd.Parameters.Add( "@ReturnCode", SqlDbType.Int );
+            SqlParameter returnCodeParam = sqlCommand.Parameters.Add("@ReturnCode", SqlDbType.Int);
             returnCodeParam.Direction = ParameterDirection.ReturnValue;
 
-            try {
-                cmd.Connection.Open();
-                cmd.ExecuteNonQuery();
+            try
+            {
+                sqlCommand.Connection.Open();
+                sqlCommand.ExecuteNonQuery();
 
-                int returnCode = ( int )returnCodeParam.Value;
+                int returnCode = (int) returnCodeParam.Value;
 
-                switch ( returnCode ) {
+                switch (returnCode)
+                {
                     case 0:
                         return;
                     case 2:
-                        throw new RainbowRoleProviderException( "Application " + portalAlias + " doesn't exist" );
+                        throw new RainbowRoleProviderException("Application " + portalAlias + " doesn't exist");
                     case 3:
-                        throw new RainbowRoleProviderException( "One of the roles doesn't exist" );
+                        throw new RainbowRoleProviderException("One of the roles doesn't exist");
                     case 4:
-                        throw new RainbowMembershipProviderException( "One of the users doesn't exist" );
+                        throw new RainbowMembershipProviderException("One of the users doesn't exist");
                     default:
-                        throw new RainbowRoleProviderException( "aspnet_UsersInRoles_AddUsersToRoles returned error code " + returnCode );
+                        throw new RainbowRoleProviderException(
+                            "aspnet_UsersInRoles_AddUsersToRoles returned error code " + returnCode);
                 }
             }
-            catch ( SqlException e ) {
-                if ( WriteExceptionsToEventLog ) {
-                    WriteToEventLog( e, "CreateRole" );
+            catch (SqlException e)
+            {
+                if (WriteExceptionsToEventLog)
+                {
+                    WriteToEventLog(e, "CreateRole");
                 }
 
-                throw new RainbowRoleProviderException( "Error executing aspnet_UsersInRoles_AddUsersToRoles stored proc", e );
+                throw new RainbowRoleProviderException(
+                    "Error executing aspnet_UsersInRoles_AddUsersToRoles stored proc", e);
             }
-            finally {
-                cmd.Connection.Close();
+            finally
+            {
+                sqlCommand.Connection.Close();
             }
         }
 
@@ -376,7 +382,7 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
                     WriteToEventLog( e, "DeleteRole" );
                 }
 
-                throw new RainbowRoleProviderException( "Error deleting role " + roleId.ToString(), e );
+                throw new RainbowRoleProviderException( "Error deleting role " + roleId, e );
             }
             finally {
                 if ( reader != null ) {
@@ -427,7 +433,7 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
                     WriteToEventLog( e, "RenameRole" );
                 }
 
-                throw new RainbowRoleProviderException( "Error renaming role " + roleId.ToString(), e );
+                throw new RainbowRoleProviderException( "Error renaming role " + roleId, e );
             }
             finally {
                 if ( reader != null ) {
@@ -544,7 +550,7 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
                     WriteToEventLog( e, "GetAllRoles" );
                 }
 
-                throw new RainbowRoleProviderException( "Error getting roles for user " + userId.ToString(), e );
+                throw new RainbowRoleProviderException( "Error getting roles for user " + userId, e );
             }
             finally {
                 if ( reader != null ) {
@@ -598,7 +604,7 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
                     WriteToEventLog( e, "GetAllRoles" );
                 }
 
-                throw new RainbowRoleProviderException( "Error getting users for role " + roleId.ToString(), e );
+                throw new RainbowRoleProviderException( "Error getting users for role " + roleId, e );
             }
             finally {
                 if ( reader != null ) {
@@ -667,12 +673,12 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
             string roleIdsStr = string.Empty;
 
             foreach ( Guid userId in userIds ) {
-                userIdsStr += userId.ToString() + ",";
+                userIdsStr += userId + ",";
             }
             userIdsStr = userIdsStr.Substring( 0, userIdsStr.Length - 1 );
 
             foreach ( Guid roleId in roleIds ) {
-                roleIdsStr += roleId.ToString() + ",";
+                roleIdsStr += roleId + ",";
             }
             roleIdsStr = roleIdsStr.Substring( 0, roleIdsStr.Length - 1 );
 
@@ -867,7 +873,7 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
 
             string message = "An exception occurred communicating with the data source.\n\n";
             message += "Action: " + action + "\n\n";
-            message += "Exception: " + e.ToString();
+            message += "Exception: " + e;
 
             log.WriteEntry( message );
         }

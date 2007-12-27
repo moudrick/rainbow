@@ -30,7 +30,7 @@ namespace Rainbow.Content.Web.Modules {
         protected override void OnLoad( EventArgs e ) {
             base.OnLoad( e );
 
-            portalPages = new PagesDB().GetPagesFlat( portalSettings.PortalID );
+            portalPages = new PagesDB().GetPagesFlat( PortalSettings.PortalID );
             tabList.DataBind();
 
             // Set the ImageUrl for controls from current Theme
@@ -167,7 +167,7 @@ namespace Rainbow.Content.Web.Modules {
 
                     // write tab to database
                     PagesDB tabs = new PagesDB();
-                    t.ID = tabs.AddPage( portalSettings.PortalID, t.Name, t.Order );
+                    t.ID = tabs.AddPage( PortalSettings.PortalID, t.Name, t.Order );
 
                     // Reset the order numbers for the tabs within the list  
                     OrderPages();

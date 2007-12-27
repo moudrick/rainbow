@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Settings;
 
 namespace Rainbow.Framework.Web
@@ -38,7 +39,7 @@ namespace Rainbow.Framework.Web
 		/// <returns>A unique key</returns>
 		private static string UrlElementCacheKey(int pageID, string UrlElement)
 		{
-			return string.Concat(SiteUniqueID.ToString(), pageID, UrlElement);
+			return string.Concat(RainbowContext.Current.UniqueID, pageID, UrlElement);
 		}
 
 		/// <summary>
@@ -106,7 +107,7 @@ namespace Rainbow.Framework.Web
 						// Open the connection
 						conn.Open();
 
-						using (SqlCommand cmd = new SqlCommand("SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID.ToString() + " AND SettingName = '" + propertyID + "'", conn))
+						using (SqlCommand cmd = new SqlCommand("SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID + " AND SettingName = '" + propertyID + "'", conn))
 						{
 							// 1. Instantiate a new command above
 							// 2. Call ExecuteNonQuery to send command
@@ -124,8 +125,10 @@ namespace Rainbow.Framework.Web
 					finally
 					{
 						// Close the connection
-						if (conn != null)
-							conn.Close();
+                        if (conn != null)
+                        {
+                            conn.Close();
+                        }
 					}
 				}
 
@@ -210,7 +213,7 @@ namespace Rainbow.Framework.Web
 						// Open the connection
 						conn.Open();
 
-						using (SqlCommand cmd = new SqlCommand("SELECT ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID.ToString() + " AND SettingName = '" + PageNameID + "'),'') as PageName,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID.ToString() + " AND SettingName = '" + UrlKeywordsID + "'),'') as Keywords,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID.ToString() + " AND SettingName = '" + TabLinkID + "'),'') as ExternalLink,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID.ToString() + " AND SettingName = '" + IsPlaceHolderID + "'),'') as IsPlaceHolder", conn))
+						using (SqlCommand cmd = new SqlCommand("SELECT ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID + " AND SettingName = '" + PageNameID + "'),'') as PageName,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID + " AND SettingName = '" + UrlKeywordsID + "'),'') as Keywords,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID + " AND SettingName = '" + TabLinkID + "'),'') as ExternalLink,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID + " AND SettingName = '" + IsPlaceHolderID + "'),'') as IsPlaceHolder", conn))
 						{
 							// 1. Instantiate a new command above
 							// 2. populate values
@@ -328,8 +331,10 @@ namespace Rainbow.Framework.Web
 					finally
 					{
 						// Close the connection
-						if (conn != null)
-							conn.Close();
+                        if (conn != null)
+                        {
+                            conn.Close();
+                        }
 					}
 				}
 			}
@@ -370,14 +375,6 @@ namespace Rainbow.Framework.Web
 		private static string SiteConnectionString
 		{
 			get { return Config.ConnectionString; }
-		}
-
-		/// <summary>
-		/// This static string fetches the site's alias either via querystring, cookie or domain and returns it
-		/// </summary>
-		private static string SiteUniqueID
-		{
-			get { return Portal.UniqueID; }
 		}
 	}
 }

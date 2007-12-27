@@ -3,10 +3,10 @@ using System.Collections;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Xml;
+using Rainbow.Framework.Core.DAL;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework;
-using Rainbow.Framework.Settings;
 using Subtext.TestLibrary;
 
 namespace Rainbow.Tests {
@@ -154,10 +154,10 @@ namespace Rainbow.Tests {
                     }
 
                     if (dbVersion < 1114)
-                        Console.WriteLine("Empty/New database - CodeVersion: " + Portal.CodeVersion);
+                        Console.WriteLine("Empty/New database - CodeVersion: " + DatabaseUpdater.CodeVersion);
                     else
                         Console.WriteLine("dbVersion: " + dbVersion + " - CodeVersion: " +
-                                          Portal.CodeVersion); ;
+                                          DatabaseUpdater.CodeVersion); ;
 
                     myUpdate.Apply = true;
 
@@ -271,7 +271,7 @@ namespace Rainbow.Tests {
                             //Mark this update as done
                             Console.WriteLine("Sucessfully applied version: " + myUpdate.Version);
                             Console.WriteLine(
-                                string.Format("DatabaseVersion: {0} / {1}", databaseVersion, Database.DatabaseVersion));
+                                string.Format("DatabaseVersion: {0} / {1}", databaseVersion, DatabaseUpdater.DatabaseVersion));
                         }
                     }
                     else

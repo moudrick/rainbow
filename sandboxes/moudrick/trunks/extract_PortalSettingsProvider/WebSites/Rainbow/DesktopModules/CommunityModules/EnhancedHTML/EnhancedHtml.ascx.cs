@@ -316,7 +316,7 @@ namespace Rainbow.Content.Web.Modules
 
             EnhancedHtmlDB ehdb = new EnhancedHtmlDB();
 
-            using (SqlDataReader dr = ehdb.GetLocalizedPages(ModuleID, portalSettings.PortalUILanguage.LCID, Version))
+            using (SqlDataReader dr = ehdb.GetLocalizedPages(ModuleID, PortalSettings.PortalUILanguage.LCID, Version))
             {
                 while (dr.Read())
                 {
@@ -326,11 +326,11 @@ namespace Rainbow.Content.Web.Modules
 
                 if (tabla.Rows.Count == 0)
                 {
-                    if (portalSettings.PortalUILanguage.Parent.LCID != CultureInfo.InvariantCulture.LCID)
+                    if (PortalSettings.PortalUILanguage.Parent.LCID != CultureInfo.InvariantCulture.LCID)
                     {
                         using (
                             SqlDataReader dr1 =
-                                ehdb.GetLocalizedPages(ModuleID, portalSettings.PortalUILanguage.Parent.LCID, Version))
+                                ehdb.GetLocalizedPages(ModuleID, PortalSettings.PortalUILanguage.Parent.LCID, Version))
                         {
                             while (dr1.Read())
                             {
