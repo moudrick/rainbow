@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ActiveUp.WebControls.HtmlTextBox, Version=2.1.1188.22068, Culture=neutral, PublicKeyToken=debdbfc6bad3ccfc">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\ActiveUp.WebControls.HtmlTextBox.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -60,6 +64,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Database.cs" />
     <Compile Include="DataClasses.cs">
       <DependentUpon>DataClasses.dbml</DependentUpon>
     </Compile>
@@ -68,11 +76,35 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="DataClasses\BaseSetting.cs" />
+    <Compile Include="DataClasses\Module.cs" />
+    <Compile Include="DataClasses\ModuleSetting.cs" />
+    <Compile Include="DataClasses\Page.cs" />
+    <Compile Include="DataClasses\PageSetting.cs" />
+    <Compile Include="DataClasses\Portal.cs" />
+    <Compile Include="DataClasses\PortalSetting.cs" />
+    <Compile Include="DataClasses\SettingGroup.cs" />
+    <Compile Include="DataSources\PortalDataSource.cs" />
+    <Compile Include="DBHelper.cs" />
+    <Compile Include="Debugger\DebuggerWriter.cs" />
+    <Compile Include="ModuleSettingsCustom.cs" />
+    <Compile Include="Monitoring.cs" />
+    <Compile Include="PagesDB.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <DependentUpon>Settings.settings</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Providers\HttpUrlBuilder.cs" />
+    <Compile Include="Providers\SqlGeographicProvider.cs" />
+    <Compile Include="Providers\SqlUrlBuilderProvider.cs" />
+    <Compile Include="RecyclerDB.cs" />
+    <Compile Include="Types\HtmlEditorDataType.cs" />
+    <Compile Include="Types\ModuleListDataType.cs" />
+    <Compile Include="Types\PortalUrlDataType.cs" />
+    <Compile Include="Types\UploadedFileDataType.cs" />
+    <Compile Include="UsersDb.cs" />
+    <Compile Include="WorkFlowDB.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -93,6 +125,32 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Rainbow.Framework.Configuration\Rainbow.Framework.Configuration.csproj">
+      <Project>{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}</Project>
+      <Name>Rainbow.Framework.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rainbow.Framework.Core\Rainbow.Framework.Core.csproj">
+      <Project>{552CCD6F-0A37-4366-9E3E-22B2A0221584}</Project>
+      <Name>Rainbow.Framework.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rainbow.Framework.Data\Rainbow.Framework.Data.csproj">
+      <Project>{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}</Project>
+      <Name>Rainbow.Framework.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowMembershipProvider\Rainbow.Framework.Providers.RainbowMembershipProvider.csproj">
+      <Project>{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}</Project>
+      <Name>Rainbow.Framework.Providers.RainbowMembershipProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowRoleProvider\Rainbow.Framework.Providers.RainbowRoleProvider.csproj">
+      <Project>{599A82DE-6BBE-47D2-BB28-190ABD3CD702}</Project>
+      <Name>Rainbow.Framework.Providers.RainbowRoleProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowSiteMapProvider\Rainbow.Framework.Providers.RainbowSiteMapProvider.csproj">
+      <Project>{C667C927-2E8B-44C6-BAC8-85EC9447C2C4}</Project>
+      <Name>Rainbow.Framework.Providers.RainbowSiteMapProvider</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

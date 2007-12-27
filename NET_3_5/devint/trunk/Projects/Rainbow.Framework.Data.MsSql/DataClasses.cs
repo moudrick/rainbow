@@ -1,8 +1,9 @@
 namespace Rainbow.Framework.Data.MsSql
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
+    using Rainbow.Framework.Data.MsSql.Debugger;
 
     partial class DataClassesDataContext
     {
@@ -30,32 +31,36 @@ namespace Rainbow.Framework.Data.MsSql
             pageLowerBound = pageSize * pageIndex;
             pageUpperBound = pageSize - 1 + pageLowerBound;
 
-            DataClassesDataContext db = new DataClassesDataContext();
-
-            var piQuery = from u in db.Users
-                          where u.aspnet_Membership.ApplicationId == applicationId
-                          orderby u.UserName
-                          select u;
-            totalRecords = piQuery.Count();
-
-            Dictionary<int, User> users = new Dictionary<int, User>();
-            int i = 1;
-            foreach (User u in piQuery)
+            using (DataClassesDataContext db = new DataClassesDataContext())
             {
-                users.Add(i, u);
-                i++;
+                db.Log = new DebuggerWriter();
+
+                var piQuery = from u in db.Users
+                              where u.aspnet_Membership.ApplicationId == applicationId
+                              orderby u.UserName
+                              select u;
+                totalRecords = piQuery.Count();
+
+                Dictionary<int, User> users = new Dictionary<int, User>();
+                int i = 1;
+                foreach (User u in piQuery)
+                {
+                    users.Add(i, u);
+                    i++;
+                }
+
+                var ulQuery = from u in users
+                              where u.Key >= pageLowerBound && u.Key <= pageUpperBound
+                              orderby u.Value.UserName
+                              select u;
+
+                foreach (var u in ulQuery)
+                {
+                    userList.Add(u.Value);
+                }
+
             }
-
-            var ulQuery = from u in users
-                          where u.Key >= pageLowerBound && u.Key <= pageUpperBound
-                          orderby u.Value.UserName
-                          select u;
-
-            foreach (var u in ulQuery)
-            {
-                userList.Add(u.Value);
-            }
-
+            
             return totalRecords;
         }
 
@@ -85,6 +90,7 @@ namespace Rainbow.Framework.Data.MsSql
             pageUpperBound = pageSize - 1 + pageLowerBound;
 
             DataClassesDataContext db = new DataClassesDataContext();
+            db.Log = new DebuggerWriter();
             var piQuery = from u in db.Users
                           where u.aspnet_Membership.ApplicationId == applicationId &&
                                 u.aspnet_User.LoweredUserName.StartsWith(userNameToMatch)
@@ -139,6 +145,7 @@ namespace Rainbow.Framework.Data.MsSql
             pageUpperBound = pageSize - 1 + pageLowerBound;
 
             DataClassesDataContext db = new DataClassesDataContext();
+            db.Log = new DebuggerWriter();
             var piQuery = from u in db.Users
                           where u.aspnet_Membership.ApplicationId == applicationId &&
                                 (string.IsNullOrEmpty(emailToMatch) ? u.Email == null : u.aspnet_Membership.LoweredEmail.StartsWith(emailToMatch))
@@ -177,6 +184,7 @@ namespace Rainbow.Framework.Data.MsSql
         {
             Guid? applicationId = null;
             DataClassesDataContext db = new DataClassesDataContext();
+            db.Log = new DebuggerWriter();
 
             var appIdQuery = from appId in db.aspnet_Applications
                              where appId.LoweredApplicationName == applicationName.ToLower()

@@ -41,24 +41,48 @@ namespace Rainbow.Framework.Data.MsSql
     partial void Insertaspnet_Application(aspnet_Application instance);
     partial void Updateaspnet_Application(aspnet_Application instance);
     partial void Deleteaspnet_Application(aspnet_Application instance);
-    partial void Insertrb_ModuleDefinition(rb_ModuleDefinition instance);
-    partial void Updaterb_ModuleDefinition(rb_ModuleDefinition instance);
-    partial void Deleterb_ModuleDefinition(rb_ModuleDefinition instance);
-    partial void Updaterb_GeneralModuleDefinition(rb_GeneralModuleDefinition instance);
-    partial void Deleterb_GeneralModuleDefinition(rb_GeneralModuleDefinition instance);
-    partial void Insertrb_ModuleSetting(rb_ModuleSetting instance);
-    partial void Updaterb_ModuleSetting(rb_ModuleSetting instance);
-    partial void Deleterb_ModuleSetting(rb_ModuleSetting instance);
-    partial void Insertrb_Page(rb_Page instance);
-    partial void Updaterb_Page(rb_Page instance);
-    partial void Deleterb_Page(rb_Page instance);
-    partial void Insertrb_Portal(rb_Portal instance);
-    partial void Updaterb_Portal(rb_Portal instance);
-    partial void Deleterb_Portal(rb_Portal instance);
+    partial void InsertModuleDefinition(ModuleDefinition instance);
+    partial void UpdateModuleDefinition(ModuleDefinition instance);
+    partial void DeleteModuleDefinition(ModuleDefinition instance);
+    partial void UpdateGeneralModuleDefinition(GeneralModuleDefinition instance);
+    partial void DeleteGeneralModuleDefinition(GeneralModuleDefinition instance);
+    partial void InsertPortal(Portal instance);
+    partial void UpdatePortal(Portal instance);
+    partial void DeletePortal(Portal instance);
+    partial void InsertPage(Page instance);
+    partial void UpdatePage(Page instance);
+    partial void DeletePage(Page instance);
+    partial void InsertSettingGroup(SettingGroup instance);
+    partial void UpdateSettingGroup(SettingGroup instance);
+    partial void DeleteSettingGroup(SettingGroup instance);
+    partial void InsertBaseSettingType(BaseSettingType instance);
+    partial void UpdateBaseSettingType(BaseSettingType instance);
+    partial void DeleteBaseSettingType(BaseSettingType instance);
+    partial void InsertBaseSetting(BaseSetting instance);
+    partial void UpdateBaseSetting(BaseSetting instance);
+    partial void DeleteBaseSetting(BaseSetting instance);
+    partial void InsertPortalSetting(PortalSetting instance);
+    partial void UpdatePortalSetting(PortalSetting instance);
+    partial void DeletePortalSetting(PortalSetting instance);
+    partial void InsertModuleSetting(ModuleSetting instance);
+    partial void UpdateModuleSetting(ModuleSetting instance);
+    partial void DeleteModuleSetting(ModuleSetting instance);
+    partial void InsertPageSetting(PageSetting instance);
+    partial void UpdatePageSetting(PageSetting instance);
+    partial void DeletePageSetting(PageSetting instance);
+    partial void InsertModuleUserSetting(ModuleUserSetting instance);
+    partial void UpdateModuleUserSetting(ModuleUserSetting instance);
+    partial void DeleteModuleUserSetting(ModuleUserSetting instance);
+    partial void InsertSolution(Solution instance);
+    partial void UpdateSolution(Solution instance);
+    partial void DeleteSolution(Solution instance);
+    partial void InsertSolutionModuleDefinition(SolutionModuleDefinition instance);
+    partial void UpdateSolutionModuleDefinition(SolutionModuleDefinition instance);
+    partial void DeleteSolutionModuleDefinition(SolutionModuleDefinition instance);
     #endregion
 		
 		public DataClassesDataContext() : 
-				base(global::Rainbow.Framework.Data.MsSql.Properties.Settings.Default.RainbowConnectionString, mappingSource)
+				base(global::Rainbow.Framework.Data.MsSql.Properties.Settings.Default.RainbowConnectionString1, mappingSource)
 		{
 			OnCreated();
 		}
@@ -119,67 +143,139 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		public System.Data.Linq.Table<rb_Version> rb_Versions
+		public System.Data.Linq.Table<Version> Versions
 		{
 			get
 			{
-				return this.GetTable<rb_Version>();
+				return this.GetTable<Version>();
 			}
 		}
 		
-		public System.Data.Linq.Table<rb_ModuleDefinition> rb_ModuleDefinitions
+		public System.Data.Linq.Table<ModuleDefinition> ModuleDefinitions
 		{
 			get
 			{
-				return this.GetTable<rb_ModuleDefinition>();
+				return this.GetTable<ModuleDefinition>();
 			}
 		}
 		
-		public System.Data.Linq.Table<rb_GeneralModuleDefinition> rb_GeneralModuleDefinitions
+		public System.Data.Linq.Table<GeneralModuleDefinition> GeneralModuleDefinitions
 		{
 			get
 			{
-				return this.GetTable<rb_GeneralModuleDefinition>();
+				return this.GetTable<GeneralModuleDefinition>();
 			}
 		}
 		
-		public System.Data.Linq.Table<rb_Module> rb_Modules
+		public System.Data.Linq.Table<Module> Modules
 		{
 			get
 			{
-				return this.GetTable<rb_Module>();
+				return this.GetTable<Module>();
 			}
 		}
 		
-		public System.Data.Linq.Table<rb_ModuleSetting> rb_ModuleSettings
+		public System.Data.Linq.Table<Portal> Portals
 		{
 			get
 			{
-				return this.GetTable<rb_ModuleSetting>();
+				return this.GetTable<Portal>();
 			}
 		}
 		
-		public System.Data.Linq.Table<rb_ModuleUserSetting> rb_ModuleUserSettings
+		public System.Data.Linq.Table<Page> Pages
 		{
 			get
 			{
-				return this.GetTable<rb_ModuleUserSetting>();
+				return this.GetTable<Page>();
 			}
 		}
 		
-		public System.Data.Linq.Table<rb_Page> rb_Pages
+		public System.Data.Linq.Table<SettingGroup> SettingGroups
 		{
 			get
 			{
-				return this.GetTable<rb_Page>();
+				return this.GetTable<SettingGroup>();
 			}
 		}
 		
-		public System.Data.Linq.Table<rb_Portal> rb_Portals
+		public System.Data.Linq.Table<BaseSettingType> BaseSettingTypes
 		{
 			get
 			{
-				return this.GetTable<rb_Portal>();
+				return this.GetTable<BaseSettingType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<BaseSetting> BaseSettings
+		{
+			get
+			{
+				return this.GetTable<BaseSetting>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Monitoring> Monitorings
+		{
+			get
+			{
+				return this.GetTable<Monitoring>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Recycler> Recyclers
+		{
+			get
+			{
+				return this.GetTable<Recycler>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PortalSetting> PortalSettings
+		{
+			get
+			{
+				return this.GetTable<PortalSetting>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ModuleSetting> ModuleSettings
+		{
+			get
+			{
+				return this.GetTable<ModuleSetting>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PageSetting> PageSettings
+		{
+			get
+			{
+				return this.GetTable<PageSetting>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ModuleUserSetting> ModuleUserSettings
+		{
+			get
+			{
+				return this.GetTable<ModuleUserSetting>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Solution> Solutions
+		{
+			get
+			{
+				return this.GetTable<Solution>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SolutionModuleDefinition> SolutionModuleDefinitions
+		{
+			get
+			{
+				return this.GetTable<SolutionModuleDefinition>();
 			}
 		}
 		
@@ -195,26 +291,26 @@ namespace Rainbow.Framework.Data.MsSql
 			this.aspnet_Membership_UpdateUser(default(string), obj.UserName, obj.Email, obj.Comment, ((System.Nullable<bool>)(obj.IsApproved)), ((System.Nullable<System.DateTime>)(obj.LastLoginDate)), ((System.Nullable<System.DateTime>)(obj.LastActivityDate)), default(System.Nullable<int>), default(System.Nullable<System.DateTime>));
 		}
 		
-		private void Insertrb_GeneralModuleDefinition(rb_GeneralModuleDefinition obj)
+		private void InsertGeneralModuleDefinition(GeneralModuleDefinition obj)
 		{
-			this.rb_AddGeneralModuleDefinitions(((System.Nullable<System.Guid>)(obj.GeneralModDefID)), obj.FriendlyName, obj.DesktopSrc, obj.MobileSrc, obj.AssemblyName, obj.ClassName, ((System.Nullable<bool>)(obj.Admin)), ((System.Nullable<bool>)(obj.Searchable)));
+			this.rb_AddGeneralModuleDefinitions(((System.Nullable<System.Guid>)(obj.GeneralModDefId)), obj.FriendlyName, obj.DesktopSource, obj.MobileSource, obj.AssemblyName, obj.ClassName, ((System.Nullable<bool>)(obj.IsAdmin)), ((System.Nullable<bool>)(obj.IsSearchable)));
 		}
 		
-		private void Insertrb_Module(rb_Module obj)
+		private void InsertModule(Module obj)
 		{
-			System.Nullable<int> p1 = obj.ModuleID;
-			this.rb_AddModule(((System.Nullable<int>)(obj.TabID)), ((System.Nullable<int>)(obj.ModuleOrder)), obj.ModuleTitle, obj.PaneName, ((System.Nullable<int>)(obj.ModuleDefID)), ((System.Nullable<int>)(obj.CacheTime)), obj.AuthorizedEditRoles, obj.AuthorizedAddRoles, obj.AuthorizedViewRoles, obj.AuthorizedDeleteRoles, obj.AuthorizedPropertiesRoles, obj.AuthorizedMoveModuleRoles, obj.AuthorizedDeleteModuleRoles, ((System.Nullable<bool>)(obj.ShowMobile)), obj.AuthorizedPublishingRoles, ((System.Nullable<bool>)(obj.SupportWorkflow)), ((System.Nullable<bool>)(obj.ShowEveryWhere)), ((System.Nullable<bool>)(obj.SupportCollapsable)), ref p1);
-			obj.ModuleID = p1.GetValueOrDefault();
+			System.Nullable<int> p1 = obj.ModuleId;
+			this.rb_AddModule(((System.Nullable<int>)(obj.PageId)), ((System.Nullable<int>)(obj.Order)), obj.Title, obj.PaneName, ((System.Nullable<int>)(obj.ModuleDefId)), ((System.Nullable<int>)(obj.CacheTime)), obj.AuthorizedRolesEdit, obj.AuthorizedRolesAdd, obj.AuthorizedRolesView, obj.AuthorizedRolesDelete, obj.AuthorizedRolesProperties, obj.AuthorizedRolesModuleMove, obj.AuthorizedRolesModuleDelete, ((System.Nullable<bool>)(obj.IsShowMobile)), obj.AuthorizedRolesPublishing, ((System.Nullable<bool>)(obj.IsSupportWorkflow)), ((System.Nullable<bool>)(obj.IsShowEveryWhere)), ((System.Nullable<bool>)(obj.IsCollapsable)), ref p1);
+			obj.ModuleId = p1.GetValueOrDefault();
 		}
 		
-		private void Updaterb_Module(rb_Module obj)
+		private void UpdateModule(Module obj)
 		{
-			this.rb_UpdateModule(((System.Nullable<int>)(obj.ModuleID)), ((System.Nullable<int>)(obj.TabID)), ((System.Nullable<int>)(obj.ModuleOrder)), obj.ModuleTitle, obj.PaneName, ((System.Nullable<int>)(obj.CacheTime)), obj.AuthorizedEditRoles, obj.AuthorizedAddRoles, obj.AuthorizedViewRoles, obj.AuthorizedDeleteRoles, obj.AuthorizedPropertiesRoles, ((System.Nullable<bool>)(obj.ShowMobile)), obj.AuthorizedPublishingRoles, obj.AuthorizedMoveModuleRoles, obj.AuthorizedDeleteModuleRoles, ((System.Nullable<bool>)(obj.SupportWorkflow)), obj.AuthorizedApproveRoles, ((System.Nullable<bool>)(obj.ShowEveryWhere)), ((System.Nullable<bool>)(obj.SupportCollapsable)));
+			this.rb_UpdateModule(((System.Nullable<int>)(obj.ModuleId)), ((System.Nullable<int>)(obj.PageId)), ((System.Nullable<int>)(obj.Order)), obj.Title, obj.PaneName, ((System.Nullable<int>)(obj.CacheTime)), obj.AuthorizedRolesEdit, obj.AuthorizedRolesAdd, obj.AuthorizedRolesView, obj.AuthorizedRolesDelete, obj.AuthorizedRolesProperties, ((System.Nullable<bool>)(obj.IsShowMobile)), obj.AuthorizedRolesPublishing, obj.AuthorizedRolesModuleMove, obj.AuthorizedRolesModuleDelete, ((System.Nullable<bool>)(obj.IsSupportWorkflow)), obj.AuthorizedRolesApprove, ((System.Nullable<bool>)(obj.IsShowEveryWhere)), ((System.Nullable<bool>)(obj.IsCollapsable)));
 		}
 		
-		private void Deleterb_Module(rb_Module obj)
+		private void DeleteModule(Module obj)
 		{
-			this.rb_DeleteModule(((System.Nullable<int>)(obj.ModuleID)));
+			this.rb_DeleteModule(((System.Nullable<int>)(obj.ModuleId)));
 		}
 		
 		[Function(Name="dbo.aspnet_Membership_ChangePasswordQuestionAndAnswer")]
@@ -413,24 +509,17 @@ namespace Rainbow.Framework.Data.MsSql
 		}
 		
 		[Function(Name="dbo.rb_GetModulesInTab")]
-		public ISingleResult<rb_GetModulesInTabResult> rb_GetModulesInTab([Parameter(Name="PortalID", DbType="Int")] System.Nullable<int> portalID, [Parameter(Name="TabID", DbType="Int")] System.Nullable<int> tabID)
+		public ISingleResult<GetModulesInTabResult> rb_GetModulesInTab([Parameter(Name="PortalID", DbType="Int")] System.Nullable<int> portalID, [Parameter(Name="TabID", DbType="Int")] System.Nullable<int> tabID)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), portalID, tabID);
-			return ((ISingleResult<rb_GetModulesInTabResult>)(result.ReturnValue));
+			return ((ISingleResult<GetModulesInTabResult>)(result.ReturnValue));
 		}
 		
 		[Function(Name="dbo.rb_FindModulesByGuid")]
-		public ISingleResult<rb_FindModulesByGuidResult> rb_FindModulesByGuid([Parameter(Name="PortalID", DbType="Int")] System.Nullable<int> portalID, [Parameter(Name="Guid", DbType="UniqueIdentifier")] System.Nullable<System.Guid> guid)
+		public ISingleResult<FindModulesByGuidResult> rb_FindModulesByGuid([Parameter(Name="PortalID", DbType="Int")] System.Nullable<int> portalID, [Parameter(Name="Guid", DbType="UniqueIdentifier")] System.Nullable<System.Guid> guid)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), portalID, guid);
-			return ((ISingleResult<rb_FindModulesByGuidResult>)(result.ReturnValue));
-		}
-		
-		[Function(Name="dbo.rb_GetCurrentModuleDefinitions")]
-		public ISingleResult<rb_GetCurrentModuleDefinitionsResult> rb_GetCurrentModuleDefinitions([Parameter(Name="PortalID", DbType="Int")] System.Nullable<int> portalID)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), portalID);
-			return ((ISingleResult<rb_GetCurrentModuleDefinitionsResult>)(result.ReturnValue));
+			return ((ISingleResult<FindModulesByGuidResult>)(result.ReturnValue));
 		}
 		
 		[Function(Name="dbo.rb_GetGeneralModuleDefinitionByName")]
@@ -458,24 +547,24 @@ namespace Rainbow.Framework.Data.MsSql
 		}
 		
 		[Function(Name="dbo.rb_GetModuleDefinitionByID")]
-		public ISingleResult<rb_GetModuleDefinitionByIDResult> rb_GetModuleDefinitionByID([Parameter(Name="ModuleID", DbType="Int")] System.Nullable<int> moduleID)
+		public ISingleResult<GetModuleDefinitionByIDResult> rb_GetModuleDefinitionByID([Parameter(Name="ModuleID", DbType="Int")] System.Nullable<int> moduleID)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
-			return ((ISingleResult<rb_GetModuleDefinitionByIDResult>)(result.ReturnValue));
+			return ((ISingleResult<GetModuleDefinitionByIDResult>)(result.ReturnValue));
 		}
 		
 		[Function(Name="dbo.rb_GetGuid")]
-		public ISingleResult<rb_GetGuidResult> rb_GetGuid([Parameter(Name="ModuleID", DbType="Int")] System.Nullable<int> moduleID)
+		public ISingleResult<GetGuidResult> rb_GetGuid([Parameter(Name="ModuleID", DbType="Int")] System.Nullable<int> moduleID)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
-			return ((ISingleResult<rb_GetGuidResult>)(result.ReturnValue));
+			return ((ISingleResult<GetGuidResult>)(result.ReturnValue));
 		}
 		
 		[Function(Name="dbo.rb_GetModuleInUse")]
-		public ISingleResult<rb_GetModuleInUseResult> rb_GetModuleInUse([Parameter(Name="ModuleID", DbType="UniqueIdentifier")] System.Nullable<System.Guid> moduleID)
+		public ISingleResult<GetModuleInUseResult> rb_GetModuleInUse([Parameter(Name="ModuleID", DbType="UniqueIdentifier")] System.Nullable<System.Guid> moduleID)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
-			return ((ISingleResult<rb_GetModuleInUseResult>)(result.ReturnValue));
+			return ((ISingleResult<GetModuleInUseResult>)(result.ReturnValue));
 		}
 		
 		[Function(Name="dbo.rb_GetModulesAllPortals")]
@@ -486,10 +575,59 @@ namespace Rainbow.Framework.Data.MsSql
 		}
 		
 		[Function(Name="dbo.rb_GetModulesByName")]
-		public ISingleResult<rb_GetModulesByNameResult> rb_GetModulesByName([Parameter(Name="ModuleName", DbType="VarChar(128)")] string moduleName, [Parameter(Name="PortalID", DbType="Int")] System.Nullable<int> portalID)
+		public ISingleResult<GetModulesByNameResult> rb_GetModulesByName([Parameter(Name="ModuleName", DbType="VarChar(128)")] string moduleName, [Parameter(Name="PortalID", DbType="Int")] System.Nullable<int> portalID)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleName, portalID);
-			return ((ISingleResult<rb_GetModulesByNameResult>)(result.ReturnValue));
+			return ((ISingleResult<GetModulesByNameResult>)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_GetCurrentModuleDefinitions")]
+		public ISingleResult<GeneralModuleDefinition> rb_GetCurrentModuleDefinitions([Parameter(Name="PortalID", DbType="Int")] System.Nullable<int> portalID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), portalID);
+			return ((ISingleResult<GeneralModuleDefinition>)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_MoveModuleToNewTab")]
+		public int rb_MoveModuleToNewTab([Parameter(Name="ModuleID", DbType="Int")] System.Nullable<int> moduleID, [Parameter(Name="TabID", DbType="Int")] System.Nullable<int> tabID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID, tabID);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_Publish")]
+		public int rb_Publish([Parameter(Name="ModuleID", DbType="Int")] System.Nullable<int> moduleID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_RequestApproval")]
+		public int rb_RequestApproval([Parameter(DbType="Int")] System.Nullable<int> moduleID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_Reject")]
+		public int rb_Reject([Parameter(DbType="Int")] System.Nullable<int> moduleID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_Revert")]
+		public int rb_Revert([Parameter(Name="ModuleID", DbType="Int")] System.Nullable<int> moduleID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_Approve")]
+		public int rb_Approve([Parameter(DbType="Int")] System.Nullable<int> moduleID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
+			return ((int)(result.ReturnValue));
 		}
 	}
 	
@@ -2509,16 +2647,16 @@ namespace Rainbow.Framework.Data.MsSql
 	
 	[Table(Name="dbo.rb_Versions")]
 	[DataContract()]
-	public partial class rb_Version
+	public partial class Version
 	{
 		
 		private int _Release;
 		
-		private string _Version;
+		private string _FullVersion;
 		
 		private System.Nullable<System.DateTime> _ReleaseDate;
 		
-		public rb_Version()
+		public Version()
 		{
 		}
 		
@@ -2539,19 +2677,19 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Column(Storage="_Version", DbType="NVarChar(50)")]
+		[Column(Name="Version", Storage="_FullVersion", DbType="NVarChar(50)")]
 		[DataMember(Order=2)]
-		public string Version
+		public string FullVersion
 		{
 			get
 			{
-				return this._Version;
+				return this._FullVersion;
 			}
 			set
 			{
-				if ((this._Version != value))
+				if ((this._FullVersion != value))
 				{
-					this._Version = value;
+					this._FullVersion = value;
 				}
 			}
 		}
@@ -2576,7 +2714,7 @@ namespace Rainbow.Framework.Data.MsSql
 	
 	[Table(Name="dbo.rb_ModuleDefinitions")]
 	[DataContract()]
-	public partial class rb_ModuleDefinition : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class ModuleDefinition : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -2587,9 +2725,11 @@ namespace Rainbow.Framework.Data.MsSql
 		
 		private System.Guid _GeneralModDefID;
 		
-		private EntitySet<rb_Module> _rb_Modules;
+		private EntitySet<Module> _Modules;
 		
-		private EntityRef<rb_GeneralModuleDefinition> _rb_GeneralModuleDefinition;
+		private EntityRef<GeneralModuleDefinition> _rb_GeneralModuleDefinition;
+		
+		private EntityRef<Portal> _Portal;
 		
 		private bool serializing;
 		
@@ -2597,22 +2737,22 @@ namespace Rainbow.Framework.Data.MsSql
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnModuleDefIDChanging(int value);
-    partial void OnModuleDefIDChanged();
-    partial void OnPortalIDChanging(int value);
-    partial void OnPortalIDChanged();
-    partial void OnGeneralModDefIDChanging(System.Guid value);
-    partial void OnGeneralModDefIDChanged();
+    partial void OnModuleDefIdChanging(int value);
+    partial void OnModuleDefIdChanged();
+    partial void OnPortalIdChanging(int value);
+    partial void OnPortalIdChanged();
+    partial void OnGeneralModDefIdChanging(System.Guid value);
+    partial void OnGeneralModDefIdChanged();
     #endregion
 		
-		public rb_ModuleDefinition()
+		public ModuleDefinition()
 		{
 			this.Initialize();
 		}
 		
-		[Column(Storage="_ModuleDefID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[Column(Name="ModuleDefID", Storage="_ModuleDefID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		[DataMember(Order=1)]
-		public int ModuleDefID
+		public int ModuleDefId
 		{
 			get
 			{
@@ -2622,18 +2762,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._ModuleDefID != value))
 				{
-					this.OnModuleDefIDChanging(value);
+					this.OnModuleDefIdChanging(value);
 					this.SendPropertyChanging();
 					this._ModuleDefID = value;
-					this.SendPropertyChanged("ModuleDefID");
-					this.OnModuleDefIDChanged();
+					this.SendPropertyChanged("ModuleDefId");
+					this.OnModuleDefIdChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_PortalID", DbType="Int NOT NULL")]
+		[Column(Name="PortalID", Storage="_PortalID", DbType="Int NOT NULL")]
 		[DataMember(Order=2)]
-		public int PortalID
+		public int PortalId
 		{
 			get
 			{
@@ -2643,18 +2783,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._PortalID != value))
 				{
-					this.OnPortalIDChanging(value);
+					this.OnPortalIdChanging(value);
 					this.SendPropertyChanging();
 					this._PortalID = value;
-					this.SendPropertyChanged("PortalID");
-					this.OnPortalIDChanged();
+					this.SendPropertyChanged("PortalId");
+					this.OnPortalIdChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_GeneralModDefID", DbType="UniqueIdentifier NOT NULL")]
+		[Column(Name="GeneralModDefID", Storage="_GeneralModDefID", DbType="UniqueIdentifier NOT NULL")]
 		[DataMember(Order=3)]
-		public System.Guid GeneralModDefID
+		public System.Guid GeneralModDefId
 		{
 			get
 			{
@@ -2664,40 +2804,36 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._GeneralModDefID != value))
 				{
-					if (this._rb_GeneralModuleDefinition.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnGeneralModDefIDChanging(value);
+					this.OnGeneralModDefIdChanging(value);
 					this.SendPropertyChanging();
 					this._GeneralModDefID = value;
-					this.SendPropertyChanged("GeneralModDefID");
-					this.OnGeneralModDefIDChanged();
+					this.SendPropertyChanged("GeneralModDefId");
+					this.OnGeneralModDefIdChanged();
 				}
 			}
 		}
 		
-		[Association(Name="rb_ModuleDefinition_rb_Module", Storage="_rb_Modules", OtherKey="ModuleDefID")]
+		[Association(Name="ModuleDefinition_Module", Storage="_Modules", ThisKey="ModuleDefId", OtherKey="ModuleDefId")]
 		[DataMember(Order=4, EmitDefaultValue=false)]
-		public EntitySet<rb_Module> rb_Modules
+		public EntitySet<Module> Modules
 		{
 			get
 			{
 				if ((this.serializing 
-							&& (this._rb_Modules.HasLoadedOrAssignedValues == false)))
+							&& (this._Modules.HasLoadedOrAssignedValues == false)))
 				{
 					return null;
 				}
-				return this._rb_Modules;
+				return this._Modules;
 			}
 			set
 			{
-				this._rb_Modules.Assign(value);
+				this._Modules.Assign(value);
 			}
 		}
 		
-		[Association(Name="rb_GeneralModuleDefinition_rb_ModuleDefinition", Storage="_rb_GeneralModuleDefinition", ThisKey="GeneralModDefID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public rb_GeneralModuleDefinition rb_GeneralModuleDefinition
+		[Association(Name="GeneralModuleDefinition_ModuleDefinition", Storage="_rb_GeneralModuleDefinition", ThisKey="GeneralModDefId", OtherKey="GeneralModDefId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public GeneralModuleDefinition GeneralModuleDefinition
 		{
 			get
 			{
@@ -2705,7 +2841,7 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 			set
 			{
-				rb_GeneralModuleDefinition previousValue = this._rb_GeneralModuleDefinition.Entity;
+				GeneralModuleDefinition previousValue = this._rb_GeneralModuleDefinition.Entity;
 				if (((previousValue != value) 
 							|| (this._rb_GeneralModuleDefinition.HasLoadedOrAssignedValue == false)))
 				{
@@ -2713,19 +2849,53 @@ namespace Rainbow.Framework.Data.MsSql
 					if ((previousValue != null))
 					{
 						this._rb_GeneralModuleDefinition.Entity = null;
-						previousValue.rb_ModuleDefinitions.Remove(this);
+						previousValue.ModuleDefinitions.Remove(this);
 					}
 					this._rb_GeneralModuleDefinition.Entity = value;
 					if ((value != null))
 					{
-						value.rb_ModuleDefinitions.Add(this);
-						this._GeneralModDefID = value.GeneralModDefID;
+						value.ModuleDefinitions.Add(this);
+						this._GeneralModDefID = value.GeneralModDefId;
 					}
 					else
 					{
 						this._GeneralModDefID = default(System.Guid);
 					}
-					this.SendPropertyChanged("rb_GeneralModuleDefinition");
+					this.SendPropertyChanged("GeneralModuleDefinition");
+				}
+			}
+		}
+		
+		[Association(Name="Portal_ModuleDefinition", Storage="_Portal", ThisKey="PortalId", OtherKey="PortalId", IsForeignKey=true)]
+		public Portal Portal
+		{
+			get
+			{
+				return this._Portal.Entity;
+			}
+			set
+			{
+				Portal previousValue = this._Portal.Entity;
+				if (((previousValue != value) 
+							|| (this._Portal.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Portal.Entity = null;
+						previousValue.ModuleDefinitions.Remove(this);
+					}
+					this._Portal.Entity = value;
+					if ((value != null))
+					{
+						value.ModuleDefinitions.Add(this);
+						this._PortalID = value.PortalId;
+					}
+					else
+					{
+						this._PortalID = default(int);
+					}
+					this.SendPropertyChanged("Portal");
 				}
 			}
 		}
@@ -2750,22 +2920,23 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		private void attach_rb_Modules(rb_Module entity)
+		private void attach_Modules(Module entity)
 		{
 			this.SendPropertyChanging();
-			entity.rb_ModuleDefinition = this;
+			entity.ModuleDefinition = this;
 		}
 		
-		private void detach_rb_Modules(rb_Module entity)
+		private void detach_Modules(Module entity)
 		{
 			this.SendPropertyChanging();
-			entity.rb_ModuleDefinition = null;
+			entity.ModuleDefinition = null;
 		}
 		
 		private void Initialize()
 		{
-			this._rb_Modules = new EntitySet<rb_Module>(new Action<rb_Module>(this.attach_rb_Modules), new Action<rb_Module>(this.detach_rb_Modules));
-			this._rb_GeneralModuleDefinition = default(EntityRef<rb_GeneralModuleDefinition>);
+			this._Modules = new EntitySet<Module>(new Action<Module>(this.attach_Modules), new Action<Module>(this.detach_Modules));
+			this._rb_GeneralModuleDefinition = default(EntityRef<GeneralModuleDefinition>);
+			this._Portal = default(EntityRef<Portal>);
 			OnCreated();
 		}
 		
@@ -2793,7 +2964,7 @@ namespace Rainbow.Framework.Data.MsSql
 	
 	[Table(Name="dbo.rb_GeneralModuleDefinitions")]
 	[DataContract()]
-	public partial class rb_GeneralModuleDefinition : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class GeneralModuleDefinition : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -2814,7 +2985,9 @@ namespace Rainbow.Framework.Data.MsSql
 		
 		private System.Nullable<bool> _Searchable;
 		
-		private EntitySet<rb_ModuleDefinition> _rb_ModuleDefinitions;
+		private EntitySet<ModuleDefinition> _ModuleDefinitions;
+		
+		private EntitySet<SolutionModuleDefinition> _SolutionModuleDefinitions;
 		
 		private bool serializing;
 		
@@ -2822,32 +2995,32 @@ namespace Rainbow.Framework.Data.MsSql
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnGeneralModDefIDChanging(System.Guid value);
-    partial void OnGeneralModDefIDChanged();
+    partial void OnGeneralModDefIdChanging(System.Guid value);
+    partial void OnGeneralModDefIdChanged();
     partial void OnFriendlyNameChanging(string value);
     partial void OnFriendlyNameChanged();
-    partial void OnDesktopSrcChanging(string value);
-    partial void OnDesktopSrcChanged();
-    partial void OnMobileSrcChanging(string value);
-    partial void OnMobileSrcChanged();
+    partial void OnDesktopSourceChanging(string value);
+    partial void OnDesktopSourceChanged();
+    partial void OnMobileSourceChanging(string value);
+    partial void OnMobileSourceChanged();
     partial void OnAssemblyNameChanging(string value);
     partial void OnAssemblyNameChanged();
     partial void OnClassNameChanging(string value);
     partial void OnClassNameChanged();
-    partial void OnAdminChanging(System.Nullable<bool> value);
-    partial void OnAdminChanged();
-    partial void OnSearchableChanging(System.Nullable<bool> value);
-    partial void OnSearchableChanged();
+    partial void OnIsAdminChanging(System.Nullable<bool> value);
+    partial void OnIsAdminChanged();
+    partial void OnIsSearchableChanging(System.Nullable<bool> value);
+    partial void OnIsSearchableChanged();
     #endregion
 		
-		public rb_GeneralModuleDefinition()
+		public GeneralModuleDefinition()
 		{
 			this.Initialize();
 		}
 		
-		[Column(Storage="_GeneralModDefID", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="GeneralModDefID", Storage="_GeneralModDefID", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
 		[DataMember(Order=1)]
-		public System.Guid GeneralModDefID
+		public System.Guid GeneralModDefId
 		{
 			get
 			{
@@ -2857,11 +3030,11 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._GeneralModDefID != value))
 				{
-					this.OnGeneralModDefIDChanging(value);
+					this.OnGeneralModDefIdChanging(value);
 					this.SendPropertyChanging();
 					this._GeneralModDefID = value;
-					this.SendPropertyChanged("GeneralModDefID");
-					this.OnGeneralModDefIDChanged();
+					this.SendPropertyChanged("GeneralModDefId");
+					this.OnGeneralModDefIdChanged();
 				}
 			}
 		}
@@ -2887,9 +3060,9 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Column(Storage="_DesktopSrc", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[Column(Name="DesktopSrc", Storage="_DesktopSrc", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=3)]
-		public string DesktopSrc
+		public string DesktopSource
 		{
 			get
 			{
@@ -2899,18 +3072,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._DesktopSrc != value))
 				{
-					this.OnDesktopSrcChanging(value);
+					this.OnDesktopSourceChanging(value);
 					this.SendPropertyChanging();
 					this._DesktopSrc = value;
-					this.SendPropertyChanged("DesktopSrc");
-					this.OnDesktopSrcChanged();
+					this.SendPropertyChanged("DesktopSource");
+					this.OnDesktopSourceChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_MobileSrc", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[Column(Name="MobileSrc", Storage="_MobileSrc", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=4)]
-		public string MobileSrc
+		public string MobileSource
 		{
 			get
 			{
@@ -2920,11 +3093,11 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._MobileSrc != value))
 				{
-					this.OnMobileSrcChanging(value);
+					this.OnMobileSourceChanging(value);
 					this.SendPropertyChanging();
 					this._MobileSrc = value;
-					this.SendPropertyChanged("MobileSrc");
-					this.OnMobileSrcChanged();
+					this.SendPropertyChanged("MobileSource");
+					this.OnMobileSourceChanged();
 				}
 			}
 		}
@@ -2971,9 +3144,9 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Column(Storage="_Admin", DbType="Bit")]
+		[Column(Name="Admin", Storage="_Admin", DbType="Bit")]
 		[DataMember(Order=7)]
-		public System.Nullable<bool> Admin
+		public System.Nullable<bool> IsAdmin
 		{
 			get
 			{
@@ -2983,18 +3156,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._Admin != value))
 				{
-					this.OnAdminChanging(value);
+					this.OnIsAdminChanging(value);
 					this.SendPropertyChanging();
 					this._Admin = value;
-					this.SendPropertyChanged("Admin");
-					this.OnAdminChanged();
+					this.SendPropertyChanged("IsAdmin");
+					this.OnIsAdminChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_Searchable", DbType="Bit")]
+		[Column(Name="Searchable", Storage="_Searchable", DbType="Bit")]
 		[DataMember(Order=8)]
-		public System.Nullable<bool> Searchable
+		public System.Nullable<bool> IsSearchable
 		{
 			get
 			{
@@ -3004,31 +3177,50 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._Searchable != value))
 				{
-					this.OnSearchableChanging(value);
+					this.OnIsSearchableChanging(value);
 					this.SendPropertyChanging();
 					this._Searchable = value;
-					this.SendPropertyChanged("Searchable");
-					this.OnSearchableChanged();
+					this.SendPropertyChanged("IsSearchable");
+					this.OnIsSearchableChanged();
 				}
 			}
 		}
 		
-		[Association(Name="rb_GeneralModuleDefinition_rb_ModuleDefinition", Storage="_rb_ModuleDefinitions", OtherKey="GeneralModDefID")]
+		[Association(Name="GeneralModuleDefinition_ModuleDefinition", Storage="_ModuleDefinitions", ThisKey="GeneralModDefId", OtherKey="GeneralModDefId")]
 		[DataMember(Order=9, EmitDefaultValue=false)]
-		public EntitySet<rb_ModuleDefinition> rb_ModuleDefinitions
+		public EntitySet<ModuleDefinition> ModuleDefinitions
 		{
 			get
 			{
 				if ((this.serializing 
-							&& (this._rb_ModuleDefinitions.HasLoadedOrAssignedValues == false)))
+							&& (this._ModuleDefinitions.HasLoadedOrAssignedValues == false)))
 				{
 					return null;
 				}
-				return this._rb_ModuleDefinitions;
+				return this._ModuleDefinitions;
 			}
 			set
 			{
-				this._rb_ModuleDefinitions.Assign(value);
+				this._ModuleDefinitions.Assign(value);
+			}
+		}
+		
+		[Association(Name="GeneralModuleDefinition_rb_SolutionModuleDefinition", Storage="_SolutionModuleDefinitions", ThisKey="GeneralModDefId", OtherKey="GeneralModDefID")]
+		[DataMember(Order=10, EmitDefaultValue=false)]
+		public EntitySet<SolutionModuleDefinition> SolutionModuleDefinitions
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._SolutionModuleDefinitions.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._SolutionModuleDefinitions;
+			}
+			set
+			{
+				this._SolutionModuleDefinitions.Assign(value);
 			}
 		}
 		
@@ -3052,21 +3244,34 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		private void attach_rb_ModuleDefinitions(rb_ModuleDefinition entity)
+		private void attach_ModuleDefinitions(ModuleDefinition entity)
 		{
 			this.SendPropertyChanging();
-			entity.rb_GeneralModuleDefinition = this;
+			entity.GeneralModuleDefinition = this;
 		}
 		
-		private void detach_rb_ModuleDefinitions(rb_ModuleDefinition entity)
+		private void detach_ModuleDefinitions(ModuleDefinition entity)
 		{
 			this.SendPropertyChanging();
-			entity.rb_GeneralModuleDefinition = null;
+			entity.GeneralModuleDefinition = null;
+		}
+		
+		private void attach_SolutionModuleDefinitions(SolutionModuleDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.GeneralModuleDefinition = this;
+		}
+		
+		private void detach_SolutionModuleDefinitions(SolutionModuleDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.GeneralModuleDefinition = null;
 		}
 		
 		private void Initialize()
 		{
-			this._rb_ModuleDefinitions = new EntitySet<rb_ModuleDefinition>(new Action<rb_ModuleDefinition>(this.attach_rb_ModuleDefinitions), new Action<rb_ModuleDefinition>(this.detach_rb_ModuleDefinitions));
+			this._ModuleDefinitions = new EntitySet<ModuleDefinition>(new Action<ModuleDefinition>(this.attach_ModuleDefinitions), new Action<ModuleDefinition>(this.detach_ModuleDefinitions));
+			this._SolutionModuleDefinitions = new EntitySet<SolutionModuleDefinition>(new Action<SolutionModuleDefinition>(this.attach_SolutionModuleDefinitions), new Action<SolutionModuleDefinition>(this.detach_SolutionModuleDefinitions));
 			OnCreated();
 		}
 		
@@ -3094,7 +3299,7 @@ namespace Rainbow.Framework.Data.MsSql
 	
 	[Table(Name="dbo.rb_Modules")]
 	[DataContract()]
-	public partial class rb_Module : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Module : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -3151,11 +3356,13 @@ namespace Rainbow.Framework.Data.MsSql
 		
 		private string _AuthorizedDeleteModuleRoles;
 		
-		private EntitySet<rb_ModuleSetting> _rb_ModuleSettings;
+		private EntitySet<ModuleSetting> _ModuleSettings;
 		
-		private EntityRef<rb_ModuleDefinition> _rb_ModuleDefinition;
+		private EntitySet<ModuleUserSetting> _ModuleUserSettings;
 		
-		private EntityRef<rb_Page> _rb_Page;
+		private EntityRef<Page> _Page;
+		
+		private EntityRef<ModuleDefinition> _ModuleDefinition;
 		
 		private bool serializing;
 		
@@ -3163,40 +3370,40 @@ namespace Rainbow.Framework.Data.MsSql
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnModuleIDChanging(int value);
-    partial void OnModuleIDChanged();
-    partial void OnTabIDChanging(int value);
-    partial void OnTabIDChanged();
-    partial void OnModuleDefIDChanging(int value);
-    partial void OnModuleDefIDChanged();
-    partial void OnModuleOrderChanging(int value);
-    partial void OnModuleOrderChanged();
+    partial void OnModuleIdChanging(int value);
+    partial void OnModuleIdChanged();
+    partial void OnPageIdChanging(int value);
+    partial void OnPageIdChanged();
+    partial void OnModuleDefIdChanging(int value);
+    partial void OnModuleDefIdChanged();
+    partial void OnOrderChanging(int value);
+    partial void OnOrderChanged();
     partial void OnPaneNameChanging(string value);
     partial void OnPaneNameChanged();
-    partial void OnModuleTitleChanging(string value);
-    partial void OnModuleTitleChanged();
-    partial void OnAuthorizedEditRolesChanging(string value);
-    partial void OnAuthorizedEditRolesChanged();
-    partial void OnAuthorizedViewRolesChanging(string value);
-    partial void OnAuthorizedViewRolesChanged();
-    partial void OnAuthorizedAddRolesChanging(string value);
-    partial void OnAuthorizedAddRolesChanged();
-    partial void OnAuthorizedDeleteRolesChanging(string value);
-    partial void OnAuthorizedDeleteRolesChanged();
-    partial void OnAuthorizedPropertiesRolesChanging(string value);
-    partial void OnAuthorizedPropertiesRolesChanged();
+    partial void OnTitleChanging(string value);
+    partial void OnTitleChanged();
+    partial void OnAuthorizedRolesEditChanging(string value);
+    partial void OnAuthorizedRolesEditChanged();
+    partial void OnAuthorizedRolesViewChanging(string value);
+    partial void OnAuthorizedRolesViewChanged();
+    partial void OnAuthorizedRolesAddChanging(string value);
+    partial void OnAuthorizedRolesAddChanged();
+    partial void OnAuthorizedRolesDeleteChanging(string value);
+    partial void OnAuthorizedRolesDeleteChanged();
+    partial void OnAuthorizedRolesPropertiesChanging(string value);
+    partial void OnAuthorizedRolesPropertiesChanged();
     partial void OnCacheTimeChanging(int value);
     partial void OnCacheTimeChanged();
-    partial void OnShowMobileChanging(System.Nullable<bool> value);
-    partial void OnShowMobileChanged();
-    partial void OnAuthorizedPublishingRolesChanging(string value);
-    partial void OnAuthorizedPublishingRolesChanged();
-    partial void OnNewVersionChanging(System.Nullable<bool> value);
-    partial void OnNewVersionChanged();
-    partial void OnSupportWorkflowChanging(System.Nullable<bool> value);
-    partial void OnSupportWorkflowChanged();
-    partial void OnAuthorizedApproveRolesChanging(string value);
-    partial void OnAuthorizedApproveRolesChanged();
+    partial void OnIsShowMobileChanging(System.Nullable<bool> value);
+    partial void OnIsShowMobileChanged();
+    partial void OnAuthorizedRolesPublishingChanging(string value);
+    partial void OnAuthorizedRolesPublishingChanged();
+    partial void OnIsNewVersionChanging(System.Nullable<bool> value);
+    partial void OnIsNewVersionChanged();
+    partial void OnIsSupportWorkflowChanging(System.Nullable<bool> value);
+    partial void OnIsSupportWorkflowChanged();
+    partial void OnAuthorizedRolesApproveChanging(string value);
+    partial void OnAuthorizedRolesApproveChanged();
     partial void OnWorkflowStateChanging(System.Nullable<byte> value);
     partial void OnWorkflowStateChanged();
     partial void OnLastModifiedChanging(System.Nullable<System.DateTime> value);
@@ -3207,24 +3414,24 @@ namespace Rainbow.Framework.Data.MsSql
     partial void OnStagingLastModifiedChanged();
     partial void OnStagingLastEditorChanging(string value);
     partial void OnStagingLastEditorChanged();
-    partial void OnSupportCollapsableChanging(System.Nullable<bool> value);
-    partial void OnSupportCollapsableChanged();
-    partial void OnShowEveryWhereChanging(System.Nullable<bool> value);
-    partial void OnShowEveryWhereChanged();
-    partial void OnAuthorizedMoveModuleRolesChanging(string value);
-    partial void OnAuthorizedMoveModuleRolesChanged();
-    partial void OnAuthorizedDeleteModuleRolesChanging(string value);
-    partial void OnAuthorizedDeleteModuleRolesChanged();
+    partial void OnIsCollapsableChanging(System.Nullable<bool> value);
+    partial void OnIsCollapsableChanged();
+    partial void OnIsShowEveryWhereChanging(System.Nullable<bool> value);
+    partial void OnIsShowEveryWhereChanged();
+    partial void OnAuthorizedRolesModuleMoveChanging(string value);
+    partial void OnAuthorizedRolesModuleMoveChanged();
+    partial void OnAuthorizedRolesModuleDeleteChanging(string value);
+    partial void OnAuthorizedRolesModuleDeleteChanged();
     #endregion
 		
-		public rb_Module()
+		public Module()
 		{
 			this.Initialize();
 		}
 		
-		[Column(Storage="_ModuleID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[Column(Name="ModuleID", Storage="_ModuleID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		[DataMember(Order=1)]
-		public int ModuleID
+		public int ModuleId
 		{
 			get
 			{
@@ -3234,18 +3441,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._ModuleID != value))
 				{
-					this.OnModuleIDChanging(value);
+					this.OnModuleIdChanging(value);
 					this.SendPropertyChanging();
 					this._ModuleID = value;
-					this.SendPropertyChanged("ModuleID");
-					this.OnModuleIDChanged();
+					this.SendPropertyChanged("ModuleId");
+					this.OnModuleIdChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_TabID", DbType="Int NOT NULL")]
+		[Column(Name="TabID", Storage="_TabID", DbType="Int NOT NULL")]
 		[DataMember(Order=2)]
-		public int TabID
+		public int PageId
 		{
 			get
 			{
@@ -3255,22 +3462,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._TabID != value))
 				{
-					if (this._rb_Page.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTabIDChanging(value);
+					this.OnPageIdChanging(value);
 					this.SendPropertyChanging();
 					this._TabID = value;
-					this.SendPropertyChanged("TabID");
-					this.OnTabIDChanged();
+					this.SendPropertyChanged("PageId");
+					this.OnPageIdChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_ModuleDefID", DbType="Int NOT NULL")]
+		[Column(Name="ModuleDefID", Storage="_ModuleDefID", DbType="Int NOT NULL")]
 		[DataMember(Order=3)]
-		public int ModuleDefID
+		public int ModuleDefId
 		{
 			get
 			{
@@ -3280,22 +3483,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._ModuleDefID != value))
 				{
-					if (this._rb_ModuleDefinition.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnModuleDefIDChanging(value);
+					this.OnModuleDefIdChanging(value);
 					this.SendPropertyChanging();
 					this._ModuleDefID = value;
-					this.SendPropertyChanged("ModuleDefID");
-					this.OnModuleDefIDChanged();
+					this.SendPropertyChanged("ModuleDefId");
+					this.OnModuleDefIdChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_ModuleOrder", DbType="Int NOT NULL")]
+		[Column(Name="ModuleOrder", Storage="_ModuleOrder", DbType="Int NOT NULL")]
 		[DataMember(Order=4)]
-		public int ModuleOrder
+		public int Order
 		{
 			get
 			{
@@ -3305,11 +3504,11 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._ModuleOrder != value))
 				{
-					this.OnModuleOrderChanging(value);
+					this.OnOrderChanging(value);
 					this.SendPropertyChanging();
 					this._ModuleOrder = value;
-					this.SendPropertyChanged("ModuleOrder");
-					this.OnModuleOrderChanged();
+					this.SendPropertyChanged("Order");
+					this.OnOrderChanged();
 				}
 			}
 		}
@@ -3335,9 +3534,9 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Column(Storage="_ModuleTitle", DbType="NVarChar(256)")]
+		[Column(Name="ModuleTitle", Storage="_ModuleTitle", DbType="NVarChar(256)")]
 		[DataMember(Order=6)]
-		public string ModuleTitle
+		public string Title
 		{
 			get
 			{
@@ -3347,18 +3546,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._ModuleTitle != value))
 				{
-					this.OnModuleTitleChanging(value);
+					this.OnTitleChanging(value);
 					this.SendPropertyChanging();
 					this._ModuleTitle = value;
-					this.SendPropertyChanged("ModuleTitle");
-					this.OnModuleTitleChanged();
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_AuthorizedEditRoles", DbType="NVarChar(256)")]
+		[Column(Name="AuthorizedEditRoles", Storage="_AuthorizedEditRoles", DbType="NVarChar(256)")]
 		[DataMember(Order=7)]
-		public string AuthorizedEditRoles
+		public string AuthorizedRolesEdit
 		{
 			get
 			{
@@ -3368,18 +3567,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._AuthorizedEditRoles != value))
 				{
-					this.OnAuthorizedEditRolesChanging(value);
+					this.OnAuthorizedRolesEditChanging(value);
 					this.SendPropertyChanging();
 					this._AuthorizedEditRoles = value;
-					this.SendPropertyChanged("AuthorizedEditRoles");
-					this.OnAuthorizedEditRolesChanged();
+					this.SendPropertyChanged("AuthorizedRolesEdit");
+					this.OnAuthorizedRolesEditChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_AuthorizedViewRoles", DbType="NVarChar(256)")]
+		[Column(Name="AuthorizedViewRoles", Storage="_AuthorizedViewRoles", DbType="NVarChar(256)")]
 		[DataMember(Order=8)]
-		public string AuthorizedViewRoles
+		public string AuthorizedRolesView
 		{
 			get
 			{
@@ -3389,18 +3588,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._AuthorizedViewRoles != value))
 				{
-					this.OnAuthorizedViewRolesChanging(value);
+					this.OnAuthorizedRolesViewChanging(value);
 					this.SendPropertyChanging();
 					this._AuthorizedViewRoles = value;
-					this.SendPropertyChanged("AuthorizedViewRoles");
-					this.OnAuthorizedViewRolesChanged();
+					this.SendPropertyChanged("AuthorizedRolesView");
+					this.OnAuthorizedRolesViewChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_AuthorizedAddRoles", DbType="NVarChar(256)")]
+		[Column(Name="AuthorizedAddRoles", Storage="_AuthorizedAddRoles", DbType="NVarChar(256)")]
 		[DataMember(Order=9)]
-		public string AuthorizedAddRoles
+		public string AuthorizedRolesAdd
 		{
 			get
 			{
@@ -3410,18 +3609,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._AuthorizedAddRoles != value))
 				{
-					this.OnAuthorizedAddRolesChanging(value);
+					this.OnAuthorizedRolesAddChanging(value);
 					this.SendPropertyChanging();
 					this._AuthorizedAddRoles = value;
-					this.SendPropertyChanged("AuthorizedAddRoles");
-					this.OnAuthorizedAddRolesChanged();
+					this.SendPropertyChanged("AuthorizedRolesAdd");
+					this.OnAuthorizedRolesAddChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_AuthorizedDeleteRoles", DbType="NVarChar(256)")]
+		[Column(Name="AuthorizedDeleteRoles", Storage="_AuthorizedDeleteRoles", DbType="NVarChar(256)")]
 		[DataMember(Order=10)]
-		public string AuthorizedDeleteRoles
+		public string AuthorizedRolesDelete
 		{
 			get
 			{
@@ -3431,18 +3630,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._AuthorizedDeleteRoles != value))
 				{
-					this.OnAuthorizedDeleteRolesChanging(value);
+					this.OnAuthorizedRolesDeleteChanging(value);
 					this.SendPropertyChanging();
 					this._AuthorizedDeleteRoles = value;
-					this.SendPropertyChanged("AuthorizedDeleteRoles");
-					this.OnAuthorizedDeleteRolesChanged();
+					this.SendPropertyChanged("AuthorizedRolesDelete");
+					this.OnAuthorizedRolesDeleteChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_AuthorizedPropertiesRoles", DbType="NVarChar(256)")]
+		[Column(Name="AuthorizedPropertiesRoles", Storage="_AuthorizedPropertiesRoles", DbType="NVarChar(256)")]
 		[DataMember(Order=11)]
-		public string AuthorizedPropertiesRoles
+		public string AuthorizedRolesProperties
 		{
 			get
 			{
@@ -3452,11 +3651,11 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._AuthorizedPropertiesRoles != value))
 				{
-					this.OnAuthorizedPropertiesRolesChanging(value);
+					this.OnAuthorizedRolesPropertiesChanging(value);
 					this.SendPropertyChanging();
 					this._AuthorizedPropertiesRoles = value;
-					this.SendPropertyChanged("AuthorizedPropertiesRoles");
-					this.OnAuthorizedPropertiesRolesChanged();
+					this.SendPropertyChanged("AuthorizedRolesProperties");
+					this.OnAuthorizedRolesPropertiesChanged();
 				}
 			}
 		}
@@ -3482,9 +3681,9 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Column(Storage="_ShowMobile", DbType="Bit")]
+		[Column(Name="ShowMobile", Storage="_ShowMobile", DbType="Bit")]
 		[DataMember(Order=13)]
-		public System.Nullable<bool> ShowMobile
+		public System.Nullable<bool> IsShowMobile
 		{
 			get
 			{
@@ -3494,18 +3693,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._ShowMobile != value))
 				{
-					this.OnShowMobileChanging(value);
+					this.OnIsShowMobileChanging(value);
 					this.SendPropertyChanging();
 					this._ShowMobile = value;
-					this.SendPropertyChanged("ShowMobile");
-					this.OnShowMobileChanged();
+					this.SendPropertyChanged("IsShowMobile");
+					this.OnIsShowMobileChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_AuthorizedPublishingRoles", DbType="NVarChar(256)")]
+		[Column(Name="AuthorizedPublishingRoles", Storage="_AuthorizedPublishingRoles", DbType="NVarChar(256)")]
 		[DataMember(Order=14)]
-		public string AuthorizedPublishingRoles
+		public string AuthorizedRolesPublishing
 		{
 			get
 			{
@@ -3515,18 +3714,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._AuthorizedPublishingRoles != value))
 				{
-					this.OnAuthorizedPublishingRolesChanging(value);
+					this.OnAuthorizedRolesPublishingChanging(value);
 					this.SendPropertyChanging();
 					this._AuthorizedPublishingRoles = value;
-					this.SendPropertyChanged("AuthorizedPublishingRoles");
-					this.OnAuthorizedPublishingRolesChanged();
+					this.SendPropertyChanged("AuthorizedRolesPublishing");
+					this.OnAuthorizedRolesPublishingChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_NewVersion", DbType="Bit")]
+		[Column(Name="NewVersion", Storage="_NewVersion", DbType="Bit")]
 		[DataMember(Order=15)]
-		public System.Nullable<bool> NewVersion
+		public System.Nullable<bool> IsNewVersion
 		{
 			get
 			{
@@ -3536,18 +3735,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._NewVersion != value))
 				{
-					this.OnNewVersionChanging(value);
+					this.OnIsNewVersionChanging(value);
 					this.SendPropertyChanging();
 					this._NewVersion = value;
-					this.SendPropertyChanged("NewVersion");
-					this.OnNewVersionChanged();
+					this.SendPropertyChanged("IsNewVersion");
+					this.OnIsNewVersionChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_SupportWorkflow", DbType="Bit")]
+		[Column(Name="SupportWorkflow", Storage="_SupportWorkflow", DbType="Bit")]
 		[DataMember(Order=16)]
-		public System.Nullable<bool> SupportWorkflow
+		public System.Nullable<bool> IsSupportWorkflow
 		{
 			get
 			{
@@ -3557,18 +3756,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._SupportWorkflow != value))
 				{
-					this.OnSupportWorkflowChanging(value);
+					this.OnIsSupportWorkflowChanging(value);
 					this.SendPropertyChanging();
 					this._SupportWorkflow = value;
-					this.SendPropertyChanged("SupportWorkflow");
-					this.OnSupportWorkflowChanged();
+					this.SendPropertyChanged("IsSupportWorkflow");
+					this.OnIsSupportWorkflowChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_AuthorizedApproveRoles", DbType="NVarChar(256)")]
+		[Column(Name="AuthorizedApproveRoles", Storage="_AuthorizedApproveRoles", DbType="NVarChar(256)")]
 		[DataMember(Order=17)]
-		public string AuthorizedApproveRoles
+		public string AuthorizedRolesApprove
 		{
 			get
 			{
@@ -3578,11 +3777,11 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._AuthorizedApproveRoles != value))
 				{
-					this.OnAuthorizedApproveRolesChanging(value);
+					this.OnAuthorizedRolesApproveChanging(value);
 					this.SendPropertyChanging();
 					this._AuthorizedApproveRoles = value;
-					this.SendPropertyChanged("AuthorizedApproveRoles");
-					this.OnAuthorizedApproveRolesChanged();
+					this.SendPropertyChanged("AuthorizedRolesApprove");
+					this.OnAuthorizedRolesApproveChanged();
 				}
 			}
 		}
@@ -3692,9 +3891,9 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Column(Storage="_SupportCollapsable", DbType="Bit")]
+		[Column(Name="SupportCollapsable", Storage="_SupportCollapsable", DbType="Bit")]
 		[DataMember(Order=23)]
-		public System.Nullable<bool> SupportCollapsable
+		public System.Nullable<bool> IsCollapsable
 		{
 			get
 			{
@@ -3704,18 +3903,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._SupportCollapsable != value))
 				{
-					this.OnSupportCollapsableChanging(value);
+					this.OnIsCollapsableChanging(value);
 					this.SendPropertyChanging();
 					this._SupportCollapsable = value;
-					this.SendPropertyChanged("SupportCollapsable");
-					this.OnSupportCollapsableChanged();
+					this.SendPropertyChanged("IsCollapsable");
+					this.OnIsCollapsableChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_ShowEveryWhere", DbType="Bit")]
+		[Column(Name="ShowEveryWhere", Storage="_ShowEveryWhere", DbType="Bit")]
 		[DataMember(Order=24)]
-		public System.Nullable<bool> ShowEveryWhere
+		public System.Nullable<bool> IsShowEveryWhere
 		{
 			get
 			{
@@ -3725,18 +3924,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._ShowEveryWhere != value))
 				{
-					this.OnShowEveryWhereChanging(value);
+					this.OnIsShowEveryWhereChanging(value);
 					this.SendPropertyChanging();
 					this._ShowEveryWhere = value;
-					this.SendPropertyChanged("ShowEveryWhere");
-					this.OnShowEveryWhereChanged();
+					this.SendPropertyChanged("IsShowEveryWhere");
+					this.OnIsShowEveryWhereChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_AuthorizedMoveModuleRoles", DbType="NVarChar(256)")]
+		[Column(Name="AuthorizedMoveModuleRoles", Storage="_AuthorizedMoveModuleRoles", DbType="NVarChar(256)")]
 		[DataMember(Order=25)]
-		public string AuthorizedMoveModuleRoles
+		public string AuthorizedRolesModuleMove
 		{
 			get
 			{
@@ -3746,18 +3945,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._AuthorizedMoveModuleRoles != value))
 				{
-					this.OnAuthorizedMoveModuleRolesChanging(value);
+					this.OnAuthorizedRolesModuleMoveChanging(value);
 					this.SendPropertyChanging();
 					this._AuthorizedMoveModuleRoles = value;
-					this.SendPropertyChanged("AuthorizedMoveModuleRoles");
-					this.OnAuthorizedMoveModuleRolesChanged();
+					this.SendPropertyChanged("AuthorizedRolesModuleMove");
+					this.OnAuthorizedRolesModuleMoveChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_AuthorizedDeleteModuleRoles", DbType="NVarChar(256)")]
+		[Column(Name="AuthorizedDeleteModuleRoles", Storage="_AuthorizedDeleteModuleRoles", DbType="NVarChar(256)")]
 		[DataMember(Order=26)]
-		public string AuthorizedDeleteModuleRoles
+		public string AuthorizedRolesModuleDelete
 		{
 			get
 			{
@@ -3767,98 +3966,117 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._AuthorizedDeleteModuleRoles != value))
 				{
-					this.OnAuthorizedDeleteModuleRolesChanging(value);
+					this.OnAuthorizedRolesModuleDeleteChanging(value);
 					this.SendPropertyChanging();
 					this._AuthorizedDeleteModuleRoles = value;
-					this.SendPropertyChanged("AuthorizedDeleteModuleRoles");
-					this.OnAuthorizedDeleteModuleRolesChanged();
+					this.SendPropertyChanged("AuthorizedRolesModuleDelete");
+					this.OnAuthorizedRolesModuleDeleteChanged();
 				}
 			}
 		}
 		
-		[Association(Name="rb_Module_rb_ModuleSetting", Storage="_rb_ModuleSettings", OtherKey="ModuleID")]
+		[Association(Name="Module_ModuleSetting", Storage="_ModuleSettings", ThisKey="ModuleId", OtherKey="ModuleId")]
 		[DataMember(Order=27, EmitDefaultValue=false)]
-		public EntitySet<rb_ModuleSetting> rb_ModuleSettings
+		public EntitySet<ModuleSetting> ModuleSettings
 		{
 			get
 			{
 				if ((this.serializing 
-							&& (this._rb_ModuleSettings.HasLoadedOrAssignedValues == false)))
+							&& (this._ModuleSettings.HasLoadedOrAssignedValues == false)))
 				{
 					return null;
 				}
-				return this._rb_ModuleSettings;
+				return this._ModuleSettings;
 			}
 			set
 			{
-				this._rb_ModuleSettings.Assign(value);
+				this._ModuleSettings.Assign(value);
 			}
 		}
 		
-		[Association(Name="rb_ModuleDefinition_rb_Module", Storage="_rb_ModuleDefinition", ThisKey="ModuleDefID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public rb_ModuleDefinition rb_ModuleDefinition
+		[Association(Name="Module_ModuleUserSetting", Storage="_ModuleUserSettings", ThisKey="ModuleId", OtherKey="ModuleId")]
+		[DataMember(Order=28, EmitDefaultValue=false)]
+		public EntitySet<ModuleUserSetting> ModuleUserSettings
 		{
 			get
 			{
-				return this._rb_ModuleDefinition.Entity;
-			}
-			set
-			{
-				rb_ModuleDefinition previousValue = this._rb_ModuleDefinition.Entity;
-				if (((previousValue != value) 
-							|| (this._rb_ModuleDefinition.HasLoadedOrAssignedValue == false)))
+				if ((this.serializing 
+							&& (this._ModuleUserSettings.HasLoadedOrAssignedValues == false)))
 				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._rb_ModuleDefinition.Entity = null;
-						previousValue.rb_Modules.Remove(this);
-					}
-					this._rb_ModuleDefinition.Entity = value;
-					if ((value != null))
-					{
-						value.rb_Modules.Add(this);
-						this._ModuleDefID = value.ModuleDefID;
-					}
-					else
-					{
-						this._ModuleDefID = default(int);
-					}
-					this.SendPropertyChanged("rb_ModuleDefinition");
+					return null;
 				}
-			}
-		}
-		
-		[Association(Name="rb_Page_rb_Module", Storage="_rb_Page", ThisKey="TabID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public rb_Page rb_Page
-		{
-			get
-			{
-				return this._rb_Page.Entity;
+				return this._ModuleUserSettings;
 			}
 			set
 			{
-				rb_Page previousValue = this._rb_Page.Entity;
+				this._ModuleUserSettings.Assign(value);
+			}
+		}
+		
+		[Association(Name="Page_Module", Storage="_Page", ThisKey="PageId", OtherKey="PageId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Page Page
+		{
+			get
+			{
+				return this._Page.Entity;
+			}
+			set
+			{
+				Page previousValue = this._Page.Entity;
 				if (((previousValue != value) 
-							|| (this._rb_Page.HasLoadedOrAssignedValue == false)))
+							|| (this._Page.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._rb_Page.Entity = null;
-						previousValue.rb_Modules.Remove(this);
+						this._Page.Entity = null;
+						previousValue.Modules.Remove(this);
 					}
-					this._rb_Page.Entity = value;
+					this._Page.Entity = value;
 					if ((value != null))
 					{
-						value.rb_Modules.Add(this);
-						this._TabID = value.PageID;
+						value.Modules.Add(this);
+						this._TabID = value.PageId;
 					}
 					else
 					{
 						this._TabID = default(int);
 					}
-					this.SendPropertyChanged("rb_Page");
+					this.SendPropertyChanged("Page");
+				}
+			}
+		}
+		
+		[Association(Name="ModuleDefinition_Module", Storage="_ModuleDefinition", ThisKey="ModuleDefId", OtherKey="ModuleDefId", IsForeignKey=true)]
+		public ModuleDefinition ModuleDefinition
+		{
+			get
+			{
+				return this._ModuleDefinition.Entity;
+			}
+			set
+			{
+				ModuleDefinition previousValue = this._ModuleDefinition.Entity;
+				if (((previousValue != value) 
+							|| (this._ModuleDefinition.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ModuleDefinition.Entity = null;
+						previousValue.Modules.Remove(this);
+					}
+					this._ModuleDefinition.Entity = value;
+					if ((value != null))
+					{
+						value.Modules.Add(this);
+						this._ModuleDefID = value.ModuleDefId;
+					}
+					else
+					{
+						this._ModuleDefID = default(int);
+					}
+					this.SendPropertyChanged("ModuleDefinition");
 				}
 			}
 		}
@@ -3883,743 +4101,36 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		private void attach_rb_ModuleSettings(rb_ModuleSetting entity)
+		private void attach_ModuleSettings(ModuleSetting entity)
 		{
 			this.SendPropertyChanging();
-			entity.rb_Module = this;
+			entity.Module = this;
 		}
 		
-		private void detach_rb_ModuleSettings(rb_ModuleSetting entity)
+		private void detach_ModuleSettings(ModuleSetting entity)
 		{
 			this.SendPropertyChanging();
-			entity.rb_Module = null;
+			entity.Module = null;
+		}
+		
+		private void attach_ModuleUserSettings(ModuleUserSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.Module = this;
+		}
+		
+		private void detach_ModuleUserSettings(ModuleUserSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.Module = null;
 		}
 		
 		private void Initialize()
 		{
-			this._rb_ModuleSettings = new EntitySet<rb_ModuleSetting>(new Action<rb_ModuleSetting>(this.attach_rb_ModuleSettings), new Action<rb_ModuleSetting>(this.detach_rb_ModuleSettings));
-			this._rb_ModuleDefinition = default(EntityRef<rb_ModuleDefinition>);
-			this._rb_Page = default(EntityRef<rb_Page>);
-			OnCreated();
-		}
-		
-		[OnDeserializing()]
-		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnDeserializing(StreamingContext context)
-		{
-			this.Initialize();
-		}
-		
-		[OnSerializing()]
-		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnSerializing(StreamingContext context)
-		{
-			this.serializing = true;
-		}
-		
-		[OnSerialized()]
-		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnSerialized(StreamingContext context)
-		{
-			this.serializing = false;
-		}
-	}
-	
-	[Table(Name="dbo.rb_ModuleSettings")]
-	[DataContract()]
-	public partial class rb_ModuleSetting : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ModuleID;
-		
-		private string _SettingName;
-		
-		private string _SettingValue;
-		
-		private EntityRef<rb_Module> _rb_Module;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnModuleIDChanging(int value);
-    partial void OnModuleIDChanged();
-    partial void OnSettingNameChanging(string value);
-    partial void OnSettingNameChanged();
-    partial void OnSettingValueChanging(string value);
-    partial void OnSettingValueChanged();
-    #endregion
-		
-		public rb_ModuleSetting()
-		{
-			this.Initialize();
-		}
-		
-		[Column(Storage="_ModuleID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		[DataMember(Order=1)]
-		public int ModuleID
-		{
-			get
-			{
-				return this._ModuleID;
-			}
-			set
-			{
-				if ((this._ModuleID != value))
-				{
-					if (this._rb_Module.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnModuleIDChanging(value);
-					this.SendPropertyChanging();
-					this._ModuleID = value;
-					this.SendPropertyChanged("ModuleID");
-					this.OnModuleIDChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_SettingName", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		[DataMember(Order=2)]
-		public string SettingName
-		{
-			get
-			{
-				return this._SettingName;
-			}
-			set
-			{
-				if ((this._SettingName != value))
-				{
-					this.OnSettingNameChanging(value);
-					this.SendPropertyChanging();
-					this._SettingName = value;
-					this.SendPropertyChanged("SettingName");
-					this.OnSettingNameChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_SettingValue", DbType="NVarChar(1500) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=3)]
-		public string SettingValue
-		{
-			get
-			{
-				return this._SettingValue;
-			}
-			set
-			{
-				if ((this._SettingValue != value))
-				{
-					this.OnSettingValueChanging(value);
-					this.SendPropertyChanging();
-					this._SettingValue = value;
-					this.SendPropertyChanged("SettingValue");
-					this.OnSettingValueChanged();
-				}
-			}
-		}
-		
-		[Association(Name="rb_Module_rb_ModuleSetting", Storage="_rb_Module", ThisKey="ModuleID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public rb_Module rb_Module
-		{
-			get
-			{
-				return this._rb_Module.Entity;
-			}
-			set
-			{
-				rb_Module previousValue = this._rb_Module.Entity;
-				if (((previousValue != value) 
-							|| (this._rb_Module.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._rb_Module.Entity = null;
-						previousValue.rb_ModuleSettings.Remove(this);
-					}
-					this._rb_Module.Entity = value;
-					if ((value != null))
-					{
-						value.rb_ModuleSettings.Add(this);
-						this._ModuleID = value.ModuleID;
-					}
-					else
-					{
-						this._ModuleID = default(int);
-					}
-					this.SendPropertyChanged("rb_Module");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void Initialize()
-		{
-			this._rb_Module = default(EntityRef<rb_Module>);
-			OnCreated();
-		}
-		
-		[OnDeserializing()]
-		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnDeserializing(StreamingContext context)
-		{
-			this.Initialize();
-		}
-	}
-	
-	[Table(Name="dbo.rb_ModuleUserSettings")]
-	[DataContract()]
-	public partial class rb_ModuleUserSetting
-	{
-		
-		private int _ModuleID;
-		
-		private int _UserID;
-		
-		private string _SettingName;
-		
-		private string _SettingValue;
-		
-		public rb_ModuleUserSetting()
-		{
-		}
-		
-		[Column(Storage="_ModuleID", DbType="Int NOT NULL")]
-		[DataMember(Order=1)]
-		public int ModuleID
-		{
-			get
-			{
-				return this._ModuleID;
-			}
-			set
-			{
-				if ((this._ModuleID != value))
-				{
-					this._ModuleID = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_UserID", DbType="Int NOT NULL")]
-		[DataMember(Order=2)]
-		public int UserID
-		{
-			get
-			{
-				return this._UserID;
-			}
-			set
-			{
-				if ((this._UserID != value))
-				{
-					this._UserID = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_SettingName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=3)]
-		public string SettingName
-		{
-			get
-			{
-				return this._SettingName;
-			}
-			set
-			{
-				if ((this._SettingName != value))
-				{
-					this._SettingName = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_SettingValue", DbType="NVarChar(1500) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=4)]
-		public string SettingValue
-		{
-			get
-			{
-				return this._SettingValue;
-			}
-			set
-			{
-				if ((this._SettingValue != value))
-				{
-					this._SettingValue = value;
-				}
-			}
-		}
-	}
-	
-	[Table(Name="dbo.rb_Pages")]
-	[DataContract()]
-	public partial class rb_Page : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _PageID;
-		
-		private System.Nullable<int> _ParentPageID;
-		
-		private int _PageOrder;
-		
-		private int _PortalID;
-		
-		private string _PageName;
-		
-		private string _MobilePageName;
-		
-		private string _AuthorizedRoles;
-		
-		private bool _ShowMobile;
-		
-		private System.Nullable<int> _PageLayout;
-		
-		private string _PageDescription;
-		
-		private EntitySet<rb_Module> _rb_Modules;
-		
-		private EntitySet<rb_Page> _rb_Pages;
-		
-		private EntityRef<rb_Page> _rb_Page1;
-		
-		private EntityRef<rb_Portal> _rb_Portal;
-		
-		private bool serializing;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPageIDChanging(int value);
-    partial void OnPageIDChanged();
-    partial void OnParentPageIDChanging(System.Nullable<int> value);
-    partial void OnParentPageIDChanged();
-    partial void OnPageOrderChanging(int value);
-    partial void OnPageOrderChanged();
-    partial void OnPortalIDChanging(int value);
-    partial void OnPortalIDChanged();
-    partial void OnPageNameChanging(string value);
-    partial void OnPageNameChanged();
-    partial void OnMobilePageNameChanging(string value);
-    partial void OnMobilePageNameChanged();
-    partial void OnAuthorizedRolesChanging(string value);
-    partial void OnAuthorizedRolesChanged();
-    partial void OnShowMobileChanging(bool value);
-    partial void OnShowMobileChanged();
-    partial void OnPageLayoutChanging(System.Nullable<int> value);
-    partial void OnPageLayoutChanged();
-    partial void OnPageDescriptionChanging(string value);
-    partial void OnPageDescriptionChanged();
-    #endregion
-		
-		public rb_Page()
-		{
-			this.Initialize();
-		}
-		
-		[Column(Storage="_PageID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		[DataMember(Order=1)]
-		public int PageID
-		{
-			get
-			{
-				return this._PageID;
-			}
-			set
-			{
-				if ((this._PageID != value))
-				{
-					this.OnPageIDChanging(value);
-					this.SendPropertyChanging();
-					this._PageID = value;
-					this.SendPropertyChanged("PageID");
-					this.OnPageIDChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_ParentPageID", DbType="Int")]
-		[DataMember(Order=2)]
-		public System.Nullable<int> ParentPageID
-		{
-			get
-			{
-				return this._ParentPageID;
-			}
-			set
-			{
-				if ((this._ParentPageID != value))
-				{
-					if (this._rb_Page1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnParentPageIDChanging(value);
-					this.SendPropertyChanging();
-					this._ParentPageID = value;
-					this.SendPropertyChanged("ParentPageID");
-					this.OnParentPageIDChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_PageOrder", DbType="Int NOT NULL")]
-		[DataMember(Order=3)]
-		public int PageOrder
-		{
-			get
-			{
-				return this._PageOrder;
-			}
-			set
-			{
-				if ((this._PageOrder != value))
-				{
-					this.OnPageOrderChanging(value);
-					this.SendPropertyChanging();
-					this._PageOrder = value;
-					this.SendPropertyChanged("PageOrder");
-					this.OnPageOrderChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_PortalID", DbType="Int NOT NULL")]
-		[DataMember(Order=4)]
-		public int PortalID
-		{
-			get
-			{
-				return this._PortalID;
-			}
-			set
-			{
-				if ((this._PortalID != value))
-				{
-					if (this._rb_Portal.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPortalIDChanging(value);
-					this.SendPropertyChanging();
-					this._PortalID = value;
-					this.SendPropertyChanged("PortalID");
-					this.OnPortalIDChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_PageName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=5)]
-		public string PageName
-		{
-			get
-			{
-				return this._PageName;
-			}
-			set
-			{
-				if ((this._PageName != value))
-				{
-					this.OnPageNameChanging(value);
-					this.SendPropertyChanging();
-					this._PageName = value;
-					this.SendPropertyChanged("PageName");
-					this.OnPageNameChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_MobilePageName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=6)]
-		public string MobilePageName
-		{
-			get
-			{
-				return this._MobilePageName;
-			}
-			set
-			{
-				if ((this._MobilePageName != value))
-				{
-					this.OnMobilePageNameChanging(value);
-					this.SendPropertyChanging();
-					this._MobilePageName = value;
-					this.SendPropertyChanged("MobilePageName");
-					this.OnMobilePageNameChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_AuthorizedRoles", DbType="NVarChar(512)")]
-		[DataMember(Order=7)]
-		public string AuthorizedRoles
-		{
-			get
-			{
-				return this._AuthorizedRoles;
-			}
-			set
-			{
-				if ((this._AuthorizedRoles != value))
-				{
-					this.OnAuthorizedRolesChanging(value);
-					this.SendPropertyChanging();
-					this._AuthorizedRoles = value;
-					this.SendPropertyChanged("AuthorizedRoles");
-					this.OnAuthorizedRolesChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_ShowMobile", DbType="Bit NOT NULL")]
-		[DataMember(Order=8)]
-		public bool ShowMobile
-		{
-			get
-			{
-				return this._ShowMobile;
-			}
-			set
-			{
-				if ((this._ShowMobile != value))
-				{
-					this.OnShowMobileChanging(value);
-					this.SendPropertyChanging();
-					this._ShowMobile = value;
-					this.SendPropertyChanged("ShowMobile");
-					this.OnShowMobileChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_PageLayout", DbType="Int")]
-		[DataMember(Order=9)]
-		public System.Nullable<int> PageLayout
-		{
-			get
-			{
-				return this._PageLayout;
-			}
-			set
-			{
-				if ((this._PageLayout != value))
-				{
-					this.OnPageLayoutChanging(value);
-					this.SendPropertyChanging();
-					this._PageLayout = value;
-					this.SendPropertyChanged("PageLayout");
-					this.OnPageLayoutChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_PageDescription", DbType="NVarChar(512) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=10)]
-		public string PageDescription
-		{
-			get
-			{
-				return this._PageDescription;
-			}
-			set
-			{
-				if ((this._PageDescription != value))
-				{
-					this.OnPageDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._PageDescription = value;
-					this.SendPropertyChanged("PageDescription");
-					this.OnPageDescriptionChanged();
-				}
-			}
-		}
-		
-		[Association(Name="rb_Page_rb_Module", Storage="_rb_Modules", OtherKey="TabID")]
-		[DataMember(Order=11, EmitDefaultValue=false)]
-		public EntitySet<rb_Module> rb_Modules
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._rb_Modules.HasLoadedOrAssignedValues == false)))
-				{
-					return null;
-				}
-				return this._rb_Modules;
-			}
-			set
-			{
-				this._rb_Modules.Assign(value);
-			}
-		}
-		
-		[Association(Name="rb_Page_rb_Page", Storage="_rb_Pages", OtherKey="ParentPageID")]
-		[DataMember(Order=12, EmitDefaultValue=false)]
-		public EntitySet<rb_Page> rb_Pages
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._rb_Pages.HasLoadedOrAssignedValues == false)))
-				{
-					return null;
-				}
-				return this._rb_Pages;
-			}
-			set
-			{
-				this._rb_Pages.Assign(value);
-			}
-		}
-		
-		[Association(Name="rb_Page_rb_Page", Storage="_rb_Page1", ThisKey="ParentPageID", IsForeignKey=true)]
-		public rb_Page rb_Page1
-		{
-			get
-			{
-				return this._rb_Page1.Entity;
-			}
-			set
-			{
-				rb_Page previousValue = this._rb_Page1.Entity;
-				if (((previousValue != value) 
-							|| (this._rb_Page1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._rb_Page1.Entity = null;
-						previousValue.rb_Pages.Remove(this);
-					}
-					this._rb_Page1.Entity = value;
-					if ((value != null))
-					{
-						value.rb_Pages.Add(this);
-						this._ParentPageID = value.PageID;
-					}
-					else
-					{
-						this._ParentPageID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("rb_Page1");
-				}
-			}
-		}
-		
-		[Association(Name="rb_Portal_rb_Page", Storage="_rb_Portal", ThisKey="PortalID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public rb_Portal rb_Portal
-		{
-			get
-			{
-				return this._rb_Portal.Entity;
-			}
-			set
-			{
-				rb_Portal previousValue = this._rb_Portal.Entity;
-				if (((previousValue != value) 
-							|| (this._rb_Portal.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._rb_Portal.Entity = null;
-						previousValue.rb_Pages.Remove(this);
-					}
-					this._rb_Portal.Entity = value;
-					if ((value != null))
-					{
-						value.rb_Pages.Add(this);
-						this._PortalID = value.PortalID;
-					}
-					else
-					{
-						this._PortalID = default(int);
-					}
-					this.SendPropertyChanged("rb_Portal");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_rb_Modules(rb_Module entity)
-		{
-			this.SendPropertyChanging();
-			entity.rb_Page = this;
-		}
-		
-		private void detach_rb_Modules(rb_Module entity)
-		{
-			this.SendPropertyChanging();
-			entity.rb_Page = null;
-		}
-		
-		private void attach_rb_Pages(rb_Page entity)
-		{
-			this.SendPropertyChanging();
-			entity.rb_Page1 = this;
-		}
-		
-		private void detach_rb_Pages(rb_Page entity)
-		{
-			this.SendPropertyChanging();
-			entity.rb_Page1 = null;
-		}
-		
-		private void Initialize()
-		{
-			this._rb_Modules = new EntitySet<rb_Module>(new Action<rb_Module>(this.attach_rb_Modules), new Action<rb_Module>(this.detach_rb_Modules));
-			this._rb_Pages = new EntitySet<rb_Page>(new Action<rb_Page>(this.attach_rb_Pages), new Action<rb_Page>(this.detach_rb_Pages));
-			this._rb_Page1 = default(EntityRef<rb_Page>);
-			this._rb_Portal = default(EntityRef<rb_Portal>);
+			this._ModuleSettings = new EntitySet<ModuleSetting>(new Action<ModuleSetting>(this.attach_ModuleSettings), new Action<ModuleSetting>(this.detach_ModuleSettings));
+			this._ModuleUserSettings = new EntitySet<ModuleUserSetting>(new Action<ModuleUserSetting>(this.attach_ModuleUserSettings), new Action<ModuleUserSetting>(this.detach_ModuleUserSettings));
+			this._Page = default(EntityRef<Page>);
+			this._ModuleDefinition = default(EntityRef<ModuleDefinition>);
 			OnCreated();
 		}
 		
@@ -4647,7 +4158,7 @@ namespace Rainbow.Framework.Data.MsSql
 	
 	[Table(Name="dbo.rb_Portals")]
 	[DataContract()]
-	public partial class rb_Portal : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Portal : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -4662,7 +4173,11 @@ namespace Rainbow.Framework.Data.MsSql
 		
 		private bool _AlwaysShowEditButton;
 		
-		private EntitySet<rb_Page> _rb_Pages;
+		private EntitySet<ModuleDefinition> _ModuleDefinitions;
+		
+		private EntitySet<Page> _Pages;
+		
+		private EntitySet<PortalSetting> _PortalSettings;
 		
 		private bool serializing;
 		
@@ -4670,26 +4185,26 @@ namespace Rainbow.Framework.Data.MsSql
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnPortalIDChanging(int value);
-    partial void OnPortalIDChanged();
+    partial void OnPortalIdChanging(int value);
+    partial void OnPortalIdChanged();
     partial void OnPortalAliasChanging(string value);
     partial void OnPortalAliasChanged();
     partial void OnPortalNameChanging(string value);
     partial void OnPortalNameChanged();
     partial void OnPortalPathChanging(string value);
     partial void OnPortalPathChanged();
-    partial void OnAlwaysShowEditButtonChanging(bool value);
-    partial void OnAlwaysShowEditButtonChanged();
+    partial void OnIsAlwaysShowEditButtonChanging(bool value);
+    partial void OnIsAlwaysShowEditButtonChanged();
     #endregion
 		
-		public rb_Portal()
+		public Portal()
 		{
 			this.Initialize();
 		}
 		
-		[Column(Storage="_PortalID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[Column(Name="PortalID", Storage="_PortalID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		[DataMember(Order=1)]
-		public int PortalID
+		public int PortalId
 		{
 			get
 			{
@@ -4699,11 +4214,11 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._PortalID != value))
 				{
-					this.OnPortalIDChanging(value);
+					this.OnPortalIdChanging(value);
 					this.SendPropertyChanging();
 					this._PortalID = value;
-					this.SendPropertyChanged("PortalID");
-					this.OnPortalIDChanged();
+					this.SendPropertyChanged("PortalId");
+					this.OnPortalIdChanged();
 				}
 			}
 		}
@@ -4771,9 +4286,9 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Column(Storage="_AlwaysShowEditButton", DbType="Bit NOT NULL")]
+		[Column(Name="AlwaysShowEditButton", Storage="_AlwaysShowEditButton", DbType="Bit NOT NULL")]
 		[DataMember(Order=5)]
-		public bool AlwaysShowEditButton
+		public bool IsAlwaysShowEditButton
 		{
 			get
 			{
@@ -4783,31 +4298,69 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._AlwaysShowEditButton != value))
 				{
-					this.OnAlwaysShowEditButtonChanging(value);
+					this.OnIsAlwaysShowEditButtonChanging(value);
 					this.SendPropertyChanging();
 					this._AlwaysShowEditButton = value;
-					this.SendPropertyChanged("AlwaysShowEditButton");
-					this.OnAlwaysShowEditButtonChanged();
+					this.SendPropertyChanged("IsAlwaysShowEditButton");
+					this.OnIsAlwaysShowEditButtonChanged();
 				}
 			}
 		}
 		
-		[Association(Name="rb_Portal_rb_Page", Storage="_rb_Pages", OtherKey="PortalID")]
+		[Association(Name="Portal_ModuleDefinition", Storage="_ModuleDefinitions", ThisKey="PortalId", OtherKey="PortalId")]
 		[DataMember(Order=6, EmitDefaultValue=false)]
-		public EntitySet<rb_Page> rb_Pages
+		public EntitySet<ModuleDefinition> ModuleDefinitions
 		{
 			get
 			{
 				if ((this.serializing 
-							&& (this._rb_Pages.HasLoadedOrAssignedValues == false)))
+							&& (this._ModuleDefinitions.HasLoadedOrAssignedValues == false)))
 				{
 					return null;
 				}
-				return this._rb_Pages;
+				return this._ModuleDefinitions;
 			}
 			set
 			{
-				this._rb_Pages.Assign(value);
+				this._ModuleDefinitions.Assign(value);
+			}
+		}
+		
+		[Association(Name="Portal_Page", Storage="_Pages", ThisKey="PortalId", OtherKey="PortalId")]
+		[DataMember(Order=7, EmitDefaultValue=false)]
+		public EntitySet<Page> Pages
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._Pages.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._Pages;
+			}
+			set
+			{
+				this._Pages.Assign(value);
+			}
+		}
+		
+		[Association(Name="Portal_PortalSetting", Storage="_PortalSettings", ThisKey="PortalId", OtherKey="PortalId")]
+		[DataMember(Order=8, EmitDefaultValue=false)]
+		public EntitySet<PortalSetting> PortalSettings
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PortalSettings.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._PortalSettings;
+			}
+			set
+			{
+				this._PortalSettings.Assign(value);
 			}
 		}
 		
@@ -4831,21 +4384,47 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		private void attach_rb_Pages(rb_Page entity)
+		private void attach_ModuleDefinitions(ModuleDefinition entity)
 		{
 			this.SendPropertyChanging();
-			entity.rb_Portal = this;
+			entity.Portal = this;
 		}
 		
-		private void detach_rb_Pages(rb_Page entity)
+		private void detach_ModuleDefinitions(ModuleDefinition entity)
 		{
 			this.SendPropertyChanging();
-			entity.rb_Portal = null;
+			entity.Portal = null;
+		}
+		
+		private void attach_Pages(Page entity)
+		{
+			this.SendPropertyChanging();
+			entity.Portal = this;
+		}
+		
+		private void detach_Pages(Page entity)
+		{
+			this.SendPropertyChanging();
+			entity.Portal = null;
+		}
+		
+		private void attach_PortalSettings(PortalSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.Portal = this;
+		}
+		
+		private void detach_PortalSettings(PortalSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.Portal = null;
 		}
 		
 		private void Initialize()
 		{
-			this._rb_Pages = new EntitySet<rb_Page>(new Action<rb_Page>(this.attach_rb_Pages), new Action<rb_Page>(this.detach_rb_Pages));
+			this._ModuleDefinitions = new EntitySet<ModuleDefinition>(new Action<ModuleDefinition>(this.attach_ModuleDefinitions), new Action<ModuleDefinition>(this.detach_ModuleDefinitions));
+			this._Pages = new EntitySet<Page>(new Action<Page>(this.attach_Pages), new Action<Page>(this.detach_Pages));
+			this._PortalSettings = new EntitySet<PortalSetting>(new Action<PortalSetting>(this.attach_PortalSettings), new Action<PortalSetting>(this.detach_PortalSettings));
 			OnCreated();
 		}
 		
@@ -4868,6 +4447,2880 @@ namespace Rainbow.Framework.Data.MsSql
 		public void OnSerialized(StreamingContext context)
 		{
 			this.serializing = false;
+		}
+	}
+	
+	[Table(Name="dbo.rb_Pages")]
+	[DataContract()]
+	public partial class Page : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PageId;
+		
+		private System.Nullable<int> _ParentPageId;
+		
+		private int _PageOrder;
+		
+		private int _PortalId;
+		
+		private string _PageName;
+		
+		private string _MobilePageName;
+		
+		private string _AuthorizedRoles;
+		
+		private bool _ShowMobile;
+		
+		private System.Nullable<int> _PageLayout;
+		
+		private string _PageDescription;
+		
+		private EntitySet<Module> _Modules;
+		
+		private EntitySet<Page> _Pages;
+		
+		private EntitySet<PageSetting> _PageSettings;
+		
+		private EntityRef<Page> _rb_Page1;
+		
+		private EntityRef<Portal> _Portal;
+		
+		private bool serializing;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPageIdChanging(int value);
+    partial void OnPageIdChanged();
+    partial void OnParentPageIdChanging(System.Nullable<int> value);
+    partial void OnParentPageIdChanged();
+    partial void OnPageOrderChanging(int value);
+    partial void OnPageOrderChanged();
+    partial void OnPortalIdChanging(int value);
+    partial void OnPortalIdChanged();
+    partial void OnPageNameChanging(string value);
+    partial void OnPageNameChanged();
+    partial void OnMobilePageNameChanging(string value);
+    partial void OnMobilePageNameChanged();
+    partial void OnAuthorizedRolesChanging(string value);
+    partial void OnAuthorizedRolesChanged();
+    partial void OnIsShowMobileChanging(bool value);
+    partial void OnIsShowMobileChanged();
+    partial void OnPageLayoutChanging(System.Nullable<int> value);
+    partial void OnPageLayoutChanged();
+    partial void OnPageDescriptionChanging(string value);
+    partial void OnPageDescriptionChanged();
+    #endregion
+		
+		public Page()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Name="PageID", Storage="_PageId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=1)]
+		public int PageId
+		{
+			get
+			{
+				return this._PageId;
+			}
+			set
+			{
+				if ((this._PageId != value))
+				{
+					this.OnPageIdChanging(value);
+					this.SendPropertyChanging();
+					this._PageId = value;
+					this.SendPropertyChanged("PageId");
+					this.OnPageIdChanged();
+				}
+			}
+		}
+		
+		[Column(Name="ParentPageID", Storage="_ParentPageId", DbType="Int")]
+		[DataMember(Order=2)]
+		public System.Nullable<int> ParentPageId
+		{
+			get
+			{
+				return this._ParentPageId;
+			}
+			set
+			{
+				if ((this._ParentPageId != value))
+				{
+					this.OnParentPageIdChanging(value);
+					this.SendPropertyChanging();
+					this._ParentPageId = value;
+					this.SendPropertyChanged("ParentPageId");
+					this.OnParentPageIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PageOrder", DbType="Int NOT NULL")]
+		[DataMember(Order=3)]
+		public int PageOrder
+		{
+			get
+			{
+				return this._PageOrder;
+			}
+			set
+			{
+				if ((this._PageOrder != value))
+				{
+					this.OnPageOrderChanging(value);
+					this.SendPropertyChanging();
+					this._PageOrder = value;
+					this.SendPropertyChanged("PageOrder");
+					this.OnPageOrderChanged();
+				}
+			}
+		}
+		
+		[Column(Name="PortalID", Storage="_PortalId", DbType="Int NOT NULL")]
+		[DataMember(Order=4)]
+		public int PortalId
+		{
+			get
+			{
+				return this._PortalId;
+			}
+			set
+			{
+				if ((this._PortalId != value))
+				{
+					this.OnPortalIdChanging(value);
+					this.SendPropertyChanging();
+					this._PortalId = value;
+					this.SendPropertyChanged("PortalId");
+					this.OnPortalIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PageName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=5)]
+		public string PageName
+		{
+			get
+			{
+				return this._PageName;
+			}
+			set
+			{
+				if ((this._PageName != value))
+				{
+					this.OnPageNameChanging(value);
+					this.SendPropertyChanging();
+					this._PageName = value;
+					this.SendPropertyChanged("PageName");
+					this.OnPageNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_MobilePageName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=6)]
+		public string MobilePageName
+		{
+			get
+			{
+				return this._MobilePageName;
+			}
+			set
+			{
+				if ((this._MobilePageName != value))
+				{
+					this.OnMobilePageNameChanging(value);
+					this.SendPropertyChanging();
+					this._MobilePageName = value;
+					this.SendPropertyChanged("MobilePageName");
+					this.OnMobilePageNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AuthorizedRoles", DbType="NVarChar(512)")]
+		[DataMember(Order=7)]
+		public string AuthorizedRoles
+		{
+			get
+			{
+				return this._AuthorizedRoles;
+			}
+			set
+			{
+				if ((this._AuthorizedRoles != value))
+				{
+					this.OnAuthorizedRolesChanging(value);
+					this.SendPropertyChanging();
+					this._AuthorizedRoles = value;
+					this.SendPropertyChanged("AuthorizedRoles");
+					this.OnAuthorizedRolesChanged();
+				}
+			}
+		}
+		
+		[Column(Name="ShowMobile", Storage="_ShowMobile", DbType="Bit NOT NULL")]
+		[DataMember(Order=8)]
+		public bool IsShowMobile
+		{
+			get
+			{
+				return this._ShowMobile;
+			}
+			set
+			{
+				if ((this._ShowMobile != value))
+				{
+					this.OnIsShowMobileChanging(value);
+					this.SendPropertyChanging();
+					this._ShowMobile = value;
+					this.SendPropertyChanged("IsShowMobile");
+					this.OnIsShowMobileChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PageLayout", DbType="Int")]
+		[DataMember(Order=9)]
+		public System.Nullable<int> PageLayout
+		{
+			get
+			{
+				return this._PageLayout;
+			}
+			set
+			{
+				if ((this._PageLayout != value))
+				{
+					this.OnPageLayoutChanging(value);
+					this.SendPropertyChanging();
+					this._PageLayout = value;
+					this.SendPropertyChanged("PageLayout");
+					this.OnPageLayoutChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PageDescription", DbType="NVarChar(512) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=10)]
+		public string PageDescription
+		{
+			get
+			{
+				return this._PageDescription;
+			}
+			set
+			{
+				if ((this._PageDescription != value))
+				{
+					this.OnPageDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._PageDescription = value;
+					this.SendPropertyChanged("PageDescription");
+					this.OnPageDescriptionChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Page_Module", Storage="_Modules", ThisKey="PageId", OtherKey="PageId")]
+		[DataMember(Order=11, EmitDefaultValue=false)]
+		public EntitySet<Module> Modules
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._Modules.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._Modules;
+			}
+			set
+			{
+				this._Modules.Assign(value);
+			}
+		}
+		
+		[Association(Name="Page_Page", Storage="_Pages", ThisKey="PageId", OtherKey="ParentPageId")]
+		[DataMember(Order=12, EmitDefaultValue=false)]
+		public EntitySet<Page> Pages
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._Pages.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._Pages;
+			}
+			set
+			{
+				this._Pages.Assign(value);
+			}
+		}
+		
+		[Association(Name="Page_PageSetting", Storage="_PageSettings", ThisKey="PageId", OtherKey="PageId")]
+		[DataMember(Order=13, EmitDefaultValue=false)]
+		public EntitySet<PageSetting> PageSettings
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PageSettings.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._PageSettings;
+			}
+			set
+			{
+				this._PageSettings.Assign(value);
+			}
+		}
+		
+		[Association(Name="Page_Page", Storage="_rb_Page1", ThisKey="ParentPageId", OtherKey="PageId", IsForeignKey=true)]
+		public Page ParentPage
+		{
+			get
+			{
+				return this._rb_Page1.Entity;
+			}
+			set
+			{
+				Page previousValue = this._rb_Page1.Entity;
+				if (((previousValue != value) 
+							|| (this._rb_Page1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._rb_Page1.Entity = null;
+						previousValue.Pages.Remove(this);
+					}
+					this._rb_Page1.Entity = value;
+					if ((value != null))
+					{
+						value.Pages.Add(this);
+						this._ParentPageId = value.PageId;
+					}
+					else
+					{
+						this._ParentPageId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("ParentPage");
+				}
+			}
+		}
+		
+		[Association(Name="Portal_Page", Storage="_Portal", ThisKey="PortalId", OtherKey="PortalId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Portal Portal
+		{
+			get
+			{
+				return this._Portal.Entity;
+			}
+			set
+			{
+				Portal previousValue = this._Portal.Entity;
+				if (((previousValue != value) 
+							|| (this._Portal.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Portal.Entity = null;
+						previousValue.Pages.Remove(this);
+					}
+					this._Portal.Entity = value;
+					if ((value != null))
+					{
+						value.Pages.Add(this);
+						this._PortalId = value.PortalId;
+					}
+					else
+					{
+						this._PortalId = default(int);
+					}
+					this.SendPropertyChanged("Portal");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Modules(Module entity)
+		{
+			this.SendPropertyChanging();
+			entity.Page = this;
+		}
+		
+		private void detach_Modules(Module entity)
+		{
+			this.SendPropertyChanging();
+			entity.Page = null;
+		}
+		
+		private void attach_Pages(Page entity)
+		{
+			this.SendPropertyChanging();
+			entity.ParentPage = this;
+		}
+		
+		private void detach_Pages(Page entity)
+		{
+			this.SendPropertyChanging();
+			entity.ParentPage = null;
+		}
+		
+		private void attach_PageSettings(PageSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.Page = this;
+		}
+		
+		private void detach_PageSettings(PageSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.Page = null;
+		}
+		
+		private void Initialize()
+		{
+			this._Modules = new EntitySet<Module>(new Action<Module>(this.attach_Modules), new Action<Module>(this.detach_Modules));
+			this._Pages = new EntitySet<Page>(new Action<Page>(this.attach_Pages), new Action<Page>(this.detach_Pages));
+			this._PageSettings = new EntitySet<PageSetting>(new Action<PageSetting>(this.attach_PageSettings), new Action<PageSetting>(this.detach_PageSettings));
+			this._rb_Page1 = default(EntityRef<Page>);
+			this._Portal = default(EntityRef<Portal>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
+	}
+	
+	[Table(Name="dbo.rb_SettingGroups")]
+	[DataContract()]
+	public partial class SettingGroup : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _SettingGroupId;
+		
+		private string _SettingGroupName;
+		
+		private string _SettingGroupDescription;
+		
+		private EntitySet<PageSetting> _PageSettings;
+		
+		private bool serializing;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSettingGroupIdChanging(int value);
+    partial void OnSettingGroupIdChanged();
+    partial void OnSettingGroupNameChanging(string value);
+    partial void OnSettingGroupNameChanged();
+    partial void OnSettingGroupDescriptionChanging(string value);
+    partial void OnSettingGroupDescriptionChanged();
+    #endregion
+		
+		public SettingGroup()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_SettingGroupId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=1)]
+		public int SettingGroupId
+		{
+			get
+			{
+				return this._SettingGroupId;
+			}
+			set
+			{
+				if ((this._SettingGroupId != value))
+				{
+					this.OnSettingGroupIdChanging(value);
+					this.SendPropertyChanging();
+					this._SettingGroupId = value;
+					this.SendPropertyChanged("SettingGroupId");
+					this.OnSettingGroupIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingGroupName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=2)]
+		public string SettingGroupName
+		{
+			get
+			{
+				return this._SettingGroupName;
+			}
+			set
+			{
+				if ((this._SettingGroupName != value))
+				{
+					this.OnSettingGroupNameChanging(value);
+					this.SendPropertyChanging();
+					this._SettingGroupName = value;
+					this.SendPropertyChanged("SettingGroupName");
+					this.OnSettingGroupNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingGroupDescription", DbType="NVarChar(255)")]
+		[DataMember(Order=3)]
+		public string SettingGroupDescription
+		{
+			get
+			{
+				return this._SettingGroupDescription;
+			}
+			set
+			{
+				if ((this._SettingGroupDescription != value))
+				{
+					this.OnSettingGroupDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._SettingGroupDescription = value;
+					this.SendPropertyChanged("SettingGroupDescription");
+					this.OnSettingGroupDescriptionChanged();
+				}
+			}
+		}
+		
+		[Association(Name="SettingGroup_PageSetting", Storage="_PageSettings", OtherKey="SettingGroupId")]
+		[DataMember(Order=4, EmitDefaultValue=false)]
+		public EntitySet<PageSetting> PageSettings
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PageSettings.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._PageSettings;
+			}
+			set
+			{
+				this._PageSettings.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_PageSettings(PageSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.SettingGroup = this;
+		}
+		
+		private void detach_PageSettings(PageSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.SettingGroup = null;
+		}
+		
+		private void Initialize()
+		{
+			this._PageSettings = new EntitySet<PageSetting>(new Action<PageSetting>(this.attach_PageSettings), new Action<PageSetting>(this.detach_PageSettings));
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
+	}
+	
+	[Table(Name="dbo.rb_BaseSettingTypes")]
+	[DataContract()]
+	public partial class BaseSettingType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _BaseSettingTypeId;
+		
+		private string _BaseSettingTypeName;
+		
+		private EntitySet<BaseSetting> _BaseSettings;
+		
+		private bool serializing;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnBaseSettingTypeIdChanging(int value);
+    partial void OnBaseSettingTypeIdChanged();
+    partial void OnBaseSettingTypeNameChanging(string value);
+    partial void OnBaseSettingTypeNameChanged();
+    #endregion
+		
+		public BaseSettingType()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_BaseSettingTypeId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=1)]
+		public int BaseSettingTypeId
+		{
+			get
+			{
+				return this._BaseSettingTypeId;
+			}
+			set
+			{
+				if ((this._BaseSettingTypeId != value))
+				{
+					this.OnBaseSettingTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._BaseSettingTypeId = value;
+					this.SendPropertyChanged("BaseSettingTypeId");
+					this.OnBaseSettingTypeIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_BaseSettingTypeName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=2)]
+		public string BaseSettingTypeName
+		{
+			get
+			{
+				return this._BaseSettingTypeName;
+			}
+			set
+			{
+				if ((this._BaseSettingTypeName != value))
+				{
+					this.OnBaseSettingTypeNameChanging(value);
+					this.SendPropertyChanging();
+					this._BaseSettingTypeName = value;
+					this.SendPropertyChanged("BaseSettingTypeName");
+					this.OnBaseSettingTypeNameChanged();
+				}
+			}
+		}
+		
+		[Association(Name="BaseSettingType_BaseSetting", Storage="_BaseSettings", OtherKey="BaseSettingTypeId")]
+		[DataMember(Order=3, EmitDefaultValue=false)]
+		public EntitySet<BaseSetting> BaseSettings
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._BaseSettings.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._BaseSettings;
+			}
+			set
+			{
+				this._BaseSettings.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_BaseSettings(BaseSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.BaseSettingType = this;
+		}
+		
+		private void detach_BaseSettings(BaseSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.BaseSettingType = null;
+		}
+		
+		private void Initialize()
+		{
+			this._BaseSettings = new EntitySet<BaseSetting>(new Action<BaseSetting>(this.attach_BaseSettings), new Action<BaseSetting>(this.detach_BaseSettings));
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
+	}
+	
+	[Table(Name="dbo.rb_BaseSettings")]
+	[DataContract()]
+	public partial class BaseSetting : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _BaseSettingId;
+		
+		private int _BaseSettingTypeId;
+		
+		private string _SettingName;
+		
+		private string _SettingValue;
+		
+		private System.Nullable<int> _SettingGroupId;
+		
+		private string _EnglishName;
+		
+		private string _Description;
+		
+		private string _DataType;
+		
+		private System.Nullable<int> _MinValue;
+		
+		private System.Nullable<int> _MaxValue;
+		
+		private System.Nullable<int> _SettingOrder;
+		
+		private System.Nullable<bool> _IsRequired;
+		
+		private EntityRef<BaseSettingType> _BaseSettingType;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnBaseSettingIdChanging(int value);
+    partial void OnBaseSettingIdChanged();
+    partial void OnBaseSettingTypeIdChanging(int value);
+    partial void OnBaseSettingTypeIdChanged();
+    partial void OnSettingNameChanging(string value);
+    partial void OnSettingNameChanged();
+    partial void OnSettingValueChanging(string value);
+    partial void OnSettingValueChanged();
+    partial void OnSettingGroupIdChanging(System.Nullable<int> value);
+    partial void OnSettingGroupIdChanged();
+    partial void OnEnglishNameChanging(string value);
+    partial void OnEnglishNameChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnDataTypeChanging(string value);
+    partial void OnDataTypeChanged();
+    partial void OnMinValueChanging(System.Nullable<int> value);
+    partial void OnMinValueChanged();
+    partial void OnMaxValueChanging(System.Nullable<int> value);
+    partial void OnMaxValueChanged();
+    partial void OnSettingOrderChanging(System.Nullable<int> value);
+    partial void OnSettingOrderChanged();
+    partial void OnIsRequiredChanging(System.Nullable<bool> value);
+    partial void OnIsRequiredChanged();
+    #endregion
+		
+		public BaseSetting()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_BaseSettingId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=1)]
+		public int BaseSettingId
+		{
+			get
+			{
+				return this._BaseSettingId;
+			}
+			set
+			{
+				if ((this._BaseSettingId != value))
+				{
+					this.OnBaseSettingIdChanging(value);
+					this.SendPropertyChanging();
+					this._BaseSettingId = value;
+					this.SendPropertyChanged("BaseSettingId");
+					this.OnBaseSettingIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_BaseSettingTypeId", DbType="Int NOT NULL")]
+		[DataMember(Order=2)]
+		public int BaseSettingTypeId
+		{
+			get
+			{
+				return this._BaseSettingTypeId;
+			}
+			set
+			{
+				if ((this._BaseSettingTypeId != value))
+				{
+					if (this._BaseSettingType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBaseSettingTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._BaseSettingTypeId = value;
+					this.SendPropertyChanged("BaseSettingTypeId");
+					this.OnBaseSettingTypeIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=3)]
+		public string SettingName
+		{
+			get
+			{
+				return this._SettingName;
+			}
+			set
+			{
+				if ((this._SettingName != value))
+				{
+					this.OnSettingNameChanging(value);
+					this.SendPropertyChanging();
+					this._SettingName = value;
+					this.SendPropertyChanged("SettingName");
+					this.OnSettingNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingValue", DbType="NVarChar(1500)")]
+		[DataMember(Order=4)]
+		public string SettingValue
+		{
+			get
+			{
+				return this._SettingValue;
+			}
+			set
+			{
+				if ((this._SettingValue != value))
+				{
+					this.OnSettingValueChanging(value);
+					this.SendPropertyChanging();
+					this._SettingValue = value;
+					this.SendPropertyChanged("SettingValue");
+					this.OnSettingValueChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingGroupId", DbType="Int")]
+		[DataMember(Order=5)]
+		public System.Nullable<int> SettingGroupId
+		{
+			get
+			{
+				return this._SettingGroupId;
+			}
+			set
+			{
+				if ((this._SettingGroupId != value))
+				{
+					this.OnSettingGroupIdChanging(value);
+					this.SendPropertyChanging();
+					this._SettingGroupId = value;
+					this.SendPropertyChanged("SettingGroupId");
+					this.OnSettingGroupIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_EnglishName", DbType="NVarChar(50)")]
+		[DataMember(Order=6)]
+		public string EnglishName
+		{
+			get
+			{
+				return this._EnglishName;
+			}
+			set
+			{
+				if ((this._EnglishName != value))
+				{
+					this.OnEnglishNameChanging(value);
+					this.SendPropertyChanging();
+					this._EnglishName = value;
+					this.SendPropertyChanged("EnglishName");
+					this.OnEnglishNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Description", DbType="NVarChar(255)")]
+		[DataMember(Order=7)]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_DataType", DbType="NVarChar(50)")]
+		[DataMember(Order=8)]
+		public string DataType
+		{
+			get
+			{
+				return this._DataType;
+			}
+			set
+			{
+				if ((this._DataType != value))
+				{
+					this.OnDataTypeChanging(value);
+					this.SendPropertyChanging();
+					this._DataType = value;
+					this.SendPropertyChanged("DataType");
+					this.OnDataTypeChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_MinValue", DbType="Int")]
+		[DataMember(Order=9)]
+		public System.Nullable<int> MinValue
+		{
+			get
+			{
+				return this._MinValue;
+			}
+			set
+			{
+				if ((this._MinValue != value))
+				{
+					this.OnMinValueChanging(value);
+					this.SendPropertyChanging();
+					this._MinValue = value;
+					this.SendPropertyChanged("MinValue");
+					this.OnMinValueChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_MaxValue", DbType="Int")]
+		[DataMember(Order=10)]
+		public System.Nullable<int> MaxValue
+		{
+			get
+			{
+				return this._MaxValue;
+			}
+			set
+			{
+				if ((this._MaxValue != value))
+				{
+					this.OnMaxValueChanging(value);
+					this.SendPropertyChanging();
+					this._MaxValue = value;
+					this.SendPropertyChanged("MaxValue");
+					this.OnMaxValueChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingOrder", DbType="Int")]
+		[DataMember(Order=11)]
+		public System.Nullable<int> SettingOrder
+		{
+			get
+			{
+				return this._SettingOrder;
+			}
+			set
+			{
+				if ((this._SettingOrder != value))
+				{
+					this.OnSettingOrderChanging(value);
+					this.SendPropertyChanging();
+					this._SettingOrder = value;
+					this.SendPropertyChanged("SettingOrder");
+					this.OnSettingOrderChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_IsRequired", DbType="Bit")]
+		[DataMember(Order=12)]
+		public System.Nullable<bool> IsRequired
+		{
+			get
+			{
+				return this._IsRequired;
+			}
+			set
+			{
+				if ((this._IsRequired != value))
+				{
+					this.OnIsRequiredChanging(value);
+					this.SendPropertyChanging();
+					this._IsRequired = value;
+					this.SendPropertyChanged("IsRequired");
+					this.OnIsRequiredChanged();
+				}
+			}
+		}
+		
+		[Association(Name="BaseSettingType_BaseSetting", Storage="_BaseSettingType", ThisKey="BaseSettingTypeId", IsForeignKey=true)]
+		public BaseSettingType BaseSettingType
+		{
+			get
+			{
+				return this._BaseSettingType.Entity;
+			}
+			set
+			{
+				BaseSettingType previousValue = this._BaseSettingType.Entity;
+				if (((previousValue != value) 
+							|| (this._BaseSettingType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BaseSettingType.Entity = null;
+						previousValue.BaseSettings.Remove(this);
+					}
+					this._BaseSettingType.Entity = value;
+					if ((value != null))
+					{
+						value.BaseSettings.Add(this);
+						this._BaseSettingTypeId = value.BaseSettingTypeId;
+					}
+					else
+					{
+						this._BaseSettingTypeId = default(int);
+					}
+					this.SendPropertyChanged("BaseSettingType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._BaseSettingType = default(EntityRef<BaseSettingType>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
+	[Table(Name="dbo.rb_Monitoring")]
+	[DataContract()]
+	public partial class Monitoring
+	{
+		
+		private int _ID;
+		
+		private System.Nullable<System.Guid> _UserID;
+		
+		private System.Nullable<int> _PortalID;
+		
+		private System.Nullable<int> _PageID;
+		
+		private System.Nullable<System.DateTime> _ActivityTime;
+		
+		private string _ActivityType;
+		
+		private string _Referrer;
+		
+		private string _UserAgent;
+		
+		private string _UserHostAddress;
+		
+		private string _BrowserType;
+		
+		private string _BrowserName;
+		
+		private string _BrowserVersion;
+		
+		private string _BrowserPlatform;
+		
+		private System.Nullable<bool> _BrowserIsAOL;
+		
+		private string _UserField;
+		
+		public Monitoring()
+		{
+		}
+		
+		[Column(Storage="_ID", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
+		[DataMember(Order=1)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this._ID = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_UserID", DbType="uniqueidentifier")]
+		[DataMember(Order=2)]
+		public System.Nullable<System.Guid> UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					this._UserID = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_PortalID", DbType="Int")]
+		[DataMember(Order=3)]
+		public System.Nullable<int> PortalID
+		{
+			get
+			{
+				return this._PortalID;
+			}
+			set
+			{
+				if ((this._PortalID != value))
+				{
+					this._PortalID = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_PageID", DbType="Int")]
+		[DataMember(Order=4)]
+		public System.Nullable<int> PageID
+		{
+			get
+			{
+				return this._PageID;
+			}
+			set
+			{
+				if ((this._PageID != value))
+				{
+					this._PageID = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_ActivityTime", DbType="DateTime")]
+		[DataMember(Order=5)]
+		public System.Nullable<System.DateTime> ActivityTime
+		{
+			get
+			{
+				return this._ActivityTime;
+			}
+			set
+			{
+				if ((this._ActivityTime != value))
+				{
+					this._ActivityTime = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_ActivityType", DbType="VarChar(50)")]
+		[DataMember(Order=6)]
+		public string ActivityType
+		{
+			get
+			{
+				return this._ActivityType;
+			}
+			set
+			{
+				if ((this._ActivityType != value))
+				{
+					this._ActivityType = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_Referrer", DbType="VarChar(255)")]
+		[DataMember(Order=7)]
+		public string Referrer
+		{
+			get
+			{
+				return this._Referrer;
+			}
+			set
+			{
+				if ((this._Referrer != value))
+				{
+					this._Referrer = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_UserAgent", DbType="VarChar(100)")]
+		[DataMember(Order=8)]
+		public string UserAgent
+		{
+			get
+			{
+				return this._UserAgent;
+			}
+			set
+			{
+				if ((this._UserAgent != value))
+				{
+					this._UserAgent = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_UserHostAddress", DbType="VarChar(15)")]
+		[DataMember(Order=9)]
+		public string UserHostAddress
+		{
+			get
+			{
+				return this._UserHostAddress;
+			}
+			set
+			{
+				if ((this._UserHostAddress != value))
+				{
+					this._UserHostAddress = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_BrowserType", DbType="VarChar(100)")]
+		[DataMember(Order=10)]
+		public string BrowserType
+		{
+			get
+			{
+				return this._BrowserType;
+			}
+			set
+			{
+				if ((this._BrowserType != value))
+				{
+					this._BrowserType = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_BrowserName", DbType="VarChar(100)")]
+		[DataMember(Order=11)]
+		public string BrowserName
+		{
+			get
+			{
+				return this._BrowserName;
+			}
+			set
+			{
+				if ((this._BrowserName != value))
+				{
+					this._BrowserName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_BrowserVersion", DbType="VarChar(100)")]
+		[DataMember(Order=12)]
+		public string BrowserVersion
+		{
+			get
+			{
+				return this._BrowserVersion;
+			}
+			set
+			{
+				if ((this._BrowserVersion != value))
+				{
+					this._BrowserVersion = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_BrowserPlatform", DbType="VarChar(100)")]
+		[DataMember(Order=13)]
+		public string BrowserPlatform
+		{
+			get
+			{
+				return this._BrowserPlatform;
+			}
+			set
+			{
+				if ((this._BrowserPlatform != value))
+				{
+					this._BrowserPlatform = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_BrowserIsAOL", DbType="Bit")]
+		[DataMember(Order=14)]
+		public System.Nullable<bool> BrowserIsAOL
+		{
+			get
+			{
+				return this._BrowserIsAOL;
+			}
+			set
+			{
+				if ((this._BrowserIsAOL != value))
+				{
+					this._BrowserIsAOL = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_UserField", DbType="VarChar(500)")]
+		[DataMember(Order=15)]
+		public string UserField
+		{
+			get
+			{
+				return this._UserField;
+			}
+			set
+			{
+				if ((this._UserField != value))
+				{
+					this._UserField = value;
+				}
+			}
+		}
+	}
+	
+	[Table(Name="dbo.rb_Recycler")]
+	[DataContract()]
+	public partial class Recycler
+	{
+		
+		private int _ModuleId;
+		
+		private System.DateTime _DateDeleted;
+		
+		private string _DeletedBy;
+		
+		private int _OriginalTab;
+		
+		public Recycler()
+		{
+		}
+		
+		[Column(Name="ModuleID", Storage="_ModuleId", DbType="Int NOT NULL")]
+		[DataMember(Order=1)]
+		public int ModuleId
+		{
+			get
+			{
+				return this._ModuleId;
+			}
+			set
+			{
+				if ((this._ModuleId != value))
+				{
+					this._ModuleId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_DateDeleted", DbType="DateTime NOT NULL")]
+		[DataMember(Order=2)]
+		public System.DateTime DateDeleted
+		{
+			get
+			{
+				return this._DateDeleted;
+			}
+			set
+			{
+				if ((this._DateDeleted != value))
+				{
+					this._DateDeleted = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_DeletedBy", DbType="NVarChar(250)")]
+		[DataMember(Order=3)]
+		public string DeletedBy
+		{
+			get
+			{
+				return this._DeletedBy;
+			}
+			set
+			{
+				if ((this._DeletedBy != value))
+				{
+					this._DeletedBy = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_OriginalTab", DbType="Int NOT NULL")]
+		[DataMember(Order=4)]
+		public int OriginalTab
+		{
+			get
+			{
+				return this._OriginalTab;
+			}
+			set
+			{
+				if ((this._OriginalTab != value))
+				{
+					this._OriginalTab = value;
+				}
+			}
+		}
+	}
+	
+	[Table(Name="dbo.rb_BaseSettings")]
+	[DataContract()]
+	public partial class PortalSetting : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PortalId;
+		
+		private string _SettingName;
+		
+		private string _SettingValue;
+		
+		private EntityRef<Portal> _Portal;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPortalIdChanging(int value);
+    partial void OnPortalIdChanged();
+    partial void OnSettingNameChanging(string value);
+    partial void OnSettingNameChanged();
+    partial void OnSettingValueChanging(string value);
+    partial void OnSettingValueChanged();
+    #endregion
+		
+		public PortalSetting()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Name="PortalID", Storage="_PortalId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=1)]
+		public int PortalId
+		{
+			get
+			{
+				return this._PortalId;
+			}
+			set
+			{
+				if ((this._PortalId != value))
+				{
+					this.OnPortalIdChanging(value);
+					this.SendPropertyChanging();
+					this._PortalId = value;
+					this.SendPropertyChanged("PortalId");
+					this.OnPortalIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingName", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		[DataMember(Order=2)]
+		public string SettingName
+		{
+			get
+			{
+				return this._SettingName;
+			}
+			set
+			{
+				if ((this._SettingName != value))
+				{
+					this.OnSettingNameChanging(value);
+					this.SendPropertyChanging();
+					this._SettingName = value;
+					this.SendPropertyChanged("SettingName");
+					this.OnSettingNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingValue", DbType="NVarChar(1500) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=3)]
+		public string SettingValue
+		{
+			get
+			{
+				return this._SettingValue;
+			}
+			set
+			{
+				if ((this._SettingValue != value))
+				{
+					this.OnSettingValueChanging(value);
+					this.SendPropertyChanging();
+					this._SettingValue = value;
+					this.SendPropertyChanged("SettingValue");
+					this.OnSettingValueChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Portal_PortalSetting", Storage="_Portal", ThisKey="PortalId", OtherKey="PortalId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Portal Portal
+		{
+			get
+			{
+				return this._Portal.Entity;
+			}
+			set
+			{
+				Portal previousValue = this._Portal.Entity;
+				if (((previousValue != value) 
+							|| (this._Portal.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Portal.Entity = null;
+						previousValue.PortalSettings.Remove(this);
+					}
+					this._Portal.Entity = value;
+					if ((value != null))
+					{
+						value.PortalSettings.Add(this);
+						this._PortalId = value.PortalId;
+					}
+					else
+					{
+						this._PortalId = default(int);
+					}
+					this.SendPropertyChanged("Portal");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._Portal = default(EntityRef<Portal>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
+	[Table(Name="dbo.rb_BaseSettings")]
+	[DataContract()]
+	public partial class ModuleSetting : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ModuleID;
+		
+		private string _SettingName;
+		
+		private string _SettingValue;
+		
+		private EntityRef<Module> _Module;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnModuleIdChanging(int value);
+    partial void OnModuleIdChanged();
+    partial void OnSettingNameChanging(string value);
+    partial void OnSettingNameChanged();
+    partial void OnSettingValueChanging(string value);
+    partial void OnSettingValueChanged();
+    #endregion
+		
+		public ModuleSetting()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Name="ModuleID", Storage="_ModuleID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=1)]
+		public int ModuleId
+		{
+			get
+			{
+				return this._ModuleID;
+			}
+			set
+			{
+				if ((this._ModuleID != value))
+				{
+					this.OnModuleIdChanging(value);
+					this.SendPropertyChanging();
+					this._ModuleID = value;
+					this.SendPropertyChanged("ModuleId");
+					this.OnModuleIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingName", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		[DataMember(Order=2)]
+		public string SettingName
+		{
+			get
+			{
+				return this._SettingName;
+			}
+			set
+			{
+				if ((this._SettingName != value))
+				{
+					this.OnSettingNameChanging(value);
+					this.SendPropertyChanging();
+					this._SettingName = value;
+					this.SendPropertyChanged("SettingName");
+					this.OnSettingNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingValue", DbType="NVarChar(1500) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=3)]
+		public string SettingValue
+		{
+			get
+			{
+				return this._SettingValue;
+			}
+			set
+			{
+				if ((this._SettingValue != value))
+				{
+					this.OnSettingValueChanging(value);
+					this.SendPropertyChanging();
+					this._SettingValue = value;
+					this.SendPropertyChanged("SettingValue");
+					this.OnSettingValueChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Module_ModuleSetting", Storage="_Module", ThisKey="ModuleId", OtherKey="ModuleId", IsForeignKey=true)]
+		public Module Module
+		{
+			get
+			{
+				return this._Module.Entity;
+			}
+			set
+			{
+				Module previousValue = this._Module.Entity;
+				if (((previousValue != value) 
+							|| (this._Module.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Module.Entity = null;
+						previousValue.ModuleSettings.Remove(this);
+					}
+					this._Module.Entity = value;
+					if ((value != null))
+					{
+						value.ModuleSettings.Add(this);
+						this._ModuleID = value.ModuleId;
+					}
+					else
+					{
+						this._ModuleID = default(int);
+					}
+					this.SendPropertyChanged("Module");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._Module = default(EntityRef<Module>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
+	[Table(Name="dbo.rb_BaseSettings")]
+	[DataContract()]
+	public partial class PageSetting : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PageId;
+		
+		private string _SettingName;
+		
+		private string _SettingValue;
+		
+		private System.Nullable<int> _SettingGroupId;
+		
+		private string _EnglishName;
+		
+		private string _Description;
+		
+		private string _DataType;
+		
+		private int _MinValue;
+		
+		private System.Nullable<int> _MaxValue;
+		
+		private System.Nullable<int> _SettingOrder;
+		
+		private System.Nullable<bool> _IsRequired;
+		
+		private EntityRef<SettingGroup> _SettingGroup;
+		
+		private EntityRef<Page> _Page;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPageIdChanging(int value);
+    partial void OnPageIdChanged();
+    partial void OnSettingNameChanging(string value);
+    partial void OnSettingNameChanged();
+    partial void OnSettingValueChanging(string value);
+    partial void OnSettingValueChanged();
+    partial void OnSettingGroupIdChanging(System.Nullable<int> value);
+    partial void OnSettingGroupIdChanged();
+    partial void OnEnglishNameChanging(string value);
+    partial void OnEnglishNameChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnDataTypeChanging(string value);
+    partial void OnDataTypeChanged();
+    partial void OnMinValueChanging(int value);
+    partial void OnMinValueChanged();
+    partial void OnMaxValueChanging(System.Nullable<int> value);
+    partial void OnMaxValueChanged();
+    partial void OnSettingOrderChanging(System.Nullable<int> value);
+    partial void OnSettingOrderChanged();
+    partial void OnIsRequiredChanging(System.Nullable<bool> value);
+    partial void OnIsRequiredChanged();
+    #endregion
+		
+		public PageSetting()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_PageId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=1)]
+		public int PageId
+		{
+			get
+			{
+				return this._PageId;
+			}
+			set
+			{
+				if ((this._PageId != value))
+				{
+					if (this._Page.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPageIdChanging(value);
+					this.SendPropertyChanging();
+					this._PageId = value;
+					this.SendPropertyChanged("PageId");
+					this.OnPageIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingName", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		[DataMember(Order=2)]
+		public string SettingName
+		{
+			get
+			{
+				return this._SettingName;
+			}
+			set
+			{
+				if ((this._SettingName != value))
+				{
+					this.OnSettingNameChanging(value);
+					this.SendPropertyChanging();
+					this._SettingName = value;
+					this.SendPropertyChanged("SettingName");
+					this.OnSettingNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingValue", DbType="NVarChar(1500) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=3)]
+		public string SettingValue
+		{
+			get
+			{
+				return this._SettingValue;
+			}
+			set
+			{
+				if ((this._SettingValue != value))
+				{
+					this.OnSettingValueChanging(value);
+					this.SendPropertyChanging();
+					this._SettingValue = value;
+					this.SendPropertyChanged("SettingValue");
+					this.OnSettingValueChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingGroupId", DbType="Int")]
+		[DataMember(Order=4)]
+		public System.Nullable<int> SettingGroupId
+		{
+			get
+			{
+				return this._SettingGroupId;
+			}
+			set
+			{
+				if ((this._SettingGroupId != value))
+				{
+					if (this._SettingGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSettingGroupIdChanging(value);
+					this.SendPropertyChanging();
+					this._SettingGroupId = value;
+					this.SendPropertyChanged("SettingGroupId");
+					this.OnSettingGroupIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_EnglishName", DbType="NVarChar(50)")]
+		[DataMember(Order=5)]
+		public string EnglishName
+		{
+			get
+			{
+				return this._EnglishName;
+			}
+			set
+			{
+				if ((this._EnglishName != value))
+				{
+					this.OnEnglishNameChanging(value);
+					this.SendPropertyChanging();
+					this._EnglishName = value;
+					this.SendPropertyChanged("EnglishName");
+					this.OnEnglishNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Description", DbType="NVarChar(255)")]
+		[DataMember(Order=6)]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_DataType", DbType="NVarChar(50)")]
+		[DataMember(Order=7)]
+		public string DataType
+		{
+			get
+			{
+				return this._DataType;
+			}
+			set
+			{
+				if ((this._DataType != value))
+				{
+					this.OnDataTypeChanging(value);
+					this.SendPropertyChanging();
+					this._DataType = value;
+					this.SendPropertyChanged("DataType");
+					this.OnDataTypeChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_MinValue", DbType="Int NOT NULL")]
+		[DataMember(Order=8)]
+		public int MinValue
+		{
+			get
+			{
+				return this._MinValue;
+			}
+			set
+			{
+				if ((this._MinValue != value))
+				{
+					this.OnMinValueChanging(value);
+					this.SendPropertyChanging();
+					this._MinValue = value;
+					this.SendPropertyChanged("MinValue");
+					this.OnMinValueChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_MaxValue", DbType="Int")]
+		[DataMember(Order=9)]
+		public System.Nullable<int> MaxValue
+		{
+			get
+			{
+				return this._MaxValue;
+			}
+			set
+			{
+				if ((this._MaxValue != value))
+				{
+					this.OnMaxValueChanging(value);
+					this.SendPropertyChanging();
+					this._MaxValue = value;
+					this.SendPropertyChanged("MaxValue");
+					this.OnMaxValueChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingOrder", DbType="Int")]
+		[DataMember(Order=10)]
+		public System.Nullable<int> SettingOrder
+		{
+			get
+			{
+				return this._SettingOrder;
+			}
+			set
+			{
+				if ((this._SettingOrder != value))
+				{
+					this.OnSettingOrderChanging(value);
+					this.SendPropertyChanging();
+					this._SettingOrder = value;
+					this.SendPropertyChanged("SettingOrder");
+					this.OnSettingOrderChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_IsRequired", DbType="Bit")]
+		[DataMember(Order=11)]
+		public System.Nullable<bool> IsRequired
+		{
+			get
+			{
+				return this._IsRequired;
+			}
+			set
+			{
+				if ((this._IsRequired != value))
+				{
+					this.OnIsRequiredChanging(value);
+					this.SendPropertyChanging();
+					this._IsRequired = value;
+					this.SendPropertyChanged("IsRequired");
+					this.OnIsRequiredChanged();
+				}
+			}
+		}
+		
+		[Association(Name="SettingGroup_PageSetting", Storage="_SettingGroup", ThisKey="SettingGroupId", IsForeignKey=true)]
+		public SettingGroup SettingGroup
+		{
+			get
+			{
+				return this._SettingGroup.Entity;
+			}
+			set
+			{
+				SettingGroup previousValue = this._SettingGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._SettingGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SettingGroup.Entity = null;
+						previousValue.PageSettings.Remove(this);
+					}
+					this._SettingGroup.Entity = value;
+					if ((value != null))
+					{
+						value.PageSettings.Add(this);
+						this._SettingGroupId = value.SettingGroupId;
+					}
+					else
+					{
+						this._SettingGroupId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("SettingGroup");
+				}
+			}
+		}
+		
+		[Association(Name="Page_PageSetting", Storage="_Page", ThisKey="PageId", OtherKey="PageId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Page Page
+		{
+			get
+			{
+				return this._Page.Entity;
+			}
+			set
+			{
+				Page previousValue = this._Page.Entity;
+				if (((previousValue != value) 
+							|| (this._Page.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Page.Entity = null;
+						previousValue.PageSettings.Remove(this);
+					}
+					this._Page.Entity = value;
+					if ((value != null))
+					{
+						value.PageSettings.Add(this);
+						this._PageId = value.PageId;
+					}
+					else
+					{
+						this._PageId = default(int);
+					}
+					this.SendPropertyChanged("Page");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._SettingGroup = default(EntityRef<SettingGroup>);
+			this._Page = default(EntityRef<Page>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
+	[Table(Name="dbo.rb_BaseSettings")]
+	[DataContract()]
+	public partial class ModuleUserSetting : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ModuleID;
+		
+		private int _UserID;
+		
+		private string _SettingName;
+		
+		private string _SettingValue;
+		
+		private EntityRef<Module> _Module;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnModuleIdChanging(int value);
+    partial void OnModuleIdChanged();
+    partial void OnUserIdChanging(int value);
+    partial void OnUserIdChanged();
+    partial void OnSettingNameChanging(string value);
+    partial void OnSettingNameChanged();
+    partial void OnSettingValueChanging(string value);
+    partial void OnSettingValueChanged();
+    #endregion
+		
+		public ModuleUserSetting()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Name="ModuleID", Storage="_ModuleID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=1)]
+		public int ModuleId
+		{
+			get
+			{
+				return this._ModuleID;
+			}
+			set
+			{
+				if ((this._ModuleID != value))
+				{
+					this.OnModuleIdChanging(value);
+					this.SendPropertyChanging();
+					this._ModuleID = value;
+					this.SendPropertyChanged("ModuleId");
+					this.OnModuleIdChanged();
+				}
+			}
+		}
+		
+		[Column(Name="UserID", Storage="_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=2)]
+		public int UserId
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					this.OnUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingName", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		[DataMember(Order=3)]
+		public string SettingName
+		{
+			get
+			{
+				return this._SettingName;
+			}
+			set
+			{
+				if ((this._SettingName != value))
+				{
+					this.OnSettingNameChanging(value);
+					this.SendPropertyChanging();
+					this._SettingName = value;
+					this.SendPropertyChanged("SettingName");
+					this.OnSettingNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingValue", DbType="NVarChar(1500) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=4)]
+		public string SettingValue
+		{
+			get
+			{
+				return this._SettingValue;
+			}
+			set
+			{
+				if ((this._SettingValue != value))
+				{
+					this.OnSettingValueChanging(value);
+					this.SendPropertyChanging();
+					this._SettingValue = value;
+					this.SendPropertyChanged("SettingValue");
+					this.OnSettingValueChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Module_ModuleUserSetting", Storage="_Module", ThisKey="ModuleId", OtherKey="ModuleId", IsForeignKey=true)]
+		public Module Module
+		{
+			get
+			{
+				return this._Module.Entity;
+			}
+			set
+			{
+				Module previousValue = this._Module.Entity;
+				if (((previousValue != value) 
+							|| (this._Module.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Module.Entity = null;
+						previousValue.ModuleUserSettings.Remove(this);
+					}
+					this._Module.Entity = value;
+					if ((value != null))
+					{
+						value.ModuleUserSettings.Add(this);
+						this._ModuleID = value.ModuleId;
+					}
+					else
+					{
+						this._ModuleID = default(int);
+					}
+					this.SendPropertyChanged("Module");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._Module = default(EntityRef<Module>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
+	[Table(Name="dbo.rb_Solutions")]
+	[DataContract()]
+	public partial class Solution : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _SolutionsID;
+		
+		private string _SolDescription;
+		
+		private EntitySet<SolutionModuleDefinition> _SolutionModuleDefinitions;
+		
+		private bool serializing;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSolutionsIDChanging(int value);
+    partial void OnSolutionsIDChanged();
+    partial void OnSolDescriptionChanging(string value);
+    partial void OnSolDescriptionChanged();
+    #endregion
+		
+		public Solution()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_SolutionsID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=1)]
+		public int SolutionsID
+		{
+			get
+			{
+				return this._SolutionsID;
+			}
+			set
+			{
+				if ((this._SolutionsID != value))
+				{
+					this.OnSolutionsIDChanging(value);
+					this.SendPropertyChanging();
+					this._SolutionsID = value;
+					this.SendPropertyChanged("SolutionsID");
+					this.OnSolutionsIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SolDescription", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=2)]
+		public string SolDescription
+		{
+			get
+			{
+				return this._SolDescription;
+			}
+			set
+			{
+				if ((this._SolDescription != value))
+				{
+					this.OnSolDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._SolDescription = value;
+					this.SendPropertyChanged("SolDescription");
+					this.OnSolDescriptionChanged();
+				}
+			}
+		}
+		
+		[Association(Name="rb_Solution_rb_SolutionModuleDefinition", Storage="_SolutionModuleDefinitions", OtherKey="SolutionsID")]
+		[DataMember(Order=3, EmitDefaultValue=false)]
+		public EntitySet<SolutionModuleDefinition> SolutionModuleDefinitions
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._SolutionModuleDefinitions.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._SolutionModuleDefinitions;
+			}
+			set
+			{
+				this._SolutionModuleDefinitions.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_SolutionModuleDefinitions(SolutionModuleDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.Solution = this;
+		}
+		
+		private void detach_SolutionModuleDefinitions(SolutionModuleDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.Solution = null;
+		}
+		
+		private void Initialize()
+		{
+			this._SolutionModuleDefinitions = new EntitySet<SolutionModuleDefinition>(new Action<SolutionModuleDefinition>(this.attach_SolutionModuleDefinitions), new Action<SolutionModuleDefinition>(this.detach_SolutionModuleDefinitions));
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
+	}
+	
+	[Table(Name="dbo.rb_SolutionModuleDefinitions")]
+	[DataContract()]
+	public partial class SolutionModuleDefinition : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _SolutionModDefID;
+		
+		private System.Guid _GeneralModDefID;
+		
+		private int _SolutionsID;
+		
+		private EntityRef<GeneralModuleDefinition> _GeneralModuleDefinition;
+		
+		private EntityRef<Solution> _Solution;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSolutionModDefIDChanging(int value);
+    partial void OnSolutionModDefIDChanged();
+    partial void OnGeneralModDefIDChanging(System.Guid value);
+    partial void OnGeneralModDefIDChanged();
+    partial void OnSolutionsIDChanging(int value);
+    partial void OnSolutionsIDChanged();
+    #endregion
+		
+		public SolutionModuleDefinition()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_SolutionModDefID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=1)]
+		public int SolutionModDefID
+		{
+			get
+			{
+				return this._SolutionModDefID;
+			}
+			set
+			{
+				if ((this._SolutionModDefID != value))
+				{
+					this.OnSolutionModDefIDChanging(value);
+					this.SendPropertyChanging();
+					this._SolutionModDefID = value;
+					this.SendPropertyChanged("SolutionModDefID");
+					this.OnSolutionModDefIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_GeneralModDefID", DbType="UniqueIdentifier NOT NULL")]
+		[DataMember(Order=2)]
+		public System.Guid GeneralModDefID
+		{
+			get
+			{
+				return this._GeneralModDefID;
+			}
+			set
+			{
+				if ((this._GeneralModDefID != value))
+				{
+					if (this._GeneralModuleDefinition.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGeneralModDefIDChanging(value);
+					this.SendPropertyChanging();
+					this._GeneralModDefID = value;
+					this.SendPropertyChanged("GeneralModDefID");
+					this.OnGeneralModDefIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SolutionsID", DbType="Int NOT NULL")]
+		[DataMember(Order=3)]
+		public int SolutionsID
+		{
+			get
+			{
+				return this._SolutionsID;
+			}
+			set
+			{
+				if ((this._SolutionsID != value))
+				{
+					if (this._Solution.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSolutionsIDChanging(value);
+					this.SendPropertyChanging();
+					this._SolutionsID = value;
+					this.SendPropertyChanged("SolutionsID");
+					this.OnSolutionsIDChanged();
+				}
+			}
+		}
+		
+		[Association(Name="GeneralModuleDefinition_rb_SolutionModuleDefinition", Storage="_GeneralModuleDefinition", ThisKey="GeneralModDefID", OtherKey="GeneralModDefId", IsForeignKey=true)]
+		public GeneralModuleDefinition GeneralModuleDefinition
+		{
+			get
+			{
+				return this._GeneralModuleDefinition.Entity;
+			}
+			set
+			{
+				GeneralModuleDefinition previousValue = this._GeneralModuleDefinition.Entity;
+				if (((previousValue != value) 
+							|| (this._GeneralModuleDefinition.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._GeneralModuleDefinition.Entity = null;
+						previousValue.SolutionModuleDefinitions.Remove(this);
+					}
+					this._GeneralModuleDefinition.Entity = value;
+					if ((value != null))
+					{
+						value.SolutionModuleDefinitions.Add(this);
+						this._GeneralModDefID = value.GeneralModDefId;
+					}
+					else
+					{
+						this._GeneralModDefID = default(System.Guid);
+					}
+					this.SendPropertyChanged("GeneralModuleDefinition");
+				}
+			}
+		}
+		
+		[Association(Name="rb_Solution_rb_SolutionModuleDefinition", Storage="_Solution", ThisKey="SolutionsID", IsForeignKey=true)]
+		public Solution Solution
+		{
+			get
+			{
+				return this._Solution.Entity;
+			}
+			set
+			{
+				Solution previousValue = this._Solution.Entity;
+				if (((previousValue != value) 
+							|| (this._Solution.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Solution.Entity = null;
+						previousValue.SolutionModuleDefinitions.Remove(this);
+					}
+					this._Solution.Entity = value;
+					if ((value != null))
+					{
+						value.SolutionModuleDefinitions.Add(this);
+						this._SolutionsID = value.SolutionsID;
+					}
+					else
+					{
+						this._SolutionsID = default(int);
+					}
+					this.SendPropertyChanged("Solution");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._GeneralModuleDefinition = default(EntityRef<GeneralModuleDefinition>);
+			this._Solution = default(EntityRef<Solution>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
 		}
 	}
 	
@@ -5108,14 +7561,14 @@ namespace Rainbow.Framework.Data.MsSql
 	}
 	
 	[DataContract()]
-	public partial class rb_GetModulesInTabResult
+	public partial class GetModulesInTabResult
 	{
 		
 		private int _ModuleID;
 		
 		private System.Guid _GeneralModDefID;
 		
-		public rb_GetModulesInTabResult()
+		public GetModulesInTabResult()
 		{
 		}
 		
@@ -5155,12 +7608,12 @@ namespace Rainbow.Framework.Data.MsSql
 	}
 	
 	[DataContract()]
-	public partial class rb_FindModulesByGuidResult
+	public partial class FindModulesByGuidResult
 	{
 		
 		private int _ModuleID;
 		
-		public rb_FindModulesByGuidResult()
+		public FindModulesByGuidResult()
 		{
 		}
 		
@@ -5183,111 +7636,7 @@ namespace Rainbow.Framework.Data.MsSql
 	}
 	
 	[DataContract()]
-	public partial class rb_GetCurrentModuleDefinitionsResult
-	{
-		
-		private string _FriendlyName;
-		
-		private string _DesktopSrc;
-		
-		private string _MobileSrc;
-		
-		private System.Nullable<bool> _Admin;
-		
-		private int _ModuleDefID;
-		
-		public rb_GetCurrentModuleDefinitionsResult()
-		{
-		}
-		
-		[Column(Storage="_FriendlyName", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=1)]
-		public string FriendlyName
-		{
-			get
-			{
-				return this._FriendlyName;
-			}
-			set
-			{
-				if ((this._FriendlyName != value))
-				{
-					this._FriendlyName = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_DesktopSrc", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=2)]
-		public string DesktopSrc
-		{
-			get
-			{
-				return this._DesktopSrc;
-			}
-			set
-			{
-				if ((this._DesktopSrc != value))
-				{
-					this._DesktopSrc = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_MobileSrc", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=3)]
-		public string MobileSrc
-		{
-			get
-			{
-				return this._MobileSrc;
-			}
-			set
-			{
-				if ((this._MobileSrc != value))
-				{
-					this._MobileSrc = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_Admin", DbType="Bit")]
-		[DataMember(Order=4)]
-		public System.Nullable<bool> Admin
-		{
-			get
-			{
-				return this._Admin;
-			}
-			set
-			{
-				if ((this._Admin != value))
-				{
-					this._Admin = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_ModuleDefID", DbType="Int NOT NULL")]
-		[DataMember(Order=5)]
-		public int ModuleDefID
-		{
-			get
-			{
-				return this._ModuleDefID;
-			}
-			set
-			{
-				if ((this._ModuleDefID != value))
-				{
-					this._ModuleDefID = value;
-				}
-			}
-		}
-	}
-	
-	[DataContract()]
-	public partial class rb_GetModuleDefinitionByIDResult
+	public partial class GetModuleDefinitionByIDResult
 	{
 		
 		private int _ModuleDefID;
@@ -5304,7 +7653,7 @@ namespace Rainbow.Framework.Data.MsSql
 		
 		private int _ModuleID;
 		
-		public rb_GetModuleDefinitionByIDResult()
+		public GetModuleDefinitionByIDResult()
 		{
 		}
 		
@@ -5429,12 +7778,12 @@ namespace Rainbow.Framework.Data.MsSql
 	}
 	
 	[DataContract()]
-	public partial class rb_GetGuidResult
+	public partial class GetGuidResult
 	{
 		
 		private System.Guid _GeneralModDefID;
 		
-		public rb_GetGuidResult()
+		public GetGuidResult()
 		{
 		}
 		
@@ -5457,7 +7806,7 @@ namespace Rainbow.Framework.Data.MsSql
 	}
 	
 	[DataContract()]
-	public partial class rb_GetModuleInUseResult
+	public partial class GetModuleInUseResult
 	{
 		
 		private int _PortalID;
@@ -5468,7 +7817,7 @@ namespace Rainbow.Framework.Data.MsSql
 		
 		private char _Checked;
 		
-		public rb_GetModuleInUseResult()
+		public GetModuleInUseResult()
 		{
 		}
 		
@@ -5542,14 +7891,14 @@ namespace Rainbow.Framework.Data.MsSql
 	}
 	
 	[DataContract()]
-	public partial class rb_GetModulesByNameResult
+	public partial class GetModulesByNameResult
 	{
 		
 		private int _Column1;
 		
 		private string _Column2;
 		
-		public rb_GetModulesByNameResult()
+		public GetModulesByNameResult()
 		{
 		}
 		

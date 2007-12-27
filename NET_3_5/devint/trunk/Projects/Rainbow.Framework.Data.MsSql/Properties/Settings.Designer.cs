@@ -55,5 +55,15 @@ namespace Rainbow.Framework.Data.MsSql.Properties {
                 return ((string)(this["RainbowConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"Data Source=.\SQLExpress;AttachDbFilename=""T:\Users\William Forney\Documents\Visual Studio 2008\Projects\Rainbow\NET_3_5\devint\trunk\WebSites\Rainbow\App_Data\Database.mdf"";Initial Catalog=Rainbow;Integrated Security=True;Asynchronous Processing=True;MultipleActiveResultSets=True")]
+        public string RainbowConnectionString1 {
+            get {
+                return ((string)(this["RainbowConnectionString1"]));
+            }
+        }
     }
 }
