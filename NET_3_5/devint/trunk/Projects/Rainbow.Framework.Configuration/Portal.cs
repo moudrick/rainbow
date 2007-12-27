@@ -4,6 +4,8 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Web;
 using System.Net;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace Rainbow.Framework.Configuration
 {
@@ -45,6 +47,25 @@ namespace Rainbow.Framework.Configuration
                     return (int) context.Current.Application["CodeVersion"];
                 else
                     return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets the product version.
+        /// </summary>
+        /// <value>The product version.</value>
+        public static string ProductVersion
+        {
+            get
+            {
+                if (HttpContext.Current.Application["ProductVersion"] == null)
+                {
+                    FileVersionInfo f = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
+                    HttpContext.Current.Application.Lock();
+                    HttpContext.Current.Application["ProductVersion"] = f.ProductVersion;
+                    HttpContext.Current.Application.UnLock();
+                }
+                return (string)HttpContext.Current.Application["ProductVersion"];
             }
         }
 
