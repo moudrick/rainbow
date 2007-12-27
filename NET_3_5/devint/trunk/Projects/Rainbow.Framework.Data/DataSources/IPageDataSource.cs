@@ -8,6 +8,7 @@ namespace Rainbow.Framework.Data.DataSources
 {
     interface IPageDataSource
     {
+        IPage Add();
         IPage CreateNew();
         IPage GetById(int pageId);
         List<IPage> GetAll();

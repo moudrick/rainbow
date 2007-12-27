@@ -59,6 +59,8 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="DataSources\IPageDataSource.cs" />
+    <Compile Include="DataSources\IPortalDataSource.cs" />
+    <Compile Include="Entities\IPortal.cs" />
     <Compile Include="Exceptions\CodeVersionException.cs" />
     <Compile Include="Exceptions\DatabaseUnreachableException.cs" />
     <Compile Include="Exceptions\DatabaseVersionException.cs" />

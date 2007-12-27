@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Rainbow.Framework.Data.Entities
 {
-    interface IPage
+    public interface IPage : IComparable, IComparable<IPortal>, IConvertible
     {
         int PageId { get; set; }
         string Name { get; set; }
