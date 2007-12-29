@@ -87,13 +87,35 @@
     <exec program="${local.filename}.cmd" />
   </target>
 
+  <!-- ************************* -->
+  <!-- **  deploy section     ** -->
+  <!-- ************************* -->
+  <target name="integration.sql2k.sql2k5Precompiled">
+    <call target="wc.info" />
+    <call target="results.delete" />
+    <call target="svn.default" />
+    <call target="tests.prepare" />
+    <call target="config.update" />
+    <call target="app.sql2k.prepare" />
+
+    <call target="build.rebuild" />
+
+    <call target="app.sql2k5Precompiled.prepare" />
+
+    <call target="app.sql2k.fixup" />
+    <call target="app.sql2k5Precompiled.fixup" />
+
+    <call target="tests.run" />
+    <call target="tests.ncover.default" />
+
+    <call target="downloads" />
+  </target>
+
   <!-- ***************************************** -->
   <!-- **  Public action sequence targets     ** -->
   <!-- ***************************************** -->
-  <target name="ccnet" depends="main">
-    <call target="main" />
-    <call target="downloads" />
-  </target>
+  <target name="ccnet" depends="integration.sql2k.sql2k5Precompiled" />
+
   <target name="manual" depends="main, wc.notepadSpecifics" />
   <target name="main" >
     <call target="wc.info" />
