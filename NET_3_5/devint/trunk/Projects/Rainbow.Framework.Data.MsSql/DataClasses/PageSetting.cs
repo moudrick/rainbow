@@ -8,7 +8,7 @@ using Rainbow.Framework.Configuration;
 
 namespace Rainbow.Framework.Data.MsSql
 {
-    partial class PageSetting : IComparable<PageSetting>
+    partial class PageSetting : IComparable<PageSetting>, Rainbow.Framework.Data.MsSql.DataClasses.IPageSetting
     {
         /// <summary>
         /// Gets or sets the base setting.

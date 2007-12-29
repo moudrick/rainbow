@@ -15,10 +15,11 @@ using System.Globalization;
 using System.Collections;
 using Rainbow.Framework.Data.Providers;
 using Rainbow.Framework.Data.MsSql.Debugger;
+using Rainbow.Framework.Data.Entities;
 
 namespace Rainbow.Framework.Data.MsSql
 {
-    partial class Page : IComparable
+    partial class Page : IPage
     {
         /// <summary>
         /// Gets or sets the name.
@@ -42,22 +43,16 @@ namespace Rainbow.Framework.Data.MsSql
 
                 if (pageName.SettingValue != value)
                 {
-                    this.OnNameChanging(value);
-                    this.SendPropertyChanging();
                     pageName.SettingValue = value;
-                    this.SendPropertyChanged("Name");
-                    this.OnNameChanged();
                 }
             }
         }
-        partial void OnNameChanging(string value);
-        partial void OnNameChanged();
 
         /// <summary>
         /// Gets or sets the custom menu image.
         /// </summary>
         /// <value>The custom menu image.</value>
-        public string CustomMenuImage
+        public string MenuImage
         {
             get
             {
@@ -71,16 +66,10 @@ namespace Rainbow.Framework.Data.MsSql
 
                 if (cmi.SettingValue != value)
                 {
-                    this.OnCustomMenuImageChanging(value);
-                    this.SendPropertyChanging();
                     cmi.SettingValue = value;
-                    this.SendPropertyChanged("CustomMenuImage");
-                    this.OnCustomMenuImageChanged();
                 }
             }
         }
-        partial void OnCustomMenuImageChanging(string value);
-        partial void OnCustomMenuImageChanged();
 
         #region Page Settings
 
@@ -738,30 +727,6 @@ namespace Rainbow.Framework.Data.MsSql
 
         #endregion
 
-        #region IComparable Members
-
-        /// <summary>
-        /// Compares the current instance with another object of the same type.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This instance is less than <paramref name="obj"/>. Zero This instance is equal to <paramref name="obj"/>. Greater than zero This instance is greater than <paramref name="obj"/>.
-        /// </returns>
-        /// <exception cref="T:System.ArgumentException">
-        /// 	<paramref name="value"/> is not the same type as this instance. </exception>
-        public int CompareTo(object value)
-        {
-            if (value == null) return 1;
-
-            int compareOrder = ((Page)value).PageOrder;
-
-            if (this.PageOrder == compareOrder) return 0;
-            if (this.PageOrder < compareOrder) return -1;
-            if (this.PageOrder > compareOrder) return 1;
-            return 0;
-        }
-
-        #endregion
 
         /// <summary>
         /// Does the products module exist in page?
@@ -797,5 +762,195 @@ namespace Rainbow.Framework.Data.MsSql
             cookie.Expires = time.Add(span);
             HttpContext.Current.Response.AppendCookie(cookie);
         }
+
+        #region IPage Members
+
+        IEnumerable<IPage> IPage.MenuGroup
+        {
+            get { return this.MenuGroup as IEnumerable<IPage>; }
+        }
+
+        IEnumerable<IModule> IPage.Modules
+        {
+            get
+            {
+                return this.Modules as IEnumerable<IModule>;
+            }
+            set
+            {
+                this.Modules = value as IEnumerable<Module>;
+            }
+        }
+
+        IEnumerable<IPage> IPage.Pages
+        {
+            get
+            {
+                return this.Pages as IEnumerable<IPage>;
+            }
+            set
+            {
+                this.Pages = value as IEnumerable<Page>;
+            }
+        }
+
+        IEnumerable<IPageSetting> IPage.PageSettings
+        {
+            get
+            {
+                return this.PageSettings as IEnumerable<IPageSetting>;
+            }
+            set
+            {
+                this.PageSettings = value as IEnumerable<PageSetting>;
+            }
+        }
+
+        IPage IPage.ParentPage
+        {
+            get
+            {
+                return this.ParentPage as IPage;
+            }
+            set
+            {
+                this.ParentPage = value as Page;
+            }
+        }
+
+        #endregion
+
+        #region IComparable Members
+
+        /// <summary>
+        /// Compares the current instance with another object of the same type.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This instance is less than <paramref name="obj"/>. Zero This instance is equal to <paramref name="obj"/>. Greater than zero This instance is greater than <paramref name="obj"/>.
+        /// </returns>
+        /// <exception cref="T:System.ArgumentException">
+        /// 	<paramref name="value"/> is not the same type as this instance. </exception>
+        public int CompareTo(object value)
+        {
+            if (value == null) return 1;
+
+            int compareOrder = ((Page)value).PageOrder;
+
+            if (this.PageOrder == compareOrder) return 0;
+            if (this.PageOrder < compareOrder) return -1;
+            if (this.PageOrder > compareOrder) return 1;
+            return 0;
+        }
+
+        #endregion
+
+        #region IComparable<IPage> Members
+
+        /// <summary>
+        /// Compares to.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns></returns>
+        public int CompareTo(IPage other)
+        {
+            if (other == null) return 1;
+
+            int compareOrder = (other as Page).Order;
+            if (this.Order == compareOrder) return 0;
+            if (this.Order < compareOrder) return -1;
+            if (this.Order > compareOrder) return 1;
+        }
+
+        #endregion
+
+        #region IConvertible Members
+
+        public TypeCode GetTypeCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ToBoolean(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public byte ToByte(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public char ToChar(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTime ToDateTime(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public decimal ToDecimal(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double ToDouble(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public short ToInt16(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int ToInt32(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long ToInt64(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public sbyte ToSByte(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float ToSingle(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ToString(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object ToType(Type conversionType, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ushort ToUInt16(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public uint ToUInt32(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ulong ToUInt64(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

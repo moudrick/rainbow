@@ -6,10 +6,11 @@ using Rainbow.Framework.Configuration.Cache;
 using System.Diagnostics;
 using Rainbow.Framework.Configuration;
 using Rainbow.Framework.Data.MsSql.Debugger;
+using Rainbow.Framework.Data.Entities;
 
 namespace Rainbow.Framework.Data.MsSql
 {
-    partial class Module : IComparable<Module>
+    partial class Module : IComparable<Module>, IModule
     {
         const string strAdmin = "Admin;";
         const string strNoModule = "No Module";
@@ -336,7 +337,7 @@ namespace Rainbow.Framework.Data.MsSql
                     //PortalAlias = portal.PortalAlias,
                     Order = m.Page.PageOrder,
                     PaneName = m.PaneName,
-                    ModuleDefId = m.ModuleDefId
+                    DefinitionId = m.DefinitionId
                 });
 
             return q.ToList();
@@ -398,7 +399,7 @@ namespace Rainbow.Framework.Data.MsSql
                     //PortalAlias = portal.PortalAlias,
                     Order = mod.Page.PageOrder,
                     PaneName = mod.PaneName,
-                    ModuleDefId = mod.ModuleDefId
+                    DefinitionId = mod.DefinitionId
                 });
 
             return mods;

@@ -84,12 +84,12 @@
     <Compile Include="DataClasses\Portal.cs" />
     <Compile Include="DataClasses\PortalSetting.cs" />
     <Compile Include="DataClasses\SettingGroup.cs" />
+    <Compile Include="DataSources\PageDataSource.cs" />
     <Compile Include="DataSources\PortalDataSource.cs" />
     <Compile Include="DBHelper.cs" />
     <Compile Include="Debugger\DebuggerWriter.cs" />
     <Compile Include="ModuleSettingsCustom.cs" />
     <Compile Include="Monitoring.cs" />
-    <Compile Include="PagesDB.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <DependentUpon>Settings.settings</DependentUpon>
       <AutoGen>True</AutoGen>

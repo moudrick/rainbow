@@ -70,6 +70,10 @@
     <Compile Include="RainbowSqlMembershipProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Rainbow.Framework.Configuration\Rainbow.Framework.Configuration.csproj">
+      <Project>{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}</Project>
+      <Name>Rainbow.Framework.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rainbow.Framework.Data.MsSql\Rainbow.Framework.Data.MsSql.csproj">
       <Project>{F3D1132B-139D-47FF-911E-10A950B572D0}</Project>
       <Name>Rainbow.Framework.Data.MsSql</Name>

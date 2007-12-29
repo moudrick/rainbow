@@ -299,7 +299,7 @@ namespace Rainbow.Framework.Data.MsSql
 		private void InsertModule(Module obj)
 		{
 			System.Nullable<int> p1 = obj.ModuleId;
-			this.rb_AddModule(((System.Nullable<int>)(obj.PageId)), ((System.Nullable<int>)(obj.Order)), obj.Title, obj.PaneName, ((System.Nullable<int>)(obj.ModuleDefId)), ((System.Nullable<int>)(obj.CacheTime)), obj.AuthorizedRolesEdit, obj.AuthorizedRolesAdd, obj.AuthorizedRolesView, obj.AuthorizedRolesDelete, obj.AuthorizedRolesProperties, obj.AuthorizedRolesModuleMove, obj.AuthorizedRolesModuleDelete, ((System.Nullable<bool>)(obj.IsShowMobile)), obj.AuthorizedRolesPublishing, ((System.Nullable<bool>)(obj.IsSupportWorkflow)), ((System.Nullable<bool>)(obj.IsShowEveryWhere)), ((System.Nullable<bool>)(obj.IsCollapsable)), ref p1);
+			this.rb_AddModule(((System.Nullable<int>)(obj.PageId)), ((System.Nullable<int>)(obj.Order)), obj.Title, obj.PaneName, ((System.Nullable<int>)(obj.DefinitionId)), ((System.Nullable<int>)(obj.CacheTime)), obj.AuthorizedRolesEdit, obj.AuthorizedRolesAdd, obj.AuthorizedRolesView, obj.AuthorizedRolesDelete, obj.AuthorizedRolesProperties, obj.AuthorizedRolesModuleMove, obj.AuthorizedRolesModuleDelete, ((System.Nullable<bool>)(obj.IsShowMobile)), obj.AuthorizedRolesPublishing, ((System.Nullable<bool>)(obj.IsSupportWorkflow)), ((System.Nullable<bool>)(obj.IsShowEveryWhere)), ((System.Nullable<bool>)(obj.IsCollapsable)), ref p1);
 			obj.ModuleId = p1.GetValueOrDefault();
 		}
 		
@@ -627,6 +627,13 @@ namespace Rainbow.Framework.Data.MsSql
 		public int rb_Approve([Parameter(DbType="Int")] System.Nullable<int> moduleID)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), moduleID);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.rb_GetPageTree")]
+		public int rb_GetPageTree([Parameter(Name="PortalID", DbType="Int")] System.Nullable<int> portalID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), portalID);
 			return ((int)(result.ReturnValue));
 		}
 	}
@@ -3205,7 +3212,7 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Association(Name="GeneralModuleDefinition_rb_SolutionModuleDefinition", Storage="_SolutionModuleDefinitions", ThisKey="GeneralModDefId", OtherKey="GeneralModDefID")]
+		[Association(Name="GeneralModuleDefinition_SolutionModuleDefinition", Storage="_SolutionModuleDefinitions", ThisKey="GeneralModDefId", OtherKey="GeneralModDefID")]
 		[DataMember(Order=10, EmitDefaultValue=false)]
 		public EntitySet<SolutionModuleDefinition> SolutionModuleDefinitions
 		{
@@ -3473,7 +3480,7 @@ namespace Rainbow.Framework.Data.MsSql
 		
 		[Column(Name="ModuleDefID", Storage="_ModuleDefID", DbType="Int NOT NULL")]
 		[DataMember(Order=3)]
-		public int ModuleDefId
+		public int DefinitionId
 		{
 			get
 			{
@@ -4013,7 +4020,7 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Association(Name="Page_Module", Storage="_Page", ThisKey="PageId", OtherKey="PageId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		[Association(Name="Page_Module", Storage="_Page", ThisKey="PageId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public Page Page
 		{
 			get
@@ -4036,7 +4043,7 @@ namespace Rainbow.Framework.Data.MsSql
 					if ((value != null))
 					{
 						value.Modules.Add(this);
-						this._TabID = value.PageId;
+						this._TabID = value.Id;
 					}
 					else
 					{
@@ -4493,26 +4500,26 @@ namespace Rainbow.Framework.Data.MsSql
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnPageIdChanging(int value);
-    partial void OnPageIdChanged();
-    partial void OnParentPageIdChanging(System.Nullable<int> value);
-    partial void OnParentPageIdChanged();
-    partial void OnPageOrderChanging(int value);
-    partial void OnPageOrderChanged();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnParentIdChanging(System.Nullable<int> value);
+    partial void OnParentIdChanged();
+    partial void OnOrderChanging(int value);
+    partial void OnOrderChanged();
     partial void OnPortalIdChanging(int value);
     partial void OnPortalIdChanged();
     partial void OnPageNameChanging(string value);
     partial void OnPageNameChanged();
-    partial void OnMobilePageNameChanging(string value);
-    partial void OnMobilePageNameChanged();
+    partial void OnNameMobileChanging(string value);
+    partial void OnNameMobileChanged();
     partial void OnAuthorizedRolesChanging(string value);
     partial void OnAuthorizedRolesChanged();
     partial void OnIsShowMobileChanging(bool value);
     partial void OnIsShowMobileChanged();
-    partial void OnPageLayoutChanging(System.Nullable<int> value);
-    partial void OnPageLayoutChanged();
-    partial void OnPageDescriptionChanging(string value);
-    partial void OnPageDescriptionChanged();
+    partial void OnLayoutChanging(System.Nullable<int> value);
+    partial void OnLayoutChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
     #endregion
 		
 		public Page()
@@ -4522,7 +4529,7 @@ namespace Rainbow.Framework.Data.MsSql
 		
 		[Column(Name="PageID", Storage="_PageId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		[DataMember(Order=1)]
-		public int PageId
+		public int Id
 		{
 			get
 			{
@@ -4532,18 +4539,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._PageId != value))
 				{
-					this.OnPageIdChanging(value);
+					this.OnIdChanging(value);
 					this.SendPropertyChanging();
 					this._PageId = value;
-					this.SendPropertyChanged("PageId");
-					this.OnPageIdChanged();
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
 				}
 			}
 		}
 		
 		[Column(Name="ParentPageID", Storage="_ParentPageId", DbType="Int")]
 		[DataMember(Order=2)]
-		public System.Nullable<int> ParentPageId
+		public System.Nullable<int> ParentId
 		{
 			get
 			{
@@ -4553,18 +4560,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._ParentPageId != value))
 				{
-					this.OnParentPageIdChanging(value);
+					this.OnParentIdChanging(value);
 					this.SendPropertyChanging();
 					this._ParentPageId = value;
-					this.SendPropertyChanged("ParentPageId");
-					this.OnParentPageIdChanged();
+					this.SendPropertyChanged("ParentId");
+					this.OnParentIdChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_PageOrder", DbType="Int NOT NULL")]
+		[Column(Name="PageOrder", Storage="_PageOrder", DbType="Int NOT NULL")]
 		[DataMember(Order=3)]
-		public int PageOrder
+		public int Order
 		{
 			get
 			{
@@ -4574,11 +4581,11 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._PageOrder != value))
 				{
-					this.OnPageOrderChanging(value);
+					this.OnOrderChanging(value);
 					this.SendPropertyChanging();
 					this._PageOrder = value;
-					this.SendPropertyChanged("PageOrder");
-					this.OnPageOrderChanged();
+					this.SendPropertyChanged("Order");
+					this.OnOrderChanged();
 				}
 			}
 		}
@@ -4605,8 +4612,7 @@ namespace Rainbow.Framework.Data.MsSql
 		}
 		
 		[Column(Storage="_PageName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=5)]
-		public string PageName
+		private string PageName
 		{
 			get
 			{
@@ -4625,9 +4631,9 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Column(Storage="_MobilePageName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=6)]
-		public string MobilePageName
+		[Column(Name="MobilePageName", Storage="_MobilePageName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=5)]
+		public string NameMobile
 		{
 			get
 			{
@@ -4637,17 +4643,17 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._MobilePageName != value))
 				{
-					this.OnMobilePageNameChanging(value);
+					this.OnNameMobileChanging(value);
 					this.SendPropertyChanging();
 					this._MobilePageName = value;
-					this.SendPropertyChanged("MobilePageName");
-					this.OnMobilePageNameChanged();
+					this.SendPropertyChanged("NameMobile");
+					this.OnNameMobileChanged();
 				}
 			}
 		}
 		
 		[Column(Storage="_AuthorizedRoles", DbType="NVarChar(512)")]
-		[DataMember(Order=7)]
+		[DataMember(Order=6)]
 		public string AuthorizedRoles
 		{
 			get
@@ -4668,7 +4674,7 @@ namespace Rainbow.Framework.Data.MsSql
 		}
 		
 		[Column(Name="ShowMobile", Storage="_ShowMobile", DbType="Bit NOT NULL")]
-		[DataMember(Order=8)]
+		[DataMember(Order=7)]
 		public bool IsShowMobile
 		{
 			get
@@ -4688,9 +4694,9 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Column(Storage="_PageLayout", DbType="Int")]
-		[DataMember(Order=9)]
-		public System.Nullable<int> PageLayout
+		[Column(Name="PageLayout", Storage="_PageLayout", DbType="Int")]
+		[DataMember(Order=8)]
+		public System.Nullable<int> Layout
 		{
 			get
 			{
@@ -4700,18 +4706,18 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._PageLayout != value))
 				{
-					this.OnPageLayoutChanging(value);
+					this.OnLayoutChanging(value);
 					this.SendPropertyChanging();
 					this._PageLayout = value;
-					this.SendPropertyChanged("PageLayout");
-					this.OnPageLayoutChanged();
+					this.SendPropertyChanged("Layout");
+					this.OnLayoutChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_PageDescription", DbType="NVarChar(512) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=10)]
-		public string PageDescription
+		[Column(Name="PageDescription", Storage="_PageDescription", DbType="NVarChar(512) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=9)]
+		public string Description
 		{
 			get
 			{
@@ -4721,17 +4727,17 @@ namespace Rainbow.Framework.Data.MsSql
 			{
 				if ((this._PageDescription != value))
 				{
-					this.OnPageDescriptionChanging(value);
+					this.OnDescriptionChanging(value);
 					this.SendPropertyChanging();
 					this._PageDescription = value;
-					this.SendPropertyChanged("PageDescription");
-					this.OnPageDescriptionChanged();
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
 				}
 			}
 		}
 		
-		[Association(Name="Page_Module", Storage="_Modules", ThisKey="PageId", OtherKey="PageId")]
-		[DataMember(Order=11, EmitDefaultValue=false)]
+		[Association(Name="Page_Module", Storage="_Modules", ThisKey="Id", OtherKey="PageId")]
+		[DataMember(Order=10, EmitDefaultValue=false)]
 		public EntitySet<Module> Modules
 		{
 			get
@@ -4749,8 +4755,8 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Association(Name="Page_Page", Storage="_Pages", ThisKey="PageId", OtherKey="ParentPageId")]
-		[DataMember(Order=12, EmitDefaultValue=false)]
+		[Association(Name="Page_Page", Storage="_Pages", ThisKey="Id", OtherKey="ParentId")]
+		[DataMember(Order=11, EmitDefaultValue=false)]
 		public EntitySet<Page> Pages
 		{
 			get
@@ -4768,8 +4774,8 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Association(Name="Page_PageSetting", Storage="_PageSettings", ThisKey="PageId", OtherKey="PageId")]
-		[DataMember(Order=13, EmitDefaultValue=false)]
+		[Association(Name="Page_PageSetting", Storage="_PageSettings", ThisKey="Id", OtherKey="PageId")]
+		[DataMember(Order=12, EmitDefaultValue=false)]
 		public EntitySet<PageSetting> PageSettings
 		{
 			get
@@ -4787,7 +4793,7 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Association(Name="Page_Page", Storage="_rb_Page1", ThisKey="ParentPageId", OtherKey="PageId", IsForeignKey=true)]
+		[Association(Name="Page_Page", Storage="_rb_Page1", ThisKey="ParentId", OtherKey="Id", IsForeignKey=true)]
 		public Page ParentPage
 		{
 			get
@@ -4810,7 +4816,7 @@ namespace Rainbow.Framework.Data.MsSql
 					if ((value != null))
 					{
 						value.Pages.Add(this);
-						this._ParentPageId = value.PageId;
+						this._ParentPageId = value.Id;
 					}
 					else
 					{
@@ -6708,7 +6714,7 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Association(Name="Page_PageSetting", Storage="_Page", ThisKey="PageId", OtherKey="PageId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		[Association(Name="Page_PageSetting", Storage="_Page", ThisKey="PageId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public Page Page
 		{
 			get
@@ -6731,7 +6737,7 @@ namespace Rainbow.Framework.Data.MsSql
 					if ((value != null))
 					{
 						value.PageSettings.Add(this);
-						this._PageId = value.PageId;
+						this._PageId = value.Id;
 					}
 					else
 					{
@@ -7037,7 +7043,7 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Association(Name="rb_Solution_rb_SolutionModuleDefinition", Storage="_SolutionModuleDefinitions", OtherKey="SolutionsID")]
+		[Association(Name="Solution_SolutionModuleDefinition", Storage="_SolutionModuleDefinitions", OtherKey="SolutionsID")]
 		[DataMember(Order=3, EmitDefaultValue=false)]
 		public EntitySet<SolutionModuleDefinition> SolutionModuleDefinitions
 		{
@@ -7221,7 +7227,7 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Association(Name="GeneralModuleDefinition_rb_SolutionModuleDefinition", Storage="_GeneralModuleDefinition", ThisKey="GeneralModDefID", OtherKey="GeneralModDefId", IsForeignKey=true)]
+		[Association(Name="GeneralModuleDefinition_SolutionModuleDefinition", Storage="_GeneralModuleDefinition", ThisKey="GeneralModDefID", OtherKey="GeneralModDefId", IsForeignKey=true)]
 		public GeneralModuleDefinition GeneralModuleDefinition
 		{
 			get
@@ -7255,7 +7261,7 @@ namespace Rainbow.Framework.Data.MsSql
 			}
 		}
 		
-		[Association(Name="rb_Solution_rb_SolutionModuleDefinition", Storage="_Solution", ThisKey="SolutionsID", IsForeignKey=true)]
+		[Association(Name="Solution_SolutionModuleDefinition", Storage="_Solution", ThisKey="SolutionsID", IsForeignKey=true)]
 		public Solution Solution
 		{
 			get

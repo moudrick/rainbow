@@ -9,6 +9,8 @@ using System.Web.Security;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using Rainbow.Framework.Data.MsSql;
 using System.Data.Linq;
+using Rainbow.Framework.Configuration;
+using Rainbow.Framework.Data.MsSql.Debugger;
 
 namespace Rainbow.Framework.Providers.RainbowMembershipProvider
 {
@@ -466,7 +468,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
         {
             RainbowUser u = null;
 
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString); db.Log = new DebuggerWriter();
             User row = db.aspnet_Membership_GetUserByUserId((Guid?)providerUserKey, (DateTime?)DateTime.Now, (bool?)userIsOnline).Single();
 
             if (row != null)
@@ -627,7 +629,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
                 encodedPassword = EncodePassword(newPassword);
             }
 
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             int returnCode = db.aspnet_Membership_SetPassword(portalAlias, username, encodedPassword, passwordSalt, (DateTime?)DateTime.Now,
                 (int?)PasswordFormat);
 
@@ -652,7 +654,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
             if (!ValidateUser(username, password))
                 return false;
 
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             int returnCode = db.aspnet_Membership_ChangePasswordQuestionAndAnswer(portalAlias, username, newPasswordQuestion, newPasswordAnswer);
 
             return returnCode == 0;
@@ -701,7 +703,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
             }
 
             Guid? userId = null;
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             int returnCode = db.aspnet_Membership_CreateUser(portalAlias, username, encodedPassword, passwordSalt, email, passwordQuestion,
                 passwordAnswer == null ? null : passwordAnswer, (bool?)isApproved, (DateTime?)DateTime.Now, (DateTime?)DateTime.Now,
                 (int?)Convert.ToInt32(RequiresUniqueEmail), (int?)PasswordFormat, ref userId);
@@ -737,7 +739,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
             bool profileDeleted = this.DeleteUserProfile(username);
 
             int? tablesDeletedFrom = null;
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             int returnCode = db.aspnet_Users_DeleteUser(portalAlias, username, (deleteAllRelatedData ? 0xF : 1), ref tablesDeletedFrom);
 
             return (tablesDeletedFrom.GetValueOrDefault() > 0) && (returnCode == 0);
@@ -779,7 +781,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
             MembershipUserCollection users = new MembershipUserCollection();
             List<User> dbusers = null;
 
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             totalRecords = db.aspnet_Membership_GetAllUsers(portalAlias, pageIndex, pageSize, out dbusers);
 
             foreach (User u in dbusers)
@@ -810,7 +812,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
             TimeSpan onlineSpan = new TimeSpan(0, System.Web.Security.Membership.UserIsOnlineTimeWindow, 0);
             DateTime compareTime = DateTime.Now.Subtract(onlineSpan);
 
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             int numOnline = db.aspnet_Membership_GetNumberOfUsersOnline(portalAlias, Membership.UserIsOnlineTimeWindow, DateTime.Now);
 
             return numOnline;
@@ -847,7 +849,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
                 throw new RainbowMembershipProviderException("Cannot retrieve Hashed passwords.");
             }
 
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             ISingleResult<aspnet_Membership_GetPasswordResult> result = db.aspnet_Membership_GetPassword(
                 portalAlias, username, MaxInvalidPasswordAttempts, PasswordAttemptWindow, DateTime.Now, answer);
 
@@ -899,7 +901,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
         {
             RainbowUser u = null;
 
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             User row = db.aspnet_Membership_GetUserByName(portalAlias, username, DateTime.Now, userIsOnline).Single();
 
             if (row != null)
@@ -924,7 +926,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
         /// </returns>
         public override bool UnlockUser(string portalAlias, string username)
         {
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             int returnCode = db.aspnet_Membership_UnlockUser(portalAlias, username);
 
             return (returnCode == 0);
@@ -942,7 +944,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
         /// </returns>
         public override string GetUserNameByEmail(string portalAlias, string email)
         {
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             aspnet_Membership_GetUserByEmailResult result = db.aspnet_Membership_GetUserByEmail(portalAlias, email).Single();
 
             string username = string.Empty;
@@ -965,7 +967,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
         /// is not valid, UpdateUser throws a ProviderException.</exception>
         public override void UpdateUser(string portalAlias, MembershipUser user)
         {
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             int totalRecords = db.aspnet_Membership_UpdateUser(portalAlias, user.UserName, user.Email, user.Comment, user.IsApproved,
                 user.LastLoginDate, user.LastActivityDate, (int?)Convert.ToInt32(RequiresUniqueEmail), DateTime.Now);
 
@@ -996,7 +998,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
             string dbPasswordSalt = string.Empty;
             MembershipPasswordFormat passwordFormat = MembershipPasswordFormat.Clear;
 
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             aspnet_Membership_GetPasswordWithFormatResult row = db.aspnet_Membership_GetPasswordWithFormat(
                 portalAlias, username, true, DateTime.Now).Single();
 
@@ -1034,7 +1036,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
             List<User> userList = null;
             MembershipUserCollection users = new MembershipUserCollection();
 
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             totalRecords = db.aspnet_Membership_FindUsersByName(portalAlias, usernameToMatch, pageIndex, pageSize, out userList);
 
             foreach (User user in userList)
@@ -1069,7 +1071,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
             List<User> userList = null;
             MembershipUserCollection users = new MembershipUserCollection();
 
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             totalRecords = db.aspnet_Membership_FindUsersByEmail(portalAlias, emailToMatch, pageIndex, pageSize, out userList);
 
             foreach (User u in userList)
@@ -1148,7 +1150,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider
                 encodedPassword = EncodePassword(newPassword);
             }
 
-            DataClassesDataContext db = new DataClassesDataContext();
+            DataClassesDataContext db = new DataClassesDataContext(); db.Log = new DebuggerWriter();
             int returnCode = db.aspnet_Membership_ResetPassword(portalAlias, username, encodedPassword, MaxInvalidPasswordAttempts, PasswordAttemptWindow,
                 passwordSalt, DateTime.Now, (int?)Convert.ToInt32(PasswordFormat), answer);
 

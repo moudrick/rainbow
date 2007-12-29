@@ -101,6 +101,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Design\PictureItem.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Page.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\BreadCrumbs.cs" />
+    <Compile Include="UI\WebControls\CachedPortalModuleControl.cs" />
+    <Compile Include="UI\WebControls\DesktopNavigation.cs" />
+    <Compile Include="UI\WebControls\DesktopPanes.cs" />
+    <Compile Include="UI\WebControls\FCKTextBox.cs" />
+    <Compile Include="UI\WebControls\FreeTextBox.cs" />
+    <Compile Include="UI\WebControls\HeaderImage.cs" />
+    <Compile Include="UI\WebControls\HeaderMenu.cs" />
+    <Compile Include="UI\WebControls\HeaderTitle.cs" />
+    <Compile Include="UI\WebControls\HtmlTextBox.cs" />
+    <Compile Include="UI\WebControls\ItemNavigation.cs" />
+    <Compile Include="UI\WebControls\LanguageSwitcher.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\MenuNavigation.cs" />
+    <Compile Include="UI\WebControls\ModuleButton.cs" />
+    <Compile Include="UI\WebControls\PageKeyPhrase.cs" />
+    <Compile Include="UI\WebControls\PortalModuleControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\PortalModuleControlCustom.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\ShopNavigation.cs" />
+    <Compile Include="UI\WebControls\SolpartNavigation.cs" />
+    <Compile Include="UI\WebControls\ViewControlButtons.cs" />
+    <Compile Include="UI\WebControls\XmlEditGrid.cs" />
     <Compile Include="ZenEngine\ZenBreadCrumbs.cs" />
     <Compile Include="ZenEngine\ZenContent.cs" />
     <Compile Include="ZenEngine\ZenHeaderMenu.cs" />
@@ -200,9 +233,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UI\WebControls\" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
@@ -218,6 +248,9 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UI\WebControls\BreadCrumbs_readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

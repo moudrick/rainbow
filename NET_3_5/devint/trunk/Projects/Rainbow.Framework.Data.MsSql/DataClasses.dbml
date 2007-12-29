@@ -121,7 +121,7 @@
       <Column Name="Admin" Member="IsAdmin" Storage="_Admin" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="Searchable" Member="IsSearchable" Storage="_Searchable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="GeneralModuleDefinition_ModuleDefinition" Member="ModuleDefinitions" ThisKey="GeneralModDefId" OtherKey="GeneralModDefId" Type="ModuleDefinition" />
-      <Association Name="GeneralModuleDefinition_rb_SolutionModuleDefinition" Member="SolutionModuleDefinitions" ThisKey="GeneralModDefId" OtherKey="GeneralModDefID" Type="SolutionModuleDefinition" />
+      <Association Name="GeneralModuleDefinition_SolutionModuleDefinition" Member="SolutionModuleDefinitions" ThisKey="GeneralModDefId" OtherKey="GeneralModDefID" Type="SolutionModuleDefinition" />
     </Type>
     <InsertFunction FunctionId="FunctionId3">
       <Argument Parameter="generalModDefID" Member="GeneralModDefId" />
@@ -164,7 +164,7 @@
       <Column Name="AuthorizedDeleteModuleRoles" Member="AuthorizedRolesModuleDelete" Storage="_AuthorizedDeleteModuleRoles" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Association Name="Module_ModuleSetting" Member="ModuleSettings" ThisKey="ModuleId" OtherKey="ModuleId" Type="ModuleSetting" />
       <Association Name="Module_ModuleUserSetting" Member="ModuleUserSettings" ThisKey="ModuleId" OtherKey="ModuleId" Type="ModuleUserSetting" />
-      <Association Name="Page_Module" Member="Page" ThisKey="PageId" OtherKey="PageId" Type="Page" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Page_Module" Member="Page" ThisKey="PageId" OtherKey="Id" Type="Page" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ModuleDefinition_Module" Member="ModuleDefinition" ThisKey="ModuleDefId" OtherKey="ModuleDefId" Type="ModuleDefinition" IsForeignKey="true" />
     </Type>
     <InsertFunction FunctionId="FunctionId4">
@@ -227,20 +227,20 @@
   </Table>
   <Table Name="dbo.rb_Pages" Member="Pages">
     <Type Name="Page">
-      <Column Name="PageID" Member="PageId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ParentPageID" Member="ParentPageId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PageOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PageID" Member="Id" Storage="_PageId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ParentPageID" Member="ParentId" Storage="_ParentPageId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PageOrder" Member="Order" Storage="_PageOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PortalID" Member="PortalId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="PageName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="MobilePageName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PageName" AccessModifier="Private" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MobilePageName" Member="NameMobile" Storage="_MobilePageName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="AuthorizedRoles" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
       <Column Name="ShowMobile" Member="IsShowMobile" Storage="_ShowMobile" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="PageLayout" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PageDescription" Type="System.String" DbType="NVarChar(512) NOT NULL" CanBeNull="false" />
-      <Association Name="Page_Module" Member="Modules" ThisKey="PageId" OtherKey="PageId" Type="Module" />
-      <Association Name="Page_Page" Member="Pages" ThisKey="PageId" OtherKey="ParentPageId" Type="Page" />
-      <Association Name="Page_PageSetting" Member="PageSettings" ThisKey="PageId" OtherKey="PageId" Type="PageSetting" />
-      <Association Name="Page_Page" Member="ParentPage" Storage="_rb_Page1" ThisKey="ParentPageId" OtherKey="PageId" Type="Page" IsForeignKey="true" />
+      <Column Name="PageLayout" Member="Layout" Storage="_PageLayout" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PageDescription" Member="Description" Storage="_PageDescription" Type="System.String" DbType="NVarChar(512) NOT NULL" CanBeNull="false" />
+      <Association Name="Page_Module" Member="Modules" ThisKey="Id" OtherKey="PageId" Type="Module" />
+      <Association Name="Page_Page" Member="Pages" ThisKey="Id" OtherKey="ParentId" Type="Page" />
+      <Association Name="Page_PageSetting" Member="PageSettings" ThisKey="Id" OtherKey="PageId" Type="PageSetting" />
+      <Association Name="Page_Page" Member="ParentPage" Storage="_rb_Page1" ThisKey="ParentId" OtherKey="Id" Type="Page" IsForeignKey="true" />
       <Association Name="Portal_Page" Member="Portal" ThisKey="PortalId" OtherKey="PortalId" Type="Portal" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
@@ -333,7 +333,7 @@
       <Column Name="SettingOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="IsRequired" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="SettingGroup_PageSetting" Member="SettingGroup" ThisKey="SettingGroupId" Type="SettingGroup" IsForeignKey="true" />
-      <Association Name="Page_PageSetting" Member="Page" ThisKey="PageId" OtherKey="PageId" Type="Page" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Page_PageSetting" Member="Page" ThisKey="PageId" OtherKey="Id" Type="Page" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.rb_BaseSettings" Member="ModuleUserSettings">
@@ -349,7 +349,7 @@
     <Type Name="Solution">
       <Column Name="SolutionsID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="SolDescription" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Association Name="rb_Solution_rb_SolutionModuleDefinition" Member="SolutionModuleDefinitions" OtherKey="SolutionsID" Type="SolutionModuleDefinition" />
+      <Association Name="Solution_SolutionModuleDefinition" Member="SolutionModuleDefinitions" OtherKey="SolutionsID" Type="SolutionModuleDefinition" />
     </Type>
   </Table>
   <Table Name="dbo.rb_SolutionModuleDefinitions" Member="SolutionModuleDefinitions">
@@ -357,8 +357,8 @@
       <Column Name="SolutionModDefID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="GeneralModDefID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Column Name="SolutionsID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="GeneralModuleDefinition_rb_SolutionModuleDefinition" Member="GeneralModuleDefinition" ThisKey="GeneralModDefID" OtherKey="GeneralModDefId" Type="GeneralModuleDefinition" IsForeignKey="true" />
-      <Association Name="rb_Solution_rb_SolutionModuleDefinition" Member="Solution" ThisKey="SolutionsID" Type="Solution" IsForeignKey="true" />
+      <Association Name="GeneralModuleDefinition_SolutionModuleDefinition" Member="GeneralModuleDefinition" ThisKey="GeneralModDefID" OtherKey="GeneralModDefId" Type="GeneralModuleDefinition" IsForeignKey="true" />
+      <Association Name="Solution_SolutionModuleDefinition" Member="Solution" ThisKey="SolutionsID" Type="Solution" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.aspnet_Membership_ChangePasswordQuestionAndAnswer" Method="aspnet_Membership_ChangePasswordQuestionAndAnswer">
@@ -678,6 +678,10 @@
   </Function>
   <Function Name="dbo.rb_Approve" Method="rb_Approve">
     <Parameter Name="moduleID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.rb_GetPageTree" Method="rb_GetPageTree">
+    <Parameter Name="PortalID" Parameter="portalID" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
 </Database>

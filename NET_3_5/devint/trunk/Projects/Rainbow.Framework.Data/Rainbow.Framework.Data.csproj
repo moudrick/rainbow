@@ -44,6 +44,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -60,6 +63,8 @@
     </Compile>
     <Compile Include="DataSources\IPageDataSource.cs" />
     <Compile Include="DataSources\IPortalDataSource.cs" />
+    <Compile Include="Entities\IModule.cs" />
+    <Compile Include="Entities\IPageSetting.cs" />
     <Compile Include="Entities\IPortal.cs" />
     <Compile Include="Exceptions\CodeVersionException.cs" />
     <Compile Include="Exceptions\DatabaseUnreachableException.cs" />
