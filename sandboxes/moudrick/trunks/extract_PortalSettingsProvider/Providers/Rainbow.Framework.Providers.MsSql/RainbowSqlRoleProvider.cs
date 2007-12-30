@@ -10,9 +10,9 @@ using System.Diagnostics;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using System.Collections;
 
-namespace Rainbow.Framework.Providers.RainbowRoleProvider {
-
-    public class RainbowSqlRoleProvider : RainbowRoleProvider {
+namespace Rainbow.Framework.Providers.MsSql
+{
+    public class RainbowSqlRoleProvider : RainbowRoleProvider.RainbowRoleProvider {
 
         protected string pApplicationName;
         protected string connectionString;

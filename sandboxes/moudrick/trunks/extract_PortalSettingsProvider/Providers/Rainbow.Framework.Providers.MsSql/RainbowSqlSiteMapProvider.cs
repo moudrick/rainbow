@@ -13,110 +13,110 @@ using Rainbow.Context;
 using Rainbow.Framework;
 using System.Collections;
 
-namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
-
-	/// <summary>
-	/// Summary description for SqlSiteMapProvider
-	/// </summary>
-	[SqlClientPermission(SecurityAction.Demand, Unrestricted = true)]
-	public class RainbowSqlSiteMapProvider : RainbowSiteMapProvider {
+namespace Rainbow.Framework.Providers.MsSql
+{
+    /// <summary>
+    /// Summary description for SqlSiteMapProvider
+    /// </summary>
+    [SqlClientPermission(SecurityAction.Demand, Unrestricted = true)]
+    public class RainbowSqlSiteMapProvider : RainbowSiteMapProvider.RainbowSiteMapProvider {
 		
-		private const int _rootNodeID = -1;
+        private const int _rootNodeID = -1;
 
-		private const string _errmsg1 = "Missing node ID";
-		private const string _errmsg2 = "Duplicate node ID";
-		private const string _errmsg4 = "Invalid parent ID";
-		private const string _errmsg5 = "Empty or missing connectionStringName";
-		private const string _errmsg6 = "Missing connection string";
-		private const string _errmsg7 = "Empty connection string";
-		private const string _errmsg8 = "Invalid sqlCacheDependency";
+        private const string _errmsg1 = "Missing node ID";
+        private const string _errmsg2 = "Duplicate node ID";
+        private const string _errmsg4 = "Invalid parent ID";
+        private const string _errmsg5 = "Empty or missing connectionStringName";
+        private const string _errmsg6 = "Missing connection string";
+        private const string _errmsg7 = "Empty connection string";
+        private const string _errmsg8 = "Invalid sqlCacheDependency";
 		
-		public const string _cacheDependencyName = "__SiteMapCacheDependency";
+        public const string _cacheDependencyName = "__SiteMapCacheDependency";
 
-		private string _connect;              // Database connection string
-		private string _database, _table;     // Database info for SQL Server 7/2000 cache dependency
-		private bool _2005dependency = false; // Database info for SQL Server 2005 cache dependency
+        private string _connect;              // Database connection string
+        private string _database, _table;     // Database info for SQL Server 7/2000 cache dependency
+        private bool _2005dependency = false; // Database info for SQL Server 2005 cache dependency
 
-		private int  _indexPageID, _indexParentPageID, _indexPageOrder, _indexPortalID, 
-					 _indexPageName, _indexAuthorizedRoles, _indexPageLayout, _indexPageDescription;
+        private int  _indexPageID, _indexParentPageID, _indexPageOrder, _indexPortalID, 
+                     _indexPageName, _indexAuthorizedRoles, _indexPageLayout, _indexPageDescription;
 		
-		private Dictionary<int, SiteMapNode> _nodes = new Dictionary<int, SiteMapNode>(16);
-		private readonly object _lock = new object();
-		private SiteMapNode _root;
+        private Dictionary<int, SiteMapNode> _nodes = new Dictionary<int, SiteMapNode>(16);
+        private readonly object _lock = new object();
+        private SiteMapNode _root;
 
-		public override void Initialize (string name, NameValueCollection config) {
-			// Verify that config isn't null
-			if (config == null)
-				throw new ArgumentNullException("config");
+        public override void Initialize (string name, NameValueCollection config) {
+            // Verify that config isn't null
+            if (config == null)
+                throw new ArgumentNullException("config");
 
-			// Assign the provider a default name if it doesn't have one
-			if (String.IsNullOrEmpty(name))
-				name = "RainbowSqlSiteMapProvider";
+            // Assign the provider a default name if it doesn't have one
+            if (String.IsNullOrEmpty(name))
+                name = "RainbowSqlSiteMapProvider";
 
-			// Add a default "description" attribute to config if the
-			// attribute doesn’t exist or is empty
-			if (string.IsNullOrEmpty(config["description"]))
-			{
-				config.Remove("description");
-				config.Add("description", "Rainbow SQL site map provider");
-			}
+            // Add a default "description" attribute to config if the
+            // attribute doesn’t exist or is empty
+            if (string.IsNullOrEmpty(config["description"]))
+            {
+                config.Remove("description");
+                config.Add("description", "Rainbow SQL site map provider");
+            }
 
-			// Call the base class's Initialize method
-			base.Initialize(name, config);
+            // Call the base class's Initialize method
+            base.Initialize(name, config);
 
-			// Initialize _connect
-			string connect = config["connectionStringName"];
+            // Initialize _connect
+            string connect = config["connectionStringName"];
 
-			if (String.IsNullOrEmpty(connect)) {
-				throw new ProviderException(_errmsg5);
-			}
+            if (String.IsNullOrEmpty(connect)) {
+                throw new ProviderException(_errmsg5);
+            }
 
-			config.Remove("connectionStringName");
+            config.Remove("connectionStringName");
 
-			if (WebConfigurationManager.ConnectionStrings[connect] == null) {
-				throw new ProviderException(_errmsg6);
-			}
+            if (WebConfigurationManager.ConnectionStrings[connect] == null) {
+                throw new ProviderException(_errmsg6);
+            }
 
-			_connect = WebConfigurationManager.ConnectionStrings[connect].ConnectionString;
+            _connect = WebConfigurationManager.ConnectionStrings[connect].ConnectionString;
 
-			if (String.IsNullOrEmpty(_connect)) {
-				throw new ProviderException(_errmsg7);
-			}
+            if (String.IsNullOrEmpty(_connect)) {
+                throw new ProviderException(_errmsg7);
+            }
 	        
-			// Initialize SQL cache dependency info
-			string dependency = config["sqlCacheDependency"];
+            // Initialize SQL cache dependency info
+            string dependency = config["sqlCacheDependency"];
 
-			if (!String.IsNullOrEmpty(dependency)){
-				if (String.Equals(dependency, "CommandNotification", StringComparison.InvariantCultureIgnoreCase)){
-					SqlDependency.Start(_connect);
-					_2005dependency = true;
-				} else {
-					// If not "CommandNotification", then extract database and table names
-					string[] info = dependency.Split(new char[] { ':' });
-					if (info.Length != 2) {
-						throw new ProviderException(_errmsg8);
-					}
-					_database = info[0];
-					_table = info[1];
-				}
-				config.Remove("sqlCacheDependency");
-			}
+            if (!String.IsNullOrEmpty(dependency)){
+                if (String.Equals(dependency, "CommandNotification", StringComparison.InvariantCultureIgnoreCase)){
+                    SqlDependency.Start(_connect);
+                    _2005dependency = true;
+                } else {
+                    // If not "CommandNotification", then extract database and table names
+                    string[] info = dependency.Split(new char[] { ':' });
+                    if (info.Length != 2) {
+                        throw new ProviderException(_errmsg8);
+                    }
+                    _database = info[0];
+                    _table = info[1];
+                }
+                config.Remove("sqlCacheDependency");
+            }
 	        
-			// SiteMapProvider processes the securityTrimmingEnabled
-			// attribute but fails to remove it. Remove it now so we can
-			// check for unrecognized configuration attributes.
-			if (config["securityTrimmingEnabled"] != null) {
-				config.Remove("securityTrimmingEnabled");
-			}
+            // SiteMapProvider processes the securityTrimmingEnabled
+            // attribute but fails to remove it. Remove it now so we can
+            // check for unrecognized configuration attributes.
+            if (config["securityTrimmingEnabled"] != null) {
+                config.Remove("securityTrimmingEnabled");
+            }
 
-			// Throw an exception if unrecognized attributes remain
-			if (config.Count > 0) {
-				string attr = config.GetKey(0);
-				if (!String.IsNullOrEmpty(attr)) {
-					throw new ProviderException("Unrecognized attribute: " + attr);
-				}
-			}
-		}
+            // Throw an exception if unrecognized attributes remain
+            if (config.Count > 0) {
+                string attr = config.GetKey(0);
+                if (!String.IsNullOrEmpty(attr)) {
+                    throw new ProviderException("Unrecognized attribute: " + attr);
+                }
+            }
+        }
 
 
         /// <summary>
@@ -125,68 +125,68 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
         /// </summary>
         /// <returns>The root System.Web.SiteMapNode of the site map navigation structure.</returns>
         public override SiteMapNode BuildSiteMap() {
-			lock (_lock) {
-				// Return immediately if this method has been called before
-				if (_root != null) {
-					return _root;
-				}
+            lock (_lock) {
+                // Return immediately if this method has been called before
+                if (_root != null) {
+                    return _root;
+                }
 
-				// Query the database for site map nodes
-				SqlConnection connection = new SqlConnection(_connect);
+                // Query the database for site map nodes
+                SqlConnection connection = new SqlConnection(_connect);
 
-				try {
-					SqlCommand command = new SqlCommand(BuildSiteMap_Query(), connection);
-					command.CommandType = CommandType.Text;
+                try {
+                    SqlCommand command = new SqlCommand(BuildSiteMap_Query(), connection);
+                    command.CommandType = CommandType.Text;
 
-					// Create a SQL cache dependency if requested
-					SqlCacheDependency dependency = null;
+                    // Create a SQL cache dependency if requested
+                    SqlCacheDependency dependency = null;
 
-					if (_2005dependency) {
-						dependency = new SqlCacheDependency(command);
-					} else if (!String.IsNullOrEmpty(_database) && !string.IsNullOrEmpty(_table)) {
-						dependency = new SqlCacheDependency(_database, _table);
-					}
+                    if (_2005dependency) {
+                        dependency = new SqlCacheDependency(command);
+                    } else if (!String.IsNullOrEmpty(_database) && !string.IsNullOrEmpty(_table)) {
+                        dependency = new SqlCacheDependency(_database, _table);
+                    }
 
-					connection.Open();
+                    connection.Open();
 					
-					SqlDataReader reader = command.ExecuteReader();
-					_indexPageID = reader.GetOrdinal("PageID");
-					_indexParentPageID = reader.GetOrdinal("ParentPageID");
-					_indexPageOrder = reader.GetOrdinal("PageOrder");
-					_indexPortalID = reader.GetOrdinal("PortalID");
-					_indexPageName = reader.GetOrdinal("PageName");
-					_indexAuthorizedRoles = reader.GetOrdinal("AuthorizedRoles");
-					_indexPageLayout = reader.GetOrdinal("PageLayout");
-					_indexPageDescription = reader.GetOrdinal("PageDescription");
+                    SqlDataReader reader = command.ExecuteReader();
+                    _indexPageID = reader.GetOrdinal("PageID");
+                    _indexParentPageID = reader.GetOrdinal("ParentPageID");
+                    _indexPageOrder = reader.GetOrdinal("PageOrder");
+                    _indexPortalID = reader.GetOrdinal("PortalID");
+                    _indexPageName = reader.GetOrdinal("PageName");
+                    _indexAuthorizedRoles = reader.GetOrdinal("AuthorizedRoles");
+                    _indexPageLayout = reader.GetOrdinal("PageLayout");
+                    _indexPageDescription = reader.GetOrdinal("PageDescription");
 
-					if (reader.Read()){
-						// Create an empty root node and add it to the site map
+                    if (reader.Read()){
+                        // Create an empty root node and add it to the site map
                         _root = new SiteMapNode(this, _rootNodeID.ToString(), HttpUrlBuilder.BuildUrl(), string.Empty, string.Empty, new string[] { "All Users" } , null, null, null);
                         _nodes.Add(_rootNodeID, _root);
-						AddNode(_root, null);
+                        AddNode(_root, null);
 
-						// Build a tree of SiteMapNodes underneath the root node
-						do {
-							// Create another site map node and add it to the site map
-							SiteMapNode node = CreateSiteMapNodeFromDataReader(reader);
-							AddNode(node, GetParentNodeFromDataReader(reader));
-						} while (reader.Read());
+                        // Build a tree of SiteMapNodes underneath the root node
+                        do {
+                            // Create another site map node and add it to the site map
+                            SiteMapNode node = CreateSiteMapNodeFromDataReader(reader);
+                            AddNode(node, GetParentNodeFromDataReader(reader));
+                        } while (reader.Read());
 
-						// Use the SQL cache dependency
-						if (dependency != null)	{
-							HttpRuntime.Cache.Insert(_cacheDependencyName + PortalID, new object(), dependency,
-								Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable,
-								OnSiteMapChanged);
-						}
-					}
-				} finally	{
-					connection.Close();
-				}
+                        // Use the SQL cache dependency
+                        if (dependency != null)	{
+                            HttpRuntime.Cache.Insert(_cacheDependencyName + PortalID, new object(), dependency,
+                                                     Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable,
+                                                     OnSiteMapChanged);
+                        }
+                    }
+                } finally	{
+                    connection.Close();
+                }
 
-				// Return the root SiteMapNode
-				return _root;
-			}
-		}
+                // Return the root SiteMapNode
+                return _root;
+            }
+        }
 
              
 
@@ -194,39 +194,39 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
         /// Returns the root node.
         /// </summary>
         /// <returns>The root node.</returns>
-		protected override SiteMapNode GetRootNodeCore () {
-			lock (_lock) {
-				BuildSiteMap();
-				return _root;
-			}
-		}
+        protected override SiteMapNode GetRootNodeCore () {
+            lock (_lock) {
+                BuildSiteMap();
+                return _root;
+            }
+        }
 
-		// Helper methods
-		private SiteMapNode CreateSiteMapNodeFromDataReader (DbDataReader reader) {
-			// Make sure the node ID is present
-			if (reader.IsDBNull(_indexPageID)) {
-				throw new ProviderException(_errmsg1);
-			}
+        // Helper methods
+        private SiteMapNode CreateSiteMapNodeFromDataReader (DbDataReader reader) {
+            // Make sure the node ID is present
+            if (reader.IsDBNull(_indexPageID)) {
+                throw new ProviderException(_errmsg1);
+            }
 
-			// Get the node ID from the DataReader
-			int id = reader.GetInt32 (_indexPageID);
+            // Get the node ID from the DataReader
+            int id = reader.GetInt32 (_indexPageID);
 
-			// Make sure the node ID is unique
-			if (_nodes.ContainsKey(id)) {
-				throw new ProviderException(_errmsg2);
-			}
+            // Make sure the node ID is unique
+            if (_nodes.ContainsKey(id)) {
+                throw new ProviderException(_errmsg2);
+            }
 			
-			string name = reader.IsDBNull (_indexPageName) ? null : reader.GetString (_indexPageName).Trim ();
-			string description = reader.IsDBNull (_indexPageDescription) ? null : reader.GetString (_indexPageDescription).Trim ();
-			string roles = reader.IsDBNull(_indexAuthorizedRoles) ? null : reader.GetString(_indexAuthorizedRoles).Trim();
+            string name = reader.IsDBNull (_indexPageName) ? null : reader.GetString (_indexPageName).Trim ();
+            string description = reader.IsDBNull (_indexPageDescription) ? null : reader.GetString (_indexPageDescription).Trim ();
+            string roles = reader.IsDBNull(_indexAuthorizedRoles) ? null : reader.GetString(_indexAuthorizedRoles).Trim();
 			
-			string url = HttpUrlBuilder.BuildUrl(id);
+            string url = HttpUrlBuilder.BuildUrl(id);
 
-			// If roles were specified, turn the list into a string array
-			string[] rolelist = null;
-			if (!String.IsNullOrEmpty(roles)) {
-				rolelist = roles.Split(new char[] { ',', ';' }, 512);
-			}
+            // If roles were specified, turn the list into a string array
+            string[] rolelist = null;
+            if (!String.IsNullOrEmpty(roles)) {
+                rolelist = roles.Split(new char[] { ',', ';' }, 512);
+            }
             if (rolelist != null) {
                 int rolelistLength = rolelist.Length;
                 if (rolelistLength > 0) {
@@ -241,45 +241,45 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
                 }
             }
 
-			// Create a SiteMapNode
-			SiteMapNode node = new SiteMapNode(this, id.ToString(), url, name, description, rolelist, null, null, null);
+            // Create a SiteMapNode
+            SiteMapNode node = new SiteMapNode(this, id.ToString(), url, name, description, rolelist, null, null, null);
 
-			// Record the node in the _nodes dictionary
-			_nodes.Add(id, node);
+            // Record the node in the _nodes dictionary
+            _nodes.Add(id, node);
 	       
-			// Return the node        
-			return node;        
-		}
+            // Return the node        
+            return node;        
+        }
 
 		
         private SiteMapNode GetParentNodeFromDataReader(DbDataReader reader) {
-			// Make sure the parent ID is present
-			if (reader.IsDBNull(_indexParentPageID)) {
-				return _nodes[_rootNodeID];
-			}
+            // Make sure the parent ID is present
+            if (reader.IsDBNull(_indexParentPageID)) {
+                return _nodes[_rootNodeID];
+            }
 
-			// Get the parent ID from the DataReader
-			int pid = reader.GetInt32(_indexParentPageID);
+            // Get the parent ID from the DataReader
+            int pid = reader.GetInt32(_indexParentPageID);
 
-			// Make sure the parent ID is valid
-			if (!_nodes.ContainsKey(pid)) {
-				throw new ProviderException(_errmsg4);
-			}
+            // Make sure the parent ID is valid
+            if (!_nodes.ContainsKey(pid)) {
+                throw new ProviderException(_errmsg4);
+            }
 
-			// Return the parent SiteMapNode
-			return _nodes[pid];
-		}
+            // Return the parent SiteMapNode
+            return _nodes[pid];
+        }
 
-		void OnSiteMapChanged(string key, object item, CacheItemRemovedReason reason){
-			lock (_lock) {
-				if (key == _cacheDependencyName && reason == CacheItemRemovedReason.DependencyChanged) {
-					// Refresh the site map
-					Clear ();
-					_nodes.Clear();
-					_root = null;
-				}
-			}
-		}
+        void OnSiteMapChanged(string key, object item, CacheItemRemovedReason reason){
+            lock (_lock) {
+                if (key == _cacheDependencyName && reason == CacheItemRemovedReason.DependencyChanged) {
+                    // Refresh the site map
+                    Clear ();
+                    _nodes.Clear();
+                    _root = null;
+                }
+            }
+        }
 
 
         /// <summary>
@@ -302,26 +302,26 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
         }
 
 
-		private string BuildSiteMap_Query() {
-			string s = string.Format(@"
+        private string BuildSiteMap_Query() {
+            string s = string.Format(@"
 				SELECT	[PageID], [ParentPageID], [PageOrder], [PortalID], [PageName],
 						[AuthorizedRoles], [PageLayout], [PageDescription]
 				FROM  [dbo].[rb_Pages] 
 				WHERE [PortalID] = {0} 
 				ORDER BY [PageOrder]
 			", PortalID);
-			return s;
-		}
+            return s;
+        }
 
-	    string PortalID
-	    {
-	        get
-	        {
-	            Reader contextReader = new Reader(new WebContextReader());
-	            HttpContext context = contextReader.HttpContext;
-	            return context.Items["PortalID"].ToString();
-	        }
-	    }
+        string PortalID
+        {
+            get
+            {
+                Reader contextReader = new Reader(new WebContextReader());
+                HttpContext context = contextReader.HttpContext;
+                return context.Items["PortalID"].ToString();
+            }
+        }
 
         public override bool IsAccessibleToUser(HttpContext context, SiteMapNode node) {
 
@@ -345,5 +345,5 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
             }
             return isVisible;
         }
-	}
+    }
 }

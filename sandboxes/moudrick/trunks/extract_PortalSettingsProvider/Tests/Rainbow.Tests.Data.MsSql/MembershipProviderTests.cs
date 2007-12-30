@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using System.Web.Security;
+using RainbowSqlMembershipProvider=Rainbow.Framework.Providers.MsSql.RainbowSqlMembershipProvider;
 
 namespace Rainbow.Tests.Data.MsSql
 {
@@ -79,7 +80,7 @@ namespace Rainbow.Tests.Data.MsSql
         {
             MembershipProvider provider = Membership.Provider;
             Assert.AreEqual(provider.GetType(),
-                typeof (Rainbow.Framework.Providers.RainbowMembershipProvider.RainbowSqlMembershipProvider),
+                typeof (RainbowSqlMembershipProvider),
                 "Error retrieving Provider property");
         }
 

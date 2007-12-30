@@ -861,16 +861,17 @@ Then break script execution (CTRL-C)
   </target>
 
   <target name="tests.setProperties">
+    <property if="${not property::exists('sql.db.name')}" 
+      name="sql.db.name" value="${wc.default.branch}" dynamic="true" />
     <property name="sql.instance" value="${sql.tests.instance}" />
     <property name="sql.tests.db.name" value="tests_${sql.db.name}" />
     <property name="sql.tests.connectionString" value="server=${sql.tests.instance};database=${sql.tests.db.name};uid=rainbow;pwd=rainbow_" />
   </target>
 
   <target name="tests.prepare">
-    <property if="${not property::exists('sql.db.name')}" 
-      name="sql.db.name" value="${wc.default.branch}" dynamic="true" />
-    <call target="sql.tests.db.recreate" />
+    <call target="tests.setProperties" />
     <call target="tests.updateConfig" />
+    <call target="sql.tests.db.recreate" />
   </target>
 
   <target name="tests.updateConfig">

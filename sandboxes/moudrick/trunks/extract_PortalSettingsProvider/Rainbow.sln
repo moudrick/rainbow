@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.UrlRewrit
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "D:\...\Rainbow\", "WebSites\Rainbow\", "{F67D24F2-C7E6-4C2E-B7FC-BD99E5754E5D}"
 	ProjectSection(WebsiteProperties) = preProject
-		ProjectReferences = "{552CCD6F-0A37-4366-9E3E-22B2A0221584}|Rainbow.Framework.Core.dll;{D3A33CF8-2AEB-4E6E-AC2E-01C676F33616}|Rainbow.Framework.Web.dll;{10F33732-1ACA-492A-A737-DF8314CE7499}|Rainbow.Framework.UrlRewriting.dll;{38DA41AC-51C1-4E4D-9610-5370309C2C1E}|Rainbow.Framework.Web.UI.WebControls.dll;{14CD80D2-D20D-437F-9D8E-0B37CE3A2609}|Rainbow.Framework.dll;"
+		ProjectReferences = "{552CCD6F-0A37-4366-9E3E-22B2A0221584}|Rainbow.Framework.Core.dll;{D3A33CF8-2AEB-4E6E-AC2E-01C676F33616}|Rainbow.Framework.Web.dll;{10F33732-1ACA-492A-A737-DF8314CE7499}|Rainbow.Framework.UrlRewriting.dll;{38DA41AC-51C1-4E4D-9610-5370309C2C1E}|Rainbow.Framework.Web.UI.WebControls.dll;{14CD80D2-D20D-437F-9D8E-0B37CE3A2609}|Rainbow.Framework.dll;{271F57E4-02A3-4143-8C97-0552F52730D7}|Rainbow.Framework.Providers.MsSql.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/Rainbow"
 		Debug.AspNetCompiler.PhysicalPath = "WebSites\Rainbow\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Rainbow\"

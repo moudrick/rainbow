@@ -9,12 +9,12 @@ using System.Configuration;
 using System.Security.Cryptography;
 using System.Diagnostics;
 
-namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
-
+namespace Rainbow.Framework.Providers.MsSql
+{
     /// <summary>
     /// SQL-specific implementation of <code>RainbowMembershipProvider</code> API
     /// </summary>
-    public class RainbowSqlMembershipProvider : RainbowMembershipProvider {
+    public class RainbowSqlMembershipProvider : RainbowMembershipProvider.RainbowMembershipProvider {
 
         private const int _errorCode_UserNotFound = 1;
         private const int _errorCode_IncorrectPasswordAnswer = 3;
@@ -204,7 +204,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
             base.Initialize( name, config );
 
             pApplicationName = GetConfigValue( config["applicationName"],
-                                            System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath );
+                                               System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath );
             pMaxInvalidPasswordAttempts = Convert.ToInt32( GetConfigValue( config["maxInvalidPasswordAttempts"], "5" ) );
             pPasswordAttemptWindow = Convert.ToInt32( GetConfigValue( config["passwordAttemptWindow"], "10" ) );
             pMinRequiredNonAlphanumericCharacters = Convert.ToInt32( GetConfigValue( config["minRequiredNonAlphanumericCharacters"], "1" ) );
@@ -325,19 +325,19 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
                         bool isLockedOut = reader.IsDBNull(9) ? false : reader.GetBoolean(9);
                         DateTime lastLockedOutDate = reader.IsDBNull(10) ? DateTime.Now : reader.GetDateTime(10);
 
-                        user = InstanciateNewUser(this.Name,
-                                               userName,
-                                               (Guid) providerUserKey,
-                                               email,
-                                               passwordQuestion,
-                                               comment,
-                                               isApproved,
-                                               isLockedOut,
-                                               creationDate,
-                                               lastLoginDate,
-                                               lastActivityDate,
-                                               lastPasswordChangedDate,
-                                               lastLockedOutDate);
+                        user = InstanciateNewUser(Name,
+                                                  userName,
+                                                  (Guid) providerUserKey,
+                                                  email,
+                                                  passwordQuestion,
+                                                  comment,
+                                                  isApproved,
+                                                  isLockedOut,
+                                                  creationDate,
+                                                  lastLoginDate,
+                                                  lastActivityDate,
+                                                  lastPasswordChangedDate,
+                                                  lastLockedOutDate);
                         LoadUserProfile(user);
                     }
                 }
@@ -550,14 +550,14 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
                 cmd.ExecuteNonQuery();
 
                 status = (MembershipCreateStatus) Enum.Parse(typeof (MembershipCreateStatus), 
-                    returnCode.Value.ToString());
+                                                             returnCode.Value.ToString());
 
                 if (((int) returnCode.Value) == 0)
                 {
                     // everything went OK
 
-                    RainbowUser user = (RainbowUser) this.GetUser(newUserIdParam.Value, false);
-                    this.SaveUserProfile(user);
+                    RainbowUser user = (RainbowUser) GetUser(newUserIdParam.Value, false);
+                    SaveUserProfile(user);
                     return user;
                 }
                 else
@@ -828,7 +828,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
                         DateTime lastLockedOutDate = reader.IsDBNull( 10 ) ? DateTime.Now : reader.GetDateTime( 10 );
 
                         u = InstanciateNewUser( this.Name, username, providerUserKey, email, passwordQuestion, comment, isApproved,
-                             isLockedOut, creationDate, lastLoginDate, lastActivityDate, lastPasswordChangedDate, lastLockedOutDate);
+                                                isLockedOut, creationDate, lastLoginDate, lastActivityDate, lastPasswordChangedDate, lastLockedOutDate);
                         LoadUserProfile( u );
                     }
                 }
@@ -1272,7 +1272,7 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
                     break;
                 case MembershipPasswordFormat.Encrypted:
                     password =
-                      Encoding.Unicode.GetString( DecryptPassword( Convert.FromBase64String( password ) ) );
+                        Encoding.Unicode.GetString( DecryptPassword( Convert.FromBase64String( password ) ) );
                     break;
                 case MembershipPasswordFormat.Hashed:
                     throw new RainbowMembershipProviderException( "Cannot unencode a hashed password." );
@@ -1335,10 +1335,20 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
             bool isLockedOut = reader.IsDBNull( 10 ) ? false : reader.GetBoolean( 10 );
             DateTime lastLockedOutDate = reader.IsDBNull( 11 ) ? DateTime.Now : reader.GetDateTime( 11 );
 
-            RainbowUser u = InstanciateNewUser( this.Name, username, providerUserKey, email, passwordQuestion, comment, isApproved,
-                 isLockedOut, creationDate, lastLoginDate, lastActivityDate, lastPasswordChangedDate, lastLockedOutDate );
-
-            return u;
+            return
+                InstanciateNewUser(this.Name,
+                                   username,
+                                   providerUserKey,
+                                   email,
+                                   passwordQuestion,
+                                   comment,
+                                   isApproved,
+                                   isLockedOut,
+                                   creationDate,
+                                   lastLoginDate,
+                                   lastActivityDate,
+                                   lastPasswordChangedDate,
+                                   lastLockedOutDate);
         }
 
         /// <summary>
