@@ -1,7 +1,5 @@
 using System.Web;
 using Rainbow.Framework.Core;
-using Rainbow.Framework.Core.DAL;
-using Rainbow.Framework.Settings;
 
 namespace Rainbow.Framework.Logging
 {
@@ -20,7 +18,7 @@ namespace Rainbow.Framework.Logging
         {
             try
             {
-                return DatabaseUpdater.CodeVersion.ToString();
+                return VersionController.Instance.CodeVersion.ToString();
             }
             catch
             {

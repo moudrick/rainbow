@@ -10,14 +10,7 @@ namespace Rainbow.Framework.Settings
 	/// </summary>
 	public sealed class Path
 	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		private Path()
-		{
-		}
-
-		private static string applicationRoot;// = null;
+		static string applicationRoot;
 
 		/// <summary>
 		/// ApplicationRoot
@@ -81,16 +74,16 @@ namespace Rainbow.Framework.Settings
 			return WebPathCombine(ApplicationRoot, value);
 		}
 
-		/// <summary>
-		/// ApplicationRoot based path
-		/// Since it is common for all portals is declared as static
-		/// </summary>
-		public static string ApplicationRootPath(params string[] values)
-		{
-			ArrayList fullValues = new ArrayList(values);
-			fullValues.Insert(0, ApplicationRoot);
-			return WebPathCombine((string[]) fullValues.ToArray(Type.GetType("String")));
-		}
+//		/// <summary>
+//		/// ApplicationRoot based path
+//		/// Since it is common for all portals is declared as static
+//		/// </summary>
+//		public static string ApplicationRootPath(params string[] values)
+//		{
+//			ArrayList fullValues = new ArrayList(values);
+//			fullValues.Insert(0, ApplicationRoot);
+//			return WebPathCombine((string[]) fullValues.ToArray(Type.GetType("String")));
+//		}
 
 		/// <summary>
 		/// WebPathCombine ensures that combined path is a valid url

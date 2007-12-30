@@ -8,7 +8,6 @@ using Rainbow.Framework;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
-using Rainbow.Framework.Core.DAL;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Scheduler;
 using Rainbow.Framework.Security;
@@ -17,7 +16,7 @@ using History=Rainbow.Framework.History;
 using Path=System.IO.Path;
 using Reader=Rainbow.Context.Reader;
 
-namespace Rainbow
+namespace Rainbow.App_Code
 {
     /// <summary>
     /// Defines the methods, properties, and events common to all application 
@@ -80,11 +79,13 @@ namespace Rainbow
             if (executionFilePath != Config.InstallerRedirect.ToLower() &&
                 executionFilePath != "~/webresource.axd")
             {
-                RainbowContext.Current.CheckDatabaseVersion();
-                RainbowContext.Current.CalculatePortalResponse();
+                bool isUpToDate = RainbowContext.Current.CheckDatabaseVersion(VersionController.Instance, Config.DatabaseUpdateRedirect);
+                if (isUpToDate)
+                {
+                    RainbowContext.Current.CalculatePortalResponse();
+                }
             }
-        } // end of Application_BeginRequest
-
+        }
 
         /// <summary>
         /// Handles the AuthenticateRequest event of the Application control.
@@ -100,7 +101,7 @@ namespace Rainbow
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
             Reader contextReader = new Reader(new WebContextReader());
-            HttpContext context = contextReader.Current;
+            HttpContext context = contextReader.HttpContext;
 
             if (context.Items["PortalSettings"] != null) //PortalProvider.Instance.CurrentPortal
             {
@@ -207,7 +208,7 @@ namespace Rainbow
         protected void Application_Start()
         {
             ErrorHandler.Publish(LogLevel.Info, "Application Started: code version " 
-                + DatabaseUpdater.CodeVersion);
+                + VersionController.Instance.CodeVersion);
 
             if (Config.CheckForFilePermission)
             {

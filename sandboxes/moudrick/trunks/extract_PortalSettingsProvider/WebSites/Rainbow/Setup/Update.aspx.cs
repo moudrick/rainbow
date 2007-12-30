@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Web;
 using System.Web.UI;
 using Rainbow.Framework;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.DAL;
 using Rainbow.Framework.Settings;
 using History=Rainbow.Framework.History;
@@ -79,7 +80,7 @@ namespace Rainbow.Setup
             updater = new DatabaseUpdater(
                 System.IO.Path.Combine(mapPath, @"Setup\Scripts\"),
                 mapPath + @"\");
-            updater.PreviewUpdate();
+            updater.PreviewUpdate(VersionController.Instance);
             lblVersion.Text = updater.InitialStatusReport;
             if (updater.UpdateList.Count > 0)
             {
@@ -98,7 +99,7 @@ namespace Rainbow.Setup
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void UpdateDatabaseCommand_Click( object sender, EventArgs e ) 
         {
-            updater.PerformUpdate();
+            updater.PerformUpdate(VersionController.Instance);
 
             dbUpdateResult.Visible = false;
             dbNeedsUpdate.Visible = false;

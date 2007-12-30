@@ -2,7 +2,6 @@ using System;
 using System.Web;
 using System.Data.SqlClient;
 using System.Collections.Specialized;
-using System.Configuration;
 using System.Web.Configuration;
 using System.Collections.Generic;
 using System.Configuration.Provider;
@@ -10,6 +9,7 @@ using System.Security.Permissions;
 using System.Data.Common;
 using System.Data;
 using System.Web.Caching;
+using Rainbow.Context;
 using Rainbow.Framework;
 using System.Collections;
 
@@ -176,7 +176,7 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
 						if (dependency != null)	{
 							HttpRuntime.Cache.Insert(_cacheDependencyName + PortalID, new object(), dependency,
 								Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable,
-								new CacheItemRemovedCallback(OnSiteMapChanged));
+								OnSiteMapChanged);
 						}
 					}
 				} finally	{
@@ -303,23 +303,25 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
 
 
 		private string BuildSiteMap_Query() {
-			string s = @"
+			string s = string.Format(@"
 				SELECT	[PageID], [ParentPageID], [PageOrder], [PortalID], [PageName],
 						[AuthorizedRoles], [PageLayout], [PageDescription]
 				FROM  [dbo].[rb_Pages] 
-				WHERE [PortalID] = " + PortalID + @" 
+				WHERE [PortalID] = {0} 
 				ORDER BY [PageOrder]
-			";
+			", PortalID);
 			return s;
 		}
 
-		private string PortalID {
-			get {
-				Rainbow.Context.Reader contextReader = new Rainbow.Context.Reader(new Rainbow.Context.WebContextReader());
-				HttpContext context = contextReader.Current;
-				return context.Items["PortalID"].ToString();
-			}
-		}
+	    string PortalID
+	    {
+	        get
+	        {
+	            Reader contextReader = new Reader(new WebContextReader());
+	            HttpContext context = contextReader.HttpContext;
+	            return context.Items["PortalID"].ToString();
+	        }
+	    }
 
         public override bool IsAccessibleToUser(HttpContext context, SiteMapNode node) {
 
@@ -345,6 +347,3 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
         }
 	}
 }
-		
-		
-

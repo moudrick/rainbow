@@ -5,7 +5,7 @@ namespace Rainbow.Context
 	/// <summary>
 	/// Interface for Config Reader Strategy
 	/// </summary>
-	public interface Strategy
+	public interface IRainbowContextStrategy
 	{
 		/// <summary>
 		/// 
@@ -19,7 +19,7 @@ namespace Rainbow.Context
 	/// <summary>
 	/// Concrete Strategy - gets web current context
 	/// </summary>
-	public class WebContextReader : Strategy
+	public class WebContextReader : IRainbowContextStrategy
 	{
 		/// <summary>
 		/// 
@@ -36,22 +36,22 @@ namespace Rainbow.Context
 	/// <summary>
 	/// Reader
 	/// </summary>
-	public class Reader
+    public class Reader
 	{
-		readonly Strategy strategy;
+		readonly IRainbowContextStrategy strategy;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="strategy">a Concrete Strategy</param>
-		public Reader(Strategy strategy)
+		public Reader(IRainbowContextStrategy strategy)
 		{
 			this.strategy = strategy;
 		}
 
 		/// <summary>
 		/// </summary>
-		public HttpContext Current
+		public HttpContext HttpContext
 		{
 			get
 			{

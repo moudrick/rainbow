@@ -38,7 +38,7 @@
   <property name="web.rainbow.dir" value="WebSites/Rainbow/" />
   <property name="web.precompiled.dir" value="PrecompiledWeb" />
 
-  <property name="svn.branch.default" value="rainbow" />
+  <property name="wc.default.branch" value="rainbow" />
   <property name="sql.tests.instance" value="(local)\SQLEXPRESS" />
   <property name="build.VersionInfo" value="VersionInfo.cs" />
 
@@ -59,9 +59,9 @@
     <call target="svn.default" />
     <call target="tests.prepare" />
     <call target="config.update" />
-    <call target="app.sql2k5.export.prepare" />
+    <call target="app.export.sql2k5-express.prepare" />
     <call target="build.rebuild" />
-    <call target="app.sql2k5.export.fixup" />
+    <call target="app.export.sql2k5-express.fixup" />
   </target>
 
   <target name="deploy.preview.nobuild">
@@ -69,8 +69,8 @@
     <call target="svn.info" />
     <call target="tests.prepare" />
     <call target="config.update" />
-    <call target="app.sql2k5.export.prepare" />
-    <call target="app.sql2k5.export.fixup" />
+    <call target="app.export.sql2k5-express.prepare" />
+    <call target="app.export.sql2k5-express.fixup" />
   </target>
 
   <target name="deploy.preview.cleanup">
@@ -87,54 +87,38 @@
     <exec program="${local.filename}.cmd" />
   </target>
 
-  <!-- ************************* -->
-  <!-- **  deploy section     ** -->
-  <!-- ************************* -->
+  <!-- ****************************** -->
+  <!-- **  integration section     ** -->
+  <!-- ****************************** -->
+  <target name="integration.all">
+    <call target="integration.sql2k.sql2k5Precompiled" />
+    <call target="downloads" />
+  </target>
+
   <target name="integration.sql2k.sql2k5Precompiled">
     <call target="wc.info" />
     <call target="results.delete" />
     <call target="svn.default" />
     <call target="tests.prepare" />
     <call target="config.update" />
-    <call target="app.sql2k.prepare" />
 
+    <call target="app.solution.sql2k-default.prepare" />
     <call target="build.rebuild" />
+    <call target="app.solution.sql2k-default.fixup" />
 
-    <call target="app.sql2k5Precompiled.prepare" />
-
-    <call target="app.sql2k.fixup" />
-    <call target="app.sql2k5Precompiled.fixup" />
+    <call target="app.precompiled.sql2k5.prepare" />
+    <call target="app.precompiled.sql2k5.fixup" />
 
     <call target="tests.run" />
     <call target="tests.ncover.default" />
-
-    <call target="downloads" />
   </target>
 
   <!-- ***************************************** -->
   <!-- **  Public action sequence targets     ** -->
   <!-- ***************************************** -->
-  <target name="ccnet" depends="integration.sql2k.sql2k5Precompiled" />
-
+  <target name="ccnet" depends="integration.all" />
+  <target name="main" depends="integration.sql2k.sql2k5Precompiled" />
   <target name="manual" depends="main, wc.notepadSpecifics" />
-  <target name="main" >
-    <call target="wc.info" />
-    <call target="results.delete" />
-    <call target="svn.default" />
-    <call target="tests.prepare" />
-    <call target="config.update" />
-    <call target="app.sql2k.prepare" />
-
-    <call target="build.rebuild" />
-
-    <call target="app.sql2k5Precompiled.prepare" />
-
-    <call target="app.sql2k.fixup" />
-    <call target="app.sql2k5Precompiled.fixup" />
-
-    <call target="tests.run" />
-    <call target="tests.ncover.default" />
-  </target>
 
   <target name="ccnet.iocluster">
     <call target="wc.info" />
@@ -154,7 +138,7 @@
 
   <target name="main.tests" >
     <call target="config.update" />
-    <call target="app.sql2k.prepare" />
+    <call target="app.solution.sql2k-default.prepare" />
     <call target="tests.prepare" />
     <call target="build.rebuild" />
     <call target="tests.run" />
@@ -168,9 +152,10 @@
   <target name="tests" depends="tests.default" />
   <target name="downloads" depends="downloads.default" />
 
-  <!-- ******************************** -->
-  <!-- **  Simple action targets     ** -->
-  <!-- ******************************** -->
+  <!-- ********** -->
+  <!-- **  wc  ** -->
+  <!-- ********** -->
+
   <target name="wc.info">
     <echo message="** wc.info: runtime property values **" />
     <echo message="" />
@@ -188,6 +173,19 @@
     <echo message="** build related information **" />
     <echo-property property="${build.configuration}" />
     <echo-property property="" />
+  </target>
+
+  <target name="wc.setDefaults">
+      <property name="build.version.revision" value="0" />
+
+      <property name="svn.branch" value="${wc.indicator}${wc.default.branch}" />
+      <property name="svn.branch.encoded" value="${svn.branch}" dynamic="true" />
+  </target>
+
+  <target name="wc.setProperties">
+    <property name="sql.db.name" value="${svn.branch.encoded}" dynamic="true" />
+    <xmlpeek file="${web.rainbow.dir}${sql.relativePath}history.xml" property="sql.version"
+      xpath="/History/Release[last()]/Version" />
   </target>
 
   <!-- ***************** -->
@@ -214,7 +212,7 @@
     <copy file="${build.VersionInfo}" tofile="${downloads.source.dir}/${build.VersionInfo}" overwrite="true" />
 
     <property name="wc.dir" value="${project::get-base-directory()}\${downloads.source.dir}\" />
-    <call target="app.rainbow.setProperties" />
+    <call target="app.rainbow.sql2k5-express.setProperties" />
     <call target="tests.setProperties" />
     <call target="config.update" />
     <call target="config.web.setConnectionStrings" />
@@ -241,7 +239,7 @@
     </copy>
 
     <property name="wc.dir" value="${project::get-base-directory()}\${downloads.binary.dir}\" />
-    <call target="app.rainbow.setProperties" />
+    <call target="app.rainbow.sql2k5-express.setProperties" />
     <property name="web.relativeApplicationPath" value="" />
     <call target="config.web.setConnectionStrings" />
 
@@ -293,28 +291,15 @@
       <property name="svn.branch.encoded" value="${string::replace(svn.branch, '/', '$')}" dynamic="true" />
     </if>
     <if test="${not svn.isWorkingCopy}" >
-      <call target="svn.setDefaults" />
+      <call target="wc.setDefaults" />
     </if>
-    <call target="svn.setProperties" />
+    <call target="wc.setProperties" />
 
     <echo-property property="build.version.revision" />
     <echo-property property="svn.branch" />
     <echo-property property="svn.branch.encoded" />
     <echo-property property="sql.db.name" />
     <echo-property property="sql.version" />
-  </target>
-
-  <target name="svn.setDefaults">
-      <property name="build.version.revision" value="0" />
-
-      <property name="svn.branch" value="${wc.indicator}${svn.branch.default}" />
-      <property name="svn.branch.encoded" value="${svn.branch}" dynamic="true" />
-  </target>
-
-  <target name="svn.setProperties">
-    <property name="sql.db.name" value="${svn.branch.encoded}" dynamic="true" />
-    <xmlpeek file="${web.rainbow.dir}${sql.relativePath}history.xml" property="sql.version"
-      xpath="/History/Release[last()]/Version" />
   </target>
 
   <!-- ************** -->
@@ -771,11 +756,11 @@ GO
     <!-- 2k5: IF EXISTS (SELECT * FROM sys.schemas WHERE name = N'${sql.aspnetAccount}') DROP SCHEMA [${sql.aspnetAccount}]; IF EXISTS (SELECT * FROM sys.database_principals WHERE name = N'${sql.aspnetAccount}') DROP USER [${sql.aspnetAccount}] -->
     <property name="sql.query" 
       value="USE [${sql.db.name}]; EXEC sp_droprolemember 'db_owner', '${sql.aspnetAccount}'; IF EXISTS (SELECT * FROM [sysusers] WHERE [name] = N'${sql.aspnetAccount}') EXEC sp_dropuser '${sql.aspnetAccount}'" />
-    <call target="sql.run.query.trusted" />
+    <call target="sql.run.query.trusted" failonerror="false" />
 
     <property name="sql.query" 
       value="use [${sql.db.name}]; EXEC sp_grantlogin '${sql.aspnetAccount}'; EXEC sp_addrolemember 'db_owner', '${sql.aspnetAccount}'; EXEC sp_grantdbaccess '${sql.aspnetAccount}';" />
-    <call target="sql.run.query.trusted" />
+    <call target="sql.run.query.trusted" failonerror="false" />
   </target>
 
   <target name="sql.tests.changeOwner" >
@@ -934,9 +919,9 @@ Then break script execution (CTRL-C)
   </target>
 
   <target name="tests.run.prepare.backup">
-    <call target="svn.setDefaults" />
-    <call target="svn.setProperties" />
-    <call target="app.sql2k5.export.prepare" />
+    <call target="wc.setDefaults" />
+    <call target="wc.setProperties" />
+    <call target="app.export.sql2k5-express.prepare" />
 
     <call target="sql.recreate" />
 
@@ -947,7 +932,7 @@ Then break script execution (CTRL-C)
       <arg value="/p:Configuration=Release" />
     </exec>
 
-    <nunit2 haltonfailure="false" failonerror="false">
+    <nunit2>
       <formatter type="Xml" usefile="true" extension=".xml" outputdir="${tests.results.dir}" />
       <formatter type="Plain" usefile="false" />
       <test assemblyname="Tests\${tests.prepare.assembly}\bin\${build.configuration}\${tests.prepare.assembly}.dll" >
@@ -961,9 +946,9 @@ Then break script execution (CTRL-C)
   </target>
 
   <target name="tests.run.prepare.restore">
-    <call target="svn.setDefaults" />
-    <call target="svn.setProperties" />
-    <call target="app.sql2k5.export.prepare" />
+    <call target="wc.setDefaults" />
+    <call target="wc.setProperties" />
+    <call target="app.export.sql2k5-express.prepare" />
 
     <call target="tests.setProperties" />
     <call target="sql.tests.restore" />
@@ -1084,58 +1069,58 @@ Then break script execution (CTRL-C)
     <call target="sql.recreate" />
   </target>
 
-  <!-- ******************* -->
-  <!-- **  app.rainbow  ** -->
-  <!-- ******************* -->
-  <target name="app.rainbow.setProperties" depends="svn.info">
-    <property name="web.virtDirName" value="${svn.branch.default}" />
+  <!-- ********************************** -->
+  <!-- **  app.rainbow.sql2k5-express  ** -->
+  <!-- ********************************** -->
+  <target name="app.rainbow.sql2k5-express.setProperties" depends="svn.info">
+    <property name="web.virtDirName" value="${wc.default.branch}" />
     <property name="web.relativeApplicationPath" value="${web.rainbow.dir}" />
     <property name="sql.instance" value="(local)\SQLEXPRESS" />
-    <property name="sql.db.name" value="${svn.branch.default}" />
+    <property name="sql.db.name" value="${wc.default.branch}" />
     <call target="sql.setTrustedConnectionString" />
   </target>
 
-  <target name="app.rainbow.prepare" depends="app.rainbow.setProperties">
+  <target name="app.rainbow.sql2k5-express.prepare" depends="app.rainbow.sql2k5-express.setProperties">
     <call target="web.createIisApp" />
     <call target="web.rainbow.deleteLog" />
   </target>
 
-  <target name="app.rainbow.fixup" depends="app.rainbow.setProperties">
+  <target name="app.rainbow.sql2k5-express.fixup" depends="app.rainbow.sql2k5-express.setProperties">
     <call target="sql.recreate" />
     <call target="config.web.setConnectionStrings" />
   </target>
 
-  <!-- ***************** -->
-  <!-- **  app.sql2k  ** -->
-  <!-- ***************** -->
-  <target name="app.sql2k.setProperties" depends="svn.info">
+  <!-- ********************************** -->
+  <!-- **  app.solution.sql2k-default  ** -->
+  <!-- ********************************** -->
+  <target name="app.solution.sql2k-default.setProperties" depends="svn.info">
     <property name="web.virtDirName" value="${svn.branch.encoded}" />
     <property name="web.relativeApplicationPath" value="${web.rainbow.dir}" />
     <property name="sql.instance" value="(local)" />
     <call target="sql.setTrustedConnectionString" />
   </target>
 
-  <target name="app.sql2k.prepare" depends="app.sql2k.setProperties">
+  <target name="app.solution.sql2k-default.prepare" depends="app.solution.sql2k-default.setProperties">
     <call target="web.createIisApp" />
     <call target="web.rainbow.deleteLog" />
   </target>
 
-  <target name="app.sql2k.fixup" depends="app.sql2k.setProperties">
+  <target name="app.solution.sql2k-default.fixup" depends="app.solution.sql2k-default.setProperties">
     <call target="sql.recreate" />
     <call target="config.web.setConnectionStrings" />
   </target>
 
-  <!-- ***************************** -->
-  <!-- **  app.sql2k5Precompiled  ** -->
-  <!-- ***************************** -->
-  <target name="app.sql2k5Precompiled.setProperties" depends="svn.info">
+  <!-- ****************************** -->
+  <!-- **  app.precompiled.sql2k5  ** -->
+  <!-- ****************************** -->
+  <target name="app.precompiled.sql2k5.setProperties" depends="svn.info">
     <property name="web.virtDirName" value="${web.precompiled.dir}/${svn.branch.encoded}" />
     <property name="web.relativeApplicationPath" value="${web.virtDirName}/" />
     <property name="sql.instance" value="(local)\SQLEXPRESS" />
     <call target="sql.setTrustedConnectionString" />
   </target>
 
-  <target name="app.sql2k5Precompiled.prepare" depends="app.sql2k5Precompiled.setProperties">
+  <target name="app.precompiled.sql2k5.prepare" depends="app.precompiled.sql2k5.setProperties">
     <readregistry property="iisWwwRoot" key="SOFTWARE\Microsoft\InetStp\PathWWWRoot" hive="LocalMachine" />
     <mkdir dir="${iisWwwRoot}\${web.precompiled.dir}" />
 
@@ -1143,29 +1128,29 @@ Then break script execution (CTRL-C)
     <call target="web.rainbow.deleteLog" />
   </target>
 
-  <target name="app.sql2k5Precompiled.fixup" depends="app.sql2k5Precompiled.setProperties">
+  <target name="app.precompiled.sql2k5.fixup" depends="app.precompiled.sql2k5.setProperties">
     <call target="sql.recreate" />
     <call target="config.web.setConnectionStrings" />
   </target>
 
-  <!-- ************************* -->
-  <!-- **  app.sql2k5.export  ** -->
-  <!-- ************************* -->
-  <target name="app.sql2k5.export.setProperties">
-    <property name="sql.db.name" value="Rainbow" dynamic="true" />
+  <!-- ********************************* -->
+  <!-- **  app.export.sql2k5-express  ** -->
+  <!-- ********************************* -->
+  <target name="app.export.sql2k5-express.setProperties">
+    <property name="sql.db.name" value="${wc.default.branch}" dynamic="true" />
 
-    <property name="web.virtDirName" value="Rainbow" />
+    <property name="web.virtDirName" value="${wc.default.branch}" />
     <property name="web.relativeApplicationPath" value="${web.rainbow.dir}" />
     <property name="sql.instance" value="(local)\SQLEXPRESS" />
     <call target="sql.setTrustedConnectionString" />
   </target>
 
-  <target name="app.sql2k5.export.prepare" depends="app.sql2k5.export.setProperties">
+  <target name="app.export.sql2k5-express.prepare" depends="app.export.sql2k5-express.setProperties">
     <call target="web.createIisApp" />
     <call target="web.rainbow.deleteLog" />
   </target>
 
-  <target name="app.sql2k5.export.fixup" depends="app.sql2k5.export.setProperties">
+  <target name="app.export.sql2k5-express.fixup" depends="app.export.sql2k5-express.setProperties">
     <call target="sql.recreate" />
     <call target="config.web.setConnectionStrings" />
   </target>

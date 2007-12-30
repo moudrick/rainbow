@@ -1,13 +1,13 @@
 using System;
 using System.Web;
 using NUnit.Framework;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
-using Rainbow.Framework.Core.DAL;
 using Rainbow.Framework.Site.Configuration;
 using Subtext.TestLibrary;
 
-namespace Rainbow.Tests.Data.MsSql.PortalSettingsTests
+namespace Rainbow.Tests.Data.MsSql.PortalTests
 {
     [TestFixture]
     public class DefaultPortalTests
@@ -21,7 +21,7 @@ namespace Rainbow.Tests.Data.MsSql.PortalSettingsTests
             httpSimulator = new HttpSimulator("/Rainbow", Hepler.RainbowWebApplicationRoot);
 
             httpSimulator.SimulateRequest(new Uri("http://localhost/Rainbow/"));
-            Assert.AreEqual(1882, DatabaseUpdater.DatabaseVersion);
+            Assert.AreEqual(1882, VersionController.Instance.DatabaseVersion);
             portalSettings = PortalProvider.Instance.InstantiateNewPortalSettings(0, "Rainbow");
             Assert.IsNotNull(portalSettings);
 

@@ -9,13 +9,13 @@ using System.Web;
 using Rainbow.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
-using Rainbow.Framework.Core.DAL;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Settings.Cache;
 using Path=System.IO.Path;
+using Reader=Rainbow.Context.Reader;
 
 namespace Rainbow.Framework.Core
 {
@@ -24,10 +24,18 @@ namespace Rainbow.Framework.Core
     ///</summary>
     public class RainbowContext
     {
-        static readonly RainbowContext current = new RainbowContext(HttpContext.Current);
+        static readonly RainbowContext current =
+            new RainbowContext(new Reader(new WebContextReader()));
 
-        readonly HttpContext httpContext;
-        readonly Context.Reader rainbowContextReader;
+        readonly Reader rainbowContextReader;
+
+        HttpContext HttpContext
+        {
+            get
+            {
+                return rainbowContextReader.HttpContext;
+            }
+        }
 
         ///<summary>
         /// Gets current Rainbow Context
@@ -70,7 +78,7 @@ namespace Rainbow.Framework.Core
             {
                 string strPageID = null;
 
-                if (FindPageIdFromQueryString(rainbowContextReader.Current.Request.QueryString, ref strPageID))
+                if (FindPageIdFromQueryString(rainbowContextReader.HttpContext.Request.QueryString, ref strPageID))
                 {
                     return Config.GetIntegerFromString(false, strPageID, 0);
                 }
@@ -90,24 +98,23 @@ namespace Rainbow.Framework.Core
             // new version - Jes1111 - 07/07/2005
             get
             {
-                if (rainbowContextReader.Current.Items["PortalAlias"] == null) // not already in context
+                if (rainbowContextReader.HttpContext.Items["PortalAlias"] == null) // not already in context
                 {
                     string uniquePortalID = Config.DefaultPortal; // set default value
-                    FindAlias(rainbowContextReader.Current.Request, ref uniquePortalID); // will change uniquePortalID if it can
-                    rainbowContextReader.Current.Items.Add("PortalAlias", uniquePortalID); // add to context
+                    FindAlias(rainbowContextReader.HttpContext.Request, ref uniquePortalID); // will change uniquePortalID if it can
+                    rainbowContextReader.HttpContext.Items.Add("PortalAlias", uniquePortalID); // add to context
                     return uniquePortalID; // return current value
                 }
                 else // already in context
                 {
-                    return (string)rainbowContextReader.Current.Items["PortalAlias"]; // return from context
+                    return (string)rainbowContextReader.HttpContext.Items["PortalAlias"]; // return from context
                 }
             }
         }
 
-        RainbowContext(HttpContext httpContext)
+        RainbowContext(Reader contextReader)
         {
-            this.httpContext = httpContext;
-            this.rainbowContextReader = new Context.Reader(new WebContextReader());
+            rainbowContextReader = contextReader;
         }
 
         /// <summary>
@@ -130,20 +137,20 @@ namespace Rainbow.Framework.Core
         ///</summary>
         public void RewritePath()
         {
-            string currentURL = httpContext.Request.Path.ToLower();
+            string currentURL = HttpContext.Request.Path.ToLower();
 
-            httpContext.Trace.Warn("Application_BeginRequest :: " + currentURL);
+            HttpContext.Trace.Warn("Application_BeginRequest :: " + currentURL);
             if (PageID > 0)
             {
                 //Creates the physical path on the server 
-                string physicalPath = httpContext.Server.MapPath(currentURL.Substring(currentURL.LastIndexOf("/") + 1));
+                string physicalPath = HttpContext.Server.MapPath(currentURL.Substring(currentURL.LastIndexOf("/") + 1));
 
                 // TODO: Can we enhance performance here by checking to see if it is a friedly url page
                 // name instead of doing an IO check for exists?
                 // checks to see if the file does not exsists.
                 if (!File.Exists(physicalPath)) // Rewrites the path
                 {
-                    httpContext.RewritePath("~/default.aspx?" + httpContext.Request.ServerVariables["QUERY_STRING"]);
+                    HttpContext.RewritePath("~/default.aspx?" + HttpContext.Request.ServerVariables["QUERY_STRING"]);
                 }
             }
             else
@@ -152,15 +159,15 @@ namespace Rainbow.Framework.Core
                 pname = pname.Substring(0, (pname.Length - 5));
                 if (Regex.IsMatch(pname, @"^\d+$"))
                 {
-                    httpContext.RewritePath("~/default.aspx?pageid=" + pname +
-                                        httpContext.Request.ServerVariables["QUERY_STRING"]);
+                    HttpContext.RewritePath("~/default.aspx?pageid=" + pname +
+                                        HttpContext.Request.ServerVariables["QUERY_STRING"]);
                 }
             }
 
             // 1st Check: is it a dangerously malformed request?
             //Important patch http://support.microsoft.com/?kbid=887459
-            if (httpContext.Request.Path.IndexOf('\\') >= 0 ||
-                Path.GetFullPath(httpContext.Request.PhysicalPath) != httpContext.Request.PhysicalPath)
+            if (HttpContext.Request.Path.IndexOf('\\') >= 0 ||
+                Path.GetFullPath(HttpContext.Request.PhysicalPath) != HttpContext.Request.PhysicalPath)
             {
                 throw new RainbowRedirect(LogLevel.Warn, HttpStatusCode.NotFound, "Malformed request", null);
             }
@@ -250,8 +257,8 @@ namespace Rainbow.Framework.Core
             if (testsCounter <= testsAllowed) // success
             {
                 // Portal Settings has passed the test so add it to Context
-                httpContext.Items.Add("PortalSettings", portalSettings);
-                httpContext.Items.Add("PortalID", portalSettings.PortalID); // jes1111
+                HttpContext.Items.Add("PortalSettings", portalSettings);
+                HttpContext.Items.Add("PortalID", portalSettings.PortalID); // jes1111
             }
             else // need to redirect
             {
@@ -281,14 +288,14 @@ namespace Rainbow.Framework.Core
             //ExtendCookie(settings); 
             //if (saveCookie) // Jes1111 - why is this always set to true? is it needed?
             //{
-            httpContext.Response.Cookies["PortalAlias"].Path = "/";
-            httpContext.Response.Cookies["PortalAlias"].Value = portalSettings.PortalAlias;
+            HttpContext.Response.Cookies["PortalAlias"].Path = "/";
+            HttpContext.Response.Cookies["PortalAlias"].Value = portalSettings.PortalAlias;
             //}
 
             //Try to get alias from cookie to determine if alias has been changed
             bool refreshSite = false;
-            if (httpContext.Request.Cookies["PortalAlias"] != null &&
-                httpContext.Request.Cookies["PortalAlias"].Value.ToLower() != UniqueID)
+            if (HttpContext.Request.Cookies["PortalAlias"] != null &&
+                HttpContext.Request.Cookies["PortalAlias"].Value.ToLower() != UniqueID)
             {
                 refreshSite = true; //Portal has changed since last page request
             }
@@ -297,14 +304,14 @@ namespace Rainbow.Framework.Core
 
             // 5/7/2006 Ed Daniel
             // Added hack for Http 302 by extending condition below to check for more than 3 cookies
-            if (refreshSite && httpContext.Request.Cookies.Keys.Count > 3)
+            if (refreshSite && HttpContext.Request.Cookies.Keys.Count > 3)
             {
                 // Signout and force the browser to refresh only once to avoid any dead-lock
-                if (httpContext.Request.Cookies["refreshed"] == null
-                    || (httpContext.Request.Cookies["refreshed"] != null
-                        && httpContext.Response.Cookies["refreshed"].Value == "false"))
+                if (HttpContext.Request.Cookies["refreshed"] == null
+                    || (HttpContext.Request.Cookies["refreshed"] != null
+                        && HttpContext.Response.Cookies["refreshed"].Value == "false"))
                 {
-                    string rawUrl = httpContext.Request.RawUrl;
+                    string rawUrl = HttpContext.Request.RawUrl;
 
                     // jes1111 - not needed now
                     //					//by Manu avoid endless loop when portal does not exists
@@ -316,9 +323,9 @@ namespace Rainbow.Framework.Core
                     //						rawUrl += "&init";
                     //					else rawUrl += "?init";
 
-                    httpContext.Response.Cookies["refreshed"].Value = "true";
-                    httpContext.Response.Cookies["refreshed"].Path = "/";
-                    httpContext.Response.Cookies["refreshed"].Expires = DateTime.Now.AddMinutes(1);
+                    HttpContext.Response.Cookies["refreshed"].Value = "true";
+                    HttpContext.Response.Cookies["refreshed"].Path = "/";
+                    HttpContext.Response.Cookies["refreshed"].Expires = DateTime.Now.AddMinutes(1);
 
                     // sign-out, if refreshed param on the command line we will not call it again
                     PortalSecurity.SignOut(rawUrl, false);
@@ -326,11 +333,11 @@ namespace Rainbow.Framework.Core
             }
 
             // invalidate cookie, so the page can be refreshed when needed
-            if (httpContext.Request.Cookies["refreshed"] != null && httpContext.Request.Cookies.Keys.Count > 3)
+            if (HttpContext.Request.Cookies["refreshed"] != null && HttpContext.Request.Cookies.Keys.Count > 3)
             {
-                httpContext.Response.Cookies["refreshed"].Path = "/";
-                httpContext.Response.Cookies["refreshed"].Value = "false";
-                httpContext.Response.Cookies["refreshed"].Expires = DateTime.Now.AddMinutes(1);
+                HttpContext.Response.Cookies["refreshed"].Path = "/";
+                HttpContext.Response.Cookies["refreshed"].Value = "false";
+                HttpContext.Response.Cookies["refreshed"].Expires = DateTime.Now.AddMinutes(1);
             }
         }
 
@@ -392,7 +399,7 @@ namespace Rainbow.Framework.Core
         {
             if (Config.LockAllPortals)
             {
-                string rawUrl = httpContext.Request.RawUrl.ToLower(CultureInfo.InvariantCulture);
+                string rawUrl = HttpContext.Request.RawUrl.ToLower(CultureInfo.InvariantCulture);
                 string lockRedirect = Config.LockRedirect;
                 if (!rawUrl.EndsWith(lockRedirect))
                 {
@@ -412,7 +419,7 @@ namespace Rainbow.Framework.Core
                         }
                     }
                     // check if requestor's IP address is in allowed list
-                    if (!ipList.CheckNumber(httpContext.Request.UserHostAddress))
+                    if (!ipList.CheckNumber(HttpContext.Request.UserHostAddress))
                     {
                         throw new PortalsLockedException();
                     }
@@ -423,14 +430,15 @@ namespace Rainbow.Framework.Core
         ///<summary>
         /// 3rd Check: is database/code version correct?
         ///</summary>
-        public void CheckDatabaseVersion()
+        public bool CheckDatabaseVersion(VersionController versionController, 
+            string databaseUpdateRedirectRelativePath)
         {
-            int versionDelta = DatabaseUpdater.DatabaseVersion.CompareTo(DatabaseUpdater.CodeVersion);
+            int versionDelta = versionController.DatabaseVersion.CompareTo(versionController.CodeVersion);
             // if DB and code versions do not match
             if (versionDelta != 0)
             {
-                Uri requestUri = httpContext.Request.Url;
-                string databaseUpdateRedirect = Config.DatabaseUpdateRedirect;
+                Uri requestUri = HttpContext.Request.Url;
+                string databaseUpdateRedirect = databaseUpdateRedirectRelativePath;
                 if (databaseUpdateRedirect.StartsWith("~/"))
                 {
                     databaseUpdateRedirect = databaseUpdateRedirect.TrimStart(new char[] { '~' });
@@ -442,15 +450,14 @@ namespace Rainbow.Framework.Core
                         databaseUpdateRedirect.ToLower(CultureInfo.InvariantCulture)))
                 {
                     // ...and this is not DB Update page
-                    string errorMessage = "Database version: " + DatabaseUpdater.DatabaseVersion + " Code version: " +
-                                          DatabaseUpdater.CodeVersion;
+                    string errorMessage = string.Format("Database version: {0} Code version: {1}", 
+                        versionController.DatabaseVersion,  versionController.CodeVersion);
                     if (versionDelta < 0) // DB Version is behind Code Version
                     {
+                        ErrorHandler.Publish(LogLevel.Warn, errorMessage);
                         // Jonathan : WHy wouldnt we redirect to update page?
                         // TODO : Check with people why this was like this....
-                        httpContext.Response.Redirect(Framework.Settings.Path.ApplicationRoot + databaseUpdateRedirect, true);
-                        // so update?
-                        ErrorHandler.Publish(LogLevel.Warn, errorMessage);
+                        HttpContext.Response.Redirect(Framework.Settings.Path.ApplicationRoot + databaseUpdateRedirect, true);
                         // throw new DatabaseVersionException(errorMessage);
                     }
                     else // DB version is ahead of Code Version
@@ -464,9 +471,10 @@ namespace Rainbow.Framework.Core
                 }
                 else // this is already DB Update page... 
                 {
-                    return; // so skip creation of PortalSettings
+                    return false; // so skip creation of PortalSettings
                 }
             }
+            return true;
         }
 
         /// <summary>
