@@ -1,4 +1,4 @@
-<%@ register assembly="Rainbow.Framework" namespace="Rainbow.Framework.Web.UI.WebControls"
+<%@ register assembly="Rainbow.Framework.Web" namespace="Rainbow.Framework.Web.UI.WebControls"
     tagprefix="rbfwebui" %>
 <%@ control autoeventwireup="false" codefile="Portals.ascx.cs" inherits="Rainbow.Content.Web.Modules.Portals"
     language="c#" %>

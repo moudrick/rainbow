@@ -55,33 +55,17 @@
     <Compile Include="RainbowContextTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Engine\Rainbow.Framework\Rainbow.Framework.csproj">
+      <Project>{14CD80D2-D20D-437F-9D8E-0B37CE3A2609}</Project>
+      <Name>Rainbow.Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Projects\Rainbow.Framework.Core\Rainbow.Framework.Core.csproj">
       <Project>{552CCD6F-0A37-4366-9E3E-22B2A0221584}</Project>
       <Name>Rainbow.Framework.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowMembershipProvider\Rainbow.Framework.Providers.RainbowMembershipProvider.csproj">
-      <Project>{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowMembershipProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowRoleProvider\Rainbow.Framework.Providers.RainbowRoleProvider.csproj">
-      <Project>{599A82DE-6BBE-47D2-BB28-190ABD3CD702}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowRoleProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowSiteMapProvider\Rainbow.Framework.Providers.RainbowSiteMapProvider.csproj">
-      <Project>{C667C927-2E8B-44C6-BAC8-85EC9447C2C4}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowSiteMapProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowSqlMembershipProvider\Rainbow.Framework.Providers.RainbowSqlMembershipProvider.csproj">
-      <Project>{2F8EA798-5AD7-44BA-A062-8B5721D9CFD1}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowSqlMembershipProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowSqlRoleProvider\Rainbow.Framework.Providers.RainbowSqlRoleProvider.csproj">
-      <Project>{2C0213D4-00E2-4AD6-B82A-0D42ADAB3FAA}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowSqlRoleProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowSqlSiteMapProvider\Rainbow.Framework.Providers.RainbowSqlSiteMapProvider.csproj">
-      <Project>{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowSqlSiteMapProvider</Name>
+    <ProjectReference Include="..\..\Providers\Rainbow.Framework.Providers.MsSql\Rainbow.Framework.Providers.MsSql.csproj">
+      <Project>{271F57E4-02A3-4143-8C97-0552F52730D7}</Project>
+      <Name>Rainbow.Framework.Providers.MsSql</Name>
     </ProjectReference>
     <ProjectReference Include="..\HttpSimulator\HttpSimulator.csproj">
       <Project>{BE2546BF-F026-4F21-B1B5-9995852D62B0}</Project>

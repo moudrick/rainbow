@@ -868,7 +868,7 @@ Then break script execution (CTRL-C)
 
   <target name="tests.prepare">
     <property if="${not property::exists('sql.db.name')}" 
-      name="sql.db.name" value="Rainbow" dynamic="true" />
+      name="sql.db.name" value="${wc.default.branch}" dynamic="true" />
     <call target="sql.tests.db.recreate" />
     <call target="tests.updateConfig" />
   </target>

@@ -1,5 +1,5 @@
 <%@ Control %>
-<%@ Register TagPrefix="zen" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework" %>
+<%@ Register TagPrefix="zen" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework.Web" %>
 <zen:ZenLayout 
 	ID="ZenFooter" 
 	CssID="ZenFooter"
@@ -11,4 +11,3 @@
 		</div>
 	</FooterTemplate>
 </zen:ZenLayout>
-

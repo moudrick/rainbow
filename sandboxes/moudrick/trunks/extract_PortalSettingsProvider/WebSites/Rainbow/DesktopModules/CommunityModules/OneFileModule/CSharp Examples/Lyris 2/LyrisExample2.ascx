@@ -1,6 +1,6 @@
 <%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
 <%@ Control Language="c#" inherits="Rainbow.Content.Web.Modules.OneFileModule" %>
-<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework" %>
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework.Web" %>
 <%@ Import Namespace="System.Web.Mail" %>
 <%@ Import Namespace="Rainbow.Framework.Web.UI" %>
 <%@ Import Namespace="Rainbow.Framework.Web.UI.WebControls" %>

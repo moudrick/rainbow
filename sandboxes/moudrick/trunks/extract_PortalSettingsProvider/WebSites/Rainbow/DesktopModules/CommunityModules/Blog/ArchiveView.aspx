@@ -1,7 +1,7 @@
 <%@ register src="~/Design/DesktopLayouts/DesktopFooter.ascx" tagname="Footer" tagprefix="foot" %>
 <%@ register src="~/Design/DesktopLayouts/DesktopPortalBanner.ascx" tagname="Banner"
     tagprefix="portal" %>
-<%@ register assembly="Rainbow.Framework" namespace="Rainbow.Framework.Web.UI.WebControls"
+<%@ register assembly="Rainbow.Framework.Web" namespace="Rainbow.Framework.Web.UI.WebControls"
     tagprefix="rbfwebui" %>
 
 <%@ page autoeventwireup="false" inherits="Rainbow.Content.Web.Modules.ArchiveView" language="c#"

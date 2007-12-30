@@ -7,8 +7,8 @@
     <ProjectGuid>{D3A33CF8-2AEB-4E6E-AC2E-01C676F33616}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rainbow.Framework</RootNamespace>
-    <AssemblyName>Rainbow.Framework</AssemblyName>
+    <RootNamespace>Rainbow.Framework.Web</RootNamespace>
+    <AssemblyName>Rainbow.Framework.Web</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Rainbow.Framework.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Rainbow.Framework.Web.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Rainbow.Framework.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Rainbow.Framework.Web.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ActiveUp.WebControls.HtmlTextBox, Version=2.1.1188.22068, Culture=neutral, PublicKeyToken=debdbfc6bad3ccfc">
@@ -162,17 +162,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Engine\Rainbow.Framework\Rainbow.Framework.csproj">
+      <Project>{14CD80D2-D20D-437F-9D8E-0B37CE3A2609}</Project>
+      <Name>Rainbow.Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rainbow.Framework.Core\Rainbow.Framework.Core.csproj">
       <Project>{552CCD6F-0A37-4366-9E3E-22B2A0221584}</Project>
       <Name>Rainbow.Framework.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowMembershipProvider\Rainbow.Framework.Providers.RainbowMembershipProvider.csproj">
-      <Project>{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowMembershipProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowRoleProvider\Rainbow.Framework.Providers.RainbowRoleProvider.csproj">
-      <Project>{599A82DE-6BBE-47D2-BB28-190ABD3CD702}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowRoleProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

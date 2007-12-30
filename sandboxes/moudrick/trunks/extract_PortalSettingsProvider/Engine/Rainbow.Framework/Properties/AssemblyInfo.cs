@@ -5,19 +5,20 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "Rainbow.Framework.Providers.RainbowSqlMembershipProvider" )]
-[assembly: AssemblyDescription( "" )]
-[assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "--" )]
-[assembly: AssemblyProduct( "Rainbow.Framework.Providers.RainbowSqlMembershipProvider" )]
-[assembly: AssemblyCopyright( "Copyright © -- 2006" )]
-[assembly: AssemblyTrademark( "" )]
-[assembly: AssemblyCulture( "" )]
+[assembly: AssemblyTitle("Rainbow.Framework")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Rainbow.Framework")]
+[assembly: AssemblyCopyright("Copyright © 2007")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible( false )]
+[assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid( "88e458f6-a28e-4458-90de-33f00c0ae4a0" )]
+[assembly: Guid("b4f4eae3-9cb3-458e-976d-15f7c763b265")]
+

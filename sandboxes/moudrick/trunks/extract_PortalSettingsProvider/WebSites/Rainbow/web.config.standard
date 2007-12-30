@@ -167,19 +167,44 @@
     <membership defaultProvider="RainbowSqlMembershipProvider">
       <providers>
         <clear />
-        <add name="RainbowSqlMembershipProvider" type="Rainbow.Framework.Providers.RainbowMembershipProvider.RainbowSqlMembershipProvider, Rainbow.Framework.Providers.RainbowSqlMembershipProvider" connectionStringName="RainbowProviders.ConnectionString" enablePasswordRetrieval="true" enablePasswordReset="true" requiresQuestionAndAnswer="false" applicationName="Rainbow" requiresUniqueEmail="true" passwordFormat="Clear" maxInvalidPasswordAttempts="5" minRequiredPasswordLength="5" minRequiredNonalphanumericCharacters="0" passwordAttemptWindow="10" passwordStrengthRegularExpression="" />
+        <add name="RainbowSqlMembershipProvider" 
+          type="Rainbow.Framework.Providers.MsSql.RainbowSqlMembershipProvider, Rainbow.Framework.Providers.MsSql" 
+          connectionStringName="RainbowProviders.ConnectionString" 
+          enablePasswordRetrieval="true" 
+          enablePasswordReset="true" 
+          requiresQuestionAndAnswer="false" 
+          applicationName="Rainbow" 
+          requiresUniqueEmail="true" 
+          passwordFormat="Clear" 
+          maxInvalidPasswordAttempts="5" 
+          minRequiredPasswordLength="5" 
+          minRequiredNonalphanumericCharacters="0" 
+          passwordAttemptWindow="10" 
+          passwordStrengthRegularExpression="" />
       </providers>
     </membership>
-    <roleManager enabled="true" defaultProvider="RainbowSqlRoleProvider" cacheRolesInCookie="true" cookieName=".RainbowRolesCookie" cookieTimeout="30" cookieSlidingExpiration="true" cookieProtection="All">
+    <roleManager enabled="true" 
+        defaultProvider="RainbowSqlRoleProvider" 
+        cacheRolesInCookie="true" 
+        cookieName=".RainbowRolesCookie" 
+        cookieTimeout="30" 
+        cookieSlidingExpiration="true" 
+        cookieProtection="All">
       <providers>
         <clear />
-        <add name="RainbowSqlRoleProvider" type="Rainbow.Framework.Providers.RainbowRoleProvider.RainbowSqlRoleProvider, Rainbow.Framework.Providers.RainbowSqlRoleProvider" connectionStringName="RainbowProviders.ConnectionString" applicationName="Rainbow" />
+        <add name="RainbowSqlRoleProvider" 
+          type="Rainbow.Framework.Providers.MsSql.RainbowSqlRoleProvider, Rainbow.Framework.Providers.MsSql" 
+          connectionStringName="RainbowProviders.ConnectionString" 
+          applicationName="Rainbow" />
       </providers>
     </roleManager>
     <profile enabled="true" defaultProvider="RainbowSqlProfileProvider">
       <providers>
         <clear />
-        <add name="RainbowSqlProfileProvider" connectionStringName="Providers.ConnectionString" applicationName="Rainbow" type="System.Web.Profile.SqlProfileProvider" />
+        <add name="RainbowSqlProfileProvider" 
+          connectionStringName="Providers.ConnectionString" 
+          applicationName="Rainbow" 
+          type="System.Web.Profile.SqlProfileProvider" />
         <!--<add name="TableProfileProvider" type="Microsoft.Samples.SqlTableProfileProvider"  connectionStringName="TestDatabase" table="ProfileTable_1" applicationName="DatabaseProfileProviderTest" />-->
       </providers>
       <properties>
@@ -199,7 +224,11 @@
     </profile>
     <siteMap enabled="true" defaultProvider="RainbowSqlSiteMapProvider">
       <providers>
-        <add name="RainbowSqlSiteMapProvider" type="Rainbow.Framework.Providers.RainbowSiteMapProvider.RainbowSqlSiteMapProvider" securityTrimmingEnabled="true" connectionStringName="ConnectionString" description="Rainbow SQL Server site map provider"/>
+        <add name="RainbowSqlSiteMapProvider" 
+          type="Rainbow.Framework.Providers.MsSql.RainbowSqlSiteMapProvider, Rainbow.Framework.Providers.MsSql" 
+          securityTrimmingEnabled="true" 
+          connectionStringName="ConnectionString" 
+          description="Rainbow SQL Server site map provider"/>
       </providers>
     </siteMap>
     <caching>

@@ -1,4 +1,4 @@
-<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework" %>
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework.Web" %>
 <%@ Control Language="c#" inherits="Rainbow.Content.Web.Modules.PageKeyPhraseModule" Src="PageKeyPhrase.ascx.cs"
     AutoEventWireup="false" %>
 <div class="rb_PageKeyPhrase">

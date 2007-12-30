@@ -51,7 +51,7 @@
       <providers>
         <clear/>
         <add name="RainbowSqlMembershipProvider" 
-           type="Rainbow.Framework.Providers.RainbowMembershipProvider.RainbowSqlMembershipProvider, Rainbow.Framework.Providers.RainbowSqlMembershipProvider" 
+           type="Rainbow.Framework.Providers.MsSql.RainbowSqlMembershipProvider, Rainbow.Framework.Providers.MsSql" 
           connectionStringName="ConnectionString" 
           applicationName="Rainbow"
           enablePasswordRetrieval="false" 
@@ -70,7 +70,10 @@
     <roleManager enabled="true" defaultProvider="RainbowSqlRoleProvider" cacheRolesInCookie="true" cookieName=".RainbowRolesCookie" cookieTimeout="30" cookieSlidingExpiration="true" cookieProtection="All">
       <providers>
         <clear/>
-        <add name="RainbowSqlRoleProvider" type="Rainbow.Framework.Providers.RainbowRoleProvider.RainbowSqlRoleProvider, Rainbow.Framework.Providers.RainbowSqlRoleProvider" connectionStringName="ConnectionString" applicationName="Rainbow"/>
+        <add name="RainbowSqlRoleProvider" 
+          type="Rainbow.Framework.Providers.MsSql.RainbowSqlRoleProvider, Rainbow.Framework.Providers.MsSql" 
+          connectionStringName="ConnectionString" 
+          applicationName="Rainbow" />
       </providers>
     </roleManager>
   </system.web>

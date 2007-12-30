@@ -1,6 +1,6 @@
 <%@ control autoeventwireup="false" inherits="Rainbow.Content.Web.Modules.Announcements"
     language="c#" codefile="Announcements.ascx.cs" %>
-<%@ register assembly="Rainbow.Framework" Namespace="Rainbow.Framework.Web.UI.WebControls" tagprefix="cc2" %>
+<%@ register assembly="Rainbow.Framework.Web" Namespace="Rainbow.Framework.Web.UI.WebControls" tagprefix="cc2" %>
 <asp:datalist id="myDataList" runat="server" cellpadding="4">
     <itemtemplate>
         <rbfwebui:hyperlink id="editLink" runat="server" imageurl='<%# CurrentTheme.GetImage("Buttons_Edit", "Edit.gif").ImageUrl %>'

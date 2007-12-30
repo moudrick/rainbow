@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4F237CAF-5CE8-451D-9FAC-9CEBD5561643}</ProjectGuid>
+    <ProjectGuid>{14CD80D2-D20D-437F-9D8E-0B37CE3A2609}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rainbow.Framework.Providers</RootNamespace>
-    <AssemblyName>Rainbow.Framework.Providers</AssemblyName>
+    <RootNamespace>Rainbow.Framework</RootNamespace>
+    <AssemblyName>Rainbow.Framework</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,7 +28,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Accessibility" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -37,26 +36,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="BusinessObjects\RainbowRole.cs" />
+    <Compile Include="BusinessObjects\RainbowUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowMembershipProvider\Rainbow.Framework.Providers.RainbowMembershipProvider.csproj">
-      <Project>{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowMembershipProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowRoleProvider\Rainbow.Framework.Providers.RainbowRoleProvider.csproj">
-      <Project>{599A82DE-6BBE-47D2-BB28-190ABD3CD702}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowRoleProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projects\Rainbow.Framework.Providers.RainbowSiteMapProvider\Rainbow.Framework.Providers.RainbowSiteMapProvider.csproj">
-      <Project>{C667C927-2E8B-44C6-BAC8-85EC9447C2C4}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowSiteMapProvider</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="RainbowMembershipProvider\" />
-    <Folder Include="RainbowRoleProvider\" />
-    <Folder Include="RainbowSiteMapProvider\" />
+    <Compile Include="Providers\Exceptions\RainbowMembershipProviderException.cs" />
+    <Compile Include="Providers\Exceptions\RainbowRoleProviderException.cs" />
+    <Compile Include="Providers\RainbowMembershipProvider.cs" />
+    <Compile Include="Providers\RainbowRoleProvider.cs" />
+    <Compile Include="Providers\RainbowSiteMapProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
