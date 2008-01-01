@@ -106,14 +106,12 @@ namespace Rainbow.Tests.Data.MsSql
             int totalRecords;
             Membership.GetAllUsers();
             Membership.GetAllUsers(0, 1, out totalRecords);
-            //"Error in GetAllUsersTest"
         }
 
         [Test]
         public void GetNumberOfUsersOnline()
         {
             Membership.GetNumberOfUsersOnline();
-            //"Error in GetNumberOfUsersOnlineTest"
         }
 
         [Test]
@@ -283,7 +281,7 @@ namespace Rainbow.Tests.Data.MsSql
         }
 
         [Test]
-        public void CreateUser1()
+        public void CreateUser_ExistingFail()
         {
             MembershipCreateStatus status;
             MembershipUser user =
@@ -294,11 +292,11 @@ namespace Rainbow.Tests.Data.MsSql
         }
 
         [Test]
-        public void CreateUser2()
+        public void CreateUser_NewSuccess()
         {
             MembershipCreateStatus status;
-            MembershipUser user =
-                Membership.CreateUser("Tito", "tito", "tito@tito.com", "question", "answer", true, out status);
+            MembershipUser user = Membership.CreateUser("Tito", "tito", "tito@tito.com", 
+                "question", "answer", true, out status);
 
             Assert.IsNotNull(user);
             Assert.AreEqual(status, MembershipCreateStatus.Success);
@@ -390,14 +388,14 @@ namespace Rainbow.Tests.Data.MsSql
         }
 
         [Test]
-        public void DeleteUser1()
+        public void DeleteUser_InvalidFail()
         {
             bool success = Membership.DeleteUser("invalidUser");
             Assert.IsFalse(success, "Error in DeleteUserTest1");
         }
 
         [Test]
-        public void DeleteUsert2()
+        public void DeleteUsert_ValidSuccess()
         {
             bool success = Membership.DeleteUser("Tito");
             Assert.IsTrue(success, "Error in DeleteUserTest2");

@@ -5,7 +5,7 @@ using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Subtext.TestLibrary;
 
-namespace Rainbow.Tests.Data.MsSql.PortalSettingsTests
+namespace Rainbow.Tests.Data.MsSql.PortalTests
 {
     [TestFixture]
     public class PortalCrudTests
@@ -23,6 +23,7 @@ namespace Rainbow.Tests.Data.MsSql.PortalSettingsTests
                 HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance
                     .InstantiateNewPortalSettings(0, "Rainbow");
 
+                //System.Web.Profile.SqlProfileProvider
                 int newProtalId = PortalProvider.Instance.CreatePortal(0, "newPortalAlias", "newPortalName", "newPortalPath");
                 PortalSettings newPortal = PortalProvider.Instance.InstantiateNewPortalSettings(newProtalId);
                 Assert.IsNotNull(newPortal);

@@ -1,9 +1,9 @@
 using NUnit.Framework;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Subtext.TestLibrary;
 
 namespace Rainbow.Tests.Data.MsSql
 {
-
     //TODO: move it to Core Tests
     [TestFixture]
     public class RainbowContextTests
@@ -11,7 +11,11 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void Null()
         {
-            Assert.IsNull(PortalProvider.Instance.CurrentPortal);
+            using (HttpSimulator httpSimulator = new HttpSimulator())
+            {
+                httpSimulator.SimulateRequest();
+                Assert.IsNull(PortalProvider.Instance.CurrentPortal);
+            }
         }
     }
 }

@@ -82,6 +82,8 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         {
             get
             {
+                //TODO: [moudrick] use RainbowContext.CurrentHttpContext here 
+                // to isolate from standard HttpContext.Current
                 return (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             }
         }

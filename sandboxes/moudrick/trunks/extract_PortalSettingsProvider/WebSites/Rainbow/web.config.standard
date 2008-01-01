@@ -63,9 +63,6 @@
     <add name="ConnectionString" connectionString="server=localhost;Trusted_Connection=true;database=Rainbow2.0-Trunk;Application Name=Rainbow" providerName="System.Data.SqlClient" />
         -->
     <add name="ConnectionString" connectionString="{!!! CHANGE ME TO A VALID CONNECTION STRING !!!}" />
-    <add name="Providers.ConnectionString" connectionString="{!!! CHANGE ME TO A VALID CONNECTION STRING !!!}" />
-    <add name="RainbowProviders.ConnectionString" connectionString="{!!! CHANGE ME TO A VALID CONNECTION STRING !!!}" />
-    <add name="Main.ConnectionString" connectionString="{!!! CHANGE ME TO A VALID CONNECTION STRING !!!}" />
   </connectionStrings>
 
   <!-- Application specific settings -->
@@ -169,7 +166,7 @@
         <clear />
         <add name="RainbowSqlMembershipProvider" 
           type="Rainbow.Framework.Providers.MsSql.RainbowSqlMembershipProvider, Rainbow.Framework.Providers.MsSql" 
-          connectionStringName="RainbowProviders.ConnectionString" 
+          connectionStringName="ConnectionString" 
           enablePasswordRetrieval="true" 
           enablePasswordReset="true" 
           requiresQuestionAndAnswer="false" 
@@ -194,7 +191,7 @@
         <clear />
         <add name="RainbowSqlRoleProvider" 
           type="Rainbow.Framework.Providers.MsSql.RainbowSqlRoleProvider, Rainbow.Framework.Providers.MsSql" 
-          connectionStringName="RainbowProviders.ConnectionString" 
+          connectionStringName="ConnectionString" 
           applicationName="Rainbow" />
       </providers>
     </roleManager>
@@ -202,7 +199,7 @@
       <providers>
         <clear />
         <add name="RainbowSqlProfileProvider" 
-          connectionStringName="Providers.ConnectionString" 
+          connectionStringName="ConnectionString" 
           applicationName="Rainbow" 
           type="System.Web.Profile.SqlProfileProvider" />
         <!--<add name="TableProfileProvider" type="Microsoft.Samples.SqlTableProfileProvider"  connectionStringName="TestDatabase" table="ProfileTable_1" applicationName="DatabaseProfileProviderTest" />-->
