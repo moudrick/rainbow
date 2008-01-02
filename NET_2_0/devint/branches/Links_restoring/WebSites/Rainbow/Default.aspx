@@ -1,1 +1,0 @@
-<%@ Page Src="Default.aspx.cs" SmartNavigation="False" Language="c#" AutoEventWireup="false" Inherits="Rainbow.Default" Culture="Auto:en-US" UICulture="Auto:en-US" %>
