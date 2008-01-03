@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auxiliaries.Database.MsSql", "Auxiliaries.Database.MsSql\Auxiliaries.Database.MsSql.csproj", "{0C65743C-D792-479E-B266-A7894BD7EFCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auxiliaries.NAntTasks", "Auxiliaries.NAntTasks\Auxiliaries.NAntTasks.csproj", "{D111F3BE-91E6-484C-A851-A75B1C344612}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C65743C-D792-479E-B266-A7894BD7EFCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C65743C-D792-479E-B266-A7894BD7EFCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C65743C-D792-479E-B266-A7894BD7EFCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C65743C-D792-479E-B266-A7894BD7EFCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D111F3BE-91E6-484C-A851-A75B1C344612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D111F3BE-91E6-484C-A851-A75B1C344612}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D111F3BE-91E6-484C-A851-A75B1C344612}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D111F3BE-91E6-484C-A851-A75B1C344612}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

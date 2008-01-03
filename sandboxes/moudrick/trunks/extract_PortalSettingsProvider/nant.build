@@ -317,7 +317,7 @@
     <echo-property property="web.config" />
     <echo-property property="sql.web.connectionString" />
     <foreach item="String" property="addName" delim=";" 
-      in="ConnectionString;Providers.ConnectionString;RainbowProviders.ConnectionString;Main.ConnectionString">
+      in="ConnectionString">
       <property name="par.xpath" 
         value="/x:configuration/x:connectionStrings/x:add[@name = '${addName}']/@connectionString" />
       <call target="helper.xmlpoke.connectionString.ensure" />
@@ -617,14 +617,11 @@ Then break script execution (CTRL-C)
   <target name="sql.backup">
     <call target="sql.setBackupProperties" />
     <mkdir dir="${sql.dir.backup}" />
-    <property name="deviceName" value="${sql.db.name}_Backup" />
-
-    <property name="sql.query" value="USE [master]; DECLARE @device VARCHAR(100);SET @device = '${deviceName}';EXEC sp_dropdevice @device;" />
-    <call target="sql.run.query.trusted" failonerror="false" />
-
     <delete file="${sql.backupFileName}" />
-    <property name="sql.query" value="USE [master]; DECLARE @device VARCHAR(100);SET @device = '${deviceName}';EXEC sp_addumpdevice 'disk', @device, '${sql.backupFileName}';BACKUP DATABASE [${sql.db.name}] TO [${deviceName}] WITH INIT, SKIP; EXEC sp_dropdevice @device;" />
-    <call target="sql.run.query.trusted" />
+
+    <loadtasks assembly="Auxiliaries\Auxiliaries.NAntTasks\bin\Auxiliaries.NAntTasks.dll" />
+    <BackupMsSqlDatabase instance="${sql.instance}" isTrustedConnection="true" 
+      backupFileName="${sql.backupFileName}" databaseName="${sql.db.name}" />
 
     <zip zipfile="${sql.backupFileName}.zip">
       <fileset basedir="${sql.dir.backup}">
@@ -915,11 +912,12 @@ Then break script execution (CTRL-C)
   </target>
 
   <target name="tests.run.prepare">
+    <call target="tests.run.prepare.create" />
     <call target="tests.run.prepare.backup" />
     <call target="tests.run.prepare.restore" />
   </target>
 
-  <target name="tests.run.prepare.backup">
+  <target name="tests.run.prepare.create">
     <call target="wc.setDefaults" />
     <call target="wc.setProperties" />
     <call target="app.export.sql2k5-express.prepare" />
@@ -942,6 +940,12 @@ Then break script execution (CTRL-C)
         </categories>
       </test>
     </nunit2>
+  </target>
+
+  <target name="tests.run.prepare.backup">
+    <call target="wc.setDefaults" />
+    <call target="wc.setProperties" />
+    <call target="app.export.sql2k5-express.prepare" />
 
     <call target="sql.backup" />
   </target>
