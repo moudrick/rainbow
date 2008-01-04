@@ -553,10 +553,9 @@ End Sub
   </target>
 
   <target name="build.auxiliaries">
-    <call target="build.prepareBranchSolution" />
     <exec program="msbuild.exe" basedir="${this.netFrameworkPath}" workingdir="Auxiliaries">
       <arg value="Auxiliaries.sln" />
-      <arg value="/property:Configuration=${build.configuration};Platform=Mixed Platforms" />
+      <arg value="/property:Configuration=${build.configuration};Platform=Any CPU" />
       <arg value="/target:${build.targets}" />
       <arg value="/verbosity:quiet" />
     </exec>
