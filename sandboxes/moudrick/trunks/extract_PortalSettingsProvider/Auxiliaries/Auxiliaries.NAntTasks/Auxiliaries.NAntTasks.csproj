@@ -37,7 +37,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackupMsSqlDatabase.cs" />
+    <Compile Include="MsSqlManipulation\BackupMsSqlDatabase.cs" />
+    <Compile Include="MsSqlManipulation\MsSqlManipulationTask.cs" />
+    <Compile Include="MsSqlManipulation\RestoreMsSqlDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Auxiliaries.Database.MsSql\Auxiliaries.Database.MsSql.csproj">

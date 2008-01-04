@@ -5,13 +5,11 @@ using NAnt.Core.Attributes;
 
 namespace Auxiliaries.NAntTasks
 {
-    [TaskName("BackupMsSqlDatabase")]
-    public class BackupMsSqlDatabase : Task
+    public abstract class MsSqlManipulationTask : Task
     {
         string databaseName;
         string backupFileName;
         string instance;
-
         bool isTrustedConnection = false;
         string userName = string.Empty;
         string userPassword = string.Empty;
@@ -66,15 +64,16 @@ namespace Auxiliaries.NAntTasks
             set { outputFileName = value; }
         }
 
+        protected abstract string ExecuteTaskInternal(DatabaseManipulator databaseManipulator);
 
         protected override void ExecuteTask()
         {
-            DatabaseManipulator manipulator = new DatabaseManipulator(instance, 
-                isTrustedConnection, userName, userPassword);
-            string outputContent = manipulator.BackupDatabase(databaseName, backupFileName);
-            if (!string.IsNullOrEmpty(outputFileName))
+            string outputContent = ExecuteTaskInternal(new DatabaseManipulator(Instance, 
+                                                                               IsTrustedConnection, UserName, UserPassword));
+            if (!string.IsNullOrEmpty(OutputFileName))
             {
-                File.WriteAllText(outputFileName, outputContent);
+                Log(Level.Info, outputContent);
+                File.WriteAllText(OutputFileName, outputContent);
             }
         }
     }

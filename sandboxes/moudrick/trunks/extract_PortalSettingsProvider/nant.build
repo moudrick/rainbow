@@ -552,6 +552,17 @@ End Sub
     </exec>
   </target>
 
+  <target name="build.auxiliaries">
+    <call target="build.prepareBranchSolution" />
+    <exec program="msbuild.exe" basedir="${this.netFrameworkPath}" workingdir="Auxiliaries">
+      <arg value="Auxiliaries.sln" />
+      <arg value="/property:Configuration=${build.configuration};Platform=Mixed Platforms" />
+      <arg value="/target:${build.targets}" />
+      <arg value="/verbosity:quiet" />
+    </exec>
+  </target>
+
+
   <!-- *********** -->
   <!-- **  sql  ** -->
   <!-- *********** -->
@@ -619,7 +630,6 @@ Then break script execution (CTRL-C)
     <mkdir dir="${sql.dir.backup}" />
     <delete file="${sql.backupFileName}" />
 
-    <loadtasks assembly="Auxiliaries\Auxiliaries.NAntTasks\bin\Auxiliaries.NAntTasks.dll" />
     <BackupMsSqlDatabase instance="${sql.instance}" isTrustedConnection="true" 
       backupFileName="${sql.backupFileName}" databaseName="${sql.db.name}" />
 
@@ -629,31 +639,15 @@ Then break script execution (CTRL-C)
       </fileset>
     </zip>
   </target>
-
+  
   <target name="sql.restore">
     <call target="sql.setBackupProperties" />
     
     <delete file="${sql.backupFileName}" failonerror="false" />
     <unzip zipfile="${sql.backupFileName}.zip" todir="${sql.dir.backup}" />
 
-    <!-- killQuery -->
-    <property name="sql.query"
-      value="USE [master]; DECLARE @sql VARCHAR(8000); SET @sql = ''; SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '${sql.db.name}'; EXEC(@sql)" />
-    <call target="sql.run.query.trusted" />
-
-    <!-- physicalNameQuery -->
-    <!-- 2k: USE [master]; DECLARE @physical_name VARCHAR(8000); SELECT @physical_name=[filename] FROM dbo.sysfiles WHERE [name] = 'master'; PRINT @physical_name -->
-    <!-- 2k5: USE [master]; DECLARE @physical_name VARCHAR(MAX); SELECT @physical_name=physical_name FROM sys.database_files WHERE [name] = 'master'; PRINT @physical_name -->
-    <property name="sql.query"
-      value="USE [master]; DECLARE @physical_name VARCHAR(8000); SELECT @physical_name=[filename] FROM dbo.sysfiles WHERE [name] = 'master'; PRINT @physical_name" />
-    <call target="sql.run.query.trusted" />
-    <property name="sql.instance.dir.data" value="${path::get-directory-name(string::trim(sql.run.query.output))}\" />
-    <echo-property property="sql.instance.dir.data" />
-
-    <!-- restoreQuery -->
-    <property name="sql.query" 
-      value="USE [master]; RESTORE DATABASE [${sql.db.name}] FROM DISK = N'${sql.backupFileName}' WITH  FILE = 1,  MOVE N'${sql.db.name}' TO N'${sql.instance.dir.data}${sql.db.name}.mdf',  MOVE N'${sql.db.name}_log' TO N'${sql.instance.dir.data}${sql.db.name}_log.ldf', NOUNLOAD, REPLACE, STATS = 10" />
-    <call target="sql.run.query.trusted" />
+    <RestoreMsSqlDatabase instance="${sql.instance}" isTrustedConnection="true" 
+      backupFileName="${sql.backupFileName}" databaseName="${sql.db.name}" />
 
     <call target="sql.grantLogin" />
     <call target="sql.grantLogin.aspnet" />
@@ -665,25 +659,10 @@ Then break script execution (CTRL-C)
     <delete file="${sql.backupFileName}" failonerror="false" />
     <unzip zipfile="${sql.backupFileName}.zip" todir="${sql.dir.backup}" />
 
-    <!-- killQuery -->
-    <property name="sql.query"
-      value="USE [master]; DECLARE @sql VARCHAR(8000); SET @sql = ''; SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '${sql.tests.db.name}'; EXEC(@sql)" />
-    <call target="sql.run.query.trusted" />
-
-    <!-- physicalNameQuery -->
-    <!-- 2k: USE [master]; DECLARE @physical_name VARCHAR(8000); SELECT @physical_name=[filename] FROM dbo.sysfiles WHERE [name] = 'master'; PRINT @physical_name -->
-    <!-- 2k5: USE [master]; DECLARE @physical_name VARCHAR(MAX); SELECT @physical_name=physical_name FROM sys.database_files WHERE [name] = 'master'; PRINT @physical_name -->
-    <property name="sql.query"
-      value="USE [master]; DECLARE @physical_name VARCHAR(8000); SELECT @physical_name=[filename] FROM dbo.sysfiles WHERE [name] = 'master'; PRINT @physical_name" />
-    <call target="sql.run.query.trusted" />
-    <property name="sql.instance.dir.data" value="${path::get-directory-name(string::trim(sql.run.query.output))}\" />
-    <echo-property property="sql.instance.dir.data" />
-
-    <!-- restoreQuery -->
-    <property name="sql.query" 
-      value="USE [master]; RESTORE DATABASE [${sql.tests.db.name}] FROM DISK = N'${sql.backupFileName}' WITH  FILE = 1,  MOVE N'${sql.db.name}' TO N'${sql.instance.dir.data}${sql.tests.db.name}.mdf',  MOVE N'${sql.db.name}_log' TO N'${sql.instance.dir.data}${sql.tests.db.name}_log.ldf', NOUNLOAD, REPLACE, STATS = 10" />
-    <call target="sql.run.query.trusted" />
-
+    <RestoreMsSqlDatabase instance="${sql.instance}" isTrustedConnection="true" 
+      backupFileName="${sql.backupFileName}" databaseName="${sql.tests.db.name}" 
+      storedDatabasename="${sql.db.name}" />
+    
     <call target="sql.tests.grantLogin" />
   </target>
 
@@ -1221,4 +1200,7 @@ public class LocalExtentionTask_EchoProperty : Task {
       ]]>
     </code>
   </script>
+
+  <call target="build.auxiliaries" />
+  <loadtasks assembly="Auxiliaries\Auxiliaries.NAntTasks\bin\Auxiliaries.NAntTasks.dll" />
 </project>

@@ -1,5 +1,6 @@
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 
 namespace Auxiliaries.Database.MsSql
 {
@@ -55,7 +56,12 @@ namespace Auxiliaries.Database.MsSql
             string output = string.Empty;
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
+                connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
+                    {
+                        output += e.Message;
+                    };
                 connection.Open();
+
                 string deviceName = databaseName + "_Backup";
                 string dropDeviceSql = string.Format(@"
     USE [master]; 
@@ -80,10 +86,58 @@ namespace Auxiliaries.Database.MsSql
             return output;
         }
 
-        static void ExecuteNonQuery(string dropDeviceCmdText, SqlConnection connection)
+        public string RestoreDatabase(string databaseName, string backupFileName)
         {
-            
-            SqlCommand command = new SqlCommand(dropDeviceCmdText, connection);
+            return RestoreDatabase(databaseName, backupFileName, databaseName);     
+        }
+
+        public string RestoreDatabase(string databaseName, string backupFileName, string oldDatabaseName)
+        {
+            string output = string.Empty;
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
+                    {
+                        output += e.Message;
+                    };
+                connection.Open();
+                
+                string killProcessSql = string.Format(@"
+    USE [master]; 
+    DECLARE @sql VARCHAR(8000); 
+    SET @sql = ''; 
+    SELECT @sql = @sql + 'KILL ' + CAST(spid AS VARCHAR(10)) + ' ' FROM master.dbo.sysprocesses AS sp LEFT JOIN master.dbo.sysdatabases AS sdb ON sp.dbid = sdb.dbid WHERE [Name] = '{0}'; 
+    EXEC(@sql)", 
+        databaseName);
+                ExecuteNonQuery(killProcessSql, connection);
+
+//<!-- 2k: USE [master]; DECLARE @physical_name VARCHAR(8000); SELECT @physical_name=[filename] FROM dbo.sysfiles WHERE [name] = 'master'; PRINT @physical_name -->
+//<!-- 2k5: USE [master]; DECLARE @physical_name VARCHAR(MAX); SELECT @physical_name=physical_name FROM sys.database_files WHERE [name] = 'master'; PRINT @physical_name -->
+                string physicalNameSql = string.Format(@"
+    USE [master]; 
+    DECLARE @physical_name VARCHAR(8000); 
+    SELECT @physical_name=[filename] FROM dbo.sysfiles WHERE [name] = 'master'; PRINT @physical_name");
+                SqlCommand command = new SqlCommand(physicalNameSql, connection);
+                command.CommandType = CommandType.Text;
+                string instanceMasterFileName = command.ExecuteScalar().ToString().Trim();
+                string instanceDataDir = Path.GetDirectoryName(instanceMasterFileName);
+                string restoreSql = string.Format(@"
+    USE [master]; 
+    RESTORE DATABASE [{0}] 
+        FROM DISK = N'{1}' 
+        WITH  FILE = 1,  
+        MOVE N'{2}' TO N'{3}{0}.mdf',  
+        MOVE N'{2}_log' TO N'{3}{0}_log.ldf', 
+        NOUNLOAD, REPLACE, STATS = 10",
+            databaseName, backupFileName, oldDatabaseName, instanceDataDir);
+                ExecuteNonQuery(restoreSql, connection);
+            }
+            return output;
+        }
+
+        static void ExecuteNonQuery(string sqlText, SqlConnection connection)
+        {
+            SqlCommand command = new SqlCommand(sqlText, connection);
             command.CommandType = CommandType.Text;
             command.ExecuteNonQuery();
         }

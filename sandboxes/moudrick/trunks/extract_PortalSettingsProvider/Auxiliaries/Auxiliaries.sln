@@ -5,6 +5,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auxiliaries.Database.MsSql"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auxiliaries.NAntTasks", "Auxiliaries.NAntTasks\Auxiliaries.NAntTasks.csproj", "{D111F3BE-91E6-484C-A851-A75B1C344612}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0A27C613-B36E-43B8-A435-E18E197BE87F}"
+	ProjectSection(SolutionItems) = preProject
+		..\nant.build = ..\nant.build
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
