@@ -966,7 +966,7 @@ Then break script execution (CTRL-C)
   <!-- ******************** -->
   <!-- **  tests.ncover  ** -->
   <!-- ******************** -->
-  <property name="tests.ncover.package.root" value="C:\Program Files\NCover\" />
+  <property name="tests.ncover.package.root" value="${environment::get-variable('ProgramFiles')}\NCover\" />
   <property name="tests.ncover.results" value="${results.dir}NCover\"/>
   <property name="tests.ncover.files.properties" value="${tests.ncover.results}Properties.txt" />
   <property name="tests.ncover.files.build" value="${project::get-buildfile-path()}" />
