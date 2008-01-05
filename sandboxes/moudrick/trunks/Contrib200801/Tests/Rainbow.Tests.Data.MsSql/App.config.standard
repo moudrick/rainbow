@@ -15,6 +15,11 @@
   <appSettings>
     <!-- base directory of the rainbow setup scripts (ans history.xml).  -->
     <add key="RainbowWebApplicationRoot" value="[[your.branch.root]]WebSites\Rainbow\" />
+    <add key="TestDbBackupFileName" value="[[TestDbBackupFileName]]" />
+    <add key="RainbowTestDBInstance" value="[[RainbowTestDBInstance]]" />
+    <add key="RainbowTestDBName" value="[[RainbowTestDBName]]" />
+    <add key="RainbowTestDBUser" value="[[RainbowTestDBUser]]" />
+    <add key="RainbowTestDBUserPwd" value="[[RainbowTestDBUserPwd]]" />
   </appSettings>
 
   <system.web>

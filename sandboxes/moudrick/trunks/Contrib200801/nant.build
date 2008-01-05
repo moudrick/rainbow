@@ -187,6 +187,7 @@
     <xmlpeek file="${web.rainbow.dir}${sql.relativePath}history.xml" property="sql.version"
       xpath="/History/Release[last()]/Version" />
   </target>
+  <property name="sql.tests.db.name" value="tests_${sql.db.name}" dynamic="true" />
 
   <!-- ***************** -->
   <!-- **  downloads  ** -->
@@ -482,7 +483,11 @@ End Sub
     <echo-property property="logFileName" />
     <if test="${file::exists(logFileName)}">
       <touch verbose="true" file="${web.relativeApplicationPath}Web.config" />
-      <sleep milliseconds="500" />
+      <sleep milliseconds="1000" />
+      <touch verbose="true" file="${web.relativeApplicationPath}Web.config" />
+      <sleep milliseconds="1000" />
+      <touch verbose="true" file="${web.relativeApplicationPath}Web.config" />
+      <sleep milliseconds="1000" />
       <delete verbose="true" file="${logFileName}" />
     </if>
   </target>
@@ -617,11 +622,21 @@ Then break script execution (CTRL-C)
     <call target="sql.grantLogin" />
   </target>
 
-  <target name="sql.setBackupProperties">
+
+  <target name="sql.base.setBackupProperties">
     <property name="sql.dir.backup" value="${wc.dir}.Backup\" />
     <property name="sql.instance.encoded" value="${string::replace(sql.instance, '\', '$')}" dynamic="true" />
     <echo-property property="sql.instance" />
+   </target>
+
+  <target name="sql.setBackupProperties">
+    <call target="sql.base.setBackupProperties" />
     <property name="sql.backupFileName" value="${sql.dir.backup}${sql.instance.encoded}.${sql.db.name}.bak" />
+  </target>
+
+  <target name="sql.tests.setBackupProperties">
+    <call target="sql.base.setBackupProperties" />
+    <property name="sql.tests.backupFileName" value="${sql.dir.backup}${sql.instance.encoded}.${sql.tests.db.name}.bak" />
   </target>
 
   <target name="sql.backup">
@@ -638,7 +653,7 @@ Then break script execution (CTRL-C)
       </fileset>
     </zip>
   </target>
-  
+
   <target name="sql.restore">
     <call target="sql.setBackupProperties" />
     
@@ -660,9 +675,24 @@ Then break script execution (CTRL-C)
 
     <RestoreMsSqlDatabase instance="${sql.instance}" isTrustedConnection="true" 
       backupFileName="${sql.backupFileName}" databaseName="${sql.tests.db.name}" 
-      storedDatabasename="${sql.db.name}" />
+      storedDatabaseName="${sql.db.name}" />
     
     <call target="sql.tests.grantLogin" />
+  </target>
+
+  <target name="sql.tests.backup">
+    <call target="sql.tests.setBackupProperties" />
+    <mkdir dir="${sql.dir.backup}" />
+    <delete file="${sql.tests.backupFileName}" />
+
+    <BackupMsSqlDatabase instance="${sql.instance}" isTrustedConnection="true" 
+      backupFileName="${sql.tests.backupFileName}" databaseName="${sql.tests.db.name}" />
+
+    <zip zipfile="${sql.tests.backupFileName}.zip">
+      <fileset basedir="${sql.dir.backup}">
+        <include name="${sql.tests.backupFileName}" />
+      </fileset>
+    </zip>
   </target>
 
   <target name="sql.ensureCreateLogin.rainbow">
@@ -778,7 +808,6 @@ http://localhost/${web.precompiled.dir}/${svn.branch.encoded}/
 
   <target name="sql.tests.db.recreate" depends="tests.setProperties">
     <property name="sql.instance" value="${sql.tests.instance}" />
-    <property name="sql.tests.db.name" value="tests_${sql.db.name}" />
     <property name="sql.tests.connectionString" value="server=${sql.tests.instance};database=${sql.tests.db.name};uid=rainbow;pwd=rainbow_" />
 
     <if test="${sql.recreate.showCaution}">
@@ -816,7 +845,8 @@ Then break script execution (CTRL-C)
   <!-- ************ -->
 
   <target name="tests.default">
-    <call target="tests.prepare" />
+    <!-- call target="tests.prepare" / -->
+    <call target="tests.run.prepare" />
     <call target="tests.run" />
   </target>
 
@@ -835,6 +865,8 @@ Then break script execution (CTRL-C)
   </target>
 
   <target name="tests.updateConfig">
+    <call target="tests.setProperties" />
+    <call target="sql.tests.setBackupProperties" />
     <foreach item="String" property="relativeTestsPath" 
         in="Projects\Rainbow.Tests\;Tests\Rainbow.Tests.Data.MsSql\" delim=";">
       <copy file="${wc.dir}${relativeTestsPath}App.config.standard" 
@@ -842,17 +874,19 @@ Then break script execution (CTRL-C)
         <filterchain>
           <replacestring from="[[your.branch.root]]" to="${wc.dir}" />
           <replacestring from="[[RainbowTestDBConnectionString]]" to="${sql.tests.connectionString}" />
-
+          <replacestring from="[[TestDbBackupFileName]]" to="${sql.tests.backupFileName}" />
+          <replacestring from="[[RainbowTestDBInstance]]" to="${sql.tests.instance}" />
+          <replacestring from="[[RainbowTestDBName]]" to="${sql.tests.db.name}" />
           <replacestring from="[[RainbowTestDBUser]]" to="${sql.db.user.name}" />
           <replacestring from="[[RainbowTestDBUserPwd]]" to="${sql.db.user.password}" />
-          <replacestring from="[[RainbowTestDBServer]]" to="${sql.tests.instance}" />
         </filterchain>
       </copy>
     </foreach>
   </target>
 
   <fileset id="tests.assemblies">
-    <include name="Projects\Rainbow.Tests\bin\Rainbow.Tests.dll" />
+    <!-- include name="Projects\Rainbow.Tests\bin\Rainbow.Tests.dll" / -->
+    <include name="Tests\Rainbow.Tests.Data.MsSql\bin\Rainbow.Tests.Data.MsSql.dll" />
   </fileset>
 
   <property name="tests.results.dir" value="${results.dir}NUnit\" />
@@ -894,15 +928,18 @@ Then break script execution (CTRL-C)
       <arg value="/p:Configuration=Release" />
     </exec>
 
-    <nunit2>
-      <formatter type="Xml" usefile="true" extension=".xml" outputdir="${tests.results.dir}" />
-      <formatter type="Plain" usefile="false" />
-      <test assemblyname="Tests\${tests.prepare.assembly}\bin\${build.configuration}\${tests.prepare.assembly}.dll" >
-        <categories>
-          <include name="Prepare" />
-        </categories>
-      </test>
-    </nunit2>
+    <call target="config.web.setConnectionStrings" />
+    <call target="tests.impersonated" />
+  </target>
+
+  <target name="tests.impersonated">
+    <property-ifnotexists name="tests.impersonated.domain" value="" /> <!-- ${environment::get-variable('USERDOMAIN')} -->
+    <property-ifnotexists name="tests.impersonated.username" value="${environment::get-user-name()}" />  <!-- ${environment::get-variable('USERNAME')} -->
+    <property-ifnotexists name="tests.impersonated.password" value="set me in the default.build" />
+    <property name="tests.impersonated.assembly" value="Tests\${tests.prepare.assembly}\bin\${tests.prepare.assembly}.dll" />
+    <RunAs program="nant.exe" workingdirectory="${directory::get-current-directory()}"
+      commandline="-buildfile:tests.impersonated.build -D:tests.impersonated.assembly=${tests.impersonated.assembly} -D:tests.results.dir=${tests.results.dir}" 
+      domain="${tests.impersonated.domain}" username="${tests.impersonated.username}" password="${tests.impersonated.password}" />
   </target>
 
   <target name="tests.run.prepare.backup">
@@ -921,6 +958,7 @@ Then break script execution (CTRL-C)
     <call target="tests.setProperties" />
     <call target="sql.tests.restore" />
     <call target="sql.tests.changeOwner" />
+    <call target="sql.tests.backup" />
     <call target="tests.updateConfig" />
   </target>
 
@@ -954,15 +992,6 @@ Then break script execution (CTRL-C)
     <fail if="${int::parse(total) > 0}" message="Total Tests Failed: ${total}." />
   </target>
 
-  <target name="tests.impersonated">
-    <property-ifnotexists name="tests.impersonated.domain" value="" /> <!-- ${environment::get-variable('USERDOMAIN')} -->
-    <property-ifnotexists name="tests.impersonated.username" value="${environment::get-user-name()}" />  <!-- ${environment::get-variable('USERNAME')} -->
-    <property-ifnotexists name="tests.impersonated.password" value="set me in the default.build" />
-    <RunAs program="nant.exe" workingdirectory="${directory::get-current-directory()}"
-      commandline="-buildfile:tests.impersonated.build -D:build.configuration=${build.configuration}" 
-      domain="${tests.impersonated.domain}" username="${tests.impersonated.username}" password="${tests.impersonated.password}" />
-  </target>
-
   <!-- ******************** -->
   <!-- **  tests.ncover  ** -->
   <!-- ******************** -->
@@ -980,8 +1009,7 @@ Then break script execution (CTRL-C)
         coverageFile="${tests.ncover.results}RawCoverage.xml"
         assemblyList="Rainbow.Framework.Core;Rainbow.Framework.Providers.RainbowMembershipProvider;Rainbow.Framework.Providers.RainbowRoleProvider;Rainbow.Framework.Providers.RainbowSqlMembershipProvider;Rainbow.Framework.Providers.RainbowSqlRoleProvider"
         logFile="${tests.ncover.results}coverage.log"
-        verbose="true"
-        >
+        verbose="true">
       <assemblies refid="tests.assemblies" />
     </ncover>
     <call target="tests.ncover.private.explorer" />

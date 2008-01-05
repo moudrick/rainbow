@@ -13,7 +13,7 @@ namespace Rainbow.Tests.WebSite
             IE.Settings.WaitForCompleteTimeOut = 400;
             IE ie = new IE();
             ie.ClearCookies("http://localhost/rainbow/");
-            ie.GoTo("http://localhost/Rainbow/");
+            ie.GoTo("http://localhost/rainbow/");
             ie.WaitForComplete();
             Assert.AreEqual(ie.Url, "http://localhost/rainbow/Setup/Update.aspx");
             ie.Button(Find.ByName("UpdateDatabaseCommand")).Click();

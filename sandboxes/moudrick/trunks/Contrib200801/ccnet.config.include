@@ -39,11 +39,11 @@
     <tasks>
       <exec>
         <executable>svn.exe</executable>
-        <buildArgs>cleanup</buildArgs>
+        <buildArgs>cleanup .</buildArgs>
         <buildTimeoutSeconds>120</buildTimeoutSeconds>
       </exec>
       <exec>
-        <executable>svn</executable>
+        <executable>svn.exe</executable>
         <buildArgs>update nant.build</buildArgs>
         <buildTimeoutSeconds>10</buildTimeoutSeconds>
       </exec>

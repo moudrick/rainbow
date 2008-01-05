@@ -8,7 +8,7 @@ using Rainbow.Framework.Providers.RainbowRoleProvider;
 namespace Rainbow.Tests.Data.MsSql
 {
     [TestFixture]
-    public class RoleProviderTests
+    public class RoleProviderTests : BaseProviderTestFixture
     {
         Guid userId;
 
@@ -22,8 +22,10 @@ namespace Rainbow.Tests.Data.MsSql
         }
 
         [TestFixtureSetUp]
-        public void TestFixtureSetUp()
+        public override void TestFixtureSetUp()
         {
+            base.TestFixtureSetUp();
+
             MembershipCreateStatus status;
             MembershipUser user = Membership.CreateUser("user@user.com", "user", "user@user.com",
                 "question", "answer", true, out status);

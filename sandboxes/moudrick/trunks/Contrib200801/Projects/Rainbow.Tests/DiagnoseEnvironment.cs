@@ -3,12 +3,8 @@ using System.Data;
 using NUnit.Framework;
 using System.Data.SqlClient;
 using System.Configuration;
-using Rainbow.Framework.Settings;
 
 namespace Rainbow.Tests {
-    /// <summary>
-    /// Summary description for DiagnoseEnvironment.
-    /// </summary>
     [TestFixture]
     [Ignore("no more need these tests")]
     public class DiagnoseEnvironment {
