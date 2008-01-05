@@ -34,12 +34,15 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MsSqlManipulation\BackupMsSqlDatabase.cs" />
     <Compile Include="MsSqlManipulation\MsSqlManipulationTask.cs" />
     <Compile Include="MsSqlManipulation\RestoreMsSqlDatabase.cs" />
+    <Compile Include="Property_IfNotExists.cs" />
+    <Compile Include="RunAs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Auxiliaries.Database.MsSql\Auxiliaries.Database.MsSql.csproj">

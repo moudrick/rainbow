@@ -954,6 +954,15 @@ Then break script execution (CTRL-C)
     <fail if="${int::parse(total) > 0}" message="Total Tests Failed: ${total}." />
   </target>
 
+  <target name="tests.impersonated">
+    <property-ifnotexists name="tests.impersonated.domain" value="" /> <!-- ${environment::get-variable('USERDOMAIN')} -->
+    <property-ifnotexists name="tests.impersonated.username" value="${environment::get-user-name()}" />  <!-- ${environment::get-variable('USERNAME')} -->
+    <property-ifnotexists name="tests.impersonated.password" value="set me in the default.build" />
+    <RunAs program="nant.exe" workingdirectory="${directory::get-current-directory()}"
+      commandline="-buildfile:tests.impersonated.build -D:build.configuration=${build.configuration}" 
+      domain="${tests.impersonated.domain}" username="${tests.impersonated.username}" password="${tests.impersonated.password}" />
+  </target>
+
   <!-- ******************** -->
   <!-- **  tests.ncover  ** -->
   <!-- ******************** -->
