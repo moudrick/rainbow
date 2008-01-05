@@ -665,7 +665,7 @@ Then break script execution (CTRL-C)
     <call target="sql.tests.grantLogin" />
   </target>
 
-  <target name="sql.tests.grantLogin">
+  <target name="sql.ensureCreateLogin.rainbow">
     <description>To run the queries below and successfully use the result, you have to create the 'rainbow' database instance user with 'rainbow_'</description>
     <property name="createLoginQueryFilename" value=".create.login.sql" />
     <echo file="${createLoginQueryFilename}">
@@ -687,6 +687,12 @@ GO
 GO
     </echo>
     <exec program="osql" commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -i ${createLoginQueryFilename}" />
+  </target>
+
+
+  <target name="sql.tests.grantLogin">
+    <call target="sql.ensureCreateLogin.rainbow" />
+
     <property name="grantQuery" value="USE [${sql.tests.db.name}]; CREATE USER [${sql.db.user.name}] FOR LOGIN [${sql.db.user.name}]; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}'; --SQL 2005 only" />
     <property name="grantQuery" value="USE [${sql.tests.db.name}]; if not exists (select * from dbo.sysusers where name = N'${sql.db.user.name}') EXEC sp_grantdbaccess N'${sql.db.user.name}', N'${sql.db.user.name}'; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}';" />
 
@@ -695,27 +701,8 @@ GO
   </target>
 
   <target name="sql.grantLogin">
-    <description>To run the queries below and successfully use the result, you have to create the 'rainbow' database instance user with 'rainbow_'</description>
-    <property name="createLoginQueryFilename" value=".create.login.sql" />
-    <echo file="${createLoginQueryFilename}">
-USE [master]
-GO
+    <call target="sql.ensureCreateLogin.rainbow" />
 
-if not exists (select * from master.dbo.syslogins where loginname = N'${sql.db.user.name}')
-BEGIN
-  declare @logindb nvarchar(132), @loginlang nvarchar(132) select @logindb = N'master', @loginlang = N'us_english'
-  if @logindb is null or not exists (select * from master.dbo.sysdatabases where name = @logindb)
-    select @logindb = N'master'
-  if @loginlang is null or (not exists (select * from master.dbo.syslanguages where name = @loginlang) and @loginlang &lt;&gt; N'us_english')
-    select @loginlang = @@language
-  exec sp_addlogin N'${sql.db.user.name}', ${sql.db.user.password}, @logindb, @loginlang
-END
-GO
--- SQL 2005
---CREATE LOGIN [${sql.db.user.name}] WITH PASSWORD=N'${sql.db.user.password}', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
-GO
-    </echo>
-    <exec program="osql" commandline="${sql.osqlParams} ${sql.auth.trusted} -S ${sql.instance} -i ${createLoginQueryFilename}" />
     <property name="grantQuery" value="USE [${sql.db.name}]; CREATE USER [${sql.db.user.name}] FOR LOGIN [${sql.db.user.name}]; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}'; --SQL 2005 only" />
     <property name="grantQuery" value="USE [${sql.db.name}]; if not exists (select * from dbo.sysusers where name = N'${sql.db.user.name}') EXEC sp_grantdbaccess N'${sql.db.user.name}', N'${sql.db.user.name}'; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}';" />
 
@@ -821,9 +808,7 @@ Then break script execution (CTRL-C)
     <property name="sql.query" value="USE [master]; CREATE DATABASE [${sql.tests.db.name}]"/>
     <call target="sql.run.query.trusted" />
 
-    <!-- grantQuery -->
-    <property name="sql.query" value="USE [${sql.tests.db.name}]; CREATE USER [${sql.db.user.name}] FOR LOGIN [${sql.db.user.name}]; EXEC sp_addrolemember N'db_owner', N'${sql.db.user.name}';" />
-    <call target="sql.run.query.trusted" />
+    <call target="sql.tests.grantLogin" />
   </target>
 
   <!-- ************ -->

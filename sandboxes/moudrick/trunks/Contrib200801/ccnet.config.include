@@ -1,15 +1,41 @@
-  <project name="Rainbow">
-    <workingDirectory>&RainbowWCRoot;&BranchPath;</workingDirectory>
+<!DOCTYPE cruisecontrol [ 
+<!-- Pleaase change manually values %COMPUTERNAME%, %USERDNSDOMAIN% 
+     to there actual values from appropriate local environment variables, or remove if absent -->
+  <!ENTITY SERVER_NAME "%COMPUTERNAME%">
+  <!ENTITY SERVER_localhost_web_root_external_name "http://%COMPUTERNAME%.%USERDNSDOMAIN%/">
+  <!ENTITY SERVER_RainbowWCRoot "D:\home\rainbow\gcode\svn\" >
+
+<!-- Pleaase rename and change manually to current branch appropiate values -->
+  <!ENTITY BranchName "NET_2_0$devint$trunk$">
+  <!ENTITY BranchPath "NET_2_0/devint/trunk/">
+]>
+
+<cruisecontrol>
+  <project name="&SERVER_NAME; Rainbow status">
+    <workingDirectory>&SERVER_RainbowWCRoot;</workingDirectory>
+    <triggers />
+    <tasks>
+      <exec>
+        <executable>ccnet.svn.first.time.cmd</executable>
+        <baseDirectory>&SERVER_RainbowWCRoot;</baseDirectory>
+        <buildArgs>your_svn_login your_svn_password</buildArgs>
+        <buildTimeoutSeconds>20</buildTimeoutSeconds>
+      </exec>
+    </tasks>
+  </project>
+
+  <project name="&SERVER_NAME; Rainbow &BranchName;">
+    <workingDirectory>&SERVER_RainbowWCRoot;&BranchPath;</workingDirectory>
     <triggers />
     <externalLinks>
-      <externalLink name="localhost / Project / SQL 2000" url="&localExternalWebRoot;&BranchName;" />
-      <externalLink name="localhost / Precompiled / SQL 2005" url="&localExternalWebRoot;PrecompiledWeb/&BranchName;" />
+      <externalLink name="localhost / Project / SQL 2000" url="&SERVER_localhost_web_root_external_name;&BranchName;" />
+      <externalLink name="localhost / Precompiled / SQL 2005" url="&SERVER_localhost_web_root_external_name;PrecompiledWeb/&BranchName;" />
       <externalLink name="test.domain / Project / SQL 2000" url="http://test.domain/&BranchName;" />
       <externalLink name="test.domain / Precompiled / SQL 2005" url="http://test.domain/PrecompiledWeb/&BranchName;" />
       <externalLink name="another.test.domain / Project / SQL 2000" url="http://another.test.domain/&BranchName;" />
       <externalLink name="another.test.domain / Precompiled / SQL 2005" url="http://another.test.domain/PrecompiledWeb/&BranchName;" />
     </externalLinks>
-    <sourcecontrol type="svn" />
+    <sourcecontrol type="svn" autoGetSource="false" />
     <tasks>
       <exec>
         <executable>svn.exe</executable>
@@ -37,6 +63,6 @@
         </files>
       </merge>
       <xmllogger />
-      &rainbow_email_publishers;
     </publishers>
   </project>
+</cruisecontrol>
