@@ -16,7 +16,6 @@ using Rainbow.Framework.Settings.Cache;
 using Label = System.Web.UI.WebControls.Label;
 using Page = Rainbow.Framework.Web.UI.Page;
 using Path = Rainbow.Framework.Settings.Path;
-using Utils = Rainbow.Framework.Helpers.Utilities;
 
 namespace Rainbow.Error
 {
@@ -25,6 +24,19 @@ namespace Rainbow.Error
     /// </summary>
 	public class SmartError : Page
 	{
+        /// <summary>
+        /// Determines whether the specified STR is integer.
+        /// </summary>
+        /// <param name="str">The STR.</param>
+        /// <returns>
+        /// 	<c>true</c> if the specified STR is integer; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsInteger(string str)
+        {
+            int aux;
+            return int.TryParse(str, out aux);
+        }
+
 		protected PlaceHolder PageContent;
 
 		protected Label Label1;
@@ -32,8 +44,8 @@ namespace Rainbow.Error
 		protected Label Label3;
 		//protected Esperantus.WebControls.HyperLink ReturnHome;
 
-		protected System.Web.UI.WebControls.Label myTest;
-		protected System.Web.UI.WebControls.Label myTest2;
+		protected Label myTest;
+		protected Label myTest2;
 
 		protected const int _LOGLEVEL_ = 0;
 		protected const int _GUID_ = 1;
@@ -59,8 +71,10 @@ namespace Rainbow.Error
 			base.OnLoad (e);
 
 			// load the dedicated CSS
-			if ( !this.IsCssFileRegistered("SmartError") )
-				this.RegisterCssFile("Mod_SmartError");
+		    if (!IsCssFileRegistered("SmartError"))
+		    {
+		        RegisterCssFile("Mod_SmartError");
+            }
 
 			ArrayList storedError = null;
 			StringBuilder sb = new StringBuilder(); // to build response text
@@ -79,7 +93,7 @@ namespace Rainbow.Error
 					string qPart = qPartPos < Request.QueryString[0].Length ? Request.QueryString[0].Substring(qPartPos) : string.Empty;
 				    if (qPart.Length > 0)
 				    {
-				        if (Utils.IsInteger(qPart))
+				        if (IsInteger(qPart))
 				        {
 				            redirectUrl = HttpUrlBuilder.BuildUrl(Int32.Parse(qPart));
 				        }
@@ -89,7 +103,7 @@ namespace Rainbow.Error
 				            if (magicUrlList != null && magicUrlList.ContainsKey(HttpUtility.HtmlEncode(qPart)))
 				            {
 				                redirectUrl = HttpUtility.HtmlDecode(magicUrlList[HttpUtility.HtmlEncode(qPart)].ToString());
-				                if (Utils.IsInteger(redirectUrl))
+				                if (IsInteger(redirectUrl))
 				                {
 				                    redirectUrl = HttpUrlBuilder.BuildUrl(Int32.Parse(redirectUrl));
 				                }
@@ -107,7 +121,7 @@ namespace Rainbow.Error
 
 				}
 				// get status code from querystring
-				else if ( Utils.IsInteger(Request.QueryString[0]) && validStatus.IndexOf(Request.QueryString[0]) > -1 )
+				else if ( IsInteger(Request.QueryString[0]) && validStatus.IndexOf(Request.QueryString[0]) > -1 )
 				{
 					httpStatusCode = int.Parse(Request.QueryString[0]);
 				}
@@ -197,7 +211,7 @@ namespace Rainbow.Error
 				}
 				catch
 				{
-					// if there was a problem, let's assume that user is not authorised
+                    ;// if there was a problem, let's assume that user is not authorised
 				}
 			}
 			PageContent.Controls.Add(new LiteralControl(sb.ToString()));
@@ -224,8 +238,7 @@ namespace Rainbow.Error
                             result.Add(node.Attributes["key"].Value,
                                        HttpUtility.HtmlDecode(node.Attributes["value"].Value));
                         }
-                        catch
-                        {}
+                        catch {;}
                     }
                     Cache.Insert("rainbow_MagicUrlList_" + RainbowContext.Current.UniqueID,
                                  result,

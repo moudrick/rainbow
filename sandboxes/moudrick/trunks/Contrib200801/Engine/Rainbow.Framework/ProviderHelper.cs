@@ -9,10 +9,7 @@ namespace Rainbow.Framework.Provider
     /// </summary>
     public sealed class ProviderHelper
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        private ProviderHelper()
+        ProviderHelper()
         {
         }
 
@@ -34,7 +31,7 @@ namespace Rainbow.Framework.Provider
                     "Provider could not be instantiated. The Type could not be found.");
 
             if (!provType.IsAssignableFrom(providerType))
-                throw new ConfigurationErrorsException("Provider must implement type \'" + provType.ToString() + "\'.");
+                throw new ConfigurationErrorsException("Provider must implement type \'" + provType + "\'.");
 
             object providerObj = Activator.CreateInstance(providerType);
             if (providerObj == null)
@@ -42,15 +39,8 @@ namespace Rainbow.Framework.Provider
 
             ProviderBase providerBase = ((ProviderBase) providerObj);
 
-            try
-            {
-                providerBase.Initialize(providerSettings.Name, providerSettings.Parameters);
-                return providerBase;
-            }
-            catch
-            {
-                throw;
-            }
+            providerBase.Initialize(providerSettings.Name, providerSettings.Parameters);
+            return providerBase;
         }
 
         /// <summary>

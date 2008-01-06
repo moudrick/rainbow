@@ -298,15 +298,11 @@ namespace Rainbow.Tests.Data.MsSql
         }
 
         [Test]
-        [Ignore("Temporarily until it will be fixed")]
+        [ExpectedException(typeof(RainbowRoleProviderException), "One of the users is not in one of the specified roles")]
         public void RemoveUsersFromRolesTest4()
         {
-            Guid[] users = new Guid[1];
-            users[0] = Guid.NewGuid();
-
-            Guid[] roles = new Guid[1];
-            roles[0] = new Guid("F6A4ADDA-8450-4F9A-BE86-D0719B239A8D"); // Admins
-
+            Guid[] users = new Guid[] { Guid.NewGuid() };
+            Guid[] roles = new Guid[] { new Guid("F6A4ADDA-8450-4F9A-BE86-D0719B239A8D") }; // Admins
             Provider.RemoveUsersFromRoles("Rainbow", users, roles);
         }
 

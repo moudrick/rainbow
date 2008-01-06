@@ -2,20 +2,48 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Web.UI.WebControls", "Projects\Rainbow.Framework.Web.UI.WebControls\Rainbow.Framework.Web.UI.WebControls.csproj", "{38DA41AC-51C1-4E4D-9610-5370309C2C1E}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DUEMETRI.UI.WebControls.Panes", "Projects\DUEMETRI.UI.WebControls.DesktopPanes\DesktopPanes\DUEMETRI.UI.WebControls.Panes.csproj", "{BA2ED003-058E-418B-B0DD-FB7D4D4B2329}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DUEMETRI.UI.WebControls.HWMenu", "Projects\DUEMETRI.UI.WebControls.HWMenu\HWMenu\DUEMETRI.UI.WebControls.HWMenu.csproj", "{DCDA0619-FD70-42B6-B2DA-78EAFA4BE955}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Web", "Projects\Rainbow.Framework\Rainbow.Framework.Web.csproj", "{D3A33CF8-2AEB-4E6E-AC2E-01C676F33616}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Core", "Projects\Rainbow.Framework.Core\Rainbow.Framework.Core.csproj", "{552CCD6F-0A37-4366-9E3E-22B2A0221584}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Tests", "Projects\Rainbow.Tests\Rainbow.Tests.csproj", "{B1021322-5BD0-454F-9C38-F9565C71C2CF}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.UrlRewriting", "Projects\Rainbow.Framework.UrlRewriting\Rainbow.Framework.UrlRewriting.csproj", "{10F33732-1ACA-492A-A737-DF8314CE7499}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "D:\...\Rainbow\", "WebSites\Rainbow", "{F67D24F2-C7E6-4C2E-B7FC-BD99E5754E5D}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "D:\...\Rainbow\", "WebSites\Rainbow\", "{F67D24F2-C7E6-4C2E-B7FC-BD99E5754E5D}"
 	ProjectSection(WebsiteProperties) = preProject
 		ProjectReferences = "{552CCD6F-0A37-4366-9E3E-22B2A0221584}|Rainbow.Framework.Core.dll;{D3A33CF8-2AEB-4E6E-AC2E-01C676F33616}|Rainbow.Framework.Web.dll;{10F33732-1ACA-492A-A737-DF8314CE7499}|Rainbow.Framework.UrlRewriting.dll;{38DA41AC-51C1-4E4D-9610-5370309C2C1E}|Rainbow.Framework.Web.UI.WebControls.dll;{14CD80D2-D20D-437F-9D8E-0B37CE3A2609}|Rainbow.Framework.dll;{271F57E4-02A3-4143-8C97-0552F52730D7}|Rainbow.Framework.Providers.MsSql.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/Rainbow"
@@ -32,10 +60,14 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "D:\...\Rainbow\", "WebSites
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "9389"
+		VWDPort = "1443"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBC370A1-8A28-4011-9197-9263BE5474F9}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 	ProjectSection(SolutionItems) = preProject
 		Brief.Install.Instructions.txt = Brief.Install.Instructions.txt
 		copy.standard.cmd = copy.standard.cmd
@@ -51,28 +83,76 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSites", "WebSites", "{DCD8AFCE-7572-4A1D-AD78-0A6469A415C0}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Duemetri", "Duemetri", "{92411E7C-D85D-4E35-A838-58B2CCB1947F}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B9FA2DF7-1830-41C8-ACBD-2C1D7B7E1FA4}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpSimulator", "Tests\HttpSimulator\HttpSimulator.csproj", "{BE2546BF-F026-4F21-B1B5-9995852D62B0}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Tests.WebSite", "Tests\Rainbow.Tests.WebSite\Rainbow.Tests.WebSite.csproj", "{D10995F0-11E4-43DD-96D1-7970CA432399}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Tests.Data.MsSql", "Tests\Rainbow.Tests.Data.MsSql\Rainbow.Tests.Data.MsSql.csproj", "{1C88C0DD-E893-456B-9CB8-24B349C3FEE6}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{29763882-C0B5-49E8-BE4A-5B1E650F10C4}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Providers.MsSql", "Providers\Rainbow.Framework.Providers.MsSql\Rainbow.Framework.Providers.MsSql.csproj", "{271F57E4-02A3-4143-8C97-0552F52730D7}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{1484BAF7-C39A-45DF-AC9C-0E5219DF1445}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework", "Engine\Rainbow.Framework\Rainbow.Framework.csproj", "{14CD80D2-D20D-437F-9D8E-0B37CE3A2609}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auxiliaries", "Auxiliaries", "{A6109256-0EA3-44CD-9E4D-71A7EA6EF694}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auxiliaries.Database.MsSql", "Auxiliaries\Auxiliaries.Database.MsSql\Auxiliaries.Database.MsSql.csproj", "{0C65743C-D792-479E-B266-A7894BD7EFCB}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

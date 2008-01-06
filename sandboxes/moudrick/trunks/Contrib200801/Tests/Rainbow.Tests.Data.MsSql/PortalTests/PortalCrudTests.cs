@@ -8,14 +8,14 @@ using Subtext.TestLibrary;
 namespace Rainbow.Tests.Data.MsSql.PortalTests
 {
     [TestFixture]
-    public class PortalCrudTests
+    public class PortalCrudTests : BaseProviderTestFixture
     {
         [Test]
+        [Category("NotWorking")]
         public void Create()
         {
-            HttpSimulator httpSimulator;
-
-            httpSimulator = new HttpSimulator("/Rainbow", Hepler.RainbowWebApplicationRoot);
+            HttpSimulator httpSimulator = new HttpSimulator("/Rainbow", 
+                Hepler.RainbowWebApplicationRoot);
             using (httpSimulator)
             {
                 httpSimulator.SimulateRequest(new Uri("http://localhost/Rainbow/"));

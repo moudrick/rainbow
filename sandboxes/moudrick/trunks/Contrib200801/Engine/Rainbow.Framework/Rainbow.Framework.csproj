@@ -30,7 +30,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -39,14 +38,26 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="BusinessObjects\Country.cs" />
     <Compile Include="BusinessObjects\RainbowRole.cs" />
     <Compile Include="BusinessObjects\RainbowUser.cs" />
+    <Compile Include="BusinessObjects\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProviderConfiguration.cs" />
+    <Compile Include="ProviderConfigurationHandler.cs" />
+    <Compile Include="ProviderHelper.cs" />
+    <Compile Include="Providers\Exceptions\CountryNotFoundException.cs" />
     <Compile Include="Providers\Exceptions\RainbowMembershipProviderException.cs" />
     <Compile Include="Providers\Exceptions\RainbowRoleProviderException.cs" />
+    <Compile Include="Providers\Exceptions\StateNotFoundException.cs" />
+    <Compile Include="Providers\GeographicProvider.cs" />
     <Compile Include="Providers\RainbowMembershipProvider.cs" />
     <Compile Include="Providers\RainbowRoleProvider.cs" />
     <Compile Include="Providers\RainbowSiteMapProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Providers\docs\ProviderHistory.txt" />
+    <Content Include="Providers\docs\ProviderReadme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

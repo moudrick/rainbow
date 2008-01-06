@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using System.Globalization;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Providers.Geographic;
 
 namespace Rainbow.Tests.Data.MsSql
 {
    [TestFixture]
-   public class GeographicProviderTests 
+   public class GeographicProviderTests : BaseProviderTestFixture
    {
         [SetUp]
         public void Init() 

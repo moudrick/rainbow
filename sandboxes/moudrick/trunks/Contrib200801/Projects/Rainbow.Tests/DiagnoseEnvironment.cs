@@ -18,12 +18,6 @@ namespace Rainbow.Tests {
         }
 
         [Test]
-        public void SimpleRun() 
-        {
-            Console.WriteLine( "This should pass. It only writes to the Console." );
-        }
-
-        [Test]
         public void AccessDatabase() {
             DataTable dt;
             dt = ExecuteSql( "select * from UnitTest" );

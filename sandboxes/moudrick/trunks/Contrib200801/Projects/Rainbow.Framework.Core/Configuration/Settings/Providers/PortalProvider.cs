@@ -393,7 +393,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             }
             //Go to get custom settings
             portal.CustomSettings = GetPortalCustomSettings(
-                portal.PortalID, PortalProvider.Instance.GetPortalBaseSettings(portal.PortalPath));
+                portal.PortalID, GetPortalBaseSettings(portal.PortalPath));
             //Initialize Theme
             ThemeManager themeManager = new ThemeManager(portal.PortalPath);
             //Default
@@ -437,7 +437,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             PortalSettings portal = new PortalSettings();
             try
             {
-                PortalProvider.Instance.FillPortalSettingsBrief(portal, portalID);
+                FillPortalSettingsBrief(portal, portalID);
             }
             catch (ProviderException)
             {
@@ -613,7 +613,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                     // Save the modules into a list for finding them later
                     templateModules.Add(module);
                 }
-                catch {} // tried to add a Module thas doesn´t exists in this implementation of the portal
+                catch {;} // tried to add a Module thas doesn´t exists in this implementation of the portal
             }
 
             myReader.Close();
@@ -819,7 +819,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
 
                     result.Close();
                 }
-                catch {} // Error? ignore Tab ...
+                catch {;} // Error? ignore Tab ...
             }
             myReader.Close();
 
@@ -845,7 +845,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             my3rdConnection.Dispose();
 
             // Create paths
-            PortalProvider.Instance.CreatePortalPath(portalPath);
+            CreatePortalPath(portalPath);
 
             return newPortalID;
         }
@@ -915,7 +915,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             {
                 string aux =
                     General.GetString("DELETE_PORTAL_ERROR", "There was an error on deleting the portal", this);
-                Rainbow.Framework.ErrorHandler.Publish(Rainbow.Framework.LogLevel.Error, aux, sqlex);
+                ErrorHandler.Publish(LogLevel.Error, aux, sqlex);
                 throw new ProviderException(aux, sqlex);
             }
         }
@@ -1492,7 +1492,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             if (!CurrentCache.Exists(Key.PortalSettings()))
             {
                 // Get Settings for this Portal from the database
-                Hashtable settings = PortalProvider.Instance.GetPortalCustomSettings(portalID);
+                Hashtable settings = GetPortalCustomSettings(portalID);
                 foreach (string key in baseSettings.Keys)
                 {
                     if (settings[key] != null)
@@ -2069,17 +2069,17 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             string portalPhisicalDir =
                 HttpContext.Current.Server.MapPath(
                     Path.WebPathCombine(Path.ApplicationRoot, Config.PortalsDirectory, portalPath));
-            if (!System.IO.Directory.Exists(portalPhisicalDir))
+            if (!Directory.Exists(portalPhisicalDir))
             {
-                System.IO.Directory.CreateDirectory(portalPhisicalDir);
+                Directory.CreateDirectory(portalPhisicalDir);
             }
             // Subdirs
             string[] subdirs = { "images", "polls", "documents", "xml" };
             for (int i = 0; i <= subdirs.GetUpperBound(0); i++)
             {
-                if (!System.IO.Directory.Exists(portalPhisicalDir + "\\" + subdirs[i]))
+                if (!Directory.Exists(portalPhisicalDir + "\\" + subdirs[i]))
                 {
-                    System.IO.Directory.CreateDirectory(portalPhisicalDir + "\\" + subdirs[i]);
+                    Directory.CreateDirectory(portalPhisicalDir + "\\" + subdirs[i]);
                 }
             }
         }

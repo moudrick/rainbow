@@ -845,8 +845,6 @@ Then break script execution (CTRL-C)
   <!-- ************ -->
 
   <target name="tests.default">
-    <!-- call target="tests.prepare" / -->
-    <call target="tests.run.prepare" />
     <call target="tests.run" />
   </target>
 
@@ -877,8 +875,6 @@ Then break script execution (CTRL-C)
           <replacestring from="[[TestDbBackupFileName]]" to="${sql.tests.backupFileName}" />
           <replacestring from="[[RainbowTestDBInstance]]" to="${sql.tests.instance}" />
           <replacestring from="[[RainbowTestDBName]]" to="${sql.tests.db.name}" />
-          <replacestring from="[[RainbowTestDBUser]]" to="${sql.db.user.name}" />
-          <replacestring from="[[RainbowTestDBUserPwd]]" to="${sql.db.user.password}" />
         </filterchain>
       </copy>
     </foreach>
@@ -963,9 +959,7 @@ Then break script execution (CTRL-C)
   </target>
 
   <target name="tests.run">
-    <echo message="Running nunit2 task" />
     <call target="tests.run.prepare" />
-
     <foreach item="File" property="testAssembly">
       <in>
         <items refid="tests.assemblies" />
@@ -1007,7 +1001,7 @@ Then break script execution (CTRL-C)
         commandLineExe="${nant::get-base-directory()}nant.exe"
         commandLineArgs="-buildfile:${tests.ncover.files.build} svn.info tests.default"
         coverageFile="${tests.ncover.results}RawCoverage.xml"
-        assemblyList="Rainbow.Framework.Core;Rainbow.Framework.Providers.RainbowMembershipProvider;Rainbow.Framework.Providers.RainbowRoleProvider;Rainbow.Framework.Providers.RainbowSqlMembershipProvider;Rainbow.Framework.Providers.RainbowSqlRoleProvider"
+        assemblyList="Rainbow.Framework.dll;Rainbow.Framework.Core.dll;Rainbow.Framework.Providers.MsSql.dll;Rainbow.Tests.Data.MsSql.dll;Auxiliaries.Database.MsSql.dll"
         logFile="${tests.ncover.results}coverage.log"
         verbose="true">
       <assemblies refid="tests.assemblies" />

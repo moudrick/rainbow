@@ -15,31 +15,31 @@ namespace Rainbow.Framework.Web
 	/// </summary>
 	internal sealed class UrlBuilderHelper
 	{
-		/// <summary>
-		///     ctor
-		/// </summary>
-		/// 
-		/// <returns>
-		///     A void value...
-		/// </returns>
-		private UrlBuilderHelper()
-		{
-		}
+        public const string IsPlaceHolderID = "TabPlaceholder";
+        public const string TabLinkID = "TabLink";
+        public const string PageNameID = "UrlPageName";
+        public const string UrlKeywordsID = "TabUrlKeyword";
 
-		public const string IsPlaceHolderID = "TabPlaceholder";
-		public const string TabLinkID = "TabLink";
-		public const string PageNameID = "UrlPageName";
-		public const string UrlKeywordsID = "TabUrlKeyword";
+        /// <summary>
+        /// ApplicationPath, Application dependent relative Application Path.
+        /// Base dir for all portal code
+        /// Since it is common for all portals is declared as static
+        /// </summary>
+        public static string ApplicationPath
+        {
+            get { return Path.ApplicationRoot; }
+        }
 
-		/// <summary>
-		/// Builds up a cache key for Url Elements/Properties
-		/// </summary>
-		/// <param name="pageID">The ID of the page for which you want to generate a url element cache key for</param>
-		/// <param name="UrlElement">The Url element you are after (IsPlaceHolderID/TabLinkID/PageNameID/UrlKeywordsID) constants</param>
-		/// <returns>A unique key</returns>
-		private static string UrlElementCacheKey(int pageID, string UrlElement)
+        /// <summary>
+        ///     Returns the current site's database connection string
+        /// </summary>
+        static string SiteConnectionString
+        {
+            get { return Config.ConnectionString; }
+        }
+
+		UrlBuilderHelper()
 		{
-			return string.Concat(RainbowContext.Current.UniqueID, pageID, UrlElement);
 		}
 
 		/// <summary>
@@ -124,11 +124,7 @@ namespace Rainbow.Framework.Web
 
 					finally
 					{
-						// Close the connection
-                        if (conn != null)
-                        {
-                            conn.Close();
-                        }
+                        conn.Close();
 					}
 				}
 
@@ -330,11 +326,7 @@ namespace Rainbow.Framework.Web
 
 					finally
 					{
-						// Close the connection
-                        if (conn != null)
-                        {
-                            conn.Close();
-                        }
+                        conn.Close();
 					}
 				}
 			}
@@ -350,31 +342,15 @@ namespace Rainbow.Framework.Web
 			}
 		}
 
-
-		/// <summary>
-		/// ApplicationPath, Application dependent relative Application Path.
-		/// Base dir for all portal code
-		/// Since it is common for all portals is declared as static
-		/// </summary>
-		public static string ApplicationPath
-		{
-			get { return Path.ApplicationRoot; }
-		}
-
-		/// <summary>
-		///     Returns the current site's database connection string
-		/// </summary>
-		/// <value>
-		///     <para>
-		///         
-		///     </para>
-		/// </value>
-		/// <remarks>
-		///     
-		/// </remarks>
-		private static string SiteConnectionString
-		{
-			get { return Config.ConnectionString; }
-		}
+        /// <summary>
+        /// Builds up a cache key for Url Elements/Properties
+        /// </summary>
+        /// <param name="pageID">The ID of the page for which you want to generate a url element cache key for</param>
+        /// <param name="UrlElement">The Url element you are after (IsPlaceHolderID/TabLinkID/PageNameID/UrlKeywordsID) constants</param>
+        /// <returns>A unique key</returns>
+        static string UrlElementCacheKey(int pageID, string UrlElement)
+        {
+            return string.Concat(RainbowContext.Current.UniqueID, pageID, UrlElement);
+        }
 	}
 }

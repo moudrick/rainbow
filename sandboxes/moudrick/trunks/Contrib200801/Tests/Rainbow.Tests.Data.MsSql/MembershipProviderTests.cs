@@ -7,7 +7,7 @@ using RainbowSqlMembershipProvider=Rainbow.Framework.Providers.MsSql.RainbowSqlM
 namespace Rainbow.Tests.Data.MsSql
 {
     [TestFixture]
-    public class MembershipProviderTests
+    public class MembershipProviderTests : BaseProviderTestFixture
     {
         #region Config properties
 

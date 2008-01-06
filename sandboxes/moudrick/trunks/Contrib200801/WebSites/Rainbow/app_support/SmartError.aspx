@@ -1,7 +1,7 @@
 <%@ register src="~/Design/DesktopLayouts/DesktopPortalBanner.ascx" tagname="Banner"
     tagprefix="portal" %>
 <%@ register src="~/Design/DesktopLayouts/DesktopFooter.ascx" tagname="Footer" tagprefix="foot" %>
-<%@ page autoeventwireup="false" inherits="Rainbow.Error.SmartError" language="c#"
+<%@ page autoeventwireup="false" inherits="Rainbow  .Error.SmartError" language="c#"
     src="SmartError.aspx.cs" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">

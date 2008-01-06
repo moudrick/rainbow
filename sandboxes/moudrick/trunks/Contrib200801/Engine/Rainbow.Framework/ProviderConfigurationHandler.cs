@@ -1,4 +1,3 @@
-using System;
 using System.Configuration;
 using System.Xml;
 
@@ -16,7 +15,7 @@ namespace Rainbow.Framework.Provider
         /// <param name="context">The context.</param>
         /// <param name="node">The node.</param>
         /// <returns></returns>
-        public virtual object Create(Object parent, Object context, XmlNode node)
+        public virtual object Create(object parent, object context, XmlNode node)
         {
             ProviderConfiguration config = new ProviderConfiguration();
             config.LoadValuesFromConfigurationXml(node);

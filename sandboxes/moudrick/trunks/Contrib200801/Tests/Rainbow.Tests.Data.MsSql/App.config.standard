@@ -4,7 +4,7 @@
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" requirePermission="false"/>
     <sectionGroup name="providers">
       <section name="log" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework.Core" requirePermission="false"/>
-      <section name="geographic" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework.Core" requirePermission="false"/>
+      <section name="geographic" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false"/>
     </sectionGroup>
   </configSections>
   <connectionStrings>
@@ -18,8 +18,6 @@
     <add key="TestDbBackupFileName" value="[[TestDbBackupFileName]]" />
     <add key="RainbowTestDBInstance" value="[[RainbowTestDBInstance]]" />
     <add key="RainbowTestDBName" value="[[RainbowTestDBName]]" />
-    <add key="RainbowTestDBUser" value="[[RainbowTestDBUser]]" />
-    <add key="RainbowTestDBUserPwd" value="[[RainbowTestDBUserPwd]]" />
   </appSettings>
 
   <system.web>
@@ -115,7 +113,7 @@
     <geographic defaultProvider="GeographicProvider">
       <providers>
         <clear />
-        <add name="GeographicProvider" type="Rainbow.Framework.Providers.Geographic.SqlGeographicProvider, Rainbow.Framework.Core" countriesFilter="AR,BR,CL,UY" />
+        <add name="GeographicProvider" type="Rainbow.Framework.Providers.MsSql.SqlGeographicProvider, Rainbow.Framework.Providers.MsSql" countriesFilter="AR,BR,CL,UY" />
       </providers>
     </geographic>
   </providers>

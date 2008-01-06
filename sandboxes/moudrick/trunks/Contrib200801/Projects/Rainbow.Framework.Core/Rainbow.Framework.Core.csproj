@@ -86,9 +86,6 @@
     <Compile Include="Configuration\LogLevel.cs" />
     <Compile Include="Configuration\LogProperties.cs" />
     <Compile Include="Configuration\LogProvider.cs" />
-    <Compile Include="Configuration\Provider\ProviderConfiguration.cs" />
-    <Compile Include="Configuration\Provider\ProviderConfigurationHandler.cs" />
-    <Compile Include="Configuration\Provider\ProviderHelper.cs" />
     <Compile Include="Configuration\Settings\ModuleSettings.cs" />
     <Compile Include="Configuration\Settings\PageSettings.cs" />
     <Compile Include="Configuration\Settings\PageStripDetails.cs" />
@@ -138,7 +135,6 @@
     <Compile Include="Helpers\ModuleInstall.cs" />
     <Compile Include="Helpers\SearchDefinition.cs" />
     <Compile Include="Helpers\SearchHelper.cs" />
-    <Compile Include="Helpers\Utilities.cs" />
     <Compile Include="Helpers\WebPartHelper.cs" />
     <Compile Include="Helpers\XslHelper.cs" />
     <Compile Include="HttpUrlBuilder.cs" />
@@ -155,12 +151,6 @@
     </Compile>
     <Compile Include="GlobalEnums.cs" />
     <Compile Include="Configuration\Log4NetLogProvider.cs" />
-    <Compile Include="Provider\GeographicProvider.cs" />
-    <Compile Include="Provider\Geographic\Country.cs" />
-    <Compile Include="Provider\Geographic\CountryNotFoundException.cs" />
-    <Compile Include="Provider\Geographic\SqlGeographicProvider.cs" />
-    <Compile Include="Provider\Geographic\State.cs" />
-    <Compile Include="Provider\Geographic\StateNotFoundException.cs" />
     <Compile Include="Provider\NotSupportedByProviderException.cs" />
     <Compile Include="Provider\Web\SqlUrlBuilderProvider.cs" />
     <Compile Include="Provider\Web\UrlBuilderHelper.cs" />
@@ -273,8 +263,6 @@
     <Compile Include="UI\WebControls\XmlEditGrid.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="docs\ProviderHistory.txt" />
-    <Content Include="docs\ProviderReadme.txt" />
     <Content Include="Helpers\ModuleInstall.txt" />
     <Content Include="Settings\History.txt" />
     <Content Include="UI\WebControls\BreadCrumbs_readme.txt" />
