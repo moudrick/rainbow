@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Web.Security;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Helpers
 {
@@ -13,7 +13,7 @@ namespace Rainbow.Framework.Helpers
     public class CryptoHelper
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:CryptoHelper"/> class.
+        /// Initializes a new instance of the <see cref="CryptoHelper"/> class.
         /// </summary>
         public CryptoHelper()
         {
@@ -57,7 +57,7 @@ namespace Rainbow.Framework.Helpers
             SqlParameter parameterPassword;
             SqlParameter parameterSalt;
             SqlParameter parameterEmail;
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 SqlDataAdapter adapter = new SqlDataAdapter("SELECT Email, Password FROM rb_Users", myConnection);
                 SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
@@ -99,7 +99,7 @@ namespace Rainbow.Framework.Helpers
             SqlParameter parameterPassword;
             SqlParameter parameterSalt;
             SqlParameter parameterEmail;
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand insertCommand = new SqlCommand("rb_HashPasswords", myConnection))
                 {

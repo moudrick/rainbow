@@ -71,18 +71,18 @@ namespace Rainbow.Content.Web.Modules
             LoadDestinationModules();
         }
 
-        /// <summary>
-        /// The SourcePortalChanged event handler on this User Control fires when the
-        /// SourcePortal dropdownlist has been changed(ex. Portal Instance 1 changed to 2).
-        /// The event then refreshes the source modules for that type.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void SourcePortalChanged(object sender, EventArgs e)
-        {
-            //refresh source instances, destination instances should stay same?
-            LoadSourceModules();
-        }
+//        /// <summary>
+//        /// The SourcePortalChanged event handler on this User Control fires when the
+//        /// SourcePortal dropdownlist has been changed(ex. Portal Instance 1 changed to 2).
+//        /// The event then refreshes the source modules for that type.
+//        /// </summary>
+//        /// <param name="sender">The sender.</param>
+//        /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+//        private void SourcePortalChanged(object sender, EventArgs e)
+//        {
+//            //refresh source instances, destination instances should stay same?
+//            LoadSourceModules();
+//        }
 
         /// <summary>
         /// The DestinationPortalChanged event handler on this User Control fires when the
@@ -403,7 +403,7 @@ namespace Rainbow.Content.Web.Modules
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:ContentManager"/> class.
+        /// Initializes a new instance of the <see cref="ContentManager"/> class.
         /// </summary>
         public ContentManager()
         {
@@ -412,7 +412,7 @@ namespace Rainbow.Content.Web.Modules
             showPortals.Value = "false";
             showPortals.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             showPortals.Description = "Enable or Disable Multi-Portal Support";
-            _baseSettings.Add("MultiPortalSupport", showPortals);
+            baseSettings.Add("MultiPortalSupport", showPortals);
         }
 
         /// <summary>
@@ -441,17 +441,17 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
 
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
 
             DirectoryInfo installDir =
-                new DirectoryInfo(Path.Combine(Server.MapPath(TemplateSourceDirectory), "InstallScripts"));
+                new DirectoryInfo(System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "InstallScripts"));
             FileInfo[] installFiles = installDir.GetFiles("*_Install.sql");
             foreach (FileInfo scriptToInstall in installFiles)
             {
@@ -460,7 +460,7 @@ namespace Rainbow.Content.Web.Modules
                 if (errors.Count > 0)
                 {
                     //call rollback
-                    throw new Exception("Error occured:" + errors[0].ToString());
+                    throw new Exception("Error occured:" + errors[0]);
                 }
             }
         }
@@ -471,18 +471,18 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
 
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
 
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
 
             DirectoryInfo installDir =
-                new DirectoryInfo(Path.Combine(Server.MapPath(TemplateSourceDirectory), "InstallScripts"));
+                new DirectoryInfo(System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "InstallScripts"));
             FileInfo[] installFiles = installDir.GetFiles("*_uninstall.sql");
             foreach (FileInfo scriptToInstall in installFiles)
             {
@@ -491,7 +491,7 @@ namespace Rainbow.Content.Web.Modules
                 if (errors.Count > 0)
                 {
                     //call rollback
-                    throw new Exception("Error occured:" + errors[0].ToString());
+                    throw new Exception("Error occured:" + errors[0]);
                 }
             }
         }

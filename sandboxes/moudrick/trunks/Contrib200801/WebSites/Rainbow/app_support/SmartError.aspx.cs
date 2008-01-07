@@ -15,7 +15,7 @@ using Rainbow.Framework.Settings;
 using Rainbow.Framework.Settings.Cache;
 using Label = System.Web.UI.WebControls.Label;
 using Page = Rainbow.Framework.Web.UI.Page;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Error
 {

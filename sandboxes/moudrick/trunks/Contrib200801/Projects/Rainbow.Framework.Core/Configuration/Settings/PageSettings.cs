@@ -2,13 +2,16 @@ using System.Collections;
 using System.Globalization;
 using System.IO;
 using System.Web;
-using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
-using Rainbow.Framework.Design;
-using Rainbow.Framework;
-using Rainbow.Framework.Settings.Cache;
-using Rainbow.Framework.DataTypes;
-using Path = Rainbow.Framework.Settings.Path;
+using Rainbow.Framework; //Path
+
+using Rainbow.Framework.Core.Configuration.Settings; //Portal
+using Rainbow.Framework.Core.Configuration.Settings.Providers; //PageSettingsProvider
+using Rainbow.Framework.Design; //all
+
+using Rainbow.Framework.Settings.Cache; //CurrenctCache, Key
+using Rainbow.Framework.DataTypes; //BooleanDataType, StringDataType
+
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Site.Configuration
 {
@@ -58,7 +61,7 @@ namespace Rainbow.Framework.Site.Configuration
 		/// </summary>
 		public int PageOrder;
 
-		PortalSettings portalSettings;
+		Portal portalSettings;
 		Hashtable customSettings;
 		string tabName;
 
@@ -76,7 +79,7 @@ namespace Rainbow.Framework.Site.Configuration
         /// Stores current portal settings
         /// </summary>
         /// <value>The portal settings.</value>
-        PortalSettings PortalSettings
+        Portal PortalSettings
         {
             get
             {
@@ -85,7 +88,7 @@ namespace Rainbow.Framework.Site.Configuration
                     // Obtain PortalSettings from Current Context
                     if (HttpContext.Current != null)
                     {
-                        portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                        portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                     }
                 }
                 return portalSettings;
@@ -126,7 +129,7 @@ namespace Rainbow.Framework.Site.Configuration
                         // Thierry (Tiptopweb), see the comment in Hashtable GetPageBaseSettings()
                         // this is not resetting key not found in the database
                     {
-                        //SettingItem s = ((SettingItem)_baseSettings[key]);
+                        //SettingItem s = ((SettingItem)baseSettings[key]);
                         //s.Value = string.Empty; 3_aug_2004 Cory Isakson.  This line caused an error with booleans
                     }
                 }

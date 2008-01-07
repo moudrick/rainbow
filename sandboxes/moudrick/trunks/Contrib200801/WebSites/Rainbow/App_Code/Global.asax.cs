@@ -3,18 +3,14 @@ using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.Security;
-using Rainbow.Context;
 using Rainbow.Framework;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Exceptions;
-using Rainbow.Framework.Scheduler;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using History=Rainbow.Framework.History;
-using Path=System.IO.Path;
-using Reader=Rainbow.Context.Reader;
 
 namespace Rainbow.App_Code
 {
@@ -79,10 +75,10 @@ namespace Rainbow.App_Code
             if (executionFilePath != Config.InstallerRedirect.ToLower() &&
                 executionFilePath != "~/webresource.axd")
             {
-                bool isUpToDate = RainbowContext.Current.CheckDatabaseVersion(VersionController.Instance, Config.DatabaseUpdateRedirect);
+                bool isUpToDate = VersionController.Instance.CheckDatabaseVersion(Config.DatabaseUpdateRedirect);
                 if (isUpToDate)
                 {
-                    RainbowContext.Current.CalculatePortalResponse();
+                    PortalProvider.Instance.CalculatePortalResponse();
                 }
             }
         }
@@ -100,13 +96,12 @@ namespace Rainbow.App_Code
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
-            Reader contextReader = new Reader(new WebContextReader());
-            HttpContext context = contextReader.HttpContext;
+            HttpContext context = RainbowContext.Current.HttpContext;
 
             if (context.Items["PortalSettings"] != null) //PortalProvider.Instance.CurrentPortal
             {
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) context.Items["PortalSettings"];
+                Portal portalSettings = (Portal) context.Items["PortalSettings"];
 
                 // Auto-login a user who has a portal Alias login cookie
                 // Try to authenticate the user with the cookie value
@@ -214,7 +209,7 @@ namespace Rainbow.App_Code
             {
                 try
                 {
-                    string newDir = Path.Combine(Framework.Settings.Path.ApplicationPhysicalPath, "_createnewdir");
+                    string newDir = System.IO.Path.Combine(Framework.Path.ApplicationPhysicalPath, "_createnewdir");
                     if (!Directory.Exists(newDir))
                     {
                         Directory.CreateDirectory(newDir);
@@ -247,8 +242,8 @@ namespace Rainbow.App_Code
 					if (context.Request.ApplicationPath.Length > 0)
 						baseDir = context.Request.ApplicationPath;
 					baseDir = Server.MapPath(baseDir);
-					string binDir = Path.Combine(baseDir, "bin");
-                    string resDir = Path.Combine(baseDir, "App_GlobalResources");
+					string binDir = System.IO.Path.Combine(baseDir, "bin");
+                    string resDir = System.IO.Path.Combine(baseDir, "App_GlobalResources");
                     // Try to get KeyStore, if not found set defaults
                     //string dllName = Assembly.GetExecutingAssembly().Location + Assembly.GetExecutingAssembly().FullName + ".dll";
 
@@ -297,12 +292,7 @@ namespace Rainbow.App_Code
             //Start scheduler
             if (Config.SchedulerEnable)
             {
-                PortalProvider.Instance.Scheduler = CachedScheduler.GetScheduler(
-                    HttpContext.Current.Server.MapPath(Framework.Settings.Path.ApplicationRoot),
-                    Config.SqlConnectionString,
-                    Config.SchedulerPeriod,
-                    Config.SchedulerCacheSize);
-                PortalProvider.Instance.Scheduler.Start();
+                PortalProvider.Instance.StartScheduler();
             }
             // Start proxy
             if (Config.UseProxyServerForServerWebRequests)

@@ -15,7 +15,7 @@ using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI;
 using Localize = Rainbow.Framework.Web.UI.WebControls.Localize;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Documentation
 {

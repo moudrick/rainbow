@@ -4,6 +4,7 @@ using System.Text;
 using Rainbow.Framework;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -42,7 +43,7 @@ namespace Rainbow.Content.Web.Modules
                     EditPanel.Visible = false;
                 }
 
-                txtEMail.Text = RainbowContext.CurrentUser.Identity.Email;
+                txtEMail.Text = RainbowPrincipal.CurrentUser.Identity.Email;
             }
 
             if (!(DescText == null) && DescText.Length != 0)
@@ -78,7 +79,7 @@ namespace Rainbow.Content.Web.Modules
                 txtBody.Text + "<br><br>" +
                 General.GetString("SENDTHTS_NAME", "Name", this) + ": " + txtName.Text + "<br>" +
                 General.GetString("SENDTHTS_REMAIL", "Real EMail Address", this) + ": " +
-                RainbowContext.CurrentUser.Identity.Email + "<br><br>" +
+                RainbowPrincipal.CurrentUser.Identity.Email + "<br><br>" +
                 strServerVariables;
 
             SmtpClient smtp = new SmtpClient(Config.SmtpServer);
@@ -124,13 +125,13 @@ namespace Rainbow.Content.Web.Modules
             setEMail.Required = true;
             setEMail.Value = string.Empty;
             setEMail.Order = 1;
-            _baseSettings.Add("EMail", setEMail);
+            baseSettings.Add("EMail", setEMail);
 
             SettingItem setDescription = new SettingItem(new StringDataType());
             setDescription.Required = true;
             setDescription.Value = General.GetString("SENDTHTS_DES_TXT", "Write a description here...", this);
             setDescription.Order = 2;
-            _baseSettings.Add("Description", setDescription);
+            baseSettings.Add("Description", setDescription);
         }
 
         #region Web Form Designer generated code

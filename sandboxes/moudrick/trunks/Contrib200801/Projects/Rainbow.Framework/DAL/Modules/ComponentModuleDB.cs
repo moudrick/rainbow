@@ -1,10 +1,7 @@
 using System.Data;
 using System.Data.SqlClient;
-
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Web.UI.WebControls;
-using Rainbow.Framework;
 using Rainbow.Framework.Data;
+
 namespace Rainbow.Framework.Content.Data
 {
 	public class ComponentModuleDB
@@ -17,7 +14,7 @@ namespace Rainbow.Framework.Content.Data
 		public SqlDataReader GetComponentModule(int ModuleID)
 		{
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_GetComponentModule", myConnection);
 			myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -44,7 +41,7 @@ namespace Rainbow.Framework.Content.Data
 		public void UpdateComponentModule(int ModuleID, string CreatedByUser, string Title, string Component)
 		{
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_UpdateComponentModule", myConnection);
 			myCommand.CommandType = CommandType.StoredProcedure;
 

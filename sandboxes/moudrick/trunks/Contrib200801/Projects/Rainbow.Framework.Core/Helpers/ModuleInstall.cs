@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Helpers
 {

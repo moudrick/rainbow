@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
 using Rainbow.Framework;
-using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -39,7 +38,7 @@ namespace Rainbow.AdminAll
                 }
 
                 // Obtain PortalSettings of this Portal
-                PortalSettings currentPortalSettings = PortalProvider.Instance.InstantiateNewPortalSettings(currentPortalID);
+                Portal currentPortalSettings = PortalProvider.Instance.InstantiateNewPortalSettings(currentPortalID);
 
                 // If this is the first visit to the page, populate the site data
                 if (!Page.IsPostBack)
@@ -104,7 +103,7 @@ namespace Rainbow.AdminAll
         private void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
         {
             SettingsTable edt = (SettingsTable) sender;
-            RainbowContext.Current.UpdatePortalSetting(edt.ObjectID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
+            PortalProvider.Instance.UpdatePortalSetting(edt.ObjectID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
 
         #region Web Form Designer generated code

@@ -12,7 +12,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
     public class PageKeyPhrase : Label
     {
         // Obtain PortalSettings from Current Context
-        private PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+        private Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
         private string _tabKeyPhrase;
         private string currentLanguage;
 

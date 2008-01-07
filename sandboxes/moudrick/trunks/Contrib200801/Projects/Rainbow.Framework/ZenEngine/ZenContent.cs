@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
@@ -94,7 +93,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             innerDataSource = new ArrayList();
 
             // Obtain PortalSettings from Current Context
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             // Loop through each entry in the configuration system for this tab
             // Ensure that the visiting user has access to view the module

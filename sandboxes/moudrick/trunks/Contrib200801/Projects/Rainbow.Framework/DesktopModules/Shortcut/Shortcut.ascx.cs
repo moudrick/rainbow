@@ -49,7 +49,7 @@ namespace Rainbow.Content.Web.Modules
             if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
             {
                 //Do not remove these checks!! It fails installing modules on startup
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
                 int p = portalSettings.PortalID;
 
@@ -60,7 +60,7 @@ namespace Rainbow.Content.Web.Modules
                 linkedModule.Required = true;
                 linkedModule.Order = 0;
                 linkedModule.Value = "0";
-                _baseSettings.Add("LinkedModule", linkedModule);
+                baseSettings.Add("LinkedModule", linkedModule);
             }
         }
 

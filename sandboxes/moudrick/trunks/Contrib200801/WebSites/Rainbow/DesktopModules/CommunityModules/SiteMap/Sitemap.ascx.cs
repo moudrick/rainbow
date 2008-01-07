@@ -9,7 +9,6 @@ using Rainbow.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -40,42 +39,42 @@ namespace Rainbow.Content.Web.Modules
             //Bind to Tab setting
             SettingItem BindToTab = new SettingItem(new BooleanDataType());
             BindToTab.Value = "false";
-            _baseSettings.Add("BindToTab", BindToTab);
+            baseSettings.Add("BindToTab", BindToTab);
 
             SettingItem showTabID = new SettingItem(new IntegerDataType());
             showTabID.Required = true;
             showTabID.Value = "0";
             showTabID.MinValue = 0;
             showTabID.MaxValue = int.MaxValue;
-            _baseSettings.Add("ShowTabID", showTabID);
+            baseSettings.Add("ShowTabID", showTabID);
 
             SettingItem NodeIcon = new SettingItem(new StringDataType());
             NodeIcon.EnglishName = "Node Icon";
             NodeIcon.Required = false;
             NodeIcon.Order = 5;
             NodeIcon.Value = "sm_node.gif";
-            _baseSettings.Add("NodeIcon", NodeIcon);
+            baseSettings.Add("NodeIcon", NodeIcon);
 
             SettingItem RootIcon = new SettingItem(new StringDataType());
             RootIcon.EnglishName = "Root Icon";
             RootIcon.Required = false;
             RootIcon.Order = 6;
             RootIcon.Value = "sm_rootnode.gif";
-            _baseSettings.Add("RootIcon", RootIcon);
+            baseSettings.Add("RootIcon", RootIcon);
 
             SettingItem IconWidth = new SettingItem(new IntegerDataType());
             IconWidth.Required = true;
             IconWidth.Value = "20";
             IconWidth.MinValue = 0;
             IconWidth.MaxValue = int.MaxValue;
-            _baseSettings.Add("IconWidth", IconWidth);
+            baseSettings.Add("IconWidth", IconWidth);
 
             SettingItem IconHeight = new SettingItem(new IntegerDataType());
             IconHeight.Required = true;
             IconHeight.Value = "20";
             IconHeight.MinValue = 0;
             IconHeight.MaxValue = int.MaxValue;
-            _baseSettings.Add("IconHeight", IconHeight);
+            baseSettings.Add("IconHeight", IconHeight);
 
             // no viewstate needed
             EnableViewState = false;
@@ -230,7 +229,7 @@ namespace Rainbow.Content.Web.Modules
         {
             bool currentTabOnly = (Bind == BindOption.BindOptionCurrentChilds);
 
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             int level = 0;
 

@@ -7,6 +7,7 @@ using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -140,14 +141,14 @@ namespace Rainbow.Content.Web.Modules
                 if (ItemID == 0)
                 {
                     // Add the announcement within the Announcements table
-                    announcementDB.AddAnnouncement(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email,
+                    announcementDB.AddAnnouncement(ModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email,
                                                    TitleField.Text, DateTime.Parse(ExpireField.Text), DesktopText.Text,
                                                    MoreLinkField.Text, MobileMoreField.Text);
                 }
                 else
                 {
                     // Update the announcement within the Announcements table
-                    announcementDB.UpdateAnnouncement(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email,
+                    announcementDB.UpdateAnnouncement(ModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email,
                                                       TitleField.Text, DateTime.Parse(ExpireField.Text),
                                                       DesktopText.Text, MoreLinkField.Text, MobileMoreField.Text);
                 }

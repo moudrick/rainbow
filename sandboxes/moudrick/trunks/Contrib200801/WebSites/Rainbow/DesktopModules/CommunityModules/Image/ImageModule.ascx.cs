@@ -1,7 +1,6 @@
 using System;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -67,11 +66,11 @@ namespace Rainbow.Content.Web.Modules
             SettingItemGroup group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             int groupBase = (int) group;
 
-            SettingItem src = new SettingItem(new UploadedFileDataType()); //PortalUrlDataType
+            SettingItem src = new SettingItem(new UploadedFileDataType()); //PortalUrl
             src.Required = true;
             src.Group = group;
             src.Order = groupBase + 25; //1;
-            _baseSettings.Add("src", src);
+            baseSettings.Add("src", src);
 
             SettingItem width = new SettingItem(new IntegerDataType());
             width.Required = true;
@@ -80,7 +79,7 @@ namespace Rainbow.Content.Web.Modules
             width.Value = "150";
             width.Group = group;
             width.Order = groupBase + 30; //2;
-            _baseSettings.Add("width", width);
+            baseSettings.Add("width", width);
 
             SettingItem height = new SettingItem(new IntegerDataType());
             height.Required = true;
@@ -89,7 +88,7 @@ namespace Rainbow.Content.Web.Modules
             height.Value = "250";
             height.Group = group;
             height.Order = groupBase + 35; //1;
-            _baseSettings.Add("height", height);
+            baseSettings.Add("height", height);
         }
 
         #region Web Form Designer generated code

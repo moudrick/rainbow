@@ -101,12 +101,12 @@ namespace Rainbow.Framework
         /// <returns></returns>
         public static string GetStringResource(string resourceID, string[] localize)
         {
-            string res = General.GetString(resourceID);
+            string res = GetString(resourceID);
 
             for (int i = 0; i <= localize.GetUpperBound(0); i++)
             {
                 string thisparam = "%" + i + "%";
-                res = res.Replace(thisparam, General.GetString(localize[i]));
+                res = res.Replace(thisparam, GetString(localize[i]));
             }
             return res;
         }

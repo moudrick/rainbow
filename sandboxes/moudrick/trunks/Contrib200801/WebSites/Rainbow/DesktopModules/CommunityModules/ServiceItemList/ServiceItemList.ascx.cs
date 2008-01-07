@@ -4,8 +4,8 @@ using Rainbow.Framework;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Services;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -98,7 +98,7 @@ namespace Rainbow.Content.Web.Modules
                 Guid userID = Guid.Empty;
 
                 UsersDB u = new UsersDB();
-                RainbowUser s = u.GetSingleUser(RainbowContext.CurrentUser.Identity.Email);
+                RainbowUser s = u.GetSingleUser(RainbowPrincipal.CurrentUser.Identity.Email);
                 try
                 {                    
                         userID = (Guid)s.ProviderUserKey;
@@ -346,18 +346,18 @@ namespace Rainbow.Content.Web.Modules
             setURL.Order = 1;
             setURL.Required = true;
             setURL.Value = "http://www.rainbowportal.net/";
-            _baseSettings.Add("URL", setURL);
+            baseSettings.Add("URL", setURL);
 
             SettingItem setPortalAlias = new SettingItem(new StringDataType());
             setPortalAlias.Order = 2;
             setPortalAlias.Required = false;
             setPortalAlias.Value = string.Empty;
-            _baseSettings.Add("PortalAlias", setPortalAlias);
+            baseSettings.Add("PortalAlias", setPortalAlias);
 
             SettingItem setLocalMode = new SettingItem(new BooleanDataType());
             setLocalMode.Order = 3;
             setLocalMode.Value = "false";
-            _baseSettings.Add("LocalMode", setLocalMode);
+            baseSettings.Add("LocalMode", setLocalMode);
 
             SettingItem setModuleType =
                 new SettingItem(
@@ -366,7 +366,7 @@ namespace Rainbow.Content.Web.Modules
             setModuleType.Order = 4;
             setModuleType.Required = true;
             setModuleType.Value = "All";
-            _baseSettings.Add("ModuleType", setModuleType);
+            baseSettings.Add("ModuleType", setModuleType);
 
             SettingItem setMaxHits = new SettingItem(new IntegerDataType());
             setMaxHits.Order = 5;
@@ -374,111 +374,111 @@ namespace Rainbow.Content.Web.Modules
             setMaxHits.Value = "20";
             setMaxHits.MinValue = 1;
             setMaxHits.MaxValue = 1000;
-            _baseSettings.Add("MaxHits", setMaxHits);
+            baseSettings.Add("MaxHits", setMaxHits);
 
             SettingItem setShowID = new SettingItem(new BooleanDataType());
             setShowID.Order = 6;
             setShowID.Value = "false";
-            _baseSettings.Add("ShowID", setShowID);
+            baseSettings.Add("ShowID", setShowID);
 
             SettingItem setSearchString = new SettingItem(new StringDataType());
             setSearchString.Order = 7;
             setSearchString.Required = false;
             setSearchString.Value = "localization";
-            _baseSettings.Add("SearchString", setSearchString);
+            baseSettings.Add("SearchString", setSearchString);
 
             SettingItem setSearchField = new SettingItem(new StringDataType());
             setSearchField.Order = 8;
             setSearchField.Required = false;
             setSearchField.Value = string.Empty;
-            _baseSettings.Add("SearchField", setSearchField);
+            baseSettings.Add("SearchField", setSearchField);
 
             SettingItem setSortField =
                 new SettingItem(new ListDataType("ModuleName;Title;CreatedByUser;CreatedDate;TabName"));
             setSortField.Order = 9;
             setSortField.Required = true;
             setSortField.Value = "ModuleName";
-            _baseSettings.Add("SortField", setSortField);
+            baseSettings.Add("SortField", setSortField);
 
             SettingItem setSortDirection = new SettingItem(new ListDataType("ASC;DESC"));
             setSortDirection.Order = 10;
             setSortDirection.Required = true;
             setSortDirection.Value = "ASC";
-            _baseSettings.Add("SortDirection", setSortDirection);
+            baseSettings.Add("SortDirection", setSortDirection);
 
             SettingItem setMobileOnly = new SettingItem(new BooleanDataType());
             setMobileOnly.Order = 11;
             setMobileOnly.Value = "false";
-            _baseSettings.Add("MobileOnly", setMobileOnly);
+            baseSettings.Add("MobileOnly", setMobileOnly);
 
             SettingItem setIDList = new SettingItem(new StringDataType());
             setIDList.Order = 12;
             setIDList.Required = false;
             setIDList.Value = string.Empty;
-            _baseSettings.Add("IDList", setIDList);
+            baseSettings.Add("IDList", setIDList);
 
             SettingItem setIDListType = new SettingItem(new ListDataType("Item;Module;Tab"));
             setIDListType.Order = 13;
             setIDListType.Required = true;
             setIDListType.Value = "Tab";
-            _baseSettings.Add("IDListType", setIDListType);
+            baseSettings.Add("IDListType", setIDListType);
 
             SettingItem setTag = new SettingItem(new IntegerDataType());
             setTag.Order = 14;
             setTag.Required = true;
             setTag.Value = "0";
-            _baseSettings.Add("Tag", setTag);
+            baseSettings.Add("Tag", setTag);
 
             //SettingItem showImage = new SettingItem(new BooleanDataType());
             //showImage.Order = 15;
             //showImage.Value = "True";
-            //this._baseSettings.Add("ShowImage", showImage);
+            //this.baseSettings.Add("ShowImage", showImage);
 
             SettingItem setShowModuleFriendlyName = new SettingItem(new BooleanDataType());
             setShowModuleFriendlyName.Order = 16;
             setShowModuleFriendlyName.Value = "true";
-            _baseSettings.Add("ShowModuleFriendlyName", setShowModuleFriendlyName);
+            baseSettings.Add("ShowModuleFriendlyName", setShowModuleFriendlyName);
 
             SettingItem setShowSearchTitle = new SettingItem(new BooleanDataType());
             setShowSearchTitle.Order = 17;
             setShowSearchTitle.Value = "true";
-            _baseSettings.Add("ShowSearchTitle", setShowSearchTitle);
+            baseSettings.Add("ShowSearchTitle", setShowSearchTitle);
 
             SettingItem setShowDescription = new SettingItem(new BooleanDataType());
             setShowDescription.Order = 18;
             setShowDescription.Value = "true";
-            _baseSettings.Add("ShowDescription", setShowDescription);
+            baseSettings.Add("ShowDescription", setShowDescription);
 
             SettingItem setShowCreatedByUser = new SettingItem(new BooleanDataType());
             setShowCreatedByUser.Order = 19;
             setShowCreatedByUser.Value = "true";
-            _baseSettings.Add("ShowCreatedByUser", setShowCreatedByUser);
+            baseSettings.Add("ShowCreatedByUser", setShowCreatedByUser);
 
             SettingItem setShowCreatedDate = new SettingItem(new BooleanDataType());
             setShowCreatedDate.Order = 20;
             setShowCreatedDate.Value = "true";
-            _baseSettings.Add("ShowCreatedDate", setShowCreatedDate);
+            baseSettings.Add("ShowCreatedDate", setShowCreatedDate);
 
             SettingItem setShowLink = new SettingItem(new BooleanDataType());
             setShowLink.Order = 21;
             setShowLink.Value = "false";
-            _baseSettings.Add("ShowLink", setShowLink);
+            baseSettings.Add("ShowLink", setShowLink);
 
             SettingItem setShowTabName = new SettingItem(new BooleanDataType());
             setShowTabName.Order = 22;
             setShowTabName.Value = "true";
-            _baseSettings.Add("ShowTabName", setShowTabName);
+            baseSettings.Add("ShowTabName", setShowTabName);
 
             SettingItem setShowModuleTitle = new SettingItem(new BooleanDataType());
             setShowModuleTitle.Order = 23;
             setShowModuleTitle.Value = "false";
-            _baseSettings.Add("ShowModuleTitle", setShowModuleTitle);
+            baseSettings.Add("ShowModuleTitle", setShowModuleTitle);
 
             SettingItem setTarget = new SettingItem(new ListDataType("blank;parent;self;top"));
             setTarget.Order = 24;
             setTarget.Required = true;
             setTarget.Value = "blank";
-            _baseSettings.Add("Target", setTarget);
+            baseSettings.Add("Target", setTarget);
 
             /* Jakob says: later...
 			SettingItem setUserName = new SettingItem(new StringDataType());

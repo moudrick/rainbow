@@ -170,7 +170,8 @@ namespace Rainbow.Framework.Helpers
 				}
 				catch (Exception e)
 				{
-					ErrorHandler.Publish(LogLevel.Error, "Error in Search:SearchPortal()-> " + e.ToString() + " " + select.ToString(), e);
+					ErrorHandler.Publish(LogLevel.Error, 
+                        "Error in Search:SearchPortal()-> " + e + " " + select, e);
 					throw new Exception("Error in Search selection.");
 				}
 			}
@@ -194,7 +195,8 @@ namespace Rainbow.Framework.Helpers
 
 					while (drModules.Read())
 					{
-						ddList.Items.Add(new ListItem(drModules["FriendlyName"].ToString(), drModules["AssemblyName"].ToString() + ";" + drModules["ClassName"].ToString()));
+						ddList.Items.Add(new ListItem(drModules["FriendlyName"].ToString(), 
+                            drModules["AssemblyName"] + ";" + drModules["ClassName"]));
 					}
 				}
 
@@ -215,7 +217,7 @@ namespace Rainbow.Framework.Helpers
 		{
 
 			//  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_GetSearchableModules", myConnection);
 					myCommand.CommandType = CommandType.StoredProcedure;
 					//  Add Parameters to SPROC
@@ -419,7 +421,7 @@ namespace Rainbow.Framework.Helpers
 			SqlDataReader dr = DBHelper.GetDataReader
 				("SELECT DISTINCT rb_ModuleSettings.SettingValue " +
 				"FROM rb_ModuleSettings INNER JOIN rb_Modules ON rb_ModuleSettings.ModuleID = rb_Modules.ModuleID INNER JOIN rb_ModuleDefinitions ON rb_Modules.ModuleDefID = rb_ModuleDefinitions.ModuleDefID " + 
-				"WHERE (rb_ModuleDefinitions.PortalID = " + portalID.ToString()  + ") AND (rb_ModuleSettings.SettingName = N'TopicName') AND (rb_ModuleSettings.SettingValue <> '') ORDER BY rb_ModuleSettings.SettingValue");
+				"WHERE (rb_ModuleDefinitions.PortalID = " + portalID  + ") AND (rb_ModuleSettings.SettingName = N'TopicName') AND (rb_ModuleSettings.SettingValue <> '') ORDER BY rb_ModuleSettings.SettingValue");
 
 			try
 			{

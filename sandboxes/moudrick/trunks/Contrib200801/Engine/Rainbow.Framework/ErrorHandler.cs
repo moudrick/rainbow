@@ -1,15 +1,15 @@
 using System;
 using System.Collections;
-using System.Data.SqlClient;
+//using System.Data.SqlClient;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
-using Rainbow.Framework.Core;
-using Rainbow.Framework.Exceptions;
+using Rainbow.Framework.Core; //RainbowContext
+using Rainbow.Framework.Exceptions; //all
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Settings.Cache;
+using Rainbow.Framework.Settings; //Config
+using Rainbow.Framework.Settings.Cache; //CurrentCache
 
 namespace Rainbow.Framework
 {
@@ -47,7 +47,7 @@ namespace Rainbow.Framework
         {
             try
             {
-                HttpContext httpContext = HttpContext.Current;
+                HttpContext httpContext = RainbowContext.Current.HttpContext;
                 if (httpContext.Request != null &&
                     httpContext.Request.Url.AbsolutePath.EndsWith(
                         Config.SmartErrorRedirect.Substring(2)))
@@ -67,7 +67,8 @@ namespace Rainbow.Framework
                 try
                 {
                     LogLevel logLevel;
-                    if (lastError is DatabaseUnreachableException || lastError is SqlException)
+                    if (lastError is DatabaseUnreachableException
+                        || lastError.GetType().FullName.Contains("System.Data.SqlClient.SqlException") )
                     {
                         logLevel = LogLevel.Fatal;
                         redirectUrl = Config.DatabaseErrorRedirect;
@@ -93,11 +94,11 @@ namespace Rainbow.Framework
                         redirectUrl = Config.LockRedirect;
                         lastError = null;
                     }
-                    else if (lastError is RainbowRedirect)
+                    else if (lastError is RainbowRedirectException)
                     {
-                        logLevel = ((RainbowRedirect) lastError).Level;
-                        httpStatusCode = ((RainbowRedirect) lastError).StatusCode;
-                        redirectUrl = ((RainbowRedirect) lastError).RedirectUrl;
+                        logLevel = ((RainbowRedirectException) lastError).Level;
+                        httpStatusCode = ((RainbowRedirectException) lastError).StatusCode;
+                        redirectUrl = ((RainbowRedirectException) lastError).RedirectUrl;
                     }
                     else if (lastError is RainbowException)
                     {

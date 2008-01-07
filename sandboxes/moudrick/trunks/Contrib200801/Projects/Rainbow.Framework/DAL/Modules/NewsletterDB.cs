@@ -1,13 +1,12 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
-using System.Web.Mail;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework;
-using Rainbow.Framework.Web.UI.WebControls;
 using Rainbow.Framework.Data;
+
 namespace Rainbow.Framework.Content.Data
 {
     /// <summary>
@@ -27,7 +26,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetUsersNewsletter(int portalID, int MaxUsers, int MinSend) 
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetUsersNewsletter", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -63,7 +62,7 @@ namespace Rainbow.Framework.Content.Data
         public int GetUsersNewsletterCount(int portalID, int MaxUsers, int MinSend) 
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetUsersNewsletter", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -108,7 +107,7 @@ namespace Rainbow.Framework.Content.Data
         public void SendNewsletterTo(int portalID, string EMail) 
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_SendNewsletterTo", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -150,7 +149,7 @@ namespace Rainbow.Framework.Content.Data
         public string SendMessage(string From, string To, string Name, string Pwd, string LoginPage, string Subject, string Body, bool Send, bool HtmlMode, bool breakLines)
         {
 			// Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+			Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             string LoginUrl;
             //If an alternate home is given use this

@@ -19,7 +19,7 @@ using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -46,35 +46,35 @@ namespace Rainbow.Content.Web.Modules
             src.Required = true;
             src.Group = group;
             src.Order = groupBase + 20; //1;
-            _baseSettings.Add("src", src);
+            baseSettings.Add("src", src);
 
             SettingItem width = new SettingItem(new StringDataType());
             //	width.MinValue = 1;
             //	width.MaxValue = 400;
             width.Group = group;
             width.Order = groupBase + 25; //2;
-            _baseSettings.Add("width", width);
+            baseSettings.Add("width", width);
 
             SettingItem height = new SettingItem(new StringDataType());
             //	height.MinValue = 1;
             //	height.MaxValue = 200;
             height.Group = group;
             height.Order = groupBase + 30; //3;
-            _baseSettings.Add("height", height);
+            baseSettings.Add("height", height);
 
             SettingItem backColor = new SettingItem(new StringDataType());
             backColor.Required = false;
             backColor.Value = "#FFFFFF";
             backColor.Group = group;
             backColor.Order = groupBase + 35; //4;
-            _baseSettings.Add("backcolor", backColor);
+            baseSettings.Add("backcolor", backColor);
 
-            SettingItem FlashPath = new SettingItem(new PortalUrlDataType());
+            SettingItem FlashPath = new SettingItem(new PortalUrl());
             FlashPath.Required = true;
             FlashPath.Value = "FlashGallery";
             FlashPath.Group = group;
             FlashPath.Order = groupBase + 40; //5;
-            _baseSettings.Add("FlashPath", FlashPath);
+            baseSettings.Add("FlashPath", FlashPath);
         }
 
         /// <summary>

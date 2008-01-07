@@ -1,3 +1,4 @@
+<%@ Import namespace="Rainbow.Framework.Security"%>
 <%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
 <%@ control inherits="Rainbow.Content.Web.Modules.OneFileModule" language="c#" %>
 <%@ import namespace="System.Web.Mail" %>
@@ -31,7 +32,7 @@
                 Message.Text = "Debug info: " + yahooGroupName + " - " + yahooServerName;
         }
 
-        email.Text = RainbowContext.CurrentUser.Identity.Email;
+        email.Text = RainbowPrincipal.CurrentUser.Identity.Email;
     }
 
     void SubscribeBtn_Click(Object sender, EventArgs e)

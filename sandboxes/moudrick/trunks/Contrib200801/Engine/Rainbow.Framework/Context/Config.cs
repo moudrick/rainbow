@@ -1,11 +1,11 @@
 using System;
 using System.Configuration;
-using System.Data.SqlClient;
 using System.Globalization;
 using System.Net;
 using System.Web;
-using Rainbow.Framework.Core;
-using Rainbow.Framework.Settings.Cache;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Settings.Cache; //CurrentCache - together
+using Rainbow.Framework.Core; //RainbowContext - together
 
 namespace Rainbow.Framework.Settings
 {
@@ -17,23 +17,21 @@ namespace Rainbow.Framework.Settings
 	public sealed class Config
 	{
 		// isolates Config reader for testing purposes
-		private static Reader config = new Reader(new ConfigReader());
+        static readonly IConfigStrategy config = new ConfigurationManagerStrategy();
 
 		Config()
 		{
 			//SetReader();
 		}
 
-		#region public static methods
-
-		/// <summary>
-		/// Sets reader for all Get... methods in this class
-		/// </summary>
-		/// <param name="reader">an instance of a Concrete Strategy Reader</param>
-		public static void SetReader(Reader reader)
-		{
-			config = reader;
-		}
+//		/// <summary>
+//		/// Sets reader for all Get... methods in this class
+//		/// </summary>
+//		/// <param name="reader">an instance of a Concrete IConfigStrategy Reader</param>
+//		public static void SetReader(Reader reader)
+//		{
+//			config = reader;
+//		}
 
 		/// <summary>
 		/// Converts string value to integer value, returning parsed signed integer. 
@@ -231,10 +229,6 @@ namespace Rainbow.Framework.Settings
 			return HttpUtility.UrlEncode(item);
 		}
 
-		#endregion
-
-		#region public static members
-
 		/// <summary>
 		/// The default portal alias
 		/// <br/>
@@ -264,7 +258,7 @@ namespace Rainbow.Framework.Settings
 			{
                 // TODO: ENABLE Multi DB SUpport?
                 
-				string keyConnection = String.Concat(RainbowContext.Current.UniqueID, "_ConnectionString");
+				string keyConnection = string.Concat(RainbowContext.Current.UniqueID, "_ConnectionString");
 
 			    // check cache first
 				if (!CurrentCache.Exists(keyConnection)) // not in cache
@@ -295,29 +289,7 @@ namespace Rainbow.Framework.Settings
 			}
 		}
 
-        /// <summary>
-        /// Returns a new SqlConnection object using current ConnectionString
-        /// </summary>
-        public static SqlConnection SqlConnectionString
-        {
-            get
-            {
-                SqlConnection myConnection = new SqlConnection();
-                try
-                {
-                    myConnection.ConnectionString = ConnectionString;
-                }
-                catch (System.ArgumentException) //connectionstring not well formed
-                {
-                    //redirect to installer
-                    //HttpContext.Current.Response.Redirect(InstallerRedirect);
-                }
-                return myConnection;
-            }
-        }
-
-
-		/// <summary>
+	    /// <summary>
 		/// Removes "www." when attempting to derive alias from hostname
 		/// <br/>
 		/// Default value: true</summary>
@@ -962,7 +934,5 @@ namespace Rainbow.Framework.Settings
 		{
 			get { return GetInteger("SettingsGroupingHeight", 350); }
 		}
-
-		#endregion
 	}
 }

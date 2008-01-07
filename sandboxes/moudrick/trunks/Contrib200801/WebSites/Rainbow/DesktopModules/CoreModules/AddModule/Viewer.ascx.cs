@@ -9,7 +9,7 @@ using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
 using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules.AddModule
 {

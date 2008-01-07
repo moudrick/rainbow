@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Xml;
 using Rainbow.Framework.Data;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using System.Collections.Generic;
 
@@ -80,7 +79,7 @@ namespace Rainbow.Framework.Site.Data
                            bool showMobile, string mobilePageName)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_AddTab", myConnection))
                 {
@@ -103,7 +102,7 @@ namespace Rainbow.Framework.Site.Data
 
                     //Fixes tab name to long
                     if (pageName.Length > 50) parameterTabName.Value = pageName.Substring(0, 49);
-                    else parameterTabName.Value = pageName.ToString();
+                    else parameterTabName.Value = pageName;
                     myCommand.Parameters.Add(parameterTabName);
 
                     SqlParameter parameterTabOrder = new SqlParameter("@PageOrder", SqlDbType.Int, 4);
@@ -154,7 +153,7 @@ namespace Rainbow.Framework.Site.Data
         public void DeletePage(int pageID)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_DeleteTab", myConnection))
                 {
@@ -200,7 +199,7 @@ namespace Rainbow.Framework.Site.Data
                                string authorizedRoles, string mobilePageName, bool showMobile)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_UpdateTab", myConnection))
                 {
@@ -223,7 +222,7 @@ namespace Rainbow.Framework.Site.Data
 
                     if (pageName.Length > 50) parameterTabName.Value = pageName.Substring(0, 49);
 
-                    else parameterTabName.Value = pageName.ToString();
+                    else parameterTabName.Value = pageName;
                     myCommand.Parameters.Add(parameterTabName);
                     SqlParameter parameterTabOrder = new SqlParameter("@PageOrder", SqlDbType.Int, 4);
                     parameterTabOrder.Value = pageOrder;
@@ -274,7 +273,7 @@ namespace Rainbow.Framework.Site.Data
         public void UpdatePageOrder(int pageID, int pageOrder)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_UpdateTabOrder", myConnection))
                 {
@@ -313,7 +312,7 @@ namespace Rainbow.Framework.Site.Data
         public void UpdatePageParent(int pageID, int parentPageID, int portalID)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_UpdateTabParent", myConnection))
                 {
@@ -359,7 +358,7 @@ namespace Rainbow.Framework.Site.Data
             int ret = 0;
 
             string sql = "Select PageID  From rb_Pages  Where " +
-                         "(PortalID = " + portalID.ToString() + ") and " +
+                         "(PortalID = " + portalID + ") and " +
                          "(ParentPageID is null) and  " +
                          "(PageID > 0) and ( " +
                          "PageOrder < 2)";
@@ -378,7 +377,7 @@ namespace Rainbow.Framework.Site.Data
         public ArrayList GetPageCrumbs(int pageID)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetTabCrumbs", myConnection))
                 {
@@ -434,7 +433,7 @@ namespace Rainbow.Framework.Site.Data
         public SqlDataReader GetPagesByPortal(int portalID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetTabsByPortal", myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -457,9 +456,9 @@ namespace Rainbow.Framework.Site.Data
         public DataTable GetPagesFlatTable(int portalID)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
-                string strSQL = "rb_GetPageTree " + portalID.ToString();
+                string strSQL = "rb_GetPageTree " + portalID;
                 SqlDataAdapter da = new SqlDataAdapter(strSQL, myConnection);
 
                 DataTable dt_tbl = new DataTable("Pages");
@@ -486,11 +485,8 @@ namespace Rainbow.Framework.Site.Data
         /// <returns></returns>
         public int GetPageParentID(int portalID, int pageID)
         {
-            string strSQL = "rb_GetPagesParentTabID " + portalID.ToString() + ", " + pageID.ToString();
-            int parentID = 0;
-            // Read the resultset
-            parentID = Convert.ToInt32(DBHelper.ExecuteSQLScalar(strSQL));
-            return parentID;
+            string strSQL = "rb_GetPagesParentTabID " + portalID + ", " + pageID;
+            return Convert.ToInt32(DBHelper.ExecuteSQLScalar(strSQL));
         }
 
         /// <summary>
@@ -501,12 +497,9 @@ namespace Rainbow.Framework.Site.Data
         /// <returns></returns>
         public int GetPageTabOrder(int portalID, int pageID)
         {
-            string strSQL = "select PageOrder from rb_Pages Where (PortalID = " + portalID.ToString() + ") AND (PageID = " +
-                            pageID.ToString() + ")";
-            int t_order = 99990;
-            // Read the resultset
-            t_order = Convert.ToInt32(DBHelper.ExecuteSQLScalar(strSQL));
-            return t_order;
+            string strSQL = "select PageOrder from rb_Pages Where (PortalID = " + 
+                portalID + ") AND (PageID = " + pageID + ")";
+            return Convert.ToInt32(DBHelper.ExecuteSQLScalar(strSQL));
         }
 
         /// <summary>
@@ -517,7 +510,7 @@ namespace Rainbow.Framework.Site.Data
         public ArrayList GetPagesFlat(int portalID)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetTabsFlat", myConnection))
                 {
@@ -566,7 +559,7 @@ namespace Rainbow.Framework.Site.Data
             ArrayList DesktopPages = new ArrayList();
 
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetTabsinTab", myConnection))
                 {
@@ -619,7 +612,7 @@ namespace Rainbow.Framework.Site.Data
         public IList<PageItem> GetPagesParent(int portalID, int pageID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetTabsParent", myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;

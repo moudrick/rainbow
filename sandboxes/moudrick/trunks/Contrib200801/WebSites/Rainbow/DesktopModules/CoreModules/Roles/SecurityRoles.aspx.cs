@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
-using System.Data;
-using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using History = Rainbow.Framework.History;
@@ -43,7 +41,7 @@ namespace Rainbow.Content.Web.Modules {
             base.OnLoad( e );
 
             if ( Request.Params[ "roleID" ] != null ) {
-                roleId = new Guid( ( string )Request.Params[ "roleID" ] );
+                roleId = new Guid( Request.Params[ "roleID" ] );
             }
 
             // If this is the first visit to the page, bind the role data to the datalist

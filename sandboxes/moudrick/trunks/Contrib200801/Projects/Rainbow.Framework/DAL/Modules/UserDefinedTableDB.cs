@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -22,7 +22,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetUserDefinedFields(int ModuleID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetUserDefinedFields", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -45,7 +45,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSingleUserDefinedField(int UserDefinedFieldID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSingleUserDefinedField", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -69,7 +69,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSingleUserDefinedRow(int UserDefinedRowID, int ModuleID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSingleUserDefinedRow", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -95,7 +95,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteUserDefinedField(int UserDefinedFieldID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DeleteUserDefinedField", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -125,7 +125,7 @@ namespace Rainbow.Framework.Content.Data
         public void AddUserDefinedField(int ModuleID, string FieldTitle, bool Visible, string FieldType)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddUserDefinedField", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -167,7 +167,7 @@ namespace Rainbow.Framework.Content.Data
         public void UpdateUserDefinedField(int UserDefinedFieldID, string FieldTitle, bool Visible, string FieldType)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateUserDefinedField", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -207,7 +207,7 @@ namespace Rainbow.Framework.Content.Data
         public DataSet GetUserDefinedRows(int ModuleID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetUserDefinedRows", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -248,7 +248,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteUserDefinedRow(int UserDefinedRowID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DeleteUserDefinedRow", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -279,7 +279,7 @@ namespace Rainbow.Framework.Content.Data
             UserDefinedRowID = 0;
 
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddUserDefinedRow", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -313,7 +313,7 @@ namespace Rainbow.Framework.Content.Data
         public void UpdateUserDefinedRow(int UserDefinedRowID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateUserDefinedRow", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -342,7 +342,7 @@ namespace Rainbow.Framework.Content.Data
         public void UpdateUserDefinedData(int UserDefinedRowID, int UserDefinedFieldID, string FieldValue)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateUserDefinedData", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -378,7 +378,7 @@ namespace Rainbow.Framework.Content.Data
         public void UpdateUserDefinedData(int UserDefinedRowID, int UserDefinedFieldID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateUserDefinedData", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -410,7 +410,7 @@ namespace Rainbow.Framework.Content.Data
         public void UpdateUserDefinedFieldOrder(int UserDefinedFieldID, int Direction)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateUserDefinedFieldOrder", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 

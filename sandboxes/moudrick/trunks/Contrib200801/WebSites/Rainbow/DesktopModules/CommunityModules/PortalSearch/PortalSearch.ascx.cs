@@ -5,9 +5,10 @@ using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Core;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Providers;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using BoundColumn=Rainbow.Framework.Web.UI.WebControls.BoundColumn;
@@ -122,7 +123,7 @@ namespace Rainbow.Content.Web.Modules
                 else
                 {
                     UsersDB u = new UsersDB();
-                    System.Web.Security.MembershipUser s = u.GetSingleUser(RainbowContext.CurrentUser.Identity.Email);
+                    System.Web.Security.MembershipUser s = u.GetSingleUser(RainbowPrincipal.CurrentUser.Identity.Email);
                     userID = (Guid) s.ProviderUserKey;
                 }
 
@@ -317,9 +318,9 @@ namespace Rainbow.Content.Web.Modules
                                 break;
                             case "EC24FABD-FB16-4978-8C81-1ADD39792377": //Products
                                 // Manu
-                                int tabID =
-                                    PortalProvider.Instance.GetRootPage(Convert.ToInt32(strTabID), PortalSettings.DesktopPages).
-                                        PageID;
+                                int tabID = PortalProvider.Instance.GetRootPage(
+                                    Convert.ToInt32(strTabID), PortalSettings.DesktopPages)
+                                        .PageID;
                                 strLink =
                                     HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", tabID,
                                                             "mID=" + strModuleID + "&ItemID=" + strTabID);
@@ -465,7 +466,7 @@ namespace Rainbow.Content.Web.Modules
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:PortalSearch"/> class.
+        /// Initializes a new instance of the <see cref="PortalSearch"/> class.
         /// </summary>
         public PortalSearch()
         {
@@ -474,52 +475,52 @@ namespace Rainbow.Content.Web.Modules
             setSortOrder.Required = true;
             setSortOrder.Value = "ModuleName";
             setSortOrder.Order = 1;
-            _baseSettings.Add("SortOrder", setSortOrder);
+            baseSettings.Add("SortOrder", setSortOrder);
 
             //SettingItem showImage = new SettingItem(new BooleanDataType());
             //showImage.Order = 2;
             //showImage.Value = "True";
-            //this._baseSettings.Add("ShowImage", showImage);
+            //this.baseSettings.Add("ShowImage", showImage);
 
             SettingItem showModuleName = new SettingItem(new BooleanDataType());
             showModuleName.Order = 3;
             showModuleName.Value = "True";
-            _baseSettings.Add("ShowModuleName", showModuleName);
+            baseSettings.Add("ShowModuleName", showModuleName);
 
             SettingItem showSearchTitle = new SettingItem(new BooleanDataType());
             showSearchTitle.Order = 4;
             showSearchTitle.Value = "True";
-            _baseSettings.Add("ShowSearchTitle", showSearchTitle);
+            baseSettings.Add("ShowSearchTitle", showSearchTitle);
 
             SettingItem showAbstract = new SettingItem(new BooleanDataType());
             showAbstract.Order = 5;
             showAbstract.Value = "True";
-            _baseSettings.Add("ShowAbstract", showAbstract);
+            baseSettings.Add("ShowAbstract", showAbstract);
 
             SettingItem showCreatedByUser = new SettingItem(new BooleanDataType());
             showCreatedByUser.Order = 6;
             showCreatedByUser.Value = "True";
-            _baseSettings.Add("ShowCreatedByUser", showCreatedByUser);
+            baseSettings.Add("ShowCreatedByUser", showCreatedByUser);
 
             SettingItem showCreatedDate = new SettingItem(new BooleanDataType());
             showCreatedDate.Order = 7;
             showCreatedDate.Value = "True";
-            _baseSettings.Add("ShowCreatedDate", showCreatedDate);
+            baseSettings.Add("ShowCreatedDate", showCreatedDate);
 
             SettingItem showLink = new SettingItem(new BooleanDataType());
             showLink.Order = 8;
             showLink.Value = "False";
-            _baseSettings.Add("ShowLink", showLink);
+            baseSettings.Add("ShowLink", showLink);
 
             SettingItem showTabName = new SettingItem(new BooleanDataType());
             showTabName.Order = 9;
             showTabName.Value = "True";
-            _baseSettings.Add("ShowTabName", showTabName);
+            baseSettings.Add("ShowTabName", showTabName);
 
             SettingItem showTestInfo = new SettingItem(new BooleanDataType());
             showTestInfo.Order = 10;
             showTestInfo.Value = "False";
-            _baseSettings.Add("ShowTestInfo", showTestInfo);
+            baseSettings.Add("ShowTestInfo", showTestInfo);
 
             SettingItem maxHits = new SettingItem(new IntegerDataType());
             maxHits.Required = true;
@@ -527,32 +528,32 @@ namespace Rainbow.Content.Web.Modules
             maxHits.Value = "100";
             //maxHits.MinValue = 1;
             //maxHits.MaxValue = 1000;
-            _baseSettings.Add("MaxHits", maxHits);
+            baseSettings.Add("MaxHits", maxHits);
 
             SettingItem showModuleTitle = new SettingItem(new BooleanDataType());
             showModuleTitle.Order = 12;
             showModuleTitle.Value = "False";
-            _baseSettings.Add("ShowModuleTitle", showModuleTitle);
+            baseSettings.Add("ShowModuleTitle", showModuleTitle);
 
             SettingItem testUserID = new SettingItem(new IntegerDataType());
             testUserID.Required = true;
             testUserID.Order = 13;
             testUserID.Value = "-1";
-            _baseSettings.Add("TestUserID", testUserID);
+            baseSettings.Add("TestUserID", testUserID);
 
             SettingItem showddModule = new SettingItem(new BooleanDataType());
             showddModule.Value = "true";
             showddModule.Order = 14;
             showddModule.EnglishName = "Show Module list";
             showddModule.Description = "Show the module drop down list.";
-            _baseSettings.Add("showddModule", showddModule);
+            baseSettings.Add("showddModule", showddModule);
 
             SettingItem showddTopic = new SettingItem(new BooleanDataType());
             showddTopic.Value = "true";
             showddTopic.Order = 15;
             showddTopic.EnglishName = "Show Topics list";
             showddTopic.Description = "Show the topics drop down list.";
-            _baseSettings.Add("showddTopic", showddTopic);
+            baseSettings.Add("showddTopic", showddTopic);
 
             //Added by Rob Siera - 19 aug 2004 - Provide default Topic to search for
             SettingItem defaultTopic = new SettingItem(new StringDataType());
@@ -560,7 +561,7 @@ namespace Rainbow.Content.Web.Modules
             defaultTopic.Order = 16;
             defaultTopic.EnglishName = "Default Topic";
             defaultTopic.Description = "Set the default Topic to search.";
-            _baseSettings.Add("defaultTopic", defaultTopic);
+            baseSettings.Add("defaultTopic", defaultTopic);
             //End addition Rob Siera
 
             SettingItem showddField = new SettingItem(new BooleanDataType());
@@ -568,7 +569,7 @@ namespace Rainbow.Content.Web.Modules
             showddField.Order = 17;
             showddField.EnglishName = "Show Field list";
             showddField.Description = "Show the field drop down list.";
-            _baseSettings.Add("showddField", showddField);
+            baseSettings.Add("showddField", showddField);
         }
 
         // Jes1111

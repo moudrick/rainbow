@@ -38,7 +38,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         private void AddRootNode()
         {
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
             PageSettings tabItemsRoot = portalSettings.ActivePage;
 
             using (MenuTreeNode mn = new MenuTreeNode(tabItemsRoot.PageName))
@@ -63,7 +63,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 // get index and id from this page and transmit them
                 // Obtain PortalSettings from Current Context 
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 int tabIDItemsRoot = portalSettings.ActivePage.PageID;
 
                 MenuTreeNode mn = new MenuTreeNode(myTab.PageName);

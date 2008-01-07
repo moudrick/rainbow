@@ -16,7 +16,7 @@ using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Framework.Web.UI {
@@ -436,18 +436,18 @@ namespace Rainbow.Framework.Web.UI {
 
         #region Properties (Portal)
 
-        private PortalSettings _portalSettings;
+        private Portal _portalSettings;
 
         /// <summary>
         /// Stores current portal settings
         /// </summary>
         /// <value>The portal settings.</value>
-        public PortalSettings portalSettings {
+        public Portal portalSettings {
             get {
                 if ( _portalSettings == null ) {
                     // Obtain PortalSettings from Current Context
                     if ( HttpContext.Current != null )
-                        _portalSettings = ( PortalSettings )HttpContext.Current.Items["PortalSettings"];
+                        _portalSettings = ( Portal )HttpContext.Current.Items["PortalSettings"];
                 }
                 return _portalSettings;
             }

@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using ImageButton=Rainbow.Framework.Web.UI.WebControls.ImageButton;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
@@ -302,7 +302,7 @@ namespace Rainbow.Content.Web.Modules
                 select.Append("End\n");
                 select.Append("from rb_Modules\n");
                 select.Append("Inner Join rb_Tabs on rb_Modules.TabID = rb_Tabs.TabID and PortalID=" +
-                              PortalID.ToString() + "\n");
+                              PortalID + "\n");
                 select.Append(
                     "Inner Join rb_ModuleDefinitions on rb_Modules.ModuleDefID = rb_ModuleDefinitions.ModuleDefID\n");
                 select.Append(
@@ -317,7 +317,7 @@ namespace Rainbow.Content.Web.Modules
             select.Append("order by TabName");
             string selectSQL = select.ToString();
 
-            SqlConnection sqlConnection = Config.SqlConnectionString;
+            SqlConnection sqlConnection = DBHelper.SqlConnection;
             SqlDataAdapter sqlCommand = new SqlDataAdapter(selectSQL, sqlConnection);
 
             try
@@ -329,8 +329,8 @@ namespace Rainbow.Content.Web.Modules
             }
             catch (Exception e)
             {
-                Rainbow.Framework.ErrorHandler.Publish(Rainbow.Framework.LogLevel.Error,
-                                                       "Error in Search: " + e.ToString() + " " + select.ToString(), e);
+                ErrorHandler.Publish(LogLevel.Error, 
+                    "Error in Search: " + e + " " + select, e);
                 throw new Exception("Error in Search selection.");
             }
 

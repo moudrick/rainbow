@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Web;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Framework.Localization
@@ -48,7 +47,7 @@ namespace Rainbow.Framework.Localization
             if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
             {
                 //Do not remove these checks!! It fails installing modules on startup
-                PortalSettings _portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal _portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 if (_portalSettings.CustomSettings != null &&
                     _portalSettings.CustomSettings["SITESETTINGS_LANGLIST"] != null)
                     strLangList = _portalSettings.CustomSettings["SITESETTINGS_LANGLIST"].ToString();
@@ -101,7 +100,7 @@ namespace Rainbow.Framework.Localization
             languageSwitchType.Value = ((int) LanguageSwitcherType.VerticalLinksList).ToString();
             languageSwitchType.Order = (int) SettingItemGroup.THEME_LAYOUT_SETTINGS + 910;
             languageSwitchType.Group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
-            _baseSettings.Add("LANGUAGESWITCHER_TYPES", languageSwitchType);
+            baseSettings.Add("LANGUAGESWITCHER_TYPES", languageSwitchType);
 
             // Language Switcher Module - DisplayOptions
             ArrayList languageSwitcherDisplayOptions = new ArrayList();
@@ -123,7 +122,7 @@ namespace Rainbow.Framework.Localization
             languageSwitchFlags.Value = ((int) LanguageSwitcherDisplay.DisplayCultureList).ToString();
             languageSwitchFlags.Order = (int) SettingItemGroup.THEME_LAYOUT_SETTINGS + 920;
             languageSwitchFlags.Group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
-            _baseSettings.Add("LANGUAGESWITCHER_FLAGS", languageSwitchFlags);
+            baseSettings.Add("LANGUAGESWITCHER_FLAGS", languageSwitchFlags);
 
             // Labels
             SettingItem languageSwitchLabels =
@@ -133,7 +132,7 @@ namespace Rainbow.Framework.Localization
             languageSwitchLabels.Value = ((int) LanguageSwitcherDisplay.DisplayCultureList).ToString();
             languageSwitchLabels.Order = (int) SettingItemGroup.THEME_LAYOUT_SETTINGS + 930;
             languageSwitchLabels.Group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
-            _baseSettings.Add("LANGUAGESWITCHER_LABELS", languageSwitchLabels);
+            baseSettings.Add("LANGUAGESWITCHER_LABELS", languageSwitchLabels);
 
             // Language Switcher Module - NamesOptions
             ArrayList languageSwitcherNamesOptions = new ArrayList();
@@ -155,7 +154,7 @@ namespace Rainbow.Framework.Localization
             languageSwitcherName.Value = ((int) LanguageSwitcherName.NativeName).ToString();
             languageSwitcherName.Order = (int) SettingItemGroup.THEME_LAYOUT_SETTINGS + 940;
             languageSwitcherName.Group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
-            _baseSettings.Add("LANGUAGESWITCHER_NAMES", languageSwitcherName);
+            baseSettings.Add("LANGUAGESWITCHER_NAMES", languageSwitcherName);
 
             // Use flag images from portal's images folder?
             SettingItem customFlags = new SettingItem(new BooleanDataType());
@@ -165,7 +164,7 @@ namespace Rainbow.Framework.Localization
             customFlags.Description =
                 "Check this if you want to use custom flags from portal's images folder. Custom flags are located in portal folder. /images/flags/";
             customFlags.Value = "False";
-            _baseSettings.Add("LANGUAGESWITCHER_CUSTOMFLAGS", customFlags);
+            baseSettings.Add("LANGUAGESWITCHER_CUSTOMFLAGS", customFlags);
 
 
             SupportsWorkflow = false;

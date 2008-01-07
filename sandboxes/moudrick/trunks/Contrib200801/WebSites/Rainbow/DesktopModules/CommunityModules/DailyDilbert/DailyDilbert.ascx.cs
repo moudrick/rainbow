@@ -48,7 +48,7 @@ namespace Rainbow.Content.Web.Modules
             setImagePercent.Order = 1;
             setImagePercent.MinValue = 1;
             setImagePercent.MaxValue = 100;
-            _baseSettings.Add("ImagePercent", setImagePercent);
+            baseSettings.Add("ImagePercent", setImagePercent);
         }
 
         #region Web Form Designer generated code

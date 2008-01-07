@@ -5,7 +5,7 @@ using System.Web.UI;
 using System.Xml;
 using Rainbow.Framework;
 using Rainbow.Framework.Web.UI.WebControls;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {

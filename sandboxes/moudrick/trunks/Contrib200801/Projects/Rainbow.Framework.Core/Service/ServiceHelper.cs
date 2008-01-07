@@ -12,7 +12,7 @@ using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Services.Client;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Services
 {

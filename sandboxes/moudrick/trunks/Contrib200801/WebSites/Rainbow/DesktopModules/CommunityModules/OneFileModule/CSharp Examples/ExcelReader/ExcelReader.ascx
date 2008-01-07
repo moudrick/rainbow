@@ -16,8 +16,8 @@
                 // Settings are : ExcelFile + RangeName
 
                 // pick the Excel file from settings adding the path from the portal Data directory
-                Rainbow.Framework.DataTypes.PortalUrlDataType pt;
-                pt = new Rainbow.Framework.DataTypes.PortalUrlDataType();
+                Rainbow.Framework.DataTypes.PortalUrl pt;
+                pt = new Rainbow.Framework.DataTypes.PortalUrl();
                 pt.Value = GetSetting("ExcelFile");
                 String sExcelFile = Server.MapPath("~/DeskTopModules/" + pt.Value);
 

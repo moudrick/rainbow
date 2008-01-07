@@ -7,28 +7,14 @@ using Rainbow.Framework.Core.Configuration.Settings;
 
 namespace Rainbow.Framework.Design
 {
-
 	/// <summary>
-	/// PictureItem
+	/// Picture Item
 	/// </summary>
 	public class PictureItem : UserControl 
 	{
+        XmlDocument metadata;
 
-		/// <summary>
-		///     
-		/// </summary>
-		/// <remarks>
-		///     
-		/// </remarks>
 		protected HyperLink editLink;
-
-		/// <summary>
-		///     
-		/// </summary>
-		/// <remarks>
-		///     
-		/// </remarks>
-		private XmlDocument metadata;
 
         /// <summary>
         /// Gets the current image from theme.
@@ -55,12 +41,10 @@ namespace Rainbow.Framework.Design
 	    public string GetMetadata(string key)
 	    {
 	        XmlNode targetNode = Metadata.SelectSingleNode("/Metadata/@" + key);
-
 	        if (targetNode == null)
 	        {
 	            return null;
 	        }
-
 	        else
 	        {
 	            return targetNode.Value;
@@ -71,8 +55,6 @@ namespace Rainbow.Framework.Design
 	    /// Gets or sets the metadata.
 	    /// </summary>
 	    /// <value>The metadata.</value>
-	    /// <remarks>
-	    /// </remarks>
 	    public XmlDocument Metadata
 	    {
 	        get { return metadata; }
@@ -88,8 +70,6 @@ namespace Rainbow.Framework.Design
 	    {
 	        base.OnInit(e);
 	    }
-
 	    #endregion
-
 	}
 }

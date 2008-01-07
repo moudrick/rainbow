@@ -30,7 +30,7 @@ namespace Rainbow.Framework.DataTypes
             get
             {
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 return new ModulesDB().GetModulesByName(InnerDataSource.ToString(), portalSettings.PortalID);
             }
         }

@@ -1,4 +1,4 @@
-using Rainbow.Framework.Core;
+using Rainbow.Framework.Core; //RainbowContext - together
 
 namespace Rainbow.Framework.Settings.Cache
 {

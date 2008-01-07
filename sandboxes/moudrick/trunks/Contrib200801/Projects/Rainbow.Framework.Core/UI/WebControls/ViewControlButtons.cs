@@ -160,7 +160,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             string url = string.Empty;
             // Obtain PortalSettings from Current Context 
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
             try
             {
                 // current theme

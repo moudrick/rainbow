@@ -4,6 +4,7 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
 
@@ -124,7 +125,7 @@ namespace Rainbow.Content.Web.Modules
                 if (ItemID == 0)
                 {
                     // Add the link within the Links table
-                    enhancedLinks.AddEnhancedLink(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email,
+                    enhancedLinks.AddEnhancedLink(ModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email,
                                                   TitleField.Text, UrlField.Text, MobileUrlField.Text,
                                                   Int32.Parse(ViewOrderField.Text), DescriptionField.Text, Src.Text, 0,
                                                   TargetField.SelectedItem.Text);
@@ -132,7 +133,7 @@ namespace Rainbow.Content.Web.Modules
                 else
                 {
                     // Update the link within the Links table
-                    enhancedLinks.UpdateEnhancedLink(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email,
+                    enhancedLinks.UpdateEnhancedLink(ModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email,
                                                      TitleField.Text, UrlField.Text, MobileUrlField.Text,
                                                      Int32.Parse(ViewOrderField.Text), DescriptionField.Text, Src.Text,
                                                      0, TargetField.SelectedItem.Text);

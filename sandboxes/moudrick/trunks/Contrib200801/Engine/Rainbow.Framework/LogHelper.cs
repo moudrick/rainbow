@@ -1,5 +1,5 @@
 using System;
-using Rainbow.Framework.Logging;
+using Rainbow.Framework.Logging; //LogProvider
 
 namespace Rainbow.Framework.Helpers 
 { 

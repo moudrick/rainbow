@@ -80,7 +80,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 // changes to Language behaviour require addition of culture names to cache key
                 // Jes1111 - 24/April/2003 - added portal alias to cachekey (to facilitate identification
                 // when examining cache contents)
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 StringBuilder sb = new StringBuilder();
                 sb.Append("rb_");
                 sb.Append(portalSettings.PortalAlias.ToLower());

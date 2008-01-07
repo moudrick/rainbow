@@ -1,6 +1,6 @@
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -21,7 +21,7 @@ namespace Rainbow.Framework.Content.Data
             string strDesktopHtml = string.Empty;
 
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetHtmlText", myConnection))
                 {
@@ -89,7 +89,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetHtmlText(int moduleID, WorkFlowVersion version)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
 
             SqlCommand myCommand = new SqlCommand("rb_GetHtmlText", myConnection);
 
@@ -128,7 +128,7 @@ namespace Rainbow.Framework.Content.Data
         public void UpdateHtmlText(int moduleID, string desktopHtml, string mobileSummary, string mobileDetails)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_UpdateHtmlText", myConnection))
                 {

@@ -1,3 +1,4 @@
+<%@ Import namespace="Rainbow.Framework.Security"%>
 <%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
 <%@ Control Language="c#" inherits="Rainbow.Content.Web.Modules.OneFileModule" %>
 <%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework.Web" %>
@@ -36,7 +37,7 @@
         if (IsPostBack == false)
         {
             // prepopulate box
-            email.Text = RainbowContext.CurrentUser.Identity.Email;
+            email.Text = RainbowPrincipal.CurrentUser.Identity.Email;
         }
     }
 

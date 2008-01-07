@@ -12,7 +12,7 @@ using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI.WebControls;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules 
 {
@@ -54,7 +54,7 @@ namespace Rainbow.Content.Web.Modules
 			int groupBase = (int)group;
 			// end of modification
 
-			SettingItem DocumentPath = new SettingItem(new PortalUrlDataType());
+			SettingItem DocumentPath = new SettingItem(new PortalUrl());
 			DocumentPath.Required = true;
 			DocumentPath.Value = "Documents";
 			// Modified by Hongwei Shen
@@ -64,7 +64,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			DocumentPath.EnglishName = "Document path";
 			DocumentPath.Description = "Folder for store the documents";
-			this._baseSettings.Add("DocumentPath", DocumentPath);
+			this.baseSettings.Add("DocumentPath", DocumentPath);
 
 			// Add new functionalities by jviladiu@portalServices.net (02/07/2004)
 			SettingItem ShowImages = new SettingItem(new BooleanDataType());
@@ -76,7 +76,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			ShowImages.EnglishName = "Show Image Icons?";
 			ShowImages.Description = "Mark this if you like see Image Icons";
-			this._baseSettings.Add("DOCUMENTS_SHOWIMAGES", ShowImages);
+			this.baseSettings.Add("DOCUMENTS_SHOWIMAGES", ShowImages);
 
 			SettingItem SaveInDataBase = new SettingItem(new BooleanDataType());
 			SaveInDataBase.Value = "false";
@@ -87,7 +87,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			SaveInDataBase.EnglishName = "Save files in DataBase?";
 			SaveInDataBase.Description = "Mark this if you like save files in DataBase";
-			this._baseSettings.Add("DOCUMENTS_DBSAVE", SaveInDataBase);
+			this.baseSettings.Add("DOCUMENTS_DBSAVE", SaveInDataBase);
 
 			// Added sort by fields by Chris Thames [icecold_2@hotmail.com] (11/17/2004)
 			SettingItem	SortByField	= new SettingItem(new ListDataType(General.GetString("DOCUMENTS_SORTBY_FIELD_LIST", "File Name;Created Date")));
@@ -100,7 +100,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			SortByField.EnglishName = "Sort Field?";
 			SortByField.Description = "Sort by File Name or by Created Date?";
-			this._baseSettings.Add("DOCUMENTS_SORTBY_FIELD", SortByField);
+			this.baseSettings.Add("DOCUMENTS_SORTBY_FIELD", SortByField);
 
 			SettingItem SortByDirection = new SettingItem(new ListDataType(General.GetString("DOCUMENTS_SORTBY_DIRECTION_LIST", "Ascending;Descending")));
 			SortByDirection.Value = "Ascending";
@@ -111,7 +111,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			SortByDirection.EnglishName = "Sort ascending or descending?";
 			SortByDirection.Description = "Ascending: A to Z or 0 - 9. Descending: Z - A or 9 - 0.";
-			this._baseSettings.Add("DOCUMENTS_SORTBY_DIRECTION", SortByDirection);
+			this.baseSettings.Add("DOCUMENTS_SORTBY_DIRECTION", SortByDirection);
 			// End
 
 			// Added by Jakob Hansen 07/07/2004
@@ -124,7 +124,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			showTitle.EnglishName = "Show Title column?";
 			showTitle.Description = "Mark this if the title column should be displayed";
-			this._baseSettings.Add("DOCUMENTS_SHOWTITLE", showTitle);
+			this.baseSettings.Add("DOCUMENTS_SHOWTITLE", showTitle);
 
 			SettingItem showOwner = new SettingItem(new BooleanDataType());
 			showOwner.Value = "true";
@@ -135,7 +135,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			showOwner.EnglishName = "Show Owner column?";
 			showOwner.Description = "Mark this if the owner column should be displayed";
-			this._baseSettings.Add("DOCUMENTS_SHOWOWNER", showOwner);
+			this.baseSettings.Add("DOCUMENTS_SHOWOWNER", showOwner);
 
 			SettingItem showArea = new SettingItem(new BooleanDataType());
 			showArea.Value = "true";
@@ -146,7 +146,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			showArea.EnglishName = "Show Area column";
 			showArea.Description = "Mark this if the area column should be displayed";
-			this._baseSettings.Add("DOCUMENTS_SHOWAREA", showArea);
+			this.baseSettings.Add("DOCUMENTS_SHOWAREA", showArea);
 
 			SettingItem showLastUpdated = new SettingItem(new BooleanDataType());
 			showLastUpdated.Value = "true";
@@ -157,7 +157,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			showLastUpdated.EnglishName = "Show Last Updated column";
 			showLastUpdated.Description = "Mark this if the Last Updated column should be displayed";
-			this._baseSettings.Add("DOCUMENTS_SHOWLASTUPDATED", showLastUpdated);
+			this.baseSettings.Add("DOCUMENTS_SHOWLASTUPDATED", showLastUpdated);
 			// End Change Jakob Hansen
 
 			#endregion

@@ -11,7 +11,7 @@ using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI.WebControls;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -40,7 +40,7 @@ namespace Rainbow.Content.Web.Modules
 			setParentPageID.EnglishName = "ParentTabId";
 			setParentPageID.Description = "Sets the Id of then Parent tab for the menu (this tab may be hidden or inaccessible for the logged on user.)";
 			setParentPageID.Order = 1;
-			this._baseSettings.Add("sm_ParentPageID", setParentPageID);
+			this.baseSettings.Add("sm_ParentPageID", setParentPageID);
 
 			//localized by Pekka Ylenius
 			ArrayList SetRepeatDirectionArrayList = new ArrayList();
@@ -56,7 +56,7 @@ namespace Rainbow.Content.Web.Modules
 			setMenuRepeatDirection.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS; 
 			setMenuRepeatDirection.Description = "Sets the repeat direction for menu rendering."; 
 			setMenuRepeatDirection.EnglishName = "Menu RepeatDirection";
-			this._baseSettings.Add("sm_Menu_RepeatDirection", setMenuRepeatDirection); 
+			this.baseSettings.Add("sm_Menu_RepeatDirection", setMenuRepeatDirection); 
 
 			// MenuLayouts
 			Hashtable menuTypes = new Hashtable();
@@ -75,7 +75,7 @@ namespace Rainbow.Content.Web.Modules
 			menuTypeSetting.Description = "Sets the type of menu this module use.";
 			menuTypeSetting.EnglishName = "MenuType";
 			menuTypeSetting.Order = 3;
-			this._baseSettings.Add("sm_MenuType", menuTypeSetting);
+			this.baseSettings.Add("sm_MenuType", menuTypeSetting);
 
 			
 			ArrayList SetBindingArrayList  = new ArrayList();
@@ -93,7 +93,7 @@ namespace Rainbow.Content.Web.Modules
 			setMenuBindingType.Order = 4;
 			setMenuBindingType.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
 			setMenuBindingType.EnglishName = "MenuBindingType";
-			this._baseSettings.Add("sm_MenuBindingType", setMenuBindingType);
+			this.baseSettings.Add("sm_MenuBindingType", setMenuBindingType);
 
 			//			SettingItem setHeaderText = new SettingItem(new StringDataType());
 			//			setHeaderText.Required = false;
@@ -101,7 +101,7 @@ namespace Rainbow.Content.Web.Modules
 			//			setHeaderText.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
 			//			setHeaderText.Description ="Sets a header text of the static menu (the special setting <CurrentTab> displays the current TabName).";
 			//			setHeaderText.Order = 5;
-			//			this._baseSettings.Add("sm_Menu_HeaderText", setHeaderText);
+			//			this.baseSettings.Add("sm_Menu_HeaderText", setHeaderText);
 			//		
 			//			SettingItem setFooterText = new SettingItem(new StringDataType());
 			//			setFooterText.Required = false;

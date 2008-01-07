@@ -209,7 +209,7 @@ namespace Rainbow.Content.Web.Modules
 
             // Add new message (updating the "ItemID" on the page)
             ItemID =
-                discuss.AddMessage(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email,
+                discuss.AddMessage(ModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email,
                                    Server.HtmlEncode(TitleField.Text), BodyField.Text, GetMode());
 
             // The following code can be used if you want to create new threads

@@ -3,14 +3,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using ImageButton=Rainbow.Framework.Web.UI.WebControls.ImageButton;
-using Label=Rainbow.Framework.Web.UI.WebControls.Label;
-using System.Collections;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
 
 namespace Rainbow.Content.Web.Modules {
@@ -57,9 +55,9 @@ namespace Rainbow.Content.Web.Modules {
             // Added by Mario Endara <mario@softworks.com.uy> 2004/11/04
             // if the user is not member of the "Admins" role, he can´t access to the members of the Admins role
             // added mID by Mario Endara <mario@softworks.com.uy> to support security check (2004/11/27)
-            if ( ( d3 != null ) && ( PortalSecurity.IsInRoles( "Admins" ) == true || role.Name != "Admins" ) ) {
+            if ( ( d3 != null ) && ( PortalSecurity.IsInRoles( "Admins" ) || role.Name != "Admins" ) ) {
                 d3.NavigateUrl = HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Roles/SecurityRoles.aspx", PageID,
-                    "mID=" + ModuleID + "&roleID=" + role.Id.ToString() );
+                    "mID=" + ModuleID + "&roleID=" + role.Id );
             }
 
             if ( dl != null ) {
@@ -163,7 +161,7 @@ namespace Rainbow.Content.Web.Modules {
                 // redirect to edit page
                 Response.Redirect(
                     HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Roles/SecurityRoles.aspx", PageID,
-                                            "mID=" + ModuleID.ToString() + "&roleID=" + _roleId ) );
+                                            "mID=" + ModuleID + "&roleID=" + _roleId ) );
             }
             // reset the enable state of the add
             // set add button -- bja

@@ -8,13 +8,11 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Core;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Users.Data;
-using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
@@ -596,7 +594,7 @@ namespace Rainbow.Content.Web.Modules
                 if ( EditMode ) // Someone requested edit this record
                 {
                     //True is use is editing himself, false if is edited by an admin
-                    selfEdit = ( userName == RainbowContext.CurrentUser.Identity.UserName );
+                    selfEdit = ( userName == RainbowPrincipal.CurrentUser.Identity.UserName );
 
                     // Removed by Mario Endara <mario@softworks.com.uy> (2004/11/04)
                     //					if (PortalSecurity.IsInRoles("Admins") || selfEdit)
@@ -640,7 +638,7 @@ namespace Rainbow.Content.Web.Modules
                             originalPassword = memberUser.GetPassword();
                             originalUserID = memberUser.ProviderUserKey;
                         }
-                        catch ( System.ArgumentNullException ) {
+                        catch ( ArgumentNullException ) {
                             // user doesn't exist
                         }
                     }
@@ -690,7 +688,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void cancelButton_Click( object sender, EventArgs e ) {
-            ( ( Page )Page ).RedirectBackToReferringPage();
+            Page.RedirectBackToReferringPage();
         }
 
         /// <summary>

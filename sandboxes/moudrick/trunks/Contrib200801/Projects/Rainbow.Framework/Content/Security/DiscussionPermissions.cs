@@ -30,7 +30,7 @@ namespace Rainbow.Framework.Content.Security
         {
             // this approach willnot be safe when we change from UserEmail to UserID
             // if UserID is not unique accross ALL portal instances on a given database
-            string currentUserEmail = RainbowContext.CurrentUser.Identity.Email;
+            string currentUserEmail = RainbowPrincipal.CurrentUser.Identity.Email;
             return PortalSecurity.HasEditPermissions(moduleID) 
                 || currentUserEmail == itemUserEmail;
         }

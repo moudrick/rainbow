@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
 
@@ -23,8 +23,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         public DesktopNavigation()
         {
-            EnableViewState = false;
-            RepeatDirection = RepeatDirection.Horizontal;
+            base.EnableViewState = false;
+            base.RepeatDirection = RepeatDirection.Horizontal;
             Load += LoadControl;
         }
 
@@ -166,7 +166,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (HttpContext.Current != null)
             {
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
                 switch (Bind)
                 {
@@ -309,7 +309,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private ArrayList GetTabs(int parentID, int tabID, IList Tabs)
         {
             ArrayList authorizedTabs = new ArrayList();
-            int index = -1;
 
             //MH:get the selected tab for this 
             int selectedPageID = GetSelectedTab(parentID, tabID, Tabs);
@@ -324,7 +323,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 {
                     if (PortalSecurity.IsInRoles(tab.AuthorizedRoles))
                     {
-                        index = authorizedTabs.Add(tab);
+                        int index = authorizedTabs.Add(tab);
 
                         //MH:if (tab.PageID == tabID)
                         //MH:added to support the selected menutab in each level

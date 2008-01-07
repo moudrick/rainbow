@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core;
-using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
@@ -77,7 +75,7 @@ namespace Rainbow.Content.Web.Modules
 
         private void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
         {
-            RainbowContext.Current.UpdatePortalSetting(PortalSettings.PortalID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);        
+            PortalProvider.Instance.UpdatePortalSetting(PortalSettings.PortalID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);        
         }
 
 		public override Guid GuidID 

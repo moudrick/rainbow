@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
@@ -57,7 +57,7 @@ namespace Rainbow.Admin
             //Confirm delete
             if ( !( ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) ) {
                 string[] s = { "CONFIRM_DELETE" };
-                ClientScript.RegisterClientScriptBlock( this.GetType(), "confirmDelete",
+                ClientScript.RegisterClientScriptBlock( GetType(), "confirmDelete",
                                                        General.GetStringResource(
                                                            "CONFIRM_DELETE_SCRIPT", s ) );
             }
@@ -243,7 +243,7 @@ namespace Rainbow.Admin
 
             // reload the portalSettings from the database
             Context.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortalSettings(PageID, portalSettings.PortalAlias);
-            portalSettings = (PortalSettings) Context.Items["PortalSettings"];
+            portalSettings = (Portal) Context.Items["PortalSettings"];
 
             // reorder the modules in the content pane
             ArrayList modules = GetModules("ContentPane");
@@ -359,7 +359,7 @@ namespace Rainbow.Admin
 
                     // reload the portalSettings from the database
                     HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortalSettings(PageID, portalSettings.PortalAlias);
-                    portalSettings = (PortalSettings) Context.Items["PortalSettings"];
+                    portalSettings = (Portal) Context.Items["PortalSettings"];
 
                     // reorder the modules in the source pane
                     sourceList = GetModules(sourcePane);

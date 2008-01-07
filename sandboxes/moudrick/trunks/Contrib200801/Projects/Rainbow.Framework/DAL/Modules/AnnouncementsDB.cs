@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -31,7 +31,7 @@ namespace Rainbow.Framework.Content.Data
         public DataSet GetAnnouncements(int moduleID, WorkFlowVersion version, int RecordsPerPage, int Page)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlDataAdapter myCommand = new SqlDataAdapter("rb_GetAnnouncements", myConnection);
 
             // Mark the Command as a SPROC
@@ -87,7 +87,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSingleAnnouncement(int itemID, WorkFlowVersion version)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSingleAnnouncement", myConnection);
 
             // Mark the Command as a SPROC
@@ -124,7 +124,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteAnnouncement(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DeleteAnnouncement", myConnection);
 
             // Mark the Command as a SPROC
@@ -171,7 +171,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddAnnouncement", myConnection);
 
             // Mark the Command as a SPROC
@@ -244,7 +244,7 @@ namespace Rainbow.Framework.Content.Data
             if (userName.Length < 1) userName = "unknown";
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateAnnouncement", myConnection);
 
             // Mark the Command as a SPROC

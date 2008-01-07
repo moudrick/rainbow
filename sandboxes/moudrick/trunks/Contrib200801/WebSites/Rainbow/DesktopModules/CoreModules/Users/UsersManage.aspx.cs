@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Web;
 using System.Web.UI;
@@ -7,7 +7,8 @@ using Rainbow.Framework;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
-using Rainbow.Framework.Security;
+ using Rainbow.Framework.Providers;
+ using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
@@ -66,7 +67,7 @@ namespace Rainbow.Content.Web.Modules
             }
             if (Request.Params["username"] != null)
             {
-                userName = (string) Request.Params["username"];
+                userName = Request.Params["username"];
             }
 
 
@@ -141,7 +142,7 @@ namespace Rainbow.Content.Web.Modules
             string registerPage = "register.aspx";
             if (HttpContext.Current != null)
             {
-                PortalSettings localPortal = PortalProvider.Instance.CurrentPortal;
+                Portal localPortal = PortalProvider.Instance.CurrentPortal;
 
                 //Select the actual register page
                 if (localPortal.CustomSettings["SITESETTINGS_REGISTER_TYPE"] != null &&
@@ -164,22 +165,22 @@ namespace Rainbow.Content.Web.Modules
                     //http://code.google.com/p/rainbow/issues/detail?id=27
                     //Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/CoreModules/Register", RegisterPage);
                 }
-                Control myControl = LoadControl(moduleDesktopSrc);
+                Control control = LoadControl(moduleDesktopSrc);
 
-                PortalModuleControl p = ((PortalModuleControl) myControl);
+                PortalModuleControl portalModuleControl = ((PortalModuleControl) control);
 
                 // changed by Mario Endara <mario@softworks.com.uy> (2004/11/05)
                 // if there's no custom register module, take actual ModuleID, else take the custom ModuleID
                 if (moduleID == 0)
                 {
-                    p.ModuleID = ModuleID;
-                    ((SettingItem)p.Settings["MODULESETTINGS_SHOW_TITLE"]).Value = "false";
+                    portalModuleControl.ModuleID = ModuleID;
+                    ((SettingItem)portalModuleControl.Settings["MODULESETTINGS_SHOW_TITLE"]).Value = "false";
                 }
                 else
                 {
-                    p.ModuleID = moduleID;
+                    portalModuleControl.ModuleID = moduleID;
                 }
-                return ((Control) p);
+                return portalModuleControl;
             }
             return null;
         }
@@ -276,7 +277,7 @@ namespace Rainbow.Content.Web.Modules
             // Bind the Email and Password
             UsersDB users = new UsersDB();
 
-            Guid currentUserID = RainbowContext.CurrentUser.Identity.ProviderUserKey;
+            Guid currentUserID = RainbowPrincipal.CurrentUser.Identity.ProviderUserKey;
             // bind users in role to DataList
             IList<RainbowRole> roles = users.GetRolesByUser( currentUserID, portalSettings.PortalAlias);
             userRoles.DataSource = roles;

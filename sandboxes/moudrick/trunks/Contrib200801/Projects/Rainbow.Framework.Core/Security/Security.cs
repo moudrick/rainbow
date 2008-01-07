@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Principal;
@@ -7,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.Security;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Data;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
@@ -58,7 +58,7 @@ namespace Rainbow.Framework.Security
 			{
 				// Obtain PortalSettings from Current Context
 				// WindowsAdmins added 28.4.2003 Cory Isakson
-				PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+				Portal portalSettings = (Portal) HttpContext.Current.Items[strPortalSettings];
 				StringBuilder winRoles = new StringBuilder();
 				winRoles.Append(portalSettings.CustomSettings["WindowsAdmins"]);
 				winRoles.Append(";");
@@ -136,13 +136,13 @@ namespace Rainbow.Framework.Security
 			
 			if (moduleID <= 0) return false;
 			// Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+			Portal portalSettings = (Portal) HttpContext.Current.Items[strPortalSettings];
 			int portalID = portalSettings.PortalID;
 			// jviladiu@portalServices.net: Get users & roles from true portal (2004/09/23)
 			if (Config.UseSingleUserBase) portalID = 0;
 			
 			// Create Instance of Connection and Command Object
-			using (SqlConnection myConnection = Config.SqlConnectionString)
+			using (SqlConnection myConnection = DBHelper.SqlConnection)
 			{
 				using (SqlCommand myCommand = new SqlCommand(procedureName, myConnection))
 				{
@@ -293,13 +293,13 @@ namespace Rainbow.Framework.Security
 		private static string getPermissions (int moduleID, string procedureName, string parameterRol) 
 		{
 			// Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+			Portal portalSettings = (Portal) HttpContext.Current.Items[strPortalSettings];
 			int portalID = portalSettings.PortalID;
 			// jviladiu@portalServices.net: Get users & roles from true portal (2004/09/23)
 			if (Config.UseSingleUserBase) portalID = 0;
 
 			// Create Instance of Connection and Command Object
-			using (SqlConnection myConnection = Config.SqlConnectionString)
+			using (SqlConnection myConnection = DBHelper.SqlConnection)
 			{
 				using (SqlCommand myCommand = new SqlCommand(procedureName, myConnection))
 				{
@@ -487,7 +487,7 @@ namespace Rainbow.Framework.Security
 		public static string SignOn(string user, string password, bool persistent, string redirectPage)
 		{
 			// Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+			Portal portalSettings = (Portal) HttpContext.Current.Items[strPortalSettings];
 
             MembershipUser usr;
 			UsersDB accountSystem = new UsersDB();
@@ -575,7 +575,7 @@ namespace Rainbow.Framework.Security
         /// </summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="minuteAdd">The minute add.</param>
-		public static void ExtendCookie(PortalSettings portalSettings, int minuteAdd)
+		public static void ExtendCookie(Portal portalSettings, int minuteAdd)
 		{
 			DateTime time = DateTime.Now;
 			TimeSpan span = new TimeSpan(0, 0, minuteAdd, 0, 0); 
@@ -589,7 +589,7 @@ namespace Rainbow.Framework.Security
         /// ExtendCookie
         /// </summary>
         /// <param name="portalSettings">The portal settings.</param>
-		public static void ExtendCookie(PortalSettings portalSettings)
+		public static void ExtendCookie(Portal portalSettings)
 		{
 			int minuteAdd = Config.CookieExpire;
 			ExtendCookie(portalSettings, minuteAdd);
@@ -634,7 +634,7 @@ namespace Rainbow.Framework.Security
 			if (removeLogin)
 			{
 				// Obtain PortalSettings from Current Context
-				PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+				Portal portalSettings = (Portal) HttpContext.Current.Items[strPortalSettings];
 
 				// Invalidate Portal Alias Cookie security
 				HttpCookie xhck = HttpContext.Current.Response.Cookies["Rainbow_" + portalSettings.PortalAlias.ToLower()];
@@ -650,7 +650,7 @@ namespace Rainbow.Framework.Security
 			{
                 // Obtain PortalSettings from Current Context
                 //Ender 4 July 2003: Added to support the Monitoring module by Paul Yarrow
-                PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items[strPortalSettings];
+                Portal portalSettings = (Portal)HttpContext.Current.Items[strPortalSettings];
 
                 // User Information
                 UsersDB users = new UsersDB();
@@ -727,7 +727,7 @@ namespace Rainbow.Framework.Security
         public static IList<RainbowRole> GetRoles()
 		{
 			// Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+			Portal portalSettings = (Portal) HttpContext.Current.Items[strPortalSettings];
 			int portalID = portalSettings.PortalID;
 			// john.mandia@whitelightsolutions.com: 29th May 2004 When retrieving/editing/adding roles or users etc then portalID should be 0 if it is shared
 			// But I commented this out as this check is done in UsersDB.GetRoles Anyway

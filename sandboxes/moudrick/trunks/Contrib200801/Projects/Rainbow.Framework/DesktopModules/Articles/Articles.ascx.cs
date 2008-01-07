@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.IO;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
@@ -61,7 +60,7 @@ namespace Rainbow.Content.Web.Modules
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Articles"/> class.
+        /// Initializes a new instance of the <see cref="Articles"/> class.
         /// </summary>
         public Articles()
         {
@@ -76,21 +75,21 @@ namespace Rainbow.Content.Web.Modules
 
                 // Set Editor Settings jviladiu@portalservices.net 2004/07/30
                 // modified by Hongwei Shen
-                //HtmlEditorDataType.HtmlEditorSettings (this._baseSettings, SettingItemGroup.MODULE_SPECIAL_SETTINGS);
-                HtmlEditorDataType.HtmlEditorSettings(_baseSettings, group);
+                //HtmlEditorDataType.HtmlEditorSettings (this.baseSettings, SettingItemGroup.MODULE_SPECIAL_SETTINGS);
+                HtmlEditorDataType.HtmlEditorSettings(baseSettings, group);
                 // end of modification
 
                 //Switches date display on/off
-                SettingItem ShowDate = new SettingItem(new BooleanDataType());
-                ShowDate.Value = "True";
-                ShowDate.EnglishName = "Show Date";
+                SettingItem showDate = new SettingItem(new BooleanDataType());
+                showDate.Value = "True";
+                showDate.EnglishName = "Show Date";
                 // modified by Hongwei Shen
                 // ShowDate.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
                 // ShowDate.Order = 10;
-                ShowDate.Group = group;
-                ShowDate.Order = groupBase + 20;
+                showDate.Group = group;
+                showDate.Order = groupBase + 20;
                 // end of midification
-                _baseSettings.Add("ShowDate", ShowDate);
+                baseSettings.Add("ShowDate", showDate);
 
                 //Added by Rob Siera
                 SettingItem DefaultVisibleDays = new SettingItem(new IntegerDataType());
@@ -102,7 +101,7 @@ namespace Rainbow.Content.Web.Modules
                 DefaultVisibleDays.Group = group;
                 DefaultVisibleDays.Order = groupBase + 25;
                 // end of midification
-                _baseSettings.Add("DefaultVisibleDays", DefaultVisibleDays);
+                baseSettings.Add("DefaultVisibleDays", DefaultVisibleDays);
 
                 SettingItem RichAbstract = new SettingItem(new BooleanDataType());
                 RichAbstract.Value = "True";
@@ -114,7 +113,7 @@ namespace Rainbow.Content.Web.Modules
                 RichAbstract.Group = group;
                 RichAbstract.Order = groupBase + 30;
                 // end of midification
-                _baseSettings.Add("ARTICLES_RICHABSTRACT", RichAbstract);
+                baseSettings.Add("ARTICLES_RICHABSTRACT", RichAbstract);
 
                 UsersDB users = new UsersDB();
                 SettingItem RolesViewExpiredItems =
@@ -129,7 +128,7 @@ namespace Rainbow.Content.Web.Modules
                 RolesViewExpiredItems.Group = group;
                 RolesViewExpiredItems.Order = groupBase + 40;
                 // end of midification
-                _baseSettings.Add("EXPIRED_PERMISSION_ROLE", RolesViewExpiredItems);
+                baseSettings.Add("EXPIRED_PERMISSION_ROLE", RolesViewExpiredItems);
             }
         }
 
@@ -186,12 +185,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -201,12 +200,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

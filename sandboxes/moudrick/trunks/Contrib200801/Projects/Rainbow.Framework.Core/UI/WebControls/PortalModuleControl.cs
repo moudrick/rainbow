@@ -18,12 +18,13 @@ using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Setup;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -135,7 +136,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             applyTheme.Value = "True";
             applyTheme.EnglishName = "Apply Theme";
             applyTheme.Description = "Check this box to apply theme to this module";
-            _baseSettings.Add("MODULESETTINGS_APPLY_THEME", applyTheme);
+            baseSettings.Add("MODULESETTINGS_APPLY_THEME", applyTheme);
 
             ArrayList themeOptions = new ArrayList();
             themeOptions.Add(
@@ -147,13 +148,13 @@ namespace Rainbow.Framework.Web.UI.WebControls
             Theme.Value = ((int) ThemeList.Default).ToString();
             Theme.EnglishName = "Theme";
             Theme.Description = "Choose theme for this module";
-            _baseSettings.Add("MODULESETTINGS_THEME", Theme);
+            baseSettings.Add("MODULESETTINGS_THEME", Theme);
 
             if (HttpContext.Current != null) // null in DesignMode
             {
                 // Added: Jes1111 - 2004-08-03
-                PortalSettings _portalSettings;
-                _portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal _portalSettings;
+                _portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 // end addition: Jes1111
 
                 if (_portalSettings != null)
@@ -182,7 +183,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         ModuleTheme.Group = _Group;
                         ModuleTheme.EnglishName = "Custom Theme";
                         ModuleTheme.Description = "Set a custom theme for this module only";
-                        _baseSettings.Add("MODULESETTINGS_MODULE_THEME", ModuleTheme);
+                        baseSettings.Add("MODULESETTINGS_MODULE_THEME", ModuleTheme);
                     }
                 }
             }
@@ -194,7 +195,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             showTitle.Value = "True";
             showTitle.EnglishName = "Show Title";
             showTitle.Description = "Switches title display on/off";
-            _baseSettings.Add("MODULESETTINGS_SHOW_TITLE", showTitle);
+            baseSettings.Add("MODULESETTINGS_SHOW_TITLE", showTitle);
 
             // switches last modified summary on/off
             SettingItem ShowModifiedBy = new SettingItem(new BooleanDataType());
@@ -203,7 +204,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ShowModifiedBy.Value = "False";
             ShowModifiedBy.EnglishName = "Show Modified by";
             ShowModifiedBy.Description = "Switches 'Show Modified by' display on/off";
-            _baseSettings.Add("MODULESETTINGS_SHOW_MODIFIED_BY", ShowModifiedBy);
+            baseSettings.Add("MODULESETTINGS_SHOW_MODIFIED_BY", ShowModifiedBy);
 
             // gman3001: added 10/26/2004
             //  - implement width, height, and content scrolling options for all modules 
@@ -218,7 +219,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ControlHeight.Group = _Group;
             ControlHeight.EnglishName = "Content Height";
             ControlHeight.Description = "Minimum height(in pixels) of the content area of this module. (0 for none)";
-            _baseSettings.Add("MODULESETTINGS_CONTENT_HEIGHT", ControlHeight);
+            baseSettings.Add("MODULESETTINGS_CONTENT_HEIGHT", ControlHeight);
 
             //Windows width
             SettingItem ControlWidth = new SettingItem(new IntegerDataType());
@@ -230,7 +231,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ControlWidth.Group = _Group;
             ControlWidth.EnglishName = "Content Width";
             ControlWidth.Description = "Minimum width(in pixels) of the content area of this module. (0 for none)";
-            _baseSettings.Add("MODULESETTINGS_CONTENT_WIDTH", ControlWidth);
+            baseSettings.Add("MODULESETTINGS_CONTENT_WIDTH", ControlWidth);
 
             //Content scrolling option
             SettingItem ScrollingSetting = new SettingItem(new BooleanDataType());
@@ -240,7 +241,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ScrollingSetting.EnglishName = "Content Scrolling";
             ScrollingSetting.Description =
                 "Set to enable/disable scrolling of Content based on height and width settings.";
-            _baseSettings.Add("MODULESETTINGS_CONTENT_SCROLLING", ScrollingSetting);
+            baseSettings.Add("MODULESETTINGS_CONTENT_SCROLLING", ScrollingSetting);
 
             //Module Stretching option
             SettingItem StretchSetting = new SettingItem(new BooleanDataType());
@@ -250,7 +251,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             StretchSetting.EnglishName = "Module Auto Stretch";
             StretchSetting.Description =
                 "Set to enable/disable automatic stretching of the module's width to fill the empty area to the right of the module.";
-            _baseSettings.Add("MODULESETTINGS_WIDTH_STRETCHING", StretchSetting);
+            baseSettings.Add("MODULESETTINGS_WIDTH_STRETCHING", StretchSetting);
             // gman3001: END
 
             // BUTTONS
@@ -264,7 +265,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             printButton.Group = _Group;
             printButton.EnglishName = "Show Print Button";
             printButton.Description = "Show print button in view mode?";
-            _baseSettings.Add("MODULESETTINGS_SHOW_PRINT_BUTTION", printButton);
+            baseSettings.Add("MODULESETTINGS_SHOW_PRINT_BUTTION", printButton);
 
             // added: Jes1111 2004-08-29 - choice! Default is 'true' for backward compatibility
             // Show Title for print?
@@ -274,7 +275,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             showTitlePrint.Group = _Group;
             showTitlePrint.EnglishName = "Show Title for Print";
             showTitlePrint.Description = "Show Title for this module in print popup?";
-            _baseSettings.Add("MODULESETTINGS_SHOW_TITLE_PRINT", showTitlePrint);
+            baseSettings.Add("MODULESETTINGS_SHOW_TITLE_PRINT", showTitlePrint);
 
             // added: Jes1111 2004-08-02 - choices for Button display on module
             ArrayList buttonDisplayOptions = new ArrayList();
@@ -297,7 +298,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ButtonDisplay.EnglishName = "Display Buttons as:";
             ButtonDisplay.Description =
                 "Choose how you want module buttons to be displayed. Note that settings other than 'Image only' may require Zen or special treatment in the Theme.";
-            _baseSettings.Add("MODULESETTINGS_BUTTON_DISPLAY", ButtonDisplay);
+            baseSettings.Add("MODULESETTINGS_BUTTON_DISPLAY", ButtonDisplay);
 
             // Jes1111 - not implemented yet			
             //			// Show email button in view mode?
@@ -305,7 +306,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             //			EmailButton.Value = "False";
             //			EmailButton.Order = _groupOrderBase + 30;
             //			EmailButton.Group = _Group;
-            //			this._baseSettings.Add("ShowEmailButton",EmailButton);
+            //			this.baseSettings.Add("ShowEmailButton",EmailButton);
 
             // Show arrows buttons to move modules (admin only, property authorise)
             SettingItem ArrowButtons = new SettingItem(new BooleanDataType());
@@ -314,7 +315,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ArrowButtons.Group = _Group;
             ArrowButtons.EnglishName = "Show Arrow Admin Buttons";
             ArrowButtons.Description = "Show Arrow Admin buttons?";
-            _baseSettings.Add("MODULESETTINGS_SHOW_ARROW_BUTTONS", ArrowButtons);
+            baseSettings.Add("MODULESETTINGS_SHOW_ARROW_BUTTONS", ArrowButtons);
 
             // Show help button if exists
             SettingItem helpButton = new SettingItem(new BooleanDataType());
@@ -323,7 +324,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             helpButton.Group = _Group;
             helpButton.EnglishName = "Show Help Button";
             helpButton.Description = "Show help button in title if exists documentation for this module";
-            _baseSettings.Add("MODULESETTINGS_SHOW_HELP_BUTTON", helpButton);
+            baseSettings.Add("MODULESETTINGS_SHOW_HELP_BUTTON", helpButton);
 
             // LANGUAGE/CULTURE MANAGEMENT
             _groupOrderBase = (int) SettingItemGroup.CULTURE_SETTINGS;
@@ -338,21 +339,21 @@ namespace Rainbow.Framework.Web.UI.WebControls
             Culture.EnglishName = "Culture";
             Culture.Description =
                 "Please choose the culture. Invariant cultures shows always the module, if you choose one or more cultures only when culture is selected this module will shown.";
-            _baseSettings.Add("MODULESETTINGS_CULTURE", Culture);
+            baseSettings.Add("MODULESETTINGS_CULTURE", Culture);
 
             //Localized module title
             int counter = _groupOrderBase + 11;
             foreach (CultureInfo c in cultureList)
             {
                 //Ignore invariant
-                if (c != CultureInfo.InvariantCulture && !_baseSettings.ContainsKey(c.Name))
+                if (c != CultureInfo.InvariantCulture && !baseSettings.ContainsKey(c.Name))
                 {
                     SettingItem LocalizedTitle = new SettingItem(new StringDataType());
                     LocalizedTitle.Order = counter;
                     LocalizedTitle.Group = _Group;
                     LocalizedTitle.EnglishName = "Title (" + c.Name + ")";
                     LocalizedTitle.Description = "Set title for " + c.EnglishName + " culture.";
-                    _baseSettings.Add("MODULESETTINGS_TITLE_" + c.Name, LocalizedTitle);
+                    baseSettings.Add("MODULESETTINGS_TITLE_" + c.Name, LocalizedTitle);
                     counter++;
                 }
             }
@@ -374,7 +375,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 topicName.EnglishName = "Topic";
                 topicName.Description =
                     "Select a topic for this module. You may filter itmes by topic in Portal Search.";
-                _baseSettings.Add("TopicName", topicName);
+                baseSettings.Add("TopicName", topicName);
             }
 
             //Default configuration
@@ -390,7 +391,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <summary>
         /// _baseSettings holds datatype information
         /// </summary>
-        protected Hashtable _baseSettings = new Hashtable();
+        protected Hashtable baseSettings = new Hashtable();
 
         /// <summary>
         /// Module custom settings
@@ -402,7 +403,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 if (_settings == null)
                 {
-                    _settings = ModuleSettingsProvider.GetModuleSettings(ModuleID, _baseSettings);
+                    _settings = ModuleSettingsProvider.GetModuleSettings(ModuleID, baseSettings);
                 }
                 return _settings;
             }
@@ -414,7 +415,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Hashtable BaseSettings
         {
-            get { return _baseSettings; }
+            get { return baseSettings; }
         }
 
         /// <summary>
@@ -447,7 +448,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     // Change 8/April/2003 Jes1111
                     // changes to Language behaviour require addition of culture names to cache key
                     // Jes1111 2003/04/24 - Added PortalAlias to cachekey
-                    PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                    Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                     StringBuilder sb = new StringBuilder();
                     sb.Append("rb_");
                     sb.Append(portalSettings.PortalAlias);
@@ -984,18 +985,18 @@ end of modification
         /// <summary>
         /// Stores current portal settings 
         /// </summary>
-        public PortalSettings PortalSettings
+        public Portal PortalSettings
         {
             get
             {
                 if (Page != null)
-                    return ((Page) Page).portalSettings;
+                    return (Page).portalSettings;
                 else
                 {
                     // Obtain PortalSettings from Current Context
                     if (HttpContext.Current != null)
                     {
-                        return (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                        return (Portal) HttpContext.Current.Items["PortalSettings"];
                     }
                     return null;
                 }
@@ -1064,7 +1065,7 @@ end of modification
             get
             {
                 if (Page != null)
-                    return ((Page) Page).pageSettings;
+                    return (Page).pageSettings;
                 else
                     return null;
             }
@@ -1477,10 +1478,10 @@ end of modification
                         // TODO: This JavaScript Function Is used for different controls and should be in one place
                         // (it's also overweight considering that Javascript has a standard confirm() function - Jes1111)
                         if ( Page.Request.Browser.EcmaScriptVersion.Major >= 1 &&
-                            !( Page.ClientScript.IsClientScriptBlockRegistered( this.Page.GetType(), "confirmDelete" ) ) )
+                            !( Page.ClientScript.IsClientScriptBlockRegistered( Page.GetType(), "confirmDelete" ) ) )
                             {
                             string[] s = { "CONFIRM_DELETE" };
-                            Page.ClientScript.RegisterClientScriptBlock( this.Page.GetType(), "confirmDelete",
+                            Page.ClientScript.RegisterClientScriptBlock( Page.GetType(), "confirmDelete",
                                                                         General.GetStringResource(
                                                                             "CONFIRM_DELETE_SCRIPT",
                                                                             s ) );
@@ -2042,7 +2043,7 @@ end of modification
             }
         }
 
-        private LinkButton minMaxButton = null;
+        //private LinkButton minMaxButton = null;
 
         /// <summary>
         /// Module button to minimize/maximize module
@@ -2071,7 +2072,7 @@ end of modification
         //    }
         //}
 
-        private LinkButton closeButton = null;
+        //private LinkButton closeButton = null;
 
         /// <summary>
         /// Module button to close module
@@ -2935,9 +2936,7 @@ end of modification
                     eal.Add(Email);
                     Email = "<a href=\"mailto:" + Email + "\">" + Email + "</a>";
                 }
-                catch
-                {
-                }
+                catch {;}
 
                 // Construct the rest of the html
                 return
@@ -2988,7 +2987,7 @@ end of modification
             ArrayList paneModules = new ArrayList();
 
             // get the portal setting at the Tab level and not from this class as it is not refreshed
-            foreach (ModuleSettings _module in ((Page) Page).portalSettings.ActivePage.Modules)
+            foreach (ModuleSettings _module in (Page).portalSettings.ActivePage.Modules)
             {
                 if (PortalSettings.ActivePage.PageID == _module.PageID && _module.PaneName.ToLower() == pane.ToLower())
                 {
@@ -3080,7 +3079,7 @@ end of modification
 
             // reload the portalSettings from the database
             HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortalSettings(PageID, PortalSettings.PortalAlias);
-            ((Page) Page).portalSettings = (PortalSettings) Context.Items["PortalSettings"];
+            (Page).portalSettings = (Portal) Context.Items["PortalSettings"];
 
             // reorder the modules in the source pane
             sourceList = GetModules(sourcePane);
@@ -3152,6 +3151,7 @@ end of modification
         #region Window Management functions
 
         // Added  - BJA [wjanderson@reedtek.com] [START]
+/*
         /// <summary>
         /// Set the close button attributes to prompt user before removing. 
         /// </summary>
@@ -3173,7 +3173,8 @@ end of modification
                 delBtn.Attributes["onclick"] = "return confirmDelete();" + delBtn.Attributes["onclick"];
             else
                 delBtn.Attributes.Add("onclick", "return confirmDelete();");
-        } // end of setDeleteAttributes
+        } */
+// end of setDeleteAttributes
         // Added - BJA [wjanderson@reedtek.com] [END]
 
         #endregion

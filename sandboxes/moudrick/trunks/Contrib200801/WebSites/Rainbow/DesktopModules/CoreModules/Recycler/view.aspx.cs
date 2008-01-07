@@ -1,6 +1,6 @@
 using System;
 using System.Data;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;

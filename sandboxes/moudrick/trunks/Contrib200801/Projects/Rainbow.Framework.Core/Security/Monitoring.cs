@@ -1,7 +1,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 using System;
 
 namespace Rainbow.Framework.Security
@@ -34,7 +34,7 @@ namespace Rainbow.Framework.Security
             if (pageID == 0) pageID = 1;
 
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_AddMonitoringEntry", myConnection))
                 {

@@ -5,7 +5,6 @@ using System.Xml;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Design;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Content.Web.Modules

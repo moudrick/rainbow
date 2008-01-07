@@ -104,14 +104,14 @@ namespace Rainbow.Content.Web.Modules
                 {
                     try
                     {
-                        string virtualPath = _imageFolder + "/" + Path.GetFileName(uploadfile.PostedFile.FileName);
+                        string virtualPath = _imageFolder + "/" + System.IO.Path.GetFileName(uploadfile.PostedFile.FileName);
                         string phyiscalPath = Server.MapPath(virtualPath);
                         uploadfile.PostedFile.SaveAs(phyiscalPath);
                         uploadmessage.Text = _uploadSuccessMessage;
                     }
-                    catch (Exception exe)
+                    catch (Exception ex)
                     {
-                        uploadmessage.Text = (exe.Message);
+                        uploadmessage.Text = ex.Message;
                     }
                 }
                 else
@@ -139,9 +139,7 @@ namespace Rainbow.Content.Web.Modules
                 {
                     File.Delete(Server.MapPath(_imageFolder) + @"\" + e.CommandArgument);
                 }
-                catch
-                {
-                }
+                catch {;}
                 DisplayImages();
             }
         }
@@ -185,7 +183,7 @@ namespace Rainbow.Content.Web.Modules
             }
             else
             {
-                string galleryfilename = (string.Empty);
+                string galleryfilename;
 
                 TableRow rowItem;
                 TableCell cellItemImage;
@@ -194,7 +192,7 @@ namespace Rainbow.Content.Web.Modules
                 TableCell cellItemFileName;
                 foreach (string galleryfolderarrayitem in galleryfolderarray)
                 {
-                    galleryfilename = galleryfolderarrayitem.ToString();
+                    galleryfilename = galleryfolderarrayitem;
                     galleryfilename = galleryfilename.Substring(galleryfilename.LastIndexOf(@"\") + 1);
 
                     FlashMovie flashMovie = new FlashMovie();
@@ -216,7 +214,7 @@ namespace Rainbow.Content.Web.Modules
                     deleteCmd.CommandName = "DELETE";
                     deleteCmd.CssClass = "CommandButton";
                     deleteCmd.CommandArgument = galleryfilename;
-                    deleteCmd.Command += new CommandEventHandler(Delete_Command);
+                    deleteCmd.Command += Delete_Command;
 
                     rowItem = new TableRow();
 

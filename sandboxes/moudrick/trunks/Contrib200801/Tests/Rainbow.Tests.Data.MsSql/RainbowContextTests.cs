@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Subtext.TestLibrary;
 
 namespace Rainbow.Tests.Data.MsSql

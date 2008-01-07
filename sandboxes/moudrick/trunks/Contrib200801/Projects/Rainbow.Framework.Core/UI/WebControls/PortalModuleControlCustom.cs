@@ -2,8 +2,8 @@ using System.Collections;
 using System.Web;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings.Cache;
-using System;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -44,29 +44,27 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 else
                 {
                     Hashtable tempSettings = new Hashtable();
-
-                    SettingItem _default;
+                    SettingItem defaultSettingsItem;
 
                     //refresh this module's settings on every call in case they logged off, so it will
                     //retrieve the 'default' settings from the database.
                     //Invalidate cache
                     CurrentCache.Remove(Key.ModuleSettings(ModuleID));
-                    //this._baseSettings = ModuleSettings.GetModuleSettings(this.ModuleID, this._baseSettings);
+                    //this.baseSettings = ModuleSettings.GetModuleSettings(this.ModuleID, this._baseSettings);
 
                     foreach (string str in Settings.Keys)
                     {
-                        _default = (SettingItem) Settings[str];
-                        if (_default.Group == SettingItemGroup.CUSTOM_USER_SETTINGS) //It's one we want to customize
+                        defaultSettingsItem = (SettingItem) Settings[str];
+                        if (defaultSettingsItem.Group == SettingItemGroup.CUSTOM_USER_SETTINGS) //It's one we want to customize
                         {
-                            tempSettings.Add(str, _default); //insert the 'default' value
+                            tempSettings.Add(str, defaultSettingsItem); //insert the 'default' value
                         }
                     }
 
                     //Now, replace the default settings with the custom settings for this user from the database.
-                    return
-                        ModuleSettingsProvider.GetModuleUserSettings(ModuleConfiguration.ModuleID,
-                                                                   (Guid)RainbowContext.CurrentUser.Identity.ProviderUserKey,
-                                                                   tempSettings);
+                    return ModuleSettingsProvider.GetModuleUserSettings(ModuleConfiguration.ModuleID,
+                        RainbowPrincipal.CurrentUser.Identity.ProviderUserKey,
+                        tempSettings);
                 }
             }
         }
@@ -86,7 +84,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 if (customizeButton == null && HttpContext.Current != null)
                 {
                     // check authority
-                    if (HasCustomizeableSettings && RainbowContext.CurrentUser.Identity.IsOnline)
+                    if (HasCustomizeableSettings && RainbowPrincipal.CurrentUser.Identity.IsOnline)
                     {
                         // create the button
                         customizeButton = new ModuleButton();

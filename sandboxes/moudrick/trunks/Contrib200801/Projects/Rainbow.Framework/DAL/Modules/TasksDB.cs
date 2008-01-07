@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -25,7 +25,7 @@ namespace Rainbow.Framework.Content.Data
         public DataSet GetTasks(int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlDataAdapter myCommand = new SqlDataAdapter("rb_GetTasks", myConnection);
             myCommand.SelectCommand.CommandType = CommandType.StoredProcedure;
 
@@ -57,7 +57,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSingleTask(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSingleTask", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -82,7 +82,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteTask(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DeleteTask", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -129,7 +129,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddTask", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -218,7 +218,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateTask", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 

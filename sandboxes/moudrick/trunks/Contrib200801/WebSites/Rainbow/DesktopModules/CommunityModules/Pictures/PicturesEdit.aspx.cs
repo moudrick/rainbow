@@ -10,6 +10,7 @@ using System.Xml;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 
@@ -318,13 +319,13 @@ namespace Rainbow.Content.Web.Modules
                         SetMetadata("Caption", Caption.Text);
                         SetMetadata("Keywords", Keywords.Text);
                         SetMetadata("UploadDate", DateTime.Now.ToString());
-                        SetMetadata("CreatedBy", RainbowContext.CurrentUser.Identity.Email);
+                        SetMetadata("CreatedBy", RainbowPrincipal.CurrentUser.Identity.Email);
                         SetMetadata("DisplayOrder", displayOrder.ToString());
 
                         //Add new picture to Esperantus.Esperantus.Localize. database
                         ItemID =
                             pictures.AddPicture(ModuleID, ItemID, displayOrder, MetadataXml, ShortDescription.Text,
-                                                Keywords.Text, RainbowContext.CurrentUser.Identity.Email, DateTime.Now);
+                                                Keywords.Text, RainbowPrincipal.CurrentUser.Identity.Email, DateTime.Now);
                     }
                 }
                 else
@@ -458,7 +459,7 @@ namespace Rainbow.Content.Web.Modules
                     SetMetadata("Caption", Caption.Text);
                     SetMetadata("Keywords", Keywords.Text);
                     SetMetadata("UploadDate", DateTime.Now.ToString());
-                    SetMetadata("CreatedBy", RainbowContext.CurrentUser.Identity.Email);
+                    SetMetadata("CreatedBy", RainbowPrincipal.CurrentUser.Identity.Email);
                     SetMetadata("DisplayOrder", displayOrder.ToString());
 
                     if (ItemID == 0)
@@ -466,13 +467,13 @@ namespace Rainbow.Content.Web.Modules
                         //If this is a new picture add it to Esperantus.Esperantus.Localize. database
                         ItemID =
                             pictures.AddPicture(ModuleID, ItemID, displayOrder, MetadataXml, ShortDescription.Text,
-                                                Keywords.Text, RainbowContext.CurrentUser.Identity.Email, DateTime.Now);
+                                                Keywords.Text, RainbowPrincipal.CurrentUser.Identity.Email, DateTime.Now);
                     }
                     else
                     {
                         //Update Esperantus.Esperantus.Localize. existing one
                         pictures.UpdatePicture(ModuleID, ItemID, displayOrder, MetadataXml, ShortDescription.Text,
-                                               Keywords.Text, RainbowContext.CurrentUser.Identity.Email, DateTime.Now);
+                                               Keywords.Text, RainbowPrincipal.CurrentUser.Identity.Email, DateTime.Now);
                     }
                 }
                 // Redirect back to Esperantus.Esperantus.Localize. portal home page

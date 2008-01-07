@@ -4,6 +4,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
@@ -64,7 +65,7 @@ namespace Rainbow.Content.Web.Modules
             EditTable.DataSource =
                 new SortedList(
                     ModuleSettingsProvider.GetModuleUserSettings(this.ModuleID,
-                                                               (Guid)RainbowContext.CurrentUser.Identity.ProviderUserKey, this));
+                                                               (Guid)RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, this));
             EditTable.DataBind();
         }
 
@@ -100,7 +101,7 @@ namespace Rainbow.Content.Web.Modules
         private void EditTable_UpdateControl(object sender,
                                              Rainbow.Framework.Web.UI.WebControls.SettingsTableEventArgs e)
         {
-            ModuleSettingsProvider.UpdateCustomModuleSetting(ModuleID, (Guid)RainbowContext.CurrentUser.Identity.ProviderUserKey,
+            ModuleSettingsProvider.UpdateCustomModuleSetting(ModuleID, (Guid)RainbowPrincipal.CurrentUser.Identity.ProviderUserKey,
                                                            e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
     }

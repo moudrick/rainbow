@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Data.SqlClient;
-using System.IO;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
@@ -70,9 +69,9 @@ namespace Rainbow.Content.Web.Modules
                     if (dr.Read())
                     {
                         lblEntryCount.Text = General.GetString("BLOG_ENTRIES", "Entries", null) +
-                                             " (" + (string) dr["EntryCount"].ToString() + ")";
+                                             " (" + dr["EntryCount"] + ")";
                         lblCommentCount.Text = General.GetString("BLOG_COMMENTS", "Comments", null) +
-                                               " (" + (string) dr["CommentCount"].ToString() + ")";
+                                               " (" + dr["CommentCount"] + ")";
                     }
                 }
                 finally
@@ -92,8 +91,8 @@ namespace Rainbow.Content.Web.Modules
 
             // Set Editor Settings jviladiu@portalservices.net 2004/07/30
             // by Hongwei Shen
-            // HtmlEditorDataType.HtmlEditorSettings (this._baseSettings, SettingItemGroup.MODULE_SPECIAL_SETTINGS);
-            HtmlEditorDataType.HtmlEditorSettings(_baseSettings, group);
+            // HtmlEditorDataType.HtmlEditorSettings (this.baseSettings, SettingItemGroup.MODULE_SPECIAL_SETTINGS);
+            HtmlEditorDataType.HtmlEditorSettings(baseSettings, group);
 
             //Number of entries to display
             SettingItem EntriesToShow = new SettingItem(new IntegerDataType());
@@ -104,7 +103,7 @@ namespace Rainbow.Content.Web.Modules
             EntriesToShow.Group = group;
             EntriesToShow.Order = groupBase + 20;
             // end of modification
-            _baseSettings.Add("Entries To Show", EntriesToShow);
+            baseSettings.Add("Entries To Show", EntriesToShow);
 
             //Channel Description
             SettingItem Description = new SettingItem(new StringDataType());
@@ -115,7 +114,7 @@ namespace Rainbow.Content.Web.Modules
             Description.Group = group;
             Description.Order = groupBase + 25;
             // end of modification
-            _baseSettings.Add("Description", Description);
+            baseSettings.Add("Description", Description);
 
             //Channel Copyright
             SettingItem Copyright = new SettingItem(new StringDataType());
@@ -126,7 +125,7 @@ namespace Rainbow.Content.Web.Modules
             Copyright.Group = group;
             Copyright.Order = groupBase + 30;
             // end of modification
-            _baseSettings.Add("Copyright", Copyright);
+            baseSettings.Add("Copyright", Copyright);
 
             //Channel Language
             SettingItem Language = new SettingItem(new StringDataType());
@@ -137,7 +136,7 @@ namespace Rainbow.Content.Web.Modules
             Language.Group = group;
             Language.Order = groupBase + 40;
             // end of modification
-            _baseSettings.Add("Language", Language);
+            baseSettings.Add("Language", Language);
 
             //Author
             SettingItem Author = new SettingItem(new StringDataType());
@@ -148,7 +147,7 @@ namespace Rainbow.Content.Web.Modules
             Author.Group = group;
             Author.Order = groupBase + 50;
             // end of modification
-            _baseSettings.Add("Author", Author);
+            baseSettings.Add("Author", Author);
 
             //Author Email
             SettingItem AuthorEmail = new SettingItem(new StringDataType());
@@ -159,7 +158,7 @@ namespace Rainbow.Content.Web.Modules
             AuthorEmail.Group = group;
             AuthorEmail.Order = groupBase + 60;
             // end of modification
-            _baseSettings.Add("Author Email", AuthorEmail);
+            baseSettings.Add("Author Email", AuthorEmail);
 
             //Time to live in minutes for RSS
             //how long a channel can be cached before refreshing from the source
@@ -171,7 +170,7 @@ namespace Rainbow.Content.Web.Modules
             TimeToLive.Group = group;
             TimeToLive.Order = groupBase + 70;
             // end of modification
-            _baseSettings.Add("RSS Cache Time In Minutes", TimeToLive);
+            baseSettings.Add("RSS Cache Time In Minutes", TimeToLive);
         }
 
         #region General Implementation
@@ -219,23 +218,23 @@ namespace Rainbow.Content.Web.Modules
 
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

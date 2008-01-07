@@ -24,7 +24,7 @@ namespace Rainbow.Content.Web.Modules
         private XmlDocument xDoc = new XmlDocument();
 
         private string XmlFile;
-        private PortalUrlDataType PieUrl;
+        private PortalUrl PieUrl;
 
 
         /// <summary>
@@ -36,11 +36,11 @@ namespace Rainbow.Content.Web.Modules
         {
             lblQuiz.Text = moduleSettings["QuizName"].ToString();
 
-            PieUrl = new PortalUrlDataType();
+            PieUrl = new PortalUrl();
             PieUrl.Value = "/Quiz/Pie.gif";
 
-            PortalUrlDataType pt;
-            pt = new PortalUrlDataType();
+            PortalUrl pt;
+            pt = new PortalUrl();
             pt.Value = moduleSettings["XMLsrc"].ToString();
             string xmlsrc = pt.FullPath;
 

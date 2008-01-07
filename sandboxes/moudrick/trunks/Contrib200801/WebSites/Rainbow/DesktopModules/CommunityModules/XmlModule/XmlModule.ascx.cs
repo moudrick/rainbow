@@ -1,13 +1,7 @@
 using System;
 using System.IO;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Data;
-using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Site.Data;
-using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -29,9 +23,9 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
 		private void Page_Load(object sender, EventArgs e)
 		{
-			PortalUrlDataType pt;
+			PortalUrl pt;
 
-			pt = new PortalUrlDataType();
+			pt = new PortalUrl();
 			pt.Value = Settings["XMLsrc"].ToString();
 			string xmlsrc = pt.FullPath;
 
@@ -42,7 +36,7 @@ namespace Rainbow.Content.Web.Modules
 					xml1.DocumentSource = xmlsrc;
 					// Change - 28/Feb/2003 - Jeremy Esland
 					// Builds cache dependency files list
-					this.ModuleConfiguration.CacheDependency.Add(Server.MapPath(xmlsrc));
+					ModuleConfiguration.CacheDependency.Add(Server.MapPath(xmlsrc));
 				}
 				else
 				{
@@ -50,7 +44,7 @@ namespace Rainbow.Content.Web.Modules
 				}
 			}
 
-			pt = new PortalUrlDataType();
+			pt = new PortalUrl();
 			pt.Value = Settings["XSLsrc"].ToString();
 			string xslsrc = pt.FullPath;
 
@@ -61,7 +55,7 @@ namespace Rainbow.Content.Web.Modules
 					xml1.TransformSource = xslsrc;
 					// Change - 28/Feb/2003 - Jeremy Esland
 					// Builds cache dependency files list
-					this.ModuleConfiguration.CacheDependency.Add(Server.MapPath(xslsrc));
+					ModuleConfiguration.CacheDependency.Add(Server.MapPath(xslsrc));
 				}
 				else
 				{
@@ -75,15 +69,15 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
 		public XmlModule()
 		{
-			SettingItem XMLsrc = new SettingItem(new PortalUrlDataType());
+			SettingItem XMLsrc = new SettingItem(new PortalUrl());
 			XMLsrc.Required = true;
 			XMLsrc.Order = 1;
-			this._baseSettings.Add("XMLsrc", XMLsrc);
+			baseSettings.Add("XMLsrc", XMLsrc);
 
-			SettingItem XSLsrc = new SettingItem(new PortalUrlDataType());
+			SettingItem XSLsrc = new SettingItem(new PortalUrl());
 			XSLsrc.Required = true;
 			XSLsrc.Order = 2;
-			this._baseSettings.Add("XSLsrc", XSLsrc);
+			baseSettings.Add("XSLsrc", XSLsrc);
 		}
 
         /// <summary>

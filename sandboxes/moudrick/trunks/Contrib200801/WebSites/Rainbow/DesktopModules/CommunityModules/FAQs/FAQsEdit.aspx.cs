@@ -8,6 +8,7 @@ using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -124,7 +125,7 @@ namespace Rainbow.Content.Web.Modules
                     //  Add the question within the questions table
                     questions.AddFAQ(ModuleID,
                                      itemID,
-                                     RainbowContext.CurrentUser.Identity.Email,
+                                     RainbowPrincipal.CurrentUser.Identity.Email,
                                      Question.Text,
                                      DesktopText.Text);
                 }
@@ -133,7 +134,7 @@ namespace Rainbow.Content.Web.Modules
                     //  Update the question within the questions table
                     questions.UpdateFAQ(ModuleID,
                                         itemID,
-                                        RainbowContext.CurrentUser.Identity.Email,
+                                        RainbowPrincipal.CurrentUser.Identity.Email,
                                         Question.Text,
                                         DesktopText.Text);
                 }

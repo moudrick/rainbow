@@ -21,7 +21,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 if (_imageFolder == string.Empty)
                 {
-                    PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                    Portal pS = (Portal) HttpContext.Current.Items["PortalSettings"];
                     if (pS.CustomSettings != null)
                     {
                         if (pS.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"] != null)

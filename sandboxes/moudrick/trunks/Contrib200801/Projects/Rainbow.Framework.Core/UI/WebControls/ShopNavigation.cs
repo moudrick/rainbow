@@ -5,9 +5,8 @@ using System.Web;
 using System.Web.UI;
 using DUEMETRI.UI.WebControls.HWMenu;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 // Tiptopweb: 27 Jan 2003
 // modified from MenuNavigation to replace the Category module:
@@ -29,8 +28,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         public ShopNavigation()
         {
-            EnableViewState = false;
-            Load += new EventHandler(LoadControl);
+            base.EnableViewState = false;
+            Load += LoadControl;
         }
 
         /// <summary>
@@ -122,7 +121,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             bool currentTabOnly = (Bind == BindOption.BindOptionCurrentChilds);
 
             // Obtain PortalSettings from Current Context 
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             // Build list of tabs to be shown to user 
             ArrayList authorizedTabs = new ArrayList();
@@ -163,7 +162,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     {
                         for (int i = 0; i < myTab.Pages.Count; i++)
                         {
-                            PageStripDetails mySubTab = (PageStripDetails) myTab.Pages[i];
+                            PageStripDetails mySubTab = myTab.Pages[i];
                             AddMenuTreeNode(0, mySubTab);
                         }
                     }
@@ -178,7 +177,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         private void AddShopHomeNode()
         {
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
             int tabIDShop = portalSettings.ActivePage.PageID;
 
             MenuTreeNode mn = new MenuTreeNode(General.GetString("PRODUCT_HOME", "Shop Home"));
@@ -201,7 +200,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 // get index and id from this page and transmit them
                 // Obtain PortalSettings from Current Context 
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 int tabIDShop = portalSettings.ActivePage.PageID;
 
                 MenuTreeNode mn = new MenuTreeNode(myTab.PageName);
@@ -220,30 +219,31 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// Recourses the menu.
         /// </summary>
         /// <param name="tabIDShop">The tab ID shop.</param>
-        /// <param name="t">The t.</param>
-        /// <param name="mn">The mn.</param>
+        /// <param name="pagesBox">The t.</param>
+        /// <param name="menuTreeNode">The mn.</param>
         /// <returns></returns>
-        private MenuTreeNode RecourseMenu(int tabIDShop, PagesBox t, MenuTreeNode mn)
+        private MenuTreeNode RecourseMenu(int tabIDShop, 
+            PagesBox pagesBox, MenuTreeNode menuTreeNode)
         {
-            if (t.Count > 0)
+            if (pagesBox.Count > 0)
             {
-                for (int c = 0; c < t.Count; c++)
+                for (int c = 0; c < pagesBox.Count; c++)
                 {
-                    PageStripDetails mySubTab = (PageStripDetails) t[c];
-                    if (PortalSecurity.IsInRoles(mySubTab.AuthorizedRoles))
+                    PageStripDetails pageSubStripDetails = pagesBox[c];
+                    if (PortalSecurity.IsInRoles(pageSubStripDetails.AuthorizedRoles))
                     {
-                        MenuTreeNode mnc = new MenuTreeNode(mySubTab.PageName);
+                        MenuTreeNode newMenuTreeNode = new MenuTreeNode(pageSubStripDetails.PageName);
                         // change PageID into ItemID for the product module on the same page
-                        mnc.Link =
+                        newMenuTreeNode.Link =
                             HttpUrlBuilder.BuildUrl("~/" + HttpUrlBuilder.DefaultPage, tabIDShop,
-                                                    "ItemID=" + mySubTab.PageID);
-                        mnc.Width = mn.Width;
-                        mnc = RecourseMenu(tabIDShop, mySubTab.Pages, mnc);
-                        mn.Childs.Add(mnc);
+                                                    "ItemID=" + pageSubStripDetails.PageID);
+                        newMenuTreeNode.Width = menuTreeNode.Width;
+                        newMenuTreeNode = RecourseMenu(tabIDShop, pageSubStripDetails.Pages, newMenuTreeNode);
+                        menuTreeNode.Childs.Add(newMenuTreeNode);
                     }
                 }
             }
-            return mn;
+            return menuTreeNode;
         }
 
         /// <summary>

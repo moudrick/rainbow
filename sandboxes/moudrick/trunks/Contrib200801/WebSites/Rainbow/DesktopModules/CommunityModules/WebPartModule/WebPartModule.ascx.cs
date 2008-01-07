@@ -182,7 +182,7 @@ namespace Rainbow.Content.Web.Modules
             setWebPartFile.Required = true;
             setWebPartFile.Value = "_Rainbow/WebParts/sales.dwp";
             setWebPartFile.Order = 1;
-            _baseSettings.Add("WebPartFile", setWebPartFile);
+            baseSettings.Add("WebPartFile", setWebPartFile);
         }
 
 

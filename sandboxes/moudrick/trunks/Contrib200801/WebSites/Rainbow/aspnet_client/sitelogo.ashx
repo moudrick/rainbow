@@ -3,8 +3,8 @@
 using System;
 using System.Drawing.Imaging;
 using System.Web;
+using Rainbow.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Settings;
 
 public class sitelogo : IHttpHandler {
 
@@ -12,7 +12,7 @@ public class sitelogo : IHttpHandler {
     {
 
         // Obtain PortalSettings from Current Context
-        PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+        Portal portalSettings = (Portal)HttpContext.Current.Items["PortalSettings"];
 
         //PortalImage
         if (portalSettings.CustomSettings["SITESETTINGS_LOGO"] != null &&

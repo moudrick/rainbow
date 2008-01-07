@@ -15,7 +15,7 @@ using Rainbow.Framework.Helpers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI.WebControls;
 using BoundColumn = Rainbow.Framework.Web.UI.WebControls.BoundColumn;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules 
 {
@@ -117,7 +117,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
 		public void BindXSL()
 		{
-			PortalUrlDataType pt = new PortalUrlDataType();
+			PortalUrl pt = new PortalUrl();
 			pt.Value = Settings["XSLsrc"].ToString();
 			string xslsrc = pt.FullPath;
 
@@ -393,30 +393,30 @@ namespace Rainbow.Content.Web.Modules
 			setSortField.Required = false;
 			setSortField.Value = string.Empty;
 			setSortField.Order = 1;
-			this._baseSettings.Add("SortField", setSortField);
+			this.baseSettings.Add("SortField", setSortField);
 
 			SettingItem setSortOrder = new SettingItem(new ListDataType("ASC;DESC"));
 			setSortOrder.Required = true;
 			setSortOrder.Value = "ASC";
 			setSortOrder.Order = 2;
-			this._baseSettings.Add("SortOrder", setSortOrder);
+			this.baseSettings.Add("SortOrder", setSortOrder);
 
-			SettingItem DocumentPath = new SettingItem(new PortalUrlDataType());
+			SettingItem DocumentPath = new SettingItem(new PortalUrl());
 			DocumentPath.Required = true;
 			DocumentPath.Value = "Documents";
 			DocumentPath.Order = 3;
-			this._baseSettings.Add("DocumentPath", DocumentPath);
+			this.baseSettings.Add("DocumentPath", DocumentPath);
 
-			SettingItem ImagePath = new SettingItem(new PortalUrlDataType());
+			SettingItem ImagePath = new SettingItem(new PortalUrl());
 			ImagePath.Required = true;
 			ImagePath.Value = "Images\\Default";
 			ImagePath.Order = 4;
-			this._baseSettings.Add("ImagePath", ImagePath);
+			this.baseSettings.Add("ImagePath", ImagePath);
 
-			SettingItem XSLsrc = new SettingItem(new PortalUrlDataType());
+			SettingItem XSLsrc = new SettingItem(new PortalUrl());
 			XSLsrc.Required = false;
 			XSLsrc.Order = 5;
-			this._baseSettings.Add("XSLsrc", XSLsrc);
+			this.baseSettings.Add("XSLsrc", XSLsrc);
 
 			//Rob Siera - 04 nov 2004 - Adding possibility to use data of other UDT
 			SettingItem UDTsrc = new SettingItem(new IntegerDataType());
@@ -425,7 +425,7 @@ namespace Rainbow.Content.Web.Modules
 			UDTsrc.EnglishName="XSL data";
 			UDTsrc.Description="Specify ModuleID of a UserDefinedTable to be used as data source for XSL (see 'mID' parameter in edit URL). Specify 0 to reset to current module data.";
 			UDTsrc.Order = 6;
-			this._baseSettings.Add("UDTsrc", UDTsrc);
+			this.baseSettings.Add("UDTsrc", UDTsrc);
 
 			//Rob Siera - 04 nov 2004 - Adding possibility to view data as raw XML
 			SettingItem DisplayAsXML = new SettingItem(new BooleanDataType());
@@ -433,7 +433,7 @@ namespace Rainbow.Content.Web.Modules
 			DisplayAsXML.EnglishName="Display XML";
 			DisplayAsXML.Description="Toggle to display data as XML. Helpfull to develop XSL file.";
 			DisplayAsXML.Order = 7;
-			this._baseSettings.Add("DisplayAsXML", DisplayAsXML);
+			this.baseSettings.Add("DisplayAsXML", DisplayAsXML);
 		}
 
 

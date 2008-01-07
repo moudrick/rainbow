@@ -1,10 +1,8 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Web.UI.WebControls;
 using Rainbow.Framework.Data;
+
 namespace Rainbow.Framework.Content.Data
 {
 
@@ -28,7 +26,7 @@ namespace Rainbow.Framework.Content.Data
 		public int AddFAQ(int moduleID, int itemID, string userName, string question, string answer) 
 		{
             //  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_AddFAQ", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -76,7 +74,7 @@ namespace Rainbow.Framework.Content.Data
 		public DataSet GetFAQ(int moduleID) 
 		{
             //  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlDataAdapter myCommand = new SqlDataAdapter("rb_GetFAQ", myConnection);
             myCommand.SelectCommand.CommandType = CommandType.StoredProcedure;
 
@@ -110,7 +108,7 @@ namespace Rainbow.Framework.Content.Data
 		{
 
             //  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_GetSingleFAQ", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -135,7 +133,7 @@ namespace Rainbow.Framework.Content.Data
 		public void DeleteFAQ(int itemID)
 		{
             //  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_DeleteFAQ", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -167,7 +165,7 @@ namespace Rainbow.Framework.Content.Data
 		public void UpdateFAQ(int moduleID, int itemID, string userName, string question, string answer)
 		{
             //  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_UpdateFAQ", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 

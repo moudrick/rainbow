@@ -14,7 +14,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if(HttpContext.Current != null)
             {
                 // Obtain PortalSettings from Current Context
-            	PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            	Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
                 // Dynamically Populate the Portal Site Name
                 this.Text = portalSettings.PortalName;

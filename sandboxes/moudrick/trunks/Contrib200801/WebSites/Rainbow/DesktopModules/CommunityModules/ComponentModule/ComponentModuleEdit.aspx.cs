@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 
@@ -79,7 +80,7 @@ namespace Rainbow.Content.Web.Modules
                 // Create an instance of the Event DB component
                 ComponentModuleDB comp = new ComponentModuleDB();
 
-                comp.UpdateComponentModule(ModuleID, RainbowContext.CurrentUser.Identity.Email, TitleField.Text,
+                comp.UpdateComponentModule(ModuleID, RainbowPrincipal.CurrentUser.Identity.Email, TitleField.Text,
                                            ComponentField.Text);
 
                 // Redirect back to the portal home page

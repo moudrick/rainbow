@@ -5,7 +5,6 @@ using System.Threading;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;
 

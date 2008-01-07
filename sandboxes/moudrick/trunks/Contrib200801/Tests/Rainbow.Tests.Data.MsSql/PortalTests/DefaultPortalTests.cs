@@ -3,7 +3,7 @@ using System.Web;
 using NUnit.Framework;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Site.Configuration;
 using Subtext.TestLibrary;
 
@@ -13,7 +13,7 @@ namespace Rainbow.Tests.Data.MsSql.PortalTests
     public class DefaultPortalTests
     {
         HttpSimulator httpSimulator;
-        PortalSettings portalSettings;
+        Portal portalSettings;
 
         [SetUp]
         public void SetUp()

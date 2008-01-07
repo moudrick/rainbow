@@ -158,49 +158,49 @@ namespace Rainbow.Content.Web.Modules
             Trusted_Connection.Order = 1;
             //Trusted_Connection.Required = true;   // hmmm... problem here! Dont set to true!" 
             Trusted_Connection.Value = "True";
-            _baseSettings.Add("Trusted Connection", Trusted_Connection);
+            baseSettings.Add("Trusted Connection", Trusted_Connection);
 
             SettingItem ServerName = new SettingItem(new StringDataType());
             ServerName.Order = 2;
             ServerName.Required = true;
             ServerName.Value = "localhost";
-            _baseSettings.Add("ServerName", ServerName);
+            baseSettings.Add("ServerName", ServerName);
 
             SettingItem DatabaseName = new SettingItem(new StringDataType());
             DatabaseName.Order = 3;
             DatabaseName.Required = true;
             DatabaseName.Value = "Rainbow";
-            _baseSettings.Add("DatabaseName", DatabaseName);
+            baseSettings.Add("DatabaseName", DatabaseName);
 
             SettingItem UserID = new SettingItem(new StringDataType());
             UserID.Order = 4;
             UserID.Required = false;
             UserID.Value = "sa";
-            _baseSettings.Add("UserID", UserID);
+            baseSettings.Add("UserID", UserID);
 
             SettingItem Password = new SettingItem(new StringDataType());
             Password.Order = 5;
             Password.Required = false;
             Password.Value = string.Empty;
-            _baseSettings.Add("Password", Password);
+            baseSettings.Add("Password", Password);
 
             SettingItem MaxStringLength = new SettingItem(new IntegerDataType());
             MaxStringLength.Order = 6;
             MaxStringLength.Required = true;
             MaxStringLength.Value = "100";
-            _baseSettings.Add("MaxStringLength", MaxStringLength);
+            baseSettings.Add("MaxStringLength", MaxStringLength);
 
             SettingItem AllowPaging = new SettingItem(new BooleanDataType());
             AllowPaging.Order = 7;
             //AllowPaging.Required = true;   // hmmm... problem here! Dont set to true!" 
             AllowPaging.Value = "True";
-            _baseSettings.Add("AllowPaging", AllowPaging);
+            baseSettings.Add("AllowPaging", AllowPaging);
 
             SettingItem PageSize = new SettingItem(new IntegerDataType());
             PageSize.Order = 8;
             PageSize.Required = true;
             PageSize.Value = "10";
-            _baseSettings.Add("PageSize", PageSize);
+            baseSettings.Add("PageSize", PageSize);
         }
 
 

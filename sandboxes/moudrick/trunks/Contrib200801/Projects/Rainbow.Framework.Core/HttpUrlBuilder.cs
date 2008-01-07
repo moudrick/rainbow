@@ -169,10 +169,10 @@ namespace Rainbow.Framework
         public static string BuildUrl(string targetPage, int pageID, int modID, CultureInfo culture,
                                       string customAttributes, string currentAlias, string urlKeywords)
         {
-            PortalSettings currentSetting = null;
+            Portal currentSetting = null;
 
             if (HttpContext.Current.Items["PortalSettings"] != null)
-                currentSetting = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                currentSetting = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             if (culture == null)
             {

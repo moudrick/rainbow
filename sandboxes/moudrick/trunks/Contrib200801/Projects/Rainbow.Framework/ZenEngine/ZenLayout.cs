@@ -8,7 +8,6 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
@@ -683,7 +682,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             HybridDictionary counts = new HybridDictionary(3);
             string _key;
 
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             if (portalSettings.ActivePage.Modules.Count > 0)
             {

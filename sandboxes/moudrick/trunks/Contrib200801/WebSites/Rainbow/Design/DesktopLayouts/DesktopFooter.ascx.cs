@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -23,7 +23,7 @@ namespace Rainbow.Content.Web.Modules
             string LayoutBasePage = "DesktopFooter.ascx";
 			
             // Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+			Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 			
 			string footerPage = Path.WebPathCombine(portalSettings.PortalLayoutPath, LayoutBasePage);
 			if(File.Exists(Server.MapPath(footerPage)))

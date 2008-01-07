@@ -1,7 +1,6 @@
 using System.Web;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Settings;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -18,7 +17,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (HttpContext.Current != null)
             {
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
                 //PortalImage
                 if (portalSettings.CustomSettings["SITESETTINGS_LOGO"] != null &&

@@ -8,6 +8,7 @@ using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
@@ -88,7 +89,7 @@ namespace Rainbow.Content.Web.Modules
                 {
                     //New article - set defaults
                     StartField.Text = DateTime.Now.ToString();
-                    CreatedBy.Text = RainbowContext.CurrentUser.Identity.Email;
+                    CreatedBy.Text = RainbowPrincipal.CurrentUser.Identity.Email;
                     CreatedDate.Text = DateTime.Now.ToString();
                 }
             }
@@ -127,13 +128,13 @@ namespace Rainbow.Content.Web.Modules
                 }
                 if (ItemID == 0)
                 {
-                    blogData.AddBlog(ModuleID, RainbowContext.CurrentUser.Identity.Email,
+                    blogData.AddBlog(ModuleID, RainbowPrincipal.CurrentUser.Identity.Email,
                                      ((HTMLText) TitleField.Text).InnerText, ((HTMLText) ExcerptField.Text).InnerText,
                                      Server.HtmlEncode(DesktopText.Text), DateTime.Parse(StartField.Text), true);
                 }
                 else
                 {
-                    blogData.UpdateBlog(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email,
+                    blogData.UpdateBlog(ModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email,
                                         ((HTMLText) TitleField.Text).InnerText, ((HTMLText) ExcerptField.Text).InnerText,
                                         Server.HtmlEncode(DesktopText.Text), DateTime.Parse(StartField.Text), true);
                 }

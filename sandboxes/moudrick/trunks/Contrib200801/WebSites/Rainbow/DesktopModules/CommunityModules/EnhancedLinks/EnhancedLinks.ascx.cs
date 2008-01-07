@@ -284,7 +284,7 @@ namespace Rainbow.Content.Web.Modules
                 IconPath.EnglishName = "Container for Icons";
                 IconPath.Description = "Portal directory for upload used icons";
             }
-            _baseSettings.Add("ENHANCEDLINKS_ICONPATH", IconPath);
+            baseSettings.Add("ENHANCEDLINKS_ICONPATH", IconPath);
 
             ArrayList styleLink = new ArrayList();
             styleLink.Add(new SettingOption(1, General.GetString("ENHANCEDLINKS_DROPDOWNLIST", "DropDownList", null)));
@@ -301,7 +301,7 @@ namespace Rainbow.Content.Web.Modules
             MaxColums.Group = group;
             MaxColums.Order = groupBase + 20;
             // end of modification
-            _baseSettings.Add("ENHANCEDLINKS_MAXCOLUMS", MaxColums);
+            baseSettings.Add("ENHANCEDLINKS_MAXCOLUMS", MaxColums);
 
             SettingItem labelStyleLink = new SettingItem(new CustomListDataType(styleLink, "Name", "Val"));
             labelStyleLink.Description = "Select here how your module should look like";
@@ -313,7 +313,7 @@ namespace Rainbow.Content.Web.Modules
             labelStyleLink.Group = group;
             labelStyleLink.Order = groupBase + 25;
             // end of modification
-            _baseSettings.Add("ENHANCEDLINKS_SWITCHERTYPES", labelStyleLink);
+            baseSettings.Add("ENHANCEDLINKS_SWITCHERTYPES", labelStyleLink);
 
             SettingItem ImageDefault = new SettingItem(new StringDataType());
             ImageDefault.Value = "navLink.gif";
@@ -325,7 +325,7 @@ namespace Rainbow.Content.Web.Modules
             ImageDefault.Group = group;
             ImageDefault.Order = groupBase + 30;
             // end of modification
-            _baseSettings.Add("ENHANCEDLINKS_DEFAULTIMAGE", ImageDefault);
+            baseSettings.Add("ENHANCEDLINKS_DEFAULTIMAGE", ImageDefault);
 
             SettingItem ExpandAll = new SettingItem(new BooleanDataType());
             ExpandAll.Value = "false";
@@ -337,7 +337,7 @@ namespace Rainbow.Content.Web.Modules
             ExpandAll.Group = group;
             ExpandAll.Order = groupBase + 35;
             // end of modification
-            _baseSettings.Add("ENHANCEDLINKS_EXPANDALL", ExpandAll);
+            baseSettings.Add("ENHANCEDLINKS_EXPANDALL", ExpandAll);
         }
 
         /// <summary>

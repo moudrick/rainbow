@@ -5,6 +5,7 @@ using System.Text;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -412,7 +413,7 @@ namespace Rainbow.Framework.Core.Helpers
                 _portalID = pmc.PortalID;
                 UsersDB u = new UsersDB();
 
-                RainbowUser user = u.GetSingleUser(RainbowContext.CurrentUser.Identity.Email);
+                RainbowUser user = u.GetSingleUser(RainbowPrincipal.CurrentUser.Identity.Email);
                 //_userID = (Guid)user.ProviderUserKey;
                 _userID = (Guid)user.ProviderUserKey;
 

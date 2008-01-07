@@ -1,8 +1,7 @@
 using System.Data;
 using System.Data.SqlClient;
-
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Data;
+
 namespace Rainbow.Framework.Content.Data
 {
     /// <summary>
@@ -17,7 +16,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetModuleTypes()
         {
             //  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_ContentMgr_GetModuleTypes", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -33,7 +32,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetPortals()
         {
             //  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_ContentMgr_GetPortals", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -51,7 +50,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetModuleInstances(int ItemID,int PortalID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_ContentMgr_GetModuleInstances",myConnection);
 
             // Mark the Command as a SPROC
@@ -81,7 +80,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetModuleInstancesExc(int ItemID, int ExcludeItem, int PortalID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_ContentMgr_GetModuleInstancesExc",myConnection);
 
             // Mark the Command as a SPROC
@@ -112,7 +111,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSourceModuleData(int ContentMgr_ItemID,int ModuleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_ContentMgr_GetSourceModuleData", myConnection);
 
             // Mark the Command as a SPROC
@@ -139,7 +138,7 @@ namespace Rainbow.Framework.Content.Data
 		public SqlDataReader GetDestModuleData(int ContentMgr_ItemID,int ModuleID)
 		{
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_ContentMgr_GetDestModuleData", myConnection);
 
 			// Mark the Command as a SPROC
@@ -167,7 +166,7 @@ namespace Rainbow.Framework.Content.Data
 		public void MoveItemLeft(int ContentMgr_ItemID,int TargetItemID,int TargetModuleID)
         {
             //  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_ContentMgr_MoveItemLeft", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -197,7 +196,7 @@ namespace Rainbow.Framework.Content.Data
 		public void MoveItemRight(int ContentMgr_ItemID,int TargetItemID,int TargetModuleID)
 		{
 			//  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_ContentMgr_MoveItemRight", myConnection);
 			myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -228,7 +227,7 @@ namespace Rainbow.Framework.Content.Data
         public void CopyItem(int ContentMgr_ItemID,int ItemID, int TargetModuleID)
         {
             //  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_ContentMgr_CopyItem", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -259,7 +258,7 @@ namespace Rainbow.Framework.Content.Data
         public void CopyAll(int ContentMgr_ItemID,int SourceModuleID, int TargetModuleID)
         {
             //  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_ContentMgr_CopyAll", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -288,7 +287,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteItemLeft(int ContentMgr_ItemID,int ItemID)
         {
             //  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_ContentMgr_DeleteItemLeft", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -313,7 +312,7 @@ namespace Rainbow.Framework.Content.Data
 		public void DeleteItemRight(int ContentMgr_ItemID,int ItemID)
 		{
 			//  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_ContentMgr_DeleteItemRight", myConnection);
 			myCommand.CommandType = CommandType.StoredProcedure;
 

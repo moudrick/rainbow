@@ -10,7 +10,6 @@ using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
 
@@ -64,14 +63,14 @@ namespace Rainbow.Content.Web.Modules
             _Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             _groupOrderBase = (int) SettingItemGroup.MODULE_SPECIAL_SETTINGS;
 
-            HtmlEditorDataType.HtmlEditorSettings(_baseSettings, _Group);
+            HtmlEditorDataType.HtmlEditorSettings(baseSettings, _Group);
 
             //If false the input box for mobile content will be hidden
             SettingItem ShowMobileText = new SettingItem(new BooleanDataType());
             ShowMobileText.Value = "true";
             ShowMobileText.Order = _groupOrderBase + 10;
             ShowMobileText.Group = _Group;
-            _baseSettings.Add("ShowMobile", ShowMobileText);
+            baseSettings.Add("ShowMobile", ShowMobileText);
 
             #endregion
 
@@ -89,7 +88,7 @@ namespace Rainbow.Content.Web.Modules
             ShowCompareButton.Group = _Group;
             ShowCompareButton.EnglishName = "Show Compare Button?";
             ShowCompareButton.Description = "Compare the working version with the live one";
-            _baseSettings.Add(COMPARE_BUTTON, ShowCompareButton);
+            baseSettings.Add(COMPARE_BUTTON, ShowCompareButton);
 
             // end of addition
 

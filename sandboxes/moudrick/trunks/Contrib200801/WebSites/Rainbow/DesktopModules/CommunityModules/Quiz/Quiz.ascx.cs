@@ -30,13 +30,13 @@ namespace Rainbow.Content.Web.Modules
             QuizName.Required = true;
             QuizName.Order = 1;
             QuizName.Value = "About Australia (Demo1)";
-            _baseSettings.Add("QuizName", QuizName);
+            baseSettings.Add("QuizName", QuizName);
 
-            SettingItem XMLsrc = new SettingItem(new PortalUrlDataType());
+            SettingItem XMLsrc = new SettingItem(new PortalUrl());
             XMLsrc.Required = true;
             XMLsrc.Order = 2;
             XMLsrc.Value = "/Quiz/Demo1.xml";
-            _baseSettings.Add("XMLsrc", XMLsrc);
+            baseSettings.Add("XMLsrc", XMLsrc);
         }
 
 

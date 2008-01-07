@@ -1,8 +1,8 @@
 using System;
 using System.Web;
 using NUnit.Framework;
-using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Core.Configuration.Settings; //Portal
+using Rainbow.Framework.Providers;
 using Subtext.TestLibrary;
 
 namespace Rainbow.Tests.Data.MsSql.PortalTests
@@ -25,7 +25,7 @@ namespace Rainbow.Tests.Data.MsSql.PortalTests
 
                 //System.Web.Profile.SqlProfileProvider
                 int newProtalId = PortalProvider.Instance.CreatePortal(0, "newPortalAlias", "newPortalName", "newPortalPath");
-                PortalSettings newPortal = PortalProvider.Instance.InstantiateNewPortalSettings(newProtalId);
+                Portal newPortal = PortalProvider.Instance.InstantiateNewPortalSettings(newProtalId);
                 Assert.IsNotNull(newPortal);
             }
         }

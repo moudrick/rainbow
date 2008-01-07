@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -273,7 +272,7 @@ namespace Rainbow.Content.Web.Modules
             setMachineName.Order = groupBase + 20;
             setMachineName.EnglishName = "Machine Name";
             // end of modification
-            _baseSettings.Add("MachineName", setMachineName);
+            baseSettings.Add("MachineName", setMachineName);
 
             SettingItem setSortField =
                 new SettingItem(new ListDataType("EntryType;TimeGenerated;Source;EventID;Message"));
@@ -285,7 +284,7 @@ namespace Rainbow.Content.Web.Modules
             setSortField.Order = groupBase + 25;
             setSortField.EnglishName = "Sort Field";
             // end of modification
-            _baseSettings.Add("SortField", setSortField);
+            baseSettings.Add("SortField", setSortField);
 
             SettingItem setSortDirection = new SettingItem(new ListDataType("ASC;DESC"));
             setSortDirection.Required = true;
@@ -296,7 +295,7 @@ namespace Rainbow.Content.Web.Modules
             setSortDirection.Order = groupBase + 30;
             setSortDirection.EnglishName = "Sort Direction";
             // end of modification
-            _baseSettings.Add("SortDirection", setSortDirection);
+            baseSettings.Add("SortDirection", setSortDirection);
         }
 
         /// <summary>

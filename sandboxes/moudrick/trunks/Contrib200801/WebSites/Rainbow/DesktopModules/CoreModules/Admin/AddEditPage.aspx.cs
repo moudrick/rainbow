@@ -1,7 +1,7 @@
 using System;
 using System.Web.UI;
+using Rainbow.Framework;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using Rainbow.KickStarter.CommonClasses;

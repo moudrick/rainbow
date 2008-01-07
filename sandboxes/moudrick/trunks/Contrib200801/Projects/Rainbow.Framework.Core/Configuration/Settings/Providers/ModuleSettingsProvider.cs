@@ -3,7 +3,8 @@ using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -145,7 +146,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         public static Hashtable GetModuleSettingsHashtable(int moduleID)
         {
             Hashtable settings = new Hashtable();
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetModuleSettings", myConnection))
                 {
@@ -178,7 +179,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         public static Hashtable GetModuleSettingsHashtable(int moduleID, Guid userID)
         {
             Hashtable settings = new Hashtable();
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetModuleUserSettings", myConnection))
                 {
@@ -216,7 +217,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         public static void UpdateCustomModuleSetting(int moduleID, Guid userID, string key, string value)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_UpdateModuleUserSetting", myConnection))
                 {
@@ -261,7 +262,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             try
             {
                 PortalModuleControlCustom portalModule = (PortalModuleControlCustom)page.LoadControl(controlPath);
-                Hashtable setting = GetModuleUserSettings(moduleID, (Guid)RainbowContext.CurrentUser.Identity.ProviderUserKey, portalModule.CustomizedUserSettings);
+                Hashtable setting = GetModuleUserSettings(moduleID, (Guid)RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, portalModule.CustomizedUserSettings);
                 return setting;
             }
             catch (Exception ex)
@@ -302,7 +303,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         static SqlDataReader GetModuleDefinitionByID(int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection connection = Config.SqlConnectionString;
+            SqlConnection connection = DBHelper.SqlConnection;
             SqlCommand command = new SqlCommand("rb_GetModuleDefinitionByID", connection);
 
             // Mark the Command as a SPROC
@@ -372,7 +373,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         public static void UpdateModuleSetting(int moduleID, string key, string value)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_UpdateModuleSetting", myConnection))
                 {

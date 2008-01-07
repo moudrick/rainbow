@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Web;
 using System.Web.Security;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
 
@@ -41,7 +40,7 @@ namespace Rainbow.Framework.Users.Data {
             }
         }
 
-        static PortalSettings CurrentPortalSettings {
+        static Portal CurrentPortalSettings {
             get 
             {
                 return PortalProvider.Instance.CurrentPortal;
@@ -274,10 +273,10 @@ namespace Rainbow.Framework.Users.Data {
         /// </summary>
         /// <param name="userName">the user's email</param>
         /// <returns></returns>
-        public RainbowUser GetSingleUser( string userName ) {
-
-            RainbowUser user = MembershipProvider.GetUser( CurrentPortalSettings.PortalAlias, userName, true ) as RainbowUser;
-            return user;
+        public RainbowUser GetSingleUser(string userName) 
+        //TODO: [moudrick]  inline this method
+        {
+            return MembershipProvider.GetSingleUser(CurrentPortalSettings.PortalAlias, userName);
         }
 
         /// <summary>

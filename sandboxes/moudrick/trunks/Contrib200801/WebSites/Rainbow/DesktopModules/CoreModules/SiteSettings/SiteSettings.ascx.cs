@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
-using Rainbow.Framework.Core;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -64,7 +63,7 @@ namespace Rainbow.Content.Web.Modules
 
         private void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
         {
-            RainbowContext.Current.UpdatePortalSetting(PortalSettings.PortalID,
+            PortalProvider.Instance.UpdatePortalSetting(PortalSettings.PortalID,
                                                        e.CurrentItem.EditControl.ID,
                                                        e.CurrentItem.Value);
         }

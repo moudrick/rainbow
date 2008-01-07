@@ -8,6 +8,7 @@ using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -118,7 +119,7 @@ namespace Rainbow.Content.Web.Modules
                     ExpireField.Text =
                         DateTime.Now.AddDays(int.Parse(moduleSettings["DefaultVisibleDays"].ToString())).
                             ToShortDateString();
-                    CreatedBy.Text = RainbowContext.CurrentUser.Identity.Email;
+                    CreatedBy.Text = RainbowPrincipal.CurrentUser.Identity.Email;
                     CreatedDate.Text = DateTime.Now.ToString();
                 }
             }
@@ -158,7 +159,7 @@ namespace Rainbow.Content.Web.Modules
                 }
                 if (ItemID == 0)
                 {
-                    Articles.AddArticle(ModuleID, RainbowContext.CurrentUser.Identity.Email,
+                    Articles.AddArticle(ModuleID, RainbowPrincipal.CurrentUser.Identity.Email,
                                         ((HTMLText) TitleField.Text).InnerText,
                                         ((HTMLText) SubtitleField.Text).InnerText, AbstractText.Text,
                                         Server.HtmlEncode(DesktopText.Text), DateTime.Parse(StartField.Text),
@@ -166,7 +167,7 @@ namespace Rainbow.Content.Web.Modules
                 }
                 else
                 {
-                    Articles.UpdateArticle(ModuleID, ItemID, RainbowContext.CurrentUser.Identity.Email,
+                    Articles.UpdateArticle(ModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email,
                                            ((HTMLText) TitleField.Text).InnerText,
                                            ((HTMLText) SubtitleField.Text).InnerText, AbstractText.Text,
                                            Server.HtmlEncode(DesktopText.Text), DateTime.Parse(StartField.Text),

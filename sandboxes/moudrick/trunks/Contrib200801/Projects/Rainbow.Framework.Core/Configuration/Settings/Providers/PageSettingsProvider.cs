@@ -3,7 +3,7 @@ using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Core.Configuration.Settings.Providers
@@ -25,7 +25,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             // Get Settings for this Page from the database
             Hashtable _settings = new Hashtable();
 
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetTabCustomSettings", myConnection))
                 {
@@ -64,7 +64,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         public static PagesBox GetPageSettingsPagesBox(int pageID)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetTabSettings", myConnection))
                 {
@@ -120,7 +120,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="value">The value.</param>
         public static void UpdatePageSettings(int pageID, string key, string value)
         {
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_UpdateTabCustomSettings", myConnection))
                 {

@@ -376,49 +376,49 @@ namespace Rainbow.Content.Web.Modules
             Trusted_Connection.Order = 1;
             //Trusted_Connection.Required = true;   // hmmm... problem here! Dont set to true!" 
             Trusted_Connection.Value = "True";
-            _baseSettings.Add("Trusted Connection", Trusted_Connection);
+            baseSettings.Add("Trusted Connection", Trusted_Connection);
 
             SettingItem ServerName = new SettingItem(new StringDataType());
             ServerName.Order = 2;
             ServerName.Required = true;
             ServerName.Value = "localhost";
-            _baseSettings.Add("ServerName", ServerName);
+            baseSettings.Add("ServerName", ServerName);
 
             SettingItem DatabaseName = new SettingItem(new StringDataType());
             DatabaseName.Order = 3;
             DatabaseName.Required = true;
             DatabaseName.Value = "Rainbow";
-            _baseSettings.Add("DatabaseName", DatabaseName);
+            baseSettings.Add("DatabaseName", DatabaseName);
 
             SettingItem UserID = new SettingItem(new StringDataType());
             UserID.Order = 4;
             UserID.Required = false;
             UserID.Value = string.Empty;
-            _baseSettings.Add("UserID", UserID);
+            baseSettings.Add("UserID", UserID);
 
             SettingItem Password = new SettingItem(new StringDataType());
             Password.Order = 5;
             Password.Required = false;
             Password.Value = string.Empty;
-            _baseSettings.Add("Password", Password);
+            baseSettings.Add("Password", Password);
 
             SettingItem InfoFields = new SettingItem(new StringDataType());
             InfoFields.Order = 6;
             InfoFields.Required = true;
             InfoFields.Value = "name,id,xtype,uid"; // for table sysobjects
-            _baseSettings.Add("InfoFields", InfoFields);
+            baseSettings.Add("InfoFields", InfoFields);
 
             SettingItem InfoExtendedFields = new SettingItem(new StringDataType());
             InfoExtendedFields.Order = 7;
             InfoExtendedFields.Required = true;
             InfoExtendedFields.Value = "*"; // for table sysobjects
-            _baseSettings.Add("InfoExtendedFields", InfoExtendedFields);
+            baseSettings.Add("InfoExtendedFields", InfoExtendedFields);
 
             SettingItem ShowQueryBox = new SettingItem(new BooleanDataType());
             ShowQueryBox.Order = 8;
             //ShowQueryBox.Required = true;   // hmmm... problem here! Dont set to true!" 
             ShowQueryBox.Value = "True";
-            _baseSettings.Add("Show Query Box", ShowQueryBox);
+            baseSettings.Add("Show Query Box", ShowQueryBox);
 
             SettingItem QueryBoxHeight = new SettingItem(new IntegerDataType());
             QueryBoxHeight.Order = 9;
@@ -426,7 +426,7 @@ namespace Rainbow.Content.Web.Modules
             QueryBoxHeight.Value = "150";
             QueryBoxHeight.MinValue = 10;
             QueryBoxHeight.MaxValue = 2000;
-            _baseSettings.Add("Query Box Height", QueryBoxHeight);
+            baseSettings.Add("Query Box Height", QueryBoxHeight);
         }
 
         #region Web Form Designer generated code

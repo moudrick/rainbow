@@ -67,6 +67,7 @@ namespace Rainbow.Framework.Providers
         /// </summary>
         /// <returns></returns>
         public static GeographicProvider Current
+        //TODO: rename it to Instance
         {
             get
             {
@@ -82,7 +83,6 @@ namespace Rainbow.Framework.Providers
                 if (CurrentCache[cacheKey] == null)
                 {
                     // The assembly should be in \bin or GAC, so we simply need
-
                     // to get an instance of the type
                     try
                     {

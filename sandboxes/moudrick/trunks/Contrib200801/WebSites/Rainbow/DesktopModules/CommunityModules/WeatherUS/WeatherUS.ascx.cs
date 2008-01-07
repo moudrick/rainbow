@@ -27,13 +27,13 @@ namespace Rainbow.Content.Web.Modules
             setZip.Required = true;
             setZip.Value = "10001";
             setZip.Order = 1;
-            _baseSettings.Add("Zip", setZip);
+            baseSettings.Add("Zip", setZip);
 
             SettingItem setOption = new SettingItem(new StringDataType());
             setOption.Required = true;
             setOption.Value = "0";
             setOption.Order = 2;
-            _baseSettings.Add("Option", setOption);
+            baseSettings.Add("Option", setOption);
         }
 
         /// <summary>

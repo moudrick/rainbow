@@ -150,21 +150,21 @@ namespace Rainbow.Content.Web.Modules
 			setting.Value = string.Empty;
 			setting.EnglishName = "Settings string";
 			setting.Description = "Settings are in pairs like: FirstName=Elvis;LastName=Presly;";
-			this._baseSettings.Add("Settings string", setting);
+			this.baseSettings.Add("Settings string", setting);
 
-			SettingItem xmlFile = new SettingItem(new PortalUrlDataType());
+			SettingItem xmlFile = new SettingItem(new PortalUrl());
 			xmlFile.Required = false;
 			xmlFile.Order = 2;
 			xmlFile.EnglishName = "XML settings file";
 			xmlFile.Description = "Name of file in folder Rainbow\\_Portalfolder (typically _Rainbow). Do not add a path!";
-			this._baseSettings.Add("XML settings file", xmlFile);
+			this.baseSettings.Add("XML settings file", xmlFile);
 
 			SettingItem debugMode = new SettingItem(new BooleanDataType());
 			debugMode.Order = 3;
 			debugMode.Value = "True";
 			debugMode.EnglishName = "Debug Mode";
 			debugMode.Description = "Primarily for the developer. Controls property DebugMode";
-			this._baseSettings.Add("Debug Mode", debugMode);
+			this.baseSettings.Add("Debug Mode", debugMode);
 		}
 
 
@@ -238,7 +238,7 @@ namespace Rainbow.Content.Web.Modules
 		{
 			bool retValue = true;
 
-			PortalUrlDataType pt = new PortalUrlDataType();
+			PortalUrl pt = new PortalUrl();
 			pt.Value = file;
 			string xmlFile = pt.FullPath;
 

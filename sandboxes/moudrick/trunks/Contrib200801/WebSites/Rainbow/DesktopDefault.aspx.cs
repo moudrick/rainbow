@@ -105,7 +105,7 @@ namespace Rainbow
                 try
                 {
                     
-                    Monitoring.LogEntry((Guid)RainbowContext.CurrentUser.Identity.ProviderUserKey, portalSettings.PortalID,
+                    Monitoring.LogEntry((Guid)RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, portalSettings.PortalID,
                                         Convert.ToInt32(PageID), Rainbow.Framework.Monitoring.MonitoringAction.PageRequest, string.Empty);
                 }
                 catch (System.Data.SqlClient.SqlException sqex)

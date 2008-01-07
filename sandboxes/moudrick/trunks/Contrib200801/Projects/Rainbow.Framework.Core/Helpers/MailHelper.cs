@@ -9,6 +9,7 @@ using Rainbow.Framework.Core;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Exceptions;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings;
 using MailMessage=System.Net.Mail.MailMessage;
 
@@ -162,7 +163,7 @@ namespace Rainbow.Framework.Helpers
             {
                 // Get the logged on email address from the context
                 //string email = System.Web.HttpContext.Current.User.Identity.Name;
-                string email = RainbowContext.CurrentUser.Identity.Email;
+                string email = RainbowPrincipal.CurrentUser.Identity.Email;
 
                 if (!Validated)
                     return email;

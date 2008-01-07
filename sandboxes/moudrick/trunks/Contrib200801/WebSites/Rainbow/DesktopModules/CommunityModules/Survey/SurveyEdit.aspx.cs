@@ -5,6 +5,7 @@ using System.Web.UI;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using ImageButton=System.Web.UI.WebControls.ImageButton;
@@ -48,7 +49,7 @@ namespace Rainbow.Content.Web.Modules
             //*********************************************************
             SurveyDB SurveyCheck = new SurveyDB();
             // puts the desc of Survey in the title
-            lblDescSurvey.Text = SurveyCheck.ExistAddSurvey(ModuleID, RainbowContext.CurrentUser.Identity.Email);
+            lblDescSurvey.Text = SurveyCheck.ExistAddSurvey(ModuleID, RainbowPrincipal.CurrentUser.Identity.Email);
 
             //TBD: Create a sproc that gets these fields:
             //CreatedBy.Text = (string) dr["CreatedByUser"];

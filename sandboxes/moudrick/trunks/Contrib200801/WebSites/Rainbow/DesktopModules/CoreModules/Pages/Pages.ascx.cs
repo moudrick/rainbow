@@ -70,7 +70,7 @@ namespace Rainbow.Content.Web.Modules {
             PageVersion.Description =
                 "If Checked the module acts has it always did. If not it uses the new short form which allows security to be set so the new tab will not be seen by all users.";
             PageVersion.Order = 10;
-            _baseSettings.Add( "TAB_VERSION", PageVersion );
+            baseSettings.Add( "TAB_VERSION", PageVersion );
         }
 
 

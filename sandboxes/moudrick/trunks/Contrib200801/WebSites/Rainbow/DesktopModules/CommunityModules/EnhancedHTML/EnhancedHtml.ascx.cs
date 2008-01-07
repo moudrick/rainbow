@@ -12,7 +12,6 @@ using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -487,7 +486,7 @@ namespace Rainbow.Content.Web.Modules
             _groupOrderBase = (int) _Group;
             // end of modification
 
-            HtmlEditorDataType.HtmlEditorSettings(_baseSettings, _Group);
+            HtmlEditorDataType.HtmlEditorSettings(baseSettings, _Group);
 
             SettingItem ShowTitlePage = new SettingItem(new BooleanDataType());
             ShowTitlePage.Value = "false";
@@ -495,7 +494,7 @@ namespace Rainbow.Content.Web.Modules
             ShowTitlePage.Group = _Group;
             ShowTitlePage.EnglishName = "Show Title Page?";
             ShowTitlePage.Description = "Mark this if you like see the Title Page";
-            _baseSettings.Add("ENHANCEDHTML_SHOWTITLEPAGE", ShowTitlePage);
+            baseSettings.Add("ENHANCEDHTML_SHOWTITLEPAGE", ShowTitlePage);
 
             SettingItem ShowUpMenu = new SettingItem(new BooleanDataType());
             ShowUpMenu.Value = "false";
@@ -503,7 +502,7 @@ namespace Rainbow.Content.Web.Modules
             ShowUpMenu.Group = _Group;
             ShowUpMenu.EnglishName = "Show Index Menu?";
             ShowUpMenu.Description = "Mark this if you like see a index menu whith the titles of all pages";
-            _baseSettings.Add("ENHANCEDHTML_SHOWUPMENU", ShowUpMenu);
+            baseSettings.Add("ENHANCEDHTML_SHOWUPMENU", ShowUpMenu);
 
             ArrayList alignUpMenu = new ArrayList();
             alignUpMenu.Add(new SettingOption(1, General.GetString("LEFT", "Left")));
@@ -515,7 +514,7 @@ namespace Rainbow.Content.Web.Modules
             labelAlignUpMenu.EnglishName = "Align Index Menu";
             labelAlignUpMenu.Value = "1";
             labelAlignUpMenu.Order = _groupOrderBase + 30;
-            _baseSettings.Add("ENHANCEDHTML_ALIGNUPMENU", labelAlignUpMenu);
+            baseSettings.Add("ENHANCEDHTML_ALIGNUPMENU", labelAlignUpMenu);
 
             SettingItem ShowDownMenu = new SettingItem(new BooleanDataType());
             ShowDownMenu.Value = "true";
@@ -523,7 +522,7 @@ namespace Rainbow.Content.Web.Modules
             ShowDownMenu.Group = _Group;
             ShowDownMenu.EnglishName = "Show Navigation Menu?";
             ShowDownMenu.Description = "Mark this if you like see a navigation menu with previous and next page";
-            _baseSettings.Add("ENHANCEDHTML_SHOWDOWNMENU", ShowDownMenu);
+            baseSettings.Add("ENHANCEDHTML_SHOWDOWNMENU", ShowDownMenu);
 
             ArrayList alignDownMenu = new ArrayList();
             alignDownMenu.Add(new SettingOption(1, General.GetString("LEFT", "Left")));
@@ -535,7 +534,7 @@ namespace Rainbow.Content.Web.Modules
             labelAlignDownMenu.EnglishName = "Align Navigation Menu";
             labelAlignDownMenu.Value = "3";
             labelAlignDownMenu.Order = _groupOrderBase + 50;
-            _baseSettings.Add("ENHANCEDHTML_ALIGNDOWNMENU", labelAlignDownMenu);
+            baseSettings.Add("ENHANCEDHTML_ALIGNDOWNMENU", labelAlignDownMenu);
 
             SettingItem AddInvariant = new SettingItem(new BooleanDataType());
             AddInvariant.Value = "true";
@@ -544,7 +543,7 @@ namespace Rainbow.Content.Web.Modules
             AddInvariant.EnglishName = "Add Invariant Culture?";
             AddInvariant.Description =
                 "Mark this if you like see pages with invariant culture after pages with actual culture code";
-            _baseSettings.Add("ENHANCEDHTML_ADDINVARIANTCULTURE", AddInvariant);
+            baseSettings.Add("ENHANCEDHTML_ADDINVARIANTCULTURE", AddInvariant);
 
             SettingItem ShowMultiMode = new SettingItem(new BooleanDataType());
             ShowMultiMode.Value = "true";
@@ -552,7 +551,7 @@ namespace Rainbow.Content.Web.Modules
             ShowMultiMode.Group = _Group;
             ShowMultiMode.EnglishName = "Show Multi-Mode icon?";
             ShowMultiMode.Description = "Mark this if you like see icon multimode page";
-            _baseSettings.Add("ENHANCEDHTML_SHOWMULTIMODE", ShowMultiMode);
+            baseSettings.Add("ENHANCEDHTML_SHOWMULTIMODE", ShowMultiMode);
 
             SettingItem GetContentsFromPortals = new SettingItem(new BooleanDataType());
             GetContentsFromPortals.Value = "false";
@@ -561,7 +560,7 @@ namespace Rainbow.Content.Web.Modules
             GetContentsFromPortals.EnglishName = "Get contents from others Portals?";
             GetContentsFromPortals.Description =
                 "Mark this if you like get contents from modules in others portals in the same database";
-            _baseSettings.Add("ENHANCEDHTML_GET_CONTENTS_FROM_PORTALS", GetContentsFromPortals);
+            baseSettings.Add("ENHANCEDHTML_GET_CONTENTS_FROM_PORTALS", GetContentsFromPortals);
 
             #endregion
 
@@ -608,7 +607,7 @@ namespace Rainbow.Content.Web.Modules
             string retorno = s.SearchSqlSelect(portalID, userID, searchString);
             if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
             {
-                PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal pS = (Portal) HttpContext.Current.Items["PortalSettings"];
                 retorno += " AND ((itm.CultureCode = '" + pS.PortalUILanguage.LCID.ToString() +
                            "') OR (itm.CultureCode = '" + CultureInfo.InvariantCulture.LCID.ToString() + "'))";
             }

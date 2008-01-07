@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using System.Xml;
-using Rainbow.Framework;
 using Rainbow.Framework.Design;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Site.Configuration;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
+
+using Rainbow.Framework.DataTypes; //PortalUrl - together
+using Rainbow.Framework.Settings; //Config.PortalSecureDirectory
+using Rainbow.Framework.Site.Configuration; //PageSettings
 
 namespace Rainbow.Framework.Core.Configuration.Settings
 {
@@ -22,16 +22,21 @@ namespace Rainbow.Framework.Core.Configuration.Settings
     /// </summary>
     [History("moudrick", "2007/11/16", "extracting provider")]
     [History("jminond", "2005/03/10", "Tab to page conversion")]
-    [History("gman3001", "2004/09/29", "Added the GetCurrentUserProfile method to obtain a hashtable of the current user's profile details.")]
-    [History("jviladiu@portalServices.net", "2004/08/19", "Add support for move & delete module roles")]
+    [History("gman3001", "2004/09/29",
+        "Added the GetCurrentUserProfile method to obtain a hashtable of the current user's profile details."
+        )]
+    [History("jviladiu@portalServices.net", "2004/08/19",
+        "Add support for move & delete module roles")]
     [History("jviladiu@portalServices.net", "2004/07/30", "Added new ActiveModule property")]
     [History("Jes1111", "2003/03/09", "Added new ShowTabs property")]
     [History("Jes1111", "2003/04/02", "Added new DesktopTabsXml property (an XPathDocument)")]
     [History("Thierry", "2003/04/12", "Added PortalSecurePath property")]
     [History("Jes1111", "2003/04/17", "Added new language-related properties and methods")]
-    [History("Jes1111", "2003/04/23", "Corrected string comparison case problem in language settings")]
-    [History("cisakson@yahoo.com", "2003/04/28", "Added a custom setting for Windows users to assign a portal Admin")]
-    public class PortalSettings
+    [History("Jes1111", "2003/04/23",
+        "Corrected string comparison case problem in language settings")]
+    [History("cisakson@yahoo.com", "2003/04/28",
+        "Added a custom setting for Windows users to assign a portal Admin")]
+    public class Portal
     {
         const string strCustomLayout = "CustomLayout";
         const string strCustomTheme = "CustomTheme";
@@ -66,10 +71,11 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                 string termsOfService = string.Empty;
 
                 //Verify if we have to show conditions
-                if (CustomSettings["SITESETTINGS_TERMS_OF_SERVICE"] != null && CustomSettings["SITESETTINGS_TERMS_OF_SERVICE"].ToString().Length != 0)
+                if (CustomSettings["SITESETTINGS_TERMS_OF_SERVICE"] != null &&
+                    CustomSettings["SITESETTINGS_TERMS_OF_SERVICE"].ToString().Length != 0)
                 {
                     //				// Attempt to load the required text
-                    //				Rainbow.Framework.DataTypes.PortalUrlDataType pt = new Rainbow.Framework.DataTypes.PortalUrlDataType();
+                    //				Rainbow.Framework.DataTypes.PortalUrl pt = new Rainbow.Framework.DataTypes.PortalUrl();
                     //				pt.Value = CustomSettings["SITESETTINGS_TERMS_OF_SERVICE"].ToString();
                     //				string terms = HttpContext.Current.Server.MapPath(pt.FullPath);
                     //				
@@ -88,13 +94,15 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                     string localized_terms = "";
                     // TODO: FIX THIS
                     // localized_terms = terms.Replace(".", "_" + Localize.GetCurrentUINeutralCultureName() + ".");
-                    PortalUrlDataType pt = new PortalUrlDataType();
-                    pt.Value = localized_terms;
+                    PortalUrl portalUrl = new PortalUrl();
+                    portalUrl.Value = localized_terms;
 
-                    if (File.Exists(HttpContext.Current.Server.MapPath(pt.FullPath)))
+                    if (File.Exists(HttpContext.Current.Server.MapPath(portalUrl.FullPath)))
+                    {
                         terms = localized_terms;
-                    pt.Value = terms;
-                    terms = HttpContext.Current.Server.MapPath(pt.FullPath);
+                    }
+                    portalUrl.Value = terms;
+                    terms = HttpContext.Current.Server.MapPath(portalUrl.FullPath);
 
                     //Load conditions
                     if (File.Exists(terms))
@@ -108,7 +116,6 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                             s.Close();
                         }
                     }
-
                     else
                     {
                         //If load fails use default
@@ -132,8 +139,11 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                 string customLayout = string.Empty;
 
                 // Thierry (Tiptopweb), 4 July 2003, switch to custom Layout
-                if (ActivePage.CustomSettings[strCustomLayout] != null && ActivePage.CustomSettings[strCustomLayout].ToString().Length > 0)
+                if (ActivePage.CustomSettings[strCustomLayout] != null &&
+                    ActivePage.CustomSettings[strCustomLayout].ToString().Length > 0)
+                {
                     customLayout = ActivePage.CustomSettings[strCustomLayout].ToString();
+                }
 
                 if (customLayout.Length != 0)
                 {
@@ -142,7 +152,8 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                 }
 
                 // Try to get layout from querystring
-                if (HttpContext.Current != null && HttpContext.Current.Request.Params["Layout"] != null)
+                if (HttpContext.Current != null &&
+                    HttpContext.Current.Request.Params["Layout"] != null)
                 {
                     thisLayoutPath = HttpContext.Current.Request.Params["Layout"];
                 }
@@ -186,18 +197,26 @@ namespace Rainbow.Framework.Core.Configuration.Settings
 
                     for (int i = 0; i < DesktopPages.Count; i++)
                     {
-                        PageStripDetails myPage = (PageStripDetails)DesktopPages[i];
+                        PageStripDetails myPage = (PageStripDetails) DesktopPages[i];
 
                         //if ( myPage.ParentPageID == 0 && PortalSecurity.IsInRoles(myPage.AuthorizedRoles) )
                         if (myPage.ParentPageID == 0)
                         {
                             writer.WriteStartElement("MenuItem"); // start MenuItem element
-                            writer.WriteAttributeString("ParentPageId", myPage.ParentPageID.ToString());
+                            writer.WriteAttributeString("ParentPageId",
+                                                        myPage.ParentPageID.ToString());
 
-                            if (HttpUrlBuilder.UrlPageName(myPage.PageID) == HttpUrlBuilder.DefaultPage)
+                            if (HttpUrlBuilder.UrlPageName(myPage.PageID) ==
+                                HttpUrlBuilder.DefaultPage)
+                            {
                                 writer.WriteAttributeString("UrlPageName", myPage.PageName);
+                            }
                             else
-                                writer.WriteAttributeString("UrlPageName", HttpUrlBuilder.UrlPageName(myPage.PageID).Replace(".aspx", ""));
+                            {
+                                writer.WriteAttributeString("UrlPageName",
+                                                            HttpUrlBuilder.UrlPageName(myPage.PageID)
+                                                                .Replace(".aspx", ""));
+                            }
 
                             writer.WriteAttributeString("PageName", myPage.PageName);
 
@@ -257,9 +276,13 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                 //Patch for possible .NET framework bug
                 //if returned an empty string caused an endless loop
                 if (currentLayout != null && currentLayout.Length != 0)
+                {
                     return currentLayout;
+                }
                 else
+                {
                     return "Default";
+                }
             }
             set { currentLayout = value; }
         }
@@ -296,16 +319,23 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                 string x = Path.WebPathCombine(portalPathPrefix, portalPath);
 
                 //(portalPathPrefix + _portalPath).Replace("//", "/");
-                if (x == "/") return string.Empty;
+                if (x == "/")
+                {
+                    return string.Empty;
+                }
                 return x;
             }
             set
             {
                 if (value.StartsWith(portalPathPrefix))
+                {
                     portalPath = value.Substring(portalPathPrefix.Length);
+                }
 
                 else
+                {
                     portalPath = value;
+                }
             }
         }
 
@@ -474,7 +504,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
             set { currentThemeDefault = value; }
         }
 
-        internal PortalSettings()
+        internal Portal()
         {
             string applicationPath = HttpContext.Current.Request.ApplicationPath;
             portalPathPrefix = applicationPath == "/" ? string.Empty : applicationPath;
@@ -492,7 +522,8 @@ namespace Rainbow.Framework.Core.Configuration.Settings
         public Theme GetCurrentTheme()
         {
             // look for an custom theme
-            if (ActivePage.CustomSettings[strCustomTheme] != null && ActivePage.CustomSettings[strCustomTheme].ToString().Length > 0)
+            if (ActivePage.CustomSettings[strCustomTheme] != null &&
+                ActivePage.CustomSettings[strCustomTheme].ToString().Length > 0)
             {
                 string customTheme = ActivePage.CustomSettings[strCustomTheme].ToString().Trim();
                 ThemeManager themeManager = new ThemeManager(PortalPath);
@@ -515,9 +546,11 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                 case "Alt":
 
                     // look for an alternate custom theme
-                    if (ActivePage.CustomSettings["CustomThemeAlt"] != null && ActivePage.CustomSettings["CustomThemeAlt"].ToString().Length > 0)
+                    if (ActivePage.CustomSettings["CustomThemeAlt"] != null &&
+                        ActivePage.CustomSettings["CustomThemeAlt"].ToString().Length > 0)
                     {
-                        string customTheme = ActivePage.CustomSettings["CustomThemeAlt"].ToString().Trim();
+                        string customTheme =
+                            ActivePage.CustomSettings["CustomThemeAlt"].ToString().Trim();
                         ThemeManager themeManager = new ThemeManager(PortalPath);
                         themeManager.Load(customTheme);
                         return themeManager.CurrentTheme;
@@ -527,9 +560,11 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                 default:
 
                     // look for an custom theme
-                    if (ActivePage.CustomSettings[strCustomTheme] != null && ActivePage.CustomSettings[strCustomTheme].ToString().Length > 0)
+                    if (ActivePage.CustomSettings[strCustomTheme] != null &&
+                        ActivePage.CustomSettings[strCustomTheme].ToString().Length > 0)
                     {
-                        string customTheme = ActivePage.CustomSettings[strCustomTheme].ToString().Trim();
+                        string customTheme =
+                            ActivePage.CustomSettings[strCustomTheme].ToString().Trim();
                         ThemeManager themeManager = new ThemeManager(PortalPath);
                         themeManager.Load(customTheme);
                         return themeManager.CurrentTheme;
@@ -589,7 +624,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                     else
                     {
                         writer.WriteAttributeString("UrlPageName",
-                                                    HttpUrlBuilder.UrlPageName(mySubPage.PageID).Replace(".aspx", ""));
+                            HttpUrlBuilder.UrlPageName(mySubPage.PageID).Replace(".aspx", ""));
                     }
                     writer.WriteAttributeString("PageName", mySubPage.PageName);
                     writer.WriteAttributeString("PageOrder", mySubPage.PageOrder.ToString());

@@ -1,25 +1,25 @@
 using System.Web;
-using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Core.Configuration.Settings; //Portal
 
 namespace Rainbow.Framework.DataTypes
 {
     /// <summary>
-    /// PortalUrlDataType
+    /// PortalUrl
     /// </summary>
-    public class PortalUrlDataType : StringDataType
+    public class PortalUrl : StringDataType
     {
         /// <remarks>
         /// Change visibility to private because now we cache internal values.
         /// Could be moved to protected again if we transform in a property and invalidate cache.
         /// </remarks>
-        private string _portalPathPrefix = string.Empty;
+        readonly string portalPathPrefix = string.Empty;
 
+        string innerFullPath;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PortalUrlDataType"/> class.
+        /// Initializes a new instance of the <see cref="PortalUrl"/> class.
         /// </summary>
-        public PortalUrlDataType()
+        public PortalUrl()
         {
             InnerDataType = PropertiesDataType.String;
 
@@ -27,25 +27,29 @@ namespace Rainbow.Framework.DataTypes
 
             if (HttpContext.Current.Items["PortalSettings"] != null)
             {
+                //TODO: [moudrick] encapsulate it to PortalProvider
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-                _portalPathPrefix = portalSettings.PortalFullPath;
-                if (!_portalPathPrefix.EndsWith("/"))
-                    _portalPathPrefix += "/";
+                Portal portalSettings =
+                    (Portal) HttpContext.Current.Items["PortalSettings"];
+                portalPathPrefix = portalSettings.PortalFullPath;
+                if (!portalPathPrefix.EndsWith("/"))
+                {
+                    portalPathPrefix += "/";
+                }
             }
         }
 
         /// <summary>
         /// Use this on portalsetting or when you want turn off automatic discovery
         /// </summary>
-        /// <param name="PortalFullPath">The portal full path.</param>
-        public PortalUrlDataType(string PortalFullPath)
+        /// <param name="portalFullPath">The portal full path.</param>
+        public PortalUrl(string portalFullPath)
         {
             InnerDataType = PropertiesDataType.String;
 
             //			InitializeComponents();			
 
-            _portalPathPrefix = PortalFullPath;
+            portalPathPrefix = portalFullPath;
         }
 
         /// <summary>
@@ -54,10 +58,8 @@ namespace Rainbow.Framework.DataTypes
         /// <value>The portal path prefix.</value>
         protected string PortalPathPrefix
         {
-            get { return _portalPathPrefix; }
+            get { return portalPathPrefix; }
         }
-
-        private string _innerFullPath;
 
         /// <summary>
         /// Not Implemented
@@ -67,12 +69,12 @@ namespace Rainbow.Framework.DataTypes
         {
             get
             {
-                if (_innerFullPath == null)
+                if (innerFullPath == null)
                 {
-                    _innerFullPath = Path.WebPathCombine(_portalPathPrefix, Value);
-                    _innerFullPath = _innerFullPath.TrimEnd('/'); //Removes trailings
+                    innerFullPath = Path.WebPathCombine(portalPathPrefix, Value);
+                    innerFullPath = innerFullPath.TrimEnd('/'); //Removes trailings
                 }
-                return _innerFullPath;
+                return innerFullPath;
             }
         }
 
@@ -86,12 +88,16 @@ namespace Rainbow.Framework.DataTypes
             set
             {
                 //Remove portal path if present
-                if (value.StartsWith(_portalPathPrefix))
-                    innerValue = value.Substring(_portalPathPrefix.Length);
+                if (value.StartsWith(portalPathPrefix))
+                {
+                    innerValue = value.Substring(portalPathPrefix.Length);
+                }
                 else
+                {
                     innerValue = value;
-                //Reset _innerFullPath
-                _innerFullPath = null;
+                }
+                //Reset innerFullPath
+                innerFullPath = null;
             }
         }
 

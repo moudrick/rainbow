@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Content.Web.Modules
@@ -100,13 +101,13 @@ namespace Rainbow.Content.Web.Modules
                 if (ItemID == 0)
                 {
                     // Add the book within the books table
-                    bookDB.Addrb_BookList(ModuleID, RainbowContext.CurrentUser.Identity.Email, ISBNField.Text,
+                    bookDB.Addrb_BookList(ModuleID, RainbowPrincipal.CurrentUser.Identity.Email, ISBNField.Text,
                                           CaptionTextBox.Text);
                 }
                 else
                 {
                     // Update the book
-                    bookDB.Updaterb_BookList(ItemID, RainbowContext.CurrentUser.Identity.Email, ISBNField.Text,
+                    bookDB.Updaterb_BookList(ItemID, RainbowPrincipal.CurrentUser.Identity.Email, ISBNField.Text,
                                              CaptionTextBox.Text);
                 }
 

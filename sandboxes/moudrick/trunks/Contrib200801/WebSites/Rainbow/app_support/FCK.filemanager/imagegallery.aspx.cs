@@ -14,7 +14,7 @@ using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Image = System.Drawing.Image;
 using Page = System.Web.UI.Page;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 {

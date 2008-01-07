@@ -3,7 +3,7 @@ using System.Data;
 using System.Web;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.Core;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Data;
@@ -128,7 +128,7 @@ namespace Rainbow.Content.Web.Modules {
         private void BindState() {
             StateRow.Visible = false;
             if ( CountryField.SelectedItem != null ) {
-                string currentCountry = CountryField.SelectedItem.Value.ToString();
+                string currentCountry = CountryField.SelectedItem.Value;
                 //added next line to clear the list. 
                 //The stateField seems to remember it's values even when you set the 
                 //DataSource to null
@@ -309,7 +309,7 @@ namespace Rainbow.Content.Web.Modules {
                 if ( EditMode ) // Someone requested edit this record
                 {
                     //True is use is editing himself, false if is edited by an admin
-                    selfEdit = ( userName == RainbowContext.CurrentUser.Identity.Email );
+                    selfEdit = ( userName == RainbowPrincipal.CurrentUser.Identity.Email );
 
                     // Removed by Mario Endara <mario@softworks.com.uy> (2004/11/04)
                     //					if (PortalSecurity.IsInRoles("Admins") || selfEdit)
@@ -354,7 +354,7 @@ namespace Rainbow.Content.Web.Modules {
                             //stores original password for later check
                             // originalPassword = memberUser.GetPassword();  NOT STILL SUPPORTED
                         }
-                        catch ( System.ArgumentNullException ) {
+                        catch ( ArgumentNullException ) {
                             // no  existe el usuario;
                         }
                     }

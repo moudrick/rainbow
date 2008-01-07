@@ -35,12 +35,12 @@ namespace Rainbow.Content.Web.Modules
             XslHelper xh = new XslHelper();
             StringBuilder sb = new StringBuilder();
             TextWriter tw = new StringWriter(sb);
-            PortalUrlDataType pt;
+            PortalUrl pt;
 
-            pt = new PortalUrlDataType();
+            pt = new PortalUrl();
             pt.Value = Settings["XMLsrc"].ToString();
             string xmlsrc = Server.MapPath(pt.FullPath);
-            pt = new PortalUrlDataType();
+            pt = new PortalUrl();
             pt.Value = Settings["XSLsrc"].ToString();
             string xslsrc = Server.MapPath(pt.FullPath);
 
@@ -73,15 +73,15 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         public XmlLangModule()
         {
-            SettingItem XMLsrc = new SettingItem(new PortalUrlDataType());
+            SettingItem XMLsrc = new SettingItem(new PortalUrl());
             XMLsrc.Required = true;
             XMLsrc.Order = 1;
-            _baseSettings.Add("XMLsrc", XMLsrc);
+            baseSettings.Add("XMLsrc", XMLsrc);
 
-            SettingItem XSLsrc = new SettingItem(new PortalUrlDataType());
+            SettingItem XSLsrc = new SettingItem(new PortalUrl());
             XSLsrc.Required = true;
             XSLsrc.Order = 2;
-            _baseSettings.Add("XSLsrc", XSLsrc);
+            baseSettings.Add("XSLsrc", XSLsrc);
 
             SupportsWorkflow = false;
             SupportsBack = false;

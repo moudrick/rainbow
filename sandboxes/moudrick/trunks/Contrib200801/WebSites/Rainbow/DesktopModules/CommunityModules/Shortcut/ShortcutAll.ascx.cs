@@ -26,7 +26,7 @@ namespace Rainbow.Content.Web.Modules
             LinkedModule.Order = 0;
             LinkedModule.Value = "0";
             //Overrides the base setting
-            _baseSettings["LinkedModule"] = LinkedModule;
+            baseSettings["LinkedModule"] = LinkedModule;
         }
 
         #region General Implementation

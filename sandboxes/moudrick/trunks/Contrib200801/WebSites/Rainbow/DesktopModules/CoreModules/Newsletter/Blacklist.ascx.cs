@@ -151,47 +151,47 @@ namespace Rainbow.Admin
             setSortField.Required = true;
             setSortField.Value = "Name";
             setSortField.Order = 1;
-            _baseSettings.Add("BLACKLIST_SORTFIELD", setSortField);
+            baseSettings.Add("BLACKLIST_SORTFIELD", setSortField);
 
             SettingItem showColumnName = new SettingItem(new BooleanDataType());
             showColumnName.Order = 2;
             showColumnName.Value = "True";
-            _baseSettings.Add("BLACKLIST_SHOWCOLUMNNAME", showColumnName);
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNNAME", showColumnName);
 
             SettingItem showColumnEmail = new SettingItem(new BooleanDataType());
             showColumnEmail.Order = 3;
             showColumnEmail.Value = "True";
-            _baseSettings.Add("BLACKLIST_SHOWCOLUMNEMAIL", showColumnEmail);
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNEMAIL", showColumnEmail);
 
             SettingItem showColumnSendNewsletter = new SettingItem(new BooleanDataType());
             showColumnSendNewsletter.Order = 4;
             showColumnSendNewsletter.Value = "False";
-            _baseSettings.Add("BLACKLIST_SHOWCOLUMNSENDNEWSLETTER", showColumnSendNewsletter);
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNSENDNEWSLETTER", showColumnSendNewsletter);
 
             SettingItem showColumnReason = new SettingItem(new BooleanDataType());
             showColumnReason.Order = 5;
             showColumnReason.Value = "True";
-            _baseSettings.Add("BLACKLIST_SHOWCOLUMNREASON", showColumnReason);
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNREASON", showColumnReason);
 
             SettingItem showColumnDate = new SettingItem(new BooleanDataType());
             showColumnDate.Order = 6;
             showColumnDate.Value = "True";
-            _baseSettings.Add("BLACKLIST_SHOWCOLUMNDATE", showColumnDate);
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNDATE", showColumnDate);
 
             SettingItem showColumnLastSend = new SettingItem(new BooleanDataType());
             showColumnLastSend.Order = 7;
             showColumnLastSend.Value = "True";
-            _baseSettings.Add("BLACKLIST_SHOWCOLUMNLASTSEND", showColumnLastSend);
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNLASTSEND", showColumnLastSend);
 
             SettingItem showAllUsers = new SettingItem(new BooleanDataType());
             showAllUsers.Order = 8;
             showAllUsers.Value = "False";
-            _baseSettings.Add("BLACKLIST_SHOWALLUSERS", showAllUsers);
+            baseSettings.Add("BLACKLIST_SHOWALLUSERS", showAllUsers);
 
             SettingItem showSubscribersOnly = new SettingItem(new BooleanDataType());
             showSubscribersOnly.Order = 9;
             showSubscribersOnly.Value = "False";
-            _baseSettings.Add("BLACKLIST_SHOWSUBSCRIBERSONLY", showSubscribersOnly);
+            baseSettings.Add("BLACKLIST_SHOWSUBSCRIBERSONLY", showSubscribersOnly);
         }
 
         #region Web Form Designer generated code

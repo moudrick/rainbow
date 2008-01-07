@@ -3,7 +3,6 @@
 using System;
 using System.Collections;
 using System.Data;
-using System.IO;
 using System.Web.UI.WebControls;
 using DevSolution.Portal;
 using Rainbow.Framework;
@@ -68,7 +67,7 @@ namespace Rainbow.Content.Web.Modules
             // Modified by Hongwei Shen 2005/09/24
             SettingItemGroup group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             int groupBase = (int) group;
-            HtmlEditorDataType.HtmlEditorSettings(_baseSettings, group);
+            HtmlEditorDataType.HtmlEditorSettings(baseSettings, group);
 
             //Indah	Fuldner
             SettingItem RepeatDirection = new SettingItem(new ListDataType("Vertical;Horizontal"));
@@ -76,7 +75,7 @@ namespace Rainbow.Content.Web.Modules
             RepeatDirection.Required = true;
             RepeatDirection.Value = "Vertical";
             RepeatDirection.Order = groupBase + 20; //10;
-            _baseSettings.Add("RepeatDirectionSetting", RepeatDirection);
+            baseSettings.Add("RepeatDirectionSetting", RepeatDirection);
 
             SettingItem RepeatColumn = new SettingItem(new IntegerDataType());
             RepeatColumn.Group = group; // SettingItemGroup.MODULE_SPECIAL_SETTINGS;
@@ -85,13 +84,13 @@ namespace Rainbow.Content.Web.Modules
             RepeatColumn.MinValue = 1;
             RepeatColumn.MaxValue = 10;
             RepeatColumn.Order = groupBase + 25; // 20;
-            _baseSettings.Add("RepeatColumns", RepeatColumn);
+            baseSettings.Add("RepeatColumns", RepeatColumn);
 
             SettingItem showItemBorder = new SettingItem(new BooleanDataType());
             showItemBorder.Group = group; //SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             showItemBorder.Order = groupBase + 30;
             showItemBorder.Value = "false";
-            _baseSettings.Add("ShowBorder", showItemBorder);
+            baseSettings.Add("ShowBorder", showItemBorder);
             //End Indah	Fuldner
 
             SettingItem DelayExpire = new SettingItem(new IntegerDataType());
@@ -100,7 +99,7 @@ namespace Rainbow.Content.Web.Modules
             DelayExpire.Value = "365"; // 1	year
             DelayExpire.MinValue = 0;
             DelayExpire.MaxValue = 3650; //10 years
-            _baseSettings.Add("DelayExpire", DelayExpire);
+            baseSettings.Add("DelayExpire", DelayExpire);
 
             // devsolution 2003/6/17: Added items for calendar control
             // Show Calendar -	Show a visual calendar with 
@@ -111,7 +110,7 @@ namespace Rainbow.Content.Web.Modules
             ShowCalendar.Group = group; //SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             ShowCalendar.Order = groupBase + 40; // 50;
             ShowCalendar.Value = "false";
-            _baseSettings.Add("ShowCalendar", ShowCalendar);
+            baseSettings.Add("ShowCalendar", ShowCalendar);
             // devsolution 2003/6/17: Finished - Added items for calendar control
 
             // Change by Geert.Audenaert@Syntegra.Com
@@ -220,12 +219,12 @@ namespace Rainbow.Content.Web.Modules
             if (bool.Parse(Settings["ShowCalendar"].ToString()))
             {
                 CalendarPanel.Visible = true;
-                string DisplayDate = string.Empty;
+                string displayDate = string.Empty;
                 // devsolution 2003/6/17: Must have Devsolution.Portal.dll in \bin for calendar display functionality
                 EventCalendar eventcalendar = new EventCalendar();
                 lblCalendar.Text =
-                    eventcalendar.GenerateCalendar(ModuleID, DisplayMonth, DisplayYear, out DisplayDate, dsEventData);
-                lblDisplayDate.Text = DisplayDate;
+                    eventcalendar.GenerateCalendar(ModuleID, DisplayMonth, DisplayYear, out displayDate, dsEventData);
+                lblDisplayDate.Text = displayDate;
             }
             // devsolution 2003/6/17: Finished - Added items for calendar control
 
@@ -288,12 +287,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -303,12 +302,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -325,10 +324,10 @@ namespace Rainbow.Content.Web.Modules
         protected override void OnInit(EventArgs e)
         {
             // devsolution 2003/6/17: Added items for calendar control
-            PreviousMonth.Click += new EventHandler(PreviousMonth_Click);
-            NextMonth.Click += new EventHandler(NextMonth_Click);
+            PreviousMonth.Click += PreviousMonth_Click;
+            NextMonth.Click += NextMonth_Click;
             // devsolution 2003/6/17: Finish - Added items for calendar control
-            Load += new EventHandler(Page_Load);
+            Load += Page_Load;
 
             // Create a	new	Title the control
 //			ModuleTitle	= new DesktopModuleTitle();

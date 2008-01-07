@@ -27,14 +27,7 @@ namespace Rainbow.Content.Web.Modules
         {
             get
             {
-                if (PortalSecurity.HasEditPermissions(ModuleID) == true)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return PortalSecurity.HasEditPermissions(ModuleID);
             }
         }
 
@@ -107,7 +100,7 @@ namespace Rainbow.Content.Web.Modules
                     //Chris@cftechconsulting.com  5/24/04 added subtitle to ArticlesView.
                     if (dr["Subtitle"].ToString().Length > 0)
                     {
-                        Subtitle.Text = "(" + dr["Subtitle"].ToString() + ")";
+                        Subtitle.Text = "(" + dr["Subtitle"] + ")";
                     }
                     StartDate.Text = ((DateTime) dr["StartDate"]).ToShortDateString();
                     Description.Text = Server.HtmlDecode(dr["Description"].ToString());

@@ -21,7 +21,7 @@ namespace Rainbow.Content.Web.Modules
             string LayoutBasePage = "PrintHeader.ascx";
 			
             // Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+			Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 			
 			try
 			{

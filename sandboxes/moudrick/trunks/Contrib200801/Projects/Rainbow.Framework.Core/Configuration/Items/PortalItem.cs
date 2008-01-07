@@ -1,5 +1,3 @@
-using System;
-
 namespace Rainbow.Framework
 {
     /// <summary>
@@ -8,7 +6,7 @@ namespace Rainbow.Framework
     /// the IComparable interface so that an ArrayList of PortalItems may be sorted
     /// by PortalOrder, using the ArrayList's Sort() method.
     /// </summary>
-    public class PortalItem : IComparable
+    public class PortalItem //: IComparable
     {
         string name;
         string path;
@@ -44,15 +42,15 @@ namespace Rainbow.Framework
             set { id = value; }
         }
 
-        /// <summary>
-        /// Public comparer
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
-        public int CompareTo(object value)
-        {
-            return CompareTo(Name);
-        }
+//        /// <summary>
+//        /// Public comparer
+//        /// </summary>
+//        /// <param name="value">The value.</param>
+//        /// <returns></returns>
+//        public int CompareTo(object value)
+//        {
+//            return CompareTo(Name);
+//        }
 
         /// <summary>
         /// ToString

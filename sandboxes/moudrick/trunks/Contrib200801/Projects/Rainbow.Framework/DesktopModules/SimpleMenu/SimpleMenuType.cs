@@ -42,12 +42,12 @@ namespace Rainbow.Content.Web.Modules
 		}
 		
 
-		private PortalSettings _portalSettings;
+		private Portal _portalSettings;
         /// <summary>
         /// Gets or sets the global portal settings.
         /// </summary>
         /// <value>The global portal settings.</value>
-		public PortalSettings GlobalPortalSettings
+		public Portal GlobalPortalSettings
 		{
 			get
 			{

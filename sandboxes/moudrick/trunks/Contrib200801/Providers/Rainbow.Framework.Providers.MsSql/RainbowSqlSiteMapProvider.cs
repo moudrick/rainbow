@@ -9,9 +9,9 @@ using System.Security.Permissions;
 using System.Data.Common;
 using System.Data;
 using System.Web.Caching;
-using Rainbow.Context;
 using Rainbow.Framework;
 using System.Collections;
+using Rainbow.Framework.Core;
 
 namespace Rainbow.Framework.Providers.MsSql
 {
@@ -317,8 +317,7 @@ namespace Rainbow.Framework.Providers.MsSql
         {
             get
             {
-                Reader contextReader = new Reader(new WebContextReader());
-                HttpContext context = contextReader.HttpContext;
+                HttpContext context = RainbowContext.Current.HttpContext;
                 return context.Items["PortalID"].ToString();
             }
         }

@@ -100,7 +100,7 @@ namespace Rainbow.Admin
             // www.gt.com.au
             RainbowPrincipal user = HttpContext.Current.User as RainbowPrincipal;
 
-            PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal)HttpContext.Current.Items["PortalSettings"];
 
             //Select the actual register page
             if ( portalSettings.CustomSettings["SITESETTINGS_REGISTER_TYPE"] != null &&

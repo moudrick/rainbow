@@ -18,7 +18,7 @@ namespace Rainbow.Framework.Helpers
     /// </summary>
     public class XslHelper
     {
-        private PortalSettings portalSettings;
+        private Portal portalSettings;
         private MembershipUser user;
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Rainbow.Framework.Helpers
         /// </returns>
         public XslHelper() {
             if ( HttpContext.Current != null ) {
-                portalSettings = ( PortalSettings )HttpContext.Current.Items["PortalSettings"];
+                portalSettings = ( Portal )HttpContext.Current.Items["PortalSettings"];
 
                 Rainbow.Framework.Users.Data.UsersDB users = new Rainbow.Framework.Users.Data.UsersDB();
                 user = users.GetSingleUser( HttpContext.Current.User.Identity.Name );

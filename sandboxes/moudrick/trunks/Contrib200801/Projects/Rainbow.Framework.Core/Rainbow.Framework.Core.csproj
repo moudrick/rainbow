@@ -83,13 +83,11 @@
     <Compile Include="Configuration\Items\PagesBox.cs" />
     <Compile Include="Configuration\Items\SettingItem.cs" />
     <Compile Include="Configuration\Items\SettingItemGroups.cs" />
-    <Compile Include="Configuration\LogLevel.cs" />
     <Compile Include="Configuration\LogProperties.cs" />
-    <Compile Include="Configuration\LogProvider.cs" />
     <Compile Include="Configuration\Settings\ModuleSettings.cs" />
     <Compile Include="Configuration\Settings\PageSettings.cs" />
     <Compile Include="Configuration\Settings\PageStripDetails.cs" />
-    <Compile Include="Configuration\Settings\PortalSettings.cs" />
+    <Compile Include="Configuration\Settings\Portal.cs" />
     <Compile Include="Configuration\Settings\Providers\ModuleSettingsProvider.cs" />
     <Compile Include="Configuration\Settings\Providers\PageSettingsProvider.cs" />
     <Compile Include="Configuration\Settings\Providers\PortalProvider.cs" />
@@ -102,34 +100,13 @@
     <Compile Include="DAL\UsersDb.cs" />
     <Compile Include="VersionController.cs" />
     <Compile Include="DAL\WorkFlowDB.cs" />
-    <Compile Include="Design\Layout.cs" />
-    <Compile Include="Design\LayoutItem.cs" />
-    <Compile Include="Design\LayoutManager.cs" />
-    <Compile Include="Design\PictureItem.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Design\Theme.cs" />
-    <Compile Include="Design\ThemeImage.cs" />
-    <Compile Include="Design\ThemeItem.cs" />
-    <Compile Include="Design\ThemeManager.cs" />
-    <Compile Include="Design\ThemePart.cs" />
-    <Compile Include="ErrorHandler.cs" />
-    <Compile Include="Exceptions\CodeVersionException.cs" />
-    <Compile Include="Exceptions\DatabaseUnreachableException.cs" />
-    <Compile Include="Exceptions\DatabaseVersionException.cs" />
-    <Compile Include="Exceptions\PortalsLockedException.cs" />
-    <Compile Include="Exceptions\RainbowException.cs" />
-    <Compile Include="Exceptions\RainbowRedirect.cs" />
-    <Compile Include="General.cs" />
     <Compile Include="Helpers\ADHelper.cs" />
     <Compile Include="Helpers\CryptoHelper.cs" />
     <Compile Include="Helpers\CssHelper.cs" />
     <Compile Include="Helpers\HTMLText.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />
     <Compile Include="Helpers\IOHelper.cs" />
-    <Compile Include="Helpers\IPList.cs" />
     <Compile Include="Helpers\JavaScriptBuilder.cs" />
-    <Compile Include="Helpers\LogHelper.cs" />
     <Compile Include="Helpers\MailHelper.cs" />
     <Compile Include="Helpers\MDFHelper.cs" />
     <Compile Include="Helpers\ModuleInstall.cs" />
@@ -154,7 +131,6 @@
     <Compile Include="Provider\NotSupportedByProviderException.cs" />
     <Compile Include="Provider\Web\SqlUrlBuilderProvider.cs" />
     <Compile Include="Provider\Web\UrlBuilderHelper.cs" />
-    <Compile Include="RainbowContext.cs" />
     <Compile Include="Scheduler\CachedScheduler.cs" />
     <Compile Include="Scheduler\ISchedulable.cs" />
     <Compile Include="Scheduler\IScheduler.cs" />
@@ -172,14 +148,6 @@
     </Compile>
     <Compile Include="Service\ServiceClasses.cs" />
     <Compile Include="Service\ServiceHelper.cs" />
-    <Compile Include="Settings\Cache\CurrentCache.cs" />
-    <Compile Include="Settings\Cache\Key.cs" />
-    <Compile Include="Settings\Config.cs" />
-    <Compile Include="Settings\GlobalInternalStrings.cs" />
-    <Compile Include="Attributes\History.cs" />
-    <Compile Include="Settings\Isolators\ConfigReader.cs" />
-    <Compile Include="Settings\Isolators\ContextReader.cs" />
-    <Compile Include="Settings\Path.cs" />
     <Compile Include="Provider\UrlBuilderProvider.cs" />
     <Compile Include="Setup\IInstaller.cs" />
     <Compile Include="UI\DataTypes\ApplicationUrlDataType.cs" />
@@ -200,7 +168,7 @@
     <Compile Include="UI\DataTypes\NumericDataType.cs" />
     <Compile Include="UI\DataTypes\PathDataType.cs" />
     <Compile Include="UI\DataTypes\Percentage.cs" />
-    <Compile Include="UI\DataTypes\PortalUrlDataType.cs" />
+    <Compile Include="UI\DataTypes\PortalUrl.cs" />
     <Compile Include="UI\DataTypes\PropertiesDataType.cs" />
     <Compile Include="UI\DataTypes\SettingOption.cs" />
     <Compile Include="UI\DataTypes\StringDataType.cs" />
@@ -264,12 +232,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Helpers\ModuleInstall.txt" />
-    <Content Include="Settings\History.txt" />
     <Content Include="UI\WebControls\BreadCrumbs_readme.txt" />
     <Content Include="UI\WebControls\DesktopModuleTitle.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Settings\Rainbow.Settings.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Engine\Rainbow.Framework\Rainbow.Framework.csproj">
@@ -284,6 +248,9 @@
       <Project>{DCDA0619-FD70-42B6-B2DA-78EAFA4BE955}</Project>
       <Name>DUEMETRI.UI.WebControls.HWMenu</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

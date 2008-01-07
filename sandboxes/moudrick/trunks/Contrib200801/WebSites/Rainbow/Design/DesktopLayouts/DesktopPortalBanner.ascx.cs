@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -52,7 +52,7 @@ namespace Rainbow.Content.Web.Modules
             string LayoutBasePage = "DesktopPortalBanner.ascx";
 			
 			// Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+			Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 			
 			// jes1111 
 			portalSettings.ShowPages = ShowTabs;

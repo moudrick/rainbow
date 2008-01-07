@@ -26,7 +26,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             base.InitializeDataSource();
 
             // Obtain PortalSettings from Current Context
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             // Dynamically Populate the Left, Center and Right pane sections of the portal page
             if (portalSettings.ActivePage.Modules.Count > 0)

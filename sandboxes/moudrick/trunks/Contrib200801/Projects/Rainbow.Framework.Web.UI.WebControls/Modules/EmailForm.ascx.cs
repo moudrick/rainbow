@@ -246,7 +246,7 @@ namespace Rainbow.Content.Web.Modules
             _bcc = new EmailAddressList();
 
             HtmlEditorDataType h = new HtmlEditorDataType();
-            PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal pS = (Portal) HttpContext.Current.Items["PortalSettings"];
             try
             {
                 h.Value = pS.CustomSettings["SITESETTINGS_DEFAULT_EDITOR"].ToString();

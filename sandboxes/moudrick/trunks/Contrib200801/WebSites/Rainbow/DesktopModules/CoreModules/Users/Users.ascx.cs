@@ -2,10 +2,10 @@ using System;
 using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -46,14 +46,14 @@ namespace Rainbow.Content.Web.Modules
             get { return true; }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Users"/> class.
-        /// </summary>
-        public Users()
-        {
-            // TODO: Break this class up into user controls, 
-            // UserDetails, UserList
-        }
+//        /// <summary>
+//        /// Initializes a new instance of the <see cref="Users"/> class.
+//        /// </summary>
+//        public Users()
+//        {
+//            // TODO: Break this class up into user controls, 
+//            // UserDetails, UserList
+//        }
 
         /// <summary>
         /// The Page_Load server event handler on this user control is used

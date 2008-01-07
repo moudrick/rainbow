@@ -11,7 +11,7 @@ using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -53,7 +53,7 @@ namespace Rainbow.Content.Web.Modules
             {
                 if (xmlsrcType == "File")
                 {
-                    PortalUrlDataType pathXml = new PortalUrlDataType();
+                    PortalUrl pathXml = new PortalUrl();
                     pathXml.Value = xmlsrc;
                     xmlsrc = pathXml.FullPath;
 
@@ -106,7 +106,7 @@ namespace Rainbow.Content.Web.Modules
 
             if (xslsrcType == "File")
             {
-                PortalUrlDataType pathXsl = new PortalUrlDataType();
+                PortalUrl pathXsl = new PortalUrl();
                 pathXsl.Value = xslsrc;
                 xslsrc = pathXsl.FullPath;
             }
@@ -160,26 +160,26 @@ namespace Rainbow.Content.Web.Modules
             XMLsrcType.Value = "URL";
             XMLsrcType.Group = _Group;
             XMLsrcType.Order = _groupOrderBase + 1;
-            _baseSettings.Add("XML Type", XMLsrcType);
+            baseSettings.Add("XML Type", XMLsrcType);
 
             SettingItem XMLsrcUrl = new SettingItem(new UrlDataType());
             XMLsrcUrl.Required = false;
             XMLsrcUrl.Group = _Group;
             XMLsrcUrl.Order = _groupOrderBase + 2;
-            _baseSettings.Add("XML URL", XMLsrcUrl);
+            baseSettings.Add("XML URL", XMLsrcUrl);
 
-            SettingItem XMLsrcFile = new SettingItem(new PortalUrlDataType());
+            SettingItem XMLsrcFile = new SettingItem(new PortalUrl());
             XMLsrcFile.Required = false;
             XMLsrcFile.Group = _Group;
             XMLsrcFile.Order = _groupOrderBase + 3;
-            _baseSettings.Add("XML File", XMLsrcFile);
+            baseSettings.Add("XML File", XMLsrcFile);
 
             SettingItem XSLsrcType = new SettingItem(new ListDataType("Predefined;File"));
             XSLsrcType.Required = true;
             XSLsrcType.Value = "Predefined";
             XSLsrcType.Order = _groupOrderBase + 4;
             XSLsrcType.Group = _Group;
-            _baseSettings.Add("XSL Type", XSLsrcType);
+            baseSettings.Add("XSL Type", XSLsrcType);
 
 
             ListDataType xsltFileList = new ListDataType(GetXSLListForFeedTransformations());
@@ -188,20 +188,20 @@ namespace Rainbow.Content.Web.Modules
             XSLsrcPredefined.Value = "RSS91";
             XSLsrcPredefined.Group = _Group;
             XSLsrcPredefined.Order = _groupOrderBase + 5;
-            _baseSettings.Add("XSL Predefined", XSLsrcPredefined);
+            baseSettings.Add("XSL Predefined", XSLsrcPredefined);
 
-            SettingItem XSLsrcFile = new SettingItem(new PortalUrlDataType());
+            SettingItem XSLsrcFile = new SettingItem(new PortalUrl());
             XSLsrcFile.Required = false;
             XSLsrcFile.Group = _Group;
             XSLsrcFile.Order = _groupOrderBase + 6;
-            _baseSettings.Add("XSL File", XSLsrcFile);
+            baseSettings.Add("XSL File", XSLsrcFile);
 
             SettingItem Timeout = new SettingItem(new IntegerDataType());
             Timeout.Required = true;
             Timeout.Group = _Group;
             Timeout.Order = _groupOrderBase + 7;
             Timeout.Value = "15";
-            _baseSettings.Add("Timeout", Timeout);
+            baseSettings.Add("Timeout", Timeout);
 
             #endregion
         }

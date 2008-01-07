@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -25,7 +25,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetArticles(int moduleID, WorkFlowVersion version)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetArticles", myConnection);
 
             // Mark the Command as a SPROC
@@ -59,7 +59,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetArticlesAll(int moduleID, WorkFlowVersion version)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetArticlesAll", myConnection);
 
             // Mark the Command as a SPROC
@@ -92,7 +92,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSingleArticle(int itemID, WorkFlowVersion version)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSingleArticle", myConnection);
 
             // Mark the Command as a SPROC
@@ -123,7 +123,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteArticle(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DeleteArticle", myConnection);
 
             // Mark the Command as a SPROC
@@ -170,7 +170,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddArticle", myConnection);
 
             // Mark the Command as a SPROC
@@ -259,7 +259,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateArticle", myConnection);
 
             // Mark the Command as a SPROC

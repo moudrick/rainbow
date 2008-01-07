@@ -4,7 +4,6 @@ using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Settings;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {

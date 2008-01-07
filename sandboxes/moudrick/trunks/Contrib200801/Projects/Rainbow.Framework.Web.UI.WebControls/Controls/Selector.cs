@@ -2,7 +2,6 @@
 using System.Web;
 using System.Web.UI;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Settings;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -24,7 +23,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             // Obtain PortalSettings from Current Context
             if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
             {
-                PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal pS = (Portal) HttpContext.Current.Items["PortalSettings"];
                 if (pS.CustomSettings != null)
                 {
                     if (pS.CustomSettings["SITESETTINGS_LANGLIST"] != null)

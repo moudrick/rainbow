@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Data;
-using System.IO;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
@@ -32,7 +31,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="e"></param>
         private void Page_Load(object sender, EventArgs e)
         {
-            if (Page.IsPostBack == false)
+            if (!Page.IsPostBack)
             {
                 pgModules.PageNumber = 1;
                 //	BindData(1);
@@ -41,11 +40,13 @@ namespace Rainbow.Content.Web.Modules
             BindData(pgModules.PageNumber);
         }
 
-        private void BindData(int PageNumber)
+        void BindData(int pageNumber)
         {
             //myDataList appearance
             if (bool.Parse(Settings["ShowBorder"].ToString()))
+            {
                 myDataList.ItemStyle.BorderWidth = Unit.Pixel(1);
+            }
 
             myDataList.RepeatDirection = (Settings["RepeatDirectionSetting"].ToString() == "Horizontal"
                                               ? RepeatDirection.Horizontal
@@ -65,8 +66,7 @@ namespace Rainbow.Content.Web.Modules
             DataSet announces =
                 announcements.GetAnnouncements(ModuleID, Version, pgModules.RecordsPerPage, pgModules.PageNumber);
 
-            DataView myDataView = new DataView();
-            myDataView = announces.Tables[0].DefaultView;
+            DataView myDataView = announces.Tables[0].DefaultView;
             myDataView.Sort = sortField + " " + sortDirection;
 
             //if dataset isn't empty, get a Recordcount for the paging object.
@@ -77,8 +77,6 @@ namespace Rainbow.Content.Web.Modules
             {
                 pgModules.RecordCount = (int) (announces.Tables[0].Rows[0]["RecordCount"]);
             }
-
-
             myDataList.DataSource = myDataView;
             myDataList.DataBind();
         }
@@ -89,7 +87,7 @@ namespace Rainbow.Content.Web.Modules
         public Announcements()
         {
             // Set Editor Settings jviladiu@portalservices.net 2004/07/30
-            HtmlEditorDataType.HtmlEditorSettings(_baseSettings, SettingItemGroup.MODULE_SPECIAL_SETTINGS);
+            HtmlEditorDataType.HtmlEditorSettings(baseSettings, SettingItemGroup.MODULE_SPECIAL_SETTINGS);
 
             //Custom settings
             SettingItem DelayExpire = new SettingItem(new IntegerDataType());
@@ -98,7 +96,7 @@ namespace Rainbow.Content.Web.Modules
             DelayExpire.MaxValue = 3650; //10 years
             DelayExpire.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             DelayExpire.Description = string.Empty;
-            _baseSettings.Add("DelayExpire", DelayExpire);
+            baseSettings.Add("DelayExpire", DelayExpire);
 
             //Indah Fuldner
             SettingItem RepeatDirection = new SettingItem(new ListDataType("Vertical;Horizontal"));
@@ -106,7 +104,7 @@ namespace Rainbow.Content.Web.Modules
             RepeatDirection.Value = "Vertical";
             RepeatDirection.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             RepeatDirection.Description = string.Empty;
-            _baseSettings.Add("RepeatDirectionSetting", RepeatDirection);
+            baseSettings.Add("RepeatDirectionSetting", RepeatDirection);
 
             SettingItem RepeatColumn = new SettingItem(new IntegerDataType());
             RepeatColumn.Required = true;
@@ -115,13 +113,13 @@ namespace Rainbow.Content.Web.Modules
             RepeatColumn.MaxValue = 10;
             RepeatColumn.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             RepeatColumn.Description = string.Empty;
-            _baseSettings.Add("RepeatColumns", RepeatColumn);
+            baseSettings.Add("RepeatColumns", RepeatColumn);
 
             SettingItem showItemBorder = new SettingItem(new BooleanDataType());
             showItemBorder.Value = "false";
             showItemBorder.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             showItemBorder.Description = string.Empty;
-            _baseSettings.Add("ShowBorder", showItemBorder);
+            baseSettings.Add("ShowBorder", showItemBorder);
             //End Indah Fuldner
 
             //begin Chris Farrell, 09/05/2005, chris@cftechconsulting.com
@@ -131,7 +129,7 @@ namespace Rainbow.Content.Web.Modules
             PageSize.Value = "15";
             PageSize.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             PageSize.Description = "Default page size for paging";
-            _baseSettings.Add("PageSize", PageSize);
+            baseSettings.Add("PageSize", PageSize);
             //end chris farrell
 
             SettingItem setSortField = new SettingItem(new ListDataType("Title;CreatedDate;ExpireDate"));
@@ -139,14 +137,14 @@ namespace Rainbow.Content.Web.Modules
             setSortField.Required = true;
             setSortField.EnglishName = "Sort Field";
             setSortField.Value = "ExpireDate";
-            _baseSettings.Add("SortField", setSortField);
+            baseSettings.Add("SortField", setSortField);
 
             SettingItem setSortDirection = new SettingItem(new ListDataType("ASC;DESC"));
             setSortDirection.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             setSortDirection.Required = true;
             setSortDirection.EnglishName = "Sort Direction";
             setSortDirection.Value = "DESC";
-            _baseSettings.Add("SortDirection", setSortDirection);
+            baseSettings.Add("SortDirection", setSortDirection);
 
             // Change by Geert.Audenaert@Syntegra.Com
             // Date: 27/2/2003
@@ -200,12 +198,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -215,12 +213,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

@@ -1,6 +1,5 @@
 using System.Configuration;
 using NUnit.Framework;
-using Rainbow.Framework.Settings;
 using Subtext.TestLibrary;
 
 namespace Rainbow.Tests
@@ -18,7 +17,7 @@ namespace Rainbow.Tests
                 simulator.SimulateRequest();
 
                 string desktopSource = @"DesktopModules/CoreModules/AddModule/Viewer.ascx";
-                string controlFullPath = Path.ApplicationRoot + "/" + desktopSource;
+                string controlFullPath = Rainbow.Framework.Path.ApplicationRoot + "/" + desktopSource;
                 System.Web.UI.Page page = new System.Web.UI.Page();
                 Assert.IsNotNull(page);
                 System.Web.UI.Control myControl = page.LoadControl(controlFullPath);

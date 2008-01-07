@@ -7,7 +7,7 @@ using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI.WebControls;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
 using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -309,14 +309,14 @@ namespace Rainbow.Content.Web.Modules
             directory.Value = Path.ApplicationRoot + "/portals";
 
             //directory.Value = Path.ApplicationPhysicalPath;
-            _baseSettings.Add("Directory", directory);
+            baseSettings.Add("Directory", directory);
 
             SettingItem LinkType = new SettingItem(new ListDataType("Downloadable Link;Network Share"));
             LinkType.EnglishName = "Link Type";
             LinkType.Group = group;
             LinkType.Order = groupBase + 25; //2;
             LinkType.Value = "Downloadable Link";
-            _baseSettings.Add("LinkType", LinkType);
+            baseSettings.Add("LinkType", LinkType);
 
             SettingItem Target = new SettingItem(new ListDataType("blank;parent;self;top"));
             Target.EnglishName = "Target Window";
@@ -324,14 +324,14 @@ namespace Rainbow.Content.Web.Modules
             Target.Group = group;
             Target.Order = groupBase + 30; //3;
             Target.Value = "blank";
-            _baseSettings.Add("Target", Target);
+            baseSettings.Add("Target", Target);
 
             SettingItem Collapsed = new SettingItem(new BooleanDataType());
             Collapsed.EnglishName = "Collapsed View";
             Collapsed.Group = group;
             Collapsed.Order = groupBase + 35; //4;
             Collapsed.Value = "true";
-            _baseSettings.Add("Collapsed", Collapsed);
+            baseSettings.Add("Collapsed", Collapsed);
 
             SettingItem Style = new SettingItem(new StringDataType());
             Style.EnglishName = "Style";
@@ -339,7 +339,7 @@ namespace Rainbow.Content.Web.Modules
             Style.Group = group;
             Style.Order = groupBase + 40; //5;
             Style.Value = string.Empty;
-            _baseSettings.Add("Style", Style);
+            baseSettings.Add("Style", Style);
 
             SettingItem Indent = new SettingItem(new StringDataType());
             Indent.EnglishName = "SubDirectory Indent (px)";
@@ -347,7 +347,7 @@ namespace Rainbow.Content.Web.Modules
             Indent.Group = group;
             Indent.Order = groupBase + 45; //6;
             Indent.Value = "20px";
-            _baseSettings.Add("Indent", Indent);
+            baseSettings.Add("Indent", Indent);
         }
 
         /// <summary>

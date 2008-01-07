@@ -5,7 +5,6 @@ using System.Web.UI;
 using ActiveUp.WebControls.HtmlTextBox.Tools;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -32,7 +31,7 @@ namespace Rainbow.Framework.DataTypes
         /// <param name="group">The group.</param>
         public static void HtmlEditorSettings(Hashtable editorSettings, SettingItemGroup group)
         {
-            PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal pS = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             SettingItem Editor = new SettingItem(new HtmlEditorDataType());
             Editor.Order = (int) group + 1; //1; modified by Hongwei Shen(hongwei.shen@gmail.com) 11/9/2005
@@ -115,7 +114,7 @@ namespace Rainbow.Framework.DataTypes
 
             if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
             {
-                PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal pS = (Portal) HttpContext.Current.Items["PortalSettings"];
                 if (pS.CustomSettings != null)
                 {
                     if (pS.CustomSettings["SITESETTINGS_DEFAULT_EDITOR"] != null)
@@ -200,7 +199,7 @@ namespace Rainbow.Framework.DataTypes
         /// <param name="portalSettings">The portal settings.</param>
         /// <returns></returns>
         public IHtmlEditor GetEditor(Control PlaceHolderHTMLEditor, int moduleID, bool showUpload,
-                                     PortalSettings portalSettings)
+                                     Portal portalSettings)
         {
             IHtmlEditor DesktopText;
             string moduleImageFolder = ModuleSettingsProvider.GetModuleSettings(moduleID)["MODULE_IMAGE_FOLDER"].ToString();

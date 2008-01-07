@@ -13,7 +13,7 @@ using Rainbow.Framework.Design;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -77,7 +77,7 @@ namespace Rainbow.Content.Web.Modules
                                               ? RepeatDirection.Horizontal
                                               :
                                           (RepeatDirection)
-                                          Int32.Parse(((SettingItem) _baseSettings["RepeatDirectionSetting"])));
+                                          Int32.Parse(((SettingItem) baseSettings["RepeatDirectionSetting"])));
             dlPictures.RepeatColumns = Int32.Parse(((SettingItem) Settings["RepeatColumns"]));
             dlPictures.ItemDataBound += new DataListItemEventHandler(Pictures_ItemDataBound);
             pgPictures.RecordsPerPage = Int32.Parse(Settings["PicturesPerPage"].ToString());
@@ -236,11 +236,11 @@ namespace Rainbow.Content.Web.Modules
             SupportsWorkflow = true;
 
             // Album Path Setting
-            SettingItem AlbumPath = new SettingItem(new PortalUrlDataType());
+            SettingItem AlbumPath = new SettingItem(new PortalUrl());
             AlbumPath.Required = true;
             AlbumPath.Value = "Album";
             AlbumPath.Order = 3;
-            _baseSettings.Add("AlbumPath", AlbumPath);
+            baseSettings.Add("AlbumPath", AlbumPath);
 
             // Thumbnail Resize Options
             ArrayList thumbnailResizeOptions = new ArrayList();
@@ -260,7 +260,7 @@ namespace Rainbow.Content.Web.Modules
             ThumbnailResize.Required = true;
             ThumbnailResize.Value = ((int) ResizeOption.FixedWidthHeight).ToString();
             ThumbnailResize.Order = 4;
-            _baseSettings.Add("ThumbnailResize", ThumbnailResize);
+            baseSettings.Add("ThumbnailResize", ThumbnailResize);
 
             // Thumbnail Width Setting
             SettingItem ThumbnailWidth = new SettingItem(new IntegerDataType());
@@ -269,7 +269,7 @@ namespace Rainbow.Content.Web.Modules
             ThumbnailWidth.Order = 5;
             ThumbnailWidth.MinValue = 2;
             ThumbnailWidth.MaxValue = 9999;
-            _baseSettings.Add("ThumbnailWidth", ThumbnailWidth);
+            baseSettings.Add("ThumbnailWidth", ThumbnailWidth);
 
             // Thumbnail Height Setting
             SettingItem ThumbnailHeight = new SettingItem(new IntegerDataType());
@@ -278,7 +278,7 @@ namespace Rainbow.Content.Web.Modules
             ThumbnailHeight.Order = 6;
             ThumbnailHeight.MinValue = 2;
             ThumbnailHeight.MaxValue = 9999;
-            _baseSettings.Add("ThumbnailHeight", ThumbnailHeight);
+            baseSettings.Add("ThumbnailHeight", ThumbnailHeight);
 
             // Original Resize Options
             ArrayList originalResizeOptions = new ArrayList();
@@ -300,7 +300,7 @@ namespace Rainbow.Content.Web.Modules
             OriginalResize.Required = true;
             OriginalResize.Value = ((int) ResizeOption.MaintainAspectWidth).ToString();
             OriginalResize.Order = 7;
-            _baseSettings.Add("OriginalResize", OriginalResize);
+            baseSettings.Add("OriginalResize", OriginalResize);
 
             // Original Width Settings
             SettingItem OriginalWidth = new SettingItem(new IntegerDataType());
@@ -309,7 +309,7 @@ namespace Rainbow.Content.Web.Modules
             OriginalWidth.Order = 8;
             OriginalWidth.MinValue = 2;
             OriginalWidth.MaxValue = 9999;
-            _baseSettings.Add("OriginalWidth", OriginalWidth);
+            baseSettings.Add("OriginalWidth", OriginalWidth);
 
             // Original Width Settings
             SettingItem OriginalHeight = new SettingItem(new IntegerDataType());
@@ -318,7 +318,7 @@ namespace Rainbow.Content.Web.Modules
             OriginalHeight.Order = 9;
             OriginalHeight.MinValue = 2;
             OriginalHeight.MaxValue = 9999;
-            _baseSettings.Add("OriginalHeight", OriginalHeight);
+            baseSettings.Add("OriginalHeight", OriginalHeight);
 
             // Repeat Direction Options
             ArrayList repeatDirectionOptions = new ArrayList();
@@ -334,7 +334,7 @@ namespace Rainbow.Content.Web.Modules
             RepeatDirectionSetting.Required = true;
             RepeatDirectionSetting.Value = ((int) RepeatDirection.Horizontal).ToString();
             RepeatDirectionSetting.Order = 10;
-            _baseSettings.Add("RepeatDirection", RepeatDirectionSetting);
+            baseSettings.Add("RepeatDirection", RepeatDirectionSetting);
 
             // Repeat Columns Setting
             SettingItem RepeatColumns = new SettingItem(new IntegerDataType());
@@ -343,7 +343,7 @@ namespace Rainbow.Content.Web.Modules
             RepeatColumns.Order = 11;
             RepeatColumns.MinValue = 1;
             RepeatColumns.MaxValue = 200;
-            _baseSettings.Add("RepeatColumns", RepeatColumns);
+            baseSettings.Add("RepeatColumns", RepeatColumns);
 
             // Layouts
             Hashtable layouts = new Hashtable();
@@ -364,14 +364,14 @@ namespace Rainbow.Content.Web.Modules
             ThumbnailLayoutSetting.Required = true;
             ThumbnailLayoutSetting.Value = "DefaultThumbnailView.ascx";
             ThumbnailLayoutSetting.Order = 12;
-            _baseSettings.Add("ThumbnailLayout", ThumbnailLayoutSetting);
+            baseSettings.Add("ThumbnailLayout", ThumbnailLayoutSetting);
 
             // Thumbnail Layout Setting
             SettingItem ImageLayoutSetting = new SettingItem(new CustomListDataType(layouts, "Key", "Value"));
             ImageLayoutSetting.Required = true;
             ImageLayoutSetting.Value = "DefaultImageView.ascx";
             ImageLayoutSetting.Order = 13;
-            _baseSettings.Add("ImageLayout", ImageLayoutSetting);
+            baseSettings.Add("ImageLayout", ImageLayoutSetting);
 
             // PicturesPerPage
             SettingItem PicturesPerPage = new SettingItem(new IntegerDataType());
@@ -380,13 +380,13 @@ namespace Rainbow.Content.Web.Modules
             PicturesPerPage.Order = 14;
             PicturesPerPage.MinValue = 1;
             PicturesPerPage.MaxValue = 9999;
-            _baseSettings.Add("PicturesPerPage", PicturesPerPage);
+            baseSettings.Add("PicturesPerPage", PicturesPerPage);
 
             //If false the input box for bulk loads will be hidden
             SettingItem AllowBulkLoad = new SettingItem(new BooleanDataType());
             AllowBulkLoad.Value = "false";
             AllowBulkLoad.Order = 15;
-            _baseSettings.Add("AllowBulkLoad", AllowBulkLoad);
+            baseSettings.Add("AllowBulkLoad", AllowBulkLoad);
         }
 
         #region Global Implementation

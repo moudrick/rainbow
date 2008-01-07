@@ -5,9 +5,9 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Data;
 using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Data;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Providers.Geographic;
-using Rainbow.Framework.Settings;
 using System.Configuration;
 
 namespace Rainbow.Framework.Providers.MsSql
@@ -28,7 +28,7 @@ namespace Rainbow.Framework.Providers.MsSql
                 SqlConnection result;
                 try
                 {
-                    result = Config.SqlConnectionString;
+                    result = DBHelper.SqlConnection;
                 }
                 catch
                 {

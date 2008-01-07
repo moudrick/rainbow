@@ -18,7 +18,7 @@ using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.FCKeditorV2
 {
@@ -339,7 +339,7 @@ namespace Rainbow.FCKeditorV2
 			{
 				if ( sUserFilesPath == null )
 				{
-					PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+					Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 					if (portalSettings == null) return null;
 					Hashtable ms = ModuleSettingsProvider.GetModuleSettings(portalSettings.ActiveModule);
 					string DefaultImageFolder = "default";

@@ -10,7 +10,7 @@ using System.Xml;
 using System.Xml.Xsl;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Helpers;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -22,7 +22,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <summary>
         /// 
         /// </summary>
-        protected PortalSettings portalSettings;
+        protected Portal portalSettings;
 
         /// <summary>
         /// 
@@ -113,7 +113,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private void LoadControl(object sender, EventArgs e)
         {
             // Obtain PortalSettings from Current Context
-            portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             PortalPagesXml = portalSettings.PortalPagesXml;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using System.Web;
 using Rainbow.Framework.Data;
@@ -154,11 +155,62 @@ namespace Rainbow.Framework.Core
                 string dbKey = "CurrentDatabase";
                 if (Config.EnableMultiDbSupport)
                 {
-                    dbKey = "DatabaseVersion_" + Config.SqlConnectionString.DataSource + "_" +
-                            Config.SqlConnectionString.Database; // For multidb support
+                    dbKey = "DatabaseVersion_" + DBHelper.SqlConnection.DataSource + "_" +
+                            DBHelper.SqlConnection.Database; // For multidb support
                 }
                 return dbKey;
             }
         }
+
+        ///<summary>
+        /// 3rd Check: is database/code version correct?
+        ///</summary>
+        public bool CheckDatabaseVersion(string databaseUpdateRedirectRelativePath)
+        {
+            int versionDelta = DatabaseVersion.CompareTo(CodeVersion);
+            HttpContext httpContext = RainbowContext.Current.HttpContext;
+            // if DB and code versions do not match
+            if (versionDelta != 0)
+            {
+                Uri requestUri = httpContext.Request.Url;
+                string databaseUpdateRedirect = databaseUpdateRedirectRelativePath;
+                if (databaseUpdateRedirect.StartsWith("~/"))
+                {
+                    databaseUpdateRedirect = databaseUpdateRedirect.TrimStart(new char[] { '~' });
+                }
+
+                if (
+                    !
+                    requestUri.AbsolutePath.ToLower(CultureInfo.InvariantCulture).EndsWith(
+                        databaseUpdateRedirect.ToLower(CultureInfo.InvariantCulture)))
+                {
+                    // ...and this is not DB Update page
+                    string errorMessage = string.Format("Database version: {0} Code version: {1}",
+                        DatabaseVersion, CodeVersion);
+                    if (versionDelta < 0) // DB Version is behind Code Version
+                    {
+                        ErrorHandler.Publish(LogLevel.Warn, errorMessage);
+                        // Jonathan : WHy wouldnt we redirect to update page?
+                        // TODO : Check with people why this was like this....
+                        httpContext.Response.Redirect(Path.ApplicationRoot + databaseUpdateRedirect, true);
+                        // throw new DatabaseVersionException(errorMessage);
+                    }
+                    else // DB version is ahead of Code Version
+                    {
+                        ErrorHandler.Publish(LogLevel.Warn, errorMessage);
+                        // Jonathan : WHy wouldnt we redirect to update page?
+                        // TODO : Check with people why this was like this....
+                        // Who cares ?
+                        // throw new CodeVersionException(errorMessage);
+                    }
+                }
+                else // this is already DB Update page... 
+                {
+                    return false; // so skip creation of PortalSettings
+                }
+            }
+            return true;
+        }
+
     }
 }

@@ -177,13 +177,13 @@ namespace Rainbow.Content.Web.Modules
         {
             SettingItem CoolText = new SettingItem(new StringDataType());
             CoolText.Order = 10;
-            _baseSettings.Add("CoolText", CoolText);
+            baseSettings.Add("CoolText", CoolText);
 
             SettingItem HideAutomatically = new SettingItem(new BooleanDataType());
             HideAutomatically.Value = "True";
             HideAutomatically.EnglishName = "Hide automatically";
             HideAutomatically.Order = 20;
-            _baseSettings.Add("SIGNIN_AUTOMATICALLYHIDE", HideAutomatically);
+            baseSettings.Add("SIGNIN_AUTOMATICALLYHIDE", HideAutomatically);
 
             //1.2.8.1743b - 09/10/2003
             //New setting on Signin fo disable IE autocomplete by Mike Stone
@@ -195,21 +195,21 @@ namespace Rainbow.Content.Web.Modules
             AutoComplete.EnglishName = "Allow IE Autocomplete";
             AutoComplete.Description = "If Checked IE Will try to remember logins";
             AutoComplete.Order = 30;
-            _baseSettings.Add("SIGNIN_ALLOW_AUTOCOMPLETE", AutoComplete);
+            baseSettings.Add("SIGNIN_ALLOW_AUTOCOMPLETE", AutoComplete);
 
             SettingItem RememberLogin = new SettingItem(new BooleanDataType());
             RememberLogin.Value = "True";
             RememberLogin.EnglishName = "Allow Remember Login";
             RememberLogin.Description = "If Checked allows to remember logins";
             RememberLogin.Order = 40;
-            _baseSettings.Add("SIGNIN_ALLOW_REMEMBER_LOGIN", RememberLogin);
+            baseSettings.Add("SIGNIN_ALLOW_REMEMBER_LOGIN", RememberLogin);
 
             SettingItem SendPassword = new SettingItem(new BooleanDataType());
             SendPassword.Value = "True";
             SendPassword.EnglishName = "Allow Send Password";
             SendPassword.Description = "If Checked allows user to ask to get password by email if he forgotten";
             SendPassword.Order = 50;
-            _baseSettings.Add("SIGNIN_ALLOW_SEND_PASSWORD", SendPassword);
+            baseSettings.Add("SIGNIN_ALLOW_SEND_PASSWORD", SendPassword);
         }
 
         #region General Implementation

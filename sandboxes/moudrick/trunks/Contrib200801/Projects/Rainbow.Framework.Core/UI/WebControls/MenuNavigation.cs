@@ -5,9 +5,8 @@ using System.Web;
 using System.Web.UI;
 using DUEMETRI.UI.WebControls.HWMenu;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
@@ -30,8 +29,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         public MenuNavigation()
         {
-            EnableViewState = false;
-            Load += new EventHandler(LoadControl);
+            base.EnableViewState = false;
+            Load += LoadControl;
         }
 
         /// <summary>
@@ -285,7 +284,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (HttpContext.Current != null)
             {
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
                 switch (Bind)
                 {

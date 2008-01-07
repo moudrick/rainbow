@@ -212,7 +212,7 @@ namespace Rainbow.Content.Web.Modules
 
             if (HttpContext.Current != null) // if it is not design time (and not overriden - Jes1111)
             {
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 if (portalSettings.PortalContentLanguage != CultureInfo.InvariantCulture
                     && moduleSettings["MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name] != null
                     &&

@@ -18,13 +18,13 @@ using System.Web;
 using System.Web.UI;
 using System.Xml;
 using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Solpart.WebControls;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -46,7 +46,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         public SolpartNavigation()
         {
-            EnableViewState = false;
+            base.EnableViewState = false;
             Load += LoadControl;
         }
 
@@ -59,14 +59,14 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             SystemScriptPath =
                 string.Concat(Path.ApplicationRoot, "/aspnet_client/SolpartWebControls_SolpartMenu/1_4_0_0/");
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
             string solpart =
                 string.Concat(Path.ApplicationRoot, "/aspnet_client/SolpartWebControls_SolpartMenu/1_4_0_0/");
 
             if (ShowIconMenu)
             {
                 SystemImagesPath = Path.WebPathCombine(portalSettings.PortalLayoutPath, "menuimages/");
-                string menuDirectory = HttpContext.Current.Server.MapPath(base.SystemImagesPath);
+                string menuDirectory = HttpContext.Current.Server.MapPath(SystemImagesPath);
 
                 // Create directory and copy standard images for solpart
                 if (!Directory.Exists(menuDirectory))
@@ -202,7 +202,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             //bool currentTabOnly = (Bind == BindOption.BindOptionCurrentChilds); 
 
             // Obtain PortalSettings from Current Context 
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             // Build list of tabs to be shown to user 
             ArrayList authorizedTabs = setAutorizedTabsWithImage();
@@ -300,7 +300,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (!AutoShopDetect) return false;
             if (!CurrentCache.Exists(Key.TabNavigationSettings(tab, "Shop")))
             {
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 bool exists = new ModulesDB().ExistModuleProductsInPage(tab, portalSettings.PortalID);
                 CurrentCache.Insert(Key.TabNavigationSettings(tab, "Shop"), exists);
             }
@@ -419,7 +419,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private void AddGraphMenuItem(string parent, string tab, string tabname, string iconfile, string url,
                                       bool translation, string customcss, string customhighlightcss)
         {
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
             string pathGraph = HttpContext.Current.Server.MapPath(portalSettings.PortalLayoutPath + "/menuimages/");
             string tabTranslation = tabname;
             if (translation) tabTranslation = General.GetString(tabname);
@@ -514,7 +514,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (HttpContext.Current != null)
             {
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
                 switch (Bind)
                 {
@@ -594,6 +594,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             return authorizedTabs;
         }
 
+/*
         /// <summary>
         /// Seems to be unused - Jes1111
         /// </summary>
@@ -622,6 +623,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             }
             return 0;
         }
+*/
 
         /// <summary>
         /// Gets the tabs.

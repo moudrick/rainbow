@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Content.Web.Modules
@@ -98,7 +99,7 @@ namespace Rainbow.Content.Web.Modules
                 {
                     milestonesDb.AddMilestones(ItemID,
                                                ModuleID,
-                                               RainbowContext.CurrentUser.Identity.Email,
+                                               RainbowPrincipal.CurrentUser.Identity.Email,
                                                DateTime.Now,
                                                TitleField.Text,
                                                DateTime.Parse(EstCompleteDate.Text),
@@ -108,7 +109,7 @@ namespace Rainbow.Content.Web.Modules
                 {
                     milestonesDb.UpdateMilestones(ItemID,
                                                   ModuleID,
-                                                  RainbowContext.CurrentUser.Identity.Email,
+                                                  RainbowPrincipal.CurrentUser.Identity.Email,
                                                   DateTime.Now,
                                                   TitleField.Text,
                                                   DateTime.Parse(EstCompleteDate.Text),

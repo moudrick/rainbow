@@ -72,7 +72,7 @@ namespace Rainbow.Content.Web.ModulesVersion
             SettingItem cityCode = new SettingItem(new StringDataType());
             cityCode.Required = false;
             cityCode.Value = "BKXX0001";
-            _baseSettings.Add("CityCode", cityCode);
+            baseSettings.Add("CityCode", cityCode);
 
             SettingItem forecast = new SettingItem(new StringDataType());
             forecast.Required = false;
@@ -82,7 +82,7 @@ namespace Rainbow.Content.Web.ModulesVersion
             SettingItem setUnit = new SettingItem(new StringDataType());
             setUnit.Required = false;
             setUnit.Value = "m";
-            _baseSettings.Add("Unit", setUnit);
+            baseSettings.Add("Unit", setUnit);
         }
 
         #region Web Form Designer generated code

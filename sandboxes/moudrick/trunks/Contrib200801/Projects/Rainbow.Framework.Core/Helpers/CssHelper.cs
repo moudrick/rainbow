@@ -34,7 +34,7 @@ namespace Rainbow.Framework.Helpers
         /// <summary>
         ///     
         /// </summary>
-        private PortalSettings portalSettings;
+        private Portal portalSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:CssHelper"/> class.
@@ -46,7 +46,7 @@ namespace Rainbow.Framework.Helpers
         {
             if (HttpContext.Current != null)
             {
-                portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
             }
         }
 

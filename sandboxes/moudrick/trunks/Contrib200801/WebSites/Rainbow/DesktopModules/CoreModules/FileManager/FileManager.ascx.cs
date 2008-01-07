@@ -10,7 +10,7 @@ using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI.WebControls;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -172,7 +172,7 @@ namespace Rainbow.Content.Web.Modules
                 directory.Value = PortalSettings.PortalPath;
             else
                 directory.Value = string.Empty;
-            _baseSettings.Add("FM_DIRECTORY", directory);
+            baseSettings.Add("FM_DIRECTORY", directory);
 
             SettingItem DownloadableExt = new SettingItem(new StringDataType());
             DownloadableExt.EnglishName = "Downloadable extentions";
@@ -181,7 +181,7 @@ namespace Rainbow.Content.Web.Modules
             DownloadableExt.Value = "";
             DownloadableExt.Description =
                 "Provide a comma-delimited list of file extentions that you can download On Click";
-            _baseSettings.Add("FM_DOWNLOADABLEEXT", DownloadableExt);
+            baseSettings.Add("FM_DOWNLOADABLEEXT", DownloadableExt);
         }
 
         /// <summary>

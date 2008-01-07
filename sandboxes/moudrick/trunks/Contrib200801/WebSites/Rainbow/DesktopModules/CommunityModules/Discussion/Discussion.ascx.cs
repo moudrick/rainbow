@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Data.SqlClient;
-using System.IO;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
@@ -91,7 +90,7 @@ namespace Rainbow.Content.Web.Modules
         public void TopLevelListOrDetailList_Select(object Sender, DataListCommandEventArgs e)
         {
             // Determine the command of the button
-            string command = ((CommandEventArgs) (e)).CommandName;
+            string command = e.CommandName;
 
             // Update asp:datalist selection index depending upon the type of command
             // and then rebind the asp:datalist with content
@@ -248,10 +247,13 @@ namespace Rainbow.Content.Web.Modules
         /// <returns></returns>
         protected string GetReplyImage()
         {
-            if (DiscussionPermissions.HasAddPermissions(ModuleID) == true)
+            if (DiscussionPermissions.HasAddPermissions(ModuleID))
+            {
                 return getLocalImage("reply.png");
+            }
             else
-                return getLocalImage("1x1.gif");
+            {
+                return getLocalImage("1x1.gif");}
         }
 
         /// <summary>
@@ -370,14 +372,14 @@ namespace Rainbow.Content.Web.Modules
         public Discussion()
         {
             // Jminond - added editor support
-            HtmlEditorDataType.HtmlEditorSettings(_baseSettings, SettingItemGroup.MODULE_SPECIAL_SETTINGS);
+            HtmlEditorDataType.HtmlEditorSettings(baseSettings, SettingItemGroup.MODULE_SPECIAL_SETTINGS);
 
             /*
 			 * SettingItem setSortField = new SettingItem(new ListDataType("CreatedDate;Title"));
 			setSortField.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
 			setSortField.Required = true;
 			setSortField.Value = "DueDate";
-			this._baseSettings.Add("DISCUSSION_SORT_FIELD", setSortField);
+			this.baseSettings.Add("DISCUSSION_SORT_FIELD", setSortField);
 			*/
         }
 
@@ -411,7 +413,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
@@ -426,7 +428,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {

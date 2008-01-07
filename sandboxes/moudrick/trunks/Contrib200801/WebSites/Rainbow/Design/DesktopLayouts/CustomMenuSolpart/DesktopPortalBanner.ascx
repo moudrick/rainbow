@@ -1,10 +1,11 @@
+<%@ Import namespace="Rainbow.Framework.Security"%>
 <%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
 <%@ Control Language="c#" %>
 <%@ Import Namespace="Rainbow.Framework.Design" %>
 <script runat="server" language="C#">
     public Hashtable userProfile;
     private void Page_Load( object sender, System.EventArgs e ) {
-        PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items["PortalSettings"];
+        Portal portalSettings = ( Portal )HttpContext.Current.Items["PortalSettings"];
 
         // Obtain the Profile details for the current user
 
@@ -55,7 +56,7 @@
                             </tr>
                             <tr>
                                 <td align="right" class="headerUserInfo" nowrap="nowrap">
-                                    <%=RainbowContext.CurrentUser.Identity.UserName%>
+                                    <%=RainbowPrincipal.CurrentUser.Identity.UserName%>
                                     <br />
                                     <%=userProfile["Title"]%>
                                 </td>

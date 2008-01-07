@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -27,7 +27,7 @@ namespace Rainbow.Framework.Content.Data
                               string keywords, string CreatedByUser, DateTime CreatedDate)
         {
             //  Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddPicture", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -88,7 +88,7 @@ namespace Rainbow.Framework.Content.Data
         public DataSet GetPicturesPaged(int moduleID, int page, int recordsPerPage, WorkFlowVersion version)
         {
             //  Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlDataAdapter myCommand = new SqlDataAdapter("rb_GetPicturesPaged", myConnection);
             myCommand.SelectCommand.CommandType = CommandType.StoredProcedure;
 
@@ -134,7 +134,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSinglePicture(int itemID, WorkFlowVersion version)
         {
             //  Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSinglePicture", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -162,7 +162,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeletePicture(int itemID)
         {
             //  Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DeletePicture", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -198,7 +198,7 @@ namespace Rainbow.Framework.Content.Data
                                   string shortDescription, string keywords, string CreatedByUser, DateTime CreatedDate)
         {
             //  Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdatePicture", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Configuration.Provider;
 using System.Web.UI;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules

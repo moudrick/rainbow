@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Core;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Admin
@@ -123,7 +124,7 @@ namespace Rainbow.Admin
                     BlacklistDB.AddToBlackList(portalSettings.PortalID,
                                                email,
                                                General.GetString("NEWSLETTER_BLACKLISTED") +
-                                               RainbowContext.CurrentUser.Identity.Email);
+                                               RainbowPrincipal.CurrentUser.Identity.Email);
                 }
                 else
                 {

@@ -8,7 +8,7 @@ namespace Rainbow.Framework.DataTypes
     /// <summary>
     /// Allows upload a file on current portal folder
     /// </summary>
-    public class UploadedFileDataType : PortalUrlDataType
+    public class UploadedFileDataType : PortalUrl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UploadedFileDataType"/> class.

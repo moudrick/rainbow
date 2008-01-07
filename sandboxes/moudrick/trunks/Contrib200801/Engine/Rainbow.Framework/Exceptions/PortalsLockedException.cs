@@ -15,12 +15,34 @@ namespace Rainbow.Framework.Exceptions
     [Serializable]
     public class PortalsLockedException : Exception
     {
+        LogLevel level = LogLevel.Fatal;
+        HttpStatusCode statusCode = HttpStatusCode.ServiceUnavailable;
+
         /// <summary>
-        /// Default constructor.
+        /// ExceptionLevel enumerator.
+        /// </summary>
+        /// <value>The level.</value>
+        public LogLevel Level
+        {
+            get { return level; }
+            set { level = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the status code.
+        /// </summary>
+        /// <value>The status code.</value>
+        public HttpStatusCode StatusCode
+        {
+            get { return statusCode; }
+            set { statusCode = value; }
+        }
+
+        /// <summary>
+        /// Default constructor
         /// </summary>
         public PortalsLockedException()
-        {
-        }
+        {}
 
         /// <summary>
         /// Constructor with message.
@@ -28,8 +50,7 @@ namespace Rainbow.Framework.Exceptions
         /// <param name="message">Text message to be included in log.</param>
         public PortalsLockedException(string message)
             : base(message)
-        {
-        }
+        {}
 
         /// <summary>
         /// Constructor with message and innerException.
@@ -38,8 +59,7 @@ namespace Rainbow.Framework.Exceptions
         /// <param name="inner">Inner exception</param>
         public PortalsLockedException(string message, Exception inner)
             : base(message, inner)
-        {
-        }
+        {}
 
         /// <summary>
         /// Constructor with ExceptionLevel, message and innerException.
@@ -50,7 +70,7 @@ namespace Rainbow.Framework.Exceptions
         public PortalsLockedException(LogLevel level, string message, Exception inner)
             : base(message, inner)
         {
-            _level = level;
+            this.level = level;
         }
 
         /// <summary>
@@ -63,34 +83,10 @@ namespace Rainbow.Framework.Exceptions
         public PortalsLockedException(LogLevel level, HttpStatusCode statusCode, string message, Exception inner)
             : base(message, inner)
         {
-            _level = level;
-            _statusCode = statusCode;
+            this.level = level;
+            this.statusCode = statusCode;
         }
 
-
-        private LogLevel _level = LogLevel.Fatal;
-
-        /// <summary>
-        /// ExceptionLevel enumerator.
-        /// </summary>
-        /// <value>The level.</value>
-        public LogLevel Level
-        {
-            get { return _level; }
-            set { _level = value; }
-        }
-
-        private HttpStatusCode _statusCode = HttpStatusCode.ServiceUnavailable;
-
-        /// <summary>
-        /// Gets or sets the status code.
-        /// </summary>
-        /// <value>The status code.</value>
-        public HttpStatusCode StatusCode
-        {
-            get { return _statusCode; }
-            set { _statusCode = value; }
-        }
 
         /// <summary>
         /// Helper for de-serialization.
@@ -102,8 +98,8 @@ namespace Rainbow.Framework.Exceptions
         protected PortalsLockedException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            _level = (LogLevel) info.GetValue("_level", typeof (LogLevel));
-            _statusCode = (HttpStatusCode) info.GetValue("_statusCode", typeof (HttpStatusCode));
+            level = (LogLevel) info.GetValue("level", typeof (LogLevel));
+            statusCode = (HttpStatusCode) info.GetValue("statusCode", typeof (HttpStatusCode));
         }
 
         /// <summary>
@@ -116,8 +112,8 @@ namespace Rainbow.Framework.Exceptions
         [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("_level", (int) _level, typeof (LogLevel));
-            info.AddValue("_statusCode", (int) _statusCode, typeof (HttpStatusCode));
+            info.AddValue("level", (int) level, typeof (LogLevel));
+            info.AddValue("statusCode", (int) statusCode, typeof (HttpStatusCode));
             base.GetObjectData(info, context);
         }
     }

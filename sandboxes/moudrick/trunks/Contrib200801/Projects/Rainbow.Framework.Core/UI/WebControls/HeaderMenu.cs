@@ -9,7 +9,6 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Data;
 
 namespace Rainbow.Framework.Web.UI.WebControls
@@ -290,7 +289,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 ArrayList list = new ArrayList();
 
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
                 string homeLink = "<a";
                 string menuLink;
@@ -308,7 +307,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     if (ShowWelcome)
                     {
                         list.Add(General.GetString("HEADER_WELCOME", "Welcome", this) + "&#160;" +
-                                 RainbowContext.CurrentUser.Identity.Name + "!");
+                                 RainbowPrincipal.CurrentUser.Identity.Name + "!");
                     }
 
                     if (ShowHome)
@@ -376,7 +375,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                             menuLink = menuLink + " href='" +
                                        HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
-                                                                                                          RainbowContext
+                                                                                                          RainbowPrincipal
                                                                                                               .CurrentUser
                                                                                                               .Identity.
                                                                                                               Email ) +
@@ -392,7 +391,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                             menuLink = menuLink + " href='" +
                                        HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
-                                                                                                          RainbowContext
+                                                                                                          RainbowPrincipal
                                                                                                               .
                                                                                                               CurrentUser
                                                                                                               .Identity.
