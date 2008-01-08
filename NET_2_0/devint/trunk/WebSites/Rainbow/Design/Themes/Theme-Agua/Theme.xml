@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Theme xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>Theme-IoCluster</Name>
+	<Type>zen</Type>
+	<Css>zen.css</Css>
+	<Images>
+		<ThemeImage Name="Spacer" ImageUrl="icon/Spacer.gif" Width="1" Height="1" />
+		<ThemeImage Name="Navlink" ImageUrl="icon/NavLink.gif" Width="6" Height="7" />
+		<ThemeImage Name="Checked" ImageUrl="icon/Checked.gif" Width="13" Height="13" />
+		<ThemeImage Name="Unchecked" ImageUrl="icon/Unchecked.gif" Width="13" Height="13" />
+		<ThemeImage Name="Buttons_Add" ImageUrl="icon/add.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Security" ImageUrl="icon/security.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Approve" ImageUrl="icon/approve.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Back" ImageUrl="icon/back.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Close" ImageUrl="icon/Close.gif" Width="23" Height="19" />
+		<ThemeImage Name="Buttons_Delete" ImageUrl="icon/delete.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_DeleteModule" ImageUrl="icon/DeleteModule.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Down" ImageUrl="icon/down.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Edit" ImageUrl="icon/edit.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Email" ImageUrl="icon/email.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Help" ImageUrl="icon/help.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Left" ImageUrl="icon/left.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Max" ImageUrl="icon/Max.gif" Width="23" Height="19" />
+		<ThemeImage Name="Buttons_Min" ImageUrl="icon/Min.gif" Width="23" Height="19" />
+		<ThemeImage Name="Buttons_Print" ImageUrl="icon/print.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Properties" ImageUrl="icon/properties.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Publish" ImageUrl="icon/publish.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_ReadyToApprove" ImageUrl="icon/ReadyToApprove.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Reject" ImageUrl="icon/reject.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Revert" ImageUrl="icon/revert.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Right" ImageUrl="icon/right.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Save" ImageUrl="icon/save.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_Up" ImageUrl="icon/up.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_VersionToStaging" ImageUrl="icon/VersionToStaging.png" Width="16" Height="16" />
+		<ThemeImage Name="Buttons_VersionToProduction" ImageUrl="icon/VersionToProduction.png" Width="16" Height="16" />
+	</Images>
+	<Parts>
+		<ThemePart Name="ModuleLayout">
+			<HTML><![CDATA[
+				<div class="zm">
+					<div class="zm-hdr">
+					<if:Title>
+						<div class="zm-content">
+							<h2>
+								<content:TitleText />
+							</h2>
+						</div>
+					</if:Title>
+					<if:Buttons>
+						<div class="zm-ctrl">
+							<ul>
+								<loop:Buttons>
+									<li>
+										<content:Button />
+									</li>
+								</loop:Buttons>
+							</ul>
+						</div>
+					</if:Buttons>
+				</div>
+					<if:Body>
+					<div class="zm-bdy">
+						<div class="zm-content">
+							<content:ModuleContent />
+						</div>
+					</div>
+				</if:Body>
+					<if:Footer>
+					<div class="zm-ftr">
+						<div class="zm-content">
+							<if:ShowModifiedBy>
+								<content:ModifiedBy />
+							</if:ShowModifiedBy>
+						</div>
+					</div>
+				</if:Footer>
+				</div> ]]>
+			</HTML>
+		</ThemePart>
+	</Parts>
+</Theme>
