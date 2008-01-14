@@ -3,15 +3,11 @@ using System.Collections;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.BLL.Utils;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Design;
 
-//
 // This Namespace holds the information to manage the viewable controls;
 // namely, min., max. and close buttons
-// 
-
 namespace Rainbow.Framework.Web.UI.WebControls
 {
     /// <summary>
@@ -19,10 +15,10 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// </summary>
     internal class ViewControlData
     {
-        private string name_ = string.Empty; // button name
-        private string alt_text_ = string.Empty; // alternate text
-        private string localize_ = string.Empty; // localized tag name
-        private LinkButton button_ = null; // the control
+        string name_ = string.Empty; // button name
+        string alt_text_ = string.Empty; // alternate text
+        string localize_ = string.Empty; // localized tag name
+        LinkButton button_ = null; // the control
 
         /// <summary>
         /// ctor to create the image button
@@ -132,7 +128,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
         internal static string ImageFormat(string name)
         {
             StringBuilder sb = new StringBuilder("<img border=0 height='");
-            int width = 0, height = 0;
+            int width;
+            int height;
             string url = Url(name, out width, out height);
             // set the new image
             sb.Append(height.ToString());
@@ -217,10 +214,10 @@ namespace Rainbow.Framework.Web.UI.WebControls
     public class ViewControlManager
     {
         // collection of buttons
-        private ArrayList buttons_ = new ArrayList();
-        private int tabID_ = -1;
-        private int moduleID_ = -1;
-        private string rawUrl_ = string.Empty;
+        readonly ArrayList buttons_ = new ArrayList();
+        readonly int tabID_ = -1;
+        readonly int moduleID_ = -1;
+        string rawUrl_ = string.Empty;
 
         /// <summary>
         /// Default Ctor
@@ -254,7 +251,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 LinkButton btn = null;
                 // if present assign it
                 if (vcd != null)
-                    btn = (LinkButton) vcd.viewControlBtn;
+                {
+                    btn = vcd.viewControlBtn;
+                }
                 return btn;
             }
         } // end of LinkButton
@@ -305,7 +304,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 // create a new view control
                 vcd = new ViewControlData(name, altText, localize);
                 // set event handlers
-                vcd.viewControlBtn.Click += new EventHandler(Button_Click);
+                vcd.viewControlBtn.Click += Button_Click;
                 // set attributes
                 vcd.viewControlBtn.Attributes["mID"] = moduleID_.ToString();
                 vcd.viewControlBtn.Attributes["tID"] = tabID_.ToString();
@@ -335,7 +334,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="evt">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void Button_Click(Object sender, EventArgs evt)
+        static void Button_Click(Object sender, EventArgs evt)
         {
             //// 
             //LinkButton ibut = (LinkButton) sender;

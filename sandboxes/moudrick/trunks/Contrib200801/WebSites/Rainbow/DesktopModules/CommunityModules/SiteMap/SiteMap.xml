@@ -54,7 +54,7 @@
             This function creates from the PortalSettings structure a list with the tabs in the right order
             </summary>
         </member>
-        <member name="M:Rainbow.Content.Web.ModulesSitemap.Sitemap.RecurseSitemap(Rainbow.Framework.Site.Configuration.PageStripDetails,System.Int32)">
+        <member name="M:Rainbow.Content.Web.ModulesSitemap.Sitemap.RecurseSitemap(Rainbow.Framework.BusinessObjects.PageStripDetails,System.Int32)">
             <summary>
             This is the recursive function to add all tabs with it's child tabs
             </summary>

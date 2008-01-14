@@ -1,21 +1,24 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.Serialization;
 
-namespace Rainbow.Framework.Providers.Geographic {
+namespace Rainbow.Framework.Providers.Exceptions
+{
+    [Serializable]
+    public class StateNotFoundException : ApplicationException
+    {
+        public StateNotFoundException()
+        {}
 
-    [global::System.Serializable]
-    public class StateNotFoundException : ApplicationException {
+        public StateNotFoundException(string message) : base(message)
+        {}
 
-        public StateNotFoundException() { }
-
-        public StateNotFoundException( string message ) : base( message ) { }
-
-        public StateNotFoundException( string message, Exception inner ) : base( message, inner ) { }
+        public StateNotFoundException(string message, Exception inner) : base(message, inner)
+        {}
 
         protected StateNotFoundException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context )
-            : base( info, context ) { }
+            SerializationInfo info,
+            StreamingContext context)
+            : base(info, context)
+        {}
     }
 }

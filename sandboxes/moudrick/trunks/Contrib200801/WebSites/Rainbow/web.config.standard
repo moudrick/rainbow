@@ -9,10 +9,11 @@
     <section name="ShippingObjects" type="System.Configuration.NameValueSectionHandler, System, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, Custom=null" requirePermission="false" />
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" requirePermission="false" />
     <sectionGroup name="providers">
-      <section name="log" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="geographic" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false"/>
-      <section name="portal" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false"/>
-      <section name="urlBuilder" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework.Core" requirePermission="false" />
+      <section name="log"        type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="geographic" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="portal"     type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="portalPage" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="urlBuilder" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
     </sectionGroup>
     <section name="urlrewritingnet" restartOnExternalChanges="true" requirePermission="false" type="UrlRewritingNet.Configuration.UrlRewriteSection, UrlRewritingNet.UrlRewriter" />
     <sectionGroup name="system.web.extensions" type="System.Web.Configuration.SystemWebExtensionsSectionGroup, System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -632,7 +633,15 @@
     <urlBuilder defaultProvider="SqlUrlBuilder">
       <providers>
         <clear />
-        <add name="SqlUrlBuilder" type="Rainbow.Framework.Web.SqlUrlBuilderProvider, Rainbow.Framework.Core" handlerflag="site" handlersplitter="__" pageidnosplitter="true" friendlypagename="default.aspx" aliasinurl="false" langinurl="false" cacheminutes="5" ignoretargetpage="PageLayout.aspx" />
+        <add name="SqlUrlBuilder" type="Rainbow.Framework.Web.SqlUrlBuilderProvider, Rainbow.Framework.Core" 
+          handlerflag="site" 
+          handlersplitter="__" 
+          pageidnosplitter="true" 
+          friendlypagename="default.aspx" 
+          aliasinurl="false" 
+          langinurl="false" 
+          cacheminutes="5" 
+          ignoretargetpage="PageLayout.aspx" />
       </providers>
     </urlBuilder>
     <geographic defaultProvider="GeographicProvider">
@@ -647,13 +656,25 @@
         <add name="PortalProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlPortalProvider, Rainbow.Framework.Providers.MsSql" />
       </providers>
     </portal>
+    <portalPage defaultProvider="PortalPageProvider">
+      <providers>
+        <clear/>
+        <add name="PortalPageProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlPortalPageProvider, Rainbow.Framework.Providers.MsSql" />
+      </providers>
+    </portalPage>
   </providers>
   <urlrewritingnet xmlns="http://www.urlrewriting.net/schemas/config/2006/07">
     <providers>
       <add name="RainbowUrlRewritingProvider" type="Rainbow.Framework.UrlRewriting.RainbowUrlRewritingProvider, Rainbow.Framework.UrlRewriting" />
     </providers>
     <rewrites>
-      <add name="RainbowUrl" provider="RainbowUrlRewritingProvider" rewriteUrlParameter="ExcludeFromClientQueryString" ignoreCase="true" handlerFlag="site" handlerSplitter="__" pageIdNoSplitter="true" friendlyPageName="DesktopDefault.aspx"  />
+      <add name="RainbowUrl" provider="RainbowUrlRewritingProvider" 
+        rewriteUrlParameter="ExcludeFromClientQueryString" 
+        ignoreCase="true" 
+        handlerFlag="site" 
+        handlerSplitter="__" 
+        pageIdNoSplitter="true" 
+        friendlyPageName="DesktopDefault.aspx"  />
     </rewrites>
   </urlrewritingnet>
 </configuration>

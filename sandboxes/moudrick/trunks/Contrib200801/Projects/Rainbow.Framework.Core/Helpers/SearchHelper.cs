@@ -6,16 +6,15 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI.WebControls;
 using System.Collections.Generic;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
 
 namespace Rainbow.Framework.Helpers
 {
-
 	/// <summary>
 	/// SearchHelper
 	/// Original ideas from Jakob Hansen.
@@ -428,13 +427,11 @@ namespace Rainbow.Framework.Helpers
 
 			try
 			{
-
 				while(dr.Read())
 				{
 					al.Add(dr["SettingValue"].ToString());
 				}
 			}
-
 			finally
 			{
 				dr.Close(); //by Manu fix close bug #2 found

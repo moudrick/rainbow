@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Web.Security;
 using NUnit.Framework;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers;
+using Rainbow.Framework.Providers.Exceptions;
 
 namespace Rainbow.Tests.Data.MsSql
 {

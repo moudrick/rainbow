@@ -8,21 +8,22 @@ using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.Caching;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Exceptions;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
 using Rainbow.Framework.Scheduler;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
-using Rainbow.Framework.Providers.RainbowSiteMapProvider;
 using Path=Rainbow.Framework.Path;
 
-namespace Rainbow.Framework.Core.Configuration.Settings.Providers
+namespace Rainbow.Framework.Providers.MsSql
 {
     ///<summary>
     /// MsSql implementation for PortalProvider
@@ -373,7 +374,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             }
             //Go to get custom settings
             SetCustomSettings(portal, 
-                GetPortalCustomSettings(portal.PortalID, GetPortalBaseSettings(portal.PortalPath)));
+                              GetPortalCustomSettings(portal.PortalID, GetPortalBaseSettings(portal.PortalPath)));
             
             //Initialize Theme
             ThemeManager themeManager = new ThemeManager(portal.PortalPath);
@@ -423,12 +424,12 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             catch (ProviderException)
             {
                 throw new Exception("The portal you requested cannot be found. PortalID: " + portalID,
-                    new HttpException(404, "Portal not found"));
+                                    new HttpException(404, "Portal not found"));
             }
 
             //Go to get custom settings
             SetCustomSettings(portal, 
-                GetPortalCustomSettings(portalID, GetPortalBaseSettings(portal.PortalPath)));
+                              GetPortalCustomSettings(portalID, GetPortalBaseSettings(portal.PortalPath)));
             portal.CurrentLayout = portal.CustomSettings["SITESETTINGS_PAGE_LAYOUT"].ToString();
             //Initialize Theme
             ThemeManager themeManager = new ThemeManager(portal.PortalPath);
@@ -550,10 +551,10 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="portalPath">The portal path.</param>
         /// <returns></returns>
         public override int CreatePortal(int templateID,
-                                string templateAlias,
-                                string portalAlias,
-                                string portalName,
-                                string portalPath)
+                                         string templateAlias,
+                                         string portalAlias,
+                                         string portalName,
+                                         string portalPath)
         {
             int newPortalID;
             ModulesDB modules = new ModulesDB();
@@ -622,8 +623,8 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                 tab.oldID = (int) myReader["PageID"];
                 tab.newID =
                     PortalPageProvider.Instance.AddPage(newPortalID,
-                                 myReader["PageName"].ToString(),
-                                 Int32.Parse(myReader["PageOrder"].ToString()));
+                                                        myReader["PageName"].ToString(),
+                                                        Int32.Parse(myReader["PageOrder"].ToString()));
                 templateTabs.Add(tab);
             }
             myReader.Close();
@@ -662,13 +663,13 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
 
                 // Update the Tab in the new portal
                 PortalPageProvider.Instance.UpdatePage(newPortalID,
-                                newTabID,
-                                newParentTabID,
-                                myReader["PageName"].ToString(),
-                                Int32.Parse(myReader["PageOrder"].ToString()),
-                                myReader["AuthorizedRoles"].ToString(),
-                                myReader["MobilePageName"].ToString(),
-                                (bool) myReader["ShowMobile"]);
+                                                       newTabID,
+                                                       newParentTabID,
+                                                       myReader["PageName"].ToString(),
+                                                       Int32.Parse(myReader["PageOrder"].ToString()),
+                                                       myReader["AuthorizedRoles"].ToString(),
+                                                       myReader["MobilePageName"].ToString(),
+                                                       (bool) myReader["ShowMobile"]);
 
                 // Finally use GetPortalSettings to access each Tab and its Modules in the Template Portal
                 // and create them in the new Portal
@@ -808,8 +809,8 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             while (myReader.Read())
             {
                 UpdatePortalSetting(newPortalID,
-                    myReader["SettingName"].ToString(),
-                    myReader["SettingValue"].ToString());
+                                    myReader["SettingName"].ToString(),
+                                    myReader["SettingValue"].ToString());
             }
 
             myReader.Close();
@@ -1779,15 +1780,15 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
 
                         //ActivePage initialization
                         PortalPageProvider.FillPortalPage(activePortalPage,
-                            pageID,
-                            portal.CurrentLayout,
-                            Int32.Parse("0" + parameterParentPageID.Value),
-                            (int)parameterPageOrder.Value,
-                            (string)parameterMobilePageName.Value,
-                            (string)parameterAuthRoles.Value,
-                            (string)parameterPageName.Value,
-                            (bool)parameterShowMobile.Value,
-                            portal.PortalPath);
+                                                          pageID,
+                                                          portal.CurrentLayout,
+                                                          Int32.Parse("0" + parameterParentPageID.Value),
+                                                          (int)parameterPageOrder.Value,
+                                                          (string)parameterMobilePageName.Value,
+                                                          (string)parameterAuthRoles.Value,
+                                                          (string)parameterPageName.Value,
+                                                          (bool)parameterShowMobile.Value,
+                                                          portal.PortalPath);
                     }
                     catch (SqlException sqlException)
                     {

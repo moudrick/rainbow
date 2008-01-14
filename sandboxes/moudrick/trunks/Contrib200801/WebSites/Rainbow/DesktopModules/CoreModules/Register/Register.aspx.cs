@@ -2,8 +2,10 @@ using System;
 using System.Web;
 using System.Web.UI;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -15,14 +17,10 @@ namespace Rainbow.Admin
     /// Summary description for Register.
     /// </summary>
     [History("jminond", "march 2005", "Changes for moving Tab to Page")]
-    [
-        History("gman3001", "2004/10/06",
-            "Modified GetCurrentProfileControl method to properly obtain a custom register control as specified by the 'Register Module ID' setting."
-            )]
-    [
-        History("John.Mandia@whitelightsolutions.com", "2003/10/31",
-            "Fixed Bug 799945 in sourceforge. After allow no new registrations is ticked users cannot edit their profile"
-            )]
+    [History("gman3001", "2004/10/06",
+            "Modified GetCurrentProfileControl method to properly obtain a custom register control as specified by the 'Register Module ID' setting.")]
+    [History("John.Mandia@whitelightsolutions.com", "2003/10/31",
+            "Fixed Bug 799945 in sourceforge. After allow no new registrations is ticked users cannot edit their profile")]
     [History("Manu", "2003/04/04", "Only one register page can load multiple modules")]
     [History("Jes1111", "2003/03/10", "Modified from original page to use Register module")]
     public partial class Register : Page
@@ -90,41 +88,46 @@ namespace Rainbow.Admin
         /// Gets the current profile control.
         /// </summary>
         /// <returns></returns>
-        public static Control GetCurrentProfileControl() {
+        public static Control GetCurrentProfileControl() 
+        {
             //default
             string RegisterPage = "Register.ascx";
 
             // 19/08/2004 Jonathan Fong 
             // www.gt.com.au
             RainbowPrincipal user = HttpContext.Current.User as RainbowPrincipal;
-
-            Portal portalSettings = (Portal)HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 
             //Select the actual register page
-            if ( portalSettings.CustomSettings["SITESETTINGS_REGISTER_TYPE"] != null &&
+            if (portalSettings.CustomSettings["SITESETTINGS_REGISTER_TYPE"] != null &&
                 portalSettings.CustomSettings["SITESETTINGS_REGISTER_TYPE"].ToString() != "Register.ascx" ) {
                 RegisterPage = portalSettings.CustomSettings["SITESETTINGS_REGISTER_TYPE"].ToString();
             }
-            System.Web.UI.Page x = new System.Web.UI.Page();
+            System.Web.UI.Page page = new System.Web.UI.Page();
 
             // Modified by gman3001 10/06/2004, to support proper loading of a register module specified by 'Register Module ID' setting in the Portal Settings admin page
             int moduleID = int.Parse( portalSettings.CustomSettings["SITESETTINGS_REGISTER_MODULEID"].ToString() );
             string moduleDesktopSrc = string.Empty;
-            if ( moduleID > 0 )
-                moduleDesktopSrc = ModuleSettingsProvider.GetModuleDesktopSrc( moduleID );
-            if ( moduleDesktopSrc.Length == 0 )
+            if (moduleID > 0)
+            {
+                moduleDesktopSrc = ModuleSettingsProvider.GetModuleDesktopSrc(moduleID);
+            }
+            if (moduleDesktopSrc.Length == 0)
+            {
                 moduleDesktopSrc = RegisterPage;
-            Control myControl = x.LoadControl( moduleDesktopSrc );
+            }
+            //TODO: [moudrick] this line breaks HttpSimulator tests
+            Control control = page.LoadControl(moduleDesktopSrc);
             // End Modification by gman3001
 
-            PortalModuleControl p = ( (PortalModuleControl)myControl );
+            PortalModuleControl portalModuleControl = ((PortalModuleControl) control);
             //p.ModuleID = int.Parse(portalSettings.CustomSettings["SITESETTINGS_REGISTER_MODULEID"].ToString());
-            p.ModuleID = moduleID;
-            if ( p.ModuleID == 0 )
-                ( (SettingItem)p.Settings["MODULESETTINGS_SHOW_TITLE"] ).Value = "false";
-            return ( (Control)p );
-
-            return ( null );
+            portalModuleControl.ModuleID = moduleID;
+            if (portalModuleControl.ModuleID == 0)
+            {
+                ((SettingItem) portalModuleControl.Settings["MODULESETTINGS_SHOW_TITLE"]).Value = "false";
+            }
+            return portalModuleControl;
         }
     }
 }

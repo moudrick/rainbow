@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.IO;
-using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -441,7 +441,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
 
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
@@ -451,7 +451,7 @@ namespace Rainbow.Content.Web.Modules
             }
 
             DirectoryInfo installDir =
-                new DirectoryInfo(System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "InstallScripts"));
+                new DirectoryInfo(Path.Combine(Server.MapPath(TemplateSourceDirectory), "InstallScripts"));
             FileInfo[] installFiles = installDir.GetFiles("*_Install.sql");
             foreach (FileInfo scriptToInstall in installFiles)
             {
@@ -471,7 +471,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
 
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
 
@@ -482,7 +482,7 @@ namespace Rainbow.Content.Web.Modules
             }
 
             DirectoryInfo installDir =
-                new DirectoryInfo(System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "InstallScripts"));
+                new DirectoryInfo(Path.Combine(Server.MapPath(TemplateSourceDirectory), "InstallScripts"));
             FileInfo[] installFiles = installDir.GetFiles("*_uninstall.sql");
             foreach (FileInfo scriptToInstall in installFiles)
             {

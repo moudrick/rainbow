@@ -5,6 +5,7 @@ using System.IO;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Data;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Helpers;
@@ -21,15 +22,14 @@ namespace Rainbow.Content.Web.Modules
 	public partial class Documents : PortalModuleControl 
 	{
 		/// <summary>
-		/// 
 		/// </summary>
 		protected DataView myDataView;
-		/// <summary>
-		/// 
+
+        /// <summary>
 		/// </summary>
 		protected string sortField;
+
 		/// <summary>
-		/// 
 		/// </summary>
 		protected string sortDirection;
 

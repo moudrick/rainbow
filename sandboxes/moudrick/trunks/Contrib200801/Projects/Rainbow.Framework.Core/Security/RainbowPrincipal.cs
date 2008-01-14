@@ -1,8 +1,8 @@
 using System.Security.Principal;
 using System.Web.Security;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
 
 namespace Rainbow.Framework.Security
 {

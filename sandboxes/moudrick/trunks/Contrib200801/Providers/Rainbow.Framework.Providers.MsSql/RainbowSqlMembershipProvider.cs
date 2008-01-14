@@ -2,18 +2,20 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers.Exceptions;
 using System.Web.Security;
 using System.Configuration;
 using System.Security.Cryptography;
 using System.Diagnostics;
+using RainbowMembershipProvider=Rainbow.Framework.Providers.RainbowMembershipProvider;
 
 namespace Rainbow.Framework.Providers.MsSql
 {
     /// <summary>
     /// SQL-specific implementation of <code>RainbowMembershipProvider</code> API
     /// </summary>
-    public class RainbowSqlMembershipProvider : RainbowMembershipProvider.RainbowMembershipProvider
+    public class RainbowSqlMembershipProvider : RainbowMembershipProvider
     {
         const int errorCode_UserNotFound = 1;
         const int errorCode_IncorrectPasswordAnswer = 3;

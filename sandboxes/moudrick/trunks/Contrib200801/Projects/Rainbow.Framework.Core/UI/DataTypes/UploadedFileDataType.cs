@@ -1,7 +1,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Framework.DataTypes

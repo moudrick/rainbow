@@ -21,7 +21,6 @@ namespace Rainbow.Framework.BusinessObjects
             this.administrativeDivisionNeutralName = administrativeDivisionNeutralName;
         }
 
-
         /// <summary>
         /// Gets or sets the country ID.
         /// </summary>
@@ -60,10 +59,8 @@ namespace Rainbow.Framework.BusinessObjects
         {
             get
             {
-                return
-                    GeographicProvider.Instance.GetCountryDisplayName(countryID,
-                                                                     Thread.CurrentThread.
-                                                                         CurrentCulture);
+                return GeographicProvider.Instance.GetCountryDisplayName(countryID,
+                    Thread.CurrentThread.CurrentCulture);
             }
         }
 
@@ -75,9 +72,9 @@ namespace Rainbow.Framework.BusinessObjects
         {
             get
             {
-                return
-                    GeographicProvider.Instance.GetAdministrativeDivisionName(
-                        administrativeDivisionNeutralName, Thread.CurrentThread.CurrentCulture);
+                return GeographicProvider.Instance.GetAdministrativeDivisionName(
+                    administrativeDivisionNeutralName, 
+                    Thread.CurrentThread.CurrentCulture);
             }
         }
 
@@ -105,7 +102,6 @@ namespace Rainbow.Framework.BusinessObjects
         ///<summary>
         ///Serves as a hash function for a particular type. <see cref="M:System.Object.GetHashCode"></see> is suitable for use in hashing algorithms and data structures like a hash table.
         ///</summary>
-        ///
         ///<returns>
         ///A hash code for the current <see cref="T:System.Object"></see>.
         ///</returns>

@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;

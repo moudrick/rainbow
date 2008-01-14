@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using System.Net;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -35,15 +35,15 @@ namespace Rainbow.Content.Web.Modules
                 if (showAddress)
                 {
                     if (Settings["Street"].ToString().Length != 0)
-                        lblAddress.Text += Settings["Street"].ToString() + "<br>";
+                        lblAddress.Text += Settings["Street"] + "<br>";
 
                     if (Settings["Region"].ToString().Length != 0)
-                        lblAddress.Text += Settings["City"].ToString() + ", " + Settings["Region"].ToString() + "<br>";
+                        lblAddress.Text += Settings["City"] + ", " + Settings["Region"] + "<br>";
                     else
-                        lblAddress.Text += Settings["City"].ToString() + "<br>";
+                        lblAddress.Text += Settings["City"] + "<br>";
 
                     if (Settings["PostalCode"].ToString().Length != 0)
-                        lblAddress.Text += Settings["PostalCode"].ToString() + "<br>";
+                        lblAddress.Text += Settings["PostalCode"] + "<br>";
 
                     if (Settings["Country"].ToString().Length != 0)
                         lblAddress.Text += Settings["Country"].ToString();
@@ -74,7 +74,7 @@ namespace Rainbow.Content.Web.Modules
         private void show()
         {
             hypMap.NavigateUrl = BuildMapURL();
-            hypMap.Target = "_" + Settings["Target"].ToString();
+            hypMap.Target = "_" + Settings["Target"];
 
             if (showMap)
                 hypMap.ImageUrl = GetMapImageURL(hypMap.NavigateUrl);
@@ -90,7 +90,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="strValue">The STR value.</param>
         /// <returns></returns>
-        private string EncodeValue(string strValue)
+        static string EncodeValue(string strValue)
         {
             strValue = strValue.Replace("\n", string.Empty);
             strValue = strValue.Replace("\r", string.Empty);
@@ -123,7 +123,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="strURL">The STR URL.</param>
         /// <returns></returns>
-        private string GetMapImageURL(string strURL)
+        static string GetMapImageURL(string strURL)
         {
             try
             {

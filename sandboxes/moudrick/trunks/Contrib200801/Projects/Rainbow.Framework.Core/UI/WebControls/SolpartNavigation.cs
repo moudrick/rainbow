@@ -19,11 +19,8 @@ using System.Web.UI;
 using System.Xml;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Solpart.WebControls;
 using Path=Rainbow.Framework.Path;
@@ -34,11 +31,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// TODO: CAN WE REPLACE THIS WITH ASP.NET Menu naviagion? 
     /// Therby not breaking any existing themes?
     /// </summary>
-    [
-        History("gman3001", "2004/10/06",
+    [History("gman3001", "2004/10/06",
             "Add support for the active root tab to use a custom css style for normal and highlighting purposes")]
-    [
-        History("jviladiu@portalServices.net", "2004/08/26",
+    [History("jviladiu@portalServices.net", "2004/08/26",
             "Add AutoShopDetect support and set url's for categories of products")]
     [History("jviladiu@portalServices.net", "2004/08/26", "Add ShowIconMenu property")]
     public class SolpartNavigation : SolpartMenu, INavigation

@@ -2,9 +2,10 @@ using System.Collections;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -67,7 +68,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (HttpContext.Current != null)
             {
                 // Obtain PortalSettings from Current Context 
-                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 
                 //Display breadcrumbs if the user has click a tab link  (Without hit the Database again)
                 if (portalSettings.ActivePage.PageID > 0)

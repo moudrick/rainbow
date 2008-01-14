@@ -6,6 +6,7 @@ using Rainbow.Framework.Content.Security;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;

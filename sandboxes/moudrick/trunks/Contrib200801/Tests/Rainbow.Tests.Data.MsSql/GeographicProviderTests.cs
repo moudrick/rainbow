@@ -4,7 +4,7 @@ using NUnit.Framework;
 using System.Globalization;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Providers.Geographic;
+using Rainbow.Framework.Providers.Exceptions;
 
 namespace Rainbow.Tests.Data.MsSql
 {

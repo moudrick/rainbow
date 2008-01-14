@@ -9,6 +9,7 @@ using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;

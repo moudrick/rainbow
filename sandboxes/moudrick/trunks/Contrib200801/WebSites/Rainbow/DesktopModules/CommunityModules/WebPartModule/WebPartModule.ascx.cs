@@ -4,9 +4,9 @@ using System.Net;
 using System.Text;
 using System.Xml;
 using System.Xml.Xsl;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -25,7 +25,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void Page_Load(object sender, EventArgs e)
         {
-            string ModuleIDent = ModuleID.ToString();
+            //string ModuleIDent = ModuleID.ToString();
             string WebPartFile = Settings["WebPartFile"].ToString();
             if ((WebPartFile == null) || (WebPartFile == string.Empty))
             {
@@ -57,13 +57,12 @@ namespace Rainbow.Content.Web.Modules
             }
         }
 
-
         /// <summary>
         /// Fetches the content of the network.
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns></returns>
-        private string FetchNetworkContent(string url)
+        static string FetchNetworkContent(string url)
         {
             WebRequest netRequest = WebRequest.Create(url);
             WebResponse netResponse = netRequest.GetResponse();
@@ -73,10 +72,10 @@ namespace Rainbow.Content.Web.Modules
                 Stream receiveStream = netResponse.GetResponseStream();
                 byte[] read = new Byte[512];
                 string content = string.Empty;
-                int bytes = 0;
 
                 try
                 {
+                    int bytes;
                     do
                     {
                         bytes = receiveStream.Read(read, 0, 512);
@@ -95,13 +94,12 @@ namespace Rainbow.Content.Web.Modules
             }
         }
 
-
         /// <summary>
         /// Obtains the content of the web part.
         /// </summary>
         /// <param name="partData">The part data.</param>
         /// <returns></returns>
-        private string ObtainWebPartContent(WebPart partData)
+        static string ObtainWebPartContent(WebPart partData)
         {
             string content = null;
 
@@ -166,7 +164,7 @@ namespace Rainbow.Content.Web.Modules
             while ((startIndex = content.IndexOf("_WPQ_", startIndex)) != -1)
             {
                 content = content.Substring(0, startIndex) +
-                          ModuleID.ToString() + content.Substring(startIndex + 5);
+                          ModuleID + content.Substring(startIndex + 5);
                 startIndex += 5;
             }
             return content;

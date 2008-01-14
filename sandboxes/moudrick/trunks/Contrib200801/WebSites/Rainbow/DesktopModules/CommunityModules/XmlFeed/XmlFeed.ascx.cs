@@ -9,6 +9,7 @@ using System.Xml;
 using Rainbow.Framework;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using Path=Rainbow.Framework.Path;

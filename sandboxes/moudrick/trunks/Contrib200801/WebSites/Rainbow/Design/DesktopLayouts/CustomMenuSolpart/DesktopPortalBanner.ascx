@@ -1,5 +1,6 @@
+<%@ Import namespace="Rainbow.Framework.BusinessObjects"%>
 <%@ Import namespace="Rainbow.Framework.Security"%>
-<%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
+
 <%@ Control Language="c#" %>
 <%@ Import Namespace="Rainbow.Framework.Design" %>
 <script runat="server" language="C#">

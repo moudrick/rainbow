@@ -5,7 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Caching;
 using System.Web.UI;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
@@ -32,10 +32,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
     [History("Jes1111", "2003/04/24", "Improved cache behaviour for CacheTime=-1")]
     public class CachedPortalModuleControl : Control
     {
-        // Private field variables
-        private ModuleSettings _moduleConfiguration;
-        private string _cachedOutput = string.Empty;
-        private int _portalID = 0;
+        ModuleSettings _moduleConfiguration;
+        string _cachedOutput = string.Empty;
+        int _portalID = 0;
 
         /// <summary>
         /// ModuleConfiguration

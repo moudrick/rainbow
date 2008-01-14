@@ -2,13 +2,12 @@ using System;
 using System.Collections;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using History = Rainbow.Framework.History;
 using System.Web.Security;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
 
 namespace Rainbow.Content.Web.Modules {
     /// <summary>

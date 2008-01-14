@@ -4,6 +4,7 @@ using System.Text;
 using Rainbow.Framework;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI.WebControls;
 

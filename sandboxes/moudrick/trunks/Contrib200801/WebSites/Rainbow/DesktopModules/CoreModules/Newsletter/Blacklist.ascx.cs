@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Web.UI.WebControls;
-using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Admin
@@ -153,45 +153,45 @@ namespace Rainbow.Admin
             setSortField.Order = 1;
             baseSettings.Add("BLACKLIST_SORTFIELD", setSortField);
 
-            SettingItem showColumnName = new SettingItem(new BooleanDataType());
-            showColumnName.Order = 2;
-            showColumnName.Value = "True";
-            baseSettings.Add("BLACKLIST_SHOWCOLUMNNAME", showColumnName);
+            SettingItem showColumnNameLocal = new SettingItem(new BooleanDataType());
+            showColumnNameLocal.Order = 2;
+            showColumnNameLocal.Value = "True";
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNNAME", showColumnNameLocal);
 
-            SettingItem showColumnEmail = new SettingItem(new BooleanDataType());
-            showColumnEmail.Order = 3;
-            showColumnEmail.Value = "True";
-            baseSettings.Add("BLACKLIST_SHOWCOLUMNEMAIL", showColumnEmail);
+            SettingItem showColumnEmailLocal = new SettingItem(new BooleanDataType());
+            showColumnEmailLocal.Order = 3;
+            showColumnEmailLocal.Value = "True";
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNEMAIL", showColumnEmailLocal);
 
-            SettingItem showColumnSendNewsletter = new SettingItem(new BooleanDataType());
-            showColumnSendNewsletter.Order = 4;
-            showColumnSendNewsletter.Value = "False";
-            baseSettings.Add("BLACKLIST_SHOWCOLUMNSENDNEWSLETTER", showColumnSendNewsletter);
+            SettingItem showColumnSendNewsletterLocal = new SettingItem(new BooleanDataType());
+            showColumnSendNewsletterLocal.Order = 4;
+            showColumnSendNewsletterLocal.Value = "False";
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNSENDNEWSLETTER", showColumnSendNewsletterLocal);
 
-            SettingItem showColumnReason = new SettingItem(new BooleanDataType());
-            showColumnReason.Order = 5;
-            showColumnReason.Value = "True";
-            baseSettings.Add("BLACKLIST_SHOWCOLUMNREASON", showColumnReason);
+            SettingItem showColumnReasonLocal = new SettingItem(new BooleanDataType());
+            showColumnReasonLocal.Order = 5;
+            showColumnReasonLocal.Value = "True";
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNREASON", showColumnReasonLocal);
 
-            SettingItem showColumnDate = new SettingItem(new BooleanDataType());
-            showColumnDate.Order = 6;
-            showColumnDate.Value = "True";
-            baseSettings.Add("BLACKLIST_SHOWCOLUMNDATE", showColumnDate);
+            SettingItem showColumnDateLocal = new SettingItem(new BooleanDataType());
+            showColumnDateLocal.Order = 6;
+            showColumnDateLocal.Value = "True";
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNDATE", showColumnDateLocal);
 
-            SettingItem showColumnLastSend = new SettingItem(new BooleanDataType());
-            showColumnLastSend.Order = 7;
-            showColumnLastSend.Value = "True";
-            baseSettings.Add("BLACKLIST_SHOWCOLUMNLASTSEND", showColumnLastSend);
+            SettingItem showColumnLastSendLocal = new SettingItem(new BooleanDataType());
+            showColumnLastSendLocal.Order = 7;
+            showColumnLastSendLocal.Value = "True";
+            baseSettings.Add("BLACKLIST_SHOWCOLUMNLASTSEND", showColumnLastSendLocal);
 
-            SettingItem showAllUsers = new SettingItem(new BooleanDataType());
-            showAllUsers.Order = 8;
-            showAllUsers.Value = "False";
-            baseSettings.Add("BLACKLIST_SHOWALLUSERS", showAllUsers);
+            SettingItem showAllUsersLocal = new SettingItem(new BooleanDataType());
+            showAllUsersLocal.Order = 8;
+            showAllUsersLocal.Value = "False";
+            baseSettings.Add("BLACKLIST_SHOWALLUSERS", showAllUsersLocal);
 
-            SettingItem showSubscribersOnly = new SettingItem(new BooleanDataType());
-            showSubscribersOnly.Order = 9;
-            showSubscribersOnly.Value = "False";
-            baseSettings.Add("BLACKLIST_SHOWSUBSCRIBERSONLY", showSubscribersOnly);
+            SettingItem showSubscribersOnlyLocal = new SettingItem(new BooleanDataType());
+            showSubscribersOnlyLocal.Order = 9;
+            showSubscribersOnlyLocal.Value = "False";
+            baseSettings.Add("BLACKLIST_SHOWSUBSCRIBERSONLY", showSubscribersOnlyLocal);
         }
 
         #region Web Form Designer generated code
@@ -219,26 +219,25 @@ namespace Rainbow.Admin
 
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Server.MapPath(this.TemplateSourceDirectory + "/Blacklist_Install.sql");
+            string currentScriptName = Server.MapPath(TemplateSourceDirectory + "/Blacklist_Install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Server.MapPath(this.TemplateSourceDirectory + "/Blacklist_Uninstall.sql");
+            string currentScriptName = Server.MapPath(TemplateSourceDirectory + "/Blacklist_Uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
-
         #endregion
     }
 }

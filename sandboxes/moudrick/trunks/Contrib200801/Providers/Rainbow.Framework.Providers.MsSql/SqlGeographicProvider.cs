@@ -7,7 +7,7 @@ using System.Data;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Providers.Geographic;
+using Rainbow.Framework.Providers.Exceptions;
 using System.Configuration;
 
 namespace Rainbow.Framework.Providers.MsSql

@@ -1,8 +1,8 @@
 using System;
 using System.Globalization;
-using System.Web;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -11,10 +11,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// </summary>
     public class PageKeyPhrase : Label
     {
-        // Obtain PortalSettings from Current Context
-        private Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
-        private string _tabKeyPhrase;
-        private string currentLanguage;
+        readonly Portal portalSettings = PortalProvider.Instance.CurrentPortal;
+        string tabKeyPhrase;
+        string currentLanguage;
 
         /// <summary>
         /// Stores current Tab Key Phrase
@@ -24,48 +23,48 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             get
             {
-                currentLanguage = "TabKeyPhrase_" + portalSettings.PortalContentLanguage.Name.ToString();
+                currentLanguage = "TabKeyPhrase_" + portalSettings.PortalContentLanguage.Name;
                 if (portalSettings.PortalContentLanguage != CultureInfo.InvariantCulture
                     && portalSettings.ActivePage.CustomSettings[currentLanguage] != null)
                 {
-                    _tabKeyPhrase =
-                        (string) ViewState["TabKeyPhrase_" + portalSettings.PortalContentLanguage.Name.ToString()];
-                    if (_tabKeyPhrase != null)
-                        return _tabKeyPhrase;
+                    tabKeyPhrase =
+                        (string) ViewState["TabKeyPhrase_" + portalSettings.PortalContentLanguage.Name];
+                    if (tabKeyPhrase != null)
+                        return tabKeyPhrase;
                     else
                     {
                         // Try to get this tab's key phrase
-                        _tabKeyPhrase = portalSettings.ActivePage.CustomSettings[currentLanguage].ToString();
+                        tabKeyPhrase = portalSettings.ActivePage.CustomSettings[currentLanguage].ToString();
 
-                        if (_tabKeyPhrase == string.Empty && portalSettings.CustomSettings != null)
+                        if (tabKeyPhrase == string.Empty && portalSettings.CustomSettings != null)
                         {
-                            _tabKeyPhrase = portalSettings.ActivePage.CustomSettings["TabKeyPhrase"].ToString();
+                            tabKeyPhrase = portalSettings.ActivePage.CustomSettings["TabKeyPhrase"].ToString();
 
-                            if (_tabKeyPhrase == string.Empty)
-                                _tabKeyPhrase = portalSettings.CustomSettings["SITESETTINGS_PAGE_KEY_PHRASE"].ToString();
+                            if (tabKeyPhrase == string.Empty)
+                                tabKeyPhrase = portalSettings.CustomSettings["SITESETTINGS_PAGE_KEY_PHRASE"].ToString();
                         }
 
-                        return _tabKeyPhrase;
+                        return tabKeyPhrase;
                     }
                 }
                 else
                 {
-                    _tabKeyPhrase = (string) ViewState["TabKeyPhrase"];
-                    if (_tabKeyPhrase != null)
-                        return _tabKeyPhrase;
+                    tabKeyPhrase = (string) ViewState["TabKeyPhrase"];
+                    if (tabKeyPhrase != null)
+                        return tabKeyPhrase;
                     else
                     {
                         if (portalSettings.ActivePage.CustomSettings["TabKeyPhrase"] != null)
                         {
                             // Try to get this tab's key phrase
-                            _tabKeyPhrase = portalSettings.ActivePage.CustomSettings["TabKeyPhrase"].ToString();
+                            tabKeyPhrase = portalSettings.ActivePage.CustomSettings["TabKeyPhrase"].ToString();
 
-                            if (_tabKeyPhrase == string.Empty && portalSettings.CustomSettings != null)
+                            if (tabKeyPhrase == string.Empty && portalSettings.CustomSettings != null)
                             {
-                                _tabKeyPhrase = portalSettings.CustomSettings["SITESETTINGS_PAGE_KEY_PHRASE"].ToString();
+                                tabKeyPhrase = portalSettings.CustomSettings["SITESETTINGS_PAGE_KEY_PHRASE"].ToString();
                             }
 
-                            return _tabKeyPhrase;
+                            return tabKeyPhrase;
                         }
                         return string.Empty;
                     }
@@ -75,7 +74,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 if (portalSettings.PortalContentLanguage != CultureInfo.InvariantCulture)
                 {
-                    ViewState["TabKeyPhrase_" + portalSettings.PortalContentLanguage.Name.ToString()] = value;
+                    ViewState["TabKeyPhrase_" + portalSettings.PortalContentLanguage.Name] = value;
                 }
                 else
                 {

@@ -6,8 +6,8 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Data;
 
@@ -17,15 +17,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// HeaderMenu
     /// </summary>
     [History("jviladiu@portalServices.net", "2004/09/29", "Added link showHelp for show help window")]
-    [
-        History("ozan@rainbow.web.tr", "2004/07/02",
+    [History("ozan@rainbow.web.tr", "2004/07/02",
             "Added  showTabMan and showTabAdd properties for managing tab and adding tab only one click... ")]
-    [
-        History("John.Mandia@whitelightsolutions.com", "2003/11/04",
-            "Added extra property DataBindOnInit. So you can decide if you wish it to bind automatically or when you call DataBind()"
-            )]
-    [
-        History("John.Mandia@whitelightsolutions.com", "2003/10/25",
+    [History("John.Mandia@whitelightsolutions.com", "2003/11/04",
+            "Added extra property DataBindOnInit. So you can decide if you wish it to bind automatically or when you call DataBind()")]
+    [History("John.Mandia@whitelightsolutions.com", "2003/10/25",
             "Added ability to have more control over the menu by adding more settings.")]
     public class HeaderMenu : DataList
     {
@@ -269,12 +265,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             if (Page is Page)
             {
-                if (!((Page) Page).ClientScript.IsClientScriptIncludeRegistered("rb-popup"))
-                    ((Page) Page).ClientScript.RegisterClientScriptInclude(((Page) Page).GetType(), "rb-popup",
-                                                                           Path.ApplicationRoot +
-                                                                           "/aspnet_client/popupHelper/popup.js");
+                if (!Page.ClientScript.IsClientScriptIncludeRegistered("rb-popup"))
+                {
+                    Page.ClientScript.RegisterClientScriptInclude(Page.GetType(), "rb-popup", 
+                        Path.ApplicationRoot + "/aspnet_client/popupHelper/popup.js");}
             }
-
             return sb.ToString();
         }
 
@@ -283,21 +278,20 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         public override void DataBind()
         {
+            Portal portalSettings = PortalProvider.Instance.CurrentPortal;
             if (HttpContext.Current != null)
             {
                 //Init data
                 ArrayList list = new ArrayList();
-
-                // Obtain PortalSettings from Current Context
-                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
                 string homeLink = "<a";
                 string menuLink;
 
                 // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
                 if (CssClass.Length != 0)
+                {
                     homeLink = homeLink + " class=\"" + CssClass + "\"";
-
+                }
                 homeLink = homeLink + " href='" + HttpUrlBuilder.BuildUrl() + "'>" +
                            General.GetString("Rainbow", "HOME") + "</a>";
 

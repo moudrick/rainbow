@@ -1,6 +1,6 @@
 using System.Web;
 using FredCK.FCKeditorV2;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {

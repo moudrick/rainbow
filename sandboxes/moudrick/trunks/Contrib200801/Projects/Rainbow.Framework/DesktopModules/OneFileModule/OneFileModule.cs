@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Xml;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 
 namespace Rainbow.Content.Web.Modules

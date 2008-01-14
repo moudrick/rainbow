@@ -4,9 +4,9 @@ using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Users.Data;
@@ -262,15 +262,13 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="portalSearchResult">The portal search result.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        private DataSet FillPortalDS(int portalID, Guid userID, SqlDataReader portalSearchResult, out int hits)
+        private DataSet FillPortalDS(int portalID, Guid userID, IDataReader portalSearchResult, out int hits)
         {
             hits = 0;
             DataSet ds = new DataSet();
             try
             {
                 ds = CreatePortalDS(ds);
-
-
                 try
 
                 {
@@ -482,64 +480,64 @@ namespace Rainbow.Content.Web.Modules
             //showImage.Value = "True";
             //this.baseSettings.Add("ShowImage", showImage);
 
-            SettingItem showModuleName = new SettingItem(new BooleanDataType());
-            showModuleName.Order = 3;
-            showModuleName.Value = "True";
-            baseSettings.Add("ShowModuleName", showModuleName);
+            SettingItem showModuleNameLocal = new SettingItem(new BooleanDataType());
+            showModuleNameLocal.Order = 3;
+            showModuleNameLocal.Value = "True";
+            baseSettings.Add("ShowModuleName", showModuleNameLocal);
 
             SettingItem showSearchTitle = new SettingItem(new BooleanDataType());
             showSearchTitle.Order = 4;
             showSearchTitle.Value = "True";
             baseSettings.Add("ShowSearchTitle", showSearchTitle);
 
-            SettingItem showAbstract = new SettingItem(new BooleanDataType());
-            showAbstract.Order = 5;
-            showAbstract.Value = "True";
-            baseSettings.Add("ShowAbstract", showAbstract);
+            SettingItem showAbstractLocal = new SettingItem(new BooleanDataType());
+            showAbstractLocal.Order = 5;
+            showAbstractLocal.Value = "True";
+            baseSettings.Add("ShowAbstract", showAbstractLocal);
 
-            SettingItem showCreatedByUser = new SettingItem(new BooleanDataType());
-            showCreatedByUser.Order = 6;
-            showCreatedByUser.Value = "True";
-            baseSettings.Add("ShowCreatedByUser", showCreatedByUser);
+            SettingItem showCreatedByUserLocal = new SettingItem(new BooleanDataType());
+            showCreatedByUserLocal.Order = 6;
+            showCreatedByUserLocal.Value = "True";
+            baseSettings.Add("ShowCreatedByUser", showCreatedByUserLocal);
 
-            SettingItem showCreatedDate = new SettingItem(new BooleanDataType());
-            showCreatedDate.Order = 7;
-            showCreatedDate.Value = "True";
-            baseSettings.Add("ShowCreatedDate", showCreatedDate);
+            SettingItem showCreatedDateLocal = new SettingItem(new BooleanDataType());
+            showCreatedDateLocal.Order = 7;
+            showCreatedDateLocal.Value = "True";
+            baseSettings.Add("ShowCreatedDate", showCreatedDateLocal);
 
-            SettingItem showLink = new SettingItem(new BooleanDataType());
-            showLink.Order = 8;
-            showLink.Value = "False";
-            baseSettings.Add("ShowLink", showLink);
+            SettingItem showLinkLocal = new SettingItem(new BooleanDataType());
+            showLinkLocal.Order = 8;
+            showLinkLocal.Value = "False";
+            baseSettings.Add("ShowLink", showLinkLocal);
 
-            SettingItem showTabName = new SettingItem(new BooleanDataType());
-            showTabName.Order = 9;
-            showTabName.Value = "True";
-            baseSettings.Add("ShowTabName", showTabName);
+            SettingItem settingItemLocal = new SettingItem(new BooleanDataType());
+            settingItemLocal.Order = 9;
+            settingItemLocal.Value = "True";
+            baseSettings.Add("ShowTabName", settingItemLocal);
 
-            SettingItem showTestInfo = new SettingItem(new BooleanDataType());
-            showTestInfo.Order = 10;
-            showTestInfo.Value = "False";
-            baseSettings.Add("ShowTestInfo", showTestInfo);
+            SettingItem showTestInfoLocal = new SettingItem(new BooleanDataType());
+            showTestInfoLocal.Order = 10;
+            showTestInfoLocal.Value = "False";
+            baseSettings.Add("ShowTestInfo", showTestInfoLocal);
 
-            SettingItem maxHits = new SettingItem(new IntegerDataType());
-            maxHits.Required = true;
-            maxHits.Order = 11;
-            maxHits.Value = "100";
+            SettingItem maxHitsLocal = new SettingItem(new IntegerDataType());
+            maxHitsLocal.Required = true;
+            maxHitsLocal.Order = 11;
+            maxHitsLocal.Value = "100";
             //maxHits.MinValue = 1;
             //maxHits.MaxValue = 1000;
-            baseSettings.Add("MaxHits", maxHits);
+            baseSettings.Add("MaxHits", maxHitsLocal);
 
-            SettingItem showModuleTitle = new SettingItem(new BooleanDataType());
-            showModuleTitle.Order = 12;
-            showModuleTitle.Value = "False";
-            baseSettings.Add("ShowModuleTitle", showModuleTitle);
+            SettingItem showModuleTitleLocal = new SettingItem(new BooleanDataType());
+            showModuleTitleLocal.Order = 12;
+            showModuleTitleLocal.Value = "False";
+            baseSettings.Add("ShowModuleTitle", showModuleTitleLocal);
 
-            SettingItem testUserID = new SettingItem(new IntegerDataType());
-            testUserID.Required = true;
-            testUserID.Order = 13;
-            testUserID.Value = "-1";
-            baseSettings.Add("TestUserID", testUserID);
+            SettingItem testUserIDLocal = new SettingItem(new IntegerDataType());
+            testUserIDLocal.Required = true;
+            testUserIDLocal.Order = 13;
+            testUserIDLocal.Value = "-1";
+            baseSettings.Add("TestUserID", testUserIDLocal);
 
             SettingItem showddModule = new SettingItem(new BooleanDataType());
             showddModule.Value = "true";
@@ -581,7 +579,6 @@ namespace Rainbow.Content.Web.Modules
         {
             get { return false; }
         }
-
 
         /// <summary>
         /// GUID of module (mandatory)

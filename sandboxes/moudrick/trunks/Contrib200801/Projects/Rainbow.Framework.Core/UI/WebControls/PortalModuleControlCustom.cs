@@ -2,6 +2,7 @@ using System.Collections;
 using System.Web;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
 
 namespace Rainbow.Framework.Web.UI.WebControls

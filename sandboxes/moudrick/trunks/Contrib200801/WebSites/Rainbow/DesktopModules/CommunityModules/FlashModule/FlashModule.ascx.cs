@@ -15,8 +15,8 @@ using System;
 using System.Drawing;
 using System.IO;
 using Osmosis.Web.UI;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -25,7 +25,6 @@ using Path=Rainbow.Framework.Path;
 namespace Rainbow.Content.Web.Modules
 {
     /// <summary>
-    /// 
     /// </summary>
     [History("mario@hartmann.net", "2004/08/24", "Bug fixed: Unexisting flash movie freezes IE")]
     [History("mario@hartmann.net", "2004/06/04", "Changed Flash movie control]")]

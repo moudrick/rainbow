@@ -6,16 +6,15 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Threading;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes; //BooleanDataType, StringDataType, CustomListDataType <- ListDataType <-- BaseDataType
 using Rainbow.Framework.Design;
-using Rainbow.Framework.Site.Configuration;
 
-#warning move to appropriate namespace
-namespace Rainbow.Framework.Core.Configuration.Settings.Providers
+namespace Rainbow.Framework.Providers.MsSql
 {
     ///<summary>
     /// This is interface class for get module settings values 
@@ -26,7 +25,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         const string strPortalID = "@PortalID";
         const string strPageID = "@PageID";
 
-        protected Portal PortalSettings
+        protected static Portal PortalSettings
         {
             get
             {
@@ -47,12 +46,12 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="mobilePageName">Name of the mobile page.</param>
         /// <returns></returns>
         public override int AddPage(int portalID,
-                           int parentPageID,
-                           string pageName,
-                           int pageOrder,
-                           string authorizedRoles,
-                           bool showMobile,
-                           string mobilePageName)
+                                    int parentPageID,
+                                    string pageName,
+                                    int pageOrder,
+                                    string authorizedRoles,
+                                    bool showMobile,
+                                    string mobilePageName)
         {
             // Create Instance of Connection and Command Object
             using (SqlConnection myConnection = DBHelper.SqlConnection)
@@ -168,13 +167,13 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="mobilePageName">Name of the mobile page.</param>
         /// <param name="showMobile">if set to <c>true</c> [show mobile].</param>
         public override void UpdatePage(int portalID,
-                               int pageID,
-                               int parentPageID,
-                               string pageName,
-                               int pageOrder,
-                               string authorizedRoles,
-                               string mobilePageName,
-                               bool showMobile)
+                                        int pageID,
+                                        int parentPageID,
+                                        string pageName,
+                                        int pageOrder,
+                                        string authorizedRoles,
+                                        string mobilePageName,
+                                        bool showMobile)
         {
             // Create Instance of Connection and Command Object
             using (SqlConnection connection = DBHelper.SqlConnection)

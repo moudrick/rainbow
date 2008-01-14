@@ -3,6 +3,7 @@ using System.Collections;
 using Rainbow.Framework;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Monitoring;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -15,29 +16,19 @@ namespace Rainbow.Content.Web.Modules
     /// </summary>
     public partial class WhosLoggedOn : PortalModuleControl
     {
-        #region Declarations
-
         /// <summary>
-        /// 
         /// </summary>
         protected Label Label2;
 
         /// <summary>
-        /// 
         /// </summary>
         protected Label Label1;
 
         /// <summary>
-        /// 
         /// </summary>
         protected Label Label5;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private int minutesToCheckForUsers = 30;
-
-        #endregion
+        readonly int minutesToCheckForUsers = 30;
 
         /// <summary>
         /// Initial Revision by Paul Yarrow, paul@paulyarrow.com, 2003-07-29

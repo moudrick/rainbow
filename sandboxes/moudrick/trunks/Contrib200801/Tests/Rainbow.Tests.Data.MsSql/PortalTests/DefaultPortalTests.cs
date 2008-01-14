@@ -1,10 +1,9 @@
 using System;
 using System.Web;
 using NUnit.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Core;
-using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Site.Configuration;
 using Subtext.TestLibrary;
 
 namespace Rainbow.Tests.Data.MsSql.PortalTests

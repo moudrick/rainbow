@@ -4,7 +4,8 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 using System.Xml.XPath;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using System.Web.Security;
 
@@ -18,21 +19,22 @@ namespace Rainbow.Framework.Helpers
     /// </summary>
     public class XslHelper
     {
-        private Portal portalSettings;
-        private MembershipUser user;
+        readonly Portal portalSettings;
+        readonly MembershipUser user;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:XslHelper"/> class.
+        /// Initializes a new instance of the <see cref="XslHelper"/> class.
         /// </summary>
         /// <returns>
         /// A void value...
         /// </returns>
-        public XslHelper() {
-            if ( HttpContext.Current != null ) {
-                portalSettings = ( Portal )HttpContext.Current.Items["PortalSettings"];
-
-                Rainbow.Framework.Users.Data.UsersDB users = new Rainbow.Framework.Users.Data.UsersDB();
-                user = users.GetSingleUser( HttpContext.Current.User.Identity.Name );
+        public XslHelper() 
+        {
+            portalSettings = PortalProvider.Instance.CurrentPortal;
+            if (HttpContext.Current != null)
+            {
+                user = RainbowMembershipProvider.Instance.GetSingleUser(
+                    portalSettings.PortalAlias, HttpContext.Current.User.Identity.Name);
             }
         }
 
@@ -378,7 +380,7 @@ namespace Rainbow.Framework.Helpers
         /// </summary>
         /// <param name="myText">My text.</param>
         /// <returns></returns>
-        private string Clean(string myText)
+        static string Clean(string myText)
         {
             // is this faster/slower than using iteration over string?
             char mySeparator = '_';

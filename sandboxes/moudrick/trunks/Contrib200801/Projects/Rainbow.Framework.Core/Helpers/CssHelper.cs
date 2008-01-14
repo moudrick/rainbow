@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Web;
-using Rainbow.Framework.Core.Configuration.Settings;
 
 namespace Rainbow.Framework.Helpers
 {
@@ -11,44 +9,10 @@ namespace Rainbow.Framework.Helpers
     /// </summary>
     public class CssHelper
     {
-        /// <summary>
-        ///     
-        /// </summary>
-        private const bool ALLOW_IMPORTS = true;
-
-        /// <summary>
-        ///     
-        /// </summary>
-        private const bool INCLUDE_COMMENTS = true;
-
-        /// <summary>
-        ///     
-        /// </summary>
-        private const bool PARSE_IMPORTS = true;
-
-        /// <summary>
-        ///     
-        /// </summary>
-        private const string SELECTOR_PREFIX = "";
-
-        /// <summary>
-        ///     
-        /// </summary>
-        private Portal portalSettings;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:CssHelper"/> class.
-        /// </summary>
-        /// <returns>
-        /// A void value...
-        /// </returns>
-        public CssHelper()
-        {
-            if (HttpContext.Current != null)
-            {
-                portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
-            }
-        }
+        const bool ALLOW_IMPORTS = true;
+        const bool INCLUDE_COMMENTS = true;
+        const bool PARSE_IMPORTS = true;
+        const string SELECTOR_PREFIX = "";
 
         /// <summary>
         /// Parses the CSS.
@@ -234,19 +198,19 @@ namespace Rainbow.Framework.Helpers
     /// </remarks>
     public class StringTokenizer
     {
-        private const char EOF = (char) 0;
-        private int column;
-        private string data;
-        private bool ignoreWhiteSpace;
-        private int line;
-        private int pos; // position within data
-        private int saveCol;
-        private int saveLine;
-        private int savePos;
-        private char[] symbolChars;
+        const char EOF = (char) 0;
+        int column;
+        readonly string data;
+        bool ignoreWhiteSpace;
+        int line;
+        int pos; // position within data
+        int saveCol;
+        int saveLine;
+        int savePos;
+        char[] symbolChars;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:StringTokenizer"/> class.
+        /// Initializes a new instance of the <see cref="StringTokenizer"/> class.
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>
@@ -261,7 +225,7 @@ namespace Rainbow.Framework.Helpers
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:StringTokenizer"/> class.
+        /// Initializes a new instance of the <see cref="StringTokenizer"/> class.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns>
@@ -270,7 +234,9 @@ namespace Rainbow.Framework.Helpers
         public StringTokenizer(StreamReader reader)
         {
             if (reader == null)
+            {
                 throw new ArgumentNullException("reader");
+            }
             data = reader.ReadToEnd();
             Reset();
         }
@@ -932,43 +898,21 @@ namespace Rainbow.Framework.Helpers
     }
 
     /// <summary>
-    ///     
     /// </summary>
-    /// <remarks>
-    ///     
-    /// </remarks>
     public class Token
     {
-        /// <summary>
-        ///     
-        /// </summary>
-        private int column;
+        readonly int column;
+        readonly TokenKind kind;
+        readonly int line;
+        readonly string value;
 
         /// <summary>
-        ///     
-        /// </summary>
-        private TokenKind kind;
-
-        /// <summary>
-        ///     
-        /// </summary>
-        private int line;
-
-        /// <summary>
-        ///     
-        /// </summary>
-        private string value;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Token"/> class.
+        /// Initializes a new instance of the <see cref="Token"/> class.
         /// </summary>
         /// <param name="kind">The kind.</param>
         /// <param name="value">The value.</param>
         /// <param name="line">The line.</param>
         /// <param name="column">The column.</param>
-        /// <returns>
-        /// A void value...
-        /// </returns>
         public Token(TokenKind kind, string value, int line, int column)
         {
             this.kind = kind;

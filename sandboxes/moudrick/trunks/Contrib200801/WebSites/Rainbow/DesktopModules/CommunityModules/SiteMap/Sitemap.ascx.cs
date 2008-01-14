@@ -6,11 +6,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Content.Web.Modules.Sitemap;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
 

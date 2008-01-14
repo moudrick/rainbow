@@ -88,6 +88,7 @@
     <Compile Include="LogProvider.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\ProviderConfigurationHandler.cs" />
     <Compile Include="Providers\PortalPageProvider.cs" />
     <Compile Include="Providers\ProviderConfiguration.cs" />
     <Compile Include="Providers\Exceptions\CountryNotFoundException.cs" />
@@ -98,9 +99,9 @@
     <Compile Include="Providers\RainbowMembershipProvider.cs" />
     <Compile Include="Providers\RainbowRoleProvider.cs" />
     <Compile Include="Providers\RainbowSiteMapProvider.cs" />
-    <Compile Include="SettingItem.cs" />
-    <Compile Include="SettingItemGroups.cs" />
-    <Compile Include="UrlBuilderProvider.cs" />
+    <Compile Include="Items\SettingItem.cs" />
+    <Compile Include="Items\SettingItemGroups.cs" />
+    <Compile Include="Providers\UrlBuilderProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Context\History.txt" />

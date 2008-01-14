@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Web;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -11,7 +12,6 @@ using Rainbow.Framework;
 using Rainbow.Framework.Users.Data;
 using System.Text;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
 
 namespace Rainbow.Content.Web.Modules {
 

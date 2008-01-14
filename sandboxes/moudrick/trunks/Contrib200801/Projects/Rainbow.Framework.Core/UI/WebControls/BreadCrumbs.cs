@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Web;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -18,9 +18,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// </summary>
     public class BreadCrumbs : Table
     {
-        private string _textclass = "bc_Text";
-        private string _linkclass = "bc_Link";
-        private string _separator = " > ";
+        string _textclass = "bc_Text";
+        string _linkclass = "bc_Link";
+        string _separator = " > ";
 
         /// <summary>
         /// TextCSSClass
@@ -51,7 +51,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
             get { return _separator; }
             set { _separator = value; }
         }
-
 
         // Override CreateChildControls to create the control tree.
         /// <summary>
@@ -201,7 +200,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
             }
             return _breadCrumbsText;
         }
-
         //End Indah Fuldner
     }
 }

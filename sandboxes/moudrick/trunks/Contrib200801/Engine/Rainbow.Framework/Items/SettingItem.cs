@@ -2,7 +2,7 @@ using System;
 using System.Web.UI;
 using Rainbow.Framework.DataTypes;
 
-namespace Rainbow.Framework
+namespace Rainbow.Framework.Items
 {
     /// <summary>
     /// This class holds a single setting in the hashtable,
@@ -10,7 +10,7 @@ namespace Rainbow.Framework
     /// </summary>
     public class SettingItem : IComparable
     {
-        BaseDataType _datatype;
+        readonly BaseDataType _datatype;
         int _minValue;
         int _maxValue;
         int _order = 0;
@@ -139,9 +139,13 @@ namespace Rainbow.Framework
         public override string ToString()
         {
             if (_datatype.Value != null)
+            {
                 return _datatype.Value;
+            }
             else
+            {
                 return string.Empty;
+            }
         }
 
         /// <summary>

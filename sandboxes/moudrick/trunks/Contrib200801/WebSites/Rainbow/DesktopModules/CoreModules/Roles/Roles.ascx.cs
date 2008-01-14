@@ -3,13 +3,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using ImageButton=Rainbow.Framework.Web.UI.WebControls.ImageButton;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
 
 namespace Rainbow.Content.Web.Modules {
     public partial class Roles : PortalModuleControl {

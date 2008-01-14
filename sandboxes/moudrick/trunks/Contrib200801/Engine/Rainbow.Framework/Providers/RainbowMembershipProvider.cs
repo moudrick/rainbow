@@ -1,9 +1,11 @@
 using System;
 using System.Web.Security;
 using System.Web.Profile;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers.Exceptions;
 
-namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
-
+namespace Rainbow.Framework.Providers
+{
     /// <summary>
     /// Rainbow-specific membership provider API, implements ASP.NET's membership plus extra funcionality Rainbow needs.
     /// </summary>
@@ -25,7 +27,6 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
                 return Membership.Provider as RainbowMembershipProvider;
             }
         }
-
 
         /// <summary>
         /// Gets the error message.
@@ -132,11 +133,11 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
         /// <param name="lastLockoutDate">The last lockout date.</param>
         /// <returns></returns>
         protected virtual RainbowUser InstanciateNewUser( string providerName, string name, Guid providerUserKey, string email, string passwordQuestion, 
-            string comment, bool isApproved, bool isLockedOut, DateTime creationDate, DateTime lastLoginDate, DateTime lastActivityDate, DateTime lastPasswordChangeDate, DateTime lastLockoutDate ) {
+                                                          string comment, bool isApproved, bool isLockedOut, DateTime creationDate, DateTime lastLoginDate, DateTime lastActivityDate, DateTime lastPasswordChangeDate, DateTime lastLockoutDate ) {
 
             return new RainbowUser( providerName, name, providerUserKey, email, passwordQuestion, 
-                comment, isApproved, isLockedOut, creationDate, lastLoginDate, lastActivityDate, lastPasswordChangeDate, lastLockoutDate);
-        }
+                                    comment, isApproved, isLockedOut, creationDate, lastLoginDate, lastActivityDate, lastPasswordChangeDate, lastLockoutDate);
+                                                          }
 
         /// <summary>
         /// Instanciates a new user.
@@ -453,11 +454,12 @@ namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
         /// <summary>
         /// Retrieves a <code>MembershipUser</code>.
         /// </summary>
+        /// <param name="portalAlias">Portal alias</param>
         /// <param name="userName">the user's email</param>
         /// <returns></returns>
-      public RainbowUser GetSingleUser(string portalSettings, string userName)
+        public RainbowUser GetSingleUser(string portalAlias, string userName)
         {
-            RainbowUser user = GetUser(portalSettings, userName, true) as RainbowUser;
+            RainbowUser user = GetUser(portalAlias, userName, true) as RainbowUser;
             return user;
         }
     }

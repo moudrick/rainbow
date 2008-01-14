@@ -11,6 +11,7 @@ using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;

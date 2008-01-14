@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -156,7 +157,6 @@ namespace Rainbow.Content.Web.Modules
             try
             {
                 DataTable myDataTable;
-                DataRow myDataRow;
                 EventLog myEventLog = new EventLog();
                 string myEventLogSource;
                 myEventLog.MachineName = MachineName.Text;
@@ -174,7 +174,7 @@ namespace Rainbow.Content.Web.Modules
                 {
                     if ((myEventLogSource == "(all)") || (myEventLogSource == myEventLogEntry.Source))
                     {
-                        myDataRow = myDataTable.NewRow();
+                        DataRow myDataRow = myDataTable.NewRow();
                         myDataRow[0] = myEventLogEntry.EntryType;
                         myDataRow[1] = myEventLogEntry.TimeGenerated;
                         myDataRow[2] = myEventLogEntry.Source;

@@ -5,10 +5,10 @@ using System.Threading;
 using System.Web;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Site.Configuration; //PortalPage
 
-namespace Rainbow.Framework.Core.Configuration.Settings.Providers
+namespace Rainbow.Framework.Providers
 {
     ///<summary>
     ///</summary>
@@ -199,13 +199,13 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="mobilePageName">Name of the mobile page.</param>
         /// <param name="showMobile">if set to <c>true</c> [show mobile].</param>
         public abstract void UpdatePage(int portalID,
-                               int pageID,
-                               int parentPageID,
-                               string pageName,
-                               int pageOrder,
-                               string authorizedRoles,
-                               string mobilePageName,
-                               bool showMobile);
+                                        int pageID,
+                                        int parentPageID,
+                                        string pageName,
+                                        int pageOrder,
+                                        string authorizedRoles,
+                                        string mobilePageName,
+                                        bool showMobile);
 
         /// <summary>
         /// The UpdatePageOrder method changes the position of the tab with respect

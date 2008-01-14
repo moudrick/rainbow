@@ -1,6 +1,6 @@
 using System;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Site.Data;
 using History=Rainbow.Framework.History;
 
@@ -14,7 +14,7 @@ namespace Rainbow.Content.Web.Modules
     public partial class ShortcutAll : Shortcut
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:ShortcutAll"/> class.
+        /// Initializes a new instance of the <see cref="ShortcutAll"/> class.
         /// </summary>
         public ShortcutAll()
         {

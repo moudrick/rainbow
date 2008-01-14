@@ -1,7 +1,7 @@
 using System;
 using System.Web;
 using System.Web.UI;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -11,12 +11,10 @@ namespace Rainbow.Framework.Web.UI.WebControls
     public class ZenHeaderTitle : HeaderTitle
     {
         /// <summary>
-        /// 
         /// </summary>
         protected string _imageUrl = string.Empty;
 
         /// <summary>
-        /// 
         /// </summary>
         protected bool _showImage = true;
 
@@ -46,7 +44,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         public ZenHeaderTitle()
         {
             EnableViewState = false;
-            Load += new EventHandler(LoadControl);
+            Load += LoadControl;
         }
 
         /// <summary>
@@ -58,11 +56,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             if (HttpContext.Current != null)
             {
-                // Obtain PortalSettings from Current Context
-                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
-
                 // PortalTitle                
-                Text = portalSettings.PortalName;
+                Text = PortalProvider.Instance.CurrentPortal.PortalName;
             }
         }
 

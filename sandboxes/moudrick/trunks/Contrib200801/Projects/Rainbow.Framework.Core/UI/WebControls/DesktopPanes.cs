@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using System.Web;
 using System.Web.UI;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
 
@@ -26,9 +26,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         protected override void InitializeDataSource()
         {
             base.InitializeDataSource();
-
-            // Obtain PortalSettings from Current Context
-            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 
             // Dynamically Populate the Left, Center and Right pane sections of the portal page
             if (portalSettings.ActivePage.Modules.Count > 0)

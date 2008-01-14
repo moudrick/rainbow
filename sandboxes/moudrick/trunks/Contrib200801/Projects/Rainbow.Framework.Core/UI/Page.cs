@@ -9,16 +9,18 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Design;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Path = Rainbow.Framework.Path;
 
-namespace Rainbow.Framework.Web.UI {
+namespace Rainbow.Framework.Web.UI 
+{
     // TODO: this class needs a better write-up ;-)
     /// <summary>
     /// A template page useful for constructing custom edit pages for module settings.<br/>

@@ -7,9 +7,9 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 
 namespace Rainbow.Content.Web.Modules
@@ -26,7 +26,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
             if (Request.Params.Get("mID") != null)
             {

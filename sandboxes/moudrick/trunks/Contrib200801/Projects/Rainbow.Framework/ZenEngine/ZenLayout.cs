@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
 
@@ -676,27 +676,29 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// Method does not check Cultures setting, so could be fooled into displaying
         /// a column even though it is empty. This needs further investigation.
         /// </remarks>
-        private HybridDictionary GetModuleCount()
+        static HybridDictionary GetModuleCount()
         {
             //TODO: check Cultures setting?
             HybridDictionary counts = new HybridDictionary(3);
-            string _key;
+            Portal portal = PortalProvider.Instance.CurrentPortal;
 
-            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
-
-            if (portalSettings.ActivePage.Modules.Count > 0)
+            if (portal.ActivePage.Modules.Count > 0)
             {
                 // Loop through each entry in the configuration system for this tab
-                foreach (ModuleSettings _moduleSettings in portalSettings.ActivePage.Modules)
+                foreach (ModuleSettings moduleSettings in portal.ActivePage.Modules)
                 {
                     // Ensure that the visiting user has access to view the current module
-                    if (PortalSecurity.IsInRoles(_moduleSettings.AuthorizedViewRoles) == true)
+                    if (PortalSecurity.IsInRoles(moduleSettings.AuthorizedViewRoles))
                     {
-                        _key = _moduleSettings.PaneName.ToLower();
-                        if (counts.Contains(_key))
-                            counts[_key] = ((int) counts[_key]) + 1;
+                        string key = moduleSettings.PaneName.ToLower();
+                        if (counts.Contains(key))
+                        {
+                            counts[key] = ((int) counts[key]) + 1;
+                        }
                         else
-                            counts.Add(_key, 1);
+                        {
+                            counts.Add(key, 1);
+                        }
                     }
                 }
             }
@@ -740,9 +742,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 if (ie7Script == string.Empty)
                 {
                     if (ConfigurationManager.AppSettings["Ie7Script"] != null &&
-                        ConfigurationManager.AppSettings["Ie7Script"].ToString() != string.Empty)
+                        ConfigurationManager.AppSettings["Ie7Script"] != string.Empty)
                     {
-                        ie7Script = ConfigurationManager.AppSettings["Ie7Script"].ToString();
+                        ie7Script = ConfigurationManager.AppSettings["Ie7Script"];
                     }
                 }
                 return ie7Script;

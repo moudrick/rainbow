@@ -1,8 +1,8 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework;
 using Rainbow.Framework.Data;

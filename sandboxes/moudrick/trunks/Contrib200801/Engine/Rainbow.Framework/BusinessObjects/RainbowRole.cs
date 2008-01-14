@@ -1,6 +1,6 @@
 using System;
 
-namespace Rainbow.Framework.Providers.RainbowRoleProvider
+namespace Rainbow.Framework.BusinessObjects
 {
     public class RainbowRole : IComparable
     {

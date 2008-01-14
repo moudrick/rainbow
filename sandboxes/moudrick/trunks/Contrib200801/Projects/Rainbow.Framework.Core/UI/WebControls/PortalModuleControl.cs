@@ -13,12 +13,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Setup;
@@ -1081,15 +1082,15 @@ end of modification
             get { return true; }
         }
 
-        private DesktopModuleTitle _ModuleTitle;
+        DesktopModuleTitle moduleTitle;
 
         /// <summary>
         /// Inner Title control. Now only used for backward compatibility 
         /// </summary>
         public virtual DesktopModuleTitle ModuleTitle
         {
-            get { return _ModuleTitle; }
-            set { _ModuleTitle = value; }
+            get { return moduleTitle; }
+            set { moduleTitle = value; }
         }
 
         /// <summary>

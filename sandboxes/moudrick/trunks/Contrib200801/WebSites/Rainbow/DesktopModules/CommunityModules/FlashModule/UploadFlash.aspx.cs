@@ -16,6 +16,7 @@ using System.IO;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using Button=Rainbow.Framework.Web.UI.WebControls.Button;
@@ -27,22 +28,21 @@ using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
 namespace Rainbow.Content.Web.Modules
 {
     /// <summary>
-    /// 
     /// </summary>
     [History("mario@hartmann.net", "2004/06/04", "Changed Flash movie control]")]
     [History("mario@hartmann.net", "2004/05/25", "Bug fixed:[ 877885 ] Flash Module - Cannot DELETE")]
     public partial class UploadFlash : AddEditItemPage
     {
         // Configuration
-        private bool _uploadIsEnabled = true;
-        private string _imageFolder = string.Empty;
-        private string _returnPath = string.Empty;
+        readonly bool _uploadIsEnabled = true;
+        string _imageFolder = string.Empty;
+        string _returnPath = string.Empty;
 
         // Messages
-        private string _noFileMessage = General.GetString("NO_FILE_MESSAGE");
-        private string _uploadSuccessMessage = General.GetString("UPLOAD_SUCCESS_MESSAGE");
-        private string _noImagesMessage = General.GetString("NO_IMAGE_MESSAGE");
-        private string _noFolderSpecifiedMessage = General.GetString("NO_FOLDER_SPECIFIED_MESSAGE");
+        //string _noFileMessage = General.GetString("NO_FILE_MESSAGE");
+        readonly string _uploadSuccessMessage = General.GetString("UPLOAD_SUCCESS_MESSAGE");
+        readonly string _noImagesMessage = General.GetString("NO_IMAGE_MESSAGE");
+        readonly string _noFolderSpecifiedMessage = General.GetString("NO_FOLDER_SPECIFIED_MESSAGE");
 
         protected Button closeButton;
 

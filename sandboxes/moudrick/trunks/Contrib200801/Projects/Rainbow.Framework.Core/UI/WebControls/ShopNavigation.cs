@@ -5,11 +5,8 @@ using System.Web;
 using System.Web.UI;
 using DUEMETRI.UI.WebControls.HWMenu;
 using Rainbow.Framework.BusinessObjects;
-using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {

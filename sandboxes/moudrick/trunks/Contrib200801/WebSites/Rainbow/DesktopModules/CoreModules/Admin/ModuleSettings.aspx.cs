@@ -6,9 +6,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Exceptions;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
@@ -17,9 +18,9 @@ using Rainbow.Framework.Web.UI.WebControls;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
 using System.Collections.Generic;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
 
-namespace Rainbow.Admin {
+namespace Rainbow.Admin 
+{
     /// <summary>
     /// Use this page to modify title and permission on portal modules<br />
     /// The ModuleSettings.aspx page is used to enable administrators to view/edit/update

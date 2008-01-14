@@ -1,5 +1,4 @@
 using System.Collections;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.BusinessObjects
 {

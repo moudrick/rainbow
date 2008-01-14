@@ -1,5 +1,5 @@
 using System.Web;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -8,7 +8,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// </summary>
     public class FreeTextBox : FreeTextBoxControls.FreeTextBox, IHtmlEditor
     {
-        private string _imageFolder = string.Empty;
+        string _imageFolder = string.Empty;
 
         /// <summary>
         /// Control Image Folder

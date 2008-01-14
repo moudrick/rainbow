@@ -4,10 +4,9 @@ using System.Configuration.Provider;
 using System.Data;
 using System.Net;
 using System.Web;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings; //Portal
 using Rainbow.Framework.Exceptions;
-using Rainbow.Framework.Site.Configuration; //PortalPage
 
 namespace Rainbow.Framework.Providers
 {

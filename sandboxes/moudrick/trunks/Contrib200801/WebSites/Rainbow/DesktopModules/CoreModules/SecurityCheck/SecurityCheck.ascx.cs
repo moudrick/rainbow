@@ -5,10 +5,10 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using ImageButton=Rainbow.Framework.Web.UI.WebControls.ImageButton;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
 using System.Collections.Generic;
 
 namespace Rainbow.Content.Web.Modules

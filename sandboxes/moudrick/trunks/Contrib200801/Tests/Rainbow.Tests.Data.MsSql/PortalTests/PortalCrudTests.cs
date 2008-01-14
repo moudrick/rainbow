@@ -1,7 +1,7 @@
 using System;
 using System.Web;
 using NUnit.Framework;
-using Rainbow.Framework.Core.Configuration.Settings; //Portal
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Providers;
 using Subtext.TestLibrary;
 

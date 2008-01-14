@@ -3,8 +3,8 @@ using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Helpers;
@@ -1270,7 +1270,7 @@ namespace Rainbow.Framework.Site.Data
         /// </summary>
         /// <param name="solutionID">The solution ID.</param>
         /// <returns></returns>
-        SqlDataReader GetSolutionModuleDefinitions(int solutionID)
+        static SqlDataReader GetSolutionModuleDefinitions(int solutionID)
         {
             // Create Instance of Connection and Command Object
             SqlConnection myConnection = DBHelper.SqlConnection;

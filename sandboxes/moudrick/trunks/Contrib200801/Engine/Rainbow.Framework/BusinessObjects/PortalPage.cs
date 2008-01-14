@@ -1,15 +1,14 @@
 using System.Collections;
 
-#warning move to appropriate namespace
-namespace Rainbow.Framework.Site.Configuration
+namespace Rainbow.Framework.BusinessObjects
 {
-	/// <summary>
-	/// PageSettings Class encapsulates the detailed settings 
-	/// for a specific Page in the Portal
-	/// </summary>
-	//TODO: [moudrick] rename it to PortalPage
-	public class PortalPage
-	{
+    /// <summary>
+    /// PageSettings Class encapsulates the detailed settings 
+    /// for a specific Page in the Portal
+    /// </summary>
+    //TODO: [moudrick] rename it to PortalPage
+    public class PortalPage
+    {
         // Jes1111
         //		public int			TemplateId;
         /// <remarks>
@@ -20,7 +19,7 @@ namespace Rainbow.Framework.Site.Configuration
         /// </remarks>
         string portalPath = null;
 
-	    /// <summary>
+        /// <summary>
         /// Gets or sets the portal path.
         /// </summary>
         /// <value>The portal path.</value>
@@ -40,9 +39,9 @@ namespace Rainbow.Framework.Site.Configuration
             }
         }
 
-	    Hashtable customSettings;
+        Hashtable customSettings;
 
-	    string authorizedRoles;
+        string authorizedRoles;
         string mobilePageName;
         int parentPageID;
         bool showMobile;
@@ -50,50 +49,50 @@ namespace Rainbow.Framework.Site.Configuration
         string pageName;
         int pageOrder;
 
-		/// <summary>
-		/// </summary>
+        /// <summary>
+        /// </summary>
         public string AuthorizedRoles
         {
             get { return authorizedRoles; }
             internal set { authorizedRoles = value; }
         }
 
-	    /// <summary>
-	    /// </summary>
-	    public string MobilePageName
-	    {
-	        get { return mobilePageName; }
-	        internal set { mobilePageName = value; }
-	    }
+        /// <summary>
+        /// </summary>
+        public string MobilePageName
+        {
+            get { return mobilePageName; }
+            internal set { mobilePageName = value; }
+        }
 
-		/// <summary>
-		/// </summary>
-		public readonly ArrayList Modules = new ArrayList();
+        /// <summary>
+        /// </summary>
+        public readonly ArrayList Modules = new ArrayList();
 
-	    /// <summary>
-	    /// </summary>
-	    public int ParentPageID
-	    {
-	        get { return parentPageID; }
-	        internal set { parentPageID = value; }
-	    }
+        /// <summary>
+        /// </summary>
+        public int ParentPageID
+        {
+            get { return parentPageID; }
+            internal set { parentPageID = value; }
+        }
 
-	    /// <summary>
-	    /// </summary>
-	    public bool ShowMobile
-	    {
-	        get { return showMobile; }
-	        internal set { showMobile = value; }
-	    }
+        /// <summary>
+        /// </summary>
+        public bool ShowMobile
+        {
+            get { return showMobile; }
+            internal set { showMobile = value; }
+        }
 
-	    /// <summary>
-	    /// </summary>
-	    public int PageID
-	    {
-	        get { return pageID; }
+        /// <summary>
+        /// </summary>
+        public int PageID
+        {
+            get { return pageID; }
             set { pageID = value; }
-	        //internal set { pageID = value; }
-	    }
+            //internal set { pageID = value; }
+        }
 
         /// <summary>
         /// </summary>
@@ -137,18 +136,18 @@ namespace Rainbow.Framework.Site.Configuration
             }
         }
 
-	    ///<summary>
-	    ///</summary>
-	    public string CustomMenuImage
-	    {
-	        get { return CustomSettings["CustomMenuImage"].ToString(); }
-	    }
+        ///<summary>
+        ///</summary>
+        public string CustomMenuImage
+        {
+            get { return CustomSettings["CustomMenuImage"].ToString(); }
+        }
 
-	    ///<summary>
+        ///<summary>
         ///</summary>
         //internal PortalPage()
         public PortalPage()
         {
         }
-	}
+    }
 }

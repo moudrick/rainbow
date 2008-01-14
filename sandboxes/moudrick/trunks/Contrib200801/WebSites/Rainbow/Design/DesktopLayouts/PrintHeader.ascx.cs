@@ -2,7 +2,7 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -16,7 +16,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         protected PlaceHolder LayoutPlaceHolder;
 
-		private void PrintHeader_Load(object sender, EventArgs e)
+		void PrintHeader_Load(object sender, EventArgs e)
 		{
             string LayoutBasePage = "PrintHeader.ascx";
 			
@@ -29,7 +29,7 @@ namespace Rainbow.Content.Web.Modules
 			}
 			catch
 			{
-				//No header available
+                ;//No header available
 			}
 		}
 

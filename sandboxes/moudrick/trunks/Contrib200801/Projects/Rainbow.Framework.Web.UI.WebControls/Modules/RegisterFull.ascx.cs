@@ -15,7 +15,6 @@ using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
 
 namespace Rainbow.Content.Web.Modules 
 {
@@ -23,12 +22,10 @@ namespace Rainbow.Content.Web.Modules
     /// Placeable Registration (Full) module
     /// </summary>
     [History( "jminond", "march 2005", "Changes for moving Tab to Page" )]
-    [
-        History( "john.mandia@whitelightsolutions.com", "2005/02/12",
+    [History( "john.mandia@whitelightsolutions.com", "2005/02/12",
             "Adding handling for unique constraint violation and showed friendlier message." )]
     [History( "bill@improvdesign.com", "2004/10/23", "Added email to admin on registration" )]
-    [
-        History( "john.mandia@whitelightsolutions.com", "2003/10/31",
+    [History( "john.mandia@whitelightsolutions.com", "2003/10/31",
             "Fixed bug where old state list would remain even though new country with no states had been selected." )]
     [History( "Mario Hartmann", "mario@hartmann.net", "1.2", "2003/10/08", "moved to seperate folder" )]
     [History( "Jes1111", "2003/03/10", "Modified from original to be fully placeable module" )]

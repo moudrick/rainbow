@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
@@ -310,9 +310,7 @@ namespace Rainbow.Content.Web.Modules
                         {
                             displayOrder = Int32.Parse(DisplayOrder.Text);
                         }
-                        catch
-                        {
-                        }
+                        catch {;}
 
                         SetMetadata("ShortDescription", ShortDescription.Text);
                         SetMetadata("LongDescription", LongDescription.Text);
@@ -450,9 +448,7 @@ namespace Rainbow.Content.Web.Modules
                     {
                         displayOrder = Int32.Parse(DisplayOrder.Text);
                     }
-                    catch
-                    {
-                    }
+                    catch {;}
 
                     SetMetadata("ShortDescription", ShortDescription.Text);
                     SetMetadata("LongDescription", LongDescription.Text);
@@ -527,7 +523,7 @@ namespace Rainbow.Content.Web.Modules
                 }
                 catch
                 {
-                    // We don't really have much to do at this point
+                    ;// We don't really have much to do at this point
                 }
 
                 //Delete Esperantus.Esperantus.Localize. record from database.
@@ -591,7 +587,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private string ConvertByteArrayToString(byte[] array)
+        static string ConvertByteArrayToString(byte[] array)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < array.Length - 1; i++) sb.Append((char) array[i]);
@@ -603,7 +599,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private byte ConvertByteArrayToByte(byte[] array)
+        static byte ConvertByteArrayToByte(byte[] array)
         {
             return array[0];
         }
@@ -613,7 +609,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private short ConvertByteArrayToShort(byte[] array)
+        static short ConvertByteArrayToShort(byte[] array)
         {
             short val = 0;
             for (int i = 0; i < array.Length; i++) val += (short) (array[i]*Math.Pow(2, (i*8)));
@@ -625,7 +621,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private long ConvertByteArrayToLong(byte[] array)
+        static long ConvertByteArrayToLong(byte[] array)
         {
             long val = 0;
             for (int i = 0; i < array.Length; i++) val += (array[i]*(long) Math.Pow(2, (i*8)));
@@ -637,7 +633,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private string ConvertByteArrayToRational(byte[] array)
+        static string ConvertByteArrayToRational(byte[] array)
         {
             int val1 = 0;
             int val2 = 0;
@@ -659,7 +655,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private string ConvertByteArrayToSRational(byte[] array)
+        static string ConvertByteArrayToSRational(byte[] array)
         {
             int val1 = 0;
             int val2 = 0;

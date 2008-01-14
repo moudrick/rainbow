@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -21,7 +21,7 @@ namespace Rainbow.AdminAll
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
             // Get portalID from querystring
             if (Request.Params["portalID"] != null)
@@ -65,9 +65,9 @@ namespace Rainbow.AdminAll
         {
             get
             {
-                ArrayList al = new ArrayList();
-                al.Add("366C247D-4CFB-451D-A7AE-649C83B05841");
-                return al;
+                ArrayList list = new ArrayList();
+                list.Add("366C247D-4CFB-451D-A7AE-649C83B05841");
+                return list;
             }
         }
 

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
 using System.Globalization;
 
@@ -11,10 +8,10 @@ namespace Rainbow.Framework.UrlRewriting {
 
     public class RainbowUrlRewritingRule : RewriteRule {
 
-        private string handlerFlag = "site";
-        private string defaultSplitter = "__";
-        private bool pageIdNoSplitter = false;
-        private string friendlyPageName = "Default.aspx";
+        string handlerFlag = "site";
+        string defaultSplitter = "__";
+        bool pageIdNoSplitter = false;
+        string friendlyPageName = "Default.aspx";
 
         public override void Initialize( UrlRewritingNet.Configuration.RewriteSettings rewriteSettings ) {
             base.Initialize( rewriteSettings );
@@ -24,11 +21,11 @@ namespace Rainbow.Framework.UrlRewriting {
             }
 
             if ( !string.IsNullOrEmpty( rewriteSettings.Attributes[ "handlersplitter" ] ) ) {
-                defaultSplitter = rewriteSettings.Attributes[ "handlersplitter" ].ToString();
+                defaultSplitter = rewriteSettings.Attributes[ "handlersplitter" ];
             }
             else {
                 if ( ConfigurationManager.AppSettings[ "HandlerDefaultSplitter" ] != null )
-                    defaultSplitter = ConfigurationManager.AppSettings[ "HandlerDefaultSplitter" ].ToString();
+                    defaultSplitter = ConfigurationManager.AppSettings[ "HandlerDefaultSplitter" ];
             }
 
             if ( !string.IsNullOrEmpty( rewriteSettings.Attributes[ "pageidnosplitter" ] ) ) {
@@ -44,26 +41,30 @@ namespace Rainbow.Framework.UrlRewriting {
             return requestUrl.Contains( "/" + handlerFlag + "/" );
         }
 
-        public override string RewriteUrl( string url ) {
+        public override string RewriteUrl(string url)
+        {
+            string rewrittenUrl = url.Substring(0, url.IndexOf("/" + handlerFlag + "/"));
 
-            string rewrittenUrl = url.Substring( 0, url.IndexOf( "/" + handlerFlag + "/" ) );
-
-            string[] parts = url.Substring( url.IndexOf( "/" + handlerFlag + "/" ) + ( "/" + handlerFlag + "/" ).Length ).Split( '/' );
+            string[] parts = url.Substring(url.IndexOf("/" + handlerFlag + "/") 
+                + ("/" + handlerFlag + "/").Length).Split('/');
 
             rewrittenUrl += "/" + friendlyPageName;
-            string queryString = "?pageId=" + parts[ parts.Length - 2 ];
+            string queryString = "?pageId=" + parts[parts.Length - 2];
 
-            string queryStringParam = string.Empty;
-            if ( parts.Length > 2 ) {
-                for ( int i = 0; i < (parts.Length-2); i++ ) {
-                    queryStringParam = parts[ i ];
+            if (parts.Length > 2)
+            {
+                for (int i = 0; i < (parts.Length - 2); i++)
+                {
+                    string queryStringParam = parts[i];
 
-                    queryString += "&" + queryStringParam.Substring( 0, queryStringParam.IndexOf( defaultSplitter ) );
-                    queryString += "=" + queryStringParam.Substring( queryStringParam.IndexOf( defaultSplitter ) + defaultSplitter.Length );
+                    queryString += "&" + queryStringParam.Substring(0,
+                        queryStringParam.IndexOf(defaultSplitter));
+                    queryString += "=" + queryStringParam.Substring(
+                        queryStringParam.IndexOf(defaultSplitter) + defaultSplitter.Length);
                 }
             }
 
-            HttpContext.Current.RewritePath( rewrittenUrl, "", queryString );
+            HttpContext.Current.RewritePath(rewrittenUrl, "", queryString);
 
             return rewrittenUrl + queryString;
         }

@@ -11,6 +11,7 @@ using System.Web.Caching;
 using Rainbow.Framework;
 using System.Collections;
 using Rainbow.Framework.Context;
+using RainbowSiteMapProvider=Rainbow.Framework.Providers.RainbowSiteMapProvider;
 
 namespace Rainbow.Framework.Providers.MsSql
 {
@@ -18,7 +19,7 @@ namespace Rainbow.Framework.Providers.MsSql
     /// Summary description for SqlSiteMapProvider
     /// </summary>
     [SqlClientPermission(SecurityAction.Demand, Unrestricted = true)]
-    public class RainbowSqlSiteMapProvider : RainbowSiteMapProvider.RainbowSiteMapProvider 
+    public class RainbowSqlSiteMapProvider : RainbowSiteMapProvider 
     {
         const int _rootNodeID = -1;
 

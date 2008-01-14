@@ -1,6 +1,6 @@
 using System;
 
-namespace Rainbow.Framework
+namespace Rainbow.Framework.Items
 {
     /// <summary>
     /// PageItem Class

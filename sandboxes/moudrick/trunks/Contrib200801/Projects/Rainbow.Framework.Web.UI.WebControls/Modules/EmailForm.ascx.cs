@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
@@ -186,7 +186,7 @@ namespace Rainbow.Content.Web.Modules
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("Subject", "Subject can not contain null values!");
+                    throw new ArgumentNullException("value", "Subject can not contain null values!");
                 txtSubject.Text = value;
             }
         }
@@ -200,7 +200,7 @@ namespace Rainbow.Content.Web.Modules
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("HtmlBodyText", "HtmlBodyText can not contain null values!");
+                    throw new ArgumentNullException("value", "HtmlBodyText can not contain null values!");
                 txtBody.Text = value;
             }
         }
@@ -214,13 +214,12 @@ namespace Rainbow.Content.Web.Modules
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("BodyText", "BodyText can not contain null values!");
+                    throw new ArgumentNullException("value", "BodyText can not contain null values!");
                 txtBody.Text = value;
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public bool AllEmailAddressesOk
         {

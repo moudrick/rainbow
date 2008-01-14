@@ -1,28 +1,27 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Configuration.Provider;
+using System.Runtime.Serialization;
 
-namespace Rainbow.Framework.Providers.RainbowRoleProvider {
+namespace Rainbow.Framework.Providers.Exceptions
+{
+    [Serializable]
+    public class RainbowRoleProviderException : ProviderException
+    {
+        public RainbowRoleProviderException()
+        {}
 
-    [global::System.Serializable]
-    public class RainbowRoleProviderException : ProviderException {
+        public RainbowRoleProviderException(string message)
+            : base(message)
+        {}
 
-        public RainbowRoleProviderException() {
-        }
-
-        public RainbowRoleProviderException( string message )
-            : base( message ) {
-        }
-
-        public RainbowRoleProviderException( string message, Exception inner )
-            : base( message, inner ) {
-        }
+        public RainbowRoleProviderException(string message, Exception inner)
+            : base(message, inner)
+        {}
 
         protected RainbowRoleProviderException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context )
-            : base( info, context ) {
-        }
+            SerializationInfo info,
+            StreamingContext context)
+            : base(info, context)
+        {}
     }
 }

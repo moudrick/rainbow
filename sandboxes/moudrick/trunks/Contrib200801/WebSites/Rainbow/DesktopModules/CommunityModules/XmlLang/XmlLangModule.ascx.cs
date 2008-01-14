@@ -5,9 +5,9 @@ using System.Web.UI;
 using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 

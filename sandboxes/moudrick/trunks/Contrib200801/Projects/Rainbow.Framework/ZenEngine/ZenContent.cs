@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
 
@@ -15,16 +15,16 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// </summary>
     public class ZenContent : WebControl, INamingContainer
     {
-        private ArrayList innerDataSource;
-        private bool _autoBind = true;
-        private string _content;
+        ArrayList innerDataSource;
+        bool _autoBind = true;
+        string _content;
 
         /// <summary>
         /// Constructor
         /// </summary>
         public ZenContent()
         {
-            Load += new EventHandler(LoadControl);
+            Load += LoadControl;
         }
 
         /// <summary>

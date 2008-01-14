@@ -7,6 +7,7 @@ using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
@@ -235,9 +236,13 @@ namespace Rainbow.Content.Web.Modules
                             tot = GetTotAnswer(SurveyID, GroupQuestionPrev);
                         }
                         if (tot == 0)
+                        {
                             perc = 0;
+                        }
                         else
-                            perc = (float.Parse(result["Num"].ToString())/(float) tot)*100;
+                        {
+                            perc = (float.Parse(result["Num"].ToString()) / (float) tot) * 100;
+                        }
 
                         // Shows the AnswerOptions
                         Panel Pan = new Panel();
@@ -269,7 +274,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="SurveyID">The survey ID.</param>
         /// <param name="QuestionID">The question ID.</param>
         /// <returns></returns>
-        protected int GetTotAnswer(int SurveyID, int QuestionID)
+        protected static int GetTotAnswer(int SurveyID, int QuestionID)
         {
             return new SurveyDB().GetAnswerNum(SurveyID, QuestionID); // get the number of answers for a QuestionID
         }
@@ -292,8 +297,7 @@ namespace Rainbow.Content.Web.Modules
 
             for (int i = 1; i <= MaxRdIndex; i++)
             {
-                RadioButton radioButtonID = new RadioButton();
-                radioButtonID = (RadioButton) SurveyHolder.Controls[((int) (ArrRadioButton.GetValue(i))) - 1];
+                RadioButton radioButtonID = (RadioButton) SurveyHolder.Controls[((int) (ArrRadioButton.GetValue(i))) - 1];
                 if (radioButtonID.Checked)
                 {
                     // get { The QuestionID and OptionID
@@ -306,8 +310,7 @@ namespace Rainbow.Content.Web.Modules
             }
             for (int j = 1; j <= MaxChIndex; j++)
             {
-                CheckBox checkButtonID = new CheckBox();
-                checkButtonID = (CheckBox) SurveyHolder.Controls[((int) (ArrCheckButton.GetValue(j))) - 1];
+                CheckBox checkButtonID = (CheckBox) SurveyHolder.Controls[((int) (ArrCheckButton.GetValue(j))) - 1];
                 if (checkButtonID.Checked)
                 {
                     int QuestionID = (int) arrCheckQuestionID.GetValue(j);

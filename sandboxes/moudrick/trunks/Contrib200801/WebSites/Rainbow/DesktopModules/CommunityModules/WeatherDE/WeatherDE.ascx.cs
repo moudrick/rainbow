@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -24,7 +24,7 @@ namespace Rainbow.Content.Web.Modules
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:WeatherDE"/> class.
+        /// Initializes a new instance of the <see cref="WeatherDE"/> class.
         /// </summary>
         public WeatherDE()
         {

@@ -4,11 +4,11 @@ using System.Data.SqlClient;
 using System.Web.UI;
 using Rainbow.Framework;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
-using Rainbow.Framework.Providers.RainbowSiteMapProvider;
 
 namespace Rainbow.Content.Web.Modules 
 {

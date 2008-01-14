@@ -8,7 +8,6 @@ using System.Xml;
 namespace Rainbow.Framework.Providers
 {
     /// <summary>
-    /// Summary description for ProviderConfiguration.
     /// </summary>
     public class ProviderConfiguration
     {
@@ -40,7 +39,8 @@ namespace Rainbow.Framework.Providers
         /// <returns></returns>
         public static ProviderConfiguration GetProviderConfiguration(string provider)
         {
-            return (ProviderConfiguration) ConfigurationManager.GetSection("providers/" + provider);
+            return (ProviderConfiguration) ConfigurationManager
+                .GetSection("providers/" + provider);
         }
 
         public static ProviderType GetDefaultProviderFromCache<ProviderType>(string providerType, Cache cache)
@@ -48,7 +48,7 @@ namespace Rainbow.Framework.Providers
         {
             ProviderConfiguration providerConfiguration = GetProviderConfiguration(providerType);
             ProviderSettings providerSettings = (ProviderSettings)providerConfiguration
-                                                                      .Providers[providerConfiguration.DefaultProvider];
+                .Providers[providerConfiguration.DefaultProvider];
             string cacheKey = string.Format("Rainbow::Web::Provider::{0}::{1}",
                                             providerType, providerConfiguration.DefaultProvider);
 
@@ -114,7 +114,9 @@ namespace Rainbow.Framework.Providers
             foreach (XmlNode child in node.ChildNodes)
             {
                 if (child.Name == "providers")
+                {
                     GetProviders(child);
+                }
             }
         }
 

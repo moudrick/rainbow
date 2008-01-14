@@ -1,6 +1,6 @@
 <%@ control language="c#" %>
 <script runat="server">
-    private void Page_Load(object sender, System.EventArgs e)
+    void Page_Load(object sender, EventArgs e)
     {
         PortalHeaderMenu.DataBind();
         PortalTitle.DataBind();
@@ -78,14 +78,14 @@
                     repeatdirection="horizontal" usetabnameinurl="true">
                     <itemstyle cssclass="Tabs" />
                     <itemtemplate>
-                        <a href="<%#PortalTabs.giveMeUrl(((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageName, ((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageID)%>">
-                            <%# ((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageName %>
+                        <a href="<%#PortalTabs.giveMeUrl(((Rainbow.Framework.BusinessObjects.PageStripDetails) Container.DataItem).PageName, ((Rainbow.Framework.BusinessObjects.PageStripDetails) Container.DataItem).PageID)%>">
+                            <%# ((Rainbow.Framework.BusinessObjects.PageStripDetails)Container.DataItem).PageName%>
                         </a>
                     </itemtemplate>
                     <selecteditemstyle cssclass="SelectedTabs" />
                     <selecteditemtemplate>
-                        <a href="<%#PortalTabs.giveMeUrl(((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageName, ((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageID)%>">
-                            <%# ((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageName %>
+                        <a href="<%#PortalTabs.giveMeUrl(((Rainbow.Framework.BusinessObjects.PageStripDetails) Container.DataItem).PageName, ((Rainbow.Framework.BusinessObjects.PageStripDetails) Container.DataItem).PageID)%>">
+                            <%# ((Rainbow.Framework.BusinessObjects.PageStripDetails)Container.DataItem).PageName%>
                         </a>
                     </selecteditemtemplate>
                 </rbfwebui:desktopnavigation>
@@ -93,7 +93,7 @@
         </tr>
         <tr>
             <td class="DefaultBanner2" colspan="2" height="1">
-                <asp:image id="IMAGE4" runat="server" imageurl="~/design/Themes/default/img/shim.gif" alt=""/></td>
+                <asp:image id="IMAGE4" runat="server" imageurl="~/design/Themes/default/img/shim.gif" alt="" /></td>
         </tr>
     </tbody>
 </table>

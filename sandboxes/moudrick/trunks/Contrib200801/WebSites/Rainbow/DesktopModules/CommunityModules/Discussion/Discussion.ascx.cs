@@ -8,6 +8,7 @@ using Rainbow.Framework.Content.Security;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using ImageButton=Rainbow.Framework.Web.UI.WebControls.ImageButton;
@@ -253,7 +254,8 @@ namespace Rainbow.Content.Web.Modules
             }
             else
             {
-                return getLocalImage("1x1.gif");}
+                return getLocalImage("1x1.gif");
+            }
         }
 
         /// <summary>
@@ -264,9 +266,13 @@ namespace Rainbow.Content.Web.Modules
         protected string GetEditImage(string itemUserEmail)
         {
             if (DiscussionPermissions.HasEditPermissions(ModuleID, itemUserEmail))
+            {
                 return getLocalImage("edit.png");
+            }
             else
+            {
                 return getLocalImage("1x1.gif");
+            }
         }
 
         /// <summary>
@@ -277,10 +283,14 @@ namespace Rainbow.Content.Web.Modules
         /// <returns></returns>
         protected string GetDeleteImage(int itemID, string itemUserEmail)
         {
-            if (DiscussionPermissions.HasDeletePermissions(ModuleID, itemID, itemUserEmail) == true)
+            if (DiscussionPermissions.HasDeletePermissions(ModuleID, itemID, itemUserEmail))
+            {
                 return getLocalImage("delete.png");
+            }
             else
+            {
                 return getLocalImage("1x1.gif");
+            }
         }
 
         /// <summary>
@@ -418,7 +428,7 @@ namespace Rainbow.Content.Web.Modules
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -433,7 +443,7 @@ namespace Rainbow.Content.Web.Modules
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

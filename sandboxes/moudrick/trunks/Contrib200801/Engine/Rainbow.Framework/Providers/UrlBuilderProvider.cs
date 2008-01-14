@@ -7,17 +7,16 @@ using System.Web;
 using System.Web.Caching;
 using Rainbow.Framework.Providers;
 
-namespace Rainbow.Framework.Web
+namespace Rainbow.Framework.Providers
 {
     /// <summary>
-    /// Summary description for UrlBuilderProvider.
     /// </summary>
     public abstract class UrlBuilderProvider : ProviderBase
     {
         /// <summary>
         /// Camel case. Must match web.config section name
         /// </summary>
-        private const string providerType = "urlBuilder";
+        const string providerType = "urlBuilder";
 
         /// <summary> 
         /// Takes a Tab ID and builds the url for get the desidered page (non default)
@@ -30,42 +29,52 @@ namespace Rainbow.Framework.Web
         /// <param name="customAttributes">Any custom attribute that can be needed. Use the following format...single attribute: paramname--paramvalue . Multiple attributes: paramname--paramvalue/paramname2--paramvalue2/paramname3--paramvalue3 </param> 
         /// <param name="currentAlias">Current Alias</param> 
         /// <param name="urlKeywords">Add some keywords to uniquely identify this tab. Usual source is UrlKeyword from TabSettings.</param> 
-        public abstract string BuildUrl(string targetPage, int tabID, int modID, CultureInfo culture,
-                                        string customAttributes, string currentAlias, string urlKeywords);
+        public abstract string BuildUrl(string targetPage,
+                                        int tabID,
+                                        int modID,
+                                        CultureInfo culture,
+                                        string customAttributes,
+                                        string currentAlias,
+                                        string urlKeywords);
 
         /// <summary>
         /// Instances this instance.
         /// </summary>
         /// <returns></returns>
-        public static UrlBuilderProvider Instance()
+        internal static UrlBuilderProvider Instance
         {
-            // Use the cache because the reflection used later is expensive
-            Cache cache = HttpRuntime.Cache;
-            string cacheKey;
-            // Get the names of providers
-            ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(providerType);
-            // Read specific configuration information for this provider
-            ProviderSettings providerSettings = (ProviderSettings) config.Providers[config.DefaultProvider];
-            // In the cache?
-            cacheKey = "Rainbow::Web::UrlBuilder::" + config.DefaultProvider;
-
-            if (cache[cacheKey] == null)
+            get
             {
-                // The assembly should be in \bin or GAC, so we simply need
+                // Use the cache because the reflection used later is expensive
+                Cache cache = HttpRuntime.Cache;
+                string cacheKey;
+                // Get the names of providers
+                ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(providerType);
+                // Read specific configuration information for this provider
+                ProviderSettings providerSettings =
+                    (ProviderSettings) config.Providers[config.DefaultProvider];
+                // In the cache?
+                cacheKey = "Rainbow::Web::UrlBuilder::" + config.DefaultProvider;
 
-                // to get an instance of the type
-                try
+                if (cache[cacheKey] == null)
                 {
-                    cache.Insert(cacheKey,
-                                 ProviderConfiguration.InstantiateProvider(providerSettings, typeof (UrlBuilderProvider)));
-                }
+                    // The assembly should be in \bin or GAC, so we simply need
 
-                catch (Exception e)
-                {
-                    throw new Exception("Unable to load provider", e);
+                    // to get an instance of the type
+                    try
+                    {
+                        cache.Insert(cacheKey,
+                                     ProviderConfiguration.InstantiateProvider(providerSettings,
+                                                                               typeof (UrlBuilderProvider)));
+                    }
+
+                    catch (Exception e)
+                    {
+                        throw new Exception("Unable to load provider", e);
+                    }
                 }
+                return (UrlBuilderProvider) cache[cacheKey];
             }
-            return (UrlBuilderProvider) cache[cacheKey];
         }
 
         /// <summary> 

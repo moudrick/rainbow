@@ -2,9 +2,8 @@ using System;
 using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Content.Web.Modules
@@ -20,7 +19,6 @@ namespace Rainbow.Content.Web.Modules
     public partial class WeatherDEEdit : EditItemPage
     {
         protected TextBox Textbox2;
-
 
         /// <summary>
         /// Handles the Load event of the Page control.

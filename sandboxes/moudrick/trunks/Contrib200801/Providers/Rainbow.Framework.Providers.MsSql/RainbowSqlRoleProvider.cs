@@ -2,17 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.Web.Security;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers.Exceptions;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 using System.Diagnostics;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using System.Collections;
+using RainbowRoleProvider=Rainbow.Framework.Providers.RainbowRoleProvider;
 
 namespace Rainbow.Framework.Providers.MsSql
 {
-    public class RainbowSqlRoleProvider : RainbowRoleProvider.RainbowRoleProvider
+    public class RainbowSqlRoleProvider : RainbowRoleProvider
     {
         const string eventSource = "RainbowSqlRoleProvider";
         const string eventLog = "Application";

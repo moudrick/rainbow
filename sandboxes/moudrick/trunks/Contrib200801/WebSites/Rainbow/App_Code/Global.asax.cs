@@ -4,9 +4,9 @@ using System.Net;
 using System.Web;
 using System.Web.Security;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Core;
-using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
@@ -98,11 +98,9 @@ namespace Rainbow.App_Code
         {
             HttpContext context = RainbowContext.Current.HttpContext;
 
-            if (context.Items["PortalSettings"] != null) //PortalProvider.Instance.CurrentPortal
+            Portal portalSettings = PortalProvider.Instance.CurrentPortal;
+            if (portalSettings != null)
             {
-                // Obtain PortalSettings from Current Context
-                Portal portalSettings = (Portal) context.Items["PortalSettings"];
-
                 // Auto-login a user who has a portal Alias login cookie
                 // Try to authenticate the user with the cookie value
                 if (!context.Request.IsAuthenticated &&

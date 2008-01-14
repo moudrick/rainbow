@@ -5,8 +5,8 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
@@ -192,7 +192,7 @@ namespace Rainbow.Content.Web.Modules
             dgFile.DataSource = GetFiles();
             dgFile.DataKeyField = "type";
             dgFile.DataBind();
-            lblCounter.Text = dgFile.Items.Count.ToString() + " object(s)";
+            lblCounter.Text = dgFile.Items.Count + " object(s)";
         }
 
         /// <summary>
@@ -343,7 +343,7 @@ namespace Rainbow.Content.Web.Modules
 
                 for (int i = 0; i < strExtensions.Length; i++)
                 {
-                    String strEx = (String) strExtensions[i];
+                    String strEx = strExtensions[i];
                     if (!strEx.StartsWith("."))
                     {
                         strEx = "." + strEx;

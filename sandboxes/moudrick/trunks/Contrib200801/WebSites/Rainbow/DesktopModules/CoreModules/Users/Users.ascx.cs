@@ -4,7 +4,6 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;

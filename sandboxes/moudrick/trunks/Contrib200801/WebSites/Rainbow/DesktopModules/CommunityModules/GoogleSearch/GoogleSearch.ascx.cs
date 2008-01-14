@@ -1,13 +1,10 @@
 using System;
 using System.Data;
-using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Site.Data;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI.WebControls;
 using com.google.api;
-//using Rainbow.DesktopModules.GoogleSearchWebservice.com.google.api;
 
 namespace Rainbow.DesktopModules
 {

@@ -8,16 +8,12 @@ using System.Web;
 using System.Xml;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings.Providers; //PortalPageProvider
 using Rainbow.Framework.Design;
-using Rainbow.Framework.Providers; //PortalProvider, HttpUrlBuilder
+using Rainbow.Framework.Providers;
 using Path = Rainbow.Framework.Path;
-
 using Rainbow.Framework.DataTypes; //PortalUrl
-using Rainbow.Framework.Site.Configuration; //PortalPage
 
-#warning move to appropriate namespace
-namespace Rainbow.Framework.Core.Configuration.Settings
+namespace Rainbow.Framework.BusinessObjects
 {
     /// <summary>
     /// PortalSettings Class encapsulates all of the settings 
@@ -27,8 +23,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
     [History("moudrick", "2007/11/16", "extracting provider")]
     [History("jminond", "2005/03/10", "Tab to page conversion")]
     [History("gman3001", "2004/09/29",
-        "Added the GetCurrentUserProfile method to obtain a hashtable of the current user's profile details."
-        )]
+        "Added the GetCurrentUserProfile method to obtain a hashtable of the current user's profile details.")]
     [History("jviladiu@portalServices.net", "2004/08/19",
         "Add support for move & delete module roles")]
     [History("jviladiu@portalServices.net", "2004/07/30", "Added new ActiveModule property")]
@@ -515,7 +510,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
         }
 
         public Portal()
-        //internal Portal()
+            //internal Portal()
         {
             string applicationPath = HttpContext.Current.Request.ApplicationPath;
             portalPathPrefix = applicationPath == "/" ? string.Empty : applicationPath;
@@ -642,7 +637,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                     else
                     {
                         writer.WriteAttributeString("UrlPageName",
-                            HttpUrlBuilder.UrlPageName(mySubPage.PageID).Replace(".aspx", ""));
+                                                    HttpUrlBuilder.UrlPageName(mySubPage.PageID).Replace(".aspx", ""));
                     }
                     writer.WriteAttributeString("PageName", mySubPage.PageName);
                     writer.WriteAttributeString("PageOrder", mySubPage.PageOrder.ToString());

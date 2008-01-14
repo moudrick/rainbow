@@ -6,6 +6,7 @@ using System.Web;
 using Rainbow.Framework;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules

@@ -4,10 +4,9 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -277,7 +276,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="activePageID">The active page ID.</param>
         /// <param name="allTabs">All tabs.</param>
         /// <returns></returns>
-        private int GetSelectedTab(int parentPageID, int activePageID, IList allTabs)
+        static int GetSelectedTab(int parentPageID, int activePageID, IList allTabs)
         {
             for (int i = 0; i < allTabs.Count; i++)
             {

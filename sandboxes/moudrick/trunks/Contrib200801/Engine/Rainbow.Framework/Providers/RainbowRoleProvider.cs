@@ -2,14 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.Web.Security;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers.Exceptions;
 
-namespace Rainbow.Framework.Providers.RainbowRoleProvider {
-
+namespace Rainbow.Framework.Providers
+{
     /// <summary>
     /// The Rainbow provider for roles.
     /// </summary>
-    public abstract class RainbowRoleProvider : RoleProvider {
-
+    public abstract class RainbowRoleProvider : RoleProvider 
+    {
         public static Guid AllUsersGuid = new Guid( "{8E9E3841-A27A-49da-BC02-2048F1F1FD54}" );
         public static Guid AuthenticatedUsersGuid = new Guid( "{40D335D3-8C46-4009-B456-53F254959042}" );
         public static Guid UnauthenticatedUsersGuid = new Guid( "{6E21FB8C-F345-4071-870B-151E79008B44}" );
@@ -169,5 +171,4 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
         /// <exception cref="ProviderException">GetRole throws a ProviderException if the role doesn't exist</exception>
         public abstract RainbowRole GetRoleById( Guid roleId );
     }
-
 }

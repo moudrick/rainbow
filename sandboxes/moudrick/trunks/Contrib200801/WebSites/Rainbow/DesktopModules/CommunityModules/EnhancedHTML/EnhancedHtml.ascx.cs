@@ -6,13 +6,14 @@ using System.Globalization;
 using System.Web;
 using System.Web.UI;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -451,9 +452,18 @@ namespace Rainbow.Content.Web.Modules
         /// <returns></returns>
         static string dameAlineacion(string n)
         {
-            if (n.Equals("1")) return "left";
-            if (n.Equals("2")) return "center";
-            if (n.Equals("3")) return "right";
+            if (n.Equals("1"))
+            {
+                return "left";
+            }
+            if (n.Equals("2"))
+            {
+                return "center";
+            }
+            if (n.Equals("3"))
+            {
+                return "right";
+            }
             return "left";
         }
 

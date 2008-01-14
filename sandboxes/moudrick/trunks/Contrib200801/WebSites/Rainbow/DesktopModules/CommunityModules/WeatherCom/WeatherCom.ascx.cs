@@ -4,6 +4,7 @@ using System.Net;
 using System.Xml;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.ModulesVersion
@@ -33,13 +34,13 @@ namespace Rainbow.Content.Web.ModulesVersion
                 // Request URL
                 string wsUrl = "http://xoap.weather.com/weather/local/" +
                                // City Code
-                               Settings["CityCode"].ToString() +
+                               Settings["CityCode"] +
                                "?cc=*" +
                                // Forecast Days
-                               "&dayf=" + Settings["Forecast"].ToString() +
+                               "&dayf=" + Settings["Forecast"] +
                                "&prod=xoap&par=1010760847&key=36e1f14b468962e2" +
                                // Set Unit
-                               "&unit=" + Settings["Unit"].ToString();
+                               "&unit=" + Settings["Unit"];
 
                 // Contact service for content
                 HttpWebRequest wrq = (HttpWebRequest) WebRequest.Create(wsUrl);
@@ -65,7 +66,7 @@ namespace Rainbow.Content.Web.ModulesVersion
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:WeatherCom"/> class.
+        /// Initializes a new instance of the <see cref="WeatherCom"/> class.
         /// </summary>
         public WeatherCom()
         {

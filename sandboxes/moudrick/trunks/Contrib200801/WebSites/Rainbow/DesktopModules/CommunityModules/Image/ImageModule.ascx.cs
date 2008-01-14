@@ -1,6 +1,7 @@
 using System;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 

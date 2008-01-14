@@ -2,7 +2,7 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -29,7 +29,7 @@ namespace Rainbow.Content.Web.Modules
 			}
 			catch
 			{
-				//No footer available
+                ;//No footer available
 			}
 		}
 

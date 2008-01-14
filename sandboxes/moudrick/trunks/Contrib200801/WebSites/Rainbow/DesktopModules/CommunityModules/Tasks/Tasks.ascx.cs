@@ -3,11 +3,11 @@ using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
-using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
@@ -224,13 +224,13 @@ namespace Rainbow.Content.Web.Modules
                         new SettingOption(int.Parse(r["ModuleID"].ToString()), r["ModuleTitle"].ToString()));
                 }
             }
-            catch //install time
-            {
-            }
+            catch {;} //install time
             finally
             {
                 if (r != null && r.IsClosed == false)
+                {
                     r.Close();
+                }
             }
 
             SettingItem linkedModules =
@@ -243,9 +243,7 @@ namespace Rainbow.Content.Web.Modules
             baseSettings.Add("TASKS_LINKED_MODULES", linkedModules);
         }
 
-
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
@@ -255,7 +253,7 @@ namespace Rainbow.Content.Web.Modules
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -271,7 +269,7 @@ namespace Rainbow.Content.Web.Modules
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

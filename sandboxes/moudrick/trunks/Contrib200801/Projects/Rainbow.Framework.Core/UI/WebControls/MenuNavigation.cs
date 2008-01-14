@@ -5,11 +5,8 @@ using System.Web;
 using System.Web.UI;
 using DUEMETRI.UI.WebControls.HWMenu;
 using Rainbow.Framework.BusinessObjects;
-using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -165,11 +162,22 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <returns></returns>
         string giveMeUrl(string tab, int id)
         {
-            if (!UseTabNameInUrl) return HttpUrlBuilder.BuildUrl(id);
+            if (!UseTabNameInUrl)
+            {
+                return HttpUrlBuilder.BuildUrl(id);
+            }
             string auxtab = string.Empty;
             foreach (char c in tab)
-                if (char.IsLetterOrDigit(c)) auxtab += c;
-                else auxtab += "_";
+            {
+                if (char.IsLetterOrDigit(c))
+                {
+                    auxtab += c;
+                }
+                else
+                {
+                    auxtab += "_";
+                }
+            }
             return HttpUrlBuilder.BuildUrl("~/" + auxtab + ".aspx", id);
         }
 

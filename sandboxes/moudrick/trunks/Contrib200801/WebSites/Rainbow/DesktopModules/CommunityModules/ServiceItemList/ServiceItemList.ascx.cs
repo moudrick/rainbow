@@ -1,16 +1,15 @@
 using System;
 using System.Data;
 using Rainbow.Framework;
-using Rainbow.Framework.Core;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Services;
-using Rainbow.Framework.Users.Data;
-using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -80,7 +79,7 @@ namespace Rainbow.Content.Web.Modules
             showLink = bool.Parse(Settings["ShowLink"].ToString().ToLower());
             showTabName = bool.Parse(Settings["ShowTabName"].ToString().ToLower());
             showModuleTitle = bool.Parse(Settings["ShowModuleTitle"].ToString().ToLower());
-            Target = "_" + Settings["Target"].ToString();
+            Target = "_" + Settings["Target"];
 
             GetItems();
         }
@@ -95,31 +94,28 @@ namespace Rainbow.Content.Web.Modules
             try
             {
                 int portalID = PortalSettings.PortalID;
-                Guid userID = Guid.Empty;
+                Guid userID;
 
-                UsersDB u = new UsersDB();
-                RainbowUser s = u.GetSingleUser(RainbowPrincipal.CurrentUser.Identity.Email);
-                try
-                {                    
-                        userID = (Guid)s.ProviderUserKey;
-                }
-                finally
-                {
-                 //   s.Close(); //by Manu, fixed bug 807858
-                }
+                RainbowUser user = RainbowMembershipProvider.Instance.GetSingleUser(
+                    PortalProvider.Instance.CurrentPortal.PortalAlias, 
+                    RainbowPrincipal.CurrentUser.Identity.Email);
+                userID = user.ProviderUserKey;
 
                 ServiceResponseInfo responseInfo;
-                responseInfo =
-                    ServiceHelper.CallService(portalID, userID, Path.ApplicationFullPath, ref requestInfo, (Page) Page);
+                responseInfo = ServiceHelper.CallService(portalID, userID, 
+                    Path.ApplicationFullPath, ref requestInfo, Page);
                 status = responseInfo.ServiceStatus;
                 if (status != "OK")
                 {
                     if (status.IndexOf("404") > 0)
+                    {
                         lblStatus.Text = status + "<br>" + "URL: " + requestInfo.Url;
+                    }
                     else
+                    {
                         lblStatus.Text = "WARNING! Service status: " + status;
+                    }
                 }
-
                 DataSet ds = FillPortalDS(ref responseInfo);
                 DataGrid1.DataSource = ds;
                 DataGrid1.DataBind();
@@ -190,7 +186,7 @@ namespace Rainbow.Content.Web.Modules
                     strModuleID = item.ModuleID.ToString();
                     strItemID = item.ItemID.ToString();
                     strTabID = item.PageID.ToString();
-                    strModuleGuidID = item.GeneralModDefID.ToString().ToUpper();
+                    strModuleGuidID = item.GeneralModDefID.ToUpper();
                     strModuleTitle = item.ModuleTitle;
                     strLocate = "mID=" + strModuleID + "&ItemID=" + strItemID;
 

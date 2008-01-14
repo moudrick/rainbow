@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Text;
 using System.Web;
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Framework.Web
 {
@@ -15,14 +16,14 @@ namespace Rainbow.Framework.Web
     /// </summary>
     public class SqlUrlBuilderProvider : UrlBuilderProvider
     {
-        private string _defaultSplitter = "__";
-        private string _handlerFlag = string.Empty;
-        private bool _aliasInUrl = false;
-        private bool _langInUrl = false;
-        private string _ignoreTargetPage = "tablayout.aspx";
-        private double _cacheMinutes = 5;
-        private bool _pageidNoSplitter = false;
-        private string _friendlyPageName = "default.aspx";
+        string _defaultSplitter = "__";
+        string _handlerFlag = string.Empty;
+        bool _aliasInUrl = false;
+        bool _langInUrl = false;
+        string _ignoreTargetPage = "tablayout.aspx";
+        double _cacheMinutes = 5;
+        bool _pageidNoSplitter = false;
+        string _friendlyPageName = "default.aspx";
 
         /// <summary> 
         /// Takes a Tab ID and builds the url for get the desidered page (non default)
@@ -113,8 +114,8 @@ namespace Rainbow.Framework.Web
                 if (customAttributes != null && customAttributes != string.Empty)
                 {
                     sb.Append("&");
-                    customAttributes = customAttributes.ToString().Replace("/", "&");
-                    customAttributes = customAttributes.ToString().Replace(_defaultSplitter, "=");
+                    customAttributes = customAttributes.Replace("/", "&");
+                    customAttributes = customAttributes.Replace(_defaultSplitter, "=");
                     sb.Append(customAttributes);
                 }
                 return sb.ToString().Replace("&&", "&");
@@ -162,15 +163,15 @@ namespace Rainbow.Framework.Web
                 if (modID > 0)
                 {
                     sb.Append("mid");
-                    sb.Append(_defaultSplitter + modID.ToString());
+                    sb.Append(_defaultSplitter + modID);
                     sb.Append("/");
                 }
 
                 // Add custom attributes
                 if (customAttributes != null && customAttributes != string.Empty)
                 {
-                    customAttributes = customAttributes.ToString().Replace("&", "/");
-                    customAttributes = customAttributes.ToString().Replace("=", _defaultSplitter);
+                    customAttributes = customAttributes.Replace("&", "/");
+                    customAttributes = customAttributes.Replace("=", _defaultSplitter);
                     sb.Append(customAttributes);
                     sb.Append("/");
                 }
@@ -213,7 +214,7 @@ namespace Rainbow.Framework.Web
             // For legacy support first check provider settings then web.config/rainbow.config legacy settings
             if (configValue["handlersplitter"] != null)
             {
-                _defaultSplitter = configValue["handlersplitter"].ToString();
+                _defaultSplitter = configValue["handlersplitter"];
             }
             else
             {
@@ -224,7 +225,7 @@ namespace Rainbow.Framework.Web
             // For legacy support first check provider settings then web.config/rainbow.config legacy settings
             if (configValue["handlerflag"] != null)
             {
-                _handlerFlag = configValue["handlerflag"].ToString();
+                _handlerFlag = configValue["handlerflag"];
             }
             else
             {
@@ -235,7 +236,7 @@ namespace Rainbow.Framework.Web
             // For legacy support first check provider settings then web.config/rainbow.config legacy settings
             if (configValue["aliasinurl"] != null)
             {
-                _aliasInUrl = bool.Parse(configValue["aliasinurl"].ToString());
+                _aliasInUrl = bool.Parse(configValue["aliasinurl"]);
             }
             else
             {
@@ -246,7 +247,7 @@ namespace Rainbow.Framework.Web
             // For legacy support first check provider settings then web.config/rainbow.config legacy settings
             if (configValue["langinurl"] != null)
             {
-                _langInUrl = bool.Parse(configValue["langinurl"].ToString());
+                _langInUrl = bool.Parse(configValue["langinurl"]);
             }
             else
             {
@@ -256,17 +257,17 @@ namespace Rainbow.Framework.Web
 
             if (configValue["ignoretargetpage"] != null)
             {
-                _ignoreTargetPage = configValue["ignoretargetpage"].ToString();
+                _ignoreTargetPage = configValue["ignoretargetpage"];
             }
 
             if (configValue["cacheminutes"] != null)
             {
-                _cacheMinutes = Convert.ToDouble(configValue["cacheminutes"].ToString());
+                _cacheMinutes = Convert.ToDouble(configValue["cacheminutes"]);
             }
 
             if (configValue["pageidnosplitter"] != null)
             {
-                _pageidNoSplitter = bool.Parse(configValue["pageidnosplitter"].ToString());
+                _pageidNoSplitter = bool.Parse(configValue["pageidnosplitter"]);
             }
             else {
                 if ( ConfigurationManager.AppSettings[ "PageIdNoSplitter" ] != null )
@@ -276,7 +277,7 @@ namespace Rainbow.Framework.Web
             // For legacy support first check provider settings then web.config/rainbow.config legacy settings
             if ( configValue[ "friendlypagename" ] != null ) {
                 // TODO: Friendly url's need to be fixed
-                _friendlyPageName = configValue[ "friendlypagename" ].ToString();
+                _friendlyPageName = configValue[ "friendlypagename" ];
             }
             else {
                 if ( ConfigurationManager.AppSettings[ "FriendlyPageName" ] != null )
@@ -291,8 +292,7 @@ namespace Rainbow.Framework.Web
         {
             return
                 bool.Parse(
-                    UrlBuilderHelper.PageSpecificProperty(pageID, UrlBuilderHelper.IsPlaceHolderID, _cacheMinutes).
-                        ToString());
+                    UrlBuilderHelper.PageSpecificProperty(pageID, UrlBuilderHelper.IsPlaceHolderID, _cacheMinutes));
         }
 
         /// <summary> 
@@ -309,7 +309,7 @@ namespace Rainbow.Framework.Web
         public override string UrlKeyword(int pageID)
         {
             return
-                UrlBuilderHelper.PageSpecificProperty(pageID, UrlBuilderHelper.UrlKeywordsID, _cacheMinutes).ToString();
+                UrlBuilderHelper.PageSpecificProperty(pageID, UrlBuilderHelper.UrlKeywordsID, _cacheMinutes);
         }
 
         /// <summary> 
@@ -318,7 +318,7 @@ namespace Rainbow.Framework.Web
         public override string UrlPageName(int pageID)
         {
             string _urlPageName =
-                UrlBuilderHelper.PageSpecificProperty(pageID, UrlBuilderHelper.PageNameID, _cacheMinutes).ToString();
+                UrlBuilderHelper.PageSpecificProperty(pageID, UrlBuilderHelper.PageNameID, _cacheMinutes);
             // TODO: URL Firendly names need to be fixed
             if (_urlPageName.Length == 0)
                 _urlPageName = _friendlyPageName;

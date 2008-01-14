@@ -1,20 +1,20 @@
- using System;
+using System;
 using System.Collections;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
- using Rainbow.Framework.Context;
- using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
- using Rainbow.Framework.Providers;
- using Rainbow.Framework.Security;
- using Rainbow.Framework.Users.Data;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
+using Rainbow.Framework.Security;
+using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
 using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
 using System.Collections.Generic;
 
 namespace Rainbow.Content.Web.Modules
@@ -23,10 +23,8 @@ namespace Rainbow.Content.Web.Modules
     /// User manager
     /// </summary>
     [History("jminond", "march 2005", "Changes for moving Tab to Page")]
-    [
-        History("gman3001", "2004/10/06",
-            "Add GetCurrentProfileControl method to properly obtain a custom register control as specified by the 'Register Module ID' setting."
-            )]
+    [History("gman3001", "2004/10/06",
+            "Add GetCurrentProfileControl method to properly obtain a custom register control as specified by the 'Register Module ID' setting.")]
     public partial class UsersManage : EditItemPage
     {
         private Guid userID = Guid.Empty;

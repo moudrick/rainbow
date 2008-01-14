@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers.Exceptions;
 using System.Web.Security;
 using RainbowSqlMembershipProvider=Rainbow.Framework.Providers.MsSql.RainbowSqlMembershipProvider;
 

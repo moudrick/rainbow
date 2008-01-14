@@ -1,6 +1,7 @@
 using System.Threading;
+using Rainbow.Framework.Providers;
 
-namespace Rainbow.Framework.Providers.Geographic
+namespace Rainbow.Framework.BusinessObjects
 {
     public class State
     {
@@ -68,8 +69,8 @@ namespace Rainbow.Framework.Providers.Geographic
             {
                 return
                     GeographicProvider.Instance.GetStateDisplayName(stateID,
-                                                                   Thread.CurrentThread.
-                                                                       CurrentCulture);
+                                                                    Thread.CurrentThread.
+                                                                        CurrentCulture);
             }
         }
 

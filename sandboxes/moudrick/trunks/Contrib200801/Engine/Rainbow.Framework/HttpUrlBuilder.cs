@@ -2,9 +2,9 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Web;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings; //Portal
-using Rainbow.Framework.Web;
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Framework
 {
@@ -24,7 +24,7 @@ namespace Rainbow.Framework
     [History("Jes1111", "2003/04/24", "Fixed problem with '=' in Keyword Splitter")]
     public class HttpUrlBuilder
     {
-        static readonly UrlBuilderProvider provider = UrlBuilderProvider.Instance();
+        static readonly UrlBuilderProvider provider = UrlBuilderProvider.Instance;
 
         /// <summary>
         /// Builds the url for get to current portal home page

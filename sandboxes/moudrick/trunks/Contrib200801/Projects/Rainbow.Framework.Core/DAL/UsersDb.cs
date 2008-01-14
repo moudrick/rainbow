@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Security;
-using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
+using Rainbow.Framework.Providers.Exceptions;
 
-namespace Rainbow.Framework.Users.Data {
+namespace Rainbow.Framework.Users.Data 
+{
     /// <summary>
     /// The UsersDB class encapsulates all data logic necessary to add/login/query
     /// users within the Portal Users database.
@@ -21,10 +21,8 @@ namespace Rainbow.Framework.Users.Data {
     [History( "jminond", "2005/03/10", "Tab to page conversion" )]
     [History( "gman3001", "2004/09/29", "Added the UpdateLastVisit method to update the user's last visit date indicator." )]
     //[Obsolete("//TODO: Get rid of this class")]
-    public class UsersDB {
-
-        #region Properties
-
+    public class UsersDB 
+    {
         static RainbowMembershipProvider MembershipProvider
         {
             get
@@ -33,21 +31,21 @@ namespace Rainbow.Framework.Users.Data {
             }
         }
 
-        static RainbowRoleProvider RoleProvider {
+        static RainbowRoleProvider RoleProvider 
+        {
             get 
             {
                 return RainbowRoleProvider.Instance;
             }
         }
 
-        static Portal CurrentPortalSettings {
+        static Portal CurrentPortalSettings 
+        {
             get 
             {
                 return PortalProvider.Instance.CurrentPortal;
             }
         }
-
-        #endregion
 
         #region Add Roles and Users
 

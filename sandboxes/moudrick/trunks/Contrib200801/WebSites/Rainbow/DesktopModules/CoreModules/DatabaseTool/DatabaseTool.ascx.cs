@@ -1,8 +1,8 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=System.Web.UI.WebControls.Label;
 
@@ -78,25 +78,25 @@ namespace Rainbow.Content.Web.Modules
         /// <summary>
         /// Connects the specified LBL.
         /// </summary>
-        /// <param name="lbl">The LBL.</param>
+        /// <param name="label">The LBL.</param>
         /// <returns></returns>
-        protected bool Connect(Label lbl)
+        protected bool Connect(Label label)
         {
-            lbl.Text = string.Empty;
+            label.Text = string.Empty;
             bool retValue;
             try
             {
-                SqlConnection SqlCon = new SqlConnection(ConnectionString);
-                SqlDataAdapter DA = new SqlDataAdapter("SELECT NULL", SqlCon);
-                SqlCon.Open();
+                SqlConnection connection = new SqlConnection(ConnectionString);
+                //SqlDataAdapter DA = new SqlDataAdapter("SELECT NULL", connection);
+                connection.Open();
 
-                SqlCon.Close();
-                SqlCon.Dispose();
+                connection.Close();
+                connection.Dispose();
                 retValue = true;
             }
             catch (Exception ex)
             {
-                lbl.Text = "Error: " + ex.Message;
+                label.Text = "Error: " + ex.Message;
                 retValue = false;
             }
             return retValue;
@@ -240,7 +240,7 @@ namespace Rainbow.Content.Web.Modules
         protected void GetObjectInfo_Click(object sender, EventArgs e)
         {
             FillDataGrid("SELECT " + InfoFields + " FROM sysobjects WHERE uid=USER_ID('" + tbUserName.Text +
-                         "') AND id=" + lbObjects.SelectedItem.Value.ToString());
+                         "') AND id=" + lbObjects.SelectedItem.Value);
         }
 
 
@@ -252,7 +252,7 @@ namespace Rainbow.Content.Web.Modules
         protected void GetObjectInfoExtended_Click(object sender, EventArgs e)
         {
             FillDataGrid("SELECT " + InfoExtendedFields + " FROM sysobjects WHERE uid=USER_ID('" + tbUserName.Text +
-                         "') AND id=" + lbObjects.SelectedItem.Value.ToString());
+                         "') AND id=" + lbObjects.SelectedItem.Value);
         }
 
 
@@ -268,7 +268,7 @@ namespace Rainbow.Content.Web.Modules
                 ddObjectSelectList.SelectedItem.Value == "V")
             {
                 SQL += "EXEC sp_columns";
-                SQL += " @table_name = '" + lbObjects.SelectedItem.Text.ToString() + "'";
+                SQL += " @table_name = '" + lbObjects.SelectedItem.Text + "'";
                 SQL += ",@table_owner = '" + tbUserName.Text + "'";
                 FillDataGrid(SQL);
             }
@@ -277,7 +277,7 @@ namespace Rainbow.Content.Web.Modules
                 SQL += " SELECT c.[text] FROM sysobjects o, syscomments c";
                 SQL += " WHERE o.uid=USER_ID('" + tbUserName.Text + "')";
                 SQL += " AND o.id=c.id";
-                SQL += " AND o.id=" + lbObjects.SelectedItem.Value.ToString();
+                SQL += " AND o.id=" + lbObjects.SelectedItem.Value;
 
                 GetTableField(SQL, 0);
             }
@@ -334,7 +334,7 @@ namespace Rainbow.Content.Web.Modules
                     try
                     {
                         int Rowseff = SqlComm.ExecuteNonQuery();
-                        lblRes.Text = "Effected Rows: " + Rowseff.ToString();
+                        lblRes.Text = "Effected Rows: " + Rowseff;
                     }
                     finally
                     {
