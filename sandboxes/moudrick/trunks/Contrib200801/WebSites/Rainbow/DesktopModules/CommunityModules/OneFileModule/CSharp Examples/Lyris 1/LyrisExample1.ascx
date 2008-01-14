@@ -63,7 +63,7 @@
         //Mailer.To = "join-" + listname + lyrisServerName;
         //Mailer.Subject = "Join";
         //Mailer.Body = "Join";
-        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Settings.Config.SmtpServer);
+        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Context.Config.SmtpServer);
         smtp.Send(mail);
         //SmtpMail.SmtpServer = Rainbow.Framework.Settings.Config.SmtpServer;
         //SmtpMail.Send(Mailer);
@@ -79,7 +79,7 @@
         //Mailer.To = "leave-" + listname + lyrisServerName;
         //Mailer.Subject = "Leave";
         //Mailer.Body = "Leave";
-        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Settings.Config.SmtpServer);
+        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Context.Config.SmtpServer);
         smtp.Send(mail);
         //SmtpMail.SmtpServer = Rainbow.Framework.Settings.Config.SmtpServer;
         //SmtpMail.Send(Mailer);

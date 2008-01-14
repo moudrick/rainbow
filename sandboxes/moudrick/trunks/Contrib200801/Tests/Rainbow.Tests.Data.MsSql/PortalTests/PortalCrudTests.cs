@@ -21,11 +21,11 @@ namespace Rainbow.Tests.Data.MsSql.PortalTests
                 httpSimulator.SimulateRequest(new Uri("http://localhost/Rainbow/"));
 
                 HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance
-                    .InstantiateNewPortalSettings(0, "Rainbow");
+                    .InstantiateNewPortal(0, "Rainbow");
 
                 //System.Web.Profile.SqlProfileProvider
                 int newProtalId = PortalProvider.Instance.CreatePortal(0, "newPortalAlias", "newPortalName", "newPortalPath");
-                Portal newPortal = PortalProvider.Instance.InstantiateNewPortalSettings(newProtalId);
+                Portal newPortal = PortalProvider.Instance.InstantiateNewPortal(newProtalId);
                 Assert.IsNotNull(newPortal);
             }
         }

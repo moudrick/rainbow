@@ -5,11 +5,11 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Monitoring;
 using Rainbow.Framework.Scheduler;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 

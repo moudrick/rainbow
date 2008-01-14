@@ -14,22 +14,6 @@ namespace Rainbow.Framework.DataTypes
 		}
 
         /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        /// <value>The value.</value>
-		public override string Value
-		{
-			get
-			{
-				return base.Value;
-			}
-			set
-			{
-				base.Value = value;
-			}
-		}
-
-        /// <summary>
         /// Url relative to Application
         /// </summary>
         /// <value>The description.</value>
@@ -41,5 +25,4 @@ namespace Rainbow.Framework.DataTypes
 			}
 		}
 	}
-
 }

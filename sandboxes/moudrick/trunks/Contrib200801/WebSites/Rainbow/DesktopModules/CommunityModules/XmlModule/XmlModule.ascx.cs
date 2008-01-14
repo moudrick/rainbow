@@ -3,11 +3,11 @@ using System.IO;
 using System.Web.UI;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
 {
-
 	/// <summary>
 	/// Xml Module
 	/// </summary>
@@ -25,7 +25,7 @@ namespace Rainbow.Content.Web.Modules
 		{
 			PortalUrl pt;
 
-			pt = new PortalUrl();
+			pt = PortalProvider.Instance.CurrentPortal.PortalUrl;
 			pt.Value = Settings["XMLsrc"].ToString();
 			string xmlsrc = pt.FullPath;
 
@@ -44,7 +44,7 @@ namespace Rainbow.Content.Web.Modules
 				}
 			}
 
-			pt = new PortalUrl();
+			pt = PortalProvider.Instance.CurrentPortal.PortalUrl;
 			pt.Value = Settings["XSLsrc"].ToString();
 			string xslsrc = pt.FullPath;
 
@@ -69,12 +69,12 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
 		public XmlModule()
 		{
-			SettingItem XMLsrc = new SettingItem(new PortalUrl());
+			SettingItem XMLsrc = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
 			XMLsrc.Required = true;
 			XMLsrc.Order = 1;
 			baseSettings.Add("XMLsrc", XMLsrc);
 
-			SettingItem XSLsrc = new SettingItem(new PortalUrl());
+			SettingItem XSLsrc = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
 			XSLsrc.Required = true;
 			XSLsrc.Order = 2;
 			baseSettings.Add("XSLsrc", XSLsrc);

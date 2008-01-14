@@ -8,6 +8,7 @@ using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.Caching;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
@@ -15,8 +16,6 @@ using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
 using Rainbow.Framework.Scheduler;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
@@ -183,9 +182,8 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                             //jes1111 - this.PortalTitle = ConfigurationSettings.AppSettings["PortalTitlePrefix"] + result["PortalName"].ToString();
                             settings.PortalTitle = string.Concat(Config.PortalTitlePrefix, result["PortalName"].ToString());
                             settings.PortalPath = result["PortalPath"].ToString();
-                            settings.ActivePage.PageID = 0;
-                            // added Thierry (tiptopweb) used for dropdown for layout and theme
-                            settings.ActivePage.PortalPath = settings.PortalPath;
+                            SetPageID(settings.ActivePage, 0);
+                            SetPortalPath(settings.ActivePage, settings.PortalPath);
                             settings.ActiveModule = 0;
                         }
                         else
@@ -252,7 +250,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// </summary>
         /// <param name="portalAlias">The portal alias.</param>
         /// <returns></returns>
-        string GetLanguageList(string portalAlias)
+        static string GetLanguageList(string portalAlias)
         {
             string langlist;
             if (CurrentCache.Exists(Key.LanguageList()))
@@ -277,7 +275,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// </summary>
         /// <param name="portalAlias">The portal alias.</param>
         /// <returns></returns>
-        string GetLanguageListInternal(string portalAlias)
+        static string GetLanguageListInternal(string portalAlias)
         {
             string langlist = string.Empty;
             // Create Instance of Connection and Command Object
@@ -329,7 +327,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// </summary>
         /// <param name="pageID">The page ID.</param>
         /// <param name="portalAlias">The portal alias.</param>
-        public override Portal InstantiateNewPortalSettings(int pageID, string portalAlias)
+        public override Portal InstantiateNewPortal(int pageID, string portalAlias)
         {
             // Changes culture/language according to settings
             try
@@ -371,11 +369,12 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             //Provide a valid tab id if it is missing
             if (portal.ActivePage.PageID == 0)
             {
-                portal.ActivePage.PageID = ((PageStripDetails)portal.DesktopPages[0]).PageID;
+                SetPageID(portal.ActivePage, ((PageStripDetails)portal.DesktopPages[0]).PageID);
             }
             //Go to get custom settings
-            portal.CustomSettings = GetPortalCustomSettings(
-                portal.PortalID, GetPortalBaseSettings(portal.PortalPath));
+            SetCustomSettings(portal, 
+                GetPortalCustomSettings(portal.PortalID, GetPortalBaseSettings(portal.PortalPath)));
+            
             //Initialize Theme
             ThemeManager themeManager = new ThemeManager(portal.PortalPath);
             //Default
@@ -414,7 +413,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// This overload it is used
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
-        public override Portal InstantiateNewPortalSettings(int portalID)
+        public override Portal InstantiateNewPortal(int portalID)
         {
             Portal portal = GetNew();
             try
@@ -428,8 +427,8 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             }
 
             //Go to get custom settings
-            portal.CustomSettings = GetPortalCustomSettings(portalID, 
-                GetPortalBaseSettings(portal.PortalPath));
+            SetCustomSettings(portal, 
+                GetPortalCustomSettings(portalID, GetPortalBaseSettings(portal.PortalPath)));
             portal.CurrentLayout = portal.CustomSettings["SITESETTINGS_PAGE_LAYOUT"].ToString();
             //Initialize Theme
             ThemeManager themeManager = new ThemeManager(portal.PortalPath);
@@ -478,12 +477,11 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                 iRainbowMembershipProvider.AddUserRole(roleID, userID);
             }
 
-            PagesDB tabs = new PagesDB();
             // Create a new Page "home"
-            int homePageID = tabs.AddPage(portalID, "Home", 1);
+            int homePageID = PortalPageProvider.Instance.AddPage(portalID, "Home", 1);
             // Create a new Page "admin"
             string localizedString = General.GetString("ADMIN_TAB_NAME");
-            int adminPageID = tabs.AddPage(portalID, localizedString, strAdmins, 9999);
+            int adminPageID = PortalPageProvider.Instance.AddPage(portalID, localizedString, strAdmins, 9999);
             // Add Modules for portal use
             // Html Document
             modules.UpdateModuleDefinitions(new Guid(strGUIDHTMLDocument), portalID, true);
@@ -558,8 +556,6 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                                 string portalPath)
         {
             int newPortalID;
-
-            PagesDB tabs = new PagesDB();
             ModulesDB modules = new ModulesDB();
 
             // create an Array to stores modules ID and GUID for finding them later
@@ -625,7 +621,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                 // Save the tabs into a list for finding them later
                 tab.oldID = (int) myReader["PageID"];
                 tab.newID =
-                    tabs.AddPage(newPortalID,
+                    PortalPageProvider.Instance.AddPage(newPortalID,
                                  myReader["PageName"].ToString(),
                                  Int32.Parse(myReader["PageOrder"].ToString()));
                 templateTabs.Add(tab);
@@ -665,7 +661,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                 }
 
                 // Update the Tab in the new portal
-                tabs.UpdatePage(newPortalID,
+                PortalPageProvider.Instance.UpdatePage(newPortalID,
                                 newTabID,
                                 newParentTabID,
                                 myReader["PageName"].ToString(),
@@ -1178,7 +1174,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                 baseSettings.Add("SITESETTINGS_ON_REGISTER_SEND_FROM", OnRegisterSendFrom);
 
                 //Terms of service
-                SettingItem TermsOfService = new SettingItem(new PortalUrl());
+                SettingItem TermsOfService = new SettingItem(Instance.CurrentPortal.PortalUrl);
                 TermsOfService.Order = groupOrderBase + 20;
                 TermsOfService.Group = group;
                 TermsOfService.EnglishName = "Terms file name";
@@ -1573,7 +1569,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="tab">The tab.</param>
         /// <param name="tabList">The tab list.</param>
         /// <returns></returns>
-        public override PageStripDetails GetRootPage(PageSettings tab, ArrayList tabList)
+        public override PageStripDetails GetRootPage(PortalPage tab, ArrayList tabList)
         {
             return GetRootPage(tab.PageID, tabList);
         }
@@ -1588,7 +1584,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             Scheduler.Start();
         }
 
-        void FillPortalSettingsFull(Portal portal, int pageID, string portalAlias)
+        static void FillPortalSettingsFull(Portal portal, int pageID, string portalAlias)
         {
             portal.CurrentLayout = "Default";
             // Create Instance of Connection and Command Object
@@ -1697,6 +1693,8 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                         // Read the third result --  Module Page Information
                         result.NextResult();
 
+                        PortalPage activePortalPage = portal.ActivePage;
+
                         while (result.Read())
                         {
                             ModuleSettings m = new ModuleSettings();
@@ -1764,7 +1762,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                             m.DesktopSrc = result["DesktopSrc"].ToString();
                             m.MobileSrc = result["MobileSrc"].ToString();
                             m.Admin = bool.Parse(result["Admin"].ToString());
-                            portal.ActivePage.Modules.Add(m);
+                            activePortalPage.Modules.Add(m);
                         }
                         // Now read Portal out params 
                         result.NextResult();
@@ -1780,15 +1778,16 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                         portal.PortalSecurePath = Config.PortalSecureDirectory;
 
                         //ActivePage initialization
-                        portal.ActivePage.PageID = pageID;
-                        portal.ActivePage.PageLayout = portal.CurrentLayout;
-                        portal.ActivePage.ParentPageID = Int32.Parse("0" + parameterParentPageID.Value);
-                        portal.ActivePage.PageOrder = (int)parameterPageOrder.Value;
-                        portal.ActivePage.MobilePageName = (string)parameterMobilePageName.Value;
-                        portal.ActivePage.AuthorizedRoles = (string)parameterAuthRoles.Value;
-                        portal.ActivePage.PageName = (string)parameterPageName.Value;
-                        portal.ActivePage.ShowMobile = (bool)parameterShowMobile.Value;
-                        portal.ActivePage.PortalPath = portal.PortalPath; // thierry@tiptopweb.com.au for page custom layout
+                        PortalPageProvider.FillPortalPage(activePortalPage,
+                            pageID,
+                            portal.CurrentLayout,
+                            Int32.Parse("0" + parameterParentPageID.Value),
+                            (int)parameterPageOrder.Value,
+                            (string)parameterMobilePageName.Value,
+                            (string)parameterAuthRoles.Value,
+                            (string)parameterPageName.Value,
+                            (bool)parameterShowMobile.Value,
+                            portal.PortalPath);
                     }
                     catch (SqlException sqlException)
                     {
@@ -1807,7 +1806,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         }
 
         /// AddPortal Stored Procedure
-        int AddPortal(string portalAlias, string portalName, string portalPath)
+        static int AddPortal(string portalAlias, string portalName, string portalPath)
         {
             // Create Instance of Connection and Command Object
             using (SqlConnection myConnection = DBHelper.SqlConnection)
@@ -1866,7 +1865,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="templateID">The template ID.</param>
         /// <param name="myConnection">My connection.</param>
         /// <returns></returns>
-        SqlDataReader GetTemplateModuleDefinitions(int templateID, SqlConnection myConnection)
+        static SqlDataReader GetTemplateModuleDefinitions(int templateID, SqlConnection myConnection)
         {
             SqlCommand myCommand = new SqlCommand("rb_GetCurrentModuleDefinitions", myConnection);
 
@@ -1891,7 +1890,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="templateID">The template ID.</param>
         /// <param name="myConnection">My connection.</param>
         /// <returns></returns>
-        SqlDataReader GetPortalCustomSettings(int templateID, SqlConnection myConnection)
+        static SqlDataReader GetPortalCustomSettings(int templateID, SqlConnection myConnection)
         {
             // Create Instance of Command Object
             SqlCommand myCommand = new SqlCommand("rb_GetPortalCustomSettings", myConnection);
@@ -1917,7 +1916,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="moduleName">Name of the module.</param>
         /// <param name="myConnection">My connection.</param>
         /// <returns></returns>
-        Guid GetGeneralModuleDefinitionByName(string moduleName, SqlConnection myConnection)
+        static Guid GetGeneralModuleDefinitionByName(string moduleName, SqlConnection myConnection)
         {
             // Instance of Command Object
             SqlCommand myCommand = new SqlCommand("rb_GetGeneralModuleDefinitionByName", myConnection);
@@ -1964,7 +1963,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="tabID">The tab ID.</param>
         /// <param name="myConnection">My connection.</param>
         /// <returns></returns>
-        SqlDataReader GetPageModules(int tabID, SqlConnection myConnection)
+        static SqlDataReader GetPageModules(int tabID, SqlConnection myConnection)
         {
             string selectSQL = "select ModuleID, ModuleDefID, ModuleOrder, PaneName, ModuleTitle, " +
                                "AuthorizedEditRoles, AuthorizedViewRoles, AuthorizedAddRoles, " +
@@ -1991,7 +1990,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="moduleID">The module ID.</param>
         /// <param name="myConnection">My connection.</param>
         /// <returns></returns>
-        SqlDataReader GetModuleSettings(int moduleID, SqlConnection myConnection)
+        static SqlDataReader GetModuleSettings(int moduleID, SqlConnection myConnection)
         {
             SqlCommand myCommand = new SqlCommand("rb_GetModuleSettings", myConnection);
 
@@ -2015,7 +2014,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="templateID">The template ID.</param>
         /// <param name="myConnection">My connection.</param>
         /// <returns></returns>
-        SqlDataReader GetTabsByPortal(int templateID, SqlConnection myConnection)
+        static SqlDataReader GetTabsByPortal(int templateID, SqlConnection myConnection)
         {
             SqlCommand myCommand = new SqlCommand("rb_GetTabsByPortal", myConnection);
 
@@ -2037,7 +2036,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// Creates the portal path.
         /// </summary>
         /// <param name="portalPath">The portal path.</param>
-        void CreatePortalPath(string portalPath)
+        static void CreatePortalPath(string portalPath)
         {
             portalPath = portalPath.Replace("/", string.Empty);
             portalPath = portalPath.Replace("\\", string.Empty);
@@ -2077,7 +2076,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         }
 
         /// GetPortals Stored Procedure
-        SqlDataReader GetPortalsSqlDataReader()
+        static SqlDataReader GetPortalsSqlDataReader()
         {
             // Create Instance of Connection and Command Object
             SqlConnection myConnection = DBHelper.SqlConnection;
@@ -2106,12 +2105,17 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             string strSqlConnection;
 
             //jes1111 - if(ConfigurationSettings.AppSettings[portalSqlConnectionID] != null)
+            //TODO: [moudrick] use isolated per-provider configured connection string
             if (Config.PortalTemplatesConnectionString.Length != 0)
+            {
                 //jes1111 - strSqlConnection = ConfigurationSettings.AppSettings[portalSqlConnectionID];
                 strSqlConnection = Config.PortalTemplatesConnectionString;
+            }
             else
+            {
                 //jes1111 - strSqlConnection = ConfigurationSettings.AppSettings["ConnectionString"];
                 strSqlConnection = Config.ConnectionString;
+            }
 
             return (new SqlConnection(strSqlConnection));
         }

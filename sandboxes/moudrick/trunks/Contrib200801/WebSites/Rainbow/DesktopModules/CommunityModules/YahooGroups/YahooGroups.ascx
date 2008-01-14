@@ -54,7 +54,7 @@
         mail.To.Add(listname + "-subscribe " + yahooServerName);
         mail.Subject = "subscribe";
         mail.Body = "subscribe";
-        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Settings.Config.SmtpServer);
+        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Context.Config.SmtpServer);
         smtp.Send(mail);
 
         //MailMessage Mailer = new MailMessage();
@@ -73,7 +73,7 @@
         mail.To.Add(listname + "-unsubscribe " + yahooServerName);
         mail.Subject = "unsubscribe";
         mail.Body = "unsubscribe";
-        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Settings.Config.SmtpServer);
+        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Context.Config.SmtpServer);
         smtp.Send(mail);
 
         //MailMessage Mailer = new MailMessage();

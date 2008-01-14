@@ -8,10 +8,9 @@ using System.Web;
 using System.Web.UI;
 using System.Xml;
 using Rainbow.Framework.Content.Data;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -164,7 +163,7 @@ namespace Rainbow.Content.Web.Modules
 
                     xmlTextWriter.WriteStartElement("link");
                     xmlTextWriter.WriteString(Request.Url.ToString().Replace("RSS.aspx", "blogview.aspx") + "&ItemID=" +
-                                              dr["ItemID"].ToString());
+                                              dr["ItemID"]);
                     xmlTextWriter.WriteEndElement();
 
                     xmlTextWriter.WriteStartElement("pubDate");
@@ -174,16 +173,16 @@ namespace Rainbow.Content.Web.Modules
 
                     xmlTextWriter.WriteStartElement("guid");
                     xmlTextWriter.WriteString(Request.Url.ToString().Replace("RSS.aspx", "blogview.aspx") + "&ItemID=" +
-                                              dr["ItemID"].ToString());
+                                              dr["ItemID"]);
                     xmlTextWriter.WriteEndElement();
 
                     xmlTextWriter.WriteStartElement("comments");
                     xmlTextWriter.WriteString(Request.Url.ToString().Replace("RSS.aspx", "blogview.aspx") + "&ItemID=" +
-                                              dr["ItemID"].ToString());
+                                              dr["ItemID"]);
                     xmlTextWriter.WriteEndElement();
 
                     xmlTextWriter.WriteStartElement("description");
-                    xmlTextWriter.WriteCData(Server.HtmlDecode((string) dr["Description"].ToString()));
+                    xmlTextWriter.WriteCData(Server.HtmlDecode(dr["Description"].ToString()));
                     xmlTextWriter.WriteEndElement();
 
 
@@ -206,7 +205,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="moduleSettings">The module settings.</param>
         /// <returns></returns>
-        private string TitleText(Hashtable moduleSettings)
+        static string TitleText(Hashtable moduleSettings)
         {
             string titleText = "Rainbow Blog";
 

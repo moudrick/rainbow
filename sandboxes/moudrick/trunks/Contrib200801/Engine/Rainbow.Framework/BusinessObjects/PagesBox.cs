@@ -1,6 +1,7 @@
 using System.Collections;
+using Rainbow.Framework.Site.Configuration;
 
-namespace Rainbow.Framework.Site.Configuration
+namespace Rainbow.Framework.BusinessObjects
 {
     /// <summary>
     /// Box tab
@@ -11,11 +12,11 @@ namespace Rainbow.Framework.Site.Configuration
         /// <summary>
         /// Add
         /// </summary>
-        /// <param name="t">The t.</param>
+        /// <param name="pageStripDetails">The t.</param>
         /// <returns></returns>
-        public int Add(PageStripDetails t)
+        public int Add(PageStripDetails pageStripDetails)
         {
-            return InnerList.Add(t);
+            return InnerList.Add(pageStripDetails);
         }
 
         /// <summary>

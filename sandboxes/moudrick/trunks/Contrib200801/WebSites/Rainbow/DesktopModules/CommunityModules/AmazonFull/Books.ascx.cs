@@ -5,7 +5,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Xml;
 using Rainbow.Framework;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
@@ -225,8 +225,7 @@ namespace Rainbow.Content.Web.Modules
             return (xmlTrCached);
         }
 
-
-        private string HttpGet(string strURL)
+        static string HttpGet(string strURL)
         {
             //Response.Write("HttpGet(" + strURL + ")<BR>");
             //Trace.Write("AmazonFullCaption","HttpGet.Begin()");
@@ -281,7 +280,7 @@ namespace Rainbow.Content.Web.Modules
 
             if (errors.Count > 0)
             {
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -297,7 +296,7 @@ namespace Rainbow.Content.Web.Modules
 
             if (errors.Count > 0)
             {
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

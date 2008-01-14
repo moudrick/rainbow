@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using DUEMETRI.UI.WebControls.HWMenu;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
@@ -161,7 +163,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="tab">The tab.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        private string giveMeUrl(string tab, int id)
+        string giveMeUrl(string tab, int id)
         {
             if (!UseTabNameInUrl) return HttpUrlBuilder.BuildUrl(id);
             string auxtab = string.Empty;
@@ -175,7 +177,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// Shops the desktop navigation.
         /// </summary>
         /// <param name="myTab">My tab.</param>
-        private void ShopDesktopNavigation(PageStripDetails myTab)
+        void ShopDesktopNavigation(PageStripDetails myTab)
         {
             if (PortalSecurity.IsInRoles(myTab.AuthorizedRoles))
             {
@@ -183,10 +185,10 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                 mn.Link =
                     HttpUrlBuilder.BuildUrl("~/" + HttpUrlBuilder.DefaultPage, myTab.ParentPageID,
-                                            "ItemID=" + myTab.PageID.ToString());
+                                            "ItemID=" + myTab.PageID);
                 mn.Height = Height;
                 mn.Width = Width;
-                mn = RecourseMenuShop(0, myTab.Pages, mn, myTab.ParentPageID);
+                mn = RecourseMenuShop(0, PortalPageProvider.Instance.GetPagesBox(myTab), mn, myTab.ParentPageID);
                 Childs.Add(mn);
             }
         }
@@ -213,9 +215,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                         mnc.Link =
                             HttpUrlBuilder.BuildUrl("~/" + HttpUrlBuilder.DefaultPage, idShop,
-                                                    "ItemID=" + mySubTab.PageID.ToString());
+                                                    "ItemID=" + mySubTab.PageID);
                         mnc.Width = mn.Width;
-                        mnc = RecourseMenuShop(tabIndex, mySubTab.Pages, mnc, idShop);
+                        mnc = RecourseMenuShop(tabIndex, PortalPageProvider.Instance.GetPagesBox(mySubTab), mnc, idShop);
                         mn.Childs.Add(mnc);
                     }
                 }
@@ -238,7 +240,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 mn.Link = giveMeUrl(myTab.PageName, myTab.PageID);
                 mn.Height = Height;
                 mn.Width = Width;
-                mn = RecourseMenu(tabIndex, myTab.Pages, mn);
+                mn = RecourseMenu(tabIndex, PortalPageProvider.Instance.GetPagesBox(myTab), mn);
                 Childs.Add(mn);
             }
         }
@@ -247,30 +249,30 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// Recourses the menu.
         /// </summary>
         /// <param name="tabIndex">Index of the tab.</param>
-        /// <param name="t">The t.</param>
-        /// <param name="mn">The mn.</param>
+        /// <param name="pagesBoxTabs">The t.</param>
+        /// <param name="menuTreeNode">The mn.</param>
         /// <returns></returns>
-        protected virtual MenuTreeNode RecourseMenu(int tabIndex, PagesBox t, MenuTreeNode mn) //mh:
+        protected virtual MenuTreeNode RecourseMenu(int tabIndex, PagesBox pagesBoxTabs, MenuTreeNode menuTreeNode) //mh:
         {
-            if (t.Count > 0)
+            if (pagesBoxTabs.Count > 0)
             {
-                for (int c = 0; c < t.Count; c++)
+                for (int c = 0; c < pagesBoxTabs.Count; c++)
                 {
-                    PageStripDetails mySubTab = t[c];
+                    PageStripDetails mySubTab = pagesBoxTabs[c];
                     if (PortalSecurity.IsInRoles(mySubTab.AuthorizedRoles))
                     {
                         MenuTreeNode mnc = new MenuTreeNode(mySubTab.PageName);
 
                         mnc.Link = giveMeUrl(mySubTab.PageName, mySubTab.PageID);
-                        mnc.Width = mn.Width;
+                        mnc.Width = menuTreeNode.Width;
 
-                        mnc = RecourseMenu(tabIndex, mySubTab.Pages, mnc);
+                        mnc = RecourseMenu(tabIndex, PortalPageProvider.Instance.GetPagesBox(mySubTab), mnc);
                         
-                        mn.Childs.Add(mnc);
+                        menuTreeNode.Childs.Add(mnc);
                     }
                 }
             }
-            return mn;
+            return menuTreeNode;
         }
 
         /// <summary>
@@ -367,7 +369,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="activePageID">The active page ID.</param>
         /// <param name="allTabs">All tabs.</param>
         /// <returns></returns>
-        private int GetSelectedTab(int parentPageID, int activePageID, IList allTabs)
+        int GetSelectedTab(int parentPageID, int activePageID, IList allTabs)
         {
             for (int i = 0; i < allTabs.Count; i++)
             {
@@ -396,7 +398,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="tabID">The tab ID.</param>
         /// <param name="Tabs">The tabs.</param>
         /// <returns></returns>
-        private ArrayList GetTabs(int parentID, int tabID, IList Tabs)
+        static ArrayList GetTabs(int parentID, int tabID, IList Tabs)
         {
             ArrayList authorizedTabs = new ArrayList();
             //int index = -1;

@@ -12,50 +12,29 @@ namespace Rainbow.Framework
     /// </summary>
     public class PageItem : IComparable
     {
-        private int _Order;
-        private string _name;
-        private int _ID;
-        private int _nestLevel;
-
         /// <summary>
         /// Order
         /// </summary>
         /// <value>The order.</value>
-        public int Order
-        {
-            get { return _Order; }
-            set { _Order = value; }
-        }
+        public int Order;
 
         /// <summary>
         /// Name
         /// </summary>
         /// <value>The name.</value>
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        public string Name;
 
         /// <summary>
         /// ID
         /// </summary>
         /// <value>The ID.</value>
-        public int ID
-        {
-            get { return _ID; }
-            set { _ID = value; }
-        }
+        public int ID;
 
         /// <summary>
         /// NestLevel
         /// </summary>
         /// <value>The nest level.</value>
-        public int NestLevel
-        {
-            get { return _nestLevel; }
-            set { _nestLevel = value; }
-        }
+        public int NestLevel;
 
         /// <summary>
         /// Public comparer
@@ -64,13 +43,23 @@ namespace Rainbow.Framework
         /// <returns></returns>
         public int CompareTo(object value)
         {
-            if (value == null) return 1;
-
+            if (value == null)
+            {
+                return 1;
+            }
             int compareOrder = ((PageItem) value).Order;
-
-            if (Order == compareOrder) return 0;
-            if (Order < compareOrder) return -1;
-            if (Order > compareOrder) return 1;
+            if (Order == compareOrder)
+            {
+                return 0;
+            }
+            if (Order < compareOrder)
+            {
+                return -1;
+            }
+            if (Order > compareOrder)
+            {
+                return 1;
+            }
             return 0;
         }
     }

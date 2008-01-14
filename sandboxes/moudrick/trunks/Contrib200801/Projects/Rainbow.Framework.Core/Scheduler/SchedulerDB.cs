@@ -15,24 +15,11 @@ namespace Rainbow.Framework.Scheduler
     /// </summary>
     internal class SchedulerDB
     {
-        /// <summary>
-        ///     
-        /// </summary>
-        /// <remarks>
-        ///     
-        /// </remarks>
-        private string _appMapPath;
+        string appMapPath;
+        IDbConnection connection;
 
         /// <summary>
-        ///     
-        /// </summary>
-        /// <remarks>
-        ///     
-        /// </remarks>
-        private IDbConnection _cn;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:SchedulerDB"/> class.
+        /// Initializes a new instance of the <see cref="SchedulerDB"/> class.
         /// </summary>
         /// <param name="cn">The cn.</param>
         /// <param name="applicationMapPath">The application map path.</param>
@@ -41,8 +28,8 @@ namespace Rainbow.Framework.Scheduler
         /// </returns>
         public SchedulerDB(IDbConnection cn, string applicationMapPath)
         {
-            _cn = cn;
-            _appMapPath = applicationMapPath;
+            connection = cn;
+            appMapPath = applicationMapPath;
             //should be: HttpContext.Current.Server.MapPath(PortalSettings.ApplicationPath)
         }
 
@@ -56,8 +43,8 @@ namespace Rainbow.Framework.Scheduler
         {
             ArrayList ary = new ArrayList();
 
-            _cn.Open();
-            using (IDbCommand cmd = _cn.CreateCommand())
+            connection.Open();
+            using (IDbCommand cmd = connection.CreateCommand())
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "rb_SchedulerGetExpiredTasks";
@@ -69,7 +56,7 @@ namespace Rainbow.Framework.Scheduler
                     dr.Close();
                 }
             }
-            _cn.Close();
+            connection.Close();
             return (SchedulerTask[]) ary.ToArray(typeof (SchedulerTask));
         }
 
@@ -82,8 +69,8 @@ namespace Rainbow.Framework.Scheduler
         /// </returns>
         public ISchedulable GetModuleInstance(int idModule)
         {
-            _cn.Open();
-            IDbCommand cmd = _cn.CreateCommand();
+            connection.Open();
+            IDbCommand cmd = connection.CreateCommand();
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = "rb_SchedulerGetModuleClassName";
             IDataParameter par;
@@ -98,18 +85,16 @@ namespace Rainbow.Framework.Scheduler
             {
                 dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             }
-
             catch (Exception ex)
             {
-                _cn.Close();
+                connection.Close();
                 throw new SchedulerException("Unable to load assembly name from database", ex);
             }
-
-            catch
-            {
-                _cn.Close();
-                throw;
-            }
+//            catch
+//            {
+//                _cn.Close();
+//                throw;
+//            }
             string assemblyName;
             string typeName;
 
@@ -117,13 +102,16 @@ namespace Rainbow.Framework.Scheduler
             {
                 if (dr.Read())
                 {
-                    assemblyName = string.Concat(_appMapPath, @"\bin\",
+                    assemblyName = string.Concat(appMapPath,
+                                                 @"\bin\",
                                                  (string) dr["AssemblyName"]);
                     typeName = (string) dr["ClassName"];
                 }
 
                 else
+                {
                     throw new SchedulerException("Not assembly in database");
+                }
                 dr.Close(); //_cn is closed by behavior.
             }
             Assembly a;
@@ -132,7 +120,6 @@ namespace Rainbow.Framework.Scheduler
             {
                 a = Assembly.LoadFrom(assemblyName);
             }
-
             catch (Exception ex)
             {
                 throw new SchedulerException("Cannot load assembly", ex);
@@ -143,7 +130,6 @@ namespace Rainbow.Framework.Scheduler
             {
                 o = a.CreateInstance(typeName);
             }
-
             catch (Exception ex)
             {
                 throw new SchedulerException(
@@ -152,11 +138,10 @@ namespace Rainbow.Framework.Scheduler
                                   typeName),
                     ex);
             }
-
-            catch
-            {
-                throw;
-            }
+//            catch
+//            {
+//                throw;
+//            }
             ISchedulable module = o as ISchedulable;
 
             if (module == null)
@@ -172,8 +157,8 @@ namespace Rainbow.Framework.Scheduler
         /// <returns>A System.Data.IDataReader value...</returns>
         public IDataReader GetOrderedTask()
         {
-            _cn.Open();
-            IDbCommand cmd = _cn.CreateCommand();
+            connection.Open();
+            IDbCommand cmd = connection.CreateCommand();
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = "rb_SchedulerGetOrderedTasks";
             return cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -186,8 +171,8 @@ namespace Rainbow.Framework.Scheduler
         /// <returns>A System.Data.IDataReader value...</returns>
         public IDataReader GetTasksByOwner(int idOwner)
         {
-            _cn.Open();
-            IDbCommand cmd = _cn.CreateCommand();
+            connection.Open();
+            IDbCommand cmd = connection.CreateCommand();
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = "rb_SchedulerGetTasksByOwner";
             IDbDataParameter par;
@@ -208,8 +193,8 @@ namespace Rainbow.Framework.Scheduler
         /// <returns>A System.Data.IDataReader value...</returns>
         public IDataReader GetTasksByTarget(int idTarget)
         {
-            _cn.Open();
-            IDbCommand cmd = _cn.CreateCommand();
+            connection.Open();
+            IDbCommand cmd = connection.CreateCommand();
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = "rb_SchedulerGetTasksByTarget";
             IDbDataParameter par;
@@ -242,9 +227,9 @@ namespace Rainbow.Framework.Scheduler
                 ss.Close();
             }
             int idTask;
-            _cn.Open();
+            connection.Open();
 
-            using (IDbCommand cmd = _cn.CreateCommand())
+            using (IDbCommand cmd = connection.CreateCommand())
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "rb_SchedulerAddTask";
@@ -288,7 +273,7 @@ namespace Rainbow.Framework.Scheduler
                 cmd.ExecuteNonQuery();
                 idTask = (int) ((IDataParameter) cmd.Parameters["@IDTask"]).Value;
             }
-            _cn.Close();
+            connection.Close();
 
             if (idTask == -1)
                 throw new SchedulerException("Task add fail in DB");
@@ -301,9 +286,9 @@ namespace Rainbow.Framework.Scheduler
         /// <param name="iDTask">The i D task.</param>
         public void RemoveTask(int iDTask)
         {
-            _cn.Open();
+            connection.Open();
 
-            using (IDbCommand cmd = _cn.CreateCommand())
+            using (IDbCommand cmd = connection.CreateCommand())
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "rb_SchedulerRemoveTask";
@@ -316,7 +301,7 @@ namespace Rainbow.Framework.Scheduler
                 cmd.Parameters.Add(par);
                 cmd.ExecuteNonQuery();
             }
-            _cn.Close();
+            connection.Close();
         }
     }
 }

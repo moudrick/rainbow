@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.Web.Caching;
 using Rainbow.Framework.BusinessObjects;
-using Rainbow.Framework.Provider;
-using System.Configuration;
 using System.Collections;
 using System.Globalization;
 using Rainbow.Framework.Providers.Geographic;
@@ -66,42 +64,16 @@ namespace Rainbow.Framework.Providers
         /// Instances this instance.
         /// </summary>
         /// <returns></returns>
-        public static GeographicProvider Current
-        //TODO: rename it to Instance
+        public static GeographicProvider Instance
         {
             get
             {
-                // Get the names of providers
-                ProviderConfiguration config =
-                    ProviderConfiguration.GetProviderConfiguration(providerType);
-                // Read specific configuration information for this provider
-                ProviderSettings providerSettings =
-                    (ProviderSettings) config.Providers[config.DefaultProvider];
-                // In the cache?
-                string cacheKey = "Rainbow::Web::GeographicProvider::" + config.DefaultProvider;
-
-                if (CurrentCache[cacheKey] == null)
-                {
-                    // The assembly should be in \bin or GAC, so we simply need
-                    // to get an instance of the type
-                    try
-                    {
-                        CurrentCache.Insert(cacheKey,
-                                            ProviderHelper.InstantiateProvider(providerSettings,
-                                                                               typeof (
-                                                                                   GeographicProvider
-                                                                                   )));
-                    }
-                    catch (Exception e)
-                    {
-                        throw new Exception("Unable to load provider", e);
-                    }
-                }
-                return (GeographicProvider) CurrentCache[cacheKey];
+                return ProviderConfiguration.GetDefaultProviderFromCache<GeographicProvider>(
+                    providerType, CurrentCache);
             }
         }
 
-        protected static Cache _currentCache = null;
+        static Cache currentCache = null;
 
         /// <summary>
         /// Gets the current cache.
@@ -111,20 +83,21 @@ namespace Rainbow.Framework.Providers
         {
             get
             {
-                if (_currentCache == null)
+                //TODO: [moudrick] make this behavior a strategy (IWebCacheStrategy)
+                //TODO: [moudrick] access it from RainbowContext similar to IHttpContextStrategy and IConfigStrategy
+                if (currentCache == null)
                 {
                     if (System.Web.HttpContext.Current != null)
                     {
-                        _currentCache = System.Web.HttpContext.Current.Cache;
+                        currentCache = System.Web.HttpContext.Current.Cache;
                     }
                     else
                     {
                         // I'm in a test environment
-                        //System.Web.HttpRuntime r = new System.Web.HttpRuntime();
-                        _currentCache = System.Web.HttpRuntime.Cache;
+                        currentCache = System.Web.HttpRuntime.Cache;
                     }
                 }
-                return _currentCache;
+                return currentCache;
             }
         }
 

@@ -1,15 +1,12 @@
 using System;
 using System.Collections;
-//using System.Data.SqlClient;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
-using Rainbow.Framework.Core; //RainbowContext
-using Rainbow.Framework.Exceptions; //all
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Settings; //Config
-using Rainbow.Framework.Settings.Cache; //CurrentCache
 
 namespace Rainbow.Framework
 {

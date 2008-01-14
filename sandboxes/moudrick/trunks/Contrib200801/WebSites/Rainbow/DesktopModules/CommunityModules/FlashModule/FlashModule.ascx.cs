@@ -17,6 +17,7 @@ using System.IO;
 using Osmosis.Web.UI;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
 using Path=Rainbow.Framework.Path;
@@ -69,7 +70,7 @@ namespace Rainbow.Content.Web.Modules
             backColor.Order = groupBase + 35; //4;
             baseSettings.Add("backcolor", backColor);
 
-            SettingItem FlashPath = new SettingItem(new PortalUrl());
+            SettingItem FlashPath = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
             FlashPath.Required = true;
             FlashPath.Value = "FlashGallery";
             FlashPath.Group = group;
@@ -109,9 +110,7 @@ namespace Rainbow.Content.Web.Modules
                     movieName = Server.MapPath(flashSrc);
                 }
             }
-            catch
-            {
-            }
+            catch {;}
 
             //Added existing file check by Manu
             if (movieName.Length != 0)
@@ -136,9 +135,7 @@ namespace Rainbow.Content.Web.Modules
                     {
                         FlashMovie1.MovieBGColor = ColorTranslator.FromHtml(flashBGColor);
                     }
-                    catch
-                    {
-                    }
+                    catch {;}
                 }
 
                 //this.FlashMovie1.AutoLoop = false;

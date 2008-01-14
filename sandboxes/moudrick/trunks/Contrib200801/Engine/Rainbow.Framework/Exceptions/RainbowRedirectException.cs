@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Context;
 
 namespace Rainbow.Framework.Exceptions
 {

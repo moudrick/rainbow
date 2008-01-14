@@ -1,9 +1,9 @@
 using System;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Settings.Cache;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using System.Collections.Generic;
@@ -117,23 +117,23 @@ namespace Rainbow.Admin
             }
 
             // Add Page info in the database
-            int NewPageID =
-                new PagesDB().AddPage(portalSettings.PortalID, Int32.Parse(parentPage.SelectedItem.Value), tabName.Text,
+            int newPageID = PortalPageProvider.Instance.AddPage(portalSettings.PortalID, Int32.Parse(parentPage.SelectedItem.Value), tabName.Text,
                                       990000, authorizedRoles, showMobile.Checked, mobilePageName.Text);
             //Clear SiteMaps Cache
             RainbowSiteMapProvider.ClearAllRainbowSiteMapCaches();
 
             // Update custom settings in the database
             EditTable.UpdateControls();
-            return NewPageID;
+            return newPageID;
         }
 
         /// <summary>
         /// The BindData helper method is used to update the tab's
         /// layout panes with the current configuration information
         /// </summary>
-        void BindData() {
-            PageSettings tab = portalSettings.ActivePage;
+        void BindData()
+        {
+            PortalPage tab = portalSettings.ActivePage;
 
             // Populate Page Names, etc.
             tabName.Text = "New Page";
@@ -141,15 +141,17 @@ namespace Rainbow.Admin
             showMobile.Checked = false;
 
             // Populate the "ParentPage" Data
-            PagesDB t = new PagesDB();
-            IList<PageItem> items = t.GetPagesParent( portalSettings.PortalID, PageID );
+            IList<PageItem> items =
+                PortalPageProvider.Instance.GetPagesParent(portalSettings.PortalID, PageID);
             parentPage.DataSource = items;
             parentPage.DataBind();
 
             // Translate
-            if ( parentPage.Items.FindByText( " ROOT_LEVEL" ) != null )
-                parentPage.Items.FindByText( " ROOT_LEVEL" ).Text =
-                    General.GetString( "ROOT_LEVEL", "Root Level", parentPage );
+            if (parentPage.Items.FindByText(" ROOT_LEVEL") != null)
+            {
+                parentPage.Items.FindByText(" ROOT_LEVEL").Text =
+                    General.GetString("ROOT_LEVEL", "Root Level", parentPage);
+            }
 
             // Populate checkbox list with all security roles for this portal
             // and "check" the ones already configured for this tab

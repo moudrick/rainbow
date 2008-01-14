@@ -7,11 +7,10 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.BusinessObjects;
-using Rainbow.Framework.Core;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
@@ -375,7 +374,7 @@ namespace Rainbow.Content.Web.Modules
         #region	Methods
 
         private void BindCountry() {
-            CountryField.DataSource = GeographicProvider.Current.GetCountries( CountryFields.Name );
+            CountryField.DataSource = GeographicProvider.Instance.GetCountries( CountryFields.Name );
             CountryField.DataBind();
         }
 
@@ -383,14 +382,14 @@ namespace Rainbow.Content.Web.Modules
             StateRow.Visible = false;
             if ( CountryField.SelectedItem != null ) {
 
-                Country selectedCountry = GeographicProvider.Current.GetCountry( CountryField.SelectedValue );
+                Country selectedCountry = GeographicProvider.Instance.GetCountry( CountryField.SelectedValue );
 
                 //added next line to clear the list. 
                 //The stateField seems to remember it's values even when you set the 
                 //DataSource to null
                 //Michel Barneveld Rainbow@MichelBarneveld.Com
                 StateField.Items.Clear();
-                StateField.DataSource = GeographicProvider.Current.GetCountryStates( selectedCountry.CountryID );
+                StateField.DataSource = GeographicProvider.Instance.GetCountryStates( selectedCountry.CountryID );
                 StateField.DataBind();
 
                 StateLabel.Text = selectedCountry.AdministrativeDivisionName;

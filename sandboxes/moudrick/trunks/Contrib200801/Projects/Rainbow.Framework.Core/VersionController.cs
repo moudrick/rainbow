@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Web;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Exceptions;
-using Rainbow.Framework.Settings;
 
 namespace Rainbow.Framework.Core
 {

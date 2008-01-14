@@ -3,9 +3,9 @@ using System.Drawing;
 using System.Web;
 using System.Web.UI;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.DAL;
-using Rainbow.Framework.Settings;
 using History=Rainbow.Framework.History;
 
 namespace Rainbow.Setup 

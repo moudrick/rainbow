@@ -1,4 +1,5 @@
 using System.Web;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core;
 
 namespace Rainbow.Framework.Logging

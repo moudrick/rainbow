@@ -6,8 +6,8 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Exceptions;
-using Rainbow.Framework.Settings;
 
 namespace Rainbow.Framework.Data
 {

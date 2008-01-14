@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
-using Rainbow.Framework.Settings;
 using System.Web.Security;
 
 namespace Rainbow.Framework.Monitoring

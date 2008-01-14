@@ -6,13 +6,17 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using System.Xml;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Core.Configuration.Settings.Providers; //PortalPageProvider
 using Rainbow.Framework.Design;
+using Rainbow.Framework.Providers; //PortalProvider, HttpUrlBuilder
 using Path = Rainbow.Framework.Path;
 
-using Rainbow.Framework.DataTypes; //PortalUrl - together
-using Rainbow.Framework.Settings; //Config.PortalSecureDirectory
-using Rainbow.Framework.Site.Configuration; //PageSettings
+using Rainbow.Framework.DataTypes; //PortalUrl
+using Rainbow.Framework.Site.Configuration; //PortalPage
 
+#warning move to appropriate namespace
 namespace Rainbow.Framework.Core.Configuration.Settings
 {
     /// <summary>
@@ -43,7 +47,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
 
         readonly string portalPathPrefix;
 
-        PageSettings activePage = new PageSettings();
+        readonly PortalPage activePage = new PortalPage();
         ArrayList desktopPages = new ArrayList();
         ArrayList mobilePages = new ArrayList();
         Hashtable customSettings;
@@ -59,6 +63,11 @@ namespace Rainbow.Framework.Core.Configuration.Settings
         XmlDocument portalPagesXml;
         Theme currentThemeAlt;
         Theme currentThemeDefault;
+
+        ///<summary>
+        /// Gets portal url of the portal
+        ///</summary>
+        public readonly PortalUrl PortalUrl;
 
         /// <summary>
         /// Gets the get terms of service.
@@ -94,7 +103,8 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                     string localized_terms = "";
                     // TODO: FIX THIS
                     // localized_terms = terms.Replace(".", "_" + Localize.GetCurrentUINeutralCultureName() + ".");
-                    PortalUrl portalUrl = new PortalUrl();
+
+                    PortalUrl portalUrl = PortalUrl;
                     portalUrl.Value = localized_terms;
 
                     if (File.Exists(HttpContext.Current.Server.MapPath(portalUrl.FullPath)))
@@ -331,7 +341,6 @@ namespace Rainbow.Framework.Core.Configuration.Settings
                 {
                     portalPath = value.Substring(portalPathPrefix.Length);
                 }
-
                 else
                 {
                     portalPath = value;
@@ -409,20 +418,10 @@ namespace Rainbow.Framework.Core.Configuration.Settings
         /// Gets or sets the active page.
         /// </summary>
         /// <value>The active page.</value>
-        public PageSettings ActivePage
+        public PortalPage ActivePage
         {
             get { return activePage; }
-            set { activePage = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the custom settings.
-        /// </summary>
-        /// <value>The custom settings.</value>
-        public Hashtable CustomSettings
-        {
-            get { return customSettings; }
-            set { customSettings = value; }
+            //set { activePage = value; }
         }
 
         /// <summary>
@@ -504,10 +503,29 @@ namespace Rainbow.Framework.Core.Configuration.Settings
             set { currentThemeDefault = value; }
         }
 
-        internal Portal()
+        /// <summary>
+        /// Gets or sets the custom settings.
+        /// </summary>
+        /// <value>The custom settings.</value>
+        public Hashtable CustomSettings
+        {
+            get { return customSettings; }
+            //internal set { customSettings = value; }
+            set { customSettings = value; }
+        }
+
+        public Portal()
+        //internal Portal()
         {
             string applicationPath = HttpContext.Current.Request.ApplicationPath;
             portalPathPrefix = applicationPath == "/" ? string.Empty : applicationPath;
+
+            string portalPathPrefixLocal = PortalFullPath;
+            if (!portalPathPrefixLocal.EndsWith("/"))
+            {
+                portalPathPrefixLocal += "/";
+            }
+            PortalUrl = new PortalUrl(portalPathPrefixLocal);
         }
 
         // -- Thierry (Tiptopweb), 21 Jun 2003 [START] 
@@ -597,7 +615,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings
         /// <param name="writer">The writer.</param>
         static void RecursePortalPagesXml(PageStripDetails pageStripDetails, XmlTextWriter writer)
         {
-            PagesBox children = pageStripDetails.Pages;
+            PagesBox children = PortalPageProvider.Instance.GetPagesBox(pageStripDetails);
             bool groupElementWritten = false;
 
             for (int child = 0; child < children.Count; child++)

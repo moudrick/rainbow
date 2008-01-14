@@ -200,7 +200,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="Value">The value.</param>
         /// <param name="dt">The dt.</param>
         /// <returns></returns>
-        private DataRow CreateRow(string Text, string Value, DataTable dt)
+        static DataRow CreateRow(string Text, string Value, DataTable dt)
         {
             DataRow dr = dt.NewRow();
             dr[0] = Text;
@@ -221,9 +221,9 @@ namespace Rainbow.Content.Web.Modules
             {
                 if (IsEditable)
                 {
-                    return
-                        HttpUrlBuilder.BuildUrl("~/DesktopModules/CommunityModules/EnhancedLinks/EnhancedLinksEdit.aspx",
-                                                "ItemID=" + itemID.ToString() + "&mID=" + ModuleID.ToString());
+                    return HttpUrlBuilder.BuildUrl(
+                        "~/DesktopModules/CommunityModules/EnhancedLinks/EnhancedLinksEdit.aspx",
+                        string.Format("ItemID={0}&mID={1}", itemID, ModuleID));
                 }
                 else
                 {
@@ -255,7 +255,7 @@ namespace Rainbow.Content.Web.Modules
         #region General Module Implementation
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:EnhancedLinks"/> class.
+        /// Initializes a new instance of the <see cref="EnhancedLinks"/> class.
         /// </summary>
         public EnhancedLinks()
         {
@@ -431,23 +431,23 @@ namespace Rainbow.Content.Web.Modules
 
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Server.MapPath(this.TemplateSourceDirectory + "/Install.sql");
+            string currentScriptName = Server.MapPath(TemplateSourceDirectory + "/Install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Server.MapPath(this.TemplateSourceDirectory + "/Uninstall.sql");
+            string currentScriptName = Server.MapPath(TemplateSourceDirectory + "/Uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

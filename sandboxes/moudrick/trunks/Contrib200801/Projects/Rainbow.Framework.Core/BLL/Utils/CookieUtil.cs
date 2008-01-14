@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Web;
-using Rainbow.Framework.Configuration;
+
 //===============================================================================
 //
 //	Base Logic Layer
@@ -20,15 +20,12 @@ namespace Rainbow.Framework.BLL.Utils
 	sealed class CookieUtil
 	{
 		//  minutes
-		static TimeSpan expire_ = new TimeSpan(0, 0, 25, 0);
-		/// <summary>
-		/// Initializes the <see cref="CookieUtil"/> class.
-		/// </summary>
-		static CookieUtil()
-		{
-		}
+		static TimeSpan expire = new TimeSpan(0, 0, 25, 0);
 
-		#region Interface
+	    /// <summary>
+	    /// the cookie path used for window informaton ( dependency above !)
+	    /// </summary>
+	    static readonly string CookiePath  = "/" ;
 
 		/// <summary>
 		/// Cookie Expiration
@@ -38,13 +35,13 @@ namespace Rainbow.Framework.BLL.Utils
 		{
 			get
 			{
-				return expire_;
+				return expire;
 			}
 			set
 			{
-				Monitor.Enter(expire_);
-				expire_ = value;
-				Monitor.Exit(expire_);
+				Monitor.Enter(expire);
+				expire = value;
+				Monitor.Exit(expire);
 			}
 		} // end of Expiration
 
@@ -112,17 +109,12 @@ namespace Rainbow.Framework.BLL.Utils
 			return retrieveImpl(name);
 		} // end of Retrieve
 
-		#endregion
-
-		#region Implementation
-
-		// Implementation
 		/// <summary>
 		/// Implemented the remove functionality
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		private static object retrieveImpl(string name)
+		static object retrieveImpl(string name)
 		{
 			return HttpContext.Current.Request.Cookies[name];
 		} // end of retrieveImpl
@@ -131,7 +123,7 @@ namespace Rainbow.Framework.BLL.Utils
 		/// Implemented the remove functionality
 		/// </summary>
 		/// <param name="name">The name.</param>
-		private static void removeImpl(string name)
+		static void removeImpl(string name)
 		{
 			HttpCookie hcookie = HttpContext.Current.Response.Cookies[name];
 
@@ -145,7 +137,7 @@ namespace Rainbow.Framework.BLL.Utils
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="value">The value.</param>
-		private static void addImpl(string name, string value)
+		static void addImpl(string name, string value)
 		{
 			// create cookie
 			HttpCookie hcookie = new HttpCookie(name, value);
@@ -156,11 +148,11 @@ namespace Rainbow.Framework.BLL.Utils
 		/// Set cookie
 		/// </summary>
 		/// <param name="cookie">The cookie.</param>
-		private static void setCookie(ref HttpCookie cookie)
+		static void setCookie(ref HttpCookie cookie)
 		{
 			// expire in timespan
-			cookie.Expires = DateTime.Now + expire_;
-			cookie.Path = GlobalInternalStrings.CookiePath;
+			cookie.Expires = DateTime.Now + expire;
+			cookie.Path = CookiePath;
 
 			// see if cookie exists, otherwise create it
 			if (HttpContext.Current.Response.Cookies[cookie.Name] != null)
@@ -174,14 +166,11 @@ namespace Rainbow.Framework.BLL.Utils
 		/// Clear the cookie
 		/// </summary>
 		/// <param name="cookie">The cookie.</param>
-		private static void clearCookie(ref HttpCookie cookie)
+		static void clearCookie(ref HttpCookie cookie)
 		{
 			cookie.Expires = new DateTime(1999, 10, 12);
 			cookie.Value = null;
 			//HttpContext.Current.Response.Cookies.Remove(cookie.Name);
 		} // end of clearCookie
-
-		#endregion
-
 	}
 }

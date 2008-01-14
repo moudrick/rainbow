@@ -1,16 +1,10 @@
-using System.Web;
 using DUEMETRI.UI.WebControls.HWMenu;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
-// mario@hartmann.net: 24/07/2003
-// modified from MenuNavigation
-// the navigation will not be effective and instead we navigate to the same page
-// and transmit the PageID as a ItemID.
-//
-// thierry@tiptopweb.com.au: 17/09/2003
-// replace Default.aspx by DesktopDefault.aspx as we are loosing the parameters
-// when transfering from Default.aspx to DesktopDefault.aspx and not using the UrlBuilder
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -18,6 +12,15 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// ItemNavigation inherits from MenuNavigation
     /// and adds the functionality of the ShopNavigation with ALL types of binding.
     /// all subcategories are added as an ItemID property.
+    /// 
+    /// mario@hartmann.net: 24/07/2003
+    /// modified from MenuNavigation
+    /// the navigation will not be effective and instead we navigate to the same page
+    /// and transmit the PageID as a ItemID.
+    ///
+    /// thierry@tiptopweb.com.au: 17/09/2003
+    /// replace Default.aspx by DesktopDefault.aspx as we are loosing the parameters
+    /// when transfering from Default.aspx to DesktopDefault.aspx and not using the UrlBuilder
     /// </summary>
     public class ItemNavigation : MenuNavigation
     {
@@ -28,18 +31,16 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             // add the root!
             AddRootNode();
-
             base.DataBind();
         }
-
 
         /// <summary>
         /// Add the current tab as top menu item.
         /// </summary>
-        private void AddRootNode()
+        void AddRootNode()
         {
-            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
-            PageSettings tabItemsRoot = portalSettings.ActivePage;
+            Portal portalSettings = PortalProvider.Instance.CurrentPortal;
+            PortalPage tabItemsRoot = portalSettings.ActivePage;
 
             using (MenuTreeNode mn = new MenuTreeNode(tabItemsRoot.PageName))
             {
@@ -49,7 +50,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 Childs.Add(mn);
             }
         }
-
 
         /// <summary>
         /// Add a Menu Tree Node if user in in the list of Authorized roles.
@@ -61,19 +61,17 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             if (PortalSecurity.IsInRoles(myTab.AuthorizedRoles))
             {
-                // get index and id from this page and transmit them
-                // Obtain PortalSettings from Current Context 
-                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = PortalProvider.Instance.CurrentPortal;
                 int tabIDItemsRoot = portalSettings.ActivePage.PageID;
 
-                MenuTreeNode mn = new MenuTreeNode(myTab.PageName);
+                MenuTreeNode menuTreeNode = new MenuTreeNode(myTab.PageName);
 
                 // change the link to stay on the same page and call a category product
-                mn.Link = HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", tabIDItemsRoot, "ItemID=" + myTab.PageID);
+                menuTreeNode.Link = HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", tabIDItemsRoot, "ItemID=" + myTab.PageID);
                 //fixed by manu
-                mn.Width = Width;
-                mn = RecourseMenu(tabIDItemsRoot, myTab.Pages, mn);
-                Childs.Add(mn);
+                menuTreeNode.Width = Width;
+                menuTreeNode = RecourseMenu(tabIDItemsRoot, PortalPageProvider.Instance.GetPagesBox(myTab), menuTreeNode);
+                Childs.Add(menuTreeNode);
             }
         }
 
@@ -82,32 +80,33 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// modified to transmit the PageID and TabIndex for the item page
         /// </summary>
         /// <param name="tabIDItemsRoot">The tab ID items root.</param>
-        /// <param name="t">The t.</param>
-        /// <param name="mn">The mn.</param>
+        /// <param name="pagesBoxTabs">The t.</param>
+        /// <param name="menuTreeNode">The mn.</param>
         /// <returns></returns>
-        protected override MenuTreeNode RecourseMenu(int tabIDItemsRoot, PagesBox t, MenuTreeNode mn)
+        protected override MenuTreeNode RecourseMenu(int tabIDItemsRoot, 
+            PagesBox pagesBoxTabs, MenuTreeNode menuTreeNode)
         {
-            if (t.Count > 0)
+            if (pagesBoxTabs.Count > 0)
             {
-                for (int c = 0; c < t.Count; c++)
+                for (int c = 0; c < pagesBoxTabs.Count; c++)
                 {
-                    PageStripDetails mySubTab = (PageStripDetails) t[c];
+                    PageStripDetails subTab = pagesBoxTabs[c];
 
-                    if (PortalSecurity.IsInRoles(mySubTab.AuthorizedRoles))
+                    if (PortalSecurity.IsInRoles(subTab.AuthorizedRoles))
                     {
-                        MenuTreeNode mnc = new MenuTreeNode(mySubTab.PageName);
+                        MenuTreeNode mnc = new MenuTreeNode(subTab.PageName);
 
                         // change PageID into ItemID for the product module on the same page
                         mnc.Link =
-                            HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", tabIDItemsRoot, "ItemID=" + mySubTab.PageID);
+                            HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", tabIDItemsRoot, "ItemID=" + subTab.PageID);
                         //by manu
-                        mnc.Width = mn.Width;
-                        mnc = RecourseMenu(tabIDItemsRoot, mySubTab.Pages, mnc);
-                        mn.Childs.Add(mnc);
+                        mnc.Width = menuTreeNode.Width;
+                        mnc = RecourseMenu(tabIDItemsRoot, PortalPageProvider.Instance.GetPagesBox(subTab), mnc);
+                        menuTreeNode.Childs.Add(mnc);
                     }
                 }
             }
-            return mn;
+            return menuTreeNode;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Web.UI;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -80,10 +80,10 @@ namespace Rainbow.Content.Web.Modules
             // if ( this is the first visit to the page, bind the tab data to the page listbox
             if (Page.IsPostBack == false)
             {
-                this.QuestionList.DataTextField = "QuestionName";
-                this.QuestionList.DataValueField = "QuestionID";
-                this.QuestionList.DataSource = portalQuestion;
-                this.QuestionList.DataBind();
+                QuestionList.DataTextField = "QuestionName";
+                QuestionList.DataValueField = "QuestionID";
+                QuestionList.DataSource = portalQuestion;
+                QuestionList.DataBind();
             }
         }
 

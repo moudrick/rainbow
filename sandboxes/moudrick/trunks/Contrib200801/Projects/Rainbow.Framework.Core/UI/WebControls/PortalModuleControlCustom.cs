@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Web;
-using Rainbow.Framework.Core;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings.Cache;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -27,7 +26,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             get { return CustomizedUserSettings.Count > 0; }
         }
-
 
         /// <summary>
         /// Gets the customized user settings.

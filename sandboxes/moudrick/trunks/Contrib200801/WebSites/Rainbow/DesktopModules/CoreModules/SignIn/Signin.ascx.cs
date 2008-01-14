@@ -1,19 +1,15 @@
 using System;
-using System.Data.SqlClient;
 using System.Text;
 using System.Web.Mail;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Security;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
-
 using System.Web.Security;
-using System.Web.Profile;
-using System.Data;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -246,28 +242,40 @@ namespace Rainbow.Content.Web.Modules
         {
             bool hide = true;
             bool autocomplete = false;
-            if (this.ModuleID == 0)
+            if (ModuleID == 0)
+            {
                 ((SettingItem) Settings["MODULESETTINGS_SHOW_TITLE"]).Value = "false";
+            }
 
             if (PortalSettings.CustomSettings["SITESETTINGS_ALLOW_NEW_REGISTRATION"] != null)
-                if (!bool.Parse(PortalSettings.CustomSettings["SITESETTINGS_ALLOW_NEW_REGISTRATION"].ToString()))
+            {
+                if ( !bool.Parse(PortalSettings.CustomSettings["SITESETTINGS_ALLOW_NEW_REGISTRATION"].ToString()))
+                {
                     RegisterBtn.Visible = false;
-
+                }
+            }
             if (Settings["SIGNIN_AUTOMATICALLYHIDE"] != null)
+            {
                 hide = bool.Parse(Settings["SIGNIN_AUTOMATICALLYHIDE"].ToString());
-
+            }
             if (Settings["SIGNIN_ALLOW_AUTOCOMPLETE"] != null)
+            {
                 autocomplete = bool.Parse(Settings["SIGNIN_ALLOW_AUTOCOMPLETE"].ToString());
-
+            }
             if (Settings["SIGNIN_ALLOW_REMEMBER_LOGIN"] != null)
-                RememberCheckBox.Visible = bool.Parse(Settings["SIGNIN_ALLOW_REMEMBER_LOGIN"].ToString());
-
+            {
+                RememberCheckBox.Visible =
+                    bool.Parse(Settings["SIGNIN_ALLOW_REMEMBER_LOGIN"].ToString());
+            }
             if (Settings["SIGNIN_ALLOW_SEND_PASSWORD"] != null)
-                SendPasswordBtn.Visible = bool.Parse(Settings["SIGNIN_ALLOW_SEND_PASSWORD"].ToString());
+            {
+                SendPasswordBtn.Visible =
+                    bool.Parse(Settings["SIGNIN_ALLOW_SEND_PASSWORD"].ToString());
+            }
 
             if (hide && Request.IsAuthenticated)
             {
-                this.Visible = false;
+                Visible = false;
             }
             else if (!autocomplete)
             {

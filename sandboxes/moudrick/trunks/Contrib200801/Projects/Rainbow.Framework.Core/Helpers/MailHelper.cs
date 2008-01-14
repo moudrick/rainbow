@@ -5,12 +5,11 @@ using System.Net.Mail;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mail;
-using Rainbow.Framework.Core;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using MailMessage=System.Net.Mail.MailMessage;
 
 namespace Rainbow.Framework.Helpers
@@ -91,12 +90,10 @@ namespace Rainbow.Framework.Helpers
                                     eal.Add(email);
                                 }
                             }
-                            catch
-                            {}
+                            catch {;}
                         }
                     }
                 }
-
                 finally
                 {
                     myReader.Close();

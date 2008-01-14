@@ -13,6 +13,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
@@ -20,7 +21,6 @@ using Rainbow.Framework.Design;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Setup;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
@@ -73,8 +73,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
         //private bool			_supportsHelp = false;
         private bool _supportsArrows = true;
         private ViewControlManager _vcm = null;
-        readonly PlaceHolder _header = new PlaceHolder();
-        readonly PlaceHolder _footer = new PlaceHolder();
+        readonly PlaceHolder header = new PlaceHolder();
+        readonly PlaceHolder footer = new PlaceHolder();
         readonly PlaceHolder _headerPlaceHolder = new PlaceHolder();
 
         //private PlaceHolder		_output = new PlaceHolder();
@@ -259,13 +259,13 @@ namespace Rainbow.Framework.Web.UI.WebControls
             _groupOrderBase = (int) SettingItemGroup.BUTTON_DISPLAY_SETTINGS;
 
             // Show print button in view mode?
-            SettingItem printButton = new SettingItem(new BooleanDataType());
-            printButton.Value = "False";
-            printButton.Order = _groupOrderBase + 20;
-            printButton.Group = _Group;
-            printButton.EnglishName = "Show Print Button";
-            printButton.Description = "Show print button in view mode?";
-            baseSettings.Add("MODULESETTINGS_SHOW_PRINT_BUTTION", printButton);
+            SettingItem printButtonLocal = new SettingItem(new BooleanDataType());
+            printButtonLocal.Value = "False";
+            printButtonLocal.Order = _groupOrderBase + 20;
+            printButtonLocal.Group = _Group;
+            printButtonLocal.EnglishName = "Show Print Button";
+            printButtonLocal.Description = "Show print button in view mode?";
+            baseSettings.Add("MODULESETTINGS_SHOW_PRINT_BUTTION", printButtonLocal);
 
             // added: Jes1111 2004-08-29 - choice! Default is 'true' for backward compatibility
             // Show Title for print?
@@ -318,13 +318,13 @@ namespace Rainbow.Framework.Web.UI.WebControls
             baseSettings.Add("MODULESETTINGS_SHOW_ARROW_BUTTONS", ArrowButtons);
 
             // Show help button if exists
-            SettingItem helpButton = new SettingItem(new BooleanDataType());
-            helpButton.Value = "True";
-            helpButton.Order = _groupOrderBase + 50;
-            helpButton.Group = _Group;
-            helpButton.EnglishName = "Show Help Button";
-            helpButton.Description = "Show help button in title if exists documentation for this module";
-            baseSettings.Add("MODULESETTINGS_SHOW_HELP_BUTTON", helpButton);
+            SettingItem helpButtonLocal = new SettingItem(new BooleanDataType());
+            helpButtonLocal.Value = "True";
+            helpButtonLocal.Order = _groupOrderBase + 50;
+            helpButtonLocal.Group = _Group;
+            helpButtonLocal.EnglishName = "Show Help Button";
+            helpButtonLocal.Description = "Show help button in title if exists documentation for this module";
+            baseSettings.Add("MODULESETTINGS_SHOW_HELP_BUTTON", helpButtonLocal);
 
             // LANGUAGE/CULTURE MANAGEMENT
             _groupOrderBase = (int) SettingItemGroup.CULTURE_SETTINGS;
@@ -722,8 +722,8 @@ end of modification
             base.OnLoad(e);
 
             BuildControlHierarchy();
-            _headerPlaceHolder.Controls.Add(_header);
-            Controls.Add(_footer);
+            _headerPlaceHolder.Controls.Add(header);
+            Controls.Add(footer);
         }
 
         /// <summary>
@@ -990,15 +990,12 @@ end of modification
             get
             {
                 if (Page != null)
-                    return (Page).portalSettings;
+                {
+                    return Page.portalSettings;
+                }
                 else
                 {
-                    // Obtain PortalSettings from Current Context
-                    if (HttpContext.Current != null)
-                    {
-                        return (Portal) HttpContext.Current.Items["PortalSettings"];
-                    }
-                    return null;
+                    return PortalProvider.Instance.CurrentPortal;
                 }
             }
         }
@@ -2045,9 +2042,9 @@ end of modification
 
         //private LinkButton minMaxButton = null;
 
-        /// <summary>
-        /// Module button to minimize/maximize module
-        /// </summary>
+//        /// <summary>
+//        /// Module button to minimize/maximize module
+//        /// </summary>
         //public LinkButton MinMaxButton {
         //    get {
         //        if ( minMaxButton == null && HttpContext.Current != null ) {
@@ -2074,9 +2071,9 @@ end of modification
 
         //private LinkButton closeButton = null;
 
-        /// <summary>
-        /// Module button to close module
-        /// </summary>
+//        /// <summary>
+//        /// Module button to close module
+//        /// </summary>
         //public LinkButton CloseButton {
         //    get {
         //        if ( closeButton == null && HttpContext.Current != null ) {
@@ -2959,7 +2956,7 @@ end of modification
         /// function for module moving
         /// </summary>
         /// <param name="list"></param>
-        private void OrderModules(ArrayList list)
+        static void OrderModules(ArrayList list)
         {
             int i = 1;
 
@@ -3078,7 +3075,7 @@ end of modification
             admin.UpdateModuleOrder(OriginalModuleID, 99, targetPane);
 
             // reload the portalSettings from the database
-            HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortalSettings(PageID, PortalSettings.PortalAlias);
+            HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortal(PageID, PortalSettings.PortalAlias);
             (Page).portalSettings = (Portal) Context.Items["PortalSettings"];
 
             // reorder the modules in the source pane
@@ -3475,7 +3472,7 @@ end of modification
         /// <summary>
         /// used to hold the consolidated list of buttons for the module
         /// </summary>
-        private ArrayList ButtonList = new ArrayList(3);
+        ArrayList ButtonList = new ArrayList(3);
 
         /// <summary>
         /// User Buttons
@@ -3493,11 +3490,11 @@ end of modification
         public ArrayList ButtonListCustom = new ArrayList(3);
 
         // switches used for building module hierarchy
-        private bool _buildTitle = true;
-        private bool _buildButtons = true;
-        private bool _buildBody = true;
-        private bool _beforeContent = true;
-        private bool _isPrint = false;
+        bool _buildTitle = true;
+        bool buildButtons = true;
+        bool _buildBody = true;
+        bool _beforeContent = true;
+        bool _isPrint = false;
 
         /// <summary>
         /// Makes the decisions about what needs to be built and calls the appropriate method
@@ -3507,7 +3504,7 @@ end of modification
             if (NamingContainer.ToString().EndsWith("ASP.print_aspx"))
             {
                 _isPrint = true;
-                _buildButtons = false;
+                buildButtons = false;
                 if (!ShowTitlePrint)
                     _buildTitle = false;
             }
@@ -3521,7 +3518,7 @@ end of modification
 
             // added Jes1111: https://sourceforge.net/tracker/index.php?func=detail&aid=1034935&group_id=66837&atid=515929
             if (ButtonList.Count == 0)
-                _buildButtons = false;
+                buildButtons = false;
 
             // changed Jes1111 - 2004-09-29 - to correct shortcut behaviour
             if (ModuleID != OriginalModuleID)
@@ -3536,7 +3533,7 @@ end of modification
             {
                 ZenBuild();
             }
-            else if (this.CurrentTheme.Type.Equals("htm"))
+            else if (CurrentTheme.Type.Equals("htm"))
             {
                 HtmBuild();
             }
@@ -3547,11 +3544,11 @@ end of modification
 
             // wrap the module in a &lt;div&gt; with the ModuleID and Module type name - needed for Zen support and useful for CSS styling and debugging ;-)
             // Added generic classname ModuleWrap useful for more generic CSS styling - Rob Siera 2004-12-30
-            _header.Controls.AddAt(0,
+            header.Controls.AddAt(0,
                                    new LiteralControl(
                                        string.Format("<div id=\"mID{0}\" class=\"{1} ModuleWrap\">", ModuleID,
                                                      GetType().Name)));
-            _footer.Controls.Add(new LiteralControl("</div>"));
+            footer.Controls.Add(new LiteralControl("</div>"));
         }
 
         /// <summary>
@@ -3585,18 +3582,18 @@ end of modification
             if ( iCtr < iBdy ) {
                 if ( iCtr != -1 ) {
                     // Both Ctrl & Body : ....Ctrl....Body.....
-                    this._header.Controls.Add( new LiteralControl( template.Substring( 0, iCtr ) ) );
-                    HtmRenderButtons( this._header );
-                    this._header.Controls.Add( new LiteralControl( template.Substring( iCtr + 14, iBdy - ( iCtr + 14 ) ) ) );
+                    header.Controls.Add( new LiteralControl( template.Substring( 0, iCtr ) ) );
+                    HtmRenderButtons( header );
+                    header.Controls.Add( new LiteralControl( template.Substring( iCtr + 14, iBdy - ( iCtr + 14 ) ) ) );
                     //base.Render(output);
-                    this._footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6 ) ) );
+                    footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6 ) ) );
                 }
                 else {
                     if ( iBdy != -1 ) {
                         // Only Body: ...Body...
-                        this._header.Controls.Add( new LiteralControl( template.Substring( 0, iBdy ) ) );
+                        header.Controls.Add( new LiteralControl( template.Substring( 0, iBdy ) ) );
                         //base.Render(output);
-                        this._footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6 ) ) );
+                        footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6 ) ) );
                     }
                     else {
                         // No Ctrl No Body...
@@ -3607,18 +3604,18 @@ end of modification
             else {
                 if ( iBdy != -1 ) {
                     // Both Ctrl & Body : ....Body....Ctrl.....
-                    this._header.Controls.Add( new LiteralControl( template.Substring( 0, iBdy ) ) );
+                    header.Controls.Add( new LiteralControl( template.Substring( 0, iBdy ) ) );
                     //base.Render(output);
-                    this._footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6, iCtr - ( iBdy + 6 ) ) ) );
-                    HtmRenderButtons( this._footer );
-                    this._footer.Controls.Add( new LiteralControl( template.Substring( iCtr + 14 ) ) );
+                    footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6, iCtr - ( iBdy + 6 ) ) ) );
+                    HtmRenderButtons( footer );
+                    footer.Controls.Add( new LiteralControl( template.Substring( iCtr + 14 ) ) );
                 }
                 else {
                     if ( iCtr != -1 ) {
                         // Only Ctrl: ...Ctrl...
-                        this._header.Controls.Add( new LiteralControl( template.Substring( 0, iCtr ) ) );
-                        HtmRenderButtons( this._header );
-                        this._footer.Controls.Add( new LiteralControl( template.Substring( iCtr + 14 ) ) );
+                        header.Controls.Add( new LiteralControl( template.Substring( 0, iCtr ) ) );
+                        HtmRenderButtons( header );
+                        footer.Controls.Add( new LiteralControl( template.Substring( iCtr + 14 ) ) );
                     }
                     else {
                         // No Ctrl No Body...
@@ -3629,15 +3626,15 @@ end of modification
 
         }
 
-        private void HtmRenderButtons( PlaceHolder placeHolder )
+        void HtmRenderButtons( PlaceHolder placeHolder )
         {
-            if ( _buildButtons )
+            if (buildButtons)
             {
-                foreach ( Control _button in this.ButtonList )
+                foreach (Control button in ButtonList)
                 {
-                    placeHolder.Controls.Add( CurrentTheme.GetLiteralControl( "TitleBeforeButton" ) );
-                    placeHolder.Controls.Add( _button );
-                    placeHolder.Controls.Add( CurrentTheme.GetLiteralControl( "TitleAfterButton" ) );
+                    placeHolder.Controls.Add(CurrentTheme.GetLiteralControl("TitleBeforeButton"));
+                    placeHolder.Controls.Add(button);
+                    placeHolder.Controls.Add(CurrentTheme.GetLiteralControl("TitleAfterButton"));
                 }
             }
         }
@@ -3672,7 +3669,7 @@ end of modification
                 tr.Controls.Add(tc);
             }
 
-            if (_buildButtons)
+            if (buildButtons)
             {
                 foreach (Control _button in ButtonList)
                 {
@@ -3682,8 +3679,8 @@ end of modification
                 }
             }
 
-            if (_buildTitle || _buildButtons)
-                _header.Controls.Add(t);
+            if (_buildTitle || buildButtons)
+                header.Controls.Add(t);
 
             if (!_buildBody)
             {
@@ -3693,7 +3690,7 @@ end of modification
             }
             else
             {
-                _footer.Controls.Add(new LiteralControl(GetLastModified()));
+                footer.Controls.Add(new LiteralControl(GetLastModified()));
             }
         }
 
@@ -3702,30 +3699,30 @@ end of modification
         /// </summary>
         protected virtual void Build()
         {
-            if (!_buildTitle && !_buildButtons)
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("ControlNoTitleStart"));
+            if (!_buildTitle && !buildButtons)
+                header.Controls.Add(CurrentTheme.GetLiteralControl("ControlNoTitleStart"));
             else
             {
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleStart"));
+                header.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleStart"));
 
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("TitleStart"));
+                header.Controls.Add(CurrentTheme.GetLiteralControl("TitleStart"));
 
                 if (_buildTitle)
-                    _header.Controls.Add(new LiteralControl(TitleText));
+                    header.Controls.Add(new LiteralControl(TitleText));
 
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("TitleMiddle"));
+                header.Controls.Add(CurrentTheme.GetLiteralControl("TitleMiddle"));
 
-                if (_buildButtons)
+                if (buildButtons)
                 {
                     foreach (Control _button in ButtonList)
                     {
-                        _header.Controls.Add(CurrentTheme.GetLiteralControl("TitleBeforeButton"));
-                        _header.Controls.Add(_button);
-                        _header.Controls.Add(CurrentTheme.GetLiteralControl("TitleAfterButton"));
+                        header.Controls.Add(CurrentTheme.GetLiteralControl("TitleBeforeButton"));
+                        header.Controls.Add(_button);
+                        header.Controls.Add(CurrentTheme.GetLiteralControl("TitleAfterButton"));
                     }
                 }
 
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("TitleEnd"));
+                header.Controls.Add(CurrentTheme.GetLiteralControl("TitleEnd"));
             }
 
             if (!_buildBody)
@@ -3735,37 +3732,37 @@ end of modification
             }
             else
             {
-                _footer.Controls.Add(new LiteralControl(GetLastModified()));
+                footer.Controls.Add(new LiteralControl(GetLastModified()));
             }
 
             // Added by gman3001: 2004/10/26 to support auto width sizing and scrollable module content
             // this must be the first footer control (besides custom ones such as GetLastModified)
             if (_buildBody)
-                _footer.Controls.Add(BuildModuleContentContainer(false));
+                footer.Controls.Add(BuildModuleContentContainer(false));
 
             // changed Jes1111: https://sourceforge.net/tracker/index.php?func=detail&aid=1034935&group_id=66837&atid=515929
-            if (!_buildTitle && !_buildButtons)
-                _footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlNoTitleEnd"));
+            if (!_buildTitle && !buildButtons)
+                footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlNoTitleEnd"));
             else
             {
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleBeforeControl"));
+                header.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleBeforeControl"));
                 //Changed Rob Siera: Incorrect positioning of ControlTitleAfterControl
                 //this._footer.Controls.AddAt(0, CurrentTheme.GetLiteralControl("ControlTitleAfterControl"));
-                _footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleAfterControl"));
-                _footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleEnd"));
+                footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleAfterControl"));
+                footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleEnd"));
             }
 
             // Added by gman3001: 2004/10/26 to support auto width sizing and scrollable module content
             // this must be the last header control
             if (_buildBody)
-                _header.Controls.Add(BuildModuleContentContainer(true));
+                header.Controls.Add(BuildModuleContentContainer(true));
 
-            if (!_isPrint && _header.Controls.Count > 0 && _footer.Controls.Count > 0)
+            if (!_isPrint && header.Controls.Count > 0 && footer.Controls.Count > 0)
             {
                 //Process the first header control as the module's outer most begin tag element
-                ProcessModuleStrecthing(_header.Controls[0], true);
+                ProcessModuleStrecthing(header.Controls[0], true);
                 //Process the last footer control as the module's outer most end tag element
-                ProcessModuleStrecthing(_footer.Controls[_footer.Controls.Count - 1], false);
+                ProcessModuleStrecthing(footer.Controls[footer.Controls.Count - 1], false);
             }
             // End add by gman3001
         }
@@ -3775,40 +3772,38 @@ end of modification
         /// </summary>
         protected virtual void ZenBuild()
         {
-            XmlTextReader _xtr = null;
-            XmlTextReader _xtr2 = null;
-            NameTable _nt = new NameTable();
-            XmlNamespaceManager _nsm = new XmlNamespaceManager(_nt);
-            _nsm.AddNamespace(string.Empty, "http://www.w3.org/1999/xhtml");
-            _nsm.AddNamespace("if", "urn:MarinaTeq.Rainbow.Zen.Condition");
-            _nsm.AddNamespace("loop", "urn:Marinateq.Rainbow.Zen.Looping");
-            _nsm.AddNamespace("content", "urn:www.rainbowportal.net");
-            XmlParserContext _context = new XmlParserContext(_nt, _nsm, string.Empty, XmlSpace.None);
-            StringBuilder _fragText;
-            LiteralControl _frag;
-            string _loopFrag = string.Empty;
-
+            XmlTextReader xmlTextReader = null;
+            NameTable nameTable = new NameTable();
+            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(nameTable);
+            namespaceManager.AddNamespace(string.Empty, "http://www.w3.org/1999/xhtml");
+            namespaceManager.AddNamespace("if", "urn:MarinaTeq.Rainbow.Zen.Condition");
+            namespaceManager.AddNamespace("loop", "urn:Marinateq.Rainbow.Zen.Looping");
+            namespaceManager.AddNamespace("content", "urn:www.rainbowportal.net");
+            XmlParserContext parserContext = new XmlParserContext(nameTable, namespaceManager, 
+                string.Empty, XmlSpace.None);
+            StringBuilder fragText;
+            LiteralControl frag;
             try
             {
-                _xtr = new XmlTextReader(CurrentTheme.GetThemePart("ModuleLayout"), XmlNodeType.Document, _context);
+                xmlTextReader = new XmlTextReader(CurrentTheme.GetThemePart("ModuleLayout"), XmlNodeType.Document, parserContext);
 
-                while (_xtr.Read())
+                while (xmlTextReader.Read())
                 {
-                    _frag = new LiteralControl();
-                    switch (_xtr.Prefix)
+                    frag = new LiteralControl();
+                    switch (xmlTextReader.Prefix)
                     {
                         case "if":
                             {
-                                if (_xtr.NodeType == XmlNodeType.Element && !ZenEvaluate(_xtr.LocalName))
-                                    _xtr.Skip();
+                                if (xmlTextReader.NodeType == XmlNodeType.Element && !ZenEvaluate(xmlTextReader.LocalName))
+                                    xmlTextReader.Skip();
                                 break;
                             }
 
                         case "loop":
                             {
-                                if (_xtr.NodeType == XmlNodeType.Element)
+                                if (xmlTextReader.NodeType == XmlNodeType.Element)
                                 {
-                                    switch (_xtr.LocalName)
+                                    switch (xmlTextReader.LocalName)
                                     {
                                         case "Buttons":
                                             {
@@ -3833,7 +3828,7 @@ end of modification
                                                 //rootNode.ToolTip = "Module Control and Options Menu";
                                                 //rootNode.Selected = true;
 
-                                                _loopFrag = _xtr.ReadInnerXml();
+                                                string _loopFrag = xmlTextReader.ReadInnerXml();
                                                 foreach (Control c in ButtonList)
                                                 {
                                                     //  ModuleButton mb = (ModuleButton)c;
@@ -3856,21 +3851,21 @@ end of modification
                                                     #region OldCode
 
                                                     /* */
-                                                    _xtr2 = new XmlTextReader(_loopFrag, XmlNodeType.Document, _context);
-                                                    while (_xtr2.Read())
+                                                    XmlTextReader xmlTextReader2 = new XmlTextReader(_loopFrag, XmlNodeType.Document, parserContext);
+                                                    while (xmlTextReader2.Read())
                                                     {
-                                                        _frag = new LiteralControl();
-                                                        switch (_xtr2.Prefix)
+                                                        frag = new LiteralControl();
+                                                        switch (xmlTextReader2.Prefix)
                                                         {
                                                             case "content":
                                                                 {
-                                                                    switch (_xtr2.LocalName)
+                                                                    switch (xmlTextReader2.LocalName)
                                                                     {
                                                                         case "Button":
                                                                             //																if ( this.CurrentTheme.Name.ToLower().Equals("zen-zero") && c is ModuleButton )
                                                                             //																	((ModuleButton)c).RenderAs = ModuleButton.RenderOptions.TextOnly;
                                                                             //																if ( _beforeContent )
-                                                                            _header.Controls.Add(c);
+                                                                            header.Controls.Add(c);
                                                                             //																else
                                                                             //																	this._footer.Controls.Add(c);
                                                                             break;
@@ -3882,36 +3877,36 @@ end of modification
                                                             case "":
                                                             default:
                                                                 {
-                                                                    if (_xtr2.NodeType == XmlNodeType.Element)
+                                                                    if (xmlTextReader2.NodeType == XmlNodeType.Element)
                                                                     {
-                                                                        _fragText = new StringBuilder("<");
-                                                                        _fragText.Append(_xtr2.LocalName);
-                                                                        while (_xtr2.MoveToNextAttribute())
+                                                                        fragText = new StringBuilder("<");
+                                                                        fragText.Append(xmlTextReader2.LocalName);
+                                                                        while (xmlTextReader2.MoveToNextAttribute())
                                                                         {
-                                                                            if (_xtr2.LocalName != "xmlns")
+                                                                            if (xmlTextReader2.LocalName != "xmlns")
                                                                             {
-                                                                                _fragText.Append(" ");
-                                                                                _fragText.Append(_xtr.LocalName);
-                                                                                _fragText.Append("=\"");
-                                                                                _fragText.Append(_xtr.Value);
-                                                                                _fragText.Append("\"");
+                                                                                fragText.Append(" ");
+                                                                                fragText.Append(xmlTextReader.LocalName);
+                                                                                fragText.Append("=\"");
+                                                                                fragText.Append(xmlTextReader.Value);
+                                                                                fragText.Append("\"");
                                                                             }
                                                                         }
-                                                                        _fragText.Append(">");
-                                                                        _frag.Text = _fragText.ToString();
+                                                                        fragText.Append(">");
+                                                                        frag.Text = fragText.ToString();
                                                                         if (_beforeContent)
-                                                                            _header.Controls.Add(_frag);
+                                                                            header.Controls.Add(frag);
                                                                         else
-                                                                            _footer.Controls.Add(_frag);
+                                                                            footer.Controls.Add(frag);
                                                                     }
-                                                                    else if (_xtr2.NodeType == XmlNodeType.EndElement)
+                                                                    else if (xmlTextReader2.NodeType == XmlNodeType.EndElement)
                                                                     {
-                                                                        _frag.Text =
-                                                                            string.Format("</{0}>", _xtr2.LocalName);
+                                                                        frag.Text =
+                                                                            string.Format("</{0}>", xmlTextReader2.LocalName);
                                                                         if (_beforeContent)
-                                                                            _header.Controls.Add(_frag);
+                                                                            header.Controls.Add(frag);
                                                                         else
-                                                                            _footer.Controls.Add(_frag);
+                                                                            footer.Controls.Add(frag);
                                                                     }
                                                                     break;
                                                                 }
@@ -3936,24 +3931,24 @@ end of modification
 
                         case "content":
                             {
-                                switch (_xtr.LocalName)
+                                switch (xmlTextReader.LocalName)
                                 {
                                     case "ModuleContent":
                                         _beforeContent = false;
                                         break;
                                     case "TitleText":
-                                        _frag.Text = TitleText;
+                                        frag.Text = TitleText;
                                         if (_beforeContent)
-                                            _header.Controls.Add(_frag);
+                                            header.Controls.Add(frag);
                                         else
-                                            _footer.Controls.Add(_frag);
+                                            footer.Controls.Add(frag);
                                         break;
                                     case "ModifiedBy":
-                                        _frag.Text = GetLastModified();
+                                        frag.Text = GetLastModified();
                                         if (_beforeContent)
-                                            _header.Controls.Add(_frag);
+                                            header.Controls.Add(frag);
                                         else
-                                            _footer.Controls.Add(_frag);
+                                            footer.Controls.Add(frag);
                                         break;
                                     default:
                                         break;
@@ -3964,32 +3959,32 @@ end of modification
                         case "":
                         default:
                             {
-                                if (_xtr.NodeType == XmlNodeType.Element)
+                                if (xmlTextReader.NodeType == XmlNodeType.Element)
                                 {
-                                    _fragText = new StringBuilder("<");
-                                    _fragText.Append(_xtr.LocalName);
-                                    while (_xtr.MoveToNextAttribute())
+                                    fragText = new StringBuilder("<");
+                                    fragText.Append(xmlTextReader.LocalName);
+                                    while (xmlTextReader.MoveToNextAttribute())
                                     {
-                                        _fragText.Append(" ");
-                                        _fragText.Append(_xtr.LocalName);
-                                        _fragText.Append("=\"");
-                                        _fragText.Append(_xtr.Value);
-                                        _fragText.Append("\"");
+                                        fragText.Append(" ");
+                                        fragText.Append(xmlTextReader.LocalName);
+                                        fragText.Append("=\"");
+                                        fragText.Append(xmlTextReader.Value);
+                                        fragText.Append("\"");
                                     }
-                                    _fragText.Append(">");
-                                    _frag.Text = _fragText.ToString();
+                                    fragText.Append(">");
+                                    frag.Text = fragText.ToString();
                                     if (_beforeContent)
-                                        _header.Controls.Add(_frag);
+                                        header.Controls.Add(frag);
                                     else
-                                        _footer.Controls.Add(_frag);
+                                        footer.Controls.Add(frag);
                                 }
-                                else if (_xtr.NodeType == XmlNodeType.EndElement)
+                                else if (xmlTextReader.NodeType == XmlNodeType.EndElement)
                                 {
-                                    _frag.Text = string.Format("</{0}>", _xtr.LocalName);
+                                    frag.Text = string.Format("</{0}>", xmlTextReader.LocalName);
                                     if (_beforeContent)
-                                        _header.Controls.Add(_frag);
+                                        header.Controls.Add(frag);
                                     else
-                                        _footer.Controls.Add(_frag);
+                                        footer.Controls.Add(frag);
                                 }
                                 break;
                             }
@@ -4003,8 +3998,8 @@ end of modification
             }
             finally
             {
-                if (_xtr != null)
-                    _xtr.Close();
+                if (xmlTextReader != null)
+                    xmlTextReader.Close();
             }
         }
 
@@ -4025,7 +4020,7 @@ end of modification
                     break;
                 case "Buttons":
                     //if ( _buildButtons && ButtonList.Count > 0 )
-                    if (_buildButtons)
+                    if (buildButtons)
                         _returnVal = true;
                     break;
                 case "Body":
@@ -4090,7 +4085,7 @@ end of modification
                     CssHelper cssHelper = new CssHelper();
                     string selectorPrefix = string.Concat("#mID", ModuleID);
                     string cssFileName = Page.Server.MapPath(CurrentTheme.CssFile);
-                    ((Page) Page).RegisterCssImport(ModuleID.ToString(), cssHelper.ParseCss(cssFileName, selectorPrefix));
+                    Page.RegisterCssImport(ModuleID.ToString(), cssHelper.ParseCss(cssFileName, selectorPrefix));
                 }
                 catch (Exception ex)
                 {

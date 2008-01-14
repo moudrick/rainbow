@@ -6,7 +6,7 @@ using System.IO;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
-using Rainbow.Framework.Provider; //ProviderConfiguration
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Framework.Logging
 {
@@ -18,7 +18,7 @@ namespace Rainbow.Framework.Logging
         /// <summary>
         /// Camel case. Must match web.config section name
         /// </summary>
-        private const string providerType = "log";
+        const string providerType = "log";
 
         /// <summary>
         /// Initializes a new instance of the LogProvider class.
@@ -65,7 +65,7 @@ namespace Rainbow.Framework.Logging
                 // to get an instance of the type
                 try
                 {
-                    cache.Insert(cacheKey, ProviderHelper.InstantiateProvider(providerSettings, typeof (LogProvider)));
+                    cache.Insert(cacheKey, ProviderConfiguration.InstantiateProvider(providerSettings, typeof (LogProvider)));
                 }
                 catch (Exception e)
                 {

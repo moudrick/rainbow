@@ -1,6 +1,7 @@
 using System;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -32,7 +33,7 @@ namespace Rainbow.Content.Web.Modules
             QuizName.Value = "About Australia (Demo1)";
             baseSettings.Add("QuizName", QuizName);
 
-            SettingItem XMLsrc = new SettingItem(new PortalUrl());
+            SettingItem XMLsrc = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
             XMLsrc.Required = true;
             XMLsrc.Order = 2;
             XMLsrc.Value = "/Quiz/Demo1.xml";

@@ -1,5 +1,4 @@
 using System.Configuration;
-using Rainbow.Framework.Context;
 
 namespace Rainbow.Framework.Context
 {

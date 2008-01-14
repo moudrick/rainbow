@@ -160,7 +160,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="tab">The tab.</param>
         /// <param name="tabList">The tab list.</param>
         /// <returns></returns>
-        private ArrayList GetBreadCrumbs(PageSettings tab, ArrayList tabList)
+        static ArrayList GetBreadCrumbs(PortalPage tab, IList tabList)
         {
             int parentPageID = tab.PageID;
             //string test=tab.PageName;      

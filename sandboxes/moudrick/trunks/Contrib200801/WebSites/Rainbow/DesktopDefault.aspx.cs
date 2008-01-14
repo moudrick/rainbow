@@ -1,10 +1,9 @@
 using System;
 using System.IO;
 using Rainbow.Framework;
-using Rainbow.Framework.Core;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 
@@ -72,17 +71,17 @@ namespace Rainbow
             }
             catch (System.Web.HttpException ex)
             {
-                Rainbow.Framework.ErrorHandler.Publish(Rainbow.Framework.LogLevel.Error, "FileOrDirectoryNotFound", ex);
+                ErrorHandler.Publish(LogLevel.Error, "FileOrDirectoryNotFound", ex);
                 LayoutPlaceHolder.Controls.Add(Page.LoadControl(defaultLayoutPath));
             }
-            catch (System.IO.DirectoryNotFoundException ex)
+            catch (DirectoryNotFoundException ex)
             {
-                Rainbow.Framework.ErrorHandler.Publish(Rainbow.Framework.LogLevel.Error, "DirectoryNotFound", ex);
+                ErrorHandler.Publish(LogLevel.Error, "DirectoryNotFound", ex);
                 LayoutPlaceHolder.Controls.Add(Page.LoadControl(defaultLayoutPath));
             }
             catch (FileNotFoundException ex)
             {
-                Rainbow.Framework.ErrorHandler.Publish(Rainbow.Framework.LogLevel.Error, "FileNotFound", ex);
+                ErrorHandler.Publish(LogLevel.Error, "FileNotFound", ex);
                 LayoutPlaceHolder.Controls.Add(Page.LoadControl(defaultLayoutPath));
             }
 
@@ -97,7 +96,7 @@ namespace Rainbow
         /// <remarks>
         /// If an error occurs, it doesn't really  matter to the user so we log it and keep going.
         /// </remarks>
-        private void LogEntry()
+        void LogEntry()
         {
             if (Config.EnableMonitoring)
             {
@@ -105,17 +104,16 @@ namespace Rainbow
                 try
                 {
                     
-                    Monitoring.LogEntry((Guid)RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, portalSettings.PortalID,
+                    Monitoring.LogEntry(RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, portalSettings.PortalID,
                                         Convert.ToInt32(PageID), Rainbow.Framework.Monitoring.MonitoringAction.PageRequest, string.Empty);
                 }
                 catch (System.Data.SqlClient.SqlException sqex)
                 {
-                    ErrorHandler.Publish(Rainbow.Framework.LogLevel.Debug, "SQL Monitoring LogEntry Error", sqex);
+                    ErrorHandler.Publish(LogLevel.Debug, "SQL Monitoring LogEntry Error", sqex);
                 }
                 catch (Exception ex)
                 {
-                    //
-                    ErrorHandler.Publish(Rainbow.Framework.LogLevel.Debug, "Monitoring LogEntry Error", ex);
+                    ErrorHandler.Publish(LogLevel.Debug, "Monitoring LogEntry Error", ex);
                 }
             }
         }

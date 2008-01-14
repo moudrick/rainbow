@@ -1,6 +1,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Framework.DataTypes
@@ -13,8 +14,9 @@ namespace Rainbow.Framework.DataTypes
         /// <summary>
         /// Initializes a new instance of the <see cref="UploadedFileDataType"/> class.
         /// </summary>
-        public UploadedFileDataType()
-            : base()
+        /// <param name="portal">The portal.</param>
+        public UploadedFileDataType(Portal portal)
+            : this(portal.PortalFullPath)
         {
         }
 
@@ -83,7 +85,7 @@ namespace Rainbow.Framework.DataTypes
                 else
                     throw new ArgumentException(
                         "A UploadDialogTextBox values is required, a '" + value.GetType().Name + "' is given.",
-                        "EditControl");
+                        "value");
             }
         }
 

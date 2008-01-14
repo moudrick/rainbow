@@ -2,7 +2,7 @@ using System.Collections;
 using System.IO;
 using System.Web;
 using System.Web.Caching;
-using Rainbow.Framework.Settings.Cache;
+using Rainbow.Framework.Context;
 
 namespace Rainbow.Framework.Design
 {

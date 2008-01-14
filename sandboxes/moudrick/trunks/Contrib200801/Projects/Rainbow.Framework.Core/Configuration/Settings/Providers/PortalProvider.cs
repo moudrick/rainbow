@@ -1,16 +1,13 @@
 using System;
 using System.Collections;
-using System.Configuration;
+using System.Configuration.Provider;
 using System.Data;
 using System.Net;
 using System.Web;
-using Rainbow.Framework.Core;  //RainbowContext
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings; //Portal
 using Rainbow.Framework.Exceptions;
-using Rainbow.Framework.Provider; //ProviderConfiguration
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Settings.Cache; //CurrentCache
-using Rainbow.Framework.Site.Configuration; //PageStripDetails, PageSettings
+using Rainbow.Framework.Site.Configuration; //PortalPage
 
 namespace Rainbow.Framework.Providers
 {
@@ -18,44 +15,21 @@ namespace Rainbow.Framework.Providers
     /// This is interface class for get portal settings values 
     /// from appropriate persistence localtion
     ///</summary>
-    public abstract class PortalProvider
+    public abstract class PortalProvider : ProviderBase
     {
         const string providerType = "portal";
 
         /// <summary>
-        /// Gets default configured Portal provider
-        /// Singleton pattern standard member
+        /// Gets default configured Portal provider.
+        /// Singleton pattern standard member.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Default instance of Portal Provider class</returns>
         public static PortalProvider Instance
         {
             get
             {
-                // Get the names of providers
-                ProviderConfiguration config =
-                    ProviderConfiguration.GetProviderConfiguration(providerType);
-                // Read specific configuration information for this provider
-                ProviderSettings providerSettings =
-                    (ProviderSettings)config.Providers[config.DefaultProvider];
-                // In the cache?
-                string cacheKey = "Rainbow::Web::PortalProvider::" + config.DefaultProvider;
-
-                if (CurrentCache.Get(cacheKey) == null) //if (CurrentCache[cacheKey] == null)
-                {
-                    // The assembly should be in \bin or GAC, so we simply need
-                    // to get an instance of the type
-                    try
-                    {
-                        CurrentCache.Insert(cacheKey,
-                                            ProviderHelper.InstantiateProvider(providerSettings,
-                                                                               typeof(PortalProvider)));
-                    }
-                    catch (Exception e)
-                    {
-                        throw new Exception("Unable to load provider", e);
-                    }
-                }
-                return (PortalProvider)CurrentCache.Get(cacheKey);
+                return ProviderConfiguration.GetDefaultProviderFromCache<PortalProvider>(
+                    providerType, HttpContext.Current.Cache);
             }
         }
 
@@ -67,6 +41,8 @@ namespace Rainbow.Framework.Providers
             get
             {
                 //TODO: [moudrick] find & encapsulate Items["PortalSettings"] sets. 
+                // Find all "Items["PortalSettings"]", Subfolders, Find Results 1, "Entire Solution"
+                // Matching lines: 74    Matching files: 52    Total files searched: 1668
                 return (Portal)RainbowContext.Current.HttpContext.Items["PortalSettings"];
             }
         }
@@ -96,7 +72,7 @@ namespace Rainbow.Framework.Providers
         /// </summary>
         /// <param name="pageID">The page ID.</param>
         /// <param name="portalAlias">The portal alias.</param>
-        public abstract Portal InstantiateNewPortalSettings(int pageID, string portalAlias);
+        public abstract Portal InstantiateNewPortal(int pageID, string portalAlias);
 
         /// <summary>
         /// The PortalSettings Factory Method encapsulates all of the logic
@@ -107,7 +83,7 @@ namespace Rainbow.Framework.Providers
         /// This overload it is used
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
-        public abstract Portal InstantiateNewPortalSettings(int portalID);
+        public abstract Portal InstantiateNewPortal(int portalID);
 
         /// <summary>
         /// The CreatePortal method create a new basic portal based on solutions table.
@@ -232,7 +208,7 @@ namespace Rainbow.Framework.Providers
         /// <param name="tab">The tab.</param>
         /// <param name="tabList">The tab list.</param>
         /// <returns></returns>
-        public abstract PageStripDetails GetRootPage(PageSettings tab, ArrayList tabList);
+        public abstract PageStripDetails GetRootPage(PortalPage tab, ArrayList tabList);
 
         ///<summary>
         ///</summary>
@@ -295,7 +271,7 @@ namespace Rainbow.Framework.Providers
             while (testsCounter <= testsToRun)
             {
                 //try with current values from arrays
-                portalSettings = InstantiateNewPortalSettings(testPageID[testsCounter - 1], testAlias[testsCounter - 1]);
+                portalSettings = InstantiateNewPortal(testPageID[testsCounter - 1], testAlias[testsCounter - 1]);
 
                 // test returned result
                 if (portalSettings.PortalAlias != null)
@@ -407,7 +383,6 @@ namespace Rainbow.Framework.Providers
             }
         }
 
-
         /// <summary>
         /// The UpdatePortalSetting Method updates a single module setting
         /// in the PortalSettings persistence.
@@ -446,9 +421,25 @@ namespace Rainbow.Framework.Providers
             return bydefault;
         }
 
-        protected Portal GetNew()
+        protected static void SetCustomSettings(Portal portal, Hashtable customSettings)
+        {
+            portal.CustomSettings = customSettings;
+        }
+
+        protected static Portal GetNew()
         {
             return new Portal();
+        }
+
+        protected static void SetPortalPath(PortalPage portalPage, string portalPath)
+        {
+            // added Thierry (tiptopweb) used for dropdown for layout and theme
+            portalPage.PortalPath = portalPath;
+        }
+
+        protected static void SetPageID(PortalPage portalPage, int pageID)
+        {
+            portalPage.PageID = pageID;
         }
     }
 }

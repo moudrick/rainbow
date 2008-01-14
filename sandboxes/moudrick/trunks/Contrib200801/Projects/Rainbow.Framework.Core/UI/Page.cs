@@ -9,15 +9,14 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Path = Rainbow.Framework.Path;
-using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Framework.Web.UI {
     // TODO: this class needs a better write-up ;-)
@@ -42,7 +41,8 @@ namespace Rainbow.Framework.Web.UI {
         /// <summary>
         /// The default constructor initializes all fields to their default values.
         /// </summary>
-        public Page() : base() {
+        public Page()
+        {
             EnsureChildControls();
         }
 
@@ -65,8 +65,8 @@ namespace Rainbow.Framework.Web.UI {
 
         #endregion
 
-        private ResourceSet userCultureSet = null;
-        private string userCulture = "en-us";
+        ResourceSet userCultureSet = null;
+        string userCulture = "en-us";
 
         /// <summary>
         /// Gets the user culture.
@@ -151,10 +151,10 @@ namespace Rainbow.Framework.Web.UI {
             //if ((myControl=Page.FindControl("cancelButton")) != null)
             {
                 if ( cancelButton == null ) {
-                    cancelButton = ( System.Web.UI.WebControls.LinkButton )myControl;
+                    cancelButton = ( LinkButton )myControl;
                 }
 
-                cancelButton.Click += new EventHandler( CancelBtn_Click );
+                cancelButton.Click += CancelBtn_Click;
                 cancelButton.Text = General.GetString( "CANCEL", "Cancel" );
                 cancelButton.CausesValidation = false;
                 cancelButton.EnableViewState = false;
@@ -162,20 +162,20 @@ namespace Rainbow.Framework.Web.UI {
             //if (updateButton != null)
             if ( updateButton != null || ( myControl = Page.FindControl( "updateButton" ) ) != null ) {
                 if ( updateButton == null ) {
-                    updateButton = ( System.Web.UI.WebControls.LinkButton )myControl;
+                    updateButton = ( LinkButton )myControl;
                 }
 
-                updateButton.Click += new EventHandler( UpdateBtn_Click );
+                updateButton.Click += UpdateBtn_Click;
                 updateButton.Text = General.GetString( "APPLY", "Apply", updateButton );
                 updateButton.EnableViewState = false;
             }
             //if (deleteButton != null)
             if ( deleteButton != null || ( myControl = Page.FindControl( "deleteButton" ) ) != null ) {
                 if ( deleteButton == null ) {
-                    deleteButton = ( System.Web.UI.WebControls.LinkButton )myControl;
+                    deleteButton = ( LinkButton )myControl;
                 }
 
-                deleteButton.Click += new EventHandler( DeleteBtn_Click );
+                deleteButton.Click += DeleteBtn_Click;
                 deleteButton.Text = General.GetString( "DELETE", "Delete", deleteButton );
                 deleteButton.EnableViewState = false;
 
@@ -354,7 +354,7 @@ namespace Rainbow.Framework.Web.UI {
 
             if ( Context.Cache[sb.ToString()] != null ) {
                 Context.Cache.Remove( sb.ToString() );
-                Debug.WriteLine( "************* Remove " + sb.ToString() );
+                Debug.WriteLine( "************* Remove " + sb );
             }
 
             // any other code goes here
@@ -602,7 +602,7 @@ namespace Rainbow.Framework.Web.UI {
         /// <summary>
         /// List of CSS files to be applied to this page
         /// </summary>
-        private Hashtable cssFileList = new Hashtable( 3 );
+        readonly Hashtable cssFileList = new Hashtable( 3 );
 
         /// <summary>
         /// Determines whether [is CSS file registered] [the specified key].
@@ -677,7 +677,7 @@ namespace Rainbow.Framework.Web.UI {
         /// Strings added to this list will injected into a &lt;style&gt;
         /// block in the page head.
         /// </summary>
-        private Hashtable cssImportList = new Hashtable( 3 );
+        readonly Hashtable cssImportList = new Hashtable( 3 );
 
         /// <summary>
         /// Determines whether [is CSS import registered] [the specified key].
@@ -724,7 +724,7 @@ namespace Rainbow.Framework.Web.UI {
         /// <summary>
         /// Holds a list of javascript function calls which will be output to the body tag as a semicolon-delimited list in the 'onload' attribute
         /// </summary>
-        private Hashtable bodyOnLoadList = new Hashtable( 3 );
+        readonly Hashtable bodyOnLoadList = new Hashtable( 3 );
 
         /// <summary>
         /// Determines whether [is body on load registered] [the specified key].
@@ -749,7 +749,7 @@ namespace Rainbow.Framework.Web.UI {
             bodyOnLoadList.Add( key.ToLower(), functionCall );
         }
 
-        private Hashtable clientScripts = new Hashtable( 3 );
+        readonly Hashtable clientScripts = new Hashtable( 3 );
 
         /// <summary>
         /// Determines whether [is client script registered] [the specified key].
@@ -778,7 +778,7 @@ namespace Rainbow.Framework.Web.UI {
         /// <summary>
         /// Stores any additional Meta entries requested by modules or other code.
         /// </summary>
-        private Hashtable additionalMetaElements = new Hashtable( 3 );
+        readonly Hashtable additionalMetaElements = new Hashtable( 3 );
 
         /// <summary>
         /// Determines whether [is additional meta element registered] [the specified key].
@@ -803,8 +803,6 @@ namespace Rainbow.Framework.Web.UI {
             additionalMetaElements.Add( key.ToLower(), element );
         }
 
-        private string bodyOtherAttributes = string.Empty;
-
         /// <summary>
         /// Referring URL
         /// </summary>
@@ -824,7 +822,7 @@ namespace Rainbow.Framework.Web.UI {
         #region Properties (Pages)
 
         private int _tabID = 0;
-        private Hashtable _Page;
+        private Hashtable pageHashtable;
 
         /// <summary>
         /// Stores current linked module ID if applicable
@@ -847,33 +845,43 @@ namespace Rainbow.Framework.Web.UI {
         /// Stores current tab settings
         /// </summary>
         /// <value>The page settings.</value>
-        public Hashtable pageSettings {
-            get {
-                if ( _Page == null ) {
-                    if ( PageID > 0 ) {
+        public Hashtable pageSettings
+        {
+            get
+            {
+                if (pageHashtable == null)
+                {
+                    if (PageID > 0)
+                    {
                         // thierry@tiptopweb.com.au : custom page layout, cannot be static
                         //_Page = Page.GetPageCustomSettings(PageID);
-                        _Page = portalSettings.ActivePage.GetPageCustomSettings( PageID );
+                        pageHashtable =
+                            PortalPageProvider.Instance.GetPageCustomSettings(portalSettings.ActivePage, PageID);
                     }
-                    else {
+                    else
+                    {
                         // Or provides an empty hashtable
-                        _Page = new Hashtable();
+                        pageHashtable = new Hashtable();
                     }
                 }
-                return _Page;
+                return pageHashtable;
             }
         }
 
-        private Theme currentTheme;
+        Theme currentTheme;
 
         /// <summary>
         /// Current page theme
         /// </summary>
         /// <value>The current theme.</value>
-        public Theme CurrentTheme {
-            get {
-                if ( currentTheme == null )
+        public Theme CurrentTheme
+        {
+            get
+            {
+                if (currentTheme == null)
+                {
                     currentTheme = portalSettings.GetCurrentTheme();
+                }
                 return currentTheme;
             }
         }
@@ -1012,7 +1020,7 @@ namespace Rainbow.Framework.Web.UI {
         /// Builds the DOCTYPE statement when requested by the Render() override.
         /// </summary>
         protected virtual void BuildDocType() {
-            if ( string.IsNullOrEmpty( this.DocType ) && ( CurrentTheme.Type == "zen" || Request.Url.PathAndQuery.IndexOf( "Viewer" ) > 0 ) ) {
+            if ( string.IsNullOrEmpty( DocType ) && ( CurrentTheme.Type == "zen" || Request.Url.PathAndQuery.IndexOf( "Viewer" ) > 0 ) ) {
                 //this.DocType = Server.HtmlDecode( Config.DefaultDOCTYPE );
             }
         }
@@ -1021,36 +1029,36 @@ namespace Rainbow.Framework.Web.UI {
         /// Builds the HTML &lt;body&gt; element, adding meta tags, stylesheets and client scripts
         /// </summary>
         protected virtual void BuildHead() {
-            this.Title = PageTitle;
-            this.Header.Controls.Add( new LiteralControl( "<meta name=\"generator\" content=\"Rainbow Portal - see http://www.rainbowportal.net\"/>\n" ) );
+            Title = PageTitle;
+            Header.Controls.Add( new LiteralControl( "<meta name=\"generator\" content=\"Rainbow Portal - see http://www.rainbowportal.net\"/>\n" ) );
 
             if ( PageMetaKeyWords.Length != 0 ) {
-                this.Header.Controls.Add( new LiteralControl( string.Format( "<meta name=\"keywords\" content=\"{0}\"/>\n", PageMetaKeyWords ) ) );
+                Header.Controls.Add( new LiteralControl( string.Format( "<meta name=\"keywords\" content=\"{0}\"/>\n", PageMetaKeyWords ) ) );
             }
 
             if ( PageMetaDescription.Length != 0 ) {
-                this.Header.Controls.Add( new LiteralControl( string.Format( "<meta name=\"description\" content=\"{0}\"/>\n", PageMetaDescription ) ) );
+                Header.Controls.Add( new LiteralControl( string.Format( "<meta name=\"description\" content=\"{0}\"/>\n", PageMetaDescription ) ) );
             }
 
             if ( PageMetaEncoding.Length != 0 ) {
-                this.Header.Controls.Add( new LiteralControl( PageMetaEncoding + "\n" ) );
+                Header.Controls.Add( new LiteralControl( PageMetaEncoding + "\n" ) );
             }
 
             if ( PageMetaOther.Length != 0 ) {
-                this.Header.Controls.Add( new LiteralControl( PageMetaOther + "\n" ) );
+                Header.Controls.Add( new LiteralControl( PageMetaOther + "\n" ) );
             }
 
             // additional metas (added by code)
             foreach ( string _metaElement in additionalMetaElements.Values ) {
-                this.Header.Controls.Add( new LiteralControl( _metaElement + "\n" ) );
+                Header.Controls.Add( new LiteralControl( _metaElement + "\n" ) );
             }
 
             // ADD THE CSS <LINK> ELEMENT(S)
             foreach ( string _cssFile in cssFileList.Values ) {
-                this.Header.Controls.Add( new LiteralControl( string.Format( "<link rel=\"stylesheet\" href=\"{0}\" type=\"text/css\"/>\n", _cssFile ) ) );
+                Header.Controls.Add( new LiteralControl( string.Format( "<link rel=\"stylesheet\" href=\"{0}\" type=\"text/css\"/>\n", _cssFile ) ) );
             }
 
-            this.Header.Controls.Add( new LiteralControl( string.Format( "<link rel=\"SHORTCUT ICON\" href=\"{0}/portalicon.ico\"/>\n",
+            Header.Controls.Add( new LiteralControl( string.Format( "<link rel=\"SHORTCUT ICON\" href=\"{0}/portalicon.ico\"/>\n",
                              Path.WebPathCombine( Path.ApplicationRoot, portalSettings.PortalPath ) ) ) );
 
             if ( cssImportList.Count > 0 ) {
@@ -1064,12 +1072,12 @@ namespace Rainbow.Framework.Web.UI {
                 sb.AppendLine( "-->" );
                 sb.AppendLine( "</style>" );
 
-                this.Header.Controls.Add( new LiteralControl( sb.ToString() + "\n" ) );
+                Header.Controls.Add( new LiteralControl( sb + "\n" ) );
             }
 
             // ADD CLIENTSCRIPTS 
             foreach ( string _script in clientScripts.Values ) {
-                this.Header.Controls.Add( new LiteralControl( string.Format( "<script type=\"text/javascript\" src=\"{0}\"></script>\n", _script ) ) );
+                Header.Controls.Add( new LiteralControl( string.Format( "<script type=\"text/javascript\" src=\"{0}\"></script>\n", _script ) ) );
             }
         }
 
@@ -1091,10 +1099,10 @@ namespace Rainbow.Framework.Web.UI {
             }
 
             // output onload attribute
-            if ( this.bodyOnLoadList.Count > 0 ) {
+            if ( bodyOnLoadList.Count > 0 ) {
                 StringBuilder sb = new StringBuilder();
 
-                foreach ( string _functionCall in this.bodyOnLoadList.Values ) {
+                foreach ( string _functionCall in bodyOnLoadList.Values ) {
                     sb.Append( _functionCall );
                 }
 

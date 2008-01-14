@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using Rainbow.Content.Web.Modules.Sitemap;
 using Rainbow.Framework;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Configuration;
@@ -21,10 +22,7 @@ namespace Rainbow.Content.Web.Modules
     [History("jminond", "march 2005", "Changes for moving Tab to Page")]
     public partial class Sitemaps : PortalModuleControl, INavigation
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        private SitemapItems list;
+        readonly SitemapItems list;
 
         /// <summary>
         /// Controls which tab is displayed. When 0 the current tab is displyed.
@@ -41,12 +39,12 @@ namespace Rainbow.Content.Web.Modules
             BindToTab.Value = "false";
             baseSettings.Add("BindToTab", BindToTab);
 
-            SettingItem showTabID = new SettingItem(new IntegerDataType());
-            showTabID.Required = true;
-            showTabID.Value = "0";
-            showTabID.MinValue = 0;
-            showTabID.MaxValue = int.MaxValue;
-            baseSettings.Add("ShowTabID", showTabID);
+            SettingItem showTabIDLocal = new SettingItem(new IntegerDataType());
+            showTabIDLocal.Required = true;
+            showTabIDLocal.Value = "0";
+            showTabIDLocal.MinValue = 0;
+            showTabIDLocal.MaxValue = int.MaxValue;
+            baseSettings.Add("ShowTabID", showTabIDLocal);
 
             SettingItem NodeIcon = new SettingItem(new StringDataType());
             NodeIcon.EnglishName = "Node Icon";
@@ -176,15 +174,24 @@ namespace Rainbow.Content.Web.Modules
                 // create the table renderer and set it's properties.
                 TableSitemapRenderer tableRenderer = new TableSitemapRenderer();
                 if (Settings["RootIcon"].ToString().Length > 0)
-                    tableRenderer.ImageRootNodeUrl = imgFolder + Settings["RootIcon"].ToString();
+                {
+                    tableRenderer.ImageRootNodeUrl = imgFolder + Settings["RootIcon"];
+                }
                 else
-                    tableRenderer.ImageRootNodeUrl = Page.CurrentTheme.GetModuleImageSRC("sm_rootnode.gif");
+                {
+                    tableRenderer.ImageRootNodeUrl =
+                        Page.CurrentTheme.GetModuleImageSRC("sm_rootnode.gif");
+                }
                 //tableRenderer.ImageRootNodeUrl	= this.Page.CurrentTheme.GetImage("SiteMap_Root", imgFolder+"sm_rootnode.gif").ImageUrl;
 
                 if (Settings["NodeIcon"].ToString().Length > 0)
-                    tableRenderer.ImageNodeUrl = imgFolder + Settings["NodeIcon"].ToString();
+                {
+                    tableRenderer.ImageNodeUrl = imgFolder + Settings["NodeIcon"];
+                }
                 else
+                {
                     tableRenderer.ImageRootNodeUrl = Page.CurrentTheme.GetModuleImageSRC("sm_node.gif");
+                }
                 //tableRenderer.ImageRootNodeUrl	= this.Page.CurrentTheme.GetImage("SiteMap_Node", imgFolder+"sm_node.gif").ImageUrl;
 
                 tableRenderer.ImageSpacerUrl = Page.CurrentTheme.GetModuleImageSRC("sm_Spacer.gif");
@@ -278,9 +285,9 @@ namespace Rainbow.Content.Web.Modules
                 //first add the tab, then add it's children
                 list.Add(new SitemapItem(tab.PageID, tab.PageName, HttpUrlBuilder.BuildUrl(tab.PageID), level));
 
-                for (int i = 0; i < tab.Pages.Count; ++i)
+                for (int i = 0; i < PortalPageProvider.Instance.GetPagesBox(tab).Count; ++i)
                 {
-                    RecurseSitemap(tab.Pages[i], level + 1);
+                    RecurseSitemap(PortalPageProvider.Instance.GetPagesBox(tab)[i], level + 1);
                 }
             }
         }

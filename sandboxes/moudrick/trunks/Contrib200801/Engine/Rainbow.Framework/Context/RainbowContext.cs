@@ -6,16 +6,14 @@ using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
-using Rainbow.Framework.Context;
 using Rainbow.Framework.Exceptions; //RainbowRedirectException, PortalsLockedException
 using Rainbow.Framework.Helpers; //IPList
-using Rainbow.Framework.Settings; //Config - together
 
-namespace Rainbow.Framework.Core
+namespace Rainbow.Framework.Context
 {
     ///<summary>
     ///</summary>
-    public interface IRainbowContext : IHttpContextStrategy
+    public interface IRainbowContext : IHttpContextStrategy, IConfigStrategy
     { }
 
     ///<summary>
@@ -23,10 +21,24 @@ namespace Rainbow.Framework.Core
     ///</summary>
     public class RainbowContext : IRainbowContext
     {
+        const string QueryStringKey_PageID = "PageID"; // Standardize text PageID
+        const string QueryStringKey_TabID = "TabID"; // Support for old TabID
+
         static readonly RainbowContext current =
-            new RainbowContext(new WebHttpContextStrategy());
+            new RainbowContext(new WebHttpContextStrategy(), new ConfigurationManagerStrategy());
 
         readonly IHttpContextStrategy rainbowContextReader;
+        readonly IConfigStrategy rainbowConfigReader;
+
+        ///<summary>
+        /// Gets current Rainbow Context
+        ///</summary>
+        public static RainbowContext Current
+        {
+            get { return current; }
+        }
+
+        #region IHttpContextStrategy members
 
         ///<summary>
         /// HttpContext that is gotten by current strategy
@@ -39,13 +51,16 @@ namespace Rainbow.Framework.Core
             }
         }
 
-        ///<summary>
-        /// Gets current Rainbow Context
-        ///</summary>
-        public static RainbowContext Current
+        #endregion
+
+        #region IConfigStrategy members
+
+        public string GetAppSetting(string key)
         {
-            get { return current; }
+            return rainbowConfigReader.GetAppSetting(key);
         }
+
+        #endregion
 
         /// <summary>
         /// Gets the page ID.
@@ -91,9 +106,10 @@ namespace Rainbow.Framework.Core
             }
         }
 
-        RainbowContext(IHttpContextStrategy contextReader)
+        RainbowContext(IHttpContextStrategy contextReader, IConfigStrategy configReader)
         {
             rainbowContextReader = contextReader;
+            rainbowConfigReader = configReader;
         }
 
         ///<summary>
@@ -127,7 +143,7 @@ namespace Rainbow.Framework.Core
                 if (Regex.IsMatch(pname, @"^\d+$"))
                 {
                     HttpContext.RewritePath("~/default.aspx?pageid=" + pname +
-                                        HttpContext.Request.ServerVariables["QUERY_STRING"]);
+                                            HttpContext.Request.ServerVariables["QUERY_STRING"]);
                 }
             }
 
@@ -137,7 +153,7 @@ namespace Rainbow.Framework.Core
                 System.IO.Path.GetFullPath(HttpContext.Request.PhysicalPath) != HttpContext.Request.PhysicalPath)
             {
                 throw new RainbowRedirectException(LogLevel.Warn, HttpStatusCode.NotFound, 
-                    "Malformed request", null);
+                                                   "Malformed request", null);
             }
         }
 
@@ -153,13 +169,13 @@ namespace Rainbow.Framework.Core
             // tabID = 240
             if (queryString != null)
             {
-                if (queryString[GlobalInternalStrings.str_PageID] != null)
+                if (queryString[QueryStringKey_PageID] != null)
                 {
-                    queryStringValues = queryString.GetValues(GlobalInternalStrings.str_PageID);
+                    queryStringValues = queryString.GetValues(QueryStringKey_PageID);
                 }
-                else if (queryString[GlobalInternalStrings.str_TabID] != null)
+                else if (queryString[QueryStringKey_TabID] != null)
                 {
-                    queryStringValues = queryString.GetValues(GlobalInternalStrings.str_TabID);
+                    queryStringValues = queryString.GetValues(QueryStringKey_TabID);
                 }
                 else
                 {
@@ -333,11 +349,11 @@ namespace Rainbow.Framework.Core
         /// <param name="secondLevelDomains">The second level domains.</param>
         /// <returns></returns>
         void FindAliasFromUri(Uri requestUri,
-                 ref string alias,
-                 string defaultPortal,
-                 bool removeWWW,
-                 bool removeTLD,
-                 string secondLevelDomains)
+                              ref string alias,
+                              string defaultPortal,
+                              bool removeWWW,
+                              bool removeTLD,
+                              string secondLevelDomains)
         {
             // if request is to localhost, return default portal 
             if (requestUri.IsLoopback)

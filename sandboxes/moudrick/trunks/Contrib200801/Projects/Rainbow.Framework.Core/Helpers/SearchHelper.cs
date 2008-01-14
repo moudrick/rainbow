@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 using System.Collections.Generic;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
@@ -117,8 +117,10 @@ namespace Rainbow.Framework.Helpers
 					object [] args = new object [] {portalID, userID, searchString, searchField};
 					string currentSearch = (string) p.GetType().InvokeMember("SearchSqlSelect", BindingFlags.Default | BindingFlags.InvokeMethod, null, p, args);
 
-					if (currentSearch.Length != 0 && currentSearch != null)
-						slqSelectQueries.Add(currentSearch);
+				    if (currentSearch.Length != 0)
+				    {
+				        slqSelectQueries.Add(currentSearch);
+                    }
 				}
 			}
 			int queriesCount = slqSelectQueries.Count;
@@ -328,8 +330,8 @@ namespace Rainbow.Framework.Helpers
 			Int32 i = 0;
 			Int32 j = 0;
 			string [] arrWord;
-			string strWord, strTmp, strNot;
-			string strBoolOp;
+            string strWord, strTmp;
+            string strBoolOp;
 			string vbCrLf = "\r\n";
 
 			if (useAnd)
@@ -349,7 +351,8 @@ namespace Rainbow.Framework.Helpers
 				strWord = strItem;
 				strWord = strWord.Replace('=', ' ');  // dephrase!
 
-				if (strWord.StartsWith("-"))
+			    string strNot;
+			    if (strWord.StartsWith("-"))
 				{
 					strNot = "NOT";
 					strWord = strWord.Substring(1);

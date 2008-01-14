@@ -5,8 +5,7 @@ using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
-using Rainbow.Framework.Core;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Context;
 
 namespace Rainbow.Framework.Web
 {

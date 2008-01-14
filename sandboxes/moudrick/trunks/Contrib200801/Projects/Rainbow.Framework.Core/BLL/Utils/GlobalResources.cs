@@ -1,5 +1,7 @@
 using System;
 using System.Configuration;
+using Rainbow.Framework.Context;
+
 //===============================================================================
 //
 //	Base Logic Layer
@@ -18,13 +20,6 @@ namespace Rainbow.Framework.BLL.Utils
 	[Obsolete("use Rainbow.Framework.Settings.Config")]
 	public class GlobalResources
 	{
-
-		// jes1111 - moved to GlobalInternalStrings
-		//		/// <summary>
-		//		/// non breakable html space character
-		//		/// </summary>
-		//		public  const string HTML_SPACE = "&nbsp;";
-
 		/// <summary>
 		/// Does the Portal support WIndow Mgmt Functions/Controls
 		/// </summary>
@@ -59,18 +54,10 @@ namespace Rainbow.Framework.BLL.Utils
 		/// <returns></returns>
 		public static bool SafeBoolean(string name, bool default_ret)
 		{
-			object obj = ConfigurationSettings.AppSettings[name];
-
-			try
-			{
-
-				if (obj != null)
-					return Convert.ToBoolean(obj);
-			}
-
-			catch { }
-			return default_ret;
-		} // end of SafeBoolean
+		    string value = RainbowContext.Current.GetAppSetting(name);
+		    bool result;
+		    return bool.TryParse(value, out result) ? result : default_ret;
+		}
 
 		/// <summary>
 		/// Get Integer Resource

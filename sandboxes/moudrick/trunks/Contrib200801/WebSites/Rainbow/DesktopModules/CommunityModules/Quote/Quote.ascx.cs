@@ -4,8 +4,8 @@ using System.Configuration;
 using System.IO;
 using System.Web;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -42,10 +42,15 @@ namespace Rainbow.Content.Web.Modules
 
                 if (ConfigurationManager.AppSettings.Get("QuoteFileFolder") != null)
                 {
-                    if (ConfigurationManager.AppSettings.Get("QuoteFileFolder").ToString().Length > 0)
-                        quoteFile = ConfigurationManager.AppSettings.Get("QuoteFileFolder").ToString() + quoteFile;
+                    if (ConfigurationManager.AppSettings.Get("QuoteFileFolder").Length > 0)
+                    {
+                        quoteFile = ConfigurationManager.AppSettings.Get("QuoteFileFolder") +
+                                    quoteFile;
+                    }
                     else
+                    {
                         quoteFile = "~/DesktopModules/CommunityModules/Quote/" + quoteFile;
+                    }
                 }
                 else
                 {
@@ -115,7 +120,7 @@ namespace Rainbow.Content.Web.Modules
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Quote"/> class.
+        /// Initializes a new instance of the <see cref="Quote"/> class.
         /// </summary>
         public Quote()
         {
@@ -190,11 +195,13 @@ namespace Rainbow.Content.Web.Modules
         /// <returns>FileInfo[]</returns>
         public FileInfo[] GetListOfQuoteFiles()
         {
-            string quoteFilePath = string.Empty;
+            string quoteFilePath;
 
             //jes1111 - if (ConfigurationSettings.AppSettings["QuoteFileFolder"] != null && ConfigurationSettings.AppSettings["QuoteFileFolder"].Length > 0)
             if (Config.QuoteFileFolder.Length != 0)
+            {
                 quoteFilePath = Config.QuoteFileFolder;
+            }
             else
             {
                 //this will default to the folder where the .query files are located by default

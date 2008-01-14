@@ -6,12 +6,11 @@ using System.Web.Configuration;
 using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.Security.Permissions;
-using System.Data.Common;
 using System.Data;
 using System.Web.Caching;
 using Rainbow.Framework;
 using System.Collections;
-using Rainbow.Framework.Core;
+using Rainbow.Framework.Context;
 
 namespace Rainbow.Framework.Providers.MsSql
 {
@@ -19,30 +18,31 @@ namespace Rainbow.Framework.Providers.MsSql
     /// Summary description for SqlSiteMapProvider
     /// </summary>
     [SqlClientPermission(SecurityAction.Demand, Unrestricted = true)]
-    public class RainbowSqlSiteMapProvider : RainbowSiteMapProvider.RainbowSiteMapProvider {
-		
-        private const int _rootNodeID = -1;
+    public class RainbowSqlSiteMapProvider : RainbowSiteMapProvider.RainbowSiteMapProvider 
+    {
+        const int _rootNodeID = -1;
 
-        private const string _errmsg1 = "Missing node ID";
-        private const string _errmsg2 = "Duplicate node ID";
-        private const string _errmsg4 = "Invalid parent ID";
-        private const string _errmsg5 = "Empty or missing connectionStringName";
-        private const string _errmsg6 = "Missing connection string";
-        private const string _errmsg7 = "Empty connection string";
-        private const string _errmsg8 = "Invalid sqlCacheDependency";
+        //TODO: [moudrick] to be resourced and localized
+        const string _errmsg1 = "Missing node ID";
+        const string _errmsg2 = "Duplicate node ID";
+        const string _errmsg4 = "Invalid parent ID";
+        const string _errmsg5 = "Empty or missing connectionStringName";
+        const string _errmsg6 = "Missing connection string";
+        const string _errmsg7 = "Empty connection string";
+        const string _errmsg8 = "Invalid sqlCacheDependency";
 		
         public const string _cacheDependencyName = "__SiteMapCacheDependency";
 
-        private string _connect;              // Database connection string
-        private string _database, _table;     // Database info for SQL Server 7/2000 cache dependency
-        private bool _2005dependency = false; // Database info for SQL Server 2005 cache dependency
+        string _connect;              // Database connection string
+        string _database, _table;     // Database info for SQL Server 7/2000 cache dependency
+        bool _2005dependency = false; // Database info for SQL Server 2005 cache dependency
 
-        private int  _indexPageID, _indexParentPageID, _indexPageOrder, _indexPortalID, 
-                     _indexPageName, _indexAuthorizedRoles, _indexPageLayout, _indexPageDescription;
+        int  _indexPageID, _indexParentPageID, _indexPageOrder, _indexPortalID, 
+             _indexPageName, _indexAuthorizedRoles, _indexPageLayout, _indexPageDescription;
 		
-        private Dictionary<int, SiteMapNode> _nodes = new Dictionary<int, SiteMapNode>(16);
-        private readonly object _lock = new object();
-        private SiteMapNode _root;
+        readonly Dictionary<int, SiteMapNode> _nodes = new Dictionary<int, SiteMapNode>(16);
+        readonly object _lock = new object();
+        SiteMapNode _root;
 
         public override void Initialize (string name, NameValueCollection config) {
             // Verify that config isn't null
@@ -202,7 +202,8 @@ namespace Rainbow.Framework.Providers.MsSql
         }
 
         // Helper methods
-        private SiteMapNode CreateSiteMapNodeFromDataReader (DbDataReader reader) {
+        SiteMapNode CreateSiteMapNodeFromDataReader (IDataRecord reader) 
+        {
             // Make sure the node ID is present
             if (reader.IsDBNull(_indexPageID)) {
                 throw new ProviderException(_errmsg1);
@@ -252,7 +253,7 @@ namespace Rainbow.Framework.Providers.MsSql
         }
 
 		
-        private SiteMapNode GetParentNodeFromDataReader(DbDataReader reader) {
+        private SiteMapNode GetParentNodeFromDataReader(IDataRecord reader) {
             // Make sure the parent ID is present
             if (reader.IsDBNull(_indexParentPageID)) {
                 return _nodes[_rootNodeID];
@@ -287,7 +288,7 @@ namespace Rainbow.Framework.Providers.MsSql
         /// that the System.Web.StaticSiteMapProvider tracks as part of its state.
         /// </summary>
         public override void ClearCache() {
-            this.Clear();
+            Clear();
         }
 
         

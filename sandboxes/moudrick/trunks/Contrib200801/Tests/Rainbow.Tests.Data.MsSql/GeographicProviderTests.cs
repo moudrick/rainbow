@@ -14,7 +14,7 @@ namespace Rainbow.Tests.Data.MsSql
         [SetUp]
         public void Init() 
         {
-            GeographicProvider.Current.CountriesFilter = "AR,BR,CL,UY";
+            GeographicProvider.Instance.CountriesFilter = "AR,BR,CL,UY";
         }
 
         [Test]
@@ -56,21 +56,21 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void ProviderInitialize() 
         {
-            string filteredCountries = GeographicProvider.Current.CountriesFilter;
+            string filteredCountries = GeographicProvider.Instance.CountriesFilter;
             Assert.AreEqual( "AR,BR,CL,UY", filteredCountries );
         }
 
         [Test]
         public void GetCountries1() 
         {
-            IList<Country> countries = GeographicProvider.Current.GetCountries();
+            IList<Country> countries = GeographicProvider.Instance.GetCountries();
             Assert.AreEqual( countries.Count, 4 );  // AR, BR, UY and CL
         }
 
         [Test]
         public void GetCountriesLocalization1()
         {
-            IList<Country> countries = GeographicProvider.Current.GetCountries();
+            IList<Country> countries = GeographicProvider.Instance.GetCountries();
 
             CultureInfo currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture;
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo( "de-DE" );
@@ -92,14 +92,14 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetSortedCountries1()
         {
-            IList<Country> countries = GeographicProvider.Current.GetCountries( CountryFields.CountryID );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( CountryFields.CountryID );
             Assert.AreEqual( countries.Count, 4 );  // AR, BR, UY and CL
         }
 
         [Test]
         public void GetSortedCountries2()
         {
-            IList<Country> countries = GeographicProvider.Current.GetCountries( CountryFields.CountryID );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( CountryFields.CountryID );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "BR", countries[1].CountryID );
@@ -115,7 +115,7 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetSortedCountries3() 
         {
-            IList<Country> countries = GeographicProvider.Current.GetCountries( CountryFields.NeutralName );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( CountryFields.NeutralName );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "BR", countries[1].CountryID );
@@ -132,7 +132,7 @@ namespace Rainbow.Tests.Data.MsSql
         public void GetSortedCountries4()
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo( "es-ES" );
-            IList<Country> countries = GeographicProvider.Current.GetCountries( CountryFields.Name );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( CountryFields.Name );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "BR", countries[1].CountryID );
@@ -147,7 +147,7 @@ namespace Rainbow.Tests.Data.MsSql
 
         [Test]
         public void GetSortedCountries5() {
-            IList<Country> countries = GeographicProvider.Current.GetCountries( CountryFields.None );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( CountryFields.None );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "BR", countries[1].CountryID );
@@ -163,7 +163,7 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetCountriesFiltered1()
         {
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY" );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY" );
             Assert.AreEqual( countries.Count, 2 );  // AR, and UY 
 
             Assert.AreEqual( "AR", countries[0].CountryID );
@@ -174,20 +174,20 @@ namespace Rainbow.Tests.Data.MsSql
         [ExpectedException(typeof(ArgumentException))]
         public void GetCountriesFiltered2() 
         {
-            GeographicProvider.Current.GetCountries( "LongFilter" );
+            GeographicProvider.Instance.GetCountries( "LongFilter" );
         }
 
         [Test]
         public void GetFilteredSortedCountries1() 
         {
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY", CountryFields.CountryID );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY", CountryFields.CountryID );
             Assert.AreEqual( countries.Count, 2 );  // AR, UY 
         }
 
         [Test]
         public void GetFilteredSortedCountries2()
         {
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY", CountryFields.CountryID );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY", CountryFields.CountryID );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "UY", countries[1].CountryID );
@@ -199,7 +199,7 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetFilteredSortedCountries3() 
         {
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY", CountryFields.NeutralName );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY", CountryFields.NeutralName );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "UY", countries[1].CountryID );
@@ -211,7 +211,7 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetFilteredSortedCountries4() 
         {
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY", CountryFields.CountryID );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY", CountryFields.CountryID );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "UY", countries[1].CountryID );
@@ -223,7 +223,7 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetFilteredSortedCountries5() 
         {
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY", CountryFields.None );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY", CountryFields.None );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "UY", countries[1].CountryID );
@@ -235,16 +235,16 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetSortedCountriesNoCountryFilter1() 
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            IList<Country> countries = GeographicProvider.Current.GetCountries( CountryFields.CountryID );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( CountryFields.CountryID );
             Assert.AreEqual( countries.Count, 237 );  
         }
 
         [Test]
         public void GetSortedCountriesNoCountryFilter2() 
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            IList<Country> countries = GeographicProvider.Current.GetCountries( CountryFields.CountryID );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( CountryFields.CountryID );
 
             Assert.AreEqual( "AD", countries[0].CountryID );
             Assert.AreEqual( "AE", countries[1].CountryID );
@@ -260,8 +260,8 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetSortedCountriesNoCountryFilter3() 
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            IList<Country> countries = GeographicProvider.Current.GetCountries( CountryFields.NeutralName );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( CountryFields.NeutralName );
 
             Assert.AreEqual( "AF", countries[0].CountryID );
             Assert.AreEqual( "AL", countries[1].CountryID );
@@ -277,9 +277,9 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetSortedCountriesNoCountryFilter4()
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo( "es-ES" );
-            IList<Country> countries = GeographicProvider.Current.GetCountries( CountryFields.Name );
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( CountryFields.Name );
 
             Assert.AreEqual( "AF", countries[0].CountryID );
             Assert.AreEqual( "AL", countries[1].CountryID );
@@ -295,8 +295,8 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetSortedCountriesNoCountryFilter5()
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            IList<Country> countries = GeographicProvider.Current.GetCountries( CountryFields.None );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( CountryFields.None );
 
             Assert.AreEqual( "AD", countries[0].CountryID );
             Assert.AreEqual( "AE", countries[1].CountryID );
@@ -312,8 +312,8 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetCountriesFilteredNoCountryFilter1()
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY" );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY" );
             Assert.AreEqual( countries.Count, 2 );  // AR, and UY 
 
             Assert.AreEqual( "AR", countries[0].CountryID );
@@ -324,31 +324,31 @@ namespace Rainbow.Tests.Data.MsSql
         [ExpectedException(typeof(ArgumentException))]
         public void GetCountriesFilteredNoCountryFilter2() 
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            GeographicProvider.Current.GetCountries( "LongFilter" );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            GeographicProvider.Instance.GetCountries( "LongFilter" );
         }
 
         [Test]
         public void GetCountriesSortedNoCountryFilter1()
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            IList<Country> countries = GeographicProvider.Current.GetCountries( CountryFields.CountryID );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( CountryFields.CountryID );
             Assert.AreEqual( countries.Count, 237 );  // AR, BR, UY and CL
         }
 
         [Test]
         public void GetFilteredSortedCountriesNoCountryFilter1() 
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY", CountryFields.CountryID );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY", CountryFields.CountryID );
             Assert.AreEqual( countries.Count, 2 );  // AR, UY 
         }
 
         [Test]
         public void GetFilteredSortedCountriesNoCountryFilter2()
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY", CountryFields.CountryID );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY", CountryFields.CountryID );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "UY", countries[1].CountryID );
@@ -360,8 +360,8 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetFilteredSortedCountriesNoCountryFilter3()
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY", CountryFields.NeutralName );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY", CountryFields.NeutralName );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "UY", countries[1].CountryID );
@@ -373,8 +373,8 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetFilteredSortedCountriesNoCountryFilter4()
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY", CountryFields.CountryID );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY", CountryFields.CountryID );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "UY", countries[1].CountryID );
@@ -386,8 +386,8 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetFilteredSortedCountriesNoCountryFilter5() 
         {
-            GeographicProvider.Current.CountriesFilter = string.Empty;
-            IList<Country> countries = GeographicProvider.Current.GetCountries( "AR,UY", CountryFields.None );
+            GeographicProvider.Instance.CountriesFilter = string.Empty;
+            IList<Country> countries = GeographicProvider.Instance.GetCountries( "AR,UY", CountryFields.None );
 
             Assert.AreEqual( "AR", countries[0].CountryID );
             Assert.AreEqual( "UY", countries[1].CountryID );
@@ -399,14 +399,14 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetUnfilteredCountries1() 
         {
-            IList<Country> allCountries = GeographicProvider.Current.GetUnfilteredCountries();
+            IList<Country> allCountries = GeographicProvider.Instance.GetUnfilteredCountries();
             Assert.AreEqual( 237, allCountries.Count );
         }
 
         [Test]
         public void GetCountryStates1()
         {
-            IList<State> states = GeographicProvider.Current.GetCountryStates( "AE" );
+            IList<State> states = GeographicProvider.Instance.GetCountryStates( "AE" );
 
             Assert.AreEqual( 4, states.Count );
 
@@ -438,14 +438,14 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetCountryStates2()
         {
-            IList<State> states = GeographicProvider.Current.GetCountryStates( "PP" );
+            IList<State> states = GeographicProvider.Instance.GetCountryStates( "PP" );
             Assert.AreEqual( 0, states.Count );
         }
 
         [Test]
         public void GetCountryDisplayName1()
         {
-            string displayName = GeographicProvider.Current.GetCountryDisplayName( "BR", new CultureInfo( "es-ES" ) );
+            string displayName = GeographicProvider.Instance.GetCountryDisplayName( "BR", new CultureInfo( "es-ES" ) );
             Assert.AreEqual( "Brasil", displayName );
         }
 
@@ -453,13 +453,13 @@ namespace Rainbow.Tests.Data.MsSql
         [ExpectedException(typeof(CountryNotFoundException))]
         public void GetCountryDisplayName2() 
         {
-            GeographicProvider.Current.GetCountryDisplayName( "ZZ", new CultureInfo( "es-ES" ) );
+            GeographicProvider.Instance.GetCountryDisplayName( "ZZ", new CultureInfo( "es-ES" ) );
         }
 
         [Test]
         public void GetStateDisplayName1() 
         {
-            string displayName = GeographicProvider.Current.GetStateDisplayName( 1003, new CultureInfo( "en-US" ) );
+            string displayName = GeographicProvider.Instance.GetStateDisplayName( 1003, new CultureInfo( "en-US" ) );
             Assert.AreEqual( "Alabama", displayName );
         }
 
@@ -467,20 +467,20 @@ namespace Rainbow.Tests.Data.MsSql
        [ExpectedException(typeof(StateNotFoundException))]
         public void GetStateDisplayName2() 
         {
-            GeographicProvider.Current.GetStateDisplayName( -40, new CultureInfo( "en-US" ) );
+            GeographicProvider.Instance.GetStateDisplayName( -40, new CultureInfo( "en-US" ) );
         }
 
         [Test]
         public void GetAdministrativeDivisionName1() 
         {
-            string displayName = GeographicProvider.Current.GetAdministrativeDivisionName( "Department", new CultureInfo( "es-ES" ) );
+            string displayName = GeographicProvider.Instance.GetAdministrativeDivisionName( "Department", new CultureInfo( "es-ES" ) );
             Assert.AreEqual( "Department", displayName );
         }
 
         [Test]
         public void GetCountry1()
         {
-            Country c = GeographicProvider.Current.GetCountry( "US" );
+            Country c = GeographicProvider.Instance.GetCountry( "US" );
 
             Assert.AreEqual( "US", c.CountryID );
             Assert.AreEqual( "United States", c.NeutralName );
@@ -489,7 +489,7 @@ namespace Rainbow.Tests.Data.MsSql
         [Test]
         public void GetCountry2()
         {
-            Country c = GeographicProvider.Current.GetCountry( "US" );
+            Country c = GeographicProvider.Instance.GetCountry( "US" );
 
             CultureInfo currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture;
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo( "de-DE" );
@@ -501,13 +501,13 @@ namespace Rainbow.Tests.Data.MsSql
         [ExpectedException(typeof(CountryNotFoundException))]
         public void GetCountry3() 
         {
-            GeographicProvider.Current.GetCountry( ".." );
+            GeographicProvider.Instance.GetCountry( ".." );
         }
 
         [Test]
         public void GetState1() 
         {
-            State state = GeographicProvider.Current.GetState( 1003 );
+            State state = GeographicProvider.Instance.GetState( 1003 );
             Assert.AreEqual( "Alabama", state.NeutralName );
             Assert.AreEqual( 1003, state.StateID );
             Assert.AreEqual( "US", state.CountryID );
@@ -517,14 +517,14 @@ namespace Rainbow.Tests.Data.MsSql
         [ExpectedException(typeof(StateNotFoundException))]
         public void GetState2()
         {
-            GeographicProvider.Current.GetState( -100 );
+            GeographicProvider.Instance.GetState( -100 );
         }
 
         [Test]
         public void CurrentCountry1()
         {
-            Country actual = GeographicProvider.Current.CurrentCountry;
-            Country expected = GeographicProvider.Current.GetCountry( RegionInfo.CurrentRegion.Name );
+            Country actual = GeographicProvider.Instance.CurrentCountry;
+            Country expected = GeographicProvider.Instance.GetCountry( RegionInfo.CurrentRegion.Name );
             Assert.AreEqual( expected, actual );
         }
     }

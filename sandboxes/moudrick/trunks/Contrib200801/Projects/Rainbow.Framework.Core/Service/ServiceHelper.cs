@@ -7,10 +7,10 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Services.Client;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI;
 using Path=Rainbow.Framework.Path;
 
@@ -316,7 +316,7 @@ namespace Rainbow.Framework.Services
         public static string AddRSSRequestParameters(ServiceRequestInfo sri)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("?LT=" + sri.ListType.ToString());
+            sb.Append("?LT=" + sri.ListType);
             if (sri.PortalAlias.Length != 0)
                 sb.Append("&PA=" + sri.PortalAlias);
             if (sri.UserName.Length != 0)
@@ -325,8 +325,8 @@ namespace Rainbow.Framework.Services
                 sb.Append("&UP=" + sri.UserPassword);
             if (sri.ModuleType.Length != 0)
                 sb.Append("&MT=" + sri.ModuleType);
-            sb.Append("&MH=" + sri.MaxHits.ToString());
-            sb.Append("&SID=" + sri.ShowID.ToString());
+            sb.Append("&MH=" + sri.MaxHits);
+            sb.Append("&SID=" + sri.ShowID);
             if (sri.SearchString.Length != 0)
                 sb.Append("&SS=" + sri.SearchString);
             if (sri.SearchField.Length != 0)
@@ -335,11 +335,11 @@ namespace Rainbow.Framework.Services
                 sb.Append("&SoF=" + sri.SortField);
             if (sri.SortDirection.Length != 0)
                 sb.Append("&SD=" + sri.SortDirection);
-            sb.Append("&RLO=" + sri.RootLevelOnly.ToString());
-            sb.Append("&MO=" + sri.MobileOnly.ToString());
+            sb.Append("&RLO=" + sri.RootLevelOnly);
+            sb.Append("&MO=" + sri.MobileOnly);
             if (sri.IDList.Length != 0)
-                sb.Append("&IDL=" + sri.IDList.ToString());
-            sb.Append("&IDLT=" + sri.IDListType.ToString());
+                sb.Append("&IDL=" + sri.IDList);
+            sb.Append("&IDLT=" + sri.IDListType);
 
             return sb.ToString();
         }
@@ -399,48 +399,66 @@ namespace Rainbow.Framework.Services
             select.Append(" ORDER BY Tab.PageOrder " + requestInfo.SortDirection +
                           ", Tab.ParentPageID, Mod.ModuleOrder ");
 
-            int PageID = -1;
-            int PageIDPrev = -1;
-            int ModuleID;
+            int pageIDPrev = -1;
 
             SqlDataReader dr = DBHelper.GetDataReader(select.ToString());
             try
             {
                 while (dr.Read())
                 {
-                    PageID = (int) dr["PageID"];
-                    ModuleID = (int) dr["ModuleID"];
+                    int pageID = (int) dr["PageID"];
+                    int moduleID = (int) dr["ModuleID"];
 
-                    if (PageID != PageIDPrev)
+                    if (pageID != pageIDPrev)
                     {
-                        if (PageIDPrev != -1)
+                        if (pageIDPrev != -1)
+                        {
                             colItems.Add(responseItem);
+                        }
 
                         responseItem = new ServiceResponseInfoItem();
 
                         if (requestInfo.ShowID)
-                            responseItem.Title = (string) dr["PageName"] + " (PageID=" + PageID + ")";
+                        {
+                            responseItem.Title = (string) dr["PageName"] + " (PageID=" + pageID +
+                                                 ")";
+                        }
                         else
+                        {
                             responseItem.Title = (string) dr["PageName"];
+                        }
 
                         if (requestInfo.ShowID)
-                            responseItem.Description = (string) dr["ModuleTitle"] + " (ModuleID=" + ModuleID + ")";
+                        {
+                            responseItem.Description = (string) dr["ModuleTitle"] + " (ModuleID=" +
+                                                       moduleID + ")";
+                        }
                         else
+                        {
                             responseItem.Description = (string) dr["ModuleTitle"];
+                        }
 
-                        responseItem.Link = applicationFullPath + "/DesktopDefault.aspx?tabID=" + PageID.ToString();
+                        responseItem.Link = applicationFullPath + "/DesktopDefault.aspx?tabID=" +
+                                            pageID;
                         if (requestInfo.PortalAlias.Length != 0)
+                        {
                             responseItem.Link += "&Alias=" + requestInfo.PortalAlias;
+                        }
                     }
                     else
                     {
                         if (requestInfo.ShowID)
-                            responseItem.Description += ", " + (string) dr["ModuleTitle"] + " (ModuleID=" + ModuleID +
+                        {
+                            responseItem.Description += ", " + (string) dr["ModuleTitle"] +
+                                                        " (ModuleID=" + moduleID +
                                                         ")";
+                        }
                         else
+                        {
                             responseItem.Description += ", " + (string) dr["ModuleTitle"];
+                        }
                     }
-                    PageIDPrev = PageID;
+                    pageIDPrev = pageID;
                 }
             }
             finally
@@ -448,8 +466,10 @@ namespace Rainbow.Framework.Services
                 dr.Close(); //by Manu, fixed bug 807858
             }
 
-            if (PageIDPrev != -1)
+            if (pageIDPrev != -1)
+            {
                 colItems.Add(responseItem);
+            }
 
             return colItems;
         }
@@ -467,7 +487,7 @@ namespace Rainbow.Framework.Services
                                                       ref ServiceRequestInfo requestInfo)
         {
             ArrayList colItems = new ArrayList();
-            ServiceResponseInfoItem responseItem = null;
+            ServiceResponseInfoItem responseItem;
 
             StringBuilder select;
             select = new StringBuilder(string.Empty, 1000);
@@ -514,30 +534,28 @@ namespace Rainbow.Framework.Services
             select.Append(" ");
             select.Append(requestInfo.SortDirection);
 
-            int PageID, ModuleID;
-
             SqlDataReader dr = DBHelper.GetDataReader(select.ToString());
             try
             {
                 while (dr.Read())
                 {
                     responseItem = new ServiceResponseInfoItem();
-                    PageID = (int) dr["PageID"];
-                    ModuleID = (int) dr["ModuleID"];
+                    int pageID = (int) dr["PageID"];
+                    int moduleID = (int) dr["ModuleID"];
 
                     if (requestInfo.ShowID)
                     {
-                        responseItem.Title = (string) dr["ModuleTitle"] + " (ModuleID=" + ModuleID + ")";
+                        responseItem.Title = (string) dr["ModuleTitle"] + " (ModuleID=" + moduleID + ")";
                         responseItem.Description = "Type: " + (string) dr["FriendlyName"] + ", Page: " +
-                                                   (string) dr["PageName"] + " (PageID=" + PageID + ")";
+                                                   (string) dr["PageName"] + " (PageID=" + pageID + ")";
                     }
                     else
                     {
-                        responseItem.Title = (string) dr["ModuleTitle"] + " (ModuleID=" + ModuleID + ")";
+                        responseItem.Title = (string) dr["ModuleTitle"] + " (ModuleID=" + moduleID + ")";
                         responseItem.Description = "Type: " + (string) dr["FriendlyName"] + ", Page: " +
                                                    (string) dr["PageName"];
                     }
-                    responseItem.Link = applicationFullPath + "/DesktopDefault.aspx?tabID=" + PageID.ToString();
+                    responseItem.Link = applicationFullPath + "/DesktopDefault.aspx?tabID=" + pageID;
                     if (requestInfo.PortalAlias.Length != 0)
                         responseItem.Link += "&Alias=" + requestInfo.PortalAlias;
 
@@ -629,7 +647,7 @@ namespace Rainbow.Framework.Services
                         }
                         catch
                         {
-                            // Modules like HtmlModule has not field CreatedDate 
+                            ;// Modules like HtmlModule has not field CreatedDate 
                         }
                     }
                     if (!dr.IsDBNull(7))
@@ -810,7 +828,7 @@ namespace Rainbow.Framework.Services
                         {
                             responseInfo = CallCommunityService(requestInfo, "CommunityService.asmx");
                         }
-                        responseInfo.ServiceDescription += " (" + requestInfo.ListType.ToString() + "List WebService)";
+                        responseInfo.ServiceDescription += " (" + requestInfo.ListType + "List WebService)";
                         break;
                     case ServiceType.CommunityRSSService:
                         if (requestInfo.LocalMode)
@@ -843,7 +861,7 @@ namespace Rainbow.Framework.Services
                             responseInfo = CallRssService(requestInfo);
                             requestInfo.Url = oldUrl;
                         }
-                        responseInfo.ServiceDescription += " (RSS " + requestInfo.ListType.ToString() + "List Service)";
+                        responseInfo.ServiceDescription += " (RSS " + requestInfo.ListType + "List Service)";
                         break;
                     case ServiceType.RSSService:
                         responseInfo = CallRssService(requestInfo);
@@ -1023,10 +1041,7 @@ namespace Rainbow.Framework.Services
                     ReceiveStream.Close(); // by Manu
                 }
             }
-            catch (Exception)
-            {
-            }
-
+            catch {;}
             return builder.ToString();
         }
 

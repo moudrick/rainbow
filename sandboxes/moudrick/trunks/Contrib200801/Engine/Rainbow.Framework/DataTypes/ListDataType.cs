@@ -10,8 +10,8 @@ namespace Rainbow.Framework.DataTypes
     /// </summary>
     public class ListDataType : BaseDataType
     {
-        private string _dataValueField;
-        private string _dataTextField;
+        string dataValueField;
+        string dataTextField;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListDataType"/> class.
@@ -71,8 +71,8 @@ namespace Rainbow.Framework.DataTypes
         /// <value>The data value field.</value>
         public override string DataValueField
         {
-            get { return _dataValueField; }
-            set { _dataValueField = value; }
+            get { return dataValueField; }
+            set { dataValueField = value; }
         }
 
         /// <summary>
@@ -81,8 +81,8 @@ namespace Rainbow.Framework.DataTypes
         /// <value>The data text field.</value>
         public override string DataTextField
         {
-            get { return _dataTextField; }
-            set { _dataTextField = value; }
+            get { return dataTextField; }
+            set { dataTextField = value; }
         }
 
         /// <summary>
@@ -144,14 +144,17 @@ namespace Rainbow.Framework.DataTypes
             get
             {
                 if (innerControl == null)
+                {
                     InitializeComponents();
+                }
 
                 //Update value in control
                 DropDownList dd = (DropDownList) innerControl;
                 dd.ClearSelection();
                 if (dd.Items.FindByValue(Value) != null)
+                {
                     dd.Items.FindByValue(Value).Selected = true;
-                //Return control
+                }
                 return innerControl;
             }
             set
@@ -162,13 +165,19 @@ namespace Rainbow.Framework.DataTypes
                     //Update value from control
                     DropDownList dd = (DropDownList) innerControl;
                     if (dd.SelectedItem != null)
+                    {
                         Value = dd.SelectedItem.Value;
+                    }
                     else
+                    {
                         Value = string.Empty;
+                    }
                 }
                 else
                     throw new ArgumentException(
-                        "A DropDownList values is required, a '" + value.GetType().Name + "' is given.", "EditControl");
+                        string.Format("A DropDownList values is required, a '{0}' is given.", 
+                            value.GetType().Name), 
+                        "value");
             }
         }
     }

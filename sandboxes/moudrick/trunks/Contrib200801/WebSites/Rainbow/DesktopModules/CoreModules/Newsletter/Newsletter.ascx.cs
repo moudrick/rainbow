@@ -6,11 +6,11 @@ using System.Web.Mail;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -270,7 +270,7 @@ namespace Rainbow.Content.Web.Modules
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:SendNewsletter"/> class.
+        /// Initializes a new instance of the <see cref="SendNewsletter"/> class.
         /// </summary>
         public SendNewsletter()
         {
@@ -417,7 +417,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Server.MapPath(this.TemplateSourceDirectory + "/Newsletter_Install.sql");
+            string currentScriptName = Server.MapPath(TemplateSourceDirectory + "/Newsletter_Install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
@@ -432,7 +432,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Server.MapPath(this.TemplateSourceDirectory + "/Newsletter_Uninstall.sql");
+            string currentScriptName = Server.MapPath(TemplateSourceDirectory + "/Newsletter_Uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {

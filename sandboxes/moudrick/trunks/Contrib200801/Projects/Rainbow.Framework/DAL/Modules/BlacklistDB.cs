@@ -1,7 +1,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
@@ -113,7 +113,7 @@ namespace Rainbow.Framework.Content.Data
 				select.Append(" WHERE usr.Email *= bl.Email");  // Note: the easy outer join!
 			else
 				select.Append(" WHERE usr.Email = bl.Email");
-			select.Append(" AND usr.PortalID = " + portalID.ToString());
+			select.Append(" AND usr.PortalID = " + portalID);
 
 			if (SendNewsletterOnly)
 				select.Append(" AND usr.SendNewsletter = 1");

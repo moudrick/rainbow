@@ -5,10 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
@@ -242,7 +243,7 @@ namespace Rainbow.Admin
             // End Change Geert.Audenaert@Syntegra.Com
 
             // reload the portalSettings from the database
-            Context.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortalSettings(PageID, portalSettings.PortalAlias);
+            Context.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortal(PageID, portalSettings.PortalAlias);
             portalSettings = (Portal) Context.Items["PortalSettings"];
 
             // reorder the modules in the content pane
@@ -358,7 +359,7 @@ namespace Rainbow.Admin
                     sourceList.RemoveAt(sourceBox.SelectedIndex);
 
                     // reload the portalSettings from the database
-                    HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortalSettings(PageID, portalSettings.PortalAlias);
+                    HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortal(PageID, portalSettings.PortalAlias);
                     portalSettings = (Portal) Context.Items["PortalSettings"];
 
                     // reorder the modules in the source pane
@@ -471,7 +472,7 @@ namespace Rainbow.Admin
             }
 
             // update Page info in the database
-            new PagesDB().UpdatePage(portalSettings.PortalID, PageID, Int32.Parse(parentPage.SelectedItem.Value),
+            PortalPageProvider.Instance.UpdatePage(portalSettings.PortalID, PageID, Int32.Parse(parentPage.SelectedItem.Value),
                                      tabName.Text, portalSettings.ActivePage.PageOrder, authorizedRoles,
                                      mobilePageName.Text, showMobile.Checked);
 
@@ -550,7 +551,7 @@ namespace Rainbow.Admin
         /// layout panes with the current configuration information
         /// </summary>
         private void BindData() {
-            PageSettings page = portalSettings.ActivePage;
+            PortalPage page = portalSettings.ActivePage;
 
             // Populate Page Names, etc.
             tabName.Text = page.PageName;
@@ -558,8 +559,7 @@ namespace Rainbow.Admin
             showMobile.Checked = page.ShowMobile;
 
             // Populate the "ParentPage" Data
-            PagesDB t = new PagesDB();
-            IList<PageItem> items = t.GetPagesParent( portalSettings.PortalID, PageID );
+            IList<PageItem> items = PortalPageProvider.Instance.GetPagesParent( portalSettings.PortalID, PageID );
             parentPage.DataSource = items;
             parentPage.DataBind();
 
@@ -683,7 +683,7 @@ namespace Rainbow.Admin
         /// <param name="e">The <see cref="T:Rainbow.Framework.Web.UI.WebControls.SettingsTableEventArgs"/> instance containing the event data.</param>
         protected void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
         {
-            PageSettings.UpdatePageSettings(PageID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
+            PortalPageProvider.Instance.UpdatePageSettings(PageID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
     }
 }

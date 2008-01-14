@@ -181,11 +181,11 @@ namespace Rainbow.Framework.Users.Data {
 
         #endregion
 
-        /// <summary>
-        /// Get Current UserID
-        /// </summary>
-        /// <pa ram name="portalID">The portal ID.</param>
-        /// <returns></returns>
+//        /// <summary>
+//       /// Get Current UserID
+//        /// </summary>
+//        /// <pa ram name="portalID">The portal ID.</param>
+//        /// <returns></returns>
         //public Guid GetCurrentUserID( int portalID ) {
         //    MembershipUser user = Membership.GetUser();
         //    return (Guid)user.ProviderUserKey;
@@ -195,7 +195,7 @@ namespace Rainbow.Framework.Users.Data {
         /// The GetPortalRoles method returns a list of all roles for the specified portal.
         /// </summary>
         /// <param name="portalAlias">The portal alias.</param>
-        /// <returns>a <code>IList<RainbowRole></code> containing all role objects.
+        /// <returns>A <see cref="T:IList<RainbowRole>"/> containing all role objects.
         /// </returns>
         public IList<RainbowRole> GetPortalRoles( string portalAlias ) {
             return RoleProvider.GetAllRoles( portalAlias );

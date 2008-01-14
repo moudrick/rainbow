@@ -2,13 +2,15 @@ using System;
 using System.Collections;
 using System.Web;
 using System.Web.UI;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    ///<summary>
+    ///</summary>
     [History("Manu", "2003/06/06", "Removed commented legacy code.")]
     [History("Manu", "2003/05/28", "Remove SignIn and LanguageSwitcher auto-placement. Place it as other modules.")]
     [History("Jes1111", "2003/03/08", "Added SignIn auto-placement")]
@@ -38,7 +40,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                     // NEW MODULE_VIEW PERMISSIONS ADDED
                     // Ensure that the visiting user has access to view the current module
-                    if (PortalSecurity.IsInRoles(_moduleSettings.AuthorizedViewRoles) == true)
+                    if (PortalSecurity.IsInRoles(_moduleSettings.AuthorizedViewRoles))
                     {
                         ArrayList arrayData;
 
@@ -115,7 +117,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                                         new LiteralControl("<br><span class=NormalRed>" + "Unable to load control '" +
                                                            _moduleSettings.DesktopSrc +
                                                            "'! (Full Error Logged)<br />Error Message: " +
-                                                           ex.Message.ToString()));
+                                                           ex.Message));
                                 }
                                 else
                                 {
@@ -150,7 +152,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                                                            "Unable to load cached control '" +
                                                            _moduleSettings.DesktopSrc +
                                                            "'! (Full Error Logged)<br />Error Message: " +
-                                                           ex.Message.ToString()));
+                                                           ex.Message));
                                 }
                                 else
                                 {

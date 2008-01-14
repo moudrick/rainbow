@@ -7,11 +7,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Data;
-using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Site.Data;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Users.Data;
-using Rainbow.Framework.Helpers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI.WebControls;
 using BoundColumn = Rainbow.Framework.Web.UI.WebControls.BoundColumn;
@@ -25,14 +22,14 @@ namespace Rainbow.Content.Web.Modules
 	/// Written by: Shaun Walker (IbuySpy Workshop)
 	/// Moved into Rainbow by Jakob Hansen, hansen3000@hotmail.com
 	/// </summary>
-	[Rainbow.Framework.History("jminond", "march 2005", "Changes for moving Tab to Page")]
-	[Rainbow.Framework.History("Ozan", "2004/07/04", "FIX: It does not show sort images when running root site instead of rainbow virtual folder.")]
-	[Rainbow.Framework.History("Ender", "2003/03/18", "Added file and Xsl functionality")]
-	[Rainbow.Framework.History("mario@hartmann.net", "2004/05/28", "Added image functionality")]
-	[Rainbow.Framework.History("RSiera", "2004/11/29", "Fixed image functionality")]
-	[Rainbow.Framework.History("RSiera", "2004/11/29", "Added DisplayAsXML functionality")]
-	[Rainbow.Framework.History("RSiera", "2004/11/29", "Added UseDataOfOtherUDT functionality")]
-	[Rainbow.Framework.History("RSiera", "2004/12/01", "Added Sorting functionality for XSL data (see example.txt)")]
+	[History("jminond", "march 2005", "Changes for moving Tab to Page")]
+	[History("Ozan", "2004/07/04", "FIX: It does not show sort images when running root site instead of rainbow virtual folder.")]
+	[History("Ender", "2003/03/18", "Added file and Xsl functionality")]
+	[History("mario@hartmann.net", "2004/05/28", "Added image functionality")]
+	[History("RSiera", "2004/11/29", "Fixed image functionality")]
+	[History("RSiera", "2004/11/29", "Added DisplayAsXML functionality")]
+	[History("RSiera", "2004/11/29", "Added UseDataOfOtherUDT functionality")]
+	[History("RSiera", "2004/12/01", "Added Sorting functionality for XSL data (see example.txt)")]
 	public partial class UserDefinedTable : PortalModuleControl 
 	{
 		protected DataGrid grdData;
@@ -57,12 +54,13 @@ namespace Rainbow.Content.Web.Modules
 					cmdManage.Visible = false;
 			}
  
-			if(Settings["XSLsrc"].ToString().Length >0 || bool.Parse(Settings["DisplayAsXML"].ToString())==true)
+			if(Settings["XSLsrc"].ToString().Length >0 ||
+			   Equals(bool.Parse(Settings["DisplayAsXML"].ToString()), true))
 			{
 				xmlControl = new UserDefinedTableXML(XmlDataView(),PageID,ModuleIDsrc(),IsEditable,GetSortField(),GetSortOrder());
-				xmlControl.SortCommand += new UDTXSLSortEventHandler(xmlData_Sort);
+				xmlControl.SortCommand += xmlData_Sort;
 
-				if(bool.Parse(Settings["DisplayAsXML"].ToString())==true)
+				if(bool.Parse(Settings["DisplayAsXML"].ToString()))
 				{
 					//Show Raw XML
 					xmlText = new TextEditor();
@@ -88,7 +86,7 @@ namespace Rainbow.Content.Web.Modules
 				grdData.HeaderStyle.CssClass = "NormalBold";
 				grdData.ItemStyle.CssClass = "Normal";
 				grdData.AllowSorting = true;
-				grdData.SortCommand += new DataGridSortCommandEventHandler(grdData_Sort);
+				grdData.SortCommand += grdData_Sort;
 				PlaceHolderOutput.Controls.Add(grdData);
 				BindGrid();
 			}
@@ -117,7 +115,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
 		public void BindXSL()
 		{
-			PortalUrl pt = new PortalUrl();
+			PortalUrl pt = PortalProvider.Instance.CurrentPortal.PortalUrl;
 			pt.Value = Settings["XSLsrc"].ToString();
 			string xslsrc = pt.FullPath;
 
@@ -128,7 +126,7 @@ namespace Rainbow.Content.Web.Modules
 					xmlControl.TransformSource = xslsrc;
 					// Change - 28/Feb/2003 - Jeremy Esland
 					// Builds cache dependency files list
-					this.ModuleConfiguration.CacheDependency.Add(Server.MapPath(xslsrc));
+					ModuleConfiguration.CacheDependency.Add(Server.MapPath(xslsrc));
 				}
 				else 
 				{
@@ -207,7 +205,7 @@ namespace Rainbow.Content.Web.Modules
             UserDefinedTableDB  objUserDefinedTable = new UserDefinedTableDB();
 
             string strSortField = string.Empty;
-            string strSortOrder = string.Empty;
+            string strSortOrder;
 
 			SqlDataReader dr;
 
@@ -234,7 +232,7 @@ namespace Rainbow.Content.Web.Modules
 			{
 				while ( dr.Read())
 				{
-					DataGridColumn colField = null;
+					DataGridColumn colField;
 					if(dr["FieldType"].ToString() == "Image")
 					{
 						colField = new BoundColumn();
@@ -283,7 +281,7 @@ namespace Rainbow.Content.Web.Modules
 							colField.HeaderText += "<img src='" + Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/UserDefinedTable/sortdescending.gif") +  "' border='0' alt='" +General.GetString("USERTABLE_SORTEDBY", "Sorted By", null) + " " + strSortField + " " +General.GetString("USERTABLE_INDSCORDER", "In Descending Order", null) + "'>";
 					}
 					colField.Visible = bool.Parse(dr["Visible"].ToString());
-					colField.SortExpression = dr["FieldTitle"].ToString() + "|ASC";
+					colField.SortExpression = dr["FieldTitle"] + "|ASC";
 
 					grdData.Columns.Add(colField);
 				}
@@ -393,30 +391,30 @@ namespace Rainbow.Content.Web.Modules
 			setSortField.Required = false;
 			setSortField.Value = string.Empty;
 			setSortField.Order = 1;
-			this.baseSettings.Add("SortField", setSortField);
+			baseSettings.Add("SortField", setSortField);
 
 			SettingItem setSortOrder = new SettingItem(new ListDataType("ASC;DESC"));
 			setSortOrder.Required = true;
 			setSortOrder.Value = "ASC";
 			setSortOrder.Order = 2;
-			this.baseSettings.Add("SortOrder", setSortOrder);
+			baseSettings.Add("SortOrder", setSortOrder);
 
-			SettingItem DocumentPath = new SettingItem(new PortalUrl());
+			SettingItem DocumentPath = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
 			DocumentPath.Required = true;
 			DocumentPath.Value = "Documents";
 			DocumentPath.Order = 3;
-			this.baseSettings.Add("DocumentPath", DocumentPath);
+			baseSettings.Add("DocumentPath", DocumentPath);
 
-			SettingItem ImagePath = new SettingItem(new PortalUrl());
+			SettingItem ImagePath = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
 			ImagePath.Required = true;
 			ImagePath.Value = "Images\\Default";
 			ImagePath.Order = 4;
-			this.baseSettings.Add("ImagePath", ImagePath);
+			baseSettings.Add("ImagePath", ImagePath);
 
-			SettingItem XSLsrc = new SettingItem(new PortalUrl());
+			SettingItem XSLsrc = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
 			XSLsrc.Required = false;
 			XSLsrc.Order = 5;
-			this.baseSettings.Add("XSLsrc", XSLsrc);
+			baseSettings.Add("XSLsrc", XSLsrc);
 
 			//Rob Siera - 04 nov 2004 - Adding possibility to use data of other UDT
 			SettingItem UDTsrc = new SettingItem(new IntegerDataType());
@@ -425,7 +423,7 @@ namespace Rainbow.Content.Web.Modules
 			UDTsrc.EnglishName="XSL data";
 			UDTsrc.Description="Specify ModuleID of a UserDefinedTable to be used as data source for XSL (see 'mID' parameter in edit URL). Specify 0 to reset to current module data.";
 			UDTsrc.Order = 6;
-			this.baseSettings.Add("UDTsrc", UDTsrc);
+			baseSettings.Add("UDTsrc", UDTsrc);
 
 			//Rob Siera - 04 nov 2004 - Adding possibility to view data as raw XML
 			SettingItem DisplayAsXML = new SettingItem(new BooleanDataType());
@@ -433,9 +431,8 @@ namespace Rainbow.Content.Web.Modules
 			DisplayAsXML.EnglishName="Display XML";
 			DisplayAsXML.Description="Toggle to display data as XML. Helpfull to develop XSL file.";
 			DisplayAsXML.Order = 7;
-			this.baseSettings.Add("DisplayAsXML", DisplayAsXML);
+			baseSettings.Add("DisplayAsXML", DisplayAsXML);
 		}
-
 
         /// <summary>
         /// Unknown
@@ -448,7 +445,7 @@ namespace Rainbow.Content.Web.Modules
 			if (errors.Count > 0)
 			{
 				// Call rollback
-				throw new Exception("Error occurred:" + errors[0].ToString());
+				throw new Exception(string.Format("Error occurred:{0}", errors[0]));
 			}
 		}
 
@@ -464,10 +461,9 @@ namespace Rainbow.Content.Web.Modules
 			if (errors.Count > 0)
 			{
 				// Call rollback
-				throw new Exception("Error occurred:" + errors[0].ToString());
+				throw new Exception("Error occurred:" + errors[0]);
 			}
 		}
-
 
 		#region Web Form Designer generated code
         /// <summary>
@@ -481,7 +477,5 @@ namespace Rainbow.Content.Web.Modules
 			base.OnInit(e);
 		}
 		#endregion
-
     }
-
 }

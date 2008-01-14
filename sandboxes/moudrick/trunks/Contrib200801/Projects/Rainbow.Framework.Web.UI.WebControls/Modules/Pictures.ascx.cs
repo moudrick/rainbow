@@ -11,6 +11,7 @@ using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 using Path=Rainbow.Framework.Path;
@@ -79,7 +80,7 @@ namespace Rainbow.Content.Web.Modules
                                           (RepeatDirection)
                                           Int32.Parse(((SettingItem) baseSettings["RepeatDirectionSetting"])));
             dlPictures.RepeatColumns = Int32.Parse(((SettingItem) Settings["RepeatColumns"]));
-            dlPictures.ItemDataBound += new DataListItemEventHandler(Pictures_ItemDataBound);
+            dlPictures.ItemDataBound += Pictures_ItemDataBound;
             pgPictures.RecordsPerPage = Int32.Parse(Settings["PicturesPerPage"].ToString());
             BindData(pgPictures.PageNumber);
         }
@@ -177,26 +178,22 @@ namespace Rainbow.Content.Web.Modules
 
             DirectoryInfo albumDirectory = new DirectoryInfo(pathToDelete);
 
-            foreach (FileInfo fi in albumDirectory.GetFiles(ModuleID.ToString() + "m*.Production.jpg"))
+            foreach (FileInfo fi in albumDirectory.GetFiles(ModuleID + "m*.Production.jpg"))
             {
                 try
                 {
                     File.Delete(fi.FullName);
                 }
-                catch
-                {
-                }
+                catch {;}
             }
 
-            foreach (FileInfo fi in albumDirectory.GetFiles(ModuleID.ToString() + "m*"))
+            foreach (FileInfo fi in albumDirectory.GetFiles(ModuleID + "m*"))
             {
                 try
                 {
                     File.Copy(fi.FullName, fi.FullName.Replace(".jpg", ".Production.jpg"), true);
                 }
-                catch
-                {
-                }
+                catch {;}
             }
 
             base.Publish();
@@ -227,8 +224,7 @@ namespace Rainbow.Content.Web.Modules
         /// <summary>
         /// Default constructor
         /// </summary>
-        [
-            History("Tim Capps", "tim@cappsnet.com", "2.4 beta", "2004/02/18",
+        [History("Tim Capps", "tim@cappsnet.com", "2.4 beta", "2004/02/18",
                 "fixed order on settings and added ShowBulkLoad")]
         public Pictures()
         {
@@ -236,11 +232,11 @@ namespace Rainbow.Content.Web.Modules
             SupportsWorkflow = true;
 
             // Album Path Setting
-            SettingItem AlbumPath = new SettingItem(new PortalUrl());
-            AlbumPath.Required = true;
-            AlbumPath.Value = "Album";
-            AlbumPath.Order = 3;
-            baseSettings.Add("AlbumPath", AlbumPath);
+            SettingItem albumPath = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
+            albumPath.Required = true;
+            albumPath.Value = "Album";
+            albumPath.Order = 3;
+            baseSettings.Add("AlbumPath", albumPath);
 
             // Thumbnail Resize Options
             ArrayList thumbnailResizeOptions = new ArrayList();
@@ -451,7 +447,7 @@ namespace Rainbow.Content.Web.Modules
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred: " + errors[0]);
             }
         }
 
@@ -466,7 +462,7 @@ namespace Rainbow.Content.Web.Modules
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -505,18 +501,18 @@ namespace Rainbow.Content.Web.Modules
         /// <summary>
         /// Structure used for list settings
         /// </summary>
-        public struct Option
+        struct Option
         {
-            private int val;
-            private string name;
+            int val;
+            string name;
 
             /// <summary>
             /// 
             /// </summary>
             public int Val
             {
-                get { return this.val; }
-                set { this.val = value; }
+                get { return val; }
+                set { val = value; }
             }
 
             /// <summary>
@@ -524,8 +520,8 @@ namespace Rainbow.Content.Web.Modules
             /// </summary>
             public string Name
             {
-                get { return this.name; }
-                set { this.name = value; }
+                get { return name; }
+                set { name = value; }
             }
 
             /// <summary>

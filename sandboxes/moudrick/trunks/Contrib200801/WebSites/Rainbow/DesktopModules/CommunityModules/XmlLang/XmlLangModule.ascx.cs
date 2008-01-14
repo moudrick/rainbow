@@ -8,6 +8,7 @@ using System.Xml.Xsl;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -30,17 +31,16 @@ namespace Rainbow.Content.Web.Modules
         private void Page_Load(object sender, EventArgs e)
         {
             XslTransform xs;
-            XPathDocument xd;
             XsltArgumentList xa = new XsltArgumentList();
             XslHelper xh = new XslHelper();
             StringBuilder sb = new StringBuilder();
             TextWriter tw = new StringWriter(sb);
             PortalUrl pt;
 
-            pt = new PortalUrl();
+            pt = PortalProvider.Instance.CurrentPortal.PortalUrl;
             pt.Value = Settings["XMLsrc"].ToString();
             string xmlsrc = Server.MapPath(pt.FullPath);
-            pt = new PortalUrl();
+            pt = PortalProvider.Instance.CurrentPortal.PortalUrl;
             pt.Value = Settings["XSLsrc"].ToString();
             string xslsrc = Server.MapPath(pt.FullPath);
 
@@ -49,7 +49,7 @@ namespace Rainbow.Content.Web.Modules
                 && File.Exists(xmlsrc)
                 && File.Exists(xslsrc))
             {
-                xd = new XPathDocument(xmlsrc);
+                XPathDocument xd = new XPathDocument(xmlsrc);
                 xs = new XslTransform();
                 xs.Load(xslsrc);
                 xa.AddParam("Lang", string.Empty, PortalSettings.PortalContentLanguage.Name.ToLower());
@@ -73,12 +73,12 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         public XmlLangModule()
         {
-            SettingItem XMLsrc = new SettingItem(new PortalUrl());
+            SettingItem XMLsrc = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
             XMLsrc.Required = true;
             XMLsrc.Order = 1;
             baseSettings.Add("XMLsrc", XMLsrc);
 
-            SettingItem XSLsrc = new SettingItem(new PortalUrl());
+            SettingItem XSLsrc = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
             XSLsrc.Required = true;
             XSLsrc.Order = 2;
             baseSettings.Add("XSLsrc", XSLsrc);

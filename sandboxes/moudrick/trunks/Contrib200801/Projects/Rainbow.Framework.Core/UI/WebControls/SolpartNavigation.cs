@@ -17,10 +17,12 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Solpart.WebControls;
@@ -249,8 +251,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 PageStripDetails myTab = (PageStripDetails) authorizedTabs[i];
                 if (myTab.PageImage == null)
                 {
-                    myTab.PageImage =
-                        (new PageSettings().GetPageCustomSettings(myTab.PageID))["CustomMenuImage"].ToString();
+                    myTab.PageImage = PortalPageProvider.Instance
+                        .InstantiateNewPortalPage(myTab.PageID).CustomMenuImage;
                 }
             }
             return authorizedTabs;
@@ -266,13 +268,13 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <returns>
         /// 	<c>true</c> if [is active tab in] [the specified active page ID]; otherwise, <c>false</c>.
         /// </returns>
-        private bool isActiveTabIn(int activePageID, PageStripDetails PageStripDetails)
+        static bool isActiveTabIn(int activePageID, PageStripDetails PageStripDetails)
         {
             if (PageStripDetails.PageID == activePageID)
             {
                 return true;
             }
-            PagesBox childTabs = PageStripDetails.Pages;
+            PagesBox childTabs = PortalPageProvider.Instance.GetPagesBox(PageStripDetails);
             if (childTabs.Count > 0)
             {
                 for (int c = 0; c < childTabs.Count; c++)
@@ -314,7 +316,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="activePageID">The active page ID.</param>
         protected virtual void ShopMenu(PageStripDetails PageStripDetails, int activePageID)
         {
-            PagesBox childTabs = PageStripDetails.Pages;
+            PagesBox childTabs = PortalPageProvider.Instance.GetPagesBox(PageStripDetails);
             if (childTabs.Count > 0)
             {
                 for (int c = 0; c < childTabs.Count; c++)
@@ -338,13 +340,17 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="tab">The tab.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        private string giveMeUrl(string tab, int id)
+        string giveMeUrl(string tab, int id)
         {
-            if (!UseTabNameInUrl) return HttpUrlBuilder.BuildUrl(id);
+            if (!UseTabNameInUrl)
+            {
+                return HttpUrlBuilder.BuildUrl(id);
+            }
             string auxtab = string.Empty;
             foreach (char c in tab)
-                if (char.IsLetterOrDigit(c)) auxtab += c;
-                else auxtab += "_";
+            {
+                auxtab += char.IsLetterOrDigit(c) ? c : '_';
+            }
             return HttpUrlBuilder.BuildUrl("~/" + auxtab + ".aspx", id);
         }
 
@@ -355,7 +361,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="activePageID">The active page ID.</param>
         protected virtual void RecourseMenu(PageStripDetails PageStripDetails, int activePageID)
         {
-            PagesBox childTabs = PageStripDetails.Pages;
+            PagesBox childTabs = PortalPageProvider.Instance.GetPagesBox(PageStripDetails);
             if (childTabs.Count > 0)
             {
                 for (int c = 0; c < childTabs.Count; c++)
@@ -365,8 +371,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     {
                         if (mySubTab.PageImage == null)
                         {
-                            mySubTab.PageImage =
-                                (new PageSettings().GetPageCustomSettings(mySubTab.PageID))["CustomMenuImage"].ToString();
+                            PortalPage portalPage = PortalPageProvider.Instance.InstantiateNewPortalPage(mySubTab.PageID);
+                            mySubTab.PageImage = portalPage.CustomMenuImage;
                         }
                         if (products(mySubTab.PageID))
                         {
@@ -484,7 +490,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="curNode">The cur node.</param>
         /// <param name="AttributeName">Name of the attribute.</param>
         /// <param name="Value">The value.</param>
-        private void AddAttributetoItem(XmlNode curNode, string AttributeName, string Value)
+        static void AddAttributetoItem(XmlNode curNode, string AttributeName, string Value)
         {
             if (curNode != null && AttributeName != null && AttributeName.Length > 0 && Value != null &&
                 Value.Length > 0)
@@ -632,7 +638,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="tabID">The tab ID.</param>
         /// <param name="Tabs">The tabs.</param>
         /// <returns></returns>
-        private ArrayList GetTabs(int parentID, int tabID, IList Tabs)
+        static ArrayList GetTabs(int parentID, int tabID, IList Tabs)
         {
             ArrayList authorizedTabs = new ArrayList();
             //int index = -1;

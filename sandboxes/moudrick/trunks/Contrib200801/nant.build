@@ -39,7 +39,11 @@
   <property name="web.precompiled.dir" value="PrecompiledWeb" />
 
   <property name="wc.default.branch" value="rainbow" />
+
+  <property name="sql.instance" value="(local)\SQLEXPRESS" />
+  <property name="sql.db.name" value="${wc.default.branch}" />
   <property name="sql.tests.instance" value="(local)\SQLEXPRESS" />
+
   <property name="build.VersionInfo" value="VersionInfo.cs" />
 
   <property name="this.netFramework" value="net-2.0" />
@@ -57,7 +61,6 @@
     <call target="wc.info" />
     <exec program="notepad" commandline="README.TXT" />
     <call target="svn.default" />
-    <call target="tests.prepare" />
     <call target="config.update" />
     <call target="app.export.sql2k5-express.prepare" />
     <call target="build.rebuild" />
@@ -67,7 +70,6 @@
   <target name="deploy.preview.nobuild">
     <call target="wc.info" />
     <call target="svn.info" />
-    <call target="tests.prepare" />
     <call target="config.update" />
     <call target="app.export.sql2k5-express.prepare" />
     <call target="app.export.sql2k5-express.fixup" />
@@ -99,7 +101,6 @@
     <call target="wc.info" />
     <call target="results.delete" />
     <call target="svn.default" />
-    <call target="tests.prepare" />
     <call target="config.update" />
 
     <call target="app.solution.sql2k-default.prepare" />
@@ -109,6 +110,7 @@
     <call target="app.precompiled.sql2k5.prepare" />
     <call target="app.precompiled.sql2k5.fixup" />
 
+    <call target="tests.prepare" />
     <call target="tests.run" />
     <call target="tests.ncover.default" />
   </target>
@@ -310,6 +312,7 @@
     <property name="config" value="${wc.dir}${web.rainbow.dir}Web.config" />
     <copy file="${config}.standard" tofile="${config}" overwrite="true" />
 
+    <call target="tests.setProperties" />
     <call target="tests.updateConfig" />
   </target>
 

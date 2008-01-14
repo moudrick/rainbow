@@ -4,6 +4,7 @@ using System.IO;
 using System.Web;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -57,10 +58,7 @@ namespace Rainbow.Content.Web.Modules.AddModule
         private void BindData()
         {
             // Populate the "Add Module" Data
-            ModulesDB m = new ModulesDB();
-
-            SqlDataReader drCurrentModuleDefinitions = m.GetCurrentModuleDefinitions(PortalSettings.PortalID);
-
+            SqlDataReader drCurrentModuleDefinitions = new ModulesDB().GetCurrentModuleDefinitions(PortalSettings.PortalID);
             try
             {
 //				if(this.ArePropertiesEditable)
@@ -76,12 +74,12 @@ namespace Rainbow.Content.Web.Modules.AddModule
                 {
                     // Added by Mario Endara <mario@softworks.com.uy> 2004/11/04
                     // only users members of the "Amins" role can add Admin modules to a Tab
-                    if (PortalSecurity.IsInRoles("Admins") == true ||
+                    if (PortalSecurity.IsInRoles("Admins") ||
                         !(bool.Parse(drCurrentModuleDefinitions["Admin"].ToString())))
                     {
                         moduleType.Items.Add(
                             new ListItem(drCurrentModuleDefinitions["FriendlyName"].ToString(),
-                                         drCurrentModuleDefinitions["ModuleDefID"].ToString() + "|" +
+                                         drCurrentModuleDefinitions["ModuleDefID"] + "|" +
                                          GetHelpPath(drCurrentModuleDefinitions["DesktopSrc"].ToString())));
                     }
                 }
@@ -99,9 +97,9 @@ namespace Rainbow.Content.Web.Modules.AddModule
         /// </summary>
         /// <param name="desktopSrc">Desktop SRC.</param>
         /// <returns>The name of the help folder in the correct format</returns>
-        private string GetHelpPath(string desktopSrc)
+        static string GetHelpPath(string desktopSrc)
         {
-            string helpPath = desktopSrc.Replace(".", "_").ToString();
+            string helpPath = desktopSrc.Replace(".", "_");
             return "Rainbow/" + helpPath;
         }
 
@@ -117,12 +115,12 @@ namespace Rainbow.Content.Web.Modules.AddModule
         /// help file associated with it. If it does then it shows the help icon. If it doesn't then it
         /// hides it.
         /// </summary>
-        private void SetHelpPath()
+        void SetHelpPath()
         {
-            SetDatata(moduleType.SelectedValue.ToString());
+            SetDatata(moduleType.SelectedValue);
         }
 
-        private void SetDatata(string modulePath)
+        void SetDatata(string modulePath)
         {
             string folderName = modulePath;
             int start = folderName.IndexOf("|");
@@ -147,7 +145,7 @@ namespace Rainbow.Content.Web.Modules.AddModule
                 AddModuleHelp.Attributes.Add("style", "cursor: hand;");
                 AddModuleHelp.NavigateUrl = string.Empty;
                 AddModuleHelp.ImageUrl = CurrentTheme.GetImage("Buttons_Help", "Help.gif").ImageUrl;
-                AddModuleHelp.ToolTip = moduleType.SelectedItem.Text.ToString() + " Help";
+                AddModuleHelp.ToolTip = moduleType.SelectedItem.Text + " Help";
             }
             else
             {
@@ -203,15 +201,16 @@ namespace Rainbow.Content.Web.Modules.AddModule
         private void AddModule_Click(Object sender, EventArgs e)
         {
             // TODO: IF PAGE ID = 0 Then we know it's home page, cant we get from db the id?
-            //PagesDB _d = new PagesDB();
             int pid = PageID;
             if (pid == 0)
-                pid = PagesDB.PortalHomePageID(PortalID);
+            {
+                pid = PortalPageProvider.Instance.PortalHomePageID(PortalID);
+            }
 
             if (pid != 0)
             {
                 // All new modules go to the end of the contentpane
-                string selectedModule = moduleType.SelectedItem.Value.ToString();
+                string selectedModule = moduleType.SelectedItem.Value;
                 int start = selectedModule.IndexOf("|");
                 int moduleID = Convert.ToInt32(selectedModule.Substring(0, start).Trim());
 
@@ -221,7 +220,7 @@ namespace Rainbow.Content.Web.Modules.AddModule
                 // This allows the user to pick what type of people can view the module being added.
                 // If Authorised Roles is selected from the dropdown then every role that has view permission for the
                 // Add Role module will be added to the view permissions of the module being added.
-                string viewPermissionRoles = viewPermissions.SelectedValue.ToString();
+                string viewPermissionRoles = viewPermissions.SelectedValue;
                 if (viewPermissionRoles == "Authorised Roles")
                 {
                     viewPermissionRoles = PortalSecurity.GetViewPermissions(ModuleID);
@@ -237,7 +236,7 @@ namespace Rainbow.Content.Web.Modules.AddModule
                     // save to database
                     ModulesDB _mod = new ModulesDB();
                     m.ID =
-                        _mod.AddModule(pid, m.Order, paneLocation.SelectedValue.ToString(), m.Title, m.ModuleDefID, 0,
+                        _mod.AddModule(pid, m.Order, paneLocation.SelectedValue, m.Title, m.ModuleDefID, 0,
                                        PortalSecurity.GetEditPermissions(ModuleID), viewPermissionRoles,
                                        PortalSecurity.GetAddPermissions(ModuleID),
                                        PortalSecurity.GetDeletePermissions(ModuleID),
@@ -291,13 +290,6 @@ namespace Rainbow.Content.Web.Modules.AddModule
         public override bool AdminModule
         {
             get { return true; }
-        }
-
-        /// <summary>
-        /// Public constructor. Sets base settings for module.
-        /// </summary>
-        public Viewer()
-        {
         }
 
         #endregion

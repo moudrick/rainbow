@@ -10,16 +10,16 @@ namespace Rainbow.Framework
     /// </summary>
     public class SettingItem : IComparable
     {
-        private BaseDataType _datatype;
-        private int _minValue;
-        private int _maxValue;
-        private int _order = 0;
-        private bool _required = false;
+        BaseDataType _datatype;
+        int _minValue;
+        int _maxValue;
+        int _order = 0;
+        bool _required = false;
 
         //by Manu
-        private string m_description = string.Empty;
-        private string m_englishName = string.Empty;
-        private SettingItemGroup m_Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
+        string m_description = string.Empty;
+        string m_englishName = string.Empty;
+        SettingItemGroup m_Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
 
         // Jes1111
         /// <summary>

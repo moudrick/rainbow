@@ -1,14 +1,13 @@
 using System;
-using System.Data.SqlClient;
 using System.Text;
 using System.Web.Mail;
 using System.Web.UI;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Security;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using Rainbow.Framework.Providers.RainbowMembershipProvider;
@@ -270,7 +269,7 @@ namespace Rainbow.Content.Web.Modules
 
             if (hide && Request.IsAuthenticated)
             {
-                this.Visible = false;
+                Visible = false;
             }
             else if (!autocomplete)
             {

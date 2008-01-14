@@ -61,7 +61,7 @@ namespace Rainbow.Framework.BusinessObjects
             get
             {
                 return
-                    GeographicProvider.Current.GetCountryDisplayName(countryID,
+                    GeographicProvider.Instance.GetCountryDisplayName(countryID,
                                                                      Thread.CurrentThread.
                                                                          CurrentCulture);
             }
@@ -76,7 +76,7 @@ namespace Rainbow.Framework.BusinessObjects
             get
             {
                 return
-                    GeographicProvider.Current.GetAdministrativeDivisionName(
+                    GeographicProvider.Instance.GetAdministrativeDivisionName(
                         administrativeDivisionNeutralName, Thread.CurrentThread.CurrentCulture);
             }
         }

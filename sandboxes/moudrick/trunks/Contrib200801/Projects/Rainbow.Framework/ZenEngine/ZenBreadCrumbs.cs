@@ -111,19 +111,19 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 {
                     if (ct > 0)
                     {
-                        sb.Append(Separator.ToString());
+                        sb.Append(Separator);
                     }
                     if (ct != (crumbs.Count - 1))
                     {
                         sb.Append("<a href='");
                         sb.Append(HttpUrlBuilder.BuildUrl(item.ID));
                         sb.Append("'>");
-                        sb.Append(item.Name.ToString());
+                        sb.Append(item.Name);
                         sb.Append("</a>");
                     }
                     else
                     {
-                        sb.Append(item.Name.ToString());
+                        sb.Append(item.Name);
                     }
                     ct++;
                 }
@@ -142,7 +142,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="tab">The tab.</param>
         /// <param name="tabList">The tab list.</param>
         /// <returns></returns>
-        private ArrayList GetBreadCrumbs(PageSettings tab, ArrayList tabList)
+        static ArrayList GetBreadCrumbs(PortalPage tab, IList tabList)
         {
             int parentTabID = tab.PageID;
             int test = tab.PageID;

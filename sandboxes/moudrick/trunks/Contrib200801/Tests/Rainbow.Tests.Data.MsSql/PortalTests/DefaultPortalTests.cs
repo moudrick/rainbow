@@ -22,7 +22,7 @@ namespace Rainbow.Tests.Data.MsSql.PortalTests
 
             httpSimulator.SimulateRequest(new Uri("http://localhost/Rainbow/"));
             Assert.AreEqual(1882, VersionController.Instance.DatabaseVersion);
-            portalSettings = PortalProvider.Instance.InstantiateNewPortalSettings(0, "Rainbow");
+            portalSettings = PortalProvider.Instance.InstantiateNewPortal(0, "Rainbow");
             Assert.IsNotNull(portalSettings);
 
             HttpContext.Current.Items["PortalSettings"] = portalSettings;
@@ -49,7 +49,7 @@ namespace Rainbow.Tests.Data.MsSql.PortalTests
         [Test]
         public void ActivePage()
         {
-            PageSettings activePage = portalSettings.ActivePage;
+            PortalPage activePage = portalSettings.ActivePage;
             Assert.IsNotNull(activePage);
             Assert.AreEqual(1, activePage.PageID);
             Assert.AreEqual(1, activePage.PageOrder);

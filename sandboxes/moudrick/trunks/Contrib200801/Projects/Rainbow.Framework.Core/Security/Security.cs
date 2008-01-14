@@ -5,9 +5,9 @@ using System.Security.Principal;
 using System.Text;
 using System.Web;
 using System.Web.Security;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Data;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
 using System.Collections.Generic;
@@ -667,15 +667,17 @@ namespace Rainbow.Framework.Security
 						{
 							Monitoring.LogEntry(uid, portalSettings.PortalID, -1, "Logoff", string.Empty);  
 						}
-					} 
-					catch {}
+					}
+                    catch {;}
 				}
 			}
 			// [END ]  bja@reedtek.com remove user window information
 
-			//Redirect user back to the Portal Home Page
-			if (urlToRedirect.Length > 0)
-				HttpContext.Current.Response.Redirect(urlToRedirect);
+		    //Redirect user back to the Portal Home Page
+		    if (urlToRedirect.Length > 0)
+		    {
+		        HttpContext.Current.Response.Redirect(urlToRedirect);
+            }
 		}
 		#endregion
 

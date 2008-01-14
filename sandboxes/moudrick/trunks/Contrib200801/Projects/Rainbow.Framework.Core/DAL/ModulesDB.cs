@@ -3,12 +3,12 @@ using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Core.BLL;
 using System.Collections.Generic;
 
@@ -303,7 +303,7 @@ namespace Rainbow.Framework.Site.Data
                     catch (Exception ex)
                     {
                         ErrorHandler.Publish(LogLevel.Warn,
-                                             "An Error Occurred in DeleteModule. Parameter : " + moduleID.ToString(), ex);
+                            "An Error Occurred in DeleteModule. Parameter : " + moduleID, ex);
                     }
                 }
             }
@@ -339,8 +339,8 @@ namespace Rainbow.Framework.Site.Data
                     {
                         //ErrorHandler.Publish(Rainbow.Framework.LogLevel.Warn, "An Error Occurred in DeleteModuleDefinition. Parameter : " + defID.ToString(), ex);
                         ErrorHandler.Publish(LogLevel.Warn,
-                                             "An Error Occurred in DeleteModuleDefinition. Parameter : " +
-                                             defID.ToString(), ex);
+                            "An Error Occurred in DeleteModuleDefinition. Parameter : " + defID, 
+                            ex);
                     }
                 }
             }
@@ -414,10 +414,9 @@ namespace Rainbow.Framework.Site.Data
 
                     using (SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection))
                     {
-                        ModuleItem m = null;
                         while (result.Read())
                         {
-                            m = new ModuleItem();
+                            ModuleItem m = new ModuleItem();
                             m.ID = (int) result["ModuleId"];
                             modList.Add(m);
                         }
@@ -500,7 +499,7 @@ namespace Rainbow.Framework.Site.Data
             myConnection.Open();
 
             IList<GeneralModuleDefinition> result = new List<GeneralModuleDefinition>();
-            GeneralModuleDefinition genModDef = null;
+            GeneralModuleDefinition genModDef;
             using ( SqlDataReader dr = myCommand.ExecuteReader( CommandBehavior.CloseConnection ) ) {
                 while ( dr.Read() ) {
                     genModDef = new GeneralModuleDefinition();
@@ -563,7 +562,8 @@ namespace Rainbow.Framework.Site.Data
                         catch (Exception ex)
                         {
                             throw new Exception(
-                                "'" + parameterModuleID.Value.ToString() + "' seems not a valid Module GUID.", ex);
+                                string.Format("'{0}' seems not a valid Module GUID.", parameterModuleID.Value), 
+                                ex);
                             // Jes1111
                             //Rainbow.Framework.Configuration.ErrorHandler.HandleException("'" + parameterModuleID.Value.ToString() + "' seems not a valid GUID.", ex);
                             //throw;
@@ -616,8 +616,8 @@ namespace Rainbow.Framework.Site.Data
                     catch (Exception ex)
                     {
                         ErrorHandler.Publish(LogLevel.Warn,
-                                             "An Error Occurred in GetModuleDefinitionByGuid. Parameter : " +
-                                             guid.ToString(), ex);
+                            string.Format("An Error Occurred in GetModuleDefinitionByGuid. Parameter : {0}", guid), 
+                            ex);
                     }
                     return (int) parameterModuleID.Value;
                 }
@@ -928,31 +928,6 @@ namespace Rainbow.Framework.Site.Data
         }
 
         /// <summary>
-        /// The GetSolutionModuleDefinitions method returns a list of all module type definitions.<br></br>
-        /// GetSolutionModuleDefinitions Stored Procedure
-        /// </summary>
-        /// <param name="solutionID">The solution ID.</param>
-        /// <returns></returns>
-        [Obsolete("Replace me, bad design practive to pass SqlDataReaders to the UI")]
-        public SqlDataReader GetSolutionModuleDefinitions(int solutionID)
-        {
-            // Create Instance of Connection and Command Object
-            SqlConnection myConnection = DBHelper.SqlConnection;
-            SqlCommand myCommand = new SqlCommand("rb_GetSolutionModuleDefinitions", myConnection);
-            // Mark the Command as a SPROC
-            myCommand.CommandType = CommandType.StoredProcedure;
-            // Add Parameters to SPROC
-            SqlParameter parameterSolutionID = new SqlParameter("@SolutionID", SqlDbType.Int, 4);
-            parameterSolutionID.Value = solutionID;
-            myCommand.Parameters.Add(parameterSolutionID);
-            // Open the database connection and execute the command
-            myConnection.Open();
-            SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            // Return the datareader
-            return dr;
-        }
-
-        /// <summary>
         /// The GetSolutions method returns the Solution list.
         /// </summary>
         /// <returns></returns>
@@ -1211,11 +1186,14 @@ namespace Rainbow.Framework.Site.Data
             }
         }
 
+        ///<summary>
+        ///</summary>
+        ///<param name="solutionID"></param>
+        ///<param name="portalID"></param>
         public void UpdateSolutionModuleDefinition(int solutionID, int portalID)
         {
             // get module definitions
-            SqlDataReader myReader;
-            myReader = GetSolutionModuleDefinitions(solutionID);
+            SqlDataReader myReader = GetSolutionModuleDefinitions(solutionID);
 
             // Always call Read before accessing data.
             try
@@ -1230,7 +1208,7 @@ namespace Rainbow.Framework.Site.Data
                 myReader.Close(); //by Manu, fixed bug 807858
             }
         }
- 
+
         /// <summary>
         /// The UpdateModuleOrder method update Modules Order.<br/>
         /// UpdateModuleOrder Stored Procedure
@@ -1284,6 +1262,30 @@ namespace Rainbow.Framework.Site.Data
         public void UpdateModuleSetting(int moduleID, string key, string value)
         {
             ModuleSettingsProvider.UpdateModuleSetting(moduleID, key, value);
+        }
+
+        /// <summary>
+        /// The GetSolutionModuleDefinitions method returns a list of all module type definitions.<br></br>
+        /// GetSolutionModuleDefinitions Stored Procedure
+        /// </summary>
+        /// <param name="solutionID">The solution ID.</param>
+        /// <returns></returns>
+        SqlDataReader GetSolutionModuleDefinitions(int solutionID)
+        {
+            // Create Instance of Connection and Command Object
+            SqlConnection myConnection = DBHelper.SqlConnection;
+            SqlCommand myCommand = new SqlCommand("rb_GetSolutionModuleDefinitions", myConnection);
+            // Mark the Command as a SPROC
+            myCommand.CommandType = CommandType.StoredProcedure;
+            // Add Parameters to SPROC
+            SqlParameter parameterSolutionID = new SqlParameter("@SolutionID", SqlDbType.Int, 4);
+            parameterSolutionID.Value = solutionID;
+            myCommand.Parameters.Add(parameterSolutionID);
+            // Open the database connection and execute the command
+            myConnection.Open();
+            SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
+            // Return the datareader
+            return dr;
         }
     }
 }

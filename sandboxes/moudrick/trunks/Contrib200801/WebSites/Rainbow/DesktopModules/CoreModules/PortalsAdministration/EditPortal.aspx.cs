@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -38,7 +38,7 @@ namespace Rainbow.AdminAll
                 }
 
                 // Obtain PortalSettings of this Portal
-                Portal currentPortalSettings = PortalProvider.Instance.InstantiateNewPortalSettings(currentPortalID);
+                Portal currentPortalSettings = PortalProvider.Instance.InstantiateNewPortal(currentPortalID);
 
                 // If this is the first visit to the page, populate the site data
                 if (!Page.IsPostBack)

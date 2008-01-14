@@ -1,6 +1,3 @@
-using System.Web;
-using Rainbow.Framework.Core.Configuration.Settings; //Portal
-
 namespace Rainbow.Framework.DataTypes
 {
     /// <summary>
@@ -17,38 +14,12 @@ namespace Rainbow.Framework.DataTypes
         string innerFullPath;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PortalUrl"/> class.
-        /// </summary>
-        public PortalUrl()
-        {
-            InnerDataType = PropertiesDataType.String;
-
-            //InitializeComponents();
-
-            if (HttpContext.Current.Items["PortalSettings"] != null)
-            {
-                //TODO: [moudrick] encapsulate it to PortalProvider
-                // Obtain PortalSettings from Current Context
-                Portal portalSettings =
-                    (Portal) HttpContext.Current.Items["PortalSettings"];
-                portalPathPrefix = portalSettings.PortalFullPath;
-                if (!portalPathPrefix.EndsWith("/"))
-                {
-                    portalPathPrefix += "/";
-                }
-            }
-        }
-
-        /// <summary>
         /// Use this on portalsetting or when you want turn off automatic discovery
         /// </summary>
         /// <param name="portalFullPath">The portal full path.</param>
+        //TODO: [moudrick] make it  protected internal after Portal class moved into this project
         public PortalUrl(string portalFullPath)
         {
-            InnerDataType = PropertiesDataType.String;
-
-            //			InitializeComponents();			
-
             portalPathPrefix = portalFullPath;
         }
 

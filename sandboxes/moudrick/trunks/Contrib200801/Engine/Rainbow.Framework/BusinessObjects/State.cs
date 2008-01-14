@@ -67,7 +67,7 @@ namespace Rainbow.Framework.Providers.Geographic
             get
             {
                 return
-                    GeographicProvider.Current.GetStateDisplayName(stateID,
+                    GeographicProvider.Instance.GetStateDisplayName(stateID,
                                                                    Thread.CurrentThread.
                                                                        CurrentCulture);
             }

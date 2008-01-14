@@ -5,7 +5,7 @@ using System.Configuration.Provider;
 using System.Globalization;
 using System.Web;
 using System.Web.Caching;
-using Rainbow.Framework.Provider;
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Framework.Web
 {
@@ -57,7 +57,7 @@ namespace Rainbow.Framework.Web
                 try
                 {
                     cache.Insert(cacheKey,
-                                 ProviderHelper.InstantiateProvider(providerSettings, typeof (UrlBuilderProvider)));
+                                 ProviderConfiguration.InstantiateProvider(providerSettings, typeof (UrlBuilderProvider)));
                 }
 
                 catch (Exception e)

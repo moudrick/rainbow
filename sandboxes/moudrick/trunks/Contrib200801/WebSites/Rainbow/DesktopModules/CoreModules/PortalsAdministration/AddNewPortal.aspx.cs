@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;

@@ -10,8 +10,9 @@
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" requirePermission="false" />
     <sectionGroup name="providers">
       <section name="log" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="urlBuilder" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
       <section name="geographic" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false"/>
+      <section name="portal" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false"/>
+      <section name="urlBuilder" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework.Core" requirePermission="false" />
     </sectionGroup>
     <section name="urlrewritingnet" restartOnExternalChanges="true" requirePermission="false" type="UrlRewritingNet.Configuration.UrlRewriteSection, UrlRewritingNet.UrlRewriter" />
     <sectionGroup name="system.web.extensions" type="System.Web.Configuration.SystemWebExtensionsSectionGroup, System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -637,13 +638,19 @@
     <geographic defaultProvider="GeographicProvider">
       <providers>
         <clear/>
-        <add name="GeographicProvider" type="Rainbow.Framework.Providers.MsSql.SqlGeographicProvider, Rainbow.Framework" countriesFilter=""/>
+        <add name="GeographicProvider" type="Rainbow.Framework.Providers.MsSql.SqlGeographicProvider, Rainbow.Framework.Providers.MsSql" countriesFilter="" />
       </providers>
     </geographic>
+    <portal defaultProvider="PortalProvider">
+      <providers>
+        <clear/>
+        <add name="PortalProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlPortalProvider, Rainbow.Framework.Providers.MsSql" />
+      </providers>
+    </portal>
   </providers>
-  <urlrewritingnet xmlns="http://www.urlrewriting.net/schemas/config/2006/07" >
+  <urlrewritingnet xmlns="http://www.urlrewriting.net/schemas/config/2006/07">
     <providers>
-      <add name="RainbowUrlRewritingProvider" type="Rainbow.Framework.UrlRewriting.RainbowUrlRewritingProvider, Rainbow.Framework.UrlRewriting"/>
+      <add name="RainbowUrlRewritingProvider" type="Rainbow.Framework.UrlRewriting.RainbowUrlRewritingProvider, Rainbow.Framework.UrlRewriting" />
     </providers>
     <rewrites>
       <add name="RainbowUrl" provider="RainbowUrlRewritingProvider" rewriteUrlParameter="ExcludeFromClientQueryString" ignoreCase="true" handlerFlag="site" handlerSplitter="__" pageIdNoSplitter="true" friendlyPageName="DesktopDefault.aspx"  />

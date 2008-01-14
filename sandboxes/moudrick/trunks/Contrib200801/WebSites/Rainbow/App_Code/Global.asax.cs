@@ -4,12 +4,12 @@ using System.Net;
 using System.Web;
 using System.Web.Security;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using History=Rainbow.Framework.History;
 
 namespace Rainbow.App_Code
@@ -181,6 +181,13 @@ namespace Rainbow.App_Code
                 //        abag[GlobalInternalStrings.UserWinMgmtIndex] = guid.ToString();
                 //    }
                 //}
+
+//            /// <summary>
+//            /// the cookie id used for getting the uid ( dependency above !)
+//            /// </summary>
+//            public static readonly string GlobalInternalStrings.UserWinMgmtIndex = "Rainbow_WinMgmt";
+
+
             }
         } // end of Application_AuthenticateRequest
 

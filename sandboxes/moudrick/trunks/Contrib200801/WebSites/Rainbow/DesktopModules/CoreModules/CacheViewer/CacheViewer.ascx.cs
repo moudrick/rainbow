@@ -3,7 +3,7 @@ using System.Collections;
 using System.Drawing;
 using System.Web;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules

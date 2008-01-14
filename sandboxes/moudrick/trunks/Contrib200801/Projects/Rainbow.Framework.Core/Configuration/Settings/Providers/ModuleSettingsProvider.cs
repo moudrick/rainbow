@@ -3,9 +3,9 @@ using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -85,7 +85,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         public static string GetControlPath(int moduleID)
         {
             string controlPath = Path.ApplicationRoot + "/";
-            using (SqlDataReader dr = ModuleSettingsProvider.GetModuleDefinitionByID(moduleID))
+            using (SqlDataReader dr = GetModuleDefinitionByID(moduleID))
             {
                 if (dr.Read())
                 {
@@ -104,7 +104,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         public static ModuleSettings InstantiateNewModuleSettings(int moduleID, ModuleSettings moduleConfiguration)
         {
             string controlPath = string.Empty;
-            SqlDataReader dr = ModuleSettingsProvider.GetModuleDefinitionByID(moduleID);
+            SqlDataReader dr = GetModuleDefinitionByID(moduleID);
             try
             {
                 if (dr.Read())
@@ -258,18 +258,18 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <returns></returns>
         public static Hashtable GetModuleUserSettings(int moduleID, Guid userID, Page page)
         {
-            string controlPath = ModuleSettingsProvider.GetControlPath(moduleID);
+            string controlPath = GetControlPath(moduleID);
             try
             {
                 PortalModuleControlCustom portalModule = (PortalModuleControlCustom)page.LoadControl(controlPath);
-                Hashtable setting = GetModuleUserSettings(moduleID, (Guid)RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, portalModule.CustomizedUserSettings);
+                Hashtable setting = GetModuleUserSettings(moduleID, RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, portalModule.CustomizedUserSettings);
                 return setting;
             }
             catch (Exception ex)
             {
                 // Rainbow.Framework.Configuration.ErrorHandler.HandleException("There was a problem loading: '" + ControlPath + "'", ex);
                 // throw;
-                throw new Rainbow.Framework.Exceptions.RainbowException(Rainbow.Framework.LogLevel.Fatal, "There was a problem loading: '" + controlPath + "'", ex);
+                throw new Exceptions.RainbowException(LogLevel.Fatal, "There was a problem loading: '" + controlPath + "'", ex);
             }
         }
 
@@ -283,7 +283,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <returns></returns>
         public static Hashtable GetModuleUserSettings(int moduleID, Guid userID, Hashtable customSettings)
         {
-            Hashtable settings = ModuleSettingsProvider.GetModuleSettingsHashtable(moduleID, userID);
+            Hashtable settings = GetModuleSettingsHashtable(moduleID, userID);
 
             foreach (string key in customSettings.Keys)
             {
@@ -331,7 +331,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         {
             if (!CurrentCache.Exists(Key.ModuleSettings(moduleID)))
             {
-                Hashtable settings = ModuleSettingsProvider.GetModuleSettingsHashtable(moduleID);
+                Hashtable settings = GetModuleSettingsHashtable(moduleID);
 
                 foreach (string key in baseSettings.Keys)
                 {
@@ -360,7 +360,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <returns></returns>
         public static Hashtable GetModuleSettings(int moduleID)
         {
-            return (ModuleSettingsProvider.GetModuleSettings(moduleID, new Rainbow.Framework.Web.UI.Page()));
+            return (GetModuleSettings(moduleID, new Web.UI.Page()));
         }
 
         /// <summary>

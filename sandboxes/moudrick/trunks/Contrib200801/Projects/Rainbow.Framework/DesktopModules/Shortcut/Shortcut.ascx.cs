@@ -1,14 +1,12 @@
 using System;
-using System.Data.SqlClient;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -41,7 +39,7 @@ namespace Rainbow.Content.Web.Modules
 //        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Shortcut"/> class.
+        /// Initializes a new instance of the <see cref="Shortcut"/> class.
         /// </summary>
         public Shortcut()
         {

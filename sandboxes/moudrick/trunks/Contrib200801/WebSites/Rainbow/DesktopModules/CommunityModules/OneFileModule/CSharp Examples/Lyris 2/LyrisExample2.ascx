@@ -61,7 +61,7 @@
         Mailer.To = "join-" + listname + lyrisServerName;
         Mailer.Subject = "Join";
         Mailer.Body = "Join";
-        SmtpMail.SmtpServer = Rainbow.Framework.Settings.Config.SmtpServer;
+        SmtpMail.SmtpServer = Rainbow.Framework.Context.Config.SmtpServer;
         SmtpMail.Send(Mailer);
     }
 
@@ -72,7 +72,7 @@
         Mailer.To = "leave-" + listname + lyrisServerName;
         Mailer.Subject = "Leave";
         Mailer.Body = "Leave";
-        SmtpMail.SmtpServer = Rainbow.Framework.Settings.Config.SmtpServer;
+        SmtpMail.SmtpServer = Rainbow.Framework.Context.Config.SmtpServer;
         SmtpMail.Send(Mailer);
     }
 </script>

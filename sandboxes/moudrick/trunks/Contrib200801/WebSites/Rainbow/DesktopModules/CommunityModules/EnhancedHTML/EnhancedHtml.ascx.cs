@@ -7,12 +7,12 @@ using System.Web;
 using System.Web.UI;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Core.Configuration.Settings;
 using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -160,7 +160,7 @@ namespace Rainbow.Content.Web.Modules
                     }
                     else
                     {
-                        referencia = "<a href='" + dameUrl("&ModeID=0&EhPageID=" + i.ToString()) + "' " +
+                        referencia = "<a href='" + dameUrl("&ModeID=0&EhPageID=" + i) + "' " +
                                      "class='EnhancedHtmlLink'>" + fila["Title"] + "</a>";
                         upmenu += referencia;
                         if (totalPages - 1 == actualPage)
@@ -169,9 +169,15 @@ namespace Rainbow.Content.Web.Modules
                         }
                     }
                 }
-                if (prevRef.Length != 0) downmenu += prevRef + currentMenuSeparator;
-                downmenu += ehPage + " " + actualPage.ToString() + " " + ehOf + " " + totalPages.ToString();
-                if (nextRef.Length != 0) downmenu += currentMenuSeparator + nextRef;
+                if (prevRef.Length != 0)
+                {
+                    downmenu += prevRef + currentMenuSeparator;
+                }
+                downmenu += string.Format("{0} {1} {2} {3}", ehPage, actualPage, ehOf, totalPages);
+                if (nextRef.Length != 0)
+                {
+                    downmenu += currentMenuSeparator + nextRef;
+                }
 
                 aux = "<br><table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>";
                 if (showTitle)
@@ -372,7 +378,6 @@ namespace Rainbow.Content.Web.Modules
         {
             HttpCookie cookie1;
             DateTime time1;
-            TimeSpan span1;
             int num1;
             string moduleCookie;
             bool moduleInUrl = false;
@@ -391,29 +396,29 @@ namespace Rainbow.Content.Web.Modules
             {
                 if (Page.Request.Params["EhPageID"] != null)
                 {
-                    EhPageID = Page.Request.Params["EhPageID"].ToString();
+                    EhPageID = Page.Request.Params["EhPageID"];
                 }
                 else if (Page.Request.Params["ItemID"] != null)
                 {
-                    EhPageID = Page.Request.Params["ItemID"].ToString();
+                    EhPageID = Page.Request.Params["ItemID"];
                 }
             }
             currentModeURL = currentURL;
-            moduleCookie = "EnhancedHtml:" + ModuleID.ToString();
+            moduleCookie = "EnhancedHtml:" + ModuleID;
             modeID = "0";
             if (Page.Request.Params["ModeID"] != null)
             {
-                modeID = Page.Request.Params["ModeID"].ToString();
+                modeID = Page.Request.Params["ModeID"];
                 cookie1 = new HttpCookie(moduleCookie);
                 cookie1.Value = modeID;
                 time1 = DateTime.Now;
-                span1 = new TimeSpan(90, 0, 0, 0);
+                TimeSpan span1 = new TimeSpan(90, 0, 0, 0);
                 cookie1.Expires = time1.Add(span1);
-                base.Response.AppendCookie(cookie1);
+                Response.AppendCookie(cookie1);
             }
             else
             {
-                if (base.Request.Cookies[moduleCookie] != null)
+                if (Request.Cookies[moduleCookie] != null)
                 {
                     modeID = Request.Cookies[moduleCookie].Value;
                 }
@@ -444,7 +449,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="n">The n.</param>
         /// <returns></returns>
-        private string dameAlineacion(string n)
+        static string dameAlineacion(string n)
         {
             if (n.Equals("1")) return "left";
             if (n.Equals("2")) return "center";
@@ -457,7 +462,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="custom">The custom.</param>
         /// <returns></returns>
-        private string dameUrl(string custom)
+        string dameUrl(string custom)
         {
             // Sugerence by Mario Endara mario@softworks.com.uy 21-jun-2004
             // for compatibility with handler splitter
@@ -471,7 +476,7 @@ namespace Rainbow.Content.Web.Modules
         #region constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:EnhancedHtml"/> class.
+        /// Initializes a new instance of the <see cref="EnhancedHtml"/> class.
         /// </summary>
         public EnhancedHtml()
         {
@@ -608,8 +613,8 @@ namespace Rainbow.Content.Web.Modules
             if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
             {
                 Portal pS = (Portal) HttpContext.Current.Items["PortalSettings"];
-                retorno += " AND ((itm.CultureCode = '" + pS.PortalUILanguage.LCID.ToString() +
-                           "') OR (itm.CultureCode = '" + CultureInfo.InvariantCulture.LCID.ToString() + "'))";
+                retorno += " AND ((itm.CultureCode = '" + pS.PortalUILanguage.LCID +
+                           "') OR (itm.CultureCode = '" + CultureInfo.InvariantCulture.LCID + "'))";
             }
             return retorno;
         }
@@ -656,7 +661,7 @@ namespace Rainbow.Content.Web.Modules
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -670,7 +675,7 @@ namespace Rainbow.Content.Web.Modules
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

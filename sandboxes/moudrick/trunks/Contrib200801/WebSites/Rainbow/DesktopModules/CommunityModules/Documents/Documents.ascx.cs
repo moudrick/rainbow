@@ -4,10 +4,8 @@ using System.Data;
 using System.IO;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Content.Security;
 using Rainbow.Framework.Data;
-using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Site.Data;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.DataTypes;
@@ -19,7 +17,7 @@ namespace Rainbow.Content.Web.Modules
 	/// <summary>
 	/// Documents
 	/// </summary>
-	[Rainbow.Framework.History("jminond", "mar-5-2005", "added full extension pack to asp_client and modified content mehtod to use this")]
+	[History("jminond", "mar-5-2005", "added full extension pack to asp_client and modified content mehtod to use this")]
 	public partial class Documents : PortalModuleControl 
 	{
 		/// <summary>
@@ -36,8 +34,8 @@ namespace Rainbow.Content.Web.Modules
 		protected string sortDirection;
 
 		// Jminond - addded to upgraded extension set
-		private string baseImageDIR = string.Empty;
-		private Hashtable availExtensions = new Hashtable();
+		string baseImageDIR = string.Empty;
+		readonly Hashtable availExtensions = new Hashtable();
 
 		/// <summary>
 		/// Constructor
@@ -54,7 +52,7 @@ namespace Rainbow.Content.Web.Modules
 			int groupBase = (int)group;
 			// end of modification
 
-			SettingItem DocumentPath = new SettingItem(new PortalUrl());
+			SettingItem DocumentPath = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
 			DocumentPath.Required = true;
 			DocumentPath.Value = "Documents";
 			// Modified by Hongwei Shen
@@ -64,7 +62,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			DocumentPath.EnglishName = "Document path";
 			DocumentPath.Description = "Folder for store the documents";
-			this.baseSettings.Add("DocumentPath", DocumentPath);
+			baseSettings.Add("DocumentPath", DocumentPath);
 
 			// Add new functionalities by jviladiu@portalServices.net (02/07/2004)
 			SettingItem ShowImages = new SettingItem(new BooleanDataType());
@@ -76,7 +74,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			ShowImages.EnglishName = "Show Image Icons?";
 			ShowImages.Description = "Mark this if you like see Image Icons";
-			this.baseSettings.Add("DOCUMENTS_SHOWIMAGES", ShowImages);
+			baseSettings.Add("DOCUMENTS_SHOWIMAGES", ShowImages);
 
 			SettingItem SaveInDataBase = new SettingItem(new BooleanDataType());
 			SaveInDataBase.Value = "false";
@@ -87,7 +85,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			SaveInDataBase.EnglishName = "Save files in DataBase?";
 			SaveInDataBase.Description = "Mark this if you like save files in DataBase";
-			this.baseSettings.Add("DOCUMENTS_DBSAVE", SaveInDataBase);
+			baseSettings.Add("DOCUMENTS_DBSAVE", SaveInDataBase);
 
 			// Added sort by fields by Chris Thames [icecold_2@hotmail.com] (11/17/2004)
 			SettingItem	SortByField	= new SettingItem(new ListDataType(General.GetString("DOCUMENTS_SORTBY_FIELD_LIST", "File Name;Created Date")));
@@ -100,7 +98,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			SortByField.EnglishName = "Sort Field?";
 			SortByField.Description = "Sort by File Name or by Created Date?";
-			this.baseSettings.Add("DOCUMENTS_SORTBY_FIELD", SortByField);
+			baseSettings.Add("DOCUMENTS_SORTBY_FIELD", SortByField);
 
 			SettingItem SortByDirection = new SettingItem(new ListDataType(General.GetString("DOCUMENTS_SORTBY_DIRECTION_LIST", "Ascending;Descending")));
 			SortByDirection.Value = "Ascending";
@@ -111,7 +109,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			SortByDirection.EnglishName = "Sort ascending or descending?";
 			SortByDirection.Description = "Ascending: A to Z or 0 - 9. Descending: Z - A or 9 - 0.";
-			this.baseSettings.Add("DOCUMENTS_SORTBY_DIRECTION", SortByDirection);
+			baseSettings.Add("DOCUMENTS_SORTBY_DIRECTION", SortByDirection);
 			// End
 
 			// Added by Jakob Hansen 07/07/2004
@@ -124,7 +122,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			showTitle.EnglishName = "Show Title column?";
 			showTitle.Description = "Mark this if the title column should be displayed";
-			this.baseSettings.Add("DOCUMENTS_SHOWTITLE", showTitle);
+			baseSettings.Add("DOCUMENTS_SHOWTITLE", showTitle);
 
 			SettingItem showOwner = new SettingItem(new BooleanDataType());
 			showOwner.Value = "true";
@@ -135,7 +133,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			showOwner.EnglishName = "Show Owner column?";
 			showOwner.Description = "Mark this if the owner column should be displayed";
-			this.baseSettings.Add("DOCUMENTS_SHOWOWNER", showOwner);
+			baseSettings.Add("DOCUMENTS_SHOWOWNER", showOwner);
 
 			SettingItem showArea = new SettingItem(new BooleanDataType());
 			showArea.Value = "true";
@@ -146,7 +144,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			showArea.EnglishName = "Show Area column";
 			showArea.Description = "Mark this if the area column should be displayed";
-			this.baseSettings.Add("DOCUMENTS_SHOWAREA", showArea);
+			baseSettings.Add("DOCUMENTS_SHOWAREA", showArea);
 
 			SettingItem showLastUpdated = new SettingItem(new BooleanDataType());
 			showLastUpdated.Value = "true";
@@ -157,7 +155,7 @@ namespace Rainbow.Content.Web.Modules
 			// end of modification
 			showLastUpdated.EnglishName = "Show Last Updated column";
 			showLastUpdated.Description = "Mark this if the Last Updated column should be displayed";
-			this.baseSettings.Add("DOCUMENTS_SHOWLASTUPDATED", showLastUpdated);
+			baseSettings.Add("DOCUMENTS_SHOWLASTUPDATED", showLastUpdated);
 			// End Change Jakob Hansen
 
 			#endregion
@@ -267,12 +265,12 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
 		private void LoadAvailableImageList()
 		{
-			string bDir = Server.MapPath(this.baseImageDIR);
+			string bDir = Server.MapPath(baseImageDIR);
 			DirectoryInfo di = new DirectoryInfo(bDir);
 			FileInfo[] rgFiles = di.GetFiles("*.gif");
-			string ext = string.Empty;
-			string nme = string.Empty;
-			string f_Name = string.Empty;
+			string ext;
+			string nme;
+			string f_Name;
 
 			foreach(FileInfo fi in rgFiles)
 			{
@@ -281,7 +279,6 @@ namespace Rainbow.Content.Web.Modules
 				nme = f_Name.Substring(0, (f_Name.Length - ext.Length));
 				availExtensions.Add(nme, f_Name);
 			}
-
 		}
 
         /// <summary>
@@ -289,10 +286,10 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="contentType">Type of the content.</param>
         /// <returns></returns>
-		private string imageAsign (string contentType) 
+		string imageAsign (string contentType) 
 		{
 			// jminond - switched to use extensions pack
-			if(availExtensions.ContainsKey(contentType))
+			if (availExtensions.ContainsKey(contentType))
 			{
 				return availExtensions[contentType].ToString();
 			}
@@ -325,7 +322,10 @@ namespace Rainbow.Content.Web.Modules
 			{
 				// if there is content in the database, create an url to browse it
 				// Add ModuleID into url for correct security access. jviladiu@portalServices.net (02/07/2004)
-                return (HttpUrlBuilder.BuildUrl("~/DesktopModules/CommunityModules/Documents/DocumentsView.aspx", "ItemID=" + documentID.ToString() + "&MId=" + ModuleID.ToString() + "&wversion=" + Version.ToString()));
+                return (HttpUrlBuilder.BuildUrl(
+                    "~/DesktopModules/CommunityModules/Documents/DocumentsView.aspx", 
+                    string.Format("ItemID={0}&MId={1}&wversion={2}", 
+                        documentID, ModuleID, Version)));
 			}
 			else 
 			{
@@ -394,7 +394,7 @@ namespace Rainbow.Content.Web.Modules
 			if (errors.Count > 0)
 			{
 				// Call rollback
-				throw new Exception("Error occurred:" + errors[0].ToString());
+				throw new Exception("Error occurred:" + errors[0]);
 			}
 		}
 
@@ -409,7 +409,7 @@ namespace Rainbow.Content.Web.Modules
 			if (errors.Count > 0)
 			{
 				// Call rollback
-				throw new Exception("Error occurred:" + errors[0].ToString());
+				throw new Exception("Error occurred:" + errors[0]);
 			}
 		}
 		# endregion

@@ -1,6 +1,7 @@
 using System;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -66,7 +67,7 @@ namespace Rainbow.Content.Web.Modules
             SettingItemGroup group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             int groupBase = (int) group;
 
-            SettingItem src = new SettingItem(new UploadedFileDataType()); //PortalUrl
+            SettingItem src = new SettingItem(new UploadedFileDataType(PortalProvider.Instance.CurrentPortal));
             src.Required = true;
             src.Group = group;
             src.Order = groupBase + 25; //1;

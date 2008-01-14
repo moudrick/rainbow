@@ -2,8 +2,8 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Web;
-using Rainbow.Framework.Core.Configuration.Settings;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Core.Configuration.Settings; //Portal
 using Rainbow.Framework.Web;
 
 namespace Rainbow.Framework
@@ -16,19 +16,15 @@ namespace Rainbow.Framework
     /// Original ideas from John Mandia, Cory Isakson, Jes and Manu.
     /// </summary>
     [History("jminond", "2005/03/10", "Tab to page conversion")]
-    [
-        History("john.mandia@whitelightsolutions.com", "2004/09/2",
-            "Introduced the provider pattern for UrlBuilder so that people can implement their rules for how urls should be built"
-            )]
-    [
-        History("john.mandia@whitelightsolutions.com", "2003/08/13",
-            "Removed Keywords splitter - rebuilt handler code to use a rules engine and changed code on url builder to make it cleaner and compatible"
-            )]
+    [History("john.mandia@whitelightsolutions.com", "2004/09/2",
+            "Introduced the provider pattern for UrlBuilder so that people can implement their rules for how urls should be built")]
+    [History("john.mandia@whitelightsolutions.com", "2003/08/13",
+            "Removed Keywords splitter - rebuilt handler code to use a rules engine and changed code on url builder to make it cleaner and compatible")]
     [History("Jes1111", "2003/03/18", "Added Keyword Splitter feature, see explanation in web.config")]
     [History("Jes1111", "2003/04/24", "Fixed problem with '=' in Keyword Splitter")]
     public class HttpUrlBuilder
     {
-        private static UrlBuilderProvider provider = UrlBuilderProvider.Instance();
+        static readonly UrlBuilderProvider provider = UrlBuilderProvider.Instance();
 
         /// <summary>
         /// Builds the url for get to current portal home page
