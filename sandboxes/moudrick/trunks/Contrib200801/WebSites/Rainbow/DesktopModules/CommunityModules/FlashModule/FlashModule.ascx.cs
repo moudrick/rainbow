@@ -15,6 +15,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using Osmosis.Web.UI;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
@@ -69,12 +70,14 @@ namespace Rainbow.Content.Web.Modules
             backColor.Order = groupBase + 35; //4;
             baseSettings.Add("backcolor", backColor);
 
-            SettingItem FlashPath = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
-            FlashPath.Required = true;
-            FlashPath.Value = "FlashGallery";
-            FlashPath.Group = group;
-            FlashPath.Order = groupBase + 40; //5;
-            baseSettings.Add("FlashPath", FlashPath);
+            Portal currentPortal = PortalProvider.Instance.CurrentPortal;
+            PortalUrl portalUrl = currentPortal != null ? currentPortal.PortalUrl : new PortalUrl(string.Empty);
+            SettingItem flashPath = new SettingItem(portalUrl);
+            flashPath.Required = true;
+            flashPath.Value = "FlashGallery";
+            flashPath.Group = group;
+            flashPath.Order = groupBase + 40; //5;
+            baseSettings.Add("FlashPath", flashPath);
         }
 
         /// <summary>

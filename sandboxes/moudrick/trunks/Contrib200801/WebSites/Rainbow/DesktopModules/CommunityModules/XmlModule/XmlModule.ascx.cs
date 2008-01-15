@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Web.UI;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
@@ -22,7 +23,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-		private void Page_Load(object sender, EventArgs e)
+		void Page_Load(object sender, EventArgs e)
 		{
 			PortalUrl portalUrl;
 
@@ -70,12 +71,14 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
 		public XmlModule()
 		{
-			SettingItem XMLsrc = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
+            Portal portal = PortalProvider.Instance.CurrentPortal;
+            PortalUrl portalUrl = portal != null ? portal.PortalUrl : new PortalUrl(string.Empty);
+            SettingItem XMLsrc = new SettingItem(portalUrl);
 			XMLsrc.Required = true;
 			XMLsrc.Order = 1;
 			baseSettings.Add("XMLsrc", XMLsrc);
 
-			SettingItem XSLsrc = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
+			SettingItem XSLsrc = new SettingItem(portalUrl);
 			XSLsrc.Required = true;
 			XSLsrc.Order = 2;
 			baseSettings.Add("XSLsrc", XSLsrc);

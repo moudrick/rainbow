@@ -1108,22 +1108,22 @@ namespace Rainbow.Framework.Providers.MsSql
                 // Show input for Portal Admins when using Windows Authenication and Multiportal
                 // cisakson@yahoo.com 28.April.2003
                 // This setting is removed in Global.asa for non-Windows authenticaton sites.
-                SettingItem PortalAdmins = new SettingItem(new StringDataType());
-                PortalAdmins.Order = groupOrderBase + 5;
-                PortalAdmins.Group = group;
+                SettingItem portalAdmins = new SettingItem(new StringDataType());
+                portalAdmins.Order = groupOrderBase + 5;
+                portalAdmins.Group = group;
                 //jes1111 - PortalAdmins.Value = ConfigurationSettings.AppSettings["ADAdministratorGroup"];
-                PortalAdmins.Value = Config.ADAdministratorGroup;
-                PortalAdmins.Required = false;
-                PortalAdmins.Description = "Show input for Portal Admins when using Windows Authenication and Multiportal";
-                baseSettings.Add("WindowsAdmins", PortalAdmins);
+                portalAdmins.Value = Config.ADAdministratorGroup;
+                portalAdmins.Required = false;
+                portalAdmins.Description = "Show input for Portal Admins when using Windows Authenication and Multiportal";
+                baseSettings.Add("WindowsAdmins", portalAdmins);
                 // Allow new registrations?
-                SettingItem AllowNewRegistrations = new SettingItem(new BooleanDataType());
-                AllowNewRegistrations.Order = groupOrderBase + 10;
-                AllowNewRegistrations.Group = group;
-                AllowNewRegistrations.Value = "True";
-                AllowNewRegistrations.EnglishName = "Allow New Registrations?";
-                AllowNewRegistrations.Description = "Check this to allow users register themselves. Leave blank for register through User Manager only.";
-                baseSettings.Add("SITESETTINGS_ALLOW_NEW_REGISTRATION", AllowNewRegistrations);
+                SettingItem allowNewRegistrations = new SettingItem(new BooleanDataType());
+                allowNewRegistrations.Order = groupOrderBase + 10;
+                allowNewRegistrations.Group = group;
+                allowNewRegistrations.Value = "True";
+                allowNewRegistrations.EnglishName = "Allow New Registrations?";
+                allowNewRegistrations.Description = "Check this to allow users register themselves. Leave blank for register through User Manager only.";
+                baseSettings.Add("SITESETTINGS_ALLOW_NEW_REGISTRATION", allowNewRegistrations);
                 //MH: added dynamic load of registertypes depending on the  content in the DesktopModules/Register/ folder
                 // Register
                 Hashtable regPages = new Hashtable();
@@ -1136,51 +1136,53 @@ namespace Rainbow.Framework.Providers.MsSql
                     regPages.Add(registerPageDisplayName, registerPageName.ToLower());
                 }
                 // Register Layout Setting
-                SettingItem RegType = new SettingItem(new CustomListDataType(regPages, "Key", "Value"));
-                RegType.Required = true;
-                RegType.Value = "Register.ascx";
-                RegType.EnglishName = "Register Type";
-                RegType.Description = "Choose here how Register Page should look like.";
-                RegType.Order = groupOrderBase + 15;
-                RegType.Group = group;
-                baseSettings.Add("SITESETTINGS_REGISTER_TYPE", RegType);
+                SettingItem regType = new SettingItem(new CustomListDataType(regPages, "Key", "Value"));
+                regType.Required = true;
+                regType.Value = "Register.ascx";
+                regType.EnglishName = "Register Type";
+                regType.Description = "Choose here how Register Page should look like.";
+                regType.Order = groupOrderBase + 15;
+                regType.Group = group;
+                baseSettings.Add("SITESETTINGS_REGISTER_TYPE", regType);
                 //MH:end
                 // Register Layout Setting module id reference by manu
-                SettingItem RegModuleID = new SettingItem(new IntegerDataType());
-                RegModuleID.Value = "0";
-                RegModuleID.Required = true;
-                RegModuleID.Order = groupOrderBase + 16;
-                RegModuleID.Group = group;
-                RegModuleID.EnglishName = "Register Module ID";
-                RegModuleID.Description = "Some custom registration may require additional settings, type here the ID of the module from where we should load settings (0= not used). Usually this module is added in an hidden area.";
-                baseSettings.Add("SITESETTINGS_REGISTER_MODULEID", RegModuleID);
+                SettingItem regModuleID = new SettingItem(new IntegerDataType());
+                regModuleID.Value = "0";
+                regModuleID.Required = true;
+                regModuleID.Order = groupOrderBase + 16;
+                regModuleID.Group = group;
+                regModuleID.EnglishName = "Register Module ID";
+                regModuleID.Description = "Some custom registration may require additional settings, type here the ID of the module from where we should load settings (0= not used). Usually this module is added in an hidden area.";
+                baseSettings.Add("SITESETTINGS_REGISTER_MODULEID", regModuleID);
                 // Send mail on new registration to
-                SettingItem OnRegisterSendTo = new SettingItem(new StringDataType());
-                OnRegisterSendTo.Value = string.Empty;
-                OnRegisterSendTo.Required = false;
-                OnRegisterSendTo.Order = groupOrderBase + 17;
-                OnRegisterSendTo.Group = group;
-                OnRegisterSendTo.EnglishName = "Send Mail To";
-                OnRegisterSendTo.Description = "On new registration a mail will be send to the email address you provide here.";
-                baseSettings.Add("SITESETTINGS_ON_REGISTER_SEND_TO", OnRegisterSendTo);
+                SettingItem onRegisterSendTo = new SettingItem(new StringDataType());
+                onRegisterSendTo.Value = string.Empty;
+                onRegisterSendTo.Required = false;
+                onRegisterSendTo.Order = groupOrderBase + 17;
+                onRegisterSendTo.Group = group;
+                onRegisterSendTo.EnglishName = "Send Mail To";
+                onRegisterSendTo.Description = "On new registration a mail will be send to the email address you provide here.";
+                baseSettings.Add("SITESETTINGS_ON_REGISTER_SEND_TO", onRegisterSendTo);
 
                 // Send mail on new registration to User from
-                SettingItem OnRegisterSendFrom = new SettingItem(new StringDataType());
-                OnRegisterSendFrom.Value = string.Empty;
-                OnRegisterSendFrom.Required = false;
-                OnRegisterSendFrom.Order = groupOrderBase + 18;
-                OnRegisterSendFrom.Group = group;
-                OnRegisterSendFrom.EnglishName = "Send Mail From";
-                OnRegisterSendFrom.Description = "On new registration a mail will be send to the new user from the email address you provide here.";
-                baseSettings.Add("SITESETTINGS_ON_REGISTER_SEND_FROM", OnRegisterSendFrom);
+                SettingItem onRegisterSendFrom = new SettingItem(new StringDataType());
+                onRegisterSendFrom.Value = string.Empty;
+                onRegisterSendFrom.Required = false;
+                onRegisterSendFrom.Order = groupOrderBase + 18;
+                onRegisterSendFrom.Group = group;
+                onRegisterSendFrom.EnglishName = "Send Mail From";
+                onRegisterSendFrom.Description = "On new registration a mail will be send to the new user from the email address you provide here.";
+                baseSettings.Add("SITESETTINGS_ON_REGISTER_SEND_FROM", onRegisterSendFrom);
 
                 //Terms of service
-                SettingItem TermsOfService = new SettingItem(Instance.CurrentPortal.PortalUrl);
-                TermsOfService.Order = groupOrderBase + 20;
-                TermsOfService.Group = group;
-                TermsOfService.EnglishName = "Terms file name";
-                TermsOfService.Description = "Type here a file name used for showing terms and condition in each register page. Provide localized version adding _<culturename>. E.g. Terms.txt, will search for Terms.txt and for Terms_en-US.txt";
-                baseSettings.Add("SITESETTINGS_TERMS_OF_SERVICE", TermsOfService);
+                Portal portal = Instance.CurrentPortal;
+                PortalUrl portalUrl = portal != null ? portal.PortalUrl : new PortalUrl(string.Empty);
+                SettingItem termsOfService = new SettingItem(portalUrl);
+                termsOfService.Order = groupOrderBase + 20;
+                termsOfService.Group = group;
+                termsOfService.EnglishName = "Terms file name";
+                termsOfService.Description = "Type here a file name used for showing terms and condition in each register page. Provide localized version adding _<culturename>. E.g. Terms.txt, will search for Terms.txt and for Terms_en-US.txt";
+                baseSettings.Add("SITESETTINGS_TERMS_OF_SERVICE", termsOfService);
 
                 // TODO: We need to bring back a country store of some sort? it should be in resources....
                 /*

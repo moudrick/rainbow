@@ -1,5 +1,6 @@
 using System;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
@@ -68,7 +69,9 @@ namespace Rainbow.Content.Web.Modules
             SettingItemGroup group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             int groupBase = (int) group;
 
-            SettingItem src = new SettingItem(new UploadedFileDataType(PortalProvider.Instance.CurrentPortal));
+            Portal portal = PortalProvider.Instance.CurrentPortal;
+            UploadedFileDataType uploadedFile = portal != null ? new UploadedFileDataType(portal) : new UploadedFileDataType(string.Empty);
+            SettingItem src = new SettingItem(uploadedFile);
             src.Required = true;
             src.Group = group;
             src.Order = groupBase + 25; //1;

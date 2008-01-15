@@ -6,6 +6,7 @@ using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
@@ -400,31 +401,33 @@ namespace Rainbow.Content.Web.Modules
 			setSortOrder.Order = 2;
 			baseSettings.Add("SortOrder", setSortOrder);
 
-			SettingItem DocumentPath = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
-			DocumentPath.Required = true;
-			DocumentPath.Value = "Documents";
-			DocumentPath.Order = 3;
-			baseSettings.Add("DocumentPath", DocumentPath);
+            Portal portal = PortalProvider.Instance.CurrentPortal;
+            PortalUrl portalUrl = portal != null ? portal.PortalUrl : new PortalUrl(string.Empty);
+            SettingItem documentPath = new SettingItem(portalUrl);
+			documentPath.Required = true;
+			documentPath.Value = "Documents";
+			documentPath.Order = 3;
+			baseSettings.Add("DocumentPath", documentPath);
 
-			SettingItem ImagePath = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
-			ImagePath.Required = true;
-			ImagePath.Value = "Images\\Default";
-			ImagePath.Order = 4;
-			baseSettings.Add("ImagePath", ImagePath);
+			SettingItem imagePath = new SettingItem(portalUrl);
+			imagePath.Required = true;
+			imagePath.Value = "Images\\Default";
+			imagePath.Order = 4;
+			baseSettings.Add("ImagePath", imagePath);
 
-			SettingItem XSLsrc = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
-			XSLsrc.Required = false;
-			XSLsrc.Order = 5;
-			baseSettings.Add("XSLsrc", XSLsrc);
+			SettingItem xslSrc = new SettingItem(portalUrl);
+			xslSrc.Required = false;
+			xslSrc.Order = 5;
+			baseSettings.Add("XSLsrc", xslSrc);
 
 			//Rob Siera - 04 nov 2004 - Adding possibility to use data of other UDT
-			SettingItem UDTsrc = new SettingItem(new IntegerDataType());
-			UDTsrc.Required = false;
-			UDTsrc.Value = ModuleID.ToString();
-			UDTsrc.EnglishName="XSL data";
-			UDTsrc.Description="Specify ModuleID of a UserDefinedTable to be used as data source for XSL (see 'mID' parameter in edit URL). Specify 0 to reset to current module data.";
-			UDTsrc.Order = 6;
-			baseSettings.Add("UDTsrc", UDTsrc);
+			SettingItem udtSrc = new SettingItem(new IntegerDataType());
+			udtSrc.Required = false;
+			udtSrc.Value = ModuleID.ToString();
+			udtSrc.EnglishName="XSL data";
+			udtSrc.Description="Specify ModuleID of a UserDefinedTable to be used as data source for XSL (see 'mID' parameter in edit URL). Specify 0 to reset to current module data.";
+			udtSrc.Order = 6;
+			baseSettings.Add("UDTsrc", udtSrc);
 
 			//Rob Siera - 04 nov 2004 - Adding possibility to view data as raw XML
 			SettingItem DisplayAsXML = new SettingItem(new BooleanDataType());

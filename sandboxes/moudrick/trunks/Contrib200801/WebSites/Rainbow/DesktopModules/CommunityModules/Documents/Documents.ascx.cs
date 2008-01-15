@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
@@ -52,64 +53,66 @@ namespace Rainbow.Content.Web.Modules
 			int groupBase = (int)group;
 			// end of modification
 
-			SettingItem DocumentPath = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
-			DocumentPath.Required = true;
-			DocumentPath.Value = "Documents";
+		    Portal currentPortal = PortalProvider.Instance.CurrentPortal;
+            PortalUrl portalUrl = currentPortal != null ? currentPortal.PortalUrl : new PortalUrl(string.Empty);
+		    SettingItem documentPath = new SettingItem(portalUrl);
+			documentPath.Required = true;
+			documentPath.Value = "Documents";
 			// Modified by Hongwei Shen
 			// DocumentPath.Order = 1;
-			DocumentPath.Group = group;
-			DocumentPath.Order = groupBase + 20;
+			documentPath.Group = group;
+			documentPath.Order = groupBase + 20;
 			// end of modification
-			DocumentPath.EnglishName = "Document path";
-			DocumentPath.Description = "Folder for store the documents";
-			baseSettings.Add("DocumentPath", DocumentPath);
+			documentPath.EnglishName = "Document path";
+			documentPath.Description = "Folder for store the documents";
+			baseSettings.Add("DocumentPath", documentPath);
 
 			// Add new functionalities by jviladiu@portalServices.net (02/07/2004)
-			SettingItem ShowImages = new SettingItem(new BooleanDataType());
-			ShowImages.Value = "true";
+			SettingItem showImages = new SettingItem(new BooleanDataType());
+			showImages.Value = "true";
 			// Modified by Hongwei Shen
 			// ShowImages.Order = 5;
-			ShowImages.Group = group;
-			ShowImages.Order = groupBase + 25;
+			showImages.Group = group;
+			showImages.Order = groupBase + 25;
 			// end of modification
-			ShowImages.EnglishName = "Show Image Icons?";
-			ShowImages.Description = "Mark this if you like see Image Icons";
-			baseSettings.Add("DOCUMENTS_SHOWIMAGES", ShowImages);
+			showImages.EnglishName = "Show Image Icons?";
+			showImages.Description = "Mark this if you like see Image Icons";
+			baseSettings.Add("DOCUMENTS_SHOWIMAGES", showImages);
 
-			SettingItem SaveInDataBase = new SettingItem(new BooleanDataType());
-			SaveInDataBase.Value = "false";
+			SettingItem saveInDataBase = new SettingItem(new BooleanDataType());
+			saveInDataBase.Value = "false";
 			// Modified by Hongwei Shen
 			// SaveInDataBase.Order = 10;
-			SaveInDataBase.Group = group;
-			SaveInDataBase.Order = groupBase + 30;
+			saveInDataBase.Group = group;
+			saveInDataBase.Order = groupBase + 30;
 			// end of modification
-			SaveInDataBase.EnglishName = "Save files in DataBase?";
-			SaveInDataBase.Description = "Mark this if you like save files in DataBase";
-			baseSettings.Add("DOCUMENTS_DBSAVE", SaveInDataBase);
+			saveInDataBase.EnglishName = "Save files in DataBase?";
+			saveInDataBase.Description = "Mark this if you like save files in DataBase";
+			baseSettings.Add("DOCUMENTS_DBSAVE", saveInDataBase);
 
 			// Added sort by fields by Chris Thames [icecold_2@hotmail.com] (11/17/2004)
-			SettingItem	SortByField	= new SettingItem(new ListDataType(General.GetString("DOCUMENTS_SORTBY_FIELD_LIST", "File Name;Created Date")));
-			SortByField.Required=true;
-			SortByField.Value =	"File Name";
+			SettingItem	sortByField	= new SettingItem(new ListDataType(General.GetString("DOCUMENTS_SORTBY_FIELD_LIST", "File Name;Created Date")));
+			sortByField.Required=true;
+			sortByField.Value =	"File Name";
 			// Modified by Hongwei Shen
 			// SortByField.Order = 11;
-			SortByField.Group = group;
-			SortByField.Order = groupBase + 35;
+			sortByField.Group = group;
+			sortByField.Order = groupBase + 35;
 			// end of modification
-			SortByField.EnglishName = "Sort Field?";
-			SortByField.Description = "Sort by File Name or by Created Date?";
-			baseSettings.Add("DOCUMENTS_SORTBY_FIELD", SortByField);
+			sortByField.EnglishName = "Sort Field?";
+			sortByField.Description = "Sort by File Name or by Created Date?";
+			baseSettings.Add("DOCUMENTS_SORTBY_FIELD", sortByField);
 
-			SettingItem SortByDirection = new SettingItem(new ListDataType(General.GetString("DOCUMENTS_SORTBY_DIRECTION_LIST", "Ascending;Descending")));
-			SortByDirection.Value = "Ascending";
+			SettingItem sortByDirection = new SettingItem(new ListDataType(General.GetString("DOCUMENTS_SORTBY_DIRECTION_LIST", "Ascending;Descending")));
+			sortByDirection.Value = "Ascending";
 			// Modified by Hongwei Shen
 			// SortByDirection.Order = 12;
-			SortByDirection.Group = group;
-			SortByDirection.Order = groupBase + 40;
+			sortByDirection.Group = group;
+			sortByDirection.Order = groupBase + 40;
 			// end of modification
-			SortByDirection.EnglishName = "Sort ascending or descending?";
-			SortByDirection.Description = "Ascending: A to Z or 0 - 9. Descending: Z - A or 9 - 0.";
-			baseSettings.Add("DOCUMENTS_SORTBY_DIRECTION", SortByDirection);
+			sortByDirection.EnglishName = "Sort ascending or descending?";
+			sortByDirection.Description = "Ascending: A to Z or 0 - 9. Descending: Z - A or 9 - 0.";
+			baseSettings.Add("DOCUMENTS_SORTBY_DIRECTION", sortByDirection);
 			// End
 
 			// Added by Jakob Hansen 07/07/2004
@@ -185,22 +188,35 @@ namespace Rainbow.Content.Web.Modules
 				string sortDirectionOption	= Settings["DOCUMENTS_SORTBY_DIRECTION"].ToString();
 				if (sortFieldOption.Length > 0)
 				{
-					if (General.GetString("DOCUMENTS_SORTBY_FIELD_LIST", "File Name;Created Date").IndexOf(sortFieldOption) > 0)
-						sortField = "CreatedDate";
-					else
-						sortField = "FileFriendlyName";
+				    if (
+				        General.GetString("DOCUMENTS_SORTBY_FIELD_LIST", "File Name;Created Date").IndexOf(
+				            sortFieldOption) > 0)
+				    {
+				        sortField = "CreatedDate";
+				    }
+				    else
+				    {
+				        sortField = "FileFriendlyName";
+				    }
 
-					if (General.GetString("DOCUMENTS_SORTBY_DIRECTION_LIST", "Ascending;Descending").IndexOf(sortDirectionOption) > 0)
-						sortDirection = "DESC";
-					else
-						sortDirection = "ASC";
+				    if (General.GetString("DOCUMENTS_SORTBY_DIRECTION_LIST", "Ascending;Descending")
+                        .IndexOf(sortDirectionOption) > 0)
+				    {
+				        sortDirection = "DESC";
+				    }
+				    else
+				    {
+				        sortDirection = "ASC";
+                    }
 				}
 				else
 				{
 					sortField = "FileFriendlyName";
 					sortDirection = "ASC";
-					if (sortField == "DueDate")
-						sortDirection = "DESC";
+				    if (sortField == "DueDate")
+				    {
+				        sortDirection = "DESC";
+                    }
 				}
 				ViewState["SortField"] = sortField;
 				ViewState["SortDirection"] = sortDirection;
@@ -221,9 +237,10 @@ namespace Rainbow.Content.Web.Modules
 			// myDataView = documentsData.Tables[0].DefaultView;
 			setDataView (documents.GetDocuments(ModuleID, Version));
 
-			if (!Page.IsPostBack)
-				myDataView.Sort = sortField + " " + sortDirection;
-
+            if (!Page.IsPostBack)
+            {
+                myDataView.Sort = sortField + " " + sortDirection;
+            }
 			BindGrid();
 		}
 
@@ -263,20 +280,19 @@ namespace Rainbow.Content.Web.Modules
         /// <summary>
         /// Loads the available image list.
         /// </summary>
-		private void LoadAvailableImageList()
+		void LoadAvailableImageList()
 		{
 			string bDir = Server.MapPath(baseImageDIR);
 			DirectoryInfo di = new DirectoryInfo(bDir);
 			FileInfo[] rgFiles = di.GetFiles("*.gif");
 			string ext;
-			string nme;
-			string f_Name;
+            string f_Name;
 
-			foreach(FileInfo fi in rgFiles)
+			foreach (FileInfo fi in rgFiles)
 			{
 				f_Name = fi.Name;
 				ext = fi.Extension;
-				nme = f_Name.Substring(0, (f_Name.Length - ext.Length));
+				string nme = f_Name.Substring(0, (f_Name.Length - ext.Length));
 				availExtensions.Add(nme, f_Name);
 			}
 		}
@@ -284,14 +300,14 @@ namespace Rainbow.Content.Web.Modules
         /// <summary>
         /// Images the asign.
         /// </summary>
-        /// <param name="contentType">Type of the content.</param>
+        /// <param name="contentTypeParameter">Type of the content.</param>
         /// <returns></returns>
-		string imageAsign (string contentType) 
+		string imageAsign (string contentTypeParameter) 
 		{
 			// jminond - switched to use extensions pack
-			if (availExtensions.ContainsKey(contentType))
+			if (availExtensions.ContainsKey(contentTypeParameter))
 			{
-				return availExtensions[contentType].ToString();
+				return availExtensions[contentTypeParameter].ToString();
 			}
 			else
 			{

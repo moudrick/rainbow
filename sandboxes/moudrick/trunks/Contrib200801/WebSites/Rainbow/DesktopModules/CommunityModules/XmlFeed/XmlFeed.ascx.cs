@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Xml;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Items;
@@ -154,65 +155,65 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         public XmlFeed()
         {
-            int _groupOrderBase;
-            SettingItemGroup _Group;
+            int groupOrderBase;
+            SettingItemGroup group;
 
             #region Module Special Settings
 
-            _Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
-            _groupOrderBase = (int) SettingItemGroup.MODULE_SPECIAL_SETTINGS;
+            group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
+            groupOrderBase = (int) SettingItemGroup.MODULE_SPECIAL_SETTINGS;
 
             SettingItem XMLsrcType = new SettingItem(new ListDataType("URL;File"));
             XMLsrcType.Required = true;
             XMLsrcType.Value = "URL";
-            XMLsrcType.Group = _Group;
-            XMLsrcType.Order = _groupOrderBase + 1;
+            XMLsrcType.Group = group;
+            XMLsrcType.Order = groupOrderBase + 1;
             baseSettings.Add("XML Type", XMLsrcType);
 
             SettingItem XMLsrcUrl = new SettingItem(new UrlDataType());
             XMLsrcUrl.Required = false;
-            XMLsrcUrl.Group = _Group;
-            XMLsrcUrl.Order = _groupOrderBase + 2;
+            XMLsrcUrl.Group = group;
+            XMLsrcUrl.Order = groupOrderBase + 2;
             baseSettings.Add("XML URL", XMLsrcUrl);
 
-            SettingItem XMLsrcFile = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
+            Portal portal = PortalProvider.Instance.CurrentPortal;
+            PortalUrl portalUrl = portal != null ? portal.PortalUrl : new PortalUrl(string.Empty);
+            SettingItem XMLsrcFile = new SettingItem(portalUrl);
             XMLsrcFile.Required = false;
-            XMLsrcFile.Group = _Group;
-            XMLsrcFile.Order = _groupOrderBase + 3;
+            XMLsrcFile.Group = group;
+            XMLsrcFile.Order = groupOrderBase + 3;
             baseSettings.Add("XML File", XMLsrcFile);
 
             SettingItem XSLsrcType = new SettingItem(new ListDataType("Predefined;File"));
             XSLsrcType.Required = true;
             XSLsrcType.Value = "Predefined";
-            XSLsrcType.Order = _groupOrderBase + 4;
-            XSLsrcType.Group = _Group;
+            XSLsrcType.Order = groupOrderBase + 4;
+            XSLsrcType.Group = group;
             baseSettings.Add("XSL Type", XSLsrcType);
-
 
             ListDataType xsltFileList = new ListDataType(GetXSLListForFeedTransformations());
             SettingItem XSLsrcPredefined = new SettingItem(xsltFileList);
             XSLsrcPredefined.Required = true;
             XSLsrcPredefined.Value = "RSS91";
-            XSLsrcPredefined.Group = _Group;
-            XSLsrcPredefined.Order = _groupOrderBase + 5;
+            XSLsrcPredefined.Group = group;
+            XSLsrcPredefined.Order = groupOrderBase + 5;
             baseSettings.Add("XSL Predefined", XSLsrcPredefined);
 
-            SettingItem XSLsrcFile = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
+            SettingItem XSLsrcFile = new SettingItem(portalUrl);
             XSLsrcFile.Required = false;
-            XSLsrcFile.Group = _Group;
-            XSLsrcFile.Order = _groupOrderBase + 6;
+            XSLsrcFile.Group = group;
+            XSLsrcFile.Order = groupOrderBase + 6;
             baseSettings.Add("XSL File", XSLsrcFile);
 
             SettingItem Timeout = new SettingItem(new IntegerDataType());
             Timeout.Required = true;
-            Timeout.Group = _Group;
-            Timeout.Order = _groupOrderBase + 7;
+            Timeout.Group = group;
+            Timeout.Order = groupOrderBase + 7;
             Timeout.Value = "15";
             baseSettings.Add("Timeout", Timeout);
 
             #endregion
         }
-
 
         /// <summary>
         /// Author:		Joe Audette

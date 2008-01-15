@@ -63,8 +63,9 @@ namespace Rainbow.Framework.DataTypes
             get
             {
                 if (innerControl == null)
+                {
                     InitializeComponents();
-
+                }
                 //Update value in control
                 UploadDialogTextBox upload = (UploadDialogTextBox) innerControl;
                 upload.UploadDirectory = PortalPathPrefix;
@@ -100,10 +101,13 @@ namespace Rainbow.Framework.DataTypes
             {
                 //Remove portal path if present
                 if (value.StartsWith(PortalPathPrefix))
+                {
                     innerValue = value.Substring(PortalPathPrefix.Length);
+                }
                 else
+                {
                     innerValue = value;
-
+                }
                 innerValue = innerValue.TrimStart('/');
             }
         }
