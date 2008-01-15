@@ -1,5 +1,5 @@
 <%@ Control %>
-<%@ Register TagPrefix="zen" Namespace="Rainbow.UI.WebControls" Assembly="MarinaTeq.Rainbow.Zen" %>
+<%@ Register TagPrefix="zen"  Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework" %>
 <zen:ZenLayout 
 	ID="ZenFooter" 
 	CssID="ZenFooter"
