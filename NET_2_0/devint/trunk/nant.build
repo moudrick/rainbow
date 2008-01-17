@@ -68,14 +68,27 @@
     <!-- exec program="svn.exe" commandline="revert -R ." / -->
     <property name="local.filename" value=".remove" />
     <delete file="${local.filename}.cmd" />
+
     <exec program="svn.exe" commandline="st --no-ignore" output="${local.filename}" />
-    <move file=".remove" tofile="${local.filename}.cmd">
+    <copy file="${local.filename}" tofile="${local.filename}.cmd">
       <filterchain>
         <replacestring from="I      " to="del /Q " />
         <replacestring from="?      " to="del /Q " />
+        <replacestring from="M      " to="@rem  " />
       </filterchain>
-    </move>
+    </copy>
     <exec program="${local.filename}.cmd" />
+
+    <exec program="svn.exe" commandline="st --no-ignore" output="${local.filename}" />
+    <copy file="${local.filename}" tofile="${local.filename}.cmd">
+      <filterchain>
+        <replacestring from="I      " to="rd /S /Q " />
+        <replacestring from="?      " to="rd /S /Q " />
+        <replacestring from="M      " to="@rem  " />
+      </filterchain>
+    </copy>
+    <exec program="${local.filename}.cmd" />
+
   </target>
 
   <!-- ***************************************** -->
