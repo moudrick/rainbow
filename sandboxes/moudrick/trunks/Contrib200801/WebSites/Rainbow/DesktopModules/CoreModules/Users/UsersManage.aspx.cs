@@ -98,7 +98,12 @@ namespace Rainbow.Content.Web.Modules
                             userName = "NewUserEmail" + i + "@yoursite.com";
                             try
                             {
-                                uid = users.AddUser( PortalProvider.Instance.CurrentPortal.PortalAlias, userName, string.Empty, friendlyName);
+                                uid =
+                                    users.AddUser(
+                                        PortalProvider.Instance.CurrentPortal.PortalAlias,
+                                        userName,
+                                        string.Empty,
+                                        friendlyName);
                             }
                             catch (Exception ex)
                             {

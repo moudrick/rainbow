@@ -375,6 +375,7 @@ namespace Rainbow.Framework.Providers.MsSql
             //Go to get custom settings
             SetCustomSettings(portal, 
                               GetPortalCustomSettings(portal.PortalID, GetPortalBaseSettings(portal.PortalPath)));
+             
             
             //Initialize Theme
             ThemeManager themeManager = new ThemeManager(portal.PortalPath);

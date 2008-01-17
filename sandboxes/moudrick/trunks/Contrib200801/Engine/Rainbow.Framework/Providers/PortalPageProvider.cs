@@ -230,7 +230,7 @@ namespace Rainbow.Framework.Providers
         public PortalPage InstantiateNewPortalPage(int pageID)
         {
             PortalPage portalPage = new PortalPage();
-            portalPage.CustomSettings = GetPageCustomSettings(portalPage, pageID);
+            //portalPage.CustomSettings = GetPageCustomSettings(portalPage, pageID);
             return portalPage;
         }
 

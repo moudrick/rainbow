@@ -31,6 +31,7 @@
   <property if="${not property::exists('build.version.revision')}" name="build.version.revision" value="0" />
   <property if="${not property::exists('build.configuration')}" name="build.configuration" value="Release" />
   <property if="${not property::exists('wc.indicator')}" name="wc.indicator" value="" />
+  <property if="${not property::exists('wc.isOnline')}" name="wc.isOnline" value="true" />
 
   <property name="wc.dir" value="${project::get-base-directory()}\" />
   <property name="results.dir" value="Results\" />
@@ -259,7 +260,7 @@
   <!-- **  svn  ** -->
   <!-- *********** -->
   <target name="svn.default">
-    <call target="svn.update" />
+    <call target="svn.update" if="${wc.isOnline}" />
     <call target="svn.info" />
   </target>
 

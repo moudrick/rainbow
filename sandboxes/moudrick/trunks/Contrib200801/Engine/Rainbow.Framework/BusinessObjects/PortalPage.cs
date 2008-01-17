@@ -1,4 +1,5 @@
 using System.Collections;
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Framework.BusinessObjects
 {
@@ -127,12 +128,11 @@ namespace Rainbow.Framework.BusinessObjects
         {
             get
             {
+                if (customSettings == null)
+                {
+                    customSettings = PortalPageProvider.Instance.GetPageCustomSettings(this, PageID);
+                }
                 return customSettings;
-            }
-            internal set
-            {
-                //TODO: [moudrick] make it readonly
-                customSettings = value;
             }
         }
 
@@ -145,8 +145,7 @@ namespace Rainbow.Framework.BusinessObjects
 
         ///<summary>
         ///</summary>
-        //internal PortalPage()
-        public PortalPage()
+        internal PortalPage()
         {
         }
     }

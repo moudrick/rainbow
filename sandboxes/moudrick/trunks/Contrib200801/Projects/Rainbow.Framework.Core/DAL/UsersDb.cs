@@ -79,7 +79,19 @@ namespace Rainbow.Framework.Users.Data
         /// <param name="email">The email.</param>
         /// <param name="sendNewsletter">if set to <c>true</c> [send newsletter].</param>
         /// <returns>The newly created ID</returns>
-        public Guid AddUser(string portalAlias, string name, string company, string address, string city, string zip, string countryID, int stateID, string phone, string fax, string password, string email, bool sendNewsletter)
+        public Guid AddUser(string portalAlias,
+                            string name,
+                            string company,
+                            string address,
+                            string city,
+                            string zip,
+                            string countryID,
+                            int stateID,
+                            string phone,
+                            string fax,
+                            string password,
+                            string email,
+                            bool sendNewsletter)
         {
             MembershipCreateStatus status;
             MembershipUser user = MembershipProvider.CreateUser(portalAlias,

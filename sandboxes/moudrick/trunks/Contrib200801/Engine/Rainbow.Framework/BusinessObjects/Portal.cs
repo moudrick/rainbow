@@ -416,7 +416,7 @@ namespace Rainbow.Framework.BusinessObjects
         public PortalPage ActivePage
         {
             get { return activePage; }
-            //set { activePage = value; }
+            //internal set { activePage = value; }
         }
 
         /// <summary>
@@ -512,7 +512,7 @@ namespace Rainbow.Framework.BusinessObjects
         public Portal()
             //internal Portal()
         {
-            string applicationPath = HttpContext.Current.Request.ApplicationPath;
+            string applicationPath = RainbowContext.Current.HttpContext.Request.ApplicationPath;
             portalPathPrefix = applicationPath == "/" ? string.Empty : applicationPath;
 
             string portalPathPrefixLocal = PortalFullPath;
