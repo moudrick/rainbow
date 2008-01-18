@@ -1,6 +1,6 @@
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -22,7 +22,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetEnhancedLinks(int moduleID, WorkFlowVersion version)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetEnhancedLinks", myConnection);
 
             // Mark the Command as a SPROC
@@ -55,7 +55,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSingleEnhancedLink(int itemID, WorkFlowVersion version)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSingleEnhancedLink", myConnection);
 
             // Mark the Command as a SPROC
@@ -86,7 +86,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteEnhancedLink(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DeleteEnhancedLink", myConnection);
 
             // Mark the Command as a SPROC
@@ -127,7 +127,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddEnhancedLink", myConnection);
 
             // Mark the Command as a SPROC
@@ -210,7 +210,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateEnhancedLink", myConnection);
 
             // Mark the Command as a SPROC

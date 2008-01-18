@@ -16,6 +16,7 @@ using System.IO;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using Button=Rainbow.Framework.Web.UI.WebControls.Button;
@@ -27,22 +28,21 @@ using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
 namespace Rainbow.Content.Web.Modules
 {
     /// <summary>
-    /// 
     /// </summary>
     [History("mario@hartmann.net", "2004/06/04", "Changed Flash movie control]")]
     [History("mario@hartmann.net", "2004/05/25", "Bug fixed:[ 877885 ] Flash Module - Cannot DELETE")]
     public partial class UploadFlash : AddEditItemPage
     {
         // Configuration
-        private bool _uploadIsEnabled = true;
-        private string _imageFolder = string.Empty;
-        private string _returnPath = string.Empty;
+        readonly bool _uploadIsEnabled = true;
+        string _imageFolder = string.Empty;
+        string _returnPath = string.Empty;
 
         // Messages
-        private string _noFileMessage = General.GetString("NO_FILE_MESSAGE");
-        private string _uploadSuccessMessage = General.GetString("UPLOAD_SUCCESS_MESSAGE");
-        private string _noImagesMessage = General.GetString("NO_IMAGE_MESSAGE");
-        private string _noFolderSpecifiedMessage = General.GetString("NO_FOLDER_SPECIFIED_MESSAGE");
+        //string _noFileMessage = General.GetString("NO_FILE_MESSAGE");
+        readonly string _uploadSuccessMessage = General.GetString("UPLOAD_SUCCESS_MESSAGE");
+        readonly string _noImagesMessage = General.GetString("NO_IMAGE_MESSAGE");
+        readonly string _noFolderSpecifiedMessage = General.GetString("NO_FOLDER_SPECIFIED_MESSAGE");
 
         protected Button closeButton;
 
@@ -104,14 +104,14 @@ namespace Rainbow.Content.Web.Modules
                 {
                     try
                     {
-                        string virtualPath = _imageFolder + "/" + Path.GetFileName(uploadfile.PostedFile.FileName);
+                        string virtualPath = _imageFolder + "/" + System.IO.Path.GetFileName(uploadfile.PostedFile.FileName);
                         string phyiscalPath = Server.MapPath(virtualPath);
                         uploadfile.PostedFile.SaveAs(phyiscalPath);
                         uploadmessage.Text = _uploadSuccessMessage;
                     }
-                    catch (Exception exe)
+                    catch (Exception ex)
                     {
-                        uploadmessage.Text = (exe.Message);
+                        uploadmessage.Text = ex.Message;
                     }
                 }
                 else
@@ -139,9 +139,7 @@ namespace Rainbow.Content.Web.Modules
                 {
                     File.Delete(Server.MapPath(_imageFolder) + @"\" + e.CommandArgument);
                 }
-                catch
-                {
-                }
+                catch {;}
                 DisplayImages();
             }
         }
@@ -185,7 +183,7 @@ namespace Rainbow.Content.Web.Modules
             }
             else
             {
-                string galleryfilename = (string.Empty);
+                string galleryfilename;
 
                 TableRow rowItem;
                 TableCell cellItemImage;
@@ -194,7 +192,7 @@ namespace Rainbow.Content.Web.Modules
                 TableCell cellItemFileName;
                 foreach (string galleryfolderarrayitem in galleryfolderarray)
                 {
-                    galleryfilename = galleryfolderarrayitem.ToString();
+                    galleryfilename = galleryfolderarrayitem;
                     galleryfilename = galleryfilename.Substring(galleryfilename.LastIndexOf(@"\") + 1);
 
                     FlashMovie flashMovie = new FlashMovie();
@@ -216,7 +214,7 @@ namespace Rainbow.Content.Web.Modules
                     deleteCmd.CommandName = "DELETE";
                     deleteCmd.CssClass = "CommandButton";
                     deleteCmd.CommandArgument = galleryfilename;
-                    deleteCmd.Command += new CommandEventHandler(Delete_Command);
+                    deleteCmd.Command += Delete_Command;
 
                     rowItem = new TableRow();
 

@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -44,7 +44,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetTopLevelMessages(int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DiscussionGetTopLevelMessages", myConnection);
 
             // Mark the Command as a SPROC
@@ -101,7 +101,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetThreadMessages(int itemID, char showRoot)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DiscussionGetThreadMessages", myConnection);
 
             // Mark the Command as a SPROC
@@ -133,7 +133,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteSingleMessage(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DiscussionDeleteMessage", myConnection);
 
             // Mark the Command as a SPROC
@@ -159,7 +159,7 @@ namespace Rainbow.Framework.Content.Data
         public void IncrementViewCount(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DiscussionIncrementViewCount", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -184,7 +184,7 @@ namespace Rainbow.Framework.Content.Data
         public int DeleteChildren(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DiscussionDeleteChildren", myConnection);
 
             // Mark the Command as a SPROC
@@ -219,7 +219,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSingleMessage(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DiscussionGetMessage", myConnection);
 
             // Mark the Command as a SPROC
@@ -262,7 +262,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DiscussionAddMessage", myConnection);
 
             // Mark the Command as a SPROC

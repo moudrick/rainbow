@@ -6,16 +6,15 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 using System.Collections.Generic;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
 
 namespace Rainbow.Framework.Helpers
 {
-
 	/// <summary>
 	/// SearchHelper
 	/// Original ideas from Jakob Hansen.
@@ -117,8 +116,10 @@ namespace Rainbow.Framework.Helpers
 					object [] args = new object [] {portalID, userID, searchString, searchField};
 					string currentSearch = (string) p.GetType().InvokeMember("SearchSqlSelect", BindingFlags.Default | BindingFlags.InvokeMethod, null, p, args);
 
-					if (currentSearch.Length != 0 && currentSearch != null)
-						slqSelectQueries.Add(currentSearch);
+				    if (currentSearch.Length != 0)
+				    {
+				        slqSelectQueries.Add(currentSearch);
+                    }
 				}
 			}
 			int queriesCount = slqSelectQueries.Count;
@@ -170,7 +171,8 @@ namespace Rainbow.Framework.Helpers
 				}
 				catch (Exception e)
 				{
-					ErrorHandler.Publish(LogLevel.Error, "Error in Search:SearchPortal()-> " + e.ToString() + " " + select.ToString(), e);
+					ErrorHandler.Publish(LogLevel.Error, 
+                        "Error in Search:SearchPortal()-> " + e + " " + select, e);
 					throw new Exception("Error in Search selection.");
 				}
 			}
@@ -194,7 +196,8 @@ namespace Rainbow.Framework.Helpers
 
 					while (drModules.Read())
 					{
-						ddList.Items.Add(new ListItem(drModules["FriendlyName"].ToString(), drModules["AssemblyName"].ToString() + ";" + drModules["ClassName"].ToString()));
+						ddList.Items.Add(new ListItem(drModules["FriendlyName"].ToString(), 
+                            drModules["AssemblyName"] + ";" + drModules["ClassName"]));
 					}
 				}
 
@@ -215,7 +218,7 @@ namespace Rainbow.Framework.Helpers
 		{
 
 			//  Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_GetSearchableModules", myConnection);
 					myCommand.CommandType = CommandType.StoredProcedure;
 					//  Add Parameters to SPROC
@@ -326,8 +329,8 @@ namespace Rainbow.Framework.Helpers
 			Int32 i = 0;
 			Int32 j = 0;
 			string [] arrWord;
-			string strWord, strTmp, strNot;
-			string strBoolOp;
+            string strWord, strTmp;
+            string strBoolOp;
 			string vbCrLf = "\r\n";
 
 			if (useAnd)
@@ -347,7 +350,8 @@ namespace Rainbow.Framework.Helpers
 				strWord = strItem;
 				strWord = strWord.Replace('=', ' ');  // dephrase!
 
-				if (strWord.StartsWith("-"))
+			    string strNot;
+			    if (strWord.StartsWith("-"))
 				{
 					strNot = "NOT";
 					strWord = strWord.Substring(1);
@@ -419,17 +423,15 @@ namespace Rainbow.Framework.Helpers
 			SqlDataReader dr = DBHelper.GetDataReader
 				("SELECT DISTINCT rb_ModuleSettings.SettingValue " +
 				"FROM rb_ModuleSettings INNER JOIN rb_Modules ON rb_ModuleSettings.ModuleID = rb_Modules.ModuleID INNER JOIN rb_ModuleDefinitions ON rb_Modules.ModuleDefID = rb_ModuleDefinitions.ModuleDefID " + 
-				"WHERE (rb_ModuleDefinitions.PortalID = " + portalID.ToString()  + ") AND (rb_ModuleSettings.SettingName = N'TopicName') AND (rb_ModuleSettings.SettingValue <> '') ORDER BY rb_ModuleSettings.SettingValue");
+				"WHERE (rb_ModuleDefinitions.PortalID = " + portalID  + ") AND (rb_ModuleSettings.SettingName = N'TopicName') AND (rb_ModuleSettings.SettingValue <> '') ORDER BY rb_ModuleSettings.SettingValue");
 
 			try
 			{
-
 				while(dr.Read())
 				{
 					al.Add(dr["SettingValue"].ToString());
 				}
 			}
-
 			finally
 			{
 				dr.Close(); //by Manu fix close bug #2 found

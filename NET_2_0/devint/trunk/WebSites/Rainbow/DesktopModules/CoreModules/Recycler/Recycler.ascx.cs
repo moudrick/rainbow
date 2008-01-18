@@ -27,7 +27,7 @@ namespace Rainbow.Content.Web.Modules
 
         protected void BindData(string SortField)
         {
-            DataTable dt = RecyclerDB.GetModulesInRecycler(portalSettings.PortalID, SortField);
+            DataTable dt = RecyclerDB.GetModulesInRecycler(PortalSettings.PortalID, SortField);
             DataGrid1.DataSource = dt;
 
             DataGrid1.DataBind();

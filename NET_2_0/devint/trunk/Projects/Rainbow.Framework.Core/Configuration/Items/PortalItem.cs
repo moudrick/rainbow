@@ -1,5 +1,3 @@
-using System;
-
 namespace Rainbow.Framework
 {
     /// <summary>
@@ -8,11 +6,11 @@ namespace Rainbow.Framework
     /// the IComparable interface so that an ArrayList of PortalItems may be sorted
     /// by PortalOrder, using the ArrayList's Sort() method.
     /// </summary>
-    public class PortalItem : IComparable
+    public class PortalItem //: IComparable
     {
-        private string _name;
-        private string _path;
-        private int _ID;
+        string name;
+        string path;
+        int id;
 
         /// <summary>
         /// Name
@@ -20,8 +18,8 @@ namespace Rainbow.Framework
         /// <value>The name.</value>
         public string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get { return name; }
+            set { name = value; }
         }
 
         /// <summary>
@@ -30,8 +28,8 @@ namespace Rainbow.Framework
         /// <value>The path.</value>
         public string Path
         {
-            get { return _path; }
-            set { _path = value; }
+            get { return path; }
+            set { path = value; }
         }
 
         /// <summary>
@@ -40,19 +38,19 @@ namespace Rainbow.Framework
         /// <value>The ID.</value>
         public int ID
         {
-            get { return _ID; }
-            set { _ID = value; }
+            get { return id; }
+            set { id = value; }
         }
 
-        /// <summary>
-        /// Public comparer
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
-        public int CompareTo(object value)
-        {
-            return CompareTo(Name);
-        }
+//        /// <summary>
+//        /// Public comparer
+//        /// </summary>
+//        /// <param name="value">The value.</param>
+//        /// <returns></returns>
+//        public int CompareTo(object value)
+//        {
+//            return CompareTo(Name);
+//        }
 
         /// <summary>
         /// ToString

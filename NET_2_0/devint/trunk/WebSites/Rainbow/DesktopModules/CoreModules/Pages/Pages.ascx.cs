@@ -3,55 +3,57 @@ using System.Collections;
 using System.Data.SqlClient;
 using System.Web.UI;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Settings.Cache;
-using Rainbow.Framework.Site.Data;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
-using Rainbow.Framework.Providers.RainbowSiteMapProvider;
 
-namespace Rainbow.Content.Web.Modules {
+namespace Rainbow.Content.Web.Modules 
+{
     /// <summary>
-    /// 
     /// </summary>
-    public partial class Pages : PortalModuleControl {
+    public partial class Pages : PortalModuleControl 
+    {
         /// <summary>
-        /// 
         /// </summary>
         protected ArrayList portalPages;
 
         /// <summary>
         /// Admin Module
         /// </summary>
-        public override bool AdminModule {
+        public override bool AdminModule
+        {
             get { return true; }
         }
 
-        protected override void OnLoad( EventArgs e ) {
-            base.OnLoad( e );
-
-            portalPages = new PagesDB().GetPagesFlat( portalSettings.PortalID );
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            portalPages = PortalPageProvider.Instance.GetPagesFlat(PortalSettings.PortalID);
             tabList.DataBind();
 
             // Set the ImageUrl for controls from current Theme
-            upBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Up", "Up.gif" ).ImageUrl;
-            downBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Down", "Down.gif" ).ImageUrl;
-            DeleteBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Delete", "Delete.gif" ).ImageUrl;
-            EditBtn.ImageUrl = CurrentTheme.GetImage( "Buttons_Edit", "Edit.gif" ).ImageUrl;
+            upBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Up", "Up.gif").ImageUrl;
+            downBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Down", "Down.gif").ImageUrl;
+            DeleteBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl;
+            EditBtn.ImageUrl = CurrentTheme.GetImage("Buttons_Edit", "Edit.gif").ImageUrl;
 
             // If this is the first visit to the page, bind the tab data to the page listbox
-            if ( !Page.IsPostBack ) {
-
+            if (!Page.IsPostBack)
+            {
                 // 2/27/2003 Start - Ender Malkoc
                 // After up or down button when the page is refreshed, 
                 // select the previously selected tab from the list.
-                if ( Request.Params[ "selectedtabID" ] != null ) {
-                    try {
-                        int tabIndex = Int32.Parse( Request.Params[ "selectedtabID" ] );
-                        SelectPage( tabIndex );
+                if (Request.Params["selectedtabID"] != null)
+                {
+                    try
+                    {
+                        int tabIndex = Int32.Parse(Request.Params["selectedtabID"]);
+                        SelectPage(tabIndex);
                     }
-                    catch {
-                    }
+                    catch {;}
                 }
                 // 2/27/2003 End - Ender Malkoc
             }
@@ -70,7 +72,7 @@ namespace Rainbow.Content.Web.Modules {
             PageVersion.Description =
                 "If Checked the module acts has it always did. If not it uses the new short form which allows security to be set so the new tab will not be seen by all users.";
             PageVersion.Order = 10;
-            _baseSettings.Add( "TAB_VERSION", PageVersion );
+            baseSettings.Add( "TAB_VERSION", PageVersion );
         }
 
 
@@ -107,30 +109,39 @@ namespace Rainbow.Content.Web.Modules {
         /// The DeleteBtn_Click server event handler is used to delete
         /// the selected tab from the portal
         /// </summary>
-        protected void DeleteBtn_Click( object sender, ImageClickEventArgs e ) {
+        protected void DeleteBtn_Click(object sender, ImageClickEventArgs e)
+        {
             //base.OnDelete();
-
-            if ( tabList.SelectedIndex > -1 ) {
-                try {
+            if (tabList.SelectedIndex > -1)
+            {
+                try
+                {
                     // must delete from database too
-                    PageItem t = ( PageItem )portalPages[tabList.SelectedIndex];
-                    PagesDB tabs = new PagesDB();
-                    tabs.DeletePage( t.ID );
+                    PageItem pageItem = (PageItem) portalPages[tabList.SelectedIndex];
+                    PortalPageProvider.Instance.DeletePage(pageItem.ID);
 
-                    portalPages.RemoveAt( tabList.SelectedIndex );
+                    portalPages.RemoveAt(tabList.SelectedIndex);
 
-                    if ( tabList.SelectedIndex > 0 )
-                        t = ( PageItem )portalPages[tabList.SelectedIndex - 1];
+                    if (tabList.SelectedIndex > 0)
+                    {
+                        pageItem = (PageItem) portalPages[tabList.SelectedIndex - 1];
+                    }
 
                     OrderPages();
 
-                    Response.Redirect( HttpUrlBuilder.BuildUrl( "~/DesktopDefault.aspx", PageID, "SelectedPageID=" + t.ID ) );
+                    Response.Redirect(
+                        HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx",
+                                                PageID,
+                                                "SelectedPageID=" + pageItem.ID));
                 }
-                catch ( SqlException ) {
+                catch (SqlException)
+                {
                     Controls.Add(
-                        new LiteralControl( "<br><span class='Error'>" +
-                                           General.GetString( "TAB_DELETE_FAILED", "Failed to delete Page", this ) +
-                                           "<br>" ) );
+                        new LiteralControl("<br><span class='Error'>" +
+                                           General.GetString("TAB_DELETE_FAILED",
+                                                             "Failed to delete Page",
+                                                             this) +
+                                           "<br>"));
                 }
             }
         }
@@ -143,8 +154,9 @@ namespace Rainbow.Content.Web.Modules {
 
                 // added mID by Mario Endara <mario@softworks.com.uy> to support security check (2004/11/09)
                 Response.Redirect(
-                    HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Pages/PageLayout.aspx", t.ID,
-                                            "mID=" + ModuleID.ToString() + "&returntabid=" + Page.PageID ) );
+                    HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Pages/PageLayout.aspx",
+                        t.ID, 
+                        string.Format("mID={0}&returntabid={1}", ModuleID, Page.PageID) ) );
             }
         }
         
@@ -166,8 +178,7 @@ namespace Rainbow.Content.Web.Modules {
                     portalPages.Add( t );
 
                     // write tab to database
-                    PagesDB tabs = new PagesDB();
-                    t.ID = tabs.AddPage( portalSettings.PortalID, t.Name, t.Order );
+                    t.ID = PortalPageProvider.Instance.AddPage(PortalSettings.PortalID, t.Name, t.Order );
 
                     // Reset the order numbers for the tabs within the list  
                     OrderPages();
@@ -179,14 +190,14 @@ namespace Rainbow.Content.Web.Modules {
                     // 3_aug_2004 Cory Isakson added returntabid so that PageLayout could return to the tab it was called from.
                     // added mID by Mario Endara <mario@softworks.com.uy> to support security check (2004/11/09)
                     Response.Redirect(
-                        HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Pages/PageLayout.aspx", t.ID,
-                                                "mID=" + ModuleID.ToString() + "&returntabid=" + Page.PageID ) );
+                        HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Pages/PageLayout.aspx", 
+                            t.ID, string.Format("mID={0}&returntabid={1}", ModuleID, Page.PageID) ) );
                 }
                 else {
                     // Redirect to New Form - Mike Stone 19/12/2004
                     Response.Redirect(
-                        HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Pages/AddPage.aspx",
-                                                "mID=" + ModuleID.ToString() + "&returntabid=" + Page.PageID ) );
+                        HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Pages/AddPage.aspx",
+                            string.Format("mID={0}&returntabid={1}", ModuleID, Page.PageID) ) );
                 }
             }
         }
@@ -195,35 +206,40 @@ namespace Rainbow.Content.Web.Modules {
         /// The OrderPages helper method is used to reset
         /// the display order for tabs within the portal
         /// </summary>
-        private void OrderPages() {
+        void OrderPages()
+        {
             int i = 1;
-
             portalPages.Sort();
-
-            foreach ( PageItem t in portalPages ) {
+            foreach (PageItem pageItem in portalPages)
+            {
                 // number the items 1, 3, 5, etc. to provide an empty order
                 // number when moving items up and down in the list.
-                t.Order = i;
+                pageItem.Order = i;
                 i += 2;
 
                 // rewrite tab to database
-                PagesDB tabs = new PagesDB();
                 // 12/16/2002 Start - Cory Isakson 
-                tabs.UpdatePageOrder( t.ID, t.Order );
+                PortalPageProvider.Instance.UpdatePageOrder(pageItem.ID, pageItem.Order);
                 // 12/16/2002 End - Cory Isakson 
             }
             //gbs: Invalidate cache, fix for bug RBM-220
-            CurrentCache.RemoveAll( "_PageNavigationSettings_" );
+            CurrentCache.RemoveAll("_PageNavigationSettings_");
         }
 
         /// <summary>
         /// Given the tabID of a tab, this function selects the right tab in the provided list control
         /// </summary>
         /// <param name="tabID">tabID of the tab that needs to be selected</param>
-        private void SelectPage( int tabID ) {
-            for ( int i = 0; i < tabList.Items.Count; i++ ) {
-                if ( ( ( PageItem )portalPages[i] ).ID == tabID ) {
-                    if ( tabList.SelectedItem != null ) tabList.SelectedItem.Selected = false;
+        void SelectPage(int tabID)
+        {
+            for (int i = 0; i < tabList.Items.Count; i++)
+            {
+                if (((PageItem) portalPages[i]).ID == tabID)
+                {
+                    if (tabList.SelectedItem != null)
+                    {
+                        tabList.SelectedItem.Selected = false;
+                    }
                     tabList.Items[i].Selected = true;
                     return;
                 }
@@ -250,7 +266,7 @@ namespace Rainbow.Content.Web.Modules {
             ArrayList errors = DBHelper.ExecuteScript( currentScriptName, true );
             if ( errors.Count > 0 ) {
                 // Call rollback
-                throw new Exception( "Error occurred:" + errors[0].ToString() );
+                throw new Exception( "Error occurred:" + errors[0] );
             }
         }
 

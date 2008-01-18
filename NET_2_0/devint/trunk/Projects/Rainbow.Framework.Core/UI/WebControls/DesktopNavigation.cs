@@ -4,8 +4,9 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -21,9 +22,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         public DesktopNavigation()
         {
-            EnableViewState = false;
-            RepeatDirection = RepeatDirection.Horizontal;
-            Load += new EventHandler(LoadControl);
+            base.EnableViewState = false;
+            base.RepeatDirection = RepeatDirection.Horizontal;
+            Load += LoadControl;
         }
 
         /// <summary>
@@ -34,7 +35,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private void LoadControl(object sender, EventArgs e)
         {
             if (AutoBind)
+            {
                 DataBind();
+            }
         }
 
         private RepeatDirection rd = RepeatDirection.Horizontal;
@@ -162,7 +165,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (HttpContext.Current != null)
             {
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
                 switch (Bind)
                 {
@@ -175,7 +178,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     case BindOption.BindOptionCurrentChilds:
                         {
                             int currentTabRoot =
-                                PortalSettings.GetRootPage(portalSettings.ActivePage, portalSettings.DesktopPages).
+                                PortalProvider.Instance.GetRootPage(portalSettings.ActivePage, portalSettings.DesktopPages).
                                     PageID;
                             authorizedTabs =
                                 GetTabs(currentTabRoot, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
@@ -273,7 +276,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="activePageID">The active page ID.</param>
         /// <param name="allTabs">All tabs.</param>
         /// <returns></returns>
-        private int GetSelectedTab(int parentPageID, int activePageID, IList allTabs)
+        static int GetSelectedTab(int parentPageID, int activePageID, IList allTabs)
         {
             for (int i = 0; i < allTabs.Count; i++)
             {
@@ -305,7 +308,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private ArrayList GetTabs(int parentID, int tabID, IList Tabs)
         {
             ArrayList authorizedTabs = new ArrayList();
-            int index = -1;
 
             //MH:get the selected tab for this 
             int selectedPageID = GetSelectedTab(parentID, tabID, Tabs);
@@ -320,7 +322,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 {
                     if (PortalSecurity.IsInRoles(tab.AuthorizedRoles))
                     {
-                        index = authorizedTabs.Add(tab);
+                        int index = authorizedTabs.Add(tab);
 
                         //MH:if (tab.PageID == tabID)
                         //MH:added to support the selected menutab in each level

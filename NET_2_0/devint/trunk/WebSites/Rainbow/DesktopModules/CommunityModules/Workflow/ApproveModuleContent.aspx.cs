@@ -1,9 +1,9 @@
 using System;
 using System.Web.Mail;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;
@@ -84,7 +84,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            this.RedirectBackToReferringPage();
+            RedirectBackToReferringPage();
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Rainbow.Content.Web.Modules
             //base.OnUpdate(e);
 
             WorkFlowDB.Approve(ModuleID);
-            this.RedirectBackToReferringPage();
+            RedirectBackToReferringPage();
         }
     }
 }

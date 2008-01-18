@@ -2,8 +2,10 @@ using System.Collections;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -66,7 +68,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (HttpContext.Current != null)
             {
                 // Obtain PortalSettings from Current Context 
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 
                 //Display breadcrumbs if the user has click a tab link  (Without hit the Database again)
                 if (portalSettings.ActivePage.PageID > 0)
@@ -110,19 +112,19 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 {
                     if (ct > 0)
                     {
-                        sb.Append(Separator.ToString());
+                        sb.Append(Separator);
                     }
                     if (ct != (crumbs.Count - 1))
                     {
                         sb.Append("<a href='");
                         sb.Append(HttpUrlBuilder.BuildUrl(item.ID));
                         sb.Append("'>");
-                        sb.Append(item.Name.ToString());
+                        sb.Append(item.Name);
                         sb.Append("</a>");
                     }
                     else
                     {
-                        sb.Append(item.Name.ToString());
+                        sb.Append(item.Name);
                     }
                     ct++;
                 }
@@ -141,7 +143,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="tab">The tab.</param>
         /// <param name="tabList">The tab list.</param>
         /// <returns></returns>
-        private ArrayList GetBreadCrumbs(PageSettings tab, ArrayList tabList)
+        static ArrayList GetBreadCrumbs(PortalPage tab, IList tabList)
         {
             int parentTabID = tab.PageID;
             int test = tab.PageID;

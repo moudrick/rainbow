@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Web;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -17,9 +18,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// </summary>
     public class BreadCrumbs : Table
     {
-        private string _textclass = "bc_Text";
-        private string _linkclass = "bc_Link";
-        private string _separator = " > ";
+        string _textclass = "bc_Text";
+        string _linkclass = "bc_Link";
+        string _separator = " > ";
 
         /// <summary>
         /// TextCSSClass
@@ -51,7 +52,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
             set { _separator = value; }
         }
 
-
         // Override CreateChildControls to create the control tree.
         /// <summary>
         /// Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
@@ -70,7 +70,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (HttpContext.Current != null)
             {
                 // Obtain PortalSettings from Current Context 
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
                 //Changes by Indah Fuldner 25.04.2003
                 //Display breadcrumbs if the user has click a tab link  (Without hit the Database again)
@@ -159,7 +159,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="tab">The tab.</param>
         /// <param name="tabList">The tab list.</param>
         /// <returns></returns>
-        private ArrayList GetBreadCrumbs(PageSettings tab, ArrayList tabList)
+        static ArrayList GetBreadCrumbs(PortalPage tab, IList tabList)
         {
             int parentPageID = tab.PageID;
             //string test=tab.PageName;      
@@ -200,7 +200,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
             }
             return _breadCrumbsText;
         }
-
         //End Indah Fuldner
     }
 }

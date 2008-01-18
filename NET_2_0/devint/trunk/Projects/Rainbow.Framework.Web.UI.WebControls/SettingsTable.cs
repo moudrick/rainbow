@@ -3,8 +3,9 @@ using System.Collections;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Items;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -125,7 +126,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 }
                 else
                 {
-                    throw new ArgumentException("DataSource must be SortedList type", "DataSource");
+                    throw new ArgumentException("DataSource must be SortedList type", "value");
                 }
             }
         }
@@ -335,7 +336,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 // this piece of script was previously in PropertyPage.aspx, but it should be
                 // part of the SettingsTable control when using tabs. So, I moved it to here.
                 // It is startup script
-                if (!((Page) Page).ClientScript.IsStartupScriptRegistered("tab_startup_js"))
+                if (!Page.ClientScript.IsStartupScriptRegistered("tab_startup_js"))
                 {
                     string script =
                         "<script language=\"javascript\" type=\"text/javascript\">" +
@@ -344,7 +345,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         " var tpg1 = new xTabPanelGroup('tpg1', tabW, tabH, 50, 'tabPanel', 'tabGroup', 'tabDefault', 'tabSelected'); " +
                         "</script>";
 
-                    ((Page) Page).ClientScript.RegisterStartupScript(Page.GetType(), "tab_startup_js", script);
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "tab_startup_js", script);
                 }
             }
         }
@@ -389,7 +390,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
             //         Now settings with no order have a progressive order number 
             //         based on their position on list
             SortedList SettingsOrder = new SortedList();
-            int order = 0;
 
             foreach (string key in Settings.GetKeyList())
             {
@@ -397,7 +397,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 {
                     if (Settings[key] is SettingItem)
                     {
-                        order = ((SettingItem) Settings[key]).Order;
+                        int order = ((SettingItem) Settings[key]).Order;
 
                         while (SettingsOrder.ContainsKey(order))
                         {
@@ -574,7 +574,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         /// <param name="currentItem">The settings item</param>
         /// <returns>Fieldset control</returns>
-        private HtmlGenericControl createNewFieldSet(SettingItem currentItem)
+        static HtmlGenericControl createNewFieldSet(SettingItem currentItem)
         {
             // start a new fieldset
             HtmlGenericControl fieldset = new HtmlGenericControl("fieldset");
@@ -607,7 +607,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             // cell for help icon and description
             TableCell helpCell = new TableCell();
-            Image img = new Image();
+            Image img;
 
             if (currentItem.Description.Length > 0)
             {
@@ -661,7 +661,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 editControl.ID = currentSetting; // Jes1111
                 editControl.EnableViewState = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 editControl = new LiteralControl("There was an error loading this control");
                 //LogHelper.Logger.Log(Rainbow.Framework.LogLevel.Warn, "There was an error loading '" + currentItem.EnglishName + "'", ex);

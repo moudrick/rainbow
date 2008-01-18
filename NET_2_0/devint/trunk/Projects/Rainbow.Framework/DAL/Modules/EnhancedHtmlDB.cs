@@ -1,6 +1,6 @@
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -21,7 +21,7 @@ namespace Rainbow.Framework.Content.Data
         /// <returns></returns>
         public SqlDataReader GetAllPages(int moduleID, WorkFlowVersion version)
         {
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetEnhancedHtml", myConnection);
 
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -50,7 +50,7 @@ namespace Rainbow.Framework.Content.Data
         /// <returns></returns>
         public SqlDataReader GetLocalizedPages(int moduleID, int cultureCode, WorkFlowVersion version)
         {
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetEnhancedLocalizedHtml", myConnection);
 
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -83,7 +83,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSinglePage(int itemID, WorkFlowVersion version)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSingleEnhancedHtml", myConnection);
 
             // Mark the Command as a SPROC
@@ -114,7 +114,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeletePage(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DeleteEnhancedHtml", myConnection);
 
             // Mark the Command as a SPROC
@@ -156,7 +156,7 @@ namespace Rainbow.Framework.Content.Data
                 userName = "unknown";
             }
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddEnhancedHtml", myConnection);
 
             // Mark the Command as a SPROC
@@ -224,7 +224,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateEnhancedHtml", myConnection);
 
             // Mark the Command as a SPROC

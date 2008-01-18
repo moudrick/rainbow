@@ -6,9 +6,9 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Content.Security;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
@@ -209,7 +209,7 @@ namespace Rainbow.Content.Web.Modules
 
             // Add new message (updating the "ItemID" on the page)
             ItemID =
-                discuss.AddMessage(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email,
+                discuss.AddMessage(ModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email,
                                    Server.HtmlEncode(TitleField.Text), BodyField.Text, GetMode());
 
             // The following code can be used if you want to create new threads

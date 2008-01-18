@@ -1,5 +1,6 @@
 <%@ control autoeventwireup="false" codefile="Blog.ascx.cs" inherits="Rainbow.Content.Web.Modules.Blog"
     language="c#" %>
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Web.UI.WebControls" %>
 <table>
     <tr>
         <td>
@@ -41,7 +42,7 @@
                     <rbfwebui:localize id="SyndicationLabel" runat="server" text="Syndication" textkey="BLOG_SYNDICATION">
                     </rbfwebui:localize></b><br />
                 <a id="lnkRSS" runat="server" href="/DesktopModules/Blog/rss.aspx">
-                    <img alt="imgRSS" id="imgRSS" runat="server" border="0" src="/rainbow/DesktopModules/Blog/xml.gif" /></a>
+                    <img alt="imgRSS" id="imgRSS" runat="server" border="0" src="/DesktopModules/Blog/xml.gif" /></a>
                 <br />
                 <br />
                 <b>

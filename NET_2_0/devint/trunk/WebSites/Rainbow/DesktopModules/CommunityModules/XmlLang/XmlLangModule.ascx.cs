@@ -5,9 +5,11 @@ using System.Web.UI;
 using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
-using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -30,17 +32,16 @@ namespace Rainbow.Content.Web.Modules
         private void Page_Load(object sender, EventArgs e)
         {
             XslTransform xs;
-            XPathDocument xd;
             XsltArgumentList xa = new XsltArgumentList();
             XslHelper xh = new XslHelper();
             StringBuilder sb = new StringBuilder();
             TextWriter tw = new StringWriter(sb);
-            PortalUrlDataType pt;
+            PortalUrl pt;
 
-            pt = new PortalUrlDataType();
+            pt = PortalProvider.Instance.CurrentPortal.PortalUrl;
             pt.Value = Settings["XMLsrc"].ToString();
             string xmlsrc = Server.MapPath(pt.FullPath);
-            pt = new PortalUrlDataType();
+            pt = PortalProvider.Instance.CurrentPortal.PortalUrl;
             pt.Value = Settings["XSLsrc"].ToString();
             string xslsrc = Server.MapPath(pt.FullPath);
 
@@ -49,10 +50,10 @@ namespace Rainbow.Content.Web.Modules
                 && File.Exists(xmlsrc)
                 && File.Exists(xslsrc))
             {
-                xd = new XPathDocument(xmlsrc);
+                XPathDocument xd = new XPathDocument(xmlsrc);
                 xs = new XslTransform();
                 xs.Load(xslsrc);
-                xa.AddParam("Lang", string.Empty, portalSettings.PortalContentLanguage.Name.ToLower());
+                xa.AddParam("Lang", string.Empty, PortalSettings.PortalContentLanguage.Name.ToLower());
                 xa.AddExtensionObject("urn:rainbow", xh);
 #if FW10
 				xs.Transform(xd, xa, tw);
@@ -67,21 +68,22 @@ namespace Rainbow.Content.Web.Modules
             }
         }
 
-
         /// <summary>
         /// Constructor
         /// </summary>
         public XmlLangModule()
         {
-            SettingItem XMLsrc = new SettingItem(new PortalUrlDataType());
+            Portal portal = PortalProvider.Instance.CurrentPortal;
+            PortalUrl portalUrl = portal != null? portal.PortalUrl : new PortalUrl(string.Empty);
+            SettingItem XMLsrc = new SettingItem(portalUrl);
             XMLsrc.Required = true;
             XMLsrc.Order = 1;
-            _baseSettings.Add("XMLsrc", XMLsrc);
+            baseSettings.Add("XMLsrc", XMLsrc);
 
-            SettingItem XSLsrc = new SettingItem(new PortalUrlDataType());
+            SettingItem XSLsrc = new SettingItem(portalUrl);
             XSLsrc.Required = true;
             XSLsrc.Order = 2;
-            _baseSettings.Add("XSLsrc", XSLsrc);
+            baseSettings.Add("XSLsrc", XSLsrc);
 
             SupportsWorkflow = false;
             SupportsBack = false;

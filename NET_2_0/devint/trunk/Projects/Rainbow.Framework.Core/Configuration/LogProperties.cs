@@ -1,5 +1,6 @@
 using System.Web;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Core;
 
 namespace Rainbow.Framework.Logging
 {
@@ -18,7 +19,7 @@ namespace Rainbow.Framework.Logging
         {
             try
             {
-                return Portal.CodeVersion.ToString();
+                return VersionController.Instance.CodeVersion.ToString();
             }
             catch
             {
@@ -162,7 +163,7 @@ namespace Rainbow.Framework.Logging
         {
             try
             {
-                return Portal.UniqueID;
+                return RainbowContext.Current.UniqueID;
             }
             catch
             {

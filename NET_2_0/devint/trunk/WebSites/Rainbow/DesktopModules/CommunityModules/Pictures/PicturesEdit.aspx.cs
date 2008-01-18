@@ -9,7 +9,8 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 
@@ -128,7 +129,7 @@ namespace Rainbow.Content.Web.Modules
                 {
                     Metadata.AppendChild(Metadata.CreateElement("Metadata"));
                     MetadataXml = Metadata.OuterXml;
-                    if (bool.Parse((SettingItem) moduleSettings["AllowBulkLoad"]) == true)
+                    if (bool.Parse((SettingItem) moduleSettings["AllowBulkLoad"]))
                     {
                         // Esperantus.Esperantus.Localize.y are adding, and we are allowed to bulk load so
                         // make Esperantus.Esperantus.Localize. controls visible
@@ -169,11 +170,11 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only Update if Entered data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 // Create an instance of Esperantus.Esperantus.Localize. PicturesDB component
                 PicturesDB pictures = new PicturesDB();
-                Bitmap fullPicture = null;
+                Bitmap fullPicture;
 
                 //Get Esperantus.Esperantus.Localize. resize option for Esperantus.Esperantus.Localize. thumbnail
                 Pictures.ResizeOption thumbnailResize =
@@ -222,10 +223,10 @@ namespace Rainbow.Content.Web.Modules
                         FileInfo fileInfo = new FileInfo(file);
 
                         //Create new filenames for Esperantus.Esperantus.Localize. thumbnail and Esperantus.Esperantus.Localize. original picture
-                        ModifiedFilename = ModuleID.ToString() + "m" + Guid.NewGuid().ToString() + ".jpg";
+                        ModifiedFilename = ModuleID + "m" + Guid.NewGuid() + ".jpg";
                         SetMetadata("ModifiedFilename", ModifiedFilename);
 
-                        ThumbnailFilename = ModuleID.ToString() + "m" + Guid.NewGuid().ToString() + ".jpg";
+                        ThumbnailFilename = ModuleID + "m" + Guid.NewGuid() + ".jpg";
                         SetMetadata("ThumbnailFilename", ThumbnailFilename);
 
                         //Full path of Esperantus.Esperantus.Localize. original picture
@@ -275,7 +276,7 @@ namespace Rainbow.Content.Web.Modules
                             return;
                         }
 
-                        Bitmap modified = null;
+                        Bitmap modified;
 
                         try
                         {
@@ -309,22 +310,20 @@ namespace Rainbow.Content.Web.Modules
                         {
                             displayOrder = Int32.Parse(DisplayOrder.Text);
                         }
-                        catch
-                        {
-                        }
+                        catch {;}
 
                         SetMetadata("ShortDescription", ShortDescription.Text);
                         SetMetadata("LongDescription", LongDescription.Text);
                         SetMetadata("Caption", Caption.Text);
                         SetMetadata("Keywords", Keywords.Text);
                         SetMetadata("UploadDate", DateTime.Now.ToString());
-                        SetMetadata("CreatedBy", PortalSettings.CurrentUser.Identity.Email);
+                        SetMetadata("CreatedBy", RainbowPrincipal.CurrentUser.Identity.Email);
                         SetMetadata("DisplayOrder", displayOrder.ToString());
 
                         //Add new picture to Esperantus.Esperantus.Localize. database
                         ItemID =
                             pictures.AddPicture(ModuleID, ItemID, displayOrder, MetadataXml, ShortDescription.Text,
-                                                Keywords.Text, PortalSettings.CurrentUser.Identity.Email, DateTime.Now);
+                                                Keywords.Text, RainbowPrincipal.CurrentUser.Identity.Email, DateTime.Now);
                     }
                 }
                 else
@@ -333,10 +332,10 @@ namespace Rainbow.Content.Web.Modules
                     if (flPicture.PostedFile.FileName.Length != 0)
                     {
                         //Create new filenames for Esperantus.Esperantus.Localize. thumbnail and Esperantus.Esperantus.Localize. original picture
-                        ModifiedFilename = ModuleID.ToString() + "m" + Guid.NewGuid().ToString() + ".jpg";
+                        ModifiedFilename = ModuleID + "m" + Guid.NewGuid() + ".jpg";
                         SetMetadata("ModifiedFilename", ModifiedFilename);
 
-                        ThumbnailFilename = ModuleID.ToString() + "m" + Guid.NewGuid().ToString() + ".jpg";
+                        ThumbnailFilename = ModuleID + "m" + Guid.NewGuid() + ".jpg";
                         SetMetadata("ThumbnailFilename", ThumbnailFilename);
 
                         //Full path of Esperantus.Esperantus.Localize. original picture
@@ -405,7 +404,7 @@ namespace Rainbow.Content.Web.Modules
                             return;
                         }
 
-                        Bitmap modified = null;
+                        Bitmap modified;
 
                         try
                         {
@@ -449,16 +448,14 @@ namespace Rainbow.Content.Web.Modules
                     {
                         displayOrder = Int32.Parse(DisplayOrder.Text);
                     }
-                    catch
-                    {
-                    }
+                    catch {;}
 
                     SetMetadata("ShortDescription", ShortDescription.Text);
                     SetMetadata("LongDescription", LongDescription.Text);
                     SetMetadata("Caption", Caption.Text);
                     SetMetadata("Keywords", Keywords.Text);
                     SetMetadata("UploadDate", DateTime.Now.ToString());
-                    SetMetadata("CreatedBy", PortalSettings.CurrentUser.Identity.Email);
+                    SetMetadata("CreatedBy", RainbowPrincipal.CurrentUser.Identity.Email);
                     SetMetadata("DisplayOrder", displayOrder.ToString());
 
                     if (ItemID == 0)
@@ -466,13 +463,13 @@ namespace Rainbow.Content.Web.Modules
                         //If this is a new picture add it to Esperantus.Esperantus.Localize. database
                         ItemID =
                             pictures.AddPicture(ModuleID, ItemID, displayOrder, MetadataXml, ShortDescription.Text,
-                                                Keywords.Text, PortalSettings.CurrentUser.Identity.Email, DateTime.Now);
+                                                Keywords.Text, RainbowPrincipal.CurrentUser.Identity.Email, DateTime.Now);
                     }
                     else
                     {
                         //Update Esperantus.Esperantus.Localize. existing one
                         pictures.UpdatePicture(ModuleID, ItemID, displayOrder, MetadataXml, ShortDescription.Text,
-                                               Keywords.Text, PortalSettings.CurrentUser.Identity.Email, DateTime.Now);
+                                               Keywords.Text, RainbowPrincipal.CurrentUser.Identity.Email, DateTime.Now);
                     }
                 }
                 // Redirect back to Esperantus.Esperantus.Localize. portal home page
@@ -526,7 +523,7 @@ namespace Rainbow.Content.Web.Modules
                 }
                 catch
                 {
-                    // We don't really have much to do at this point
+                    ;// We don't really have much to do at this point
                 }
 
                 //Delete Esperantus.Esperantus.Localize. record from database.
@@ -542,7 +539,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         public PicturesEdit()
         {
-            Page.Init += new EventHandler(Page_Init);
+            Page.Init += Page_Init;
         }
 
         /// <summary>
@@ -590,7 +587,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private string ConvertByteArrayToString(byte[] array)
+        static string ConvertByteArrayToString(byte[] array)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < array.Length - 1; i++) sb.Append((char) array[i]);
@@ -602,7 +599,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private byte ConvertByteArrayToByte(byte[] array)
+        static byte ConvertByteArrayToByte(byte[] array)
         {
             return array[0];
         }
@@ -612,7 +609,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private short ConvertByteArrayToShort(byte[] array)
+        static short ConvertByteArrayToShort(byte[] array)
         {
             short val = 0;
             for (int i = 0; i < array.Length; i++) val += (short) (array[i]*Math.Pow(2, (i*8)));
@@ -624,7 +621,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private long ConvertByteArrayToLong(byte[] array)
+        static long ConvertByteArrayToLong(byte[] array)
         {
             long val = 0;
             for (int i = 0; i < array.Length; i++) val += (array[i]*(long) Math.Pow(2, (i*8)));
@@ -636,7 +633,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private string ConvertByteArrayToRational(byte[] array)
+        static string ConvertByteArrayToRational(byte[] array)
         {
             int val1 = 0;
             int val2 = 0;
@@ -658,7 +655,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns></returns>
-        private string ConvertByteArrayToSRational(byte[] array)
+        static string ConvertByteArrayToSRational(byte[] array)
         {
             int val1 = 0;
             int val2 = 0;

@@ -7,11 +7,13 @@ using System.Web;
 using System.Web.UI;
 using System.Xml;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -30,21 +32,27 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void Page_Load(object sender, EventArgs e)
         {
-            string xmlsrc = string.Empty;
+            string xmlsrc;
             string xmlsrcType = Settings["XML Type"].ToString();
             if (xmlsrcType == "File")
+            {
                 xmlsrc = Settings["XML File"].ToString();
+            }
             else
+            {
                 xmlsrc = Settings["XML URL"].ToString();
+            }
 
-
-            string xslsrc = string.Empty;
+            string xslsrc;
             string xslsrcType = Settings["XSL Type"].ToString();
             if (xslsrcType == "File")
+            {
                 xslsrc = Settings["XSL File"].ToString();
+            }
             else
+            {
                 xslsrc = Settings["XSL Predefined"].ToString();
-
+            }
 
             //Timeout
             int timeout = int.Parse(Settings["Timeout"].ToString());
@@ -53,7 +61,7 @@ namespace Rainbow.Content.Web.Modules
             {
                 if (xmlsrcType == "File")
                 {
-                    PortalUrlDataType pathXml = new PortalUrlDataType();
+                    PortalUrl pathXml = PortalProvider.Instance.CurrentPortal.PortalUrl;
                     pathXml.Value = xmlsrc;
                     xmlsrc = pathXml.FullPath;
 
@@ -67,8 +75,8 @@ namespace Rainbow.Content.Web.Modules
                 {
                     try
                     {
-                        LogHelper.Log.Warn("XMLFeed - This should not done more than once in 30 minutes: '" + xmlsrc +
-                                           "'");
+                        string message = string.Format("XMLFeed - This should not done more than once in 30 minutes: '{0}'", xmlsrc);
+                        ErrorHandler.Publish(LogLevel.Warn, message);
 
                         // handle on the remote ressource
                         HttpWebRequest wr = (HttpWebRequest) WebRequest.Create(xmlsrc);
@@ -106,7 +114,7 @@ namespace Rainbow.Content.Web.Modules
 
             if (xslsrcType == "File")
             {
-                PortalUrlDataType pathXsl = new PortalUrlDataType();
+                PortalUrl pathXsl = PortalProvider.Instance.CurrentPortal.PortalUrl;
                 pathXsl.Value = xslsrc;
                 xslsrc = pathXsl.FullPath;
             }
@@ -147,65 +155,65 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         public XmlFeed()
         {
-            int _groupOrderBase;
-            SettingItemGroup _Group;
+            int groupOrderBase;
+            SettingItemGroup group;
 
             #region Module Special Settings
 
-            _Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
-            _groupOrderBase = (int) SettingItemGroup.MODULE_SPECIAL_SETTINGS;
+            group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
+            groupOrderBase = (int) SettingItemGroup.MODULE_SPECIAL_SETTINGS;
 
             SettingItem XMLsrcType = new SettingItem(new ListDataType("URL;File"));
             XMLsrcType.Required = true;
             XMLsrcType.Value = "URL";
-            XMLsrcType.Group = _Group;
-            XMLsrcType.Order = _groupOrderBase + 1;
-            _baseSettings.Add("XML Type", XMLsrcType);
+            XMLsrcType.Group = group;
+            XMLsrcType.Order = groupOrderBase + 1;
+            baseSettings.Add("XML Type", XMLsrcType);
 
             SettingItem XMLsrcUrl = new SettingItem(new UrlDataType());
             XMLsrcUrl.Required = false;
-            XMLsrcUrl.Group = _Group;
-            XMLsrcUrl.Order = _groupOrderBase + 2;
-            _baseSettings.Add("XML URL", XMLsrcUrl);
+            XMLsrcUrl.Group = group;
+            XMLsrcUrl.Order = groupOrderBase + 2;
+            baseSettings.Add("XML URL", XMLsrcUrl);
 
-            SettingItem XMLsrcFile = new SettingItem(new PortalUrlDataType());
+            Portal portal = PortalProvider.Instance.CurrentPortal;
+            PortalUrl portalUrl = portal != null ? portal.PortalUrl : new PortalUrl(string.Empty);
+            SettingItem XMLsrcFile = new SettingItem(portalUrl);
             XMLsrcFile.Required = false;
-            XMLsrcFile.Group = _Group;
-            XMLsrcFile.Order = _groupOrderBase + 3;
-            _baseSettings.Add("XML File", XMLsrcFile);
+            XMLsrcFile.Group = group;
+            XMLsrcFile.Order = groupOrderBase + 3;
+            baseSettings.Add("XML File", XMLsrcFile);
 
             SettingItem XSLsrcType = new SettingItem(new ListDataType("Predefined;File"));
             XSLsrcType.Required = true;
             XSLsrcType.Value = "Predefined";
-            XSLsrcType.Order = _groupOrderBase + 4;
-            XSLsrcType.Group = _Group;
-            _baseSettings.Add("XSL Type", XSLsrcType);
-
+            XSLsrcType.Order = groupOrderBase + 4;
+            XSLsrcType.Group = group;
+            baseSettings.Add("XSL Type", XSLsrcType);
 
             ListDataType xsltFileList = new ListDataType(GetXSLListForFeedTransformations());
             SettingItem XSLsrcPredefined = new SettingItem(xsltFileList);
             XSLsrcPredefined.Required = true;
             XSLsrcPredefined.Value = "RSS91";
-            XSLsrcPredefined.Group = _Group;
-            XSLsrcPredefined.Order = _groupOrderBase + 5;
-            _baseSettings.Add("XSL Predefined", XSLsrcPredefined);
+            XSLsrcPredefined.Group = group;
+            XSLsrcPredefined.Order = groupOrderBase + 5;
+            baseSettings.Add("XSL Predefined", XSLsrcPredefined);
 
-            SettingItem XSLsrcFile = new SettingItem(new PortalUrlDataType());
+            SettingItem XSLsrcFile = new SettingItem(portalUrl);
             XSLsrcFile.Required = false;
-            XSLsrcFile.Group = _Group;
-            XSLsrcFile.Order = _groupOrderBase + 6;
-            _baseSettings.Add("XSL File", XSLsrcFile);
+            XSLsrcFile.Group = group;
+            XSLsrcFile.Order = groupOrderBase + 6;
+            baseSettings.Add("XSL File", XSLsrcFile);
 
             SettingItem Timeout = new SettingItem(new IntegerDataType());
             Timeout.Required = true;
-            Timeout.Group = _Group;
-            Timeout.Order = _groupOrderBase + 7;
+            Timeout.Group = group;
+            Timeout.Order = groupOrderBase + 7;
             Timeout.Value = "15";
-            _baseSettings.Add("Timeout", Timeout);
+            baseSettings.Add("Timeout", Timeout);
 
             #endregion
         }
-
 
         /// <summary>
         /// Author:		Joe Audette
@@ -218,12 +226,14 @@ namespace Rainbow.Content.Web.Modules
         /// <returns>FileInfo[]</returns>
         public FileInfo[] GetXSLListForFeedTransformations()
         {
-            string xsltPath = string.Empty;
+            string xsltPath;
 
             //jes1111 - if (ConfigurationSettings.AppSettings["XMLFeedXSLFolder"] != null && ConfigurationSettings.AppSettings["XMLFeedXSLFolder"].Length > 0)
             if (Config.XMLFeedXSLFolder.Length != 0)
+            {
                 //jes1111 - xsltPath = ConfigurationSettings.AppSettings["XMLFeedXSLFolder"];
                 xsltPath = Config.XMLFeedXSLFolder;
+            }
             else
             {
                 //this will default to the xmlfeed folder where the .xslt files are located by default
@@ -239,7 +249,8 @@ namespace Rainbow.Content.Web.Modules
                 }
                 else
                 {
-                    LogHelper.Log.Warn("Default XSLT location not found: '" + xsltPath + "'");
+                    ErrorHandler.Publish(LogLevel.Warn,
+                                         "Default XSLT location not found: '" + xsltPath + "'"); 
                 }
             }
             catch (Exception ex)

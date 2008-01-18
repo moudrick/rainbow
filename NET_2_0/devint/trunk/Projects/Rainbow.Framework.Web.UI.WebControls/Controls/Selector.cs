@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Web;
 using System.Web.UI;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -21,17 +21,26 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             ImagePath = Path.WebPathCombine(Path.ApplicationRoot, "aspnet_client/flags/");
             ChangeLanguageAction = LanguageSwitcherAction.PostBack;
-            // Obtain PortalSettings from Current Context
+
+            Portal portal = PortalProvider.Instance.CurrentPortal;
             if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
             {
-                PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-                if (pS.CustomSettings != null)
+                if (portal.CustomSettings != null)
                 {
-                    if (pS.CustomSettings["SITESETTINGS_LANGLIST"] != null)
-                        LanguageListString = pS.CustomSettings["SITESETTINGS_LANGLIST"].ToString();
-                    if (pS.CustomSettings["LANGUAGESWITCHER_CUSTOMFLAGS"] != null)
-                        if (bool.Parse(pS.CustomSettings["LANGUAGESWITCHER_CUSTOMFLAGS"].ToString()))
-                            ImagePath = pS.PortalFullPath + "/images/flags/";
+                    if (portal.CustomSettings["SITESETTINGS_LANGLIST"] != null)
+                    {
+                        LanguageListString =
+                            portal.CustomSettings["SITESETTINGS_LANGLIST"].ToString();
+                    }
+                    if (portal.CustomSettings["LANGUAGESWITCHER_CUSTOMFLAGS"] != null)
+                    {
+                        if (
+                            bool.Parse(
+                                portal.CustomSettings["LANGUAGESWITCHER_CUSTOMFLAGS"].ToString()))
+                        {
+                            ImagePath = portal.PortalFullPath + "/images/flags/";
+                        }
+                    }
                 }
             }
             else LanguageListString = "en-US";

@@ -5,23 +5,16 @@ using System.Data.SqlClient;
 using System.Configuration;
 
 namespace Rainbow.Tests {
-    /// <summary>
-    /// Summary description for DiagnoseEnvironment.
-    /// </summary>
     [TestFixture]
+    [Ignore("no more need these tests")]
     public class DiagnoseEnvironment {
 
         [TestFixtureSetUp]
-        public void FixtureSetUp() {
-
+        public void FixtureSetUp() 
+        {
             // Set up initial database environment for testing purposes
             TestHelper.TearDownDB();
             TestHelper.RecreateDBSchema();
-        }
-
-        [Test]
-        public void SimpleRun() {
-            Console.WriteLine( "This should pass. It only writes to the Console." );
         }
 
         [Test]

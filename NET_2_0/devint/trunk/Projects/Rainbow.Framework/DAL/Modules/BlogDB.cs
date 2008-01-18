@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -30,7 +30,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetBlogs(int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogsGet", myConnection);
 
             // Mark the Command as a SPROC
@@ -59,7 +59,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetBlogStats(int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogStatsGet", myConnection);
 
             // Mark the Command as a SPROC
@@ -88,7 +88,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetBlogMonthArchive(int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogsByMonthArchiveGet", myConnection);
 
             // Mark the Command as a SPROC
@@ -119,7 +119,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetBlogEntriesByMonth(int month, int year, int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogsByMonthGet", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -150,7 +150,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSingleBlog(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogGetSingle", myConnection);
 
             // Mark the Command as a SPROC
@@ -178,7 +178,7 @@ namespace Rainbow.Framework.Content.Data
         /// <returns></returns>
         public DataSet GetSingleBlogWithImages(int itemID, string variation)
         {
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogGetSingleWithImages", myConnection);
 
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -216,7 +216,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteBlog(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogDelete", myConnection);
 
             // Mark the Command as a SPROC
@@ -259,7 +259,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogAdd", myConnection);
 
             // Mark the Command as a SPROC
@@ -333,7 +333,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogUpdate", myConnection);
 
             // Mark the Command as a SPROC
@@ -415,7 +415,7 @@ namespace Rainbow.Framework.Content.Data
                 url = url.Substring(0, 200);
             }
 
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogCommentAdd", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -462,7 +462,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteBlogComment(int commentID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogCommentDelete", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -490,7 +490,7 @@ namespace Rainbow.Framework.Content.Data
         /// <returns></returns>
         public SqlDataReader GetBlogComments(int moduleID, int itemID)
         {
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_BlogCommentsGet", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 

@@ -1,5 +1,7 @@
+<%@ Import namespace="Rainbow.Framework.Security"%>
+<%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
 <%@ Control Language="c#" inherits="Rainbow.Content.Web.Modules.OneFileModule" %>
-<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework" %>
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework.Web" %>
 <%@ Import Namespace="System.Web.Mail" %>
 <%@ Import Namespace="Rainbow.Framework.Web.UI" %>
 <%@ Import Namespace="Rainbow.Framework.Web.UI.WebControls" %>
@@ -36,7 +38,7 @@
         if (IsPostBack == false)
         {
             // prepopulate box
-            email.Text = PortalSettings.CurrentUser.Identity.Email;
+            email.Text = RainbowPrincipal.CurrentUser.Identity.Email;
         }
     }
 
@@ -59,7 +61,7 @@
         Mailer.To = "join-" + listname + lyrisServerName;
         Mailer.Subject = "Join";
         Mailer.Body = "Join";
-        SmtpMail.SmtpServer = Rainbow.Framework.Settings.Config.SmtpServer;
+        SmtpMail.SmtpServer = Rainbow.Framework.Context.Config.SmtpServer;
         SmtpMail.Send(Mailer);
     }
 
@@ -70,7 +72,7 @@
         Mailer.To = "leave-" + listname + lyrisServerName;
         Mailer.Subject = "Leave";
         Mailer.Body = "Leave";
-        SmtpMail.SmtpServer = Rainbow.Framework.Settings.Config.SmtpServer;
+        SmtpMail.SmtpServer = Rainbow.Framework.Context.Config.SmtpServer;
         SmtpMail.Send(Mailer);
     }
 </script>

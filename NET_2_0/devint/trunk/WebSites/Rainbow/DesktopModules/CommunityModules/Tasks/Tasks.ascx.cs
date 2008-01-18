@@ -2,13 +2,12 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Web.UI.WebControls;
-using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
@@ -196,21 +195,21 @@ namespace Rainbow.Content.Web.Modules
         public Tasks()
         {
             // Set Editor Settings jviladiu@portalservices.net 2004/07/30
-            HtmlEditorDataType.HtmlEditorSettings(_baseSettings, SettingItemGroup.MODULE_SPECIAL_SETTINGS);
+            HtmlEditorDataType.HtmlEditorSettings(baseSettings, SettingItemGroup.MODULE_SPECIAL_SETTINGS);
 
             SettingItem setSortField =
                 new SettingItem(new ListDataType("Title;Status;Priority;DueDate;AssignedTo;PercentComplete"));
             setSortField.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             setSortField.Required = true;
             setSortField.Value = "DueDate";
-            _baseSettings.Add("TASKS_SORT_FIELD", setSortField);
+            baseSettings.Add("TASKS_SORT_FIELD", setSortField);
 
             SettingItem defaultAssignee = new SettingItem(new StringDataType());
             defaultAssignee.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
             defaultAssignee.Value = "nobody";
             defaultAssignee.EnglishName = "Default Assignee";
             defaultAssignee.Description = "Is the name of the person which the task is automatically assigned.";
-            _baseSettings.Add("TASKS_DEFAULT_ASSIGNEE", defaultAssignee);
+            baseSettings.Add("TASKS_DEFAULT_ASSIGNEE", defaultAssignee);
 
             // Task modules list
             ModulesDB m = new ModulesDB();
@@ -218,20 +217,20 @@ namespace Rainbow.Content.Web.Modules
             SqlDataReader r = null;
             try
             {
-                r = m.GetModulesByName("Tasks", portalSettings.PortalID);
+                r = m.GetModulesByName("Tasks", PortalSettings.PortalID);
                 while (r.Read())
                 {
                     taskModulesListOptions.Add(
                         new SettingOption(int.Parse(r["ModuleID"].ToString()), r["ModuleTitle"].ToString()));
                 }
             }
-            catch //install time
-            {
-            }
+            catch {;} //install time
             finally
             {
                 if (r != null && r.IsClosed == false)
+                {
                     r.Close();
+                }
             }
 
             SettingItem linkedModules =
@@ -241,22 +240,20 @@ namespace Rainbow.Content.Web.Modules
             linkedModules.EnglishName = "Linked Modules";
             linkedModules.Description =
                 "Chose here any module that will automatically recieve a copy of all new assigned task.";
-            _baseSettings.Add("TASKS_LINKED_MODULES", linkedModules);
+            baseSettings.Add("TASKS_LINKED_MODULES", linkedModules);
         }
 
-
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -267,12 +264,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

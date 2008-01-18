@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using System.Net;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -35,15 +35,15 @@ namespace Rainbow.Content.Web.Modules
                 if (showAddress)
                 {
                     if (Settings["Street"].ToString().Length != 0)
-                        lblAddress.Text += Settings["Street"].ToString() + "<br>";
+                        lblAddress.Text += Settings["Street"] + "<br>";
 
                     if (Settings["Region"].ToString().Length != 0)
-                        lblAddress.Text += Settings["City"].ToString() + ", " + Settings["Region"].ToString() + "<br>";
+                        lblAddress.Text += Settings["City"] + ", " + Settings["Region"] + "<br>";
                     else
-                        lblAddress.Text += Settings["City"].ToString() + "<br>";
+                        lblAddress.Text += Settings["City"] + "<br>";
 
                     if (Settings["PostalCode"].ToString().Length != 0)
-                        lblAddress.Text += Settings["PostalCode"].ToString() + "<br>";
+                        lblAddress.Text += Settings["PostalCode"] + "<br>";
 
                     if (Settings["Country"].ToString().Length != 0)
                         lblAddress.Text += Settings["Country"].ToString();
@@ -74,7 +74,7 @@ namespace Rainbow.Content.Web.Modules
         private void show()
         {
             hypMap.NavigateUrl = BuildMapURL();
-            hypMap.Target = "_" + Settings["Target"].ToString();
+            hypMap.Target = "_" + Settings["Target"];
 
             if (showMap)
                 hypMap.ImageUrl = GetMapImageURL(hypMap.NavigateUrl);
@@ -90,7 +90,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="strValue">The STR value.</param>
         /// <returns></returns>
-        private string EncodeValue(string strValue)
+        static string EncodeValue(string strValue)
         {
             strValue = strValue.Replace("\n", string.Empty);
             strValue = strValue.Replace("\r", string.Empty);
@@ -123,7 +123,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="strURL">The STR URL.</param>
         /// <returns></returns>
-        private string GetMapImageURL(string strURL)
+        static string GetMapImageURL(string strURL)
         {
             try
             {
@@ -205,50 +205,50 @@ namespace Rainbow.Content.Web.Modules
             setLocation.Required = true;
             setLocation.Group = group;
             setLocation.Order = groupBase + 20; //10;
-            _baseSettings.Add("Location", setLocation);
+            baseSettings.Add("Location", setLocation);
 
             SettingItem setStreet = new SettingItem(new StringDataType());
             setStreet.Required = false;
             setStreet.Group = group;
             setStreet.Order = groupBase + 25; //20;
-            _baseSettings.Add("Street", setStreet);
+            baseSettings.Add("Street", setStreet);
 
             SettingItem setCity = new SettingItem(new StringDataType());
             setCity.Required = true;
             setCity.Group = group;
             setCity.Order = groupBase + 30;
-            _baseSettings.Add("City", setCity);
+            baseSettings.Add("City", setCity);
 
             SettingItem setRegion = new SettingItem(new StringDataType());
             setRegion.Required = false;
             setRegion.Group = group;
             setRegion.Order = groupBase + 35; //40;
             setRegion.Value = string.Empty; //Same as State for US
-            _baseSettings.Add("Region", setRegion);
+            baseSettings.Add("Region", setRegion);
 
             SettingItem setCountry = new SettingItem(new StringDataType());
             setCountry.Required = false;
             setCountry.Group = group;
             setCountry.Order = groupBase + 40; //50;
-            _baseSettings.Add("Country", setCountry);
+            baseSettings.Add("Country", setCountry);
 
             SettingItem setPostalCode = new SettingItem(new StringDataType());
             setPostalCode.Required = false;
             setPostalCode.Group = group;
             setPostalCode.Order = groupBase + 45; //60;
-            _baseSettings.Add("PostalCode", setPostalCode);
+            baseSettings.Add("PostalCode", setPostalCode);
 
             SettingItem setShowMap = new SettingItem(new BooleanDataType());
             setShowMap.Group = group;
             setShowMap.Order = groupBase + 50; //70;
             setShowMap.Value = "True";
-            _baseSettings.Add("ShowMap", setShowMap);
+            baseSettings.Add("ShowMap", setShowMap);
 
             SettingItem setShowAddress = new SettingItem(new BooleanDataType());
             setShowAddress.Group = group;
             setShowAddress.Order = groupBase + 55; //80;
             setShowAddress.Value = "False";
-            _baseSettings.Add("ShowAddress", setShowAddress);
+            baseSettings.Add("ShowAddress", setShowAddress);
 
             SettingItem setZoom = new SettingItem(new IntegerDataType());
             setZoom.Required = true;
@@ -257,20 +257,20 @@ namespace Rainbow.Content.Web.Modules
             setZoom.Value = "7";
             setZoom.MinValue = 1;
             setZoom.MaxValue = 10;
-            _baseSettings.Add("Zoom", setZoom);
+            baseSettings.Add("Zoom", setZoom);
 
             SettingItem setShowZoom = new SettingItem(new BooleanDataType());
             setShowZoom.Group = group;
             setShowZoom.Order = groupBase + 65; //100;
             setShowAddress.Value = "False";
-            _baseSettings.Add("ShowZoom", setShowZoom);
+            baseSettings.Add("ShowZoom", setShowZoom);
 
             SettingItem setTarget = new SettingItem(new ListDataType("blank;parent;self;top"));
             setTarget.Required = true;
             setTarget.Group = group;
             setTarget.Order = groupBase + 70; //110;
             setTarget.Value = "blank";
-            _baseSettings.Add("Target", setTarget);
+            baseSettings.Add("Target", setTarget);
         }
 
 

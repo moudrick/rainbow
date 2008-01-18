@@ -2,51 +2,69 @@ using System.IO;
 using System.Web.UI;
 using System.Xml;
 using Rainbow.Framework;
-
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Web.UI.WebControls;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Content.Web.Modules
 {
-	using Rainbow.Framework.Web.UI.WebControls;
-
 	/// <summary>
 	/// The OneFileModule provides basis for a module that only
 	/// consists of a single .ascx file. 
 	/// See the OneFileModule Kit for documentation and examples.
 	/// Written by: Jakob Hansen, hansen3000@hotmail
 	/// </summary>
-	public class OneFileModule : Rainbow.Framework.Web.UI.WebControls.PortalModuleControl
+	public class OneFileModule : Framework.Web.UI.WebControls.PortalModuleControl
 	{
         /// <summary>
-        /// 
         /// </summary>
-		public enum SettingsType { Off, Str, Xml, StrAndXml }   // With StrAndXml SettingsStr are searched first
+		public enum SettingsType
+        {
+            ///<summary>
+            ///</summary>
+            Off, 
+
+            ///<summary>
+            ///</summary>
+            Str, 
+
+            ///<summary>
+            ///</summary>
+            Xml, 
+
+            ///<summary>
+            ///</summary>
+            StrAndXml
+        }   // With StrAndXml SettingsStr are searched first
+
 		/// <summary>
-		/// 
 		/// </summary>
         protected SettingsType _settingsType = SettingsType.Off;
+
         /// <summary>
         /// The content of setting "Settings string"
         /// </summary>
-		protected string _settingsStr = string.Empty;      // 
+		protected string _settingsStr = string.Empty;      
+
         /// <summary>
         /// The filename in setting "XML settings file"
         /// </summary>
-		protected string _xmlFileName = string.Empty;      // 
+		protected string _xmlFileName = string.Empty;       
+
         /// <summary>
         /// The XML in file _xmlFileName
         /// </summary>
-		protected XmlDocument _settingsXml;      // 
+		protected XmlDocument _settingsXml;
+
         /// <summary>
         /// True if setting "Debug Mode" is clicked
         /// </summary>
-		protected bool _debugMode = false;       // 
+		protected bool _debugMode = false;
+
         /// <summary>
         /// False if settings are missing
         /// </summary>
 		protected bool _settingsExists = false;  // 
-
 
         /// <summary>
         /// Same as "Settings string" in the setting system
@@ -150,23 +168,22 @@ namespace Rainbow.Content.Web.Modules
 			setting.Value = string.Empty;
 			setting.EnglishName = "Settings string";
 			setting.Description = "Settings are in pairs like: FirstName=Elvis;LastName=Presly;";
-			this._baseSettings.Add("Settings string", setting);
+			baseSettings.Add("Settings string", setting);
 
-			SettingItem xmlFile = new SettingItem(new PortalUrlDataType());
+			SettingItem xmlFile = new SettingItem(PortalProvider.Instance.CurrentPortal.PortalUrl);
 			xmlFile.Required = false;
 			xmlFile.Order = 2;
 			xmlFile.EnglishName = "XML settings file";
 			xmlFile.Description = "Name of file in folder Rainbow\\_Portalfolder (typically _Rainbow). Do not add a path!";
-			this._baseSettings.Add("XML settings file", xmlFile);
+			baseSettings.Add("XML settings file", xmlFile);
 
 			SettingItem debugMode = new SettingItem(new BooleanDataType());
 			debugMode.Order = 3;
 			debugMode.Value = "True";
 			debugMode.EnglishName = "Debug Mode";
 			debugMode.Description = "Primarily for the developer. Controls property DebugMode";
-			this._baseSettings.Add("Debug Mode", debugMode);
+			baseSettings.Add("Debug Mode", debugMode);
 		}
-
 
         /// <summary>
         /// Get the setting value from SettingsStr.
@@ -177,8 +194,10 @@ namespace Rainbow.Content.Web.Modules
         /// <returns></returns>
 		protected string GetSetting(string settingName)
 		{
-			if (_settingsType == SettingsType.Off)
-				return string.Empty;
+            if (_settingsType == SettingsType.Off)
+            {
+                return string.Empty;
+            }
 
 			string retVal;
 			retVal = GetStrSetting(settingName);
@@ -186,7 +205,6 @@ namespace Rainbow.Content.Web.Modules
 				retVal = GetXmlSetting(settingName);
 			return retVal;
 		}
-
 
         /// <summary>
         /// Get the setting value from SettingsStr which has the form:
@@ -223,10 +241,8 @@ namespace Rainbow.Content.Web.Modules
 				idxStart++;
 				val = _settingsStr.Substring(idxStart, (idxEnd - idxStart));
 			}
-
 			return val;
 		}
-
 
         /// <summary>
         /// Fills the settingsXml parameter with the xml from a file
@@ -238,7 +254,7 @@ namespace Rainbow.Content.Web.Modules
 		{
 			bool retValue = true;
 
-			PortalUrlDataType pt = new PortalUrlDataType();
+			PortalUrl pt = PortalProvider.Instance.CurrentPortal.PortalUrl;
 			pt.Value = file;
 			string xmlFile = pt.FullPath;
 
@@ -282,16 +298,16 @@ namespace Rainbow.Content.Web.Modules
 				{
 					// If we get here the setting is in the xml file
 					// Move to next node (the text node containg the actual setting value)
-					if (xmlNodeReader.Read())
-						val = xmlNodeReader.Value;
+				    if (xmlNodeReader.Read())
+				    {
+				        val = xmlNodeReader.Value;
+				    }
 				}
 			}
 			finally
 			{
 				xmlNodeReader.Close(); //by Manu, fixed bug 807858
 			}
-
-
 			return val;
 		}
 

@@ -1,4 +1,7 @@
 <%@ Control Language="c#" %>
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Core" %>
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Web.UI.WebControls" %>
+
 <script runat="server">
 
     private void Page_Load(object sender, System.EventArgs e)

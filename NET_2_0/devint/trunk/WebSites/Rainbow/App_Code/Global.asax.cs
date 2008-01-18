@@ -1,26 +1,18 @@
 using System;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Reflection;
-using System.Security.Principal;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
-using Rainbow.Context;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Exceptions;
-using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Scheduler;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using History=Rainbow.Framework.History;
-using Path=System.IO.Path;
-using Reader=Rainbow.Context.Reader;
 
-namespace Rainbow
+namespace Rainbow.App_Code
 {
     /// <summary>
     /// Defines the methods, properties, and events common to all application 
@@ -72,299 +64,24 @@ namespace Rainbow
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         protected void Application_BeginRequest(Object sender, EventArgs e)
         {
-            Reader contextReader = new Reader(new WebContextReader());
-            HttpContext context = contextReader.Current;
-
-            // TODO: Move all URL handling to URLHandler.cs in core
             // TODO: Need to support page name with no id, search db for match
             // TODO: If not, return page with recomended matches..
-            /*
-             * QUERY FOR MATCHERS 
-             * 			int pageID = Portal.PageID; // Get PageID from QueryString
-			            string portalAlias = Portal.UniqueID; 
-             * Portal alias = 
-             * page name = currentURL.Substring(currentURL.LastIndexOf("/") + 1)
-DECLARE @portalAlias varchar(20)
-DECLARE @PageName varchar(20)
-
-SET @portalAlias = 'rainbow'
-SET @PageName = 'Manage' 
-
-SELECT     rb_Tabs.TabID, rb_Tabs.TabName
-FROM         rb_Portals INNER JOIN
-                      rb_Tabs ON rb_Portals.PortalID = rb_Tabs.PortalID
-WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.TabName LIKE N'%' + @PageName + N'%')
-             */
-            string currentURL = context.Request.Path.ToLower();
-
-
-#if DEBUG
-            if (currentURL.Contains("trace.axd"))
-                return;
-#endif
-            context.Trace.Warn("Application_BeginRequest :: " + currentURL);
-            if (Portal.PageID > 0)
-            {
-                //Creates the physical path on the server 
-                string physicalPath = context.Server.MapPath(currentURL.Substring(currentURL.LastIndexOf("/") + 1));
-
-                // TODO: Can we enhance performance here by checking to see if it is a friedly url page
-                // name instead of doing an IO check for exists?
-                // checks to see if the file does not exsists.
-                if (!File.Exists(physicalPath)) // Rewrites the path
-                    context.RewritePath("~/default.aspx?" + context.Request.ServerVariables["QUERY_STRING"]);
-            }
-            else
-            {
-                string pname = currentURL.Substring(currentURL.LastIndexOf("/") + 1);
-                pname = pname.Substring(0, (pname.Length - 5));
-                if (Regex.IsMatch(pname, @"^\d+$"))
-                    context.RewritePath("~/default.aspx?pageid=" + pname +
-                                        context.Request.ServerVariables["QUERY_STRING"]);
-            }
-
-
-            // 1st Check: is it a dangerously malformed request?
-            //Important patch http://support.microsoft.com/?kbid=887459
-            if (context.Request.Path.IndexOf('\\') >= 0 ||
-                Path.GetFullPath(context.Request.PhysicalPath) != context.Request.PhysicalPath)
-                throw new RainbowRedirect(LogLevel.Warn, HttpStatusCode.NotFound, "Malformed request", null);
-
-            #region 2nd Check: is the AllPortals Lock switched on?
-
-            // 2nd Check: is the AllPortals Lock switched on?
-            // let the user through if client IP address is in LockExceptions list, otherwise throw...
-            if (Config.LockAllPortals)
-            {
-                string _rawUrl = context.Request.RawUrl.ToLower(CultureInfo.InvariantCulture);
-                string _lockRedirect = Config.LockRedirect;
-                if (!_rawUrl.EndsWith(_lockRedirect))
-                {
-                    // construct IPList
-                    string[] lockKeyHolders = Config.LockKeyHolders.Split(new char[] {';'});
-                    IPList ipList = new IPList();
-                    foreach (string lockKeyHolder in lockKeyHolders)
-                    {
-                        if (lockKeyHolder.IndexOf("-") > -1)
-                            ipList.AddRange(lockKeyHolder.Substring(0, lockKeyHolder.IndexOf("-")),
-                                            lockKeyHolder.Substring(lockKeyHolder.IndexOf("-") + 1));
-                        else
-                            ipList.Add(lockKeyHolder);
-                    }
-                    // check if requestor's IP address is in allowed list
-                    if (!ipList.CheckNumber(context.Request.UserHostAddress))
-                        throw new PortalsLockedException();
-                }
-            }
-
-            #endregion
-
-            #region 3rd Check: is database/code version correct?
-
+            RainbowContext.Current.RewritePath();
+            RainbowContext.Current.CheckAllPortalsLock();
+            
             // 3rd Check: is database/code version correct?
-                        // don't check database when installer is running
-            if (Request.AppRelativeCurrentExecutionFilePath.ToLower() != Config.InstallerRedirect.ToLower() &&
-                Request.AppRelativeCurrentExecutionFilePath.ToLower() != "~/webresource.axd")
+                // don't check database when installer is running
+            string executionFilePath = Request.AppRelativeCurrentExecutionFilePath.ToLower();
+            if (executionFilePath != Config.InstallerRedirect.ToLower() &&
+                executionFilePath != "~/webresource.axd")
             {
-                int versionDelta = Database.DatabaseVersion.CompareTo(Portal.CodeVersion);
-                // if DB and code versions do not match
-                if (versionDelta != 0)
+                bool isUpToDate = VersionController.Instance.CheckDatabaseVersion(Config.DatabaseUpdateRedirect);
+                if (isUpToDate)
                 {
-                    Uri _requestUri = context.Request.Url;
-                    string _databaseUpdateRedirect = Config.DatabaseUpdateRedirect;
-                    if (_databaseUpdateRedirect.StartsWith("~/"))
-                        _databaseUpdateRedirect = _databaseUpdateRedirect.TrimStart(new char[] { '~' });
-
-                    if (
-                        !
-                        _requestUri.AbsolutePath.ToLower(CultureInfo.InvariantCulture).EndsWith(
-                            _databaseUpdateRedirect.ToLower(CultureInfo.InvariantCulture)))
-                    {
-                        // ...and this is not DB Update page
-                        string errorMessage = "Database version: " + Database.DatabaseVersion.ToString() + " Code version: " +
-                                              Portal.CodeVersion.ToString();
-                        if (versionDelta < 0) // DB Version is behind Code Version
-                        {
-                            // Jonathan : WHy wouldnt we redirect to update page?
-                            // TODO : Check with people why this was like this....
-                            Response.Redirect(Framework.Settings.Path.ApplicationRoot + _databaseUpdateRedirect, true);
-                            // so update?
-                            ErrorHandler.Publish(LogLevel.Warn, errorMessage);
-                            // throw new DatabaseVersionException(errorMessage);
-                        }
-                        else // DB version is ahead of Code Version
-                        {
-                            ErrorHandler.Publish(LogLevel.Warn, errorMessage);
-                            // Jonathan : WHy wouldnt we redirect to update page?
-                            // TODO : Check with people why this was like this....
-                            // Who cares ?
-                            // throw new CodeVersionException(errorMessage);
-                        }
-                    }
-                    else // this is already DB Update page... 
-                        return; // so skip creation of PortalSettings
-                }
-
-            #endregion
-
-                // ************ 'calculate' response to this request ************
-                //
-                // Test 1 - try requested Alias and requested PageID
-                // Test 2 - try requested Alias and PageID 0
-                // Test 3 - try default Alias and requested PageID
-                // Test 4 - try default Alias and PageID 0
-                //
-                // The UrlToleranceLevel determines how many times the test is allowed to fail before the request is considered
-                // to be "an error" and is therefore redirected:
-                //
-                // UrlToleranceLevel 1 
-                //		- requested Alias must be valid - if invalid, InvalidAliasRedirect page on default portal will be shown
-                //		- if requested PageID is found, it is shown
-                //		- if requested PageID is not found, InvalidPageIdRedirect page is shown
-                // 
-                // UrlToleranceLevel 2 
-                //		- requested Alias must be valid - if invalid, InvalidAliasRedirect page on default portal will be shown
-                //		- if requested PageID is found, it is shown
-                //		- if requested PageID is not found, PageID 0 (Home page) is shown
-                //
-                // UrlToleranceLevel 3 - <<<<<< not working?
-                //		- if requested Alias is invalid, default Alias will be used
-                //		- if requested PageID is found, it is shown
-                //		- if requested PageID is not found, InvalidPageIdRedirect page is shown
-                // 
-                // UrlToleranceLevel 4 - 
-                //		- if requested Alias is invalid, default Alias will be used
-                //		- if requested PageID is found, it is shown
-                //		- if requested PageID is not found, PageID 0 (Home page) is shown
-
-                PortalSettings portalSettings = null;
-                int pageID = Portal.PageID; // Get PageID from QueryString
-                string portalAlias = Portal.UniqueID; // Get requested alias from querystring, cookies or hostname
-                string defaultAlias = Config.DefaultPortal; // get default portal from config
-
-                // load arrays with values to test
-                string[] testAlias = new string[4] { portalAlias, portalAlias, defaultAlias, defaultAlias };
-                int[] testPageID = new int[4] { pageID, 0, pageID, 0 };
-
-                int testsAllowed = Config.UrlToleranceLevel;
-                int testsToRun = testsAllowed > 2 ? 4 : 2;
-                // if requested alias is default alias, limit UrlToleranceLevel to max value of 2 and limit tests to 2
-                if (portalAlias == defaultAlias)
-                {
-                    testsAllowed = testsAllowed % 2;
-                    testsToRun = 2;
-                }
-
-                int testsCounter = 1;
-                while (testsCounter <= testsToRun)
-                {
-                    //try with current values from arrays
-                    portalSettings = new PortalSettings(testPageID[testsCounter - 1], testAlias[testsCounter - 1]);
-
-                    // test returned result
-                    if (portalSettings.PortalAlias != null)
-                        break; // successful hit
-                    else
-                        testsCounter++; // increment the test counter and continue
-                }
-
-                if (portalSettings.PortalAlias == null)
-                {
-                    // critical error - neither requested alias nor default alias could be found in DB
-                    throw new RainbowRedirect(
-                        Config.NoPortalErrorRedirect,
-                        LogLevel.Fatal,
-                        Config.NoPortalErrorResponse,
-                        "Unable to load any portal - redirecting request to ErrorNoPortal page.",
-                        null);
-                }
-
-                if (testsCounter <= testsAllowed) // success
-                {
-                    // Portal Settings has passed the test so add it to Context
-                    context.Items.Add("PortalSettings", portalSettings);
-                    context.Items.Add("PortalID", portalSettings.PortalID); // jes1111
-                }
-                else // need to redirect
-                {
-                    if (portalSettings.PortalAlias != portalAlias) // we didn't get the portal we asked for
-                    {
-                        throw new RainbowRedirect(
-                            Config.InvalidAliasRedirect,
-                            LogLevel.Info,
-                            HttpStatusCode.NotFound,
-                            "Invalid Alias specified in request URL - redirecting (404) to InvalidAliasRedirect page.",
-                            null);
-                    }
-
-                    if (portalSettings.ActivePage.PageID != pageID) // we didn't get the page we asked for
-                    {
-                        throw new RainbowRedirect(
-                            Config.InvalidPageIdRedirect,
-                            LogLevel.Info,
-                            HttpStatusCode.NotFound,
-                            "Invalid PageID specified in request URL - redirecting (404) to InvalidPageIdRedirect page.",
-                            null);
-                    }
-                }
-
-                // Save cookies
-                //saveCookie = true; // Jes1111 - why is this always set to true? is it needed?
-                //ExtendCookie(settings); 
-                //if (saveCookie) // Jes1111 - why is this always set to true? is it needed?
-                //{
-                context.Response.Cookies["PortalAlias"].Path = "/";
-                context.Response.Cookies["PortalAlias"].Value = portalSettings.PortalAlias;
-                //}
-
-                //Try to get alias from cookie to determine if alias has been changed
-                bool refreshSite = false;
-                if (context.Request.Cookies["PortalAlias"] != null &&
-                    context.Request.Cookies["PortalAlias"].Value.ToLower() != Portal.UniqueID)
-                    refreshSite = true; //Portal has changed since last page request
-                // if switching portals then clean parameters [TipTopWeb]
-                // Must be the last instruction in this method 
-
-                // 5/7/2006 Ed Daniel
-                // Added hack for Http 302 by extending condition below to check for more than 3 cookies
-                if (refreshSite && context.Request.Cookies.Keys.Count > 3)
-                {
-                    // Signout and force the browser to refresh only once to avoid any dead-lock
-                    if (context.Request.Cookies["refreshed"] == null
-                        || (context.Request.Cookies["refreshed"] != null
-                            && context.Response.Cookies["refreshed"].Value == "false"))
-                    {
-                        string rawUrl = context.Request.RawUrl;
-
-                        // jes1111 - not needed now
-                        //					//by Manu avoid endless loop when portal does not exists
-                        //					if (rawUrl.EndsWith("init")) // jes1111: is this still valid/needed?
-                        //						context.Response.Redirect("~/app_support/ErrorNoPortal.html", true);
-                        //
-                        //					// add parameter at the end of the command line to detect the dead-lock 
-                        //					if (rawUrl.LastIndexOf(@"?") > 0)
-                        //						rawUrl += "&init";
-                        //					else rawUrl += "?init";
-
-                        context.Response.Cookies["refreshed"].Value = "true";
-                        context.Response.Cookies["refreshed"].Path = "/";
-                        context.Response.Cookies["refreshed"].Expires = DateTime.Now.AddMinutes(1);
-
-                        // sign-out, if refreshed param on the command line we will not call it again
-                        PortalSecurity.SignOut(rawUrl, false);
-                    }
-                }
-
-                // invalidate cookie, so the page can be refreshed when needed
-                if (context.Request.Cookies["refreshed"] != null && context.Request.Cookies.Keys.Count > 3)
-                {
-                    context.Response.Cookies["refreshed"].Path = "/";
-                    context.Response.Cookies["refreshed"].Value = "false";
-                    context.Response.Cookies["refreshed"].Expires = DateTime.Now.AddMinutes(1);
+                    PortalProvider.Instance.CalculatePortalResponse();
                 }
             }
-        } // end of Application_BeginRequest
-
+        }
 
         /// <summary>
         /// Handles the AuthenticateRequest event of the Application control.
@@ -377,16 +94,13 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        protected void Application_AuthenticateRequest(Object sender, EventArgs e)
+        protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
-            Reader contextReader = new Reader(new WebContextReader());
-            HttpContext context = contextReader.Current;
+            HttpContext context = RainbowContext.Current.HttpContext;
 
-            if (context.Items["PortalSettings"] != null)
+            Portal portalSettings = PortalProvider.Instance.CurrentPortal;
+            if (portalSettings != null)
             {
-                // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) context.Items["PortalSettings"];
-
                 // Auto-login a user who has a portal Alias login cookie
                 // Try to authenticate the user with the cookie value
                 if (!context.Request.IsAuthenticated &&
@@ -423,7 +137,9 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                     // jminond - if user asked to persist, he should have a cookie
                     if ((context.Request.IsAuthenticated) &&
                         (context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias] == null))
+                    {
                         PortalSecurity.KillSession();
+                    }
                 }
 
                 //if (context.Request.IsAuthenticated && !(context.User is WindowsPrincipal))
@@ -463,6 +179,13 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                 //        abag[GlobalInternalStrings.UserWinMgmtIndex] = guid.ToString();
                 //    }
                 //}
+
+//            /// <summary>
+//            /// the cookie id used for getting the uid ( dependency above !)
+//            /// </summary>
+//            public static readonly string GlobalInternalStrings.UserWinMgmtIndex = "Rainbow_WinMgmt";
+
+
             }
         } // end of Application_AuthenticateRequest
 
@@ -484,28 +207,22 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
         /// </summary>
         protected void Application_Start()
         {
-            //HttpContext context = ContextReader.Current;
-            HttpContext context = HttpContext.Current;
-
-            // moved from PortalSettings
-            FileVersionInfo f = FileVersionInfo.GetVersionInfo(Assembly.GetAssembly( typeof( Rainbow.Framework.Settings.Portal ) ).Location);
-            HttpContext.Current.Application.Lock();
-            HttpContext.Current.Application["CodeVersion"] = f.FilePrivatePart;
-            HttpContext.Current.Application.UnLock();
-
-            ErrorHandler.Publish(LogLevel.Info, "Application Started: code version " + Portal.CodeVersion.ToString());
+            ErrorHandler.Publish(LogLevel.Info, "Application Started: code version " 
+                + VersionController.Instance.CodeVersion);
 
             if (Config.CheckForFilePermission)
             {
                 try
                 {
-                    string myNewDir = Path.Combine(Framework.Settings.Path.ApplicationPhysicalPath, "_createnewdir");
-
-                    if (!Directory.Exists(myNewDir))
-                        Directory.CreateDirectory(myNewDir);
-
-                    if (Directory.Exists(myNewDir))
-                        Directory.Delete(myNewDir);
+                    string newDir = System.IO.Path.Combine(Framework.Path.ApplicationPhysicalPath, "_createnewdir");
+                    if (!Directory.Exists(newDir))
+                    {
+                        Directory.CreateDirectory(newDir);
+                    }
+                    if (Directory.Exists(newDir))
+                    {
+                        Directory.Delete(newDir);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -530,8 +247,8 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
 					if (context.Request.ApplicationPath.Length > 0)
 						baseDir = context.Request.ApplicationPath;
 					baseDir = Server.MapPath(baseDir);
-					string binDir = Path.Combine(baseDir, "bin");
-                    string resDir = Path.Combine(baseDir, "App_GlobalResources");
+					string binDir = System.IO.Path.Combine(baseDir, "bin");
+                    string resDir = System.IO.Path.Combine(baseDir, "App_GlobalResources");
                     // Try to get KeyStore, if not found set defaults
                     //string dllName = Assembly.GetExecutingAssembly().Location + Assembly.GetExecutingAssembly().FullName + ".dll";
 
@@ -580,18 +297,12 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
             //Start scheduler
             if (Config.SchedulerEnable)
             {
-                PortalSettings.Scheduler = CachedScheduler.GetScheduler(
-                    context.Server.MapPath(Framework.Settings.Path.ApplicationRoot),
-                    Config.SqlConnectionString,
-                    Config.SchedulerPeriod,
-                    Config.SchedulerCacheSize);
-                PortalSettings.Scheduler.Start();
+                PortalProvider.Instance.StartScheduler();
             }
-
             // Start proxy
             if (Config.UseProxyServerForServerWebRequests)
             {
-                WebRequest.DefaultWebProxy = PortalSettings.GetProxy();
+                WebRequest.DefaultWebProxy = PortalProvider.Instance.GetProxy();
             }
         }
 

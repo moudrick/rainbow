@@ -1,6 +1,6 @@
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -17,7 +17,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSinglerb_BookList(int ItemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSingleBook", myConnection);
 
             // Mark the Command as a SPROC
@@ -45,7 +45,7 @@ namespace Rainbow.Framework.Content.Data
         public DataSet Getrb_BookList(int ModuleId)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlDataAdapter myCommand = new SqlDataAdapter("rb_GetBooks", myConnection);
 
             // Mark the Command as a SPROC
@@ -70,7 +70,7 @@ namespace Rainbow.Framework.Content.Data
         public void Deleterb_BookList(int ItemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DeleteBook", myConnection);
 
             // Mark the Command as a SPROC
@@ -99,7 +99,7 @@ namespace Rainbow.Framework.Content.Data
         public int Addrb_BookList(int ModuleID, string CreatedByUser, string ISBN, string Caption)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddBook", myConnection);
 
             // Mark the Command as a SPROC
@@ -146,7 +146,7 @@ namespace Rainbow.Framework.Content.Data
         public void Updaterb_BookList(int ItemID, string CreatedByUser, string ISBN, string Caption)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateBook", myConnection);
 
             // Mark the Command as a SPROC

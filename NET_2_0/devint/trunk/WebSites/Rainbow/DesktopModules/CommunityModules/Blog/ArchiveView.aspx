@@ -1,12 +1,13 @@
 <%@ register src="~/Design/DesktopLayouts/DesktopFooter.ascx" tagname="Footer" tagprefix="foot" %>
 <%@ register src="~/Design/DesktopLayouts/DesktopPortalBanner.ascx" tagname="Banner"
     tagprefix="portal" %>
-<%@ register assembly="Rainbow.Framework" namespace="Rainbow.Framework.Web.UI.WebControls"
+<%@ register assembly="Rainbow.Framework.Web" namespace="Rainbow.Framework.Web.UI.WebControls"
     tagprefix="rbfwebui" %>
 
 <%@ page autoeventwireup="false" inherits="Rainbow.Content.Web.Modules.ArchiveView" language="c#"
     src="ArchiveView.aspx.cs" %>
 
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Web.UI.WebControls" %>
  <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server"><title></title>
 </head>
@@ -23,7 +24,7 @@
                             <rbfwebui:localize id="SyndicationLabel" runat="server" text="Syndication" textkey="BLOG_SYNDICATION">
                             </rbfwebui:localize></b><br />
                         <a id="lnkRSS" runat="server" href="/DesktopModules/Blog/rss.aspx">
-                            <img alt="imgRss" id="imgRSS" runat="server" border="0" src="/rainbow/DesktopModules/Blog/xml.gif" /></a>
+                            <img alt="imgRss" id="imgRSS" runat="server" border="0" src="/DesktopModules/Blog/xml.gif" /></a>
                         <br />
                         <br />
                         <b>

@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using System.Data.SqlClient;
 using System.Security.Principal;
 using System.Text;
@@ -7,297 +6,91 @@ using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Data;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Users.Data;
-using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
-using System.Web.Security;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
-using Rainbow.Framework.Providers.Geographic;
 
-
-namespace Rainbow.Content.Web.Modules {
+namespace Rainbow.Content.Web.Modules 
+{
     /// <summary>
     /// Placeable Registration (Full) module
     /// </summary>
     [History( "jminond", "march 2005", "Changes for moving Tab to Page" )]
-    [
-        History( "john.mandia@whitelightsolutions.com", "2005/02/12",
+    [History( "john.mandia@whitelightsolutions.com", "2005/02/12",
             "Adding handling for unique constraint violation and showed friendlier message." )]
     [History( "bill@improvdesign.com", "2004/10/23", "Added email to admin on registration" )]
-    [
-        History( "john.mandia@whitelightsolutions.com", "2003/10/31",
+    [History( "john.mandia@whitelightsolutions.com", "2003/10/31",
             "Fixed bug where old state list would remain even though new country with no states had been selected." )]
     [History( "Mario Hartmann", "mario@hartmann.net", "1.2", "2003/10/08", "moved to seperate folder" )]
     [History( "Jes1111", "2003/03/10", "Modified from original to be fully placeable module" )]
     [History( "Jes1111", "2003/03/10", "Updated to use Globalized controls" )]
     //TODO still needs Globalized field validators (Compare and Regex)
-    public class RegisterFull : PortalModuleControl, IEditUserProfile {
-        #region Form controls
-
-        /// <summary>
-        /// 
-        /// </summary>
+    public class RegisterFull : PortalModuleControl, IEditUserProfile 
+    {
         protected Label PageTitleLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label NameLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected TextBox NameField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected RequiredFieldValidator RequiredName;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label CompanyLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected TextBox CompanyField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label AddressLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected TextBox AddressField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label CityLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected TextBox CityField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label ZipLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected TextBox ZipField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label CountryLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected DropDownList CountryField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label StateLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected DropDownList StateField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label InLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label ThisCountryLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label PhoneLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected TextBox PhoneField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label FaxLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected TextBox FaxField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label SendNewsletterLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected CheckBox SendNewsletter;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label AccountLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label EmailLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected TextBox EmailField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected RegularExpressionValidator ValidEmail;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected RequiredFieldValidator RequiredEmail;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label PasswordLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected TextBox PasswordField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected RequiredFieldValidator RequiredPassword;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label ConfirmPasswordLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected TextBox ConfirmPasswordField;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected RequiredFieldValidator RequiredConfirm;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label ConditionsLabel;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected TextBox FieldConditions;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected CheckBox Accept;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected CustomValidator CheckTermsValidator;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected LinkButton RegisterBtn;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected LinkButton cancelButton;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label Message;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected HtmlTableRow StateRow;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Label Label1;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected HtmlTableRow EditPasswordRow;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected HtmlTableRow ConditionsRow;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected LinkButton SaveChangesBtn;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected CompareValidator ComparePasswords;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected CompareValidator CheckID;
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected Panel FullProfileInformation;
 
-        #endregion
+        string _redirectPage;
 
-        #region Private Fields
 
-        private string _redirectPage;
-
-        #endregion
+        public override Guid GuidID
+        {
+            get { return new Guid("{AE419DCC-B890-43ba-B77C-54955F182041}"); }
+        }
 
         #region Properties
 
@@ -305,7 +98,7 @@ namespace Rainbow.Content.Web.Modules {
         /// 
         /// </summary>
         public bool EditMode {
-            get { return ( userName.Length != 0 ); }
+            get { return ( UserName.Length != 0 ); }
         }
 
         /// <summary>
@@ -323,23 +116,28 @@ namespace Rainbow.Content.Web.Modules {
             set { _redirectPage = value; }
         }
 
-        private string userName {
-            get {
-                string uid = string.Empty;
-
-                if ( Request.Params["userName"] != null )
-                    uid = Request.Params["userName"];
-
-                if ( uid.Length == 0 && HttpContext.Current.Items["userName"] != null )
-                    uid = HttpContext.Current.Items["userName"].ToString();
-
+        string UserName
+        {
+            get
+            {
+                string userName = string.Empty;
+                if (Request.Params["userName"] != null)
+                {
+                    userName = Request.Params["userName"];
+                }
+                if (userName.Length == 0 
+                    && RainbowContext.Current.HttpContext.Items["userName"] != null)
+                {
+                    userName = RainbowContext.Current.HttpContext.Items["userName"].ToString();
+                }
 #if DEBUG
                 // TODO: Remove this.
-                if ( uid.Length == 0 )
-                    HttpContext.Current.Response.Write( "username is empty" );
-#endif           
-
-                return uid;
+                if (userName.Length == 0)
+                {
+                    HttpContext.Current.Response.Write("username is empty");
+                }
+#endif
+                return userName;
             }
         }
 
@@ -375,25 +173,23 @@ namespace Rainbow.Content.Web.Modules {
 
         #endregion
 
-        #region	Methods
-
-        private void BindCountry() {
-            CountryField.DataSource = GeographicProvider.Current.GetCountries( CountryFields.Name );
+        void BindCountry() {
+            CountryField.DataSource = GeographicProvider.Instance.GetCountries( CountryFields.Name );
             CountryField.DataBind();
         }
 
-        private void BindState() {
+        void BindState() {
             StateRow.Visible = false;
             if ( CountryField.SelectedItem != null ) {
 
-                Country selectedCountry = GeographicProvider.Current.GetCountry( CountryField.SelectedValue );
+                Country selectedCountry = GeographicProvider.Instance.GetCountry( CountryField.SelectedValue );
 
                 //added next line to clear the list. 
                 //The stateField seems to remember it's values even when you set the 
                 //DataSource to null
                 //Michel Barneveld Rainbow@MichelBarneveld.Com
                 StateField.Items.Clear();
-                StateField.DataSource = GeographicProvider.Current.GetCountryStates( selectedCountry.CountryID );
+                StateField.DataSource = GeographicProvider.Instance.GetCountryStates( selectedCountry.CountryID );
                 StateField.DataBind();
 
                 StateLabel.Text = selectedCountry.AdministrativeDivisionName;
@@ -423,60 +219,100 @@ namespace Rainbow.Content.Web.Modules {
             }
 
             // Only attempt a login if all form fields on the page are valid
-            if ( Page.IsValid ) {
-                UsersDB accountSystem = new UsersDB();
+            if (Page.IsValid)
+            {
+                string countryID = string.Empty;
+                if (CountryField.SelectedItem != null)
+                {
+                    countryID = CountryField.SelectedItem.Value;
+                }
 
-                string CountryID = string.Empty;
-                if ( CountryField.SelectedItem != null )
-                    CountryID = CountryField.SelectedItem.Value;
+                int stateID = 0;
+                if (StateField.SelectedItem != null)
+                {
+                    stateID = Convert.ToInt32(StateField.SelectedItem.Value);
+                }
 
-                int StateID = 0;
-                if ( StateField.SelectedItem != null )
-                    StateID = Convert.ToInt32( StateField.SelectedItem.Value );
-
-                try {
-                    if ( userName == string.Empty ) {
-                        // Add New User to Portal User Database
-                        returnID =
-                            accountSystem.AddUser( NameField.Text, CompanyField.Text,
-                                                  AddressField.Text, CityField.Text, ZipField.Text, CountryID, StateID,
-                                                  PhoneField.Text, FaxField.Text,
-                                                  PasswordField.Text, EmailField.Text, SendNewsletter.Checked );
+                try
+                {
+                    UsersDB accountSystem = new UsersDB();
+                    if (UserName == string.Empty)
+                    {
+                        returnID = accountSystem.AddUser(
+                                PortalProvider.Instance.CurrentPortal.PortalAlias,
+                                NameField.Text,
+                                CompanyField.Text,
+                                AddressField.Text,
+                                CityField.Text,
+                                ZipField.Text,
+                                countryID,
+                                stateID,
+                                PhoneField.Text,
+                                FaxField.Text,
+                                PasswordField.Text,
+                                EmailField.Text,
+                                SendNewsletter.Checked);
                     }
-                    else {
+                    else
+                    {
                         // Update user
-                        if ( PasswordField.Text.Equals( ConfirmPasswordField.Text ) && PasswordField.Text.Equals( string.Empty ) ) {
-
-                            accountSystem.UpdateUser( originalUserID, NameField.Text, CompanyField.Text, AddressField.Text,
-                                CityField.Text, ZipField.Text, CountryID, StateID, PhoneField.Text,
-                                FaxField.Text, EmailField.Text, SendNewsletter.Checked );
+                        if (PasswordField.Text.Equals(ConfirmPasswordField.Text) &&
+                            PasswordField.Text.Equals(string.Empty))
+                        {
+                            accountSystem.UpdateUser(originalUserID,
+                                                     NameField.Text,
+                                                     CompanyField.Text,
+                                                     AddressField.Text,
+                                                     CityField.Text,
+                                                     ZipField.Text,
+                                                     countryID,
+                                                     stateID,
+                                                     PhoneField.Text,
+                                                     FaxField.Text,
+                                                     EmailField.Text,
+                                                     SendNewsletter.Checked);
                         }
-                        else {
-                            accountSystem.UpdateUser( originalUserID, NameField.Text, CompanyField.Text, AddressField.Text,
-                                CityField.Text, ZipField.Text, CountryID, StateID, PhoneField.Text, FaxField.Text,
-                                PasswordField.Text, EmailField.Text, SendNewsletter.Checked );
+                        else
+                        {
+                            accountSystem.UpdateUser(originalUserID,
+                                                     NameField.Text,
+                                                     CompanyField.Text,
+                                                     AddressField.Text,
+                                                     CityField.Text,
+                                                     ZipField.Text,
+                                                     countryID,
+                                                     stateID,
+                                                     PhoneField.Text,
+                                                     FaxField.Text,
+                                                     PasswordField.Text,
+                                                     EmailField.Text,
+                                                     SendNewsletter.Checked);
                         }
                         //If we are here no error occurred
                     }
                 }
-                catch ( Exception ex ) {
-                    Message.Text = General.GetString( "REGISTRATION_FAILED", "Registration failed", Message ) + " - ";
+                catch (Exception ex)
+                {
+                    Message.Text =
+                        General.GetString("REGISTRATION_FAILED", "Registration failed", Message) +
+                        " - ";
 
-                    if ( ex is SqlException ) {
-                        if ( ( ( ( SqlException )ex ).Number == 2627 ) ) {
+                    if (ex is SqlException)
+                    {
+                        if ((((SqlException) ex).Number == 2627))
+                        {
                             Message.Text =
-                                General.GetString( "REGISTRATION_FAILED_EXISTING_EMAIL_ADDRESS",
+                                General.GetString("REGISTRATION_FAILED_EXISTING_EMAIL_ADDRESS",
                                                   "Registration has failed. This email address has already been registered. Please use a different email address or use the 'Send Password' button on the login page.",
-                                                  Message );
+                                                  Message);
                         }
                     }
 
-                    ErrorHandler.Publish( LogLevel.Error, "Error registering user", ex );
+                    ErrorHandler.Publish(LogLevel.Error, "Error registering user", ex);
                 }
             }
             return returnID;
         }
-
 
         /// <summary>
         /// Sends registration information to portal administrator.
@@ -486,7 +322,7 @@ namespace Rainbow.Content.Web.Modules {
 
             sb.Append( "New User Registration\n" );
             sb.Append( "---------------------\n" );
-            sb.Append( "PORTAL         : " + portalSettings.PortalTitle + "\n" );
+            sb.Append( "PORTAL         : " + PortalSettings.PortalTitle + "\n" );
             sb.Append( "Name           : " + NameField.Text + "\n" );
             sb.Append( "Company        : " + CompanyField.Text + "\n" );
             sb.Append( "Address        : " + AddressField.Text + "\n" );
@@ -498,85 +334,80 @@ namespace Rainbow.Content.Web.Modules {
             sb.Append( "                 " + PhoneField.Text + "\n" );
             sb.Append( "Fax            : " + FaxField.Text + "\n" );
             sb.Append( "Email          : " + EmailField.Text + "\n" );
-            sb.Append( "Send Newsletter: " + SendNewsletter.Checked.ToString() + "\n" );
+            sb.Append( "Send Newsletter: " + SendNewsletter.Checked + "\n" );
 
             MailHelper.SendMailNoAttachment(
-                portalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
-                portalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
-                "New User Registration for " + portalSettings.PortalAlias,
+                PortalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
+                PortalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
+                "New User Registration for " + PortalSettings.PortalAlias,
                 sb.ToString(),
                 string.Empty,
                 string.Empty,
                 Config.SmtpServer );
         }
 
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void RegisterBtn_Click( object sender, EventArgs e ) {
+        protected void RegisterBtn_Click(object sender, EventArgs e)
+        {
             Guid returnID = SaveUserData();
-
-            if ( returnID != Guid.Empty ) {
-                if ( portalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString().Length > 0 )
+            if (returnID != Guid.Empty)
+            {
+                if (PortalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"]
+                    .ToString().Length > 0)
+                {
                     SendRegistrationNoticeToAdmin();
+                }
                 //Full signon
-                PortalSecurity.SignOn( EmailField.Text, PasswordField.Text, false, RedirectPage );
+                PortalSecurity.SignOn(EmailField.Text, PasswordField.Text, false, RedirectPage);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void SaveChangesBtn_Click( object sender, EventArgs e ) {
+        protected void SaveChangesBtn_Click(object sender, EventArgs e)
+        {
             Page.Validate();
-            if ( Page.IsValid ) {
+            if (Page.IsValid)
+            {
                 Guid returnID = SaveUserData();
-
-                if ( returnID == Guid.Empty ) {
-                    if ( selfEdit ) {
+                if (returnID == Guid.Empty)
+                {
+                    if (selfEdit)
+                    {
                         //All should be ok now
                         //Try logoff user
-                        PortalSecurity.SignOut( string.Empty, true );
+                        PortalSecurity.SignOut(string.Empty, true);
 
                         //Logon user again with new settings
                         string actualPassword;
-                        if ( PasswordField.Text.Length != 0 )
+                        if (PasswordField.Text.Length != 0)
+                        {
                             actualPassword = PasswordField.Text;
+                        }
                         else
+                        {
                             actualPassword = originalPassword;
-
+                        }
                         //Full signon
-                        PortalSecurity.SignOn( EmailField.Text, actualPassword, false, RedirectPage );
+                        PortalSecurity.SignOn(EmailField.Text, actualPassword, false, RedirectPage);
                     }
-                    else if ( RedirectPage == string.Empty ) {
+                    else if (RedirectPage == string.Empty)
+                    {
                         // Redirect browser back to home page
                         PortalSecurity.PortalHome();
                     }
-                    else {
-                        Response.Redirect( RedirectPage );
+                    else
+                    {
+                        Response.Redirect(RedirectPage);
                     }
                 }
             }
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void Page_Load( object sender, EventArgs e ) {
-            if ( Page.IsPostBack == false ) {
+        protected void Page_Load(object sender, EventArgs e) 
+        {
+            if (Page.IsPostBack == false) 
+            {
                 //Remove validation for Windows users
-                if ( HttpContext.Current != null && Context.User is WindowsPrincipal ) {
+                if (RainbowContext.Current.HttpContext != null && Context.User is WindowsPrincipal)
+                {
                     ValidEmail.Visible = false;
                     EmailLabel.TextKey = "WINDOWS_USER_NAME";
                     EmailLabel.Text = "Windows User Name";
@@ -592,18 +423,17 @@ namespace Rainbow.Content.Web.Modules {
                 //	CountryField.Items.FindByValue(country.Name).Selected = true;
                 BindState();
 
-
                 // Edit check
-                if ( EditMode ) // Someone requested edit this record
+                if (EditMode) // Someone requested edit this record
                 {
                     //True is use is editing himself, false if is edited by an admin
-                    selfEdit = ( userName == PortalSettings.CurrentUser.Identity.UserName );
+                    selfEdit = (UserName == RainbowPrincipal.CurrentUser.Identity.UserName);
 
                     // Removed by Mario Endara <mario@softworks.com.uy> (2004/11/04)
                     //					if (PortalSecurity.IsInRoles("Admins") || selfEdit)
-                    if ( PortalSecurity.HasEditPermissions( ModuleID ) || PortalSecurity.HasAddPermissions( ModuleID ) || selfEdit ) {
-                        //We can edit
-
+                    if (PortalSecurity.HasEditPermissions(ModuleID) ||
+                        PortalSecurity.HasAddPermissions(ModuleID) || selfEdit)
+                    {   //We can edit
                         // Hide
                         RequiredPassword.Visible = false;
                         RequiredConfirm.Visible = false;
@@ -611,48 +441,58 @@ namespace Rainbow.Content.Web.Modules {
                         SaveChangesBtn.Visible = true;
                         RegisterBtn.Visible = false;
 
-                        // Obtain a single row of event information
-                        UsersDB accountSystem = new UsersDB();
+                        RainbowUser memberUser = RainbowMembershipProvider.Instance.GetSingleUser(
+                            PortalProvider.Instance.CurrentPortal.PortalAlias, UserName);
+                        if (memberUser != null)
+                        {
+                            try
+                            {
+                                NameField.Text = memberUser.Name;
+                                EmailField.Text = memberUser.Email;
+                                CompanyField.Text = memberUser.Company;
+                                AddressField.Text = memberUser.Address;
+                                ZipField.Text = memberUser.Zip;
+                                CityField.Text = memberUser.City;
 
-                        RainbowUser memberUser = accountSystem.GetSingleUser( userName );
+                                CountryField.ClearSelection();
+                                if (CountryField.Items.FindByValue(memberUser.CountryID) != null)
+                                    CountryField.Items.FindByValue(memberUser.CountryID).Selected =
+                                        true;
+                                BindState();
+                                StateField.ClearSelection();
+                                if (StateField.Items.Count > 0 &&
+                                    StateField.Items.FindByValue(memberUser.StateID.ToString()) !=
+                                    null)
+                                    StateField.Items.FindByValue(memberUser.StateID.ToString()).
+                                        Selected = true;
 
-                        try {
-                            NameField.Text = memberUser.Name;
-                            EmailField.Text = memberUser.Email;
-                            CompanyField.Text = memberUser.Company;
-                            AddressField.Text = memberUser.Address;
-                            ZipField.Text = memberUser.Zip;
-                            CityField.Text = memberUser.City;
+                                FaxField.Text = memberUser.Fax;
+                                PhoneField.Text = memberUser.Phone;
+                                SendNewsletter.Checked = memberUser.SendNewsletter;
 
-                            CountryField.ClearSelection();
-                            if ( CountryField.Items.FindByValue( memberUser.CountryID ) != null )
-                                CountryField.Items.FindByValue( memberUser.CountryID ).Selected = true;
-                            BindState();
-                            StateField.ClearSelection();
-                            if ( StateField.Items.Count > 0 &&
-                                StateField.Items.FindByValue( memberUser.StateID.ToString() ) != null )
-                                StateField.Items.FindByValue( memberUser.StateID.ToString() ).Selected = true;
-
-                            FaxField.Text = memberUser.Fax;
-                            PhoneField.Text = memberUser.Phone;
-                            SendNewsletter.Checked = memberUser.SendNewsletter;
-
-                            //stores original password for later check
-                            originalPassword = memberUser.GetPassword();
-                            originalUserID = memberUser.ProviderUserKey;
+                                //stores original password for later check
+                                originalPassword = memberUser.GetPassword();
+                                originalUserID = memberUser.ProviderUserKey;
+                            }
+                            catch (ArgumentNullException)
+                            {
+                                // user doesn't exist
+                            }
                         }
-                        catch ( System.ArgumentNullException error ) {
-                            // user doesn't exist
+                        else
+                        {
+                            // user not loaded
                         }
                     }
-                    else {
+                    else 
+                    {
                         //We do not have rights to do it!
                         PortalSecurity.AccessDeniedEdit();
                     }
                 }
-                else {
+                else 
+                {
                     BindState();
-
                     //No edit
                     RequiredPassword.Visible = true;
                     RequiredConfirm.Visible = true;
@@ -661,15 +501,17 @@ namespace Rainbow.Content.Web.Modules {
                     RegisterBtn.Visible = true;
                 }
 
-                string termsOfService = portalSettings.GetTermsOfService;
+                string termsOfService = PortalSettings.GetTermsOfService;
 
                 //Verify if we have to show conditions
-                if ( termsOfService.Length != 0 ) {
+                if (termsOfService.Length != 0)
+                {
                     //Shows conditions
                     FieldConditions.Text = termsOfService;
                     ConditionsRow.Visible = true;
                 }
-                else {
+                else
+                {
                     //Hides conditions
                     ConditionsRow.Visible = false;
                 }
@@ -691,7 +533,7 @@ namespace Rainbow.Content.Web.Modules {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void cancelButton_Click( object sender, EventArgs e ) {
-            ( ( Page )Page ).RedirectBackToReferringPage();
+            Page.RedirectBackToReferringPage();
         }
 
         /// <summary>
@@ -702,8 +544,6 @@ namespace Rainbow.Content.Web.Modules {
         protected void CheckTermsValidator_ServerValidate( object source, ServerValidateEventArgs args ) {
             args.IsValid = Accept.Checked;
         }
-
-        #endregion
 
         #region Web Form Designer generated code
 
@@ -731,9 +571,5 @@ namespace Rainbow.Content.Web.Modules {
         }
 
         #endregion
-
-        public override Guid GuidID {
-            get { return new Guid( "{AE419DCC-B890-43ba-B77C-54955F182041}" ); }
-        }
     }
 }

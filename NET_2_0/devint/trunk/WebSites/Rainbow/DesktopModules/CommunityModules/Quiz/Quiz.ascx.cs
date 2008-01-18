@@ -1,6 +1,9 @@
 using System;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -26,19 +29,20 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         public Quiz()
         {
-            SettingItem QuizName = new SettingItem(new StringDataType());
-            QuizName.Required = true;
-            QuizName.Order = 1;
-            QuizName.Value = "About Australia (Demo1)";
-            _baseSettings.Add("QuizName", QuizName);
+            SettingItem quizName = new SettingItem(new StringDataType());
+            quizName.Required = true;
+            quizName.Order = 1;
+            quizName.Value = "About Australia (Demo1)";
+            baseSettings.Add("QuizName", quizName);
 
-            SettingItem XMLsrc = new SettingItem(new PortalUrlDataType());
-            XMLsrc.Required = true;
-            XMLsrc.Order = 2;
-            XMLsrc.Value = "/Quiz/Demo1.xml";
-            _baseSettings.Add("XMLsrc", XMLsrc);
+            Portal portal = PortalProvider.Instance.CurrentPortal;
+            PortalUrl portalUrl = portal != null ? portal.PortalUrl : new PortalUrl(string.Empty);
+            SettingItem xmLsrc = new SettingItem(portalUrl);
+            xmLsrc.Required = true;
+            xmLsrc.Order = 2;
+            xmLsrc.Value = "/Quiz/Demo1.xml";
+            baseSettings.Add("XMLsrc", xmLsrc);
         }
-
 
         /// <summary>
         /// GUID of module (mandatory)

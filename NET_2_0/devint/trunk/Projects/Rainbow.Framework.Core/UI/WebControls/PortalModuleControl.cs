@@ -13,16 +13,19 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
-using Rainbow.Framework.BLL.Utils;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Setup;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -71,9 +74,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
         //private bool			_supportsHelp = false;
         private bool _supportsArrows = true;
         private ViewControlManager _vcm = null;
-        private PlaceHolder _header = new PlaceHolder();
-        private PlaceHolder _footer = new PlaceHolder();
-        private PlaceHolder _headerPlaceHolder = new PlaceHolder();
+        readonly PlaceHolder header = new PlaceHolder();
+        readonly PlaceHolder footer = new PlaceHolder();
+        readonly PlaceHolder _headerPlaceHolder = new PlaceHolder();
 
         //private PlaceHolder		_output = new PlaceHolder();
 
@@ -128,13 +131,13 @@ namespace Rainbow.Framework.Web.UI.WebControls
             _Group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
             _groupOrderBase = (int) SettingItemGroup.THEME_LAYOUT_SETTINGS;
 
-            SettingItem ApplyTheme = new SettingItem(new BooleanDataType());
-            ApplyTheme.Order = _groupOrderBase + 10;
-            ApplyTheme.Group = _Group;
-            ApplyTheme.Value = "True";
-            ApplyTheme.EnglishName = "Apply Theme";
-            ApplyTheme.Description = "Check this box to apply theme to this module";
-            _baseSettings.Add("MODULESETTINGS_APPLY_THEME", ApplyTheme);
+            SettingItem applyTheme = new SettingItem(new BooleanDataType());
+            applyTheme.Order = _groupOrderBase + 10;
+            applyTheme.Group = _Group;
+            applyTheme.Value = "True";
+            applyTheme.EnglishName = "Apply Theme";
+            applyTheme.Description = "Check this box to apply theme to this module";
+            baseSettings.Add("MODULESETTINGS_APPLY_THEME", applyTheme);
 
             ArrayList themeOptions = new ArrayList();
             themeOptions.Add(
@@ -146,13 +149,13 @@ namespace Rainbow.Framework.Web.UI.WebControls
             Theme.Value = ((int) ThemeList.Default).ToString();
             Theme.EnglishName = "Theme";
             Theme.Description = "Choose theme for this module";
-            _baseSettings.Add("MODULESETTINGS_THEME", Theme);
+            baseSettings.Add("MODULESETTINGS_THEME", Theme);
 
             if (HttpContext.Current != null) // null in DesignMode
             {
                 // Added: Jes1111 - 2004-08-03
-                PortalSettings _portalSettings;
-                _portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal _portalSettings;
+                _portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 // end addition: Jes1111
 
                 if (_portalSettings != null)
@@ -181,19 +184,19 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         ModuleTheme.Group = _Group;
                         ModuleTheme.EnglishName = "Custom Theme";
                         ModuleTheme.Description = "Set a custom theme for this module only";
-                        _baseSettings.Add("MODULESETTINGS_MODULE_THEME", ModuleTheme);
+                        baseSettings.Add("MODULESETTINGS_MODULE_THEME", ModuleTheme);
                     }
                 }
             }
 
             // switches title display on/off
-            SettingItem ShowTitle = new SettingItem(new BooleanDataType());
-            ShowTitle.Order = _groupOrderBase + 30;
-            ShowTitle.Group = _Group;
-            ShowTitle.Value = "True";
-            ShowTitle.EnglishName = "Show Title";
-            ShowTitle.Description = "Switches title display on/off";
-            _baseSettings.Add("MODULESETTINGS_SHOW_TITLE", ShowTitle);
+            SettingItem showTitle = new SettingItem(new BooleanDataType());
+            showTitle.Order = _groupOrderBase + 30;
+            showTitle.Group = _Group;
+            showTitle.Value = "True";
+            showTitle.EnglishName = "Show Title";
+            showTitle.Description = "Switches title display on/off";
+            baseSettings.Add("MODULESETTINGS_SHOW_TITLE", showTitle);
 
             // switches last modified summary on/off
             SettingItem ShowModifiedBy = new SettingItem(new BooleanDataType());
@@ -202,7 +205,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ShowModifiedBy.Value = "False";
             ShowModifiedBy.EnglishName = "Show Modified by";
             ShowModifiedBy.Description = "Switches 'Show Modified by' display on/off";
-            _baseSettings.Add("MODULESETTINGS_SHOW_MODIFIED_BY", ShowModifiedBy);
+            baseSettings.Add("MODULESETTINGS_SHOW_MODIFIED_BY", ShowModifiedBy);
 
             // gman3001: added 10/26/2004
             //  - implement width, height, and content scrolling options for all modules 
@@ -217,7 +220,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ControlHeight.Group = _Group;
             ControlHeight.EnglishName = "Content Height";
             ControlHeight.Description = "Minimum height(in pixels) of the content area of this module. (0 for none)";
-            _baseSettings.Add("MODULESETTINGS_CONTENT_HEIGHT", ControlHeight);
+            baseSettings.Add("MODULESETTINGS_CONTENT_HEIGHT", ControlHeight);
 
             //Windows width
             SettingItem ControlWidth = new SettingItem(new IntegerDataType());
@@ -229,7 +232,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ControlWidth.Group = _Group;
             ControlWidth.EnglishName = "Content Width";
             ControlWidth.Description = "Minimum width(in pixels) of the content area of this module. (0 for none)";
-            _baseSettings.Add("MODULESETTINGS_CONTENT_WIDTH", ControlWidth);
+            baseSettings.Add("MODULESETTINGS_CONTENT_WIDTH", ControlWidth);
 
             //Content scrolling option
             SettingItem ScrollingSetting = new SettingItem(new BooleanDataType());
@@ -239,7 +242,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ScrollingSetting.EnglishName = "Content Scrolling";
             ScrollingSetting.Description =
                 "Set to enable/disable scrolling of Content based on height and width settings.";
-            _baseSettings.Add("MODULESETTINGS_CONTENT_SCROLLING", ScrollingSetting);
+            baseSettings.Add("MODULESETTINGS_CONTENT_SCROLLING", ScrollingSetting);
 
             //Module Stretching option
             SettingItem StretchSetting = new SettingItem(new BooleanDataType());
@@ -249,7 +252,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             StretchSetting.EnglishName = "Module Auto Stretch";
             StretchSetting.Description =
                 "Set to enable/disable automatic stretching of the module's width to fill the empty area to the right of the module.";
-            _baseSettings.Add("MODULESETTINGS_WIDTH_STRETCHING", StretchSetting);
+            baseSettings.Add("MODULESETTINGS_WIDTH_STRETCHING", StretchSetting);
             // gman3001: END
 
             // BUTTONS
@@ -257,23 +260,23 @@ namespace Rainbow.Framework.Web.UI.WebControls
             _groupOrderBase = (int) SettingItemGroup.BUTTON_DISPLAY_SETTINGS;
 
             // Show print button in view mode?
-            SettingItem PrintButton = new SettingItem(new BooleanDataType());
-            PrintButton.Value = "False";
-            PrintButton.Order = _groupOrderBase + 20;
-            PrintButton.Group = _Group;
-            PrintButton.EnglishName = "Show Print Button";
-            PrintButton.Description = "Show print button in view mode?";
-            _baseSettings.Add("MODULESETTINGS_SHOW_PRINT_BUTTION", PrintButton);
+            SettingItem printButtonLocal = new SettingItem(new BooleanDataType());
+            printButtonLocal.Value = "False";
+            printButtonLocal.Order = _groupOrderBase + 20;
+            printButtonLocal.Group = _Group;
+            printButtonLocal.EnglishName = "Show Print Button";
+            printButtonLocal.Description = "Show print button in view mode?";
+            baseSettings.Add("MODULESETTINGS_SHOW_PRINT_BUTTION", printButtonLocal);
 
             // added: Jes1111 2004-08-29 - choice! Default is 'true' for backward compatibility
             // Show Title for print?
-            SettingItem ShowTitlePrint = new SettingItem(new BooleanDataType());
-            ShowTitlePrint.Value = "True";
-            ShowTitlePrint.Order = _groupOrderBase + 25;
-            ShowTitlePrint.Group = _Group;
-            ShowTitlePrint.EnglishName = "Show Title for Print";
-            ShowTitlePrint.Description = "Show Title for this module in print popup?";
-            _baseSettings.Add("MODULESETTINGS_SHOW_TITLE_PRINT", ShowTitlePrint);
+            SettingItem showTitlePrint = new SettingItem(new BooleanDataType());
+            showTitlePrint.Value = "True";
+            showTitlePrint.Order = _groupOrderBase + 25;
+            showTitlePrint.Group = _Group;
+            showTitlePrint.EnglishName = "Show Title for Print";
+            showTitlePrint.Description = "Show Title for this module in print popup?";
+            baseSettings.Add("MODULESETTINGS_SHOW_TITLE_PRINT", showTitlePrint);
 
             // added: Jes1111 2004-08-02 - choices for Button display on module
             ArrayList buttonDisplayOptions = new ArrayList();
@@ -296,7 +299,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ButtonDisplay.EnglishName = "Display Buttons as:";
             ButtonDisplay.Description =
                 "Choose how you want module buttons to be displayed. Note that settings other than 'Image only' may require Zen or special treatment in the Theme.";
-            _baseSettings.Add("MODULESETTINGS_BUTTON_DISPLAY", ButtonDisplay);
+            baseSettings.Add("MODULESETTINGS_BUTTON_DISPLAY", ButtonDisplay);
 
             // Jes1111 - not implemented yet			
             //			// Show email button in view mode?
@@ -304,7 +307,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             //			EmailButton.Value = "False";
             //			EmailButton.Order = _groupOrderBase + 30;
             //			EmailButton.Group = _Group;
-            //			this._baseSettings.Add("ShowEmailButton",EmailButton);
+            //			this.baseSettings.Add("ShowEmailButton",EmailButton);
 
             // Show arrows buttons to move modules (admin only, property authorise)
             SettingItem ArrowButtons = new SettingItem(new BooleanDataType());
@@ -313,16 +316,16 @@ namespace Rainbow.Framework.Web.UI.WebControls
             ArrowButtons.Group = _Group;
             ArrowButtons.EnglishName = "Show Arrow Admin Buttons";
             ArrowButtons.Description = "Show Arrow Admin buttons?";
-            _baseSettings.Add("MODULESETTINGS_SHOW_ARROW_BUTTONS", ArrowButtons);
+            baseSettings.Add("MODULESETTINGS_SHOW_ARROW_BUTTONS", ArrowButtons);
 
             // Show help button if exists
-            SettingItem HelpButton = new SettingItem(new BooleanDataType());
-            HelpButton.Value = "True";
-            HelpButton.Order = _groupOrderBase + 50;
-            HelpButton.Group = _Group;
-            HelpButton.EnglishName = "Show Help Button";
-            HelpButton.Description = "Show help button in title if exists documentation for this module";
-            _baseSettings.Add("MODULESETTINGS_SHOW_HELP_BUTTON", HelpButton);
+            SettingItem helpButtonLocal = new SettingItem(new BooleanDataType());
+            helpButtonLocal.Value = "True";
+            helpButtonLocal.Order = _groupOrderBase + 50;
+            helpButtonLocal.Group = _Group;
+            helpButtonLocal.EnglishName = "Show Help Button";
+            helpButtonLocal.Description = "Show help button in title if exists documentation for this module";
+            baseSettings.Add("MODULESETTINGS_SHOW_HELP_BUTTON", helpButtonLocal);
 
             // LANGUAGE/CULTURE MANAGEMENT
             _groupOrderBase = (int) SettingItemGroup.CULTURE_SETTINGS;
@@ -337,21 +340,21 @@ namespace Rainbow.Framework.Web.UI.WebControls
             Culture.EnglishName = "Culture";
             Culture.Description =
                 "Please choose the culture. Invariant cultures shows always the module, if you choose one or more cultures only when culture is selected this module will shown.";
-            _baseSettings.Add("MODULESETTINGS_CULTURE", Culture);
+            baseSettings.Add("MODULESETTINGS_CULTURE", Culture);
 
             //Localized module title
             int counter = _groupOrderBase + 11;
             foreach (CultureInfo c in cultureList)
             {
                 //Ignore invariant
-                if (c != CultureInfo.InvariantCulture && !_baseSettings.ContainsKey(c.Name))
+                if (c != CultureInfo.InvariantCulture && !baseSettings.ContainsKey(c.Name))
                 {
                     SettingItem LocalizedTitle = new SettingItem(new StringDataType());
                     LocalizedTitle.Order = counter;
                     LocalizedTitle.Group = _Group;
                     LocalizedTitle.EnglishName = "Title (" + c.Name + ")";
                     LocalizedTitle.Description = "Set title for " + c.EnglishName + " culture.";
-                    _baseSettings.Add("MODULESETTINGS_TITLE_" + c.Name, LocalizedTitle);
+                    baseSettings.Add("MODULESETTINGS_TITLE_" + c.Name, LocalizedTitle);
                     counter++;
                 }
             }
@@ -373,7 +376,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 topicName.EnglishName = "Topic";
                 topicName.Description =
                     "Select a topic for this module. You may filter itmes by topic in Portal Search.";
-                _baseSettings.Add("TopicName", topicName);
+                baseSettings.Add("TopicName", topicName);
             }
 
             //Default configuration
@@ -389,7 +392,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <summary>
         /// _baseSettings holds datatype information
         /// </summary>
-        protected Hashtable _baseSettings = new Hashtable();
+        protected Hashtable baseSettings = new Hashtable();
 
         /// <summary>
         /// Module custom settings
@@ -401,7 +404,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 if (_settings == null)
                 {
-                    _settings = ModuleSettings.GetModuleSettings(ModuleID, _baseSettings);
+                    _settings = ModuleSettingsProvider.GetModuleSettings(ModuleID, baseSettings);
                 }
                 return _settings;
             }
@@ -413,7 +416,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Hashtable BaseSettings
         {
-            get { return _baseSettings; }
+            get { return baseSettings; }
         }
 
         /// <summary>
@@ -446,7 +449,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     // Change 8/April/2003 Jes1111
                     // changes to Language behaviour require addition of culture names to cache key
                     // Jes1111 2003/04/24 - Added PortalAlias to cachekey
-                    PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                    Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                     StringBuilder sb = new StringBuilder();
                     sb.Append("rb_");
                     sb.Append(portalSettings.PortalAlias);
@@ -636,7 +639,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             string version = null;
             try
             {
-                version = Page.Request.QueryString["wversion" + ModuleConfiguration.ModuleID.ToString()];
+                version = Page.Request.QueryString["wversion" + ModuleConfiguration.ModuleID];
             }
             catch (NullReferenceException)
             {
@@ -706,7 +709,9 @@ end of modification
             // bja@reedtek.com - does this configuration support window mgmt controls?
             // jes1111 - if (GlobalResources.SupportWindowMgmt && SupportCollapsable)
             if (Config.WindowMgmtControls && SupportCollapsable)
+            {
                 _vcm = new ViewControlManager(PageID, ModuleID, HttpContext.Current.Request.RawUrl);
+            }
 
             #endregion
 
@@ -718,8 +723,8 @@ end of modification
             base.OnLoad(e);
 
             BuildControlHierarchy();
-            _headerPlaceHolder.Controls.Add(_header);
-            Controls.Add(_footer);
+            _headerPlaceHolder.Controls.Add(header);
+            Controls.Add(footer);
         }
 
         /// <summary>
@@ -745,7 +750,7 @@ end of modification
                     {
                         string[] s = {"CONFIRM_DELETE"};
                         Page.ClientScript.RegisterClientScriptBlock(GetType(), "confirmDelete",
-                                                                    PortalSettings.GetStringResource(
+                                                                    General.GetStringResource(
                                                                         "CONFIRM_DELETE_SCRIPT",
                                                                         s));
                     }
@@ -755,7 +760,7 @@ end of modification
                     else
                         DeleteBtn.Attributes.Add("onclick", "return confirmDelete();");
 
-                    DeleteBtn.Click += new ImageClickEventHandler(DeleteBtn_Click);
+                    DeleteBtn.Click += DeleteBtn_Click;
                     DeleteBtn.AlternateText = General.GetString("DELETE");
                     DeleteBtn.EnableViewState = false;
                 }
@@ -771,7 +776,7 @@ end of modification
                 else
                 {
                     EditBtn.Visible = true;
-                    EditBtn.Click += new ImageClickEventHandler(EditBtn_Click);
+                    EditBtn.Click += EditBtn_Click;
                     EditBtn.AlternateText = General.GetString("Edit");
                     EditBtn.EnableViewState = false;
                 }
@@ -779,7 +784,7 @@ end of modification
 
             if (updateButton != null)
             {
-                updateButton.Click += new EventHandler(UpdateBtn_Click);
+                updateButton.Click += UpdateBtn_Click;
                 updateButton.Text = General.GetString("UPDATE");
                 //updateButton.CssClass = "CommandButton"; // Jes1111 - set in .ascx
                 updateButton.EnableViewState = false;
@@ -914,9 +919,9 @@ end of modification
             {
                 bool returnValue = _supportsArrows;
 
-                if (portalSettings.CustomSettings["SITESETTINGS_SHOW_MODULE_ARROWS"] != null)
+                if (PortalSettings.CustomSettings["SITESETTINGS_SHOW_MODULE_ARROWS"] != null)
                     returnValue = returnValue &&
-                                  bool.Parse(portalSettings.CustomSettings["SITESETTINGS_SHOW_MODULE_ARROWS"].ToString());
+                                  bool.Parse(PortalSettings.CustomSettings["SITESETTINGS_SHOW_MODULE_ARROWS"].ToString());
 
                 if (Settings["MODULESETTINGS_SHOW_ARROW_BUTTONS"] != null)
                     returnValue = returnValue && bool.Parse(Settings["MODULESETTINGS_SHOW_ARROW_BUTTONS"].ToString());
@@ -966,7 +971,7 @@ end of modification
                     (ModuleConfiguration.DesktopSrc.Length != 0))
                 {
                     string aux = Path.ApplicationRoot + "/rb_documentation/Rainbow/" +
-                                 ModuleConfiguration.DesktopSrc.Replace(".", "_").ToString();
+                                 ModuleConfiguration.DesktopSrc.Replace(".", "_");
                     return Directory.Exists(HttpContext.Current.Server.MapPath(aux));
                 }
                 else
@@ -981,20 +986,17 @@ end of modification
         /// <summary>
         /// Stores current portal settings 
         /// </summary>
-        public PortalSettings portalSettings
+        public Portal PortalSettings
         {
             get
             {
                 if (Page != null)
-                    return ((Page) Page).portalSettings;
+                {
+                    return Page.portalSettings;
+                }
                 else
                 {
-                    // Obtain PortalSettings from Current Context
-                    if (HttpContext.Current != null)
-                    {
-                        return (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-                    }
-                    return null;
+                    return PortalProvider.Instance.CurrentPortal;
                 }
             }
         }
@@ -1061,7 +1063,7 @@ end of modification
             get
             {
                 if (Page != null)
-                    return ((Page) Page).pageSettings;
+                    return (Page).pageSettings;
                 else
                     return null;
             }
@@ -1080,15 +1082,15 @@ end of modification
             get { return true; }
         }
 
-        private DesktopModuleTitle _ModuleTitle;
+        DesktopModuleTitle moduleTitle;
 
         /// <summary>
         /// Inner Title control. Now only used for backward compatibility 
         /// </summary>
         public virtual DesktopModuleTitle ModuleTitle
         {
-            get { return _ModuleTitle; }
-            set { _ModuleTitle = value; }
+            get { return moduleTitle; }
+            set { moduleTitle = value; }
         }
 
         /// <summary>
@@ -1148,13 +1150,13 @@ end of modification
                 if (HttpContext.Current != null && titleText == string.Empty)
                     // if it is not design time (and not overriden - Jes1111)
                 {
-                    if (portalSettings.PortalContentLanguage != CultureInfo.InvariantCulture &&
-                        Settings["MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name] != null &&
-                        Settings["MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name].ToString().Length >
+                    if (PortalSettings.PortalContentLanguage != CultureInfo.InvariantCulture &&
+                        Settings["MODULESETTINGS_TITLE_" + PortalSettings.PortalContentLanguage.Name] != null &&
+                        Settings["MODULESETTINGS_TITLE_" + PortalSettings.PortalContentLanguage.Name].ToString().Length >
                         0)
                     {
                         titleText =
-                            Settings["MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name].ToString();
+                            Settings["MODULESETTINGS_TITLE_" + PortalSettings.PortalContentLanguage.Name].ToString();
                     }
                     else
                     {
@@ -1405,7 +1407,7 @@ end of modification
                             propertiesButton.HRef = PropertiesUrl;
                         else
                             propertiesButton.HRef =
-                                HttpUrlBuilder.BuildUrl(PropertiesUrl, PageID, "mID=" + ModuleID.ToString());
+                                HttpUrlBuilder.BuildUrl(PropertiesUrl, PageID, "mID=" + ModuleID);
                         propertiesButton.Target = PropertiesTarget;
                         propertiesButton.RenderAs = ButtonsRenderAs;
                     }
@@ -1440,7 +1442,7 @@ end of modification
                             securityButton.HRef = SecurityUrl;
                         else
                             securityButton.HRef =
-                                HttpUrlBuilder.BuildUrl(SecurityUrl, PageID, "mID=" + ModuleID.ToString());
+                                HttpUrlBuilder.BuildUrl(SecurityUrl, PageID, "mID=" + ModuleID);
                         securityButton.Target = SecurityTarget;
                         securityButton.RenderAs = ButtonsRenderAs;
                     }
@@ -1474,11 +1476,11 @@ end of modification
                         // TODO: This JavaScript Function Is used for different controls and should be in one place
                         // (it's also overweight considering that Javascript has a standard confirm() function - Jes1111)
                         if ( Page.Request.Browser.EcmaScriptVersion.Major >= 1 &&
-                            !( Page.ClientScript.IsClientScriptBlockRegistered( this.Page.GetType(), "confirmDelete" ) ) )
+                            !( Page.ClientScript.IsClientScriptBlockRegistered( Page.GetType(), "confirmDelete" ) ) )
                             {
                             string[] s = { "CONFIRM_DELETE" };
-                            Page.ClientScript.RegisterClientScriptBlock( this.Page.GetType(), "confirmDelete",
-                                                                        PortalSettings.GetStringResource(
+                            Page.ClientScript.RegisterClientScriptBlock( Page.GetType(), "confirmDelete",
+                                                                        General.GetStringResource(
                                                                             "CONFIRM_DELETE_SCRIPT",
                                                                             s ) );
                         }
@@ -1488,7 +1490,7 @@ end of modification
                         else
                             deleteModuleButton.Attributes.Add("onclick", "return confirmDelete();");
 
-                        deleteModuleButton.ServerClick += new EventHandler(DeleteModuleButton_Click);
+                        deleteModuleButton.ServerClick += DeleteModuleButton_Click;
                     }
                 }
                 return deleteModuleButton;
@@ -1510,7 +1512,7 @@ end of modification
                     if (CanHelp)
                     {
                         // build the HRef
-                        string aux = ModuleConfiguration.DesktopSrc.Replace(".", "_").ToString();
+                        string aux = ModuleConfiguration.DesktopSrc.Replace(".", "_");
                         int fileNameStart = aux.LastIndexOf("/");
                         string fileName = aux.Substring(fileNameStart + 1);
                         StringBuilder sb = new StringBuilder();
@@ -1563,7 +1565,7 @@ end of modification
                         upButton.Attributes.Add("direction", "up");
                         upButton.Attributes.Add("pane", ModuleConfiguration.PaneName.ToLower());
                         upButton.RenderAs = ButtonsRenderAs;
-                        upButton.ServerClick += new EventHandler(UpDown_Click);
+                        upButton.ServerClick += UpDown_Click;
                     }
                 }
                 return upButton;
@@ -1597,7 +1599,7 @@ end of modification
                             downButton.Attributes.Add("direction", "down");
                             downButton.Attributes.Add("pane", ModuleConfiguration.PaneName.ToLower());
                             downButton.RenderAs = ButtonsRenderAs;
-                            downButton.ServerClick += new EventHandler(UpDown_Click);
+                            downButton.ServerClick += UpDown_Click;
                         }
                     }
                 }
@@ -1634,7 +1636,7 @@ end of modification
                         leftButton.Attributes.Add("sourcepane", ModuleConfiguration.PaneName.ToLower());
                         leftButton.Attributes.Add("targetpane", leftButtonTargetPane);
                         leftButton.RenderAs = ButtonsRenderAs;
-                        leftButton.ServerClick += new EventHandler(RightLeft_Click);
+                        leftButton.ServerClick += RightLeft_Click;
                     }
                 }
                 return leftButton;
@@ -1670,7 +1672,7 @@ end of modification
                         rightButton.Attributes.Add("sourcepane", ModuleConfiguration.PaneName.ToLower());
                         rightButton.Attributes.Add("targetpane", rightButtonTargetPane);
                         rightButton.RenderAs = ButtonsRenderAs;
-                        rightButton.ServerClick += new EventHandler(RightLeft_Click);
+                        rightButton.ServerClick += RightLeft_Click;
                     }
                 }
                 return rightButton;
@@ -1698,7 +1700,7 @@ end of modification
                         readyToApproveButton.EnglishName = "Request approval";
                         readyToApproveButton.HRef =
                             HttpUrlBuilder.BuildUrl("~/DesktopModules/Workflow/RequestModuleContentApproval.aspx",
-                                                    PageID, "mID=" + ModuleID.ToString());
+                                                    PageID, "mID=" + ModuleID);
                         readyToApproveButton.Image =
                             CurrentTheme.GetImage("Buttons_ReadyToApprove", "ReadyToApprove.gif");
                         readyToApproveButton.RenderAs = ButtonsRenderAs;
@@ -1728,7 +1730,7 @@ end of modification
                         revertButton.TranslationKey = RevertText;
                         revertButton.EnglishName = "Revert";
                         revertButton.Image = CurrentTheme.GetImage("Buttons_Revert", "Revert.gif");
-                        revertButton.ServerClick += new EventHandler(RevertToProductionContent);
+                        revertButton.ServerClick += RevertToProductionContent;
                         revertButton.RenderAs = ButtonsRenderAs;
                     }
                 }
@@ -1758,7 +1760,7 @@ end of modification
                         approveButton.EnglishName = "Approve";
                         approveButton.HRef =
                             HttpUrlBuilder.BuildUrl("~/DesktopModules/Workflow/ApproveModuleContent.aspx", PageID,
-                                                    "mID=" + ModuleID.ToString());
+                                                    "mID=" + ModuleID);
                         approveButton.Image = CurrentTheme.GetImage("Buttons_Approve", "Approve.gif");
                         approveButton.RenderAs = ButtonsRenderAs;
                     }
@@ -1788,7 +1790,7 @@ end of modification
                         rejectButton.EnglishName = "Reject";
                         rejectButton.HRef =
                             HttpUrlBuilder.BuildUrl("~/DesktopModules/Workflow/RejectModuleContent.aspx", PageID,
-                                                    "mID=" + ModuleID.ToString());
+                                                    "mID=" + ModuleID);
                         rejectButton.Image = CurrentTheme.GetImage("Buttons_Reject", "Reject.gif");
                         rejectButton.RenderAs = ButtonsRenderAs;
                     }
@@ -1818,7 +1820,7 @@ end of modification
                         publishButton.EnglishName = "Publish";
                         // modified by Hongwei Shen
                         // publishButton.HRef = GetPublishUrl();
-                        publishButton.ServerClick += new EventHandler(publishButton_ServerClick);
+                        publishButton.ServerClick += publishButton_ServerClick;
                         // end of modification
                         publishButton.Image = CurrentTheme.GetImage("Buttons_Publish", "Publish.gif");
                         publishButton.RenderAs = ButtonsRenderAs;
@@ -1891,7 +1893,7 @@ end of modification
                             //if ( this.ModuleID != OriginalModuleID )
                             editButton.HRef = EditUrl;
                         else
-                            editButton.HRef = HttpUrlBuilder.BuildUrl(EditUrl, PageID, "mID=" + ModuleID.ToString());
+                            editButton.HRef = HttpUrlBuilder.BuildUrl(EditUrl, PageID, "mID=" + ModuleID);
                         editButton.Target = EditTarget;
                         editButton.Image = CurrentTheme.GetImage("Buttons_Edit", "Edit.gif");
                         editButton.RenderAs = ButtonsRenderAs;
@@ -1924,7 +1926,7 @@ end of modification
                             //if ( this.ModuleID != OriginalModuleID )
                             AddButton.HRef = AddUrl;
                         else
-                            AddButton.HRef = HttpUrlBuilder.BuildUrl(AddUrl, PageID, "mID=" + ModuleID.ToString());
+                            AddButton.HRef = HttpUrlBuilder.BuildUrl(AddUrl, PageID, "mID=" + ModuleID);
                         addButton.Target = AddTarget;
                         addButton.Image = CurrentTheme.GetImage("Buttons_Add", "Add.gif");
                         addButton.RenderAs = ButtonsRenderAs;
@@ -2039,11 +2041,11 @@ end of modification
             }
         }
 
-        private LinkButton minMaxButton = null;
+        //private LinkButton minMaxButton = null;
 
-        /// <summary>
-        /// Module button to minimize/maximize module
-        /// </summary>
+//        /// <summary>
+//        /// Module button to minimize/maximize module
+//        /// </summary>
         //public LinkButton MinMaxButton {
         //    get {
         //        if ( minMaxButton == null && HttpContext.Current != null ) {
@@ -2068,11 +2070,11 @@ end of modification
         //    }
         //}
 
-        private LinkButton closeButton = null;
+        //private LinkButton closeButton = null;
 
-        /// <summary>
-        /// Module button to close module
-        /// </summary>
+//        /// <summary>
+//        /// Module button to close module
+//        /// </summary>
         //public LinkButton CloseButton {
         //    get {
         //        if ( closeButton == null && HttpContext.Current != null ) {
@@ -2353,7 +2355,7 @@ end of modification
             get
             {
                 if (PortalSecurity.IsInRoles(ModuleConfiguration.AuthorizedDeleteModuleRoles) &&
-                    portalSettings.ActivePage.PageID == ModuleConfiguration.PageID)
+                    PortalSettings.ActivePage.PageID == ModuleConfiguration.PageID)
                     return true;
                 else
                     return false;
@@ -2424,7 +2426,7 @@ end of modification
         {
             get
             {
-                if (ModuleConfiguration == null || portalSettings.ActivePage.PageID != ModuleConfiguration.PageID)
+                if (ModuleConfiguration == null || PortalSettings.ActivePage.PageID != ModuleConfiguration.PageID)
                     return false;
 
                 if ((SupportsWorkflow && Version == WorkFlowVersion.Staging) || !SupportsWorkflow)
@@ -2453,7 +2455,7 @@ end of modification
         {
             get
             {
-                if (ModuleConfiguration == null || portalSettings.ActivePage.PageID != ModuleConfiguration.PageID)
+                if (ModuleConfiguration == null || PortalSettings.ActivePage.PageID != ModuleConfiguration.PageID)
                     return false;
 
                 if ((SupportsWorkflow && Version == WorkFlowVersion.Staging) || !SupportsWorkflow)
@@ -2571,7 +2573,7 @@ end of modification
                 if (ModuleConfiguration == null || ModuleID == 0)
                     return false;
 
-                if (SupportsArrows && portalSettings.ActivePage.PageID == ModuleConfiguration.PageID &&
+                if (SupportsArrows && PortalSettings.ActivePage.PageID == ModuleConfiguration.PageID &&
                     PortalSecurity.IsInRoles(ModuleConfiguration.AuthorizedMoveModuleRoles))
                     return true;
                 else
@@ -2591,7 +2593,7 @@ end of modification
                     return false;
 
                 if (PortalSecurity.IsInRoles(ModuleConfiguration.AuthorizedPropertiesRoles) &&
-                    portalSettings.ActivePage.PageID == ModuleConfiguration.PageID && SecurityUrl != null &&
+                    PortalSettings.ActivePage.PageID == ModuleConfiguration.PageID && SecurityUrl != null &&
                     SecurityUrl.Length != 0)
                     return true;
                 else
@@ -2611,7 +2613,7 @@ end of modification
                     return false;
 
                 if (PortalSecurity.IsInRoles(ModuleConfiguration.AuthorizedPropertiesRoles) &&
-                    portalSettings.ActivePage.PageID == ModuleConfiguration.PageID && PropertiesUrl != null &&
+                    PortalSettings.ActivePage.PageID == ModuleConfiguration.PageID && PropertiesUrl != null &&
                     PropertiesUrl.Length != 0)
                     return true;
                 else
@@ -2834,7 +2836,7 @@ end of modification
                 }
             }
 
-            qs.Add("wversion" + ModuleConfiguration.ModuleID.ToString() + "=" +
+            qs.Add("wversion" + ModuleConfiguration.ModuleID + "=" +
                    (Version == WorkFlowVersion.Production
                         ? WorkFlowVersion.Staging.ToString()
                         : WorkFlowVersion.Production.ToString()));
@@ -2913,7 +2915,7 @@ end of modification
         public string GetLastModified()
         {
             // CHANGE by david.verberckmoes@syntegra.com on june, 2 2003
-            if (bool.Parse(((SettingItem) portalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
+            if (bool.Parse(((SettingItem) PortalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
                 bool.Parse(((SettingItem) Settings["MODULESETTINGS_SHOW_MODIFIED_BY"]).Value))
             {
                 // Get stuff from database
@@ -2932,9 +2934,7 @@ end of modification
                     eal.Add(Email);
                     Email = "<a href=\"mailto:" + Email + "\">" + Email + "</a>";
                 }
-                catch
-                {
-                }
+                catch {;}
 
                 // Construct the rest of the html
                 return
@@ -2957,7 +2957,7 @@ end of modification
         /// function for module moving
         /// </summary>
         /// <param name="list"></param>
-        private void OrderModules(ArrayList list)
+        static void OrderModules(ArrayList list)
         {
             int i = 1;
 
@@ -2985,9 +2985,9 @@ end of modification
             ArrayList paneModules = new ArrayList();
 
             // get the portal setting at the Tab level and not from this class as it is not refreshed
-            foreach (ModuleSettings _module in ((Page) Page).portalSettings.ActivePage.Modules)
+            foreach (ModuleSettings _module in (Page).portalSettings.ActivePage.Modules)
             {
-                if (portalSettings.ActivePage.PageID == _module.PageID && _module.PaneName.ToLower() == pane.ToLower())
+                if (PortalSettings.ActivePage.PageID == _module.PageID && _module.PaneName.ToLower() == pane.ToLower())
                 {
                     ModuleItem m = new ModuleItem();
                     m.Title = _module.ModuleTitle;
@@ -3008,7 +3008,7 @@ end of modification
         /// <param name="url"></param>
         /// <param name="moduleID"></param>
         /// <returns></returns>
-        private string AppendModuleID(string url, int moduleID)
+        static string AppendModuleID(string url, int moduleID)
         {
             // tiptopweb, sometimes the home page does not have parameters 
             // so we test for both & and ?
@@ -3068,7 +3068,7 @@ end of modification
             string targetPane = ((ModuleButton) sender).Attributes["targetpane"];
 
             // get source arraylist
-            ArrayList sourceList = GetModules(sourcePane);
+            ArrayList sourceList;
 
             // add it to the database
             // tiptopweb : OriginalModuleID to have it work with shortcut module
@@ -3076,8 +3076,8 @@ end of modification
             admin.UpdateModuleOrder(OriginalModuleID, 99, targetPane);
 
             // reload the portalSettings from the database
-            HttpContext.Current.Items["PortalSettings"] = new PortalSettings(PageID, portalSettings.PortalAlias);
-            ((Page) Page).portalSettings = (PortalSettings) Context.Items["PortalSettings"];
+            HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortal(PageID, PortalSettings.PortalAlias);
+            (Page).portalSettings = (Portal) Context.Items["PortalSettings"];
 
             // reorder the modules in the source pane
             sourceList = GetModules(sourcePane);
@@ -3149,6 +3149,7 @@ end of modification
         #region Window Management functions
 
         // Added  - BJA [wjanderson@reedtek.com] [START]
+/*
         /// <summary>
         /// Set the close button attributes to prompt user before removing. 
         /// </summary>
@@ -3161,7 +3162,7 @@ end of modification
             {
                 string[] s = {"CONFIRM_DELETE"};
                 Page.ClientScript.RegisterClientScriptBlock(GetType(), "confirmDelete",
-                                                            PortalSettings.GetStringResource(
+                                                            General.GetStringResource(
                                                                 "CONFIRM_DELETE_SCRIPT",
                                                                 s));
             }
@@ -3170,7 +3171,8 @@ end of modification
                 delBtn.Attributes["onclick"] = "return confirmDelete();" + delBtn.Attributes["onclick"];
             else
                 delBtn.Attributes.Add("onclick", "return confirmDelete();");
-        } // end of setDeleteAttributes
+        } */
+// end of setDeleteAttributes
         // Added - BJA [wjanderson@reedtek.com] [END]
 
         #endregion
@@ -3295,16 +3297,22 @@ end of modification
                                  : false;
             if (isBeginTag)
             {
-                string StartContentSizing = "<div class='modulePadding moduleScrollBars' id='modcont_" + ClientID + "' ";
-                StartContentSizing += " style='POSITION: static; ";
+                string startContentSizing = "<div class='modulePadding moduleScrollBars' id='modcont_" + ClientID + "' ";
+                startContentSizing += " style='POSITION: static; ";
                 if (!_isPrint && width > 0)
-                    StartContentSizing += "width: " + width.ToString() + "px; ";
+                {
+                    startContentSizing += "width: " + width + "px; ";
+                }
                 if (!_isPrint && height > 0)
-                    StartContentSizing += "height: " + height.ToString() + "px; ";
+                {
+                    startContentSizing += "height: " + height + "px; ";
+                }
                 if (!_isPrint && scrolling)
-                    StartContentSizing += "overflow:auto;";
-                StartContentSizing += "'>";
-                modContainer.Text = StartContentSizing;
+                {
+                    startContentSizing += "overflow:auto;";
+                }
+                startContentSizing += "'>";
+                modContainer.Text = startContentSizing;
             }
             else
             {
@@ -3340,11 +3348,11 @@ end of modification
         /// <returns></returns>
         private void ProcessModuleStrecthing(Control moduleControl, bool isBeginTag)
         {
-            if (moduleControl is LiteralControl && moduleControl != null)
+            if (moduleControl != null && moduleControl is LiteralControl)
             {
                 LiteralControl moduleElement = (LiteralControl) moduleControl;
                 bool isStretched = (Settings["MODULESETTINGS_WIDTH_STRETCHING"] != null &&
-                                    bool.Parse(Settings["MODULESETTINGS_WIDTH_STRETCHING"].ToString()) == true);
+                                    bool.Parse(Settings["MODULESETTINGS_WIDTH_STRETCHING"].ToString()));
                 string tmp = (moduleElement.Text != null) ? moduleElement.Text.Trim() : string.Empty;
                 //Need to remove the current width setting of the main table in the module Start(Title/NoTitle)Content section of the theme,
                 //if this is to be a stretched module then insert a width attribute into it,
@@ -3465,7 +3473,7 @@ end of modification
         /// <summary>
         /// used to hold the consolidated list of buttons for the module
         /// </summary>
-        private ArrayList ButtonList = new ArrayList(3);
+        ArrayList ButtonList = new ArrayList(3);
 
         /// <summary>
         /// User Buttons
@@ -3483,11 +3491,11 @@ end of modification
         public ArrayList ButtonListCustom = new ArrayList(3);
 
         // switches used for building module hierarchy
-        private bool _buildTitle = true;
-        private bool _buildButtons = true;
-        private bool _buildBody = true;
-        private bool _beforeContent = true;
-        private bool _isPrint = false;
+        bool _buildTitle = true;
+        bool buildButtons = true;
+        bool _buildBody = true;
+        bool _beforeContent = true;
+        bool _isPrint = false;
 
         /// <summary>
         /// Makes the decisions about what needs to be built and calls the appropriate method
@@ -3497,7 +3505,7 @@ end of modification
             if (NamingContainer.ToString().EndsWith("ASP.print_aspx"))
             {
                 _isPrint = true;
-                _buildButtons = false;
+                buildButtons = false;
                 if (!ShowTitlePrint)
                     _buildTitle = false;
             }
@@ -3511,27 +3519,37 @@ end of modification
 
             // added Jes1111: https://sourceforge.net/tracker/index.php?func=detail&aid=1034935&group_id=66837&atid=515929
             if (ButtonList.Count == 0)
-                _buildButtons = false;
+                buildButtons = false;
 
             // changed Jes1111 - 2004-09-29 - to correct shortcut behaviour
             if (ModuleID != OriginalModuleID)
+            {
                 BuildShortcut();
+            }
             else if (!ApplyTheme || _isPrint)
+            {
                 BuildNoTheme();
+            }
             else if (CurrentTheme.Type.Equals("zen"))
+            {
                 ZenBuild();
-            else if ( this.CurrentTheme.Type.Equals( "htm" ) )
+            }
+            else if (CurrentTheme.Type.Equals("htm"))
+            {
                 HtmBuild();
+            }
             else
+            {
                 Build();
+            }
 
             // wrap the module in a &lt;div&gt; with the ModuleID and Module type name - needed for Zen support and useful for CSS styling and debugging ;-)
             // Added generic classname ModuleWrap useful for more generic CSS styling - Rob Siera 2004-12-30
-            _header.Controls.AddAt(0,
+            header.Controls.AddAt(0,
                                    new LiteralControl(
-                                       string.Format("<div id=\"mID{0}\" class=\"{1} ModuleWrap\">", ModuleID.ToString(),
+                                       string.Format("<div id=\"mID{0}\" class=\"{1} ModuleWrap\">", ModuleID,
                                                      GetType().Name)));
-            _footer.Controls.Add(new LiteralControl("</div>"));
+            footer.Controls.Add(new LiteralControl("</div>"));
         }
 
         /// <summary>
@@ -3565,18 +3583,18 @@ end of modification
             if ( iCtr < iBdy ) {
                 if ( iCtr != -1 ) {
                     // Both Ctrl & Body : ....Ctrl....Body.....
-                    this._header.Controls.Add( new LiteralControl( template.Substring( 0, iCtr ) ) );
-                    HtmRenderButtons( this._header );
-                    this._header.Controls.Add( new LiteralControl( template.Substring( iCtr + 14, iBdy - ( iCtr + 14 ) ) ) );
+                    header.Controls.Add( new LiteralControl( template.Substring( 0, iCtr ) ) );
+                    HtmRenderButtons( header );
+                    header.Controls.Add( new LiteralControl( template.Substring( iCtr + 14, iBdy - ( iCtr + 14 ) ) ) );
                     //base.Render(output);
-                    this._footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6 ) ) );
+                    footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6 ) ) );
                 }
                 else {
                     if ( iBdy != -1 ) {
                         // Only Body: ...Body...
-                        this._header.Controls.Add( new LiteralControl( template.Substring( 0, iBdy ) ) );
+                        header.Controls.Add( new LiteralControl( template.Substring( 0, iBdy ) ) );
                         //base.Render(output);
-                        this._footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6 ) ) );
+                        footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6 ) ) );
                     }
                     else {
                         // No Ctrl No Body...
@@ -3587,18 +3605,18 @@ end of modification
             else {
                 if ( iBdy != -1 ) {
                     // Both Ctrl & Body : ....Body....Ctrl.....
-                    this._header.Controls.Add( new LiteralControl( template.Substring( 0, iBdy ) ) );
+                    header.Controls.Add( new LiteralControl( template.Substring( 0, iBdy ) ) );
                     //base.Render(output);
-                    this._footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6, iCtr - ( iBdy + 6 ) ) ) );
-                    HtmRenderButtons( this._footer );
-                    this._footer.Controls.Add( new LiteralControl( template.Substring( iCtr + 14 ) ) );
+                    footer.Controls.Add( new LiteralControl( template.Substring( iBdy + 6, iCtr - ( iBdy + 6 ) ) ) );
+                    HtmRenderButtons( footer );
+                    footer.Controls.Add( new LiteralControl( template.Substring( iCtr + 14 ) ) );
                 }
                 else {
                     if ( iCtr != -1 ) {
                         // Only Ctrl: ...Ctrl...
-                        this._header.Controls.Add( new LiteralControl( template.Substring( 0, iCtr ) ) );
-                        HtmRenderButtons( this._header );
-                        this._footer.Controls.Add( new LiteralControl( template.Substring( iCtr + 14 ) ) );
+                        header.Controls.Add( new LiteralControl( template.Substring( 0, iCtr ) ) );
+                        HtmRenderButtons( header );
+                        footer.Controls.Add( new LiteralControl( template.Substring( iCtr + 14 ) ) );
                     }
                     else {
                         // No Ctrl No Body...
@@ -3609,15 +3627,15 @@ end of modification
 
         }
 
-        private void HtmRenderButtons( PlaceHolder placeHolder )
+        void HtmRenderButtons( PlaceHolder placeHolder )
         {
-            if ( _buildButtons )
+            if (buildButtons)
             {
-                foreach ( Control _button in this.ButtonList )
+                foreach (Control button in ButtonList)
                 {
-                    placeHolder.Controls.Add( CurrentTheme.GetLiteralControl( "TitleBeforeButton" ) );
-                    placeHolder.Controls.Add( _button );
-                    placeHolder.Controls.Add( CurrentTheme.GetLiteralControl( "TitleAfterButton" ) );
+                    placeHolder.Controls.Add(CurrentTheme.GetLiteralControl("TitleBeforeButton"));
+                    placeHolder.Controls.Add(button);
+                    placeHolder.Controls.Add(CurrentTheme.GetLiteralControl("TitleAfterButton"));
                 }
             }
         }
@@ -3652,7 +3670,7 @@ end of modification
                 tr.Controls.Add(tc);
             }
 
-            if (_buildButtons)
+            if (buildButtons)
             {
                 foreach (Control _button in ButtonList)
                 {
@@ -3662,8 +3680,8 @@ end of modification
                 }
             }
 
-            if (_buildTitle || _buildButtons)
-                _header.Controls.Add(t);
+            if (_buildTitle || buildButtons)
+                header.Controls.Add(t);
 
             if (!_buildBody)
             {
@@ -3673,7 +3691,7 @@ end of modification
             }
             else
             {
-                _footer.Controls.Add(new LiteralControl(GetLastModified()));
+                footer.Controls.Add(new LiteralControl(GetLastModified()));
             }
         }
 
@@ -3682,30 +3700,30 @@ end of modification
         /// </summary>
         protected virtual void Build()
         {
-            if (!_buildTitle && !_buildButtons)
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("ControlNoTitleStart"));
+            if (!_buildTitle && !buildButtons)
+                header.Controls.Add(CurrentTheme.GetLiteralControl("ControlNoTitleStart"));
             else
             {
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleStart"));
+                header.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleStart"));
 
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("TitleStart"));
+                header.Controls.Add(CurrentTheme.GetLiteralControl("TitleStart"));
 
                 if (_buildTitle)
-                    _header.Controls.Add(new LiteralControl(TitleText));
+                    header.Controls.Add(new LiteralControl(TitleText));
 
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("TitleMiddle"));
+                header.Controls.Add(CurrentTheme.GetLiteralControl("TitleMiddle"));
 
-                if (_buildButtons)
+                if (buildButtons)
                 {
                     foreach (Control _button in ButtonList)
                     {
-                        _header.Controls.Add(CurrentTheme.GetLiteralControl("TitleBeforeButton"));
-                        _header.Controls.Add(_button);
-                        _header.Controls.Add(CurrentTheme.GetLiteralControl("TitleAfterButton"));
+                        header.Controls.Add(CurrentTheme.GetLiteralControl("TitleBeforeButton"));
+                        header.Controls.Add(_button);
+                        header.Controls.Add(CurrentTheme.GetLiteralControl("TitleAfterButton"));
                     }
                 }
 
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("TitleEnd"));
+                header.Controls.Add(CurrentTheme.GetLiteralControl("TitleEnd"));
             }
 
             if (!_buildBody)
@@ -3715,37 +3733,37 @@ end of modification
             }
             else
             {
-                _footer.Controls.Add(new LiteralControl(GetLastModified()));
+                footer.Controls.Add(new LiteralControl(GetLastModified()));
             }
 
             // Added by gman3001: 2004/10/26 to support auto width sizing and scrollable module content
             // this must be the first footer control (besides custom ones such as GetLastModified)
             if (_buildBody)
-                _footer.Controls.Add(BuildModuleContentContainer(false));
+                footer.Controls.Add(BuildModuleContentContainer(false));
 
             // changed Jes1111: https://sourceforge.net/tracker/index.php?func=detail&aid=1034935&group_id=66837&atid=515929
-            if (!_buildTitle && !_buildButtons)
-                _footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlNoTitleEnd"));
+            if (!_buildTitle && !buildButtons)
+                footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlNoTitleEnd"));
             else
             {
-                _header.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleBeforeControl"));
+                header.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleBeforeControl"));
                 //Changed Rob Siera: Incorrect positioning of ControlTitleAfterControl
                 //this._footer.Controls.AddAt(0, CurrentTheme.GetLiteralControl("ControlTitleAfterControl"));
-                _footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleAfterControl"));
-                _footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleEnd"));
+                footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleAfterControl"));
+                footer.Controls.Add(CurrentTheme.GetLiteralControl("ControlTitleEnd"));
             }
 
             // Added by gman3001: 2004/10/26 to support auto width sizing and scrollable module content
             // this must be the last header control
             if (_buildBody)
-                _header.Controls.Add(BuildModuleContentContainer(true));
+                header.Controls.Add(BuildModuleContentContainer(true));
 
-            if (!_isPrint && _header.Controls.Count > 0 && _footer.Controls.Count > 0)
+            if (!_isPrint && header.Controls.Count > 0 && footer.Controls.Count > 0)
             {
                 //Process the first header control as the module's outer most begin tag element
-                ProcessModuleStrecthing(_header.Controls[0], true);
+                ProcessModuleStrecthing(header.Controls[0], true);
                 //Process the last footer control as the module's outer most end tag element
-                ProcessModuleStrecthing(_footer.Controls[_footer.Controls.Count - 1], false);
+                ProcessModuleStrecthing(footer.Controls[footer.Controls.Count - 1], false);
             }
             // End add by gman3001
         }
@@ -3755,40 +3773,38 @@ end of modification
         /// </summary>
         protected virtual void ZenBuild()
         {
-            XmlTextReader _xtr = null;
-            XmlTextReader _xtr2 = null;
-            NameTable _nt = new NameTable();
-            XmlNamespaceManager _nsm = new XmlNamespaceManager(_nt);
-            _nsm.AddNamespace(string.Empty, "http://www.w3.org/1999/xhtml");
-            _nsm.AddNamespace("if", "urn:MarinaTeq.Rainbow.Zen.Condition");
-            _nsm.AddNamespace("loop", "urn:Marinateq.Rainbow.Zen.Looping");
-            _nsm.AddNamespace("content", "urn:www.rainbowportal.net");
-            XmlParserContext _context = new XmlParserContext(_nt, _nsm, string.Empty, XmlSpace.None);
-            StringBuilder _fragText;
-            LiteralControl _frag;
-            string _loopFrag = string.Empty;
-
+            XmlTextReader xmlTextReader = null;
+            NameTable nameTable = new NameTable();
+            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(nameTable);
+            namespaceManager.AddNamespace(string.Empty, "http://www.w3.org/1999/xhtml");
+            namespaceManager.AddNamespace("if", "urn:MarinaTeq.Rainbow.Zen.Condition");
+            namespaceManager.AddNamespace("loop", "urn:Marinateq.Rainbow.Zen.Looping");
+            namespaceManager.AddNamespace("content", "urn:www.rainbowportal.net");
+            XmlParserContext parserContext = new XmlParserContext(nameTable, namespaceManager, 
+                string.Empty, XmlSpace.None);
+            StringBuilder fragText;
+            LiteralControl frag;
             try
             {
-                _xtr = new XmlTextReader(CurrentTheme.GetThemePart("ModuleLayout"), XmlNodeType.Document, _context);
+                xmlTextReader = new XmlTextReader(CurrentTheme.GetThemePart("ModuleLayout"), XmlNodeType.Document, parserContext);
 
-                while (_xtr.Read())
+                while (xmlTextReader.Read())
                 {
-                    _frag = new LiteralControl();
-                    switch (_xtr.Prefix)
+                    frag = new LiteralControl();
+                    switch (xmlTextReader.Prefix)
                     {
                         case "if":
                             {
-                                if (_xtr.NodeType == XmlNodeType.Element && !ZenEvaluate(_xtr.LocalName))
-                                    _xtr.Skip();
+                                if (xmlTextReader.NodeType == XmlNodeType.Element && !ZenEvaluate(xmlTextReader.LocalName))
+                                    xmlTextReader.Skip();
                                 break;
                             }
 
                         case "loop":
                             {
-                                if (_xtr.NodeType == XmlNodeType.Element)
+                                if (xmlTextReader.NodeType == XmlNodeType.Element)
                                 {
-                                    switch (_xtr.LocalName)
+                                    switch (xmlTextReader.LocalName)
                                     {
                                         case "Buttons":
                                             {
@@ -3813,7 +3829,7 @@ end of modification
                                                 //rootNode.ToolTip = "Module Control and Options Menu";
                                                 //rootNode.Selected = true;
 
-                                                _loopFrag = _xtr.ReadInnerXml();
+                                                string _loopFrag = xmlTextReader.ReadInnerXml();
                                                 foreach (Control c in ButtonList)
                                                 {
                                                     //  ModuleButton mb = (ModuleButton)c;
@@ -3836,21 +3852,21 @@ end of modification
                                                     #region OldCode
 
                                                     /* */
-                                                    _xtr2 = new XmlTextReader(_loopFrag, XmlNodeType.Document, _context);
-                                                    while (_xtr2.Read())
+                                                    XmlTextReader xmlTextReader2 = new XmlTextReader(_loopFrag, XmlNodeType.Document, parserContext);
+                                                    while (xmlTextReader2.Read())
                                                     {
-                                                        _frag = new LiteralControl();
-                                                        switch (_xtr2.Prefix)
+                                                        frag = new LiteralControl();
+                                                        switch (xmlTextReader2.Prefix)
                                                         {
                                                             case "content":
                                                                 {
-                                                                    switch (_xtr2.LocalName)
+                                                                    switch (xmlTextReader2.LocalName)
                                                                     {
                                                                         case "Button":
                                                                             //																if ( this.CurrentTheme.Name.ToLower().Equals("zen-zero") && c is ModuleButton )
                                                                             //																	((ModuleButton)c).RenderAs = ModuleButton.RenderOptions.TextOnly;
                                                                             //																if ( _beforeContent )
-                                                                            _header.Controls.Add(c);
+                                                                            header.Controls.Add(c);
                                                                             //																else
                                                                             //																	this._footer.Controls.Add(c);
                                                                             break;
@@ -3862,36 +3878,36 @@ end of modification
                                                             case "":
                                                             default:
                                                                 {
-                                                                    if (_xtr2.NodeType == XmlNodeType.Element)
+                                                                    if (xmlTextReader2.NodeType == XmlNodeType.Element)
                                                                     {
-                                                                        _fragText = new StringBuilder("<");
-                                                                        _fragText.Append(_xtr2.LocalName);
-                                                                        while (_xtr2.MoveToNextAttribute())
+                                                                        fragText = new StringBuilder("<");
+                                                                        fragText.Append(xmlTextReader2.LocalName);
+                                                                        while (xmlTextReader2.MoveToNextAttribute())
                                                                         {
-                                                                            if (_xtr2.LocalName != "xmlns")
+                                                                            if (xmlTextReader2.LocalName != "xmlns")
                                                                             {
-                                                                                _fragText.Append(" ");
-                                                                                _fragText.Append(_xtr.LocalName);
-                                                                                _fragText.Append("=\"");
-                                                                                _fragText.Append(_xtr.Value);
-                                                                                _fragText.Append("\"");
+                                                                                fragText.Append(" ");
+                                                                                fragText.Append(xmlTextReader.LocalName);
+                                                                                fragText.Append("=\"");
+                                                                                fragText.Append(xmlTextReader.Value);
+                                                                                fragText.Append("\"");
                                                                             }
                                                                         }
-                                                                        _fragText.Append(">");
-                                                                        _frag.Text = _fragText.ToString();
+                                                                        fragText.Append(">");
+                                                                        frag.Text = fragText.ToString();
                                                                         if (_beforeContent)
-                                                                            _header.Controls.Add(_frag);
+                                                                            header.Controls.Add(frag);
                                                                         else
-                                                                            _footer.Controls.Add(_frag);
+                                                                            footer.Controls.Add(frag);
                                                                     }
-                                                                    else if (_xtr2.NodeType == XmlNodeType.EndElement)
+                                                                    else if (xmlTextReader2.NodeType == XmlNodeType.EndElement)
                                                                     {
-                                                                        _frag.Text =
-                                                                            string.Format("</{0}>", _xtr2.LocalName);
+                                                                        frag.Text =
+                                                                            string.Format("</{0}>", xmlTextReader2.LocalName);
                                                                         if (_beforeContent)
-                                                                            _header.Controls.Add(_frag);
+                                                                            header.Controls.Add(frag);
                                                                         else
-                                                                            _footer.Controls.Add(_frag);
+                                                                            footer.Controls.Add(frag);
                                                                     }
                                                                     break;
                                                                 }
@@ -3916,24 +3932,24 @@ end of modification
 
                         case "content":
                             {
-                                switch (_xtr.LocalName)
+                                switch (xmlTextReader.LocalName)
                                 {
                                     case "ModuleContent":
                                         _beforeContent = false;
                                         break;
                                     case "TitleText":
-                                        _frag.Text = TitleText;
+                                        frag.Text = TitleText;
                                         if (_beforeContent)
-                                            _header.Controls.Add(_frag);
+                                            header.Controls.Add(frag);
                                         else
-                                            _footer.Controls.Add(_frag);
+                                            footer.Controls.Add(frag);
                                         break;
                                     case "ModifiedBy":
-                                        _frag.Text = GetLastModified();
+                                        frag.Text = GetLastModified();
                                         if (_beforeContent)
-                                            _header.Controls.Add(_frag);
+                                            header.Controls.Add(frag);
                                         else
-                                            _footer.Controls.Add(_frag);
+                                            footer.Controls.Add(frag);
                                         break;
                                     default:
                                         break;
@@ -3944,32 +3960,32 @@ end of modification
                         case "":
                         default:
                             {
-                                if (_xtr.NodeType == XmlNodeType.Element)
+                                if (xmlTextReader.NodeType == XmlNodeType.Element)
                                 {
-                                    _fragText = new StringBuilder("<");
-                                    _fragText.Append(_xtr.LocalName);
-                                    while (_xtr.MoveToNextAttribute())
+                                    fragText = new StringBuilder("<");
+                                    fragText.Append(xmlTextReader.LocalName);
+                                    while (xmlTextReader.MoveToNextAttribute())
                                     {
-                                        _fragText.Append(" ");
-                                        _fragText.Append(_xtr.LocalName);
-                                        _fragText.Append("=\"");
-                                        _fragText.Append(_xtr.Value);
-                                        _fragText.Append("\"");
+                                        fragText.Append(" ");
+                                        fragText.Append(xmlTextReader.LocalName);
+                                        fragText.Append("=\"");
+                                        fragText.Append(xmlTextReader.Value);
+                                        fragText.Append("\"");
                                     }
-                                    _fragText.Append(">");
-                                    _frag.Text = _fragText.ToString();
+                                    fragText.Append(">");
+                                    frag.Text = fragText.ToString();
                                     if (_beforeContent)
-                                        _header.Controls.Add(_frag);
+                                        header.Controls.Add(frag);
                                     else
-                                        _footer.Controls.Add(_frag);
+                                        footer.Controls.Add(frag);
                                 }
-                                else if (_xtr.NodeType == XmlNodeType.EndElement)
+                                else if (xmlTextReader.NodeType == XmlNodeType.EndElement)
                                 {
-                                    _frag.Text = string.Format("</{0}>", _xtr.LocalName);
+                                    frag.Text = string.Format("</{0}>", xmlTextReader.LocalName);
                                     if (_beforeContent)
-                                        _header.Controls.Add(_frag);
+                                        header.Controls.Add(frag);
                                     else
-                                        _footer.Controls.Add(_frag);
+                                        footer.Controls.Add(frag);
                                 }
                                 break;
                             }
@@ -3983,8 +3999,8 @@ end of modification
             }
             finally
             {
-                if (_xtr != null)
-                    _xtr.Close();
+                if (xmlTextReader != null)
+                    xmlTextReader.Close();
             }
         }
 
@@ -4005,7 +4021,7 @@ end of modification
                     break;
                 case "Buttons":
                     //if ( _buildButtons && ButtonList.Count > 0 )
-                    if (_buildButtons)
+                    if (buildButtons)
                         _returnVal = true;
                     break;
                 case "Body":
@@ -4024,7 +4040,7 @@ end of modification
                     break;
                 case "ShowModifiedBy":
                     if (
-                        bool.Parse(((SettingItem) portalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
+                        bool.Parse(((SettingItem) PortalSettings.CustomSettings["SITESETTINGS_SHOW_MODIFIED_BY"]).Value) &&
                         bool.Parse(((SettingItem) Settings["MODULESETTINGS_SHOW_MODIFIED_BY"]).Value))
                         _returnVal = true;
                     break;
@@ -4054,14 +4070,14 @@ end of modification
             // end: Jes1111
 
             // added: Jes1111 - 2004-08-05 - supports custom theme per module
-            if (portalSettings.CustomSettings.ContainsKey("SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES") &&
-                portalSettings.CustomSettings["SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES"].ToString().Length != 0 &&
-                bool.Parse(portalSettings.CustomSettings["SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES"].ToString()) &&
+            if (PortalSettings.CustomSettings.ContainsKey("SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES") &&
+                PortalSettings.CustomSettings["SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES"].ToString().Length != 0 &&
+                bool.Parse(PortalSettings.CustomSettings["SITESETTINGS_ALLOW_MODULE_CUSTOM_THEMES"].ToString()) &&
                 Settings.ContainsKey("MODULESETTINGS_MODULE_THEME") &&
                 Settings["MODULESETTINGS_MODULE_THEME"].ToString().Trim().Length > 0)
             {
                 // substitute custom theme for this module
-                ThemeManager _tm = new ThemeManager(portalSettings.PortalPath);
+                ThemeManager _tm = new ThemeManager(PortalSettings.PortalPath);
                 _tm.Load(Settings["MODULESETTINGS_MODULE_THEME"].ToString());
                 CurrentTheme = _tm.CurrentTheme;
                 // get CSS file, add ModuleID to each line and add resulting string to CssImportList
@@ -4070,20 +4086,20 @@ end of modification
                     CssHelper cssHelper = new CssHelper();
                     string selectorPrefix = string.Concat("#mID", ModuleID);
                     string cssFileName = Page.Server.MapPath(CurrentTheme.CssFile);
-                    ((Page) Page).RegisterCssImport(ModuleID.ToString(), cssHelper.ParseCss(cssFileName, selectorPrefix));
+                    Page.RegisterCssImport(ModuleID.ToString(), cssHelper.ParseCss(cssFileName, selectorPrefix));
                 }
                 catch (Exception ex)
                 {
                     ErrorHandler.Publish(LogLevel.Error,
                                          "Failed to load custom theme '" + CurrentTheme.CssFile + "' for ModuleID " +
                                          ModuleID + ". Continuing with default tab theme. Message was: " + ex.Message);
-                    CurrentTheme = portalSettings.GetCurrentTheme(themeName);
+                    CurrentTheme = PortalSettings.GetCurrentTheme(themeName);
                 }
             }
             else
             {
                 // original behaviour unchanged
-                CurrentTheme = portalSettings.GetCurrentTheme(themeName);
+                CurrentTheme = PortalSettings.GetCurrentTheme(themeName);
             }
             // end change: Jes1111
         }

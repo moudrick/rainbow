@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Content.Web.Modules
@@ -17,15 +18,14 @@ namespace Rainbow.Content.Web.Modules
     /// </summary>
     public partial class QuizPage : ViewItemPage
     {
-        private int intTotalQuestion;
-        private int intQuestionNo = 1;
-        private int intScore = 0;
-        private ArrayList arrAnswerHistory = new ArrayList();
-        private XmlDocument xDoc = new XmlDocument();
+        int intTotalQuestion;
+        int intQuestionNo = 1;
+        int intScore = 0;
+        ArrayList arrAnswerHistory = new ArrayList();
+        readonly XmlDocument xDoc = new XmlDocument();
 
-        private string XmlFile;
-        private PortalUrlDataType PieUrl;
-
+        string XmlFile;
+        PortalUrl PieUrl;
 
         /// <summary>
         /// Handles the Load event of the Page control.
@@ -36,11 +36,11 @@ namespace Rainbow.Content.Web.Modules
         {
             lblQuiz.Text = moduleSettings["QuizName"].ToString();
 
-            PieUrl = new PortalUrlDataType();
+            PieUrl = PortalProvider.Instance.CurrentPortal.PortalUrl;
             PieUrl.Value = "/Quiz/Pie.gif";
 
-            PortalUrlDataType pt;
-            pt = new PortalUrlDataType();
+            PortalUrl pt;
+            pt = PortalProvider.Instance.CurrentPortal.PortalUrl;
             pt.Value = moduleSettings["XMLsrc"].ToString();
             string xmlsrc = pt.FullPath;
 
@@ -153,10 +153,10 @@ namespace Rainbow.Content.Web.Modules
             int i;
             TimeSpan tsTimeSpent;
 
-            strXPath = "/quiz/mchoice[" + intQuestionNo.ToString() + "]";
+            strXPath = "/quiz/mchoice[" + intQuestionNo + "]";
 
             //Extract question
-            lblQuestion.Text = intQuestionNo.ToString() + ". " + xDoc.SelectSingleNode(strXPath + "/question").InnerXml;
+            lblQuestion.Text = intQuestionNo + ". " + xDoc.SelectSingleNode(strXPath + "/question").InnerXml;
 
             //Extract answers
             xNodeList = xDoc.SelectNodes(strXPath + "/answer");
@@ -186,7 +186,7 @@ namespace Rainbow.Content.Web.Modules
 
             //Output Time Spent
             tsTimeSpent = DateTime.Now.Subtract((DateTime) ViewState["StartTime"]);
-            lblTimeSpent.Text = tsTimeSpent.Minutes.ToString() + ":" + tsTimeSpent.Seconds.ToString();
+            lblTimeSpent.Text = tsTimeSpent.Minutes + ":" + tsTimeSpent.Seconds;
 
             //Store essential data to viewstate
             ViewState["TotalQuestion"] = intTotalQuestion;
@@ -202,7 +202,6 @@ namespace Rainbow.Content.Web.Modules
         private void ShowResult()
         {
             string strResult;
-            string strXPath;
 
             TimeSpan tsTimeSpent;
             tsTimeSpent = DateTime.Now.Subtract((DateTime) ViewState["StartTime"]);
@@ -212,10 +211,10 @@ namespace Rainbow.Content.Web.Modules
             Random rdm = new Random();
 
             strResult = "<table width=60% border=0 cellspacing=0 cellpading=4>";
-            strResult += "<tr><td align=center>Correct: " + intScore.ToString() + " of " + intTotalQuestion.ToString() +
-                         "&nbsp;&nbsp;&nbsp;Time Spent: " + tsTimeSpent.Minutes.ToString() + ":" +
-                         tsTimeSpent.Seconds.ToString() + "</td></tr>";
-            strResult += "<tr><td align=center><img src='" + PieUrl.FullPath + "?rdm=" + rdm.Next().ToString() +
+            strResult += "<tr><td align=center>Correct: " + intScore + " of " + intTotalQuestion +
+                         "&nbsp;&nbsp;&nbsp;Time Spent: " + tsTimeSpent.Minutes + ":" +
+                         tsTimeSpent.Seconds + "</td></tr>";
+            strResult += "<tr><td align=center><img src='" + PieUrl.FullPath + "?rdm=" + rdm.Next() +
                          "'></td></tr>";
             strResult += "<tr><td align=center><br>&nbsp;</td></tr>";
 
@@ -224,9 +223,9 @@ namespace Rainbow.Content.Web.Modules
             strResult += "<tr><td colspan=2></td></tr>";
             for (int i = 1; i <= intTotalQuestion; i++)
             {
-                strXPath = "/quiz/mchoice[" + i.ToString() + "]";
+                string strXPath = "/quiz/mchoice[" + i + "]";
 
-                strResult += "<tr><td align=center><b>" + i.ToString() + ". " +
+                strResult += "<tr><td align=center><b>" + i + ". " +
                              xDoc.SelectNodes(strXPath + "/question").Item(0).InnerXml + "</b><br>";
                 if (((int) arrAnswerHistory[i - 1]) == 0)
                 {
@@ -235,7 +234,7 @@ namespace Rainbow.Content.Web.Modules
                 else
                 {
                     strResult += "<b>You answered:</b> " +
-                                 xDoc.SelectNodes(strXPath + "/answer[" + arrAnswerHistory[i - 1].ToString() + "]").Item
+                                 xDoc.SelectNodes(strXPath + "/answer[" + arrAnswerHistory[i - 1] + "]").Item
                                      (0).InnerXml + "<br>";
                     strResult += "<font color='red'><b>Incorrect</b></font><br><br></td></tr>";
                 }
@@ -262,7 +261,6 @@ namespace Rainbow.Content.Web.Modules
             ArrayList FillPieColor = new ArrayList();
 
             int startAngle;
-            int a;
             int b;
             int i;
 
@@ -299,14 +297,14 @@ namespace Rainbow.Content.Web.Modules
             b = 50;
             for (i = 0; i <= 1; i++)
             {
-                a = (int) DrawAngle[i];
+                int a = (int) DrawAngle[i];
                 objGraphics.FillPie((Brush) FillPieColor[i], 50, 50, 200, 200, startAngle, a);
                 objGraphics.DrawPie(objPen, 50, 50, 200, 200, startAngle, a);
 
                 objGraphics.FillRectangle((Brush) FillPieColor[i], 260, b + 6, 10, 10);
                 objGraphics.DrawRectangle(objPen, 260, b + 6, 10, 10);
 
-                objGraphics.DrawString(arrMarks[i] + " (" + ResultsPercentage[i].ToString() + "%)", objFont,
+                objGraphics.DrawString(arrMarks[i] + " (" + ResultsPercentage[i] + "%)", objFont,
                                        Brushes.Black, 275, b);
 
                 startAngle = startAngle + a;

@@ -1,10 +1,9 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-
 using Rainbow.Framework;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Data;
+
 namespace Rainbow.Framework.Content.Data
 {
 	public class MilestonesDB
@@ -21,7 +20,7 @@ namespace Rainbow.Framework.Content.Data
 		public SqlDataReader GetSingleMilestones(int ItemID, WorkFlowVersion version)
 		{
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_GetSingleMilestones", myConnection);
 
 			// Mark the Command as a SPROC
@@ -59,7 +58,7 @@ namespace Rainbow.Framework.Content.Data
 		public SqlDataReader GetMilestones(int ModuleID, WorkFlowVersion version)
 		{
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_GetMilestones", myConnection);
 
 			// Mark the Command as a SPROC
@@ -92,7 +91,7 @@ namespace Rainbow.Framework.Content.Data
 		public void DeleteMilestones(int ItemID)
 		{
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_DeleteMilestones", myConnection);
 
 			// Mark the Command as a SPROC
@@ -130,7 +129,7 @@ namespace Rainbow.Framework.Content.Data
 		public int AddMilestones(int ItemID, int ModuleID, string CreatedByUser, DateTime CreatedDate, string Title, DateTime EstCompleteDate, string Status)
 		{
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_AddMilestones", myConnection);
 
 			// Mark the Command as a SPROC
@@ -188,7 +187,7 @@ namespace Rainbow.Framework.Content.Data
 		public void UpdateMilestones(int ItemID, int ModuleID, string CreatedByUser, DateTime CreatedDate, string Title, DateTime EstCompleteDate, string Status)
 		{
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_UpdateMilestones", myConnection);
 
 			// Mark the Command as a SPROC

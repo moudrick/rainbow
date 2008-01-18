@@ -5,12 +5,12 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -148,7 +148,7 @@ namespace Rainbow.Content.Web.Modules
         /// <returns></returns>
         private string DefaultDir()
         {
-            string tmpDir = Path.WebPathCombine(Path.ApplicationPhysicalPath, portalSettings.PortalPath);
+            string tmpDir = Path.WebPathCombine(Path.ApplicationPhysicalPath, PortalSettings.PortalPath);
             tmpDir = tmpDir.Replace("\\/", "\\");
             tmpDir = tmpDir.Replace("/", "\\");
             return tmpDir;
@@ -168,11 +168,11 @@ namespace Rainbow.Content.Web.Modules
             directory.Required = false;
             directory.Group = group;
             directory.Order = groupBase + 20; //1;
-            if (portalSettings != null)
-                directory.Value = portalSettings.PortalPath;
+            if (PortalSettings != null)
+                directory.Value = PortalSettings.PortalPath;
             else
                 directory.Value = string.Empty;
-            _baseSettings.Add("FM_DIRECTORY", directory);
+            baseSettings.Add("FM_DIRECTORY", directory);
 
             SettingItem DownloadableExt = new SettingItem(new StringDataType());
             DownloadableExt.EnglishName = "Downloadable extentions";
@@ -181,7 +181,7 @@ namespace Rainbow.Content.Web.Modules
             DownloadableExt.Value = "";
             DownloadableExt.Description =
                 "Provide a comma-delimited list of file extentions that you can download On Click";
-            _baseSettings.Add("FM_DOWNLOADABLEEXT", DownloadableExt);
+            baseSettings.Add("FM_DOWNLOADABLEEXT", DownloadableExt);
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace Rainbow.Content.Web.Modules
             dgFile.DataSource = GetFiles();
             dgFile.DataKeyField = "type";
             dgFile.DataBind();
-            lblCounter.Text = dgFile.Items.Count.ToString() + " object(s)";
+            lblCounter.Text = dgFile.Items.Count + " object(s)";
         }
 
         /// <summary>
@@ -343,7 +343,7 @@ namespace Rainbow.Content.Web.Modules
 
                 for (int i = 0; i < strExtensions.Length; i++)
                 {
-                    String strEx = (String) strExtensions[i];
+                    String strEx = strExtensions[i];
                     if (!strEx.StartsWith("."))
                     {
                         strEx = "." + strEx;

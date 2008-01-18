@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Settings.Cache;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
+using Config=Rainbow.Framework.Context.Config;
 using History=Rainbow.Framework.History;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
@@ -130,22 +131,15 @@ namespace Rainbow.Content.Web.Modules
             //by Pekka Ylenius
             CurrentCache.Remove(Key.ModuleSettings(ModuleID));
             // Using settings grouping tabs or not is set in config file. --Hongwei Shen
-            EditTable.UseGroupingTabs = Rainbow.Framework.Settings.Config.UseSettingsGroupingTabs;
+            EditTable.UseGroupingTabs = Config.UseSettingsGroupingTabs;
             // The width and height will take effect only when using grouping tabs.
             // When not using grouping tabs, width and height should be set in css 
             // class -- Hongwei Shen
-            EditTable.Width = Rainbow.Framework.Settings.Config.SettingsGroupingWidth;
-            EditTable.Height = Rainbow.Framework.Settings.Config.SettingsGroupingHeight;
+            EditTable.Width = Config.SettingsGroupingWidth;
+            EditTable.Height = Config.SettingsGroupingHeight;
             EditTable.CssClass = "st_control";
             EditTable.DataSource = new SortedList(moduleSettings);
             EditTable.DataBind();
-        }
-
-        private void saveAndCloseButton_Click(object sender, EventArgs e)
-        {
-            OnUpdate(e);
-            if (Page.IsValid == true)
-                Response.Redirect(HttpUrlBuilder.BuildUrl("~/Default.aspx", PageID));
         }
 
         /// <summary>
@@ -156,26 +150,35 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only Update if Input Data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 // Update settings in the database
                 EditTable.UpdateControls();
             }
         }
 
-        private void UpdateButton_Click(object sender, EventArgs e)
+        void saveAndCloseButton_Click(object sender, EventArgs e)
         {
-            this.OnUpdate(e);
+            OnUpdate(e);
+            if (Page.IsValid)
+            {
+                Response.Redirect(HttpUrlBuilder.BuildUrl("~/Default.aspx", PageID));
+            }
         }
 
-        private void CancelButton_Click(object sender, EventArgs e)
+        void UpdateButton_Click(object sender, EventArgs e)
         {
-            this.OnCancel(e);
+            OnUpdate(e);
         }
 
-        private void DeleteButton_Click(object sender, EventArgs e)
+        void CancelButton_Click(object sender, EventArgs e)
         {
-            this.OnDelete(e);
+            OnCancel(e);
+        }
+
+        void DeleteButton_Click(object sender, EventArgs e)
+        {
+            OnDelete(e);
         }
 
         protected override void OnCancel(EventArgs e)
@@ -184,9 +187,9 @@ namespace Rainbow.Content.Web.Modules
         }
 
         private void EditTable_UpdateControl(object sender,
-                                             Rainbow.Framework.Web.UI.WebControls.SettingsTableEventArgs e)
+                                             SettingsTableEventArgs e)
         {
-            ModuleSettings.UpdateModuleSetting(ModuleID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
+            ModuleSettingsProvider.UpdateModuleSetting(ModuleID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
     }
 }

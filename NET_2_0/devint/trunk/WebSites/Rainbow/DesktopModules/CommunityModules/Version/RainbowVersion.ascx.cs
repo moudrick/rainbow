@@ -1,9 +1,7 @@
 using System;
 using System.Threading;
-using System.Web.UI.WebControls;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.Web.UI.WebControls;
-using Rainbow.Framework.Settings;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -19,7 +17,7 @@ namespace Rainbow.Content.Web.Modules
 		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
 		private void RainbowVersion_Load(object sender, EventArgs e)
 		{
-            VersionLabel.Text = PortalSettings.ProductVersion;
+            VersionLabel.Text = VersionController.Instance.ProductVersion;
 			currentLanguage.Text = Thread.CurrentThread.CurrentCulture.Name;
 			currentUILanguage.Text = Thread.CurrentThread.CurrentUICulture.Name;
 		}

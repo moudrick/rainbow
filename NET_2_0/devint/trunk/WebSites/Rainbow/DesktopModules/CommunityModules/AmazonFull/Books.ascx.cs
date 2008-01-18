@@ -4,13 +4,12 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Xml;
-using Rainbow.Framework;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
-using Path=System.IO.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -38,13 +37,13 @@ namespace Rainbow.Content.Web.Modules
             Columns.Value = "3";
             Columns.MinValue = 1;
             Columns.MaxValue = 10;
-            _baseSettings.Add("Columns", Columns);
+            baseSettings.Add("Columns", Columns);
 
             SettingItem Width = new SettingItem(new IntegerDataType());
             Width.Value = "110";
             Width.MinValue = 50;
             Width.MaxValue = 250;
-            _baseSettings.Add("Width", Width);
+            baseSettings.Add("Width", Width);
 
             SettingItem PromoCode = new SettingItem(new StringDataType());
             //jes1111
@@ -53,11 +52,11 @@ namespace Rainbow.Content.Web.Modules
             //else 
             //	PromoCode.Value = string.Empty;
             PromoCode.Value = Config.AmazonPromoCode;
-            _baseSettings.Add("Promotion Code", PromoCode);
+            baseSettings.Add("Promotion Code", PromoCode);
 
             SettingItem ShowDetails = new SettingItem(new StringDataType());
             ShowDetails.Value = "ProductName,OurPrice,Author";
-            _baseSettings.Add("Show Details", ShowDetails);
+            baseSettings.Add("Show Details", ShowDetails);
 
             SettingItem AmazonDevToken = new SettingItem(new StringDataType());
             //jes1111
@@ -66,7 +65,7 @@ namespace Rainbow.Content.Web.Modules
             //else 
             //	AmazonDevToken.Value = string.Empty;
             AmazonDevToken.Value = Config.AmazonDevToken;
-            _baseSettings.Add("Amazon Dev Token", AmazonDevToken);
+            baseSettings.Add("Amazon Dev Token", AmazonDevToken);
 
             //Choose your editor here
             SupportsWorkflow = false;
@@ -85,15 +84,14 @@ namespace Rainbow.Content.Web.Modules
         /// <summary>
         /// GetTdWidthPercentage
         /// </summary>
-        /// <param name="Columns"></param>
+        /// <param name="columns"></param>
         /// <returns></returns>
-        public string GetTdWidthPercentage(string Columns)
+        public string GetTdWidthPercentage(string columns)
         {
             //Trace.Write("AmazonFullCaption","GetTdWidthPercentage()");
-            int tdWidthPercent;
             try
             {
-                tdWidthPercent = 100/Int32.Parse(Columns);
+                int tdWidthPercent = 100 / Int32.Parse(columns);
                 return tdWidthPercent + "%";
             }
             catch (Exception)
@@ -148,7 +146,7 @@ namespace Rainbow.Content.Web.Modules
                 }
                 catch
                 {
-                    //Trace.Write("AmazonFullCaption","GetTdWidthPercentage.If.Try.Catch()");
+                    ;//Trace.Write("AmazonFullCaption","GetTdWidthPercentage.If.Try.Catch()");
                 }
             } //END IF
             //Trace.Write("AmazonFullCaption","GetWebServiceDetails.End()");
@@ -164,11 +162,10 @@ namespace Rainbow.Content.Web.Modules
         {
             //Trace.Write("AmazonFullCaption","ConvertStr2ByteArray.Begin()");
 
-            int intCounter = 0;
+            int intCounter;
             char[] arrChar;
 
             arrChar = strInput.ToCharArray();
-
 
             byte[] arrByte;
             arrByte = new byte[arrChar.Length - 1];
@@ -182,8 +179,7 @@ namespace Rainbow.Content.Web.Modules
             return arrByte;
         }
 
-
-        private string MD5checksum(string strParm1)
+        string MD5checksum(string strParm1)
         {
             //Trace.Write("AmazonFullCaption","MD5checksum.Begin()");
             byte[] arrHashInput;
@@ -229,8 +225,7 @@ namespace Rainbow.Content.Web.Modules
             return (xmlTrCached);
         }
 
-
-        private string HttpGet(string strURL)
+        static string HttpGet(string strURL)
         {
             //Response.Write("HttpGet(" + strURL + ")<BR>");
             //Trace.Write("AmazonFullCaption","HttpGet.Begin()");
@@ -285,7 +280,7 @@ namespace Rainbow.Content.Web.Modules
 
             if (errors.Count > 0)
             {
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -301,7 +296,7 @@ namespace Rainbow.Content.Web.Modules
 
             if (errors.Count > 0)
             {
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

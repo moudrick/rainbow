@@ -78,9 +78,9 @@
     <Compile Include="SettingsTable.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowMembershipProvider\Rainbow.Framework.Providers.RainbowMembershipProvider.csproj">
-      <Project>{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}</Project>
-      <Name>Rainbow.Framework.Providers.RainbowMembershipProvider</Name>
+    <ProjectReference Include="..\..\Engine\Rainbow.Framework\Rainbow.Framework.csproj">
+      <Project>{14CD80D2-D20D-437F-9D8E-0B37CE3A2609}</Project>
+      <Name>Rainbow.Framework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Rainbow.Framework\Rainbow.Framework.Web.csproj">
       <Project>{D3A33CF8-2AEB-4E6E-AC2E-01C676F33616}</Project>

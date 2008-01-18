@@ -6,10 +6,11 @@ using System.Web.Mail;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -43,7 +44,7 @@ namespace Rainbow.Content.Web.Modules
                 txtName.Text = Settings["NEWSLETTER_DEFAULTNAME"].ToString();
                 txtEMail.Text = Settings["NEWSLETTER_DEFAULTEMAIL"].ToString();
                 if (txtEMail.Text == string.Empty)
-                    txtEMail.Text = PortalSettings.CurrentUser.Identity.Email;
+                    txtEMail.Text = RainbowPrincipal.CurrentUser.Identity.Email;
 
                 //create a DataTable
                 DataTable dt = new DataTable();
@@ -54,7 +55,7 @@ namespace Rainbow.Content.Web.Modules
                 if (!bool.Parse(Settings["TestMode"].ToString()))
                 {
                     SqlDataReader dReader =
-                        newsletter.GetUsersNewsletter(portalSettings.PortalID,
+                        newsletter.GetUsersNewsletter(PortalSettings.PortalID,
                                                       Int32.Parse(Settings["NEWSLETTER_USERBLOCK"].ToString()),
                                                       Int32.Parse(Settings["NEWSLETTER_DONOTRESENDWITHIN"].ToString()));
                     try
@@ -62,7 +63,7 @@ namespace Rainbow.Content.Web.Modules
                         while (dReader.Read())
                         {
                             DataRow dr = dt.NewRow();
-                            dr[0] = "<b>" + dReader["Name"].ToString() + ":</b> " + dReader["EMail"].ToString();
+                            dr[0] = "<b>" + dReader["Name"] + ":</b> " + dReader["EMail"];
                             dt.Rows.Add(dr);
                         }
                     }
@@ -81,7 +82,7 @@ namespace Rainbow.Content.Web.Modules
                     DataList1.Visible = true;
 
                     int cnt =
-                        newsletter.GetUsersNewsletterCount(portalSettings.PortalID,
+                        newsletter.GetUsersNewsletterCount(PortalSettings.PortalID,
                                                            Int32.Parse(Settings["NEWSLETTER_USERBLOCK"].ToString()),
                                                            Int32.Parse(
                                                                Settings["NEWSLETTER_DONOTRESENDWITHIN"].ToString()));
@@ -172,7 +173,7 @@ namespace Rainbow.Content.Web.Modules
                 {
                     // Get Newsletter Users from DB
                     SqlDataReader dReader =
-                        newsletter.GetUsersNewsletter(portalSettings.PortalID,
+                        newsletter.GetUsersNewsletter(PortalSettings.PortalID,
                                                       Int32.Parse(Settings["NEWSLETTER_USERBLOCK"].ToString()),
                                                       Int32.Parse(Settings["NEWSLETTER_DONOTRESENDWITHIN"].ToString()));
                     try
@@ -180,7 +181,7 @@ namespace Rainbow.Content.Web.Modules
                         while (dReader.Read())
                         {
                             cnt++;
-                            message += dReader["Email"].ToString() + ", ";
+                            message += dReader["Email"] + ", ";
                             try
                             {
                                 //Send the email
@@ -189,12 +190,12 @@ namespace Rainbow.Content.Web.Modules
                                                        Settings["NEWSLETTER_LOGINHOMEPAGE"].ToString(), txtSubject.Text,
                                                        txtBody.Text, true, HtmlMode.Checked, InsertBreakLines.Checked);
                                 //Update db
-                                newsletter.SendNewsletterTo(portalSettings.PortalID, dReader["Email"].ToString());
+                                newsletter.SendNewsletterTo(PortalSettings.PortalID, dReader["Email"].ToString());
                             }
                             catch (Exception ex)
                             {
-                                InvalidRecipients += dReader["Email"].ToString() + "<br>";
-                                BlacklistDB.AddToBlackList(portalSettings.PortalID, dReader["Email"].ToString(),
+                                InvalidRecipients += dReader["Email"] + "<br>";
+                                BlacklistDB.AddToBlackList(PortalSettings.PortalID, dReader["Email"].ToString(),
                                                            ex.Message);
                             }
                         }
@@ -269,7 +270,7 @@ namespace Rainbow.Content.Web.Modules
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:SendNewsletter"/> class.
+        /// Initializes a new instance of the <see cref="SendNewsletter"/> class.
         /// </summary>
         public SendNewsletter()
         {
@@ -281,13 +282,13 @@ namespace Rainbow.Content.Web.Modules
             DefaultEmail.EnglishName = "Sender Email";
             DefaultEmail.Group = group;
             DefaultEmail.Order = groupBase + 20;
-            _baseSettings.Add("NEWSLETTER_DEFAULTEMAIL", DefaultEmail);
+            baseSettings.Add("NEWSLETTER_DEFAULTEMAIL", DefaultEmail);
 
             SettingItem DefaultName = new SettingItem(new StringDataType());
             DefaultName.Group = group;
             DefaultName.Order = groupBase + 25;
             DefaultName.EnglishName = "Sender Name";
-            _baseSettings.Add("NEWSLETTER_DEFAULTNAME", DefaultName);
+            baseSettings.Add("NEWSLETTER_DEFAULTNAME", DefaultName);
 
             SettingItem TestMode = new SettingItem(new BooleanDataType());
             TestMode.Value = "False";
@@ -296,7 +297,7 @@ namespace Rainbow.Content.Web.Modules
             TestMode.EnglishName = "Test Mode";
             TestMode.Description =
                 "Use Test Mode for testing your settings. It will send only one email to the address specified as sender. Useful for testing";
-            _baseSettings.Add("TestMode", TestMode);
+            baseSettings.Add("TestMode", TestMode);
 
             //SettingItem HTMLTemplate = new SettingItem(new CustomListDataType(new Rainbow.Framework.Site.Configuration.ModulesDB().GetModuleDefinitionByGuid(p, new Guid("{0B113F51-FEA3-499A-98E7-7B83C192FDBB}")), "ModuleTitle", "ModuleID"));
             SettingItem HTMLTemplate = new SettingItem(new ModuleListDataType("Html Document"));
@@ -306,7 +307,7 @@ namespace Rainbow.Content.Web.Modules
             HTMLTemplate.EnglishName = "HTML Template";
             HTMLTemplate.Description =
                 "Select an HTML module that the will be used as base for this newsletter sent with this module.";
-            _baseSettings.Add("NEWSLETTER_HTMLTEMPLATE", HTMLTemplate);
+            baseSettings.Add("NEWSLETTER_HTMLTEMPLATE", HTMLTemplate);
 
             SettingItem LoginHomePage = new SettingItem(new StringDataType());
             LoginHomePage.EnglishName = "Site URL";
@@ -314,7 +315,7 @@ namespace Rainbow.Content.Web.Modules
             LoginHomePage.Order = groupBase + 40;
             LoginHomePage.Description =
                 "The Url or the Home page of the site used for build the instant login url. Leave blank if using the current site.";
-            _baseSettings.Add("NEWSLETTER_LOGINHOMEPAGE", LoginHomePage);
+            baseSettings.Add("NEWSLETTER_LOGINHOMEPAGE", LoginHomePage);
 
             SettingItem DoNotResendWithin = new SettingItem(new ListDataType("1;2;3;4;5;6;7;10;15;30;60;90"));
             DoNotResendWithin.Value = "7";
@@ -323,7 +324,7 @@ namespace Rainbow.Content.Web.Modules
             DoNotResendWithin.EnglishName = "Do not resend within (days)";
             DoNotResendWithin.Description =
                 "To avoid spam and duplicate sent you cannot email an user more than one time in specifed number of days.";
-            _baseSettings.Add("NEWSLETTER_DONOTRESENDWITHIN", DoNotResendWithin);
+            baseSettings.Add("NEWSLETTER_DONOTRESENDWITHIN", DoNotResendWithin);
 
             SettingItem UserBlock = new SettingItem(new ListDataType("50;100;200;250;300;1000;1500;5000"));
             UserBlock.EnglishName = "Group users";
@@ -332,7 +333,7 @@ namespace Rainbow.Content.Web.Modules
             UserBlock.Description =
                 "Select the maximum number of users. For sending emails to all you have to repeat the process. Use small values to avoid server timeouts.";
             UserBlock.Value = "250";
-            _baseSettings.Add("NEWSLETTER_USERBLOCK", UserBlock);
+            baseSettings.Add("NEWSLETTER_USERBLOCK", UserBlock);
         }
 
         /// <summary>
@@ -359,7 +360,7 @@ namespace Rainbow.Content.Web.Modules
             if (!bool.Parse(Settings["TestMode"].ToString()))
             {
                 SqlDataReader dReader =
-                    newsletter.GetUsersNewsletter(portalSettings.PortalID,
+                    newsletter.GetUsersNewsletter(PortalSettings.PortalID,
                                                   Int32.Parse(Settings["NEWSLETTER_USERBLOCK"].ToString()),
                                                   Int32.Parse(Settings["NEWSLETTER_DONOTRESENDWITHIN"].ToString()));
                 try
@@ -416,12 +417,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Server.MapPath(this.TemplateSourceDirectory + "/Newsletter_Install.sql");
+            string currentScriptName = Server.MapPath(TemplateSourceDirectory + "/Newsletter_Install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -431,12 +432,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Server.MapPath(this.TemplateSourceDirectory + "/Newsletter_Uninstall.sql");
+            string currentScriptName = Server.MapPath(TemplateSourceDirectory + "/Newsletter_Uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

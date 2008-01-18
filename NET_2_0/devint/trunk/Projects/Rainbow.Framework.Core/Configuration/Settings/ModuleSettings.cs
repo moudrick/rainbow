@@ -1,12 +1,6 @@
 using System;
 using System.Collections;
-using System.Data;
-using System.Data.SqlClient;
-using System.Web.UI;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework;
-using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Framework.Site.Configuration
 {
@@ -19,10 +13,8 @@ namespace Rainbow.Framework.Site.Configuration
 	public class ModuleSettings
 	{
 		const string strAdmin = "Admin;";
-		const string strDesktopSrc = "DesktopSrc";
-		const string strATModuleID = "@ModuleID";
 
-        #region Public Fields
+	    #region Public Fields
         /// <summary>
 		/// ModuleID
 		/// </summary>
@@ -160,203 +152,6 @@ namespace Rainbow.Framework.Site.Configuration
 			MobileSrc = string.Empty;
 			SupportCollapsable = false;
 			SupportWorkflow = false;
-		}
-
-		/// <summary>
-		/// The GetModuleDesktopSrc Method returns a string of
-		/// the specified Module's Desktop Src, which can be used to
-		/// Load this modules control into a page.
-		/// </summary>
-        /// <remarks>
-        /// Added by gman3001 10/06/2004, to allow for the retrieval of a Module's Desktop src path
-        /// in order to dynamically load a module control by its Module ID
-        /// </remarks>
-		/// <param name="moduleID">The module ID.</param>
-		/// <returns>The desktop source path string</returns>
-		public static string GetModuleDesktopSrc(int moduleID)
-		{
-			string ControlPath = string.Empty;
-
-			using (SqlDataReader dr = GetModuleDefinitionByID(moduleID))
-			{
-				if (dr.Read())
-				{
-					ControlPath = Path.WebPathCombine(Path.ApplicationRoot, dr[strDesktopSrc].ToString());
-				}
-			}
-			return ControlPath;
-		}
-
-		/// <summary>
-		/// The GetModuleSettings Method returns a hashtable of
-		/// custom module specific settings from the database.  This method is
-		/// used by some user control modules to access misc settings.
-		/// </summary>
-		/// <param name="moduleID">The module ID.</param>
-		/// <param name="_baseSettings">The _base settings.</param>
-		/// <returns></returns>
-		public static Hashtable GetModuleSettings(int moduleID, Hashtable _baseSettings)
-		{
-			if (!CurrentCache.Exists(Key.ModuleSettings(moduleID)))
-			{
-				// Get Settings for this module from the database
-				Hashtable _settings = new Hashtable();
-
-				// Create Instance of Connection and Command Object
-				using (SqlConnection myConnection = Config.SqlConnectionString)
-				{
-					using (SqlCommand myCommand = new SqlCommand("rb_GetModuleSettings", myConnection))
-					{
-						// Mark the Command as a SPROC
-						myCommand.CommandType = CommandType.StoredProcedure;
-
-						// Add Parameters to SPROC
-						SqlParameter parameterModuleID = new SqlParameter(strATModuleID, SqlDbType.Int, 4);
-						parameterModuleID.Value = moduleID;
-						myCommand.Parameters.Add(parameterModuleID);
-
-						// Execute the command
-						myConnection.Open();
-						using (SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection))
-						{
-							while (dr.Read())
-							{
-								_settings[dr["SettingName"].ToString()] = dr["SettingValue"].ToString();
-							}
-						}
-					}
-				}
-
-				foreach (string key in _baseSettings.Keys)
-				{
-					if (_settings[key] != null)
-					{
-						SettingItem s = ((SettingItem)_baseSettings[key]);
-						if (_settings[key].ToString().Length != 0)
-							s.Value = _settings[key].ToString();
-					}
-				}
-
-				CurrentCache.Insert(Key.ModuleSettings(moduleID), _baseSettings);
-			}
-			else
-			{
-				_baseSettings = (Hashtable)CurrentCache.Get(Key.ModuleSettings(moduleID));
-			}
-			return _baseSettings;
-		}
-
-		/// <summary>
-		/// The GetModuleSettings Method returns a hashtable of
-		/// custom module specific settings from the database. This method is
-		/// used by some user control modules to access misc settings.
-		/// </summary>
-		/// <param name="moduleID">The module ID.</param>
-		/// <param name="page">The page.</param>
-		/// <returns></returns>
-		public static Hashtable GetModuleSettings(int moduleID, Page page)
-		{
-			string ControlPath = Path.ApplicationRoot + "/";
-
-			using (SqlDataReader dr = GetModuleDefinitionByID(moduleID))
-			{
-				if (dr.Read())
-				{
-					ControlPath += dr[strDesktopSrc].ToString();
-				}
-			}
-
-			PortalModuleControl portalModule;
-			Hashtable setting;
-			try
-			{
-				portalModule = (PortalModuleControl)page.LoadControl(ControlPath);
-				setting = GetModuleSettings(moduleID, portalModule.BaseSettings);
-			}
-			catch (Exception ex)
-			{
-				throw new Exception("There was a problem loading: '" + ControlPath + "'", ex); // Jes1111
-				//Rainbow.Framework.Configuration.ErrorHandler.HandleException("There was a problem loading: '" + ControlPath + "'", ex);
-				//throw;
-			}
-			return setting;
-		}
-
-		/// <summary>
-		/// The GetModuleSettings Method returns a hashtable of
-		/// custom module specific settings from the database. This method is
-		/// used by some user control modules to access misc settings.
-		/// </summary>
-		/// <param name="moduleID">The module ID.</param>
-		/// <returns></returns>
-		public static Hashtable GetModuleSettings(int moduleID)
-		{
-			return (GetModuleSettings(moduleID, new Rainbow.Framework.Web.UI.Page()));
-		}
-
-		/// <summary>
-		/// The UpdateModuleSetting Method updates a single module setting
-		/// in the ModuleSettings database table.
-		/// </summary>
-		/// <param name="moduleID">The module ID.</param>
-		/// <param name="key">The key.</param>
-		/// <param name="value">The value.</param>
-		public static void UpdateModuleSetting(int moduleID, string key, string value)
-		{
-			// Create Instance of Connection and Command Object
-			using (SqlConnection myConnection = Config.SqlConnectionString)
-			{
-				using (SqlCommand myCommand = new SqlCommand("rb_UpdateModuleSetting", myConnection))
-				{
-					// Mark the Command as a SPROC
-					myCommand.CommandType = CommandType.StoredProcedure;
-
-					// Add Parameters to SPROC
-					SqlParameter parameterModuleID = new SqlParameter(strATModuleID, SqlDbType.Int, 4);
-					parameterModuleID.Value = moduleID;
-					myCommand.Parameters.Add(parameterModuleID);
-
-					SqlParameter parameterKey = new SqlParameter("@SettingName", SqlDbType.NVarChar, 50);
-					parameterKey.Value = key;
-					myCommand.Parameters.Add(parameterKey);
-
-					SqlParameter parameterValue = new SqlParameter("@SettingValue", SqlDbType.NVarChar, 1500);
-					parameterValue.Value = value;
-					myCommand.Parameters.Add(parameterValue);
-
-					myConnection.Open();
-					myCommand.ExecuteNonQuery();
-				}
-			}
-			//Invalidate cache
-			CurrentCache.Remove(Key.ModuleSettings(moduleID));
-		}
-
-		/// <summary>
-		/// GetModuleDefinitionByID
-		/// </summary>
-		/// <param name="ModuleID">ModuleID</param>
-		/// <returns>A SqlDataReader</returns>
-		public static SqlDataReader GetModuleDefinitionByID(int ModuleID)
-		{
-			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
-			SqlCommand myCommand = new SqlCommand("rb_GetModuleDefinitionByID", myConnection);
-
-			// Mark the Command as a SPROC
-			myCommand.CommandType = CommandType.StoredProcedure;
-
-			// Add Parameters to SPROC
-			SqlParameter parameterModuleID = new SqlParameter(strATModuleID, SqlDbType.Int);
-			parameterModuleID.Value = ModuleID;
-			myCommand.Parameters.Add(parameterModuleID);
-
-			// Execute the command
-			myConnection.Open();
-			SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-
-			// Return the datareader
-			return result;
 		}
 	}
 }

@@ -1,5 +1,6 @@
-
 <%@ Control Language="c#" inherits="Rainbow.Content.Web.Modules.Articles" autoeventwireup="false" %>
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Web.UI.WebControls" %>
+
 <asp:datalist id="myDataList" runat="server" CellPadding="4" Width="100%">
 	<ItemTemplate>
 		<div class="Normal">

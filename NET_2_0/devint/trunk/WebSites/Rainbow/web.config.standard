@@ -9,9 +9,11 @@
     <section name="ShippingObjects" type="System.Configuration.NameValueSectionHandler, System, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, Custom=null" requirePermission="false" />
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" requirePermission="false" />
     <sectionGroup name="providers">
-      <section name="log" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework.Core" requirePermission="false" />
-      <section name="urlBuilder" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework.Core" requirePermission="false" />
-      <section name="geographic" type="Rainbow.Framework.Provider.ProviderConfigurationHandler, Rainbow.Framework.Core" requirePermission="false"/>
+      <section name="log"        type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="geographic" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="portal"     type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="portalPage" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="urlBuilder" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
     </sectionGroup>
     <section name="urlrewritingnet" restartOnExternalChanges="true" requirePermission="false" type="UrlRewritingNet.Configuration.UrlRewriteSection, UrlRewritingNet.UrlRewriter" />
     <sectionGroup name="system.web.extensions" type="System.Web.Configuration.SystemWebExtensionsSectionGroup, System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -63,9 +65,6 @@
     <add name="ConnectionString" connectionString="server=localhost;Trusted_Connection=true;database=Rainbow2.0-Trunk;Application Name=Rainbow" providerName="System.Data.SqlClient" />
         -->
     <add name="ConnectionString" connectionString="{!!! CHANGE ME TO A VALID CONNECTION STRING !!!}" />
-    <add name="Providers.ConnectionString" connectionString="{!!! CHANGE ME TO A VALID CONNECTION STRING !!!}" />
-    <add name="RainbowProviders.ConnectionString" connectionString="{!!! CHANGE ME TO A VALID CONNECTION STRING !!!}" />
-    <add name="Main.ConnectionString" connectionString="{!!! CHANGE ME TO A VALID CONNECTION STRING !!!}" />
   </connectionStrings>
 
   <!-- Application specific settings -->
@@ -167,19 +166,44 @@
     <membership defaultProvider="RainbowSqlMembershipProvider">
       <providers>
         <clear />
-        <add name="RainbowSqlMembershipProvider" type="Rainbow.Framework.Providers.RainbowMembershipProvider.RainbowSqlMembershipProvider, Rainbow.Framework.Providers.RainbowSqlMembershipProvider" connectionStringName="RainbowProviders.ConnectionString" enablePasswordRetrieval="true" enablePasswordReset="true" requiresQuestionAndAnswer="false" applicationName="Rainbow" requiresUniqueEmail="true" passwordFormat="Clear" maxInvalidPasswordAttempts="5" minRequiredPasswordLength="5" minRequiredNonalphanumericCharacters="0" passwordAttemptWindow="10" passwordStrengthRegularExpression="" />
+        <add name="RainbowSqlMembershipProvider" 
+          type="Rainbow.Framework.Providers.MsSql.RainbowSqlMembershipProvider, Rainbow.Framework.Providers.MsSql" 
+          connectionStringName="ConnectionString" 
+          enablePasswordRetrieval="true" 
+          enablePasswordReset="true" 
+          requiresQuestionAndAnswer="false" 
+          applicationName="Rainbow" 
+          requiresUniqueEmail="true" 
+          passwordFormat="Clear" 
+          maxInvalidPasswordAttempts="5" 
+          minRequiredPasswordLength="5" 
+          minRequiredNonalphanumericCharacters="0" 
+          passwordAttemptWindow="10" 
+          passwordStrengthRegularExpression="" />
       </providers>
     </membership>
-    <roleManager enabled="true" defaultProvider="RainbowSqlRoleProvider" cacheRolesInCookie="true" cookieName=".RainbowRolesCookie" cookieTimeout="30" cookieSlidingExpiration="true" cookieProtection="All">
+    <roleManager enabled="true" 
+        defaultProvider="RainbowSqlRoleProvider" 
+        cacheRolesInCookie="true" 
+        cookieName=".RainbowRolesCookie" 
+        cookieTimeout="30" 
+        cookieSlidingExpiration="true" 
+        cookieProtection="All">
       <providers>
         <clear />
-        <add name="RainbowSqlRoleProvider" type="Rainbow.Framework.Providers.RainbowRoleProvider.RainbowSqlRoleProvider, Rainbow.Framework.Providers.RainbowSqlRoleProvider" connectionStringName="RainbowProviders.ConnectionString" applicationName="Rainbow" />
+        <add name="RainbowSqlRoleProvider" 
+          type="Rainbow.Framework.Providers.MsSql.RainbowSqlRoleProvider, Rainbow.Framework.Providers.MsSql" 
+          connectionStringName="ConnectionString" 
+          applicationName="Rainbow" />
       </providers>
     </roleManager>
     <profile enabled="true" defaultProvider="RainbowSqlProfileProvider">
       <providers>
         <clear />
-        <add name="RainbowSqlProfileProvider" connectionStringName="Providers.ConnectionString" applicationName="Rainbow" type="System.Web.Profile.SqlProfileProvider" />
+        <add name="RainbowSqlProfileProvider" 
+          connectionStringName="ConnectionString" 
+          applicationName="Rainbow" 
+          type="System.Web.Profile.SqlProfileProvider" />
         <!--<add name="TableProfileProvider" type="Microsoft.Samples.SqlTableProfileProvider"  connectionStringName="TestDatabase" table="ProfileTable_1" applicationName="DatabaseProfileProviderTest" />-->
       </providers>
       <properties>
@@ -199,7 +223,11 @@
     </profile>
     <siteMap enabled="true" defaultProvider="RainbowSqlSiteMapProvider">
       <providers>
-        <add name="RainbowSqlSiteMapProvider" type="Rainbow.Framework.Providers.RainbowSiteMapProvider.RainbowSqlSiteMapProvider" securityTrimmingEnabled="true" connectionStringName="ConnectionString" description="Rainbow SQL Server site map provider"/>
+        <add name="RainbowSqlSiteMapProvider" 
+          type="Rainbow.Framework.Providers.MsSql.RainbowSqlSiteMapProvider, Rainbow.Framework.Providers.MsSql" 
+          securityTrimmingEnabled="true" 
+          connectionStringName="ConnectionString" 
+          description="Rainbow SQL Server site map provider"/>
       </providers>
     </siteMap>
     <caching>
@@ -605,22 +633,48 @@
     <urlBuilder defaultProvider="SqlUrlBuilder">
       <providers>
         <clear />
-        <add name="SqlUrlBuilder" type="Rainbow.Framework.Web.SqlUrlBuilderProvider, Rainbow.Framework.Core" handlerflag="site" handlersplitter="__" pageidnosplitter="true" friendlypagename="default.aspx" aliasinurl="false" langinurl="false" cacheminutes="5" ignoretargetpage="PageLayout.aspx" />
+        <add name="SqlUrlBuilder" type="Rainbow.Framework.Web.SqlUrlBuilderProvider, Rainbow.Framework.Core" 
+          handlerflag="site" 
+          handlersplitter="__" 
+          pageidnosplitter="true" 
+          friendlypagename="default.aspx" 
+          aliasinurl="false" 
+          langinurl="false" 
+          cacheminutes="5" 
+          ignoretargetpage="PageLayout.aspx" />
       </providers>
     </urlBuilder>
     <geographic defaultProvider="GeographicProvider">
       <providers>
         <clear/>
-        <add name="GeographicProvider" type="Rainbow.Framework.Providers.Geographic.SqlGeographicProvider, Rainbow.Framework.Core" countriesFilter=""/>
+        <add name="GeographicProvider" type="Rainbow.Framework.Providers.MsSql.SqlGeographicProvider, Rainbow.Framework.Providers.MsSql" countriesFilter="" />
       </providers>
     </geographic>
+    <portal defaultProvider="PortalProvider">
+      <providers>
+        <clear/>
+        <add name="PortalProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlPortalProvider, Rainbow.Framework.Providers.MsSql" />
+      </providers>
+    </portal>
+    <portalPage defaultProvider="PortalPageProvider">
+      <providers>
+        <clear/>
+        <add name="PortalPageProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlPortalPageProvider, Rainbow.Framework.Providers.MsSql" />
+      </providers>
+    </portalPage>
   </providers>
-  <urlrewritingnet xmlns="http://www.urlrewriting.net/schemas/config/2006/07" >
+  <urlrewritingnet xmlns="http://www.urlrewriting.net/schemas/config/2006/07">
     <providers>
-      <add name="RainbowUrlRewritingProvider" type="Rainbow.Framework.UrlRewriting.RainbowUrlRewritingProvider, Rainbow.Framework.UrlRewriting"/>
+      <add name="RainbowUrlRewritingProvider" type="Rainbow.Framework.UrlRewriting.RainbowUrlRewritingProvider, Rainbow.Framework.UrlRewriting" />
     </providers>
     <rewrites>
-      <add name="RainbowUrl" provider="RainbowUrlRewritingProvider" rewriteUrlParameter="ExcludeFromClientQueryString" ignoreCase="true" handlerFlag="site" handlerSplitter="__" pageIdNoSplitter="true" friendlyPageName="DesktopDefault.aspx"  />
+      <add name="RainbowUrl" provider="RainbowUrlRewritingProvider" 
+        rewriteUrlParameter="ExcludeFromClientQueryString" 
+        ignoreCase="true" 
+        handlerFlag="site" 
+        handlerSplitter="__" 
+        pageIdNoSplitter="true" 
+        friendlyPageName="DesktopDefault.aspx"  />
     </rewrites>
   </urlrewritingnet>
 </configuration>

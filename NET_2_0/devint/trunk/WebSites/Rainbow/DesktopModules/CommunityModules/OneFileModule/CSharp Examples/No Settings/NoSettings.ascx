@@ -1,5 +1,5 @@
 <%@ Control Language="c#" inherits="Rainbow.Content.Web.Modules.OneFileModule" %>
-<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework" %>
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework.Web" %>
 
 <script language="C#" runat="server">
 

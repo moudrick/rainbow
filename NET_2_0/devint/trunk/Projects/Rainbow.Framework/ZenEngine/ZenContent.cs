@@ -4,8 +4,8 @@ using System.Configuration;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
@@ -15,16 +15,16 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// </summary>
     public class ZenContent : WebControl, INamingContainer
     {
-        private ArrayList innerDataSource;
-        private bool _autoBind = true;
-        private string _content;
+        ArrayList innerDataSource;
+        bool _autoBind = true;
+        string _content;
 
         /// <summary>
         /// Constructor
         /// </summary>
         public ZenContent()
         {
-            Load += new EventHandler(LoadControl);
+            Load += LoadControl;
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             innerDataSource = new ArrayList();
 
             // Obtain PortalSettings from Current Context
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             // Loop through each entry in the configuration system for this tab
             // Ensure that the visiting user has access to view the module

@@ -17,12 +17,13 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings.Cache;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Solpart.WebControls;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -30,11 +31,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// TODO: CAN WE REPLACE THIS WITH ASP.NET Menu naviagion? 
     /// Therby not breaking any existing themes?
     /// </summary>
-    [
-        History("gman3001", "2004/10/06",
+    [History("gman3001", "2004/10/06",
             "Add support for the active root tab to use a custom css style for normal and highlighting purposes")]
-    [
-        History("jviladiu@portalServices.net", "2004/08/26",
+    [History("jviladiu@portalServices.net", "2004/08/26",
             "Add AutoShopDetect support and set url's for categories of products")]
     [History("jviladiu@portalServices.net", "2004/08/26", "Add ShowIconMenu property")]
     public class SolpartNavigation : SolpartMenu, INavigation
@@ -44,8 +43,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         public SolpartNavigation()
         {
-            EnableViewState = false;
-            Load += new EventHandler(LoadControl);
+            base.EnableViewState = false;
+            Load += LoadControl;
         }
 
         /// <summary>
@@ -55,16 +54,16 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void LoadControl(object sender, EventArgs e)
         {
-            base.SystemScriptPath =
+            SystemScriptPath =
                 string.Concat(Path.ApplicationRoot, "/aspnet_client/SolpartWebControls_SolpartMenu/1_4_0_0/");
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
             string solpart =
                 string.Concat(Path.ApplicationRoot, "/aspnet_client/SolpartWebControls_SolpartMenu/1_4_0_0/");
 
             if (ShowIconMenu)
             {
-                base.SystemImagesPath = Path.WebPathCombine(portalSettings.PortalLayoutPath, "menuimages/");
-                string menuDirectory = HttpContext.Current.Server.MapPath(base.SystemImagesPath);
+                SystemImagesPath = Path.WebPathCombine(portalSettings.PortalLayoutPath, "menuimages/");
+                string menuDirectory = HttpContext.Current.Server.MapPath(SystemImagesPath);
 
                 // Create directory and copy standard images for solpart
                 if (!Directory.Exists(menuDirectory))
@@ -80,13 +79,15 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         File.Copy(solpartPhysicalDir + "/icon_arrow.gif", menuDirectory + "/icon_arrow.gif");
                 }
             }
-            else base.SystemImagesPath = solpart;
+            else SystemImagesPath = solpart;
 
-            base.MenuCSSPlaceHolderControl = "spMenuStyle";
-            base.SeparateCSS = true;
+            MenuCSSPlaceHolderControl = "spMenuStyle";
+            SeparateCSS = true;
 
             if (AutoBind)
+            {
                 DataBind();
+            }
         }
 
         #region INavigation implementation
@@ -198,7 +199,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             //bool currentTabOnly = (Bind == BindOption.BindOptionCurrentChilds); 
 
             // Obtain PortalSettings from Current Context 
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             // Build list of tabs to be shown to user 
             ArrayList authorizedTabs = setAutorizedTabsWithImage();
@@ -245,8 +246,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 PageStripDetails myTab = (PageStripDetails) authorizedTabs[i];
                 if (myTab.PageImage == null)
                 {
-                    myTab.PageImage =
-                        (new PageSettings().GetPageCustomSettings(myTab.PageID))["CustomMenuImage"].ToString();
+                    myTab.PageImage = PortalPageProvider.Instance
+                        .InstantiateNewPortalPage(myTab.PageID).CustomMenuImage;
                 }
             }
             return authorizedTabs;
@@ -262,11 +263,13 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <returns>
         /// 	<c>true</c> if [is active tab in] [the specified active page ID]; otherwise, <c>false</c>.
         /// </returns>
-        private bool isActiveTabIn(int activePageID, PageStripDetails PageStripDetails)
+        static bool isActiveTabIn(int activePageID, PageStripDetails PageStripDetails)
         {
             if (PageStripDetails.PageID == activePageID)
+            {
                 return true;
-            PagesBox childTabs = PageStripDetails.Pages;
+            }
+            PagesBox childTabs = PortalPageProvider.Instance.GetPagesBox(PageStripDetails);
             if (childTabs.Count > 0)
             {
                 for (int c = 0; c < childTabs.Count; c++)
@@ -275,10 +278,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     if (PortalSecurity.IsInRoles(mySubTab.AuthorizedRoles))
                     {
                         if (isActiveTabIn(activePageID, mySubTab))
+                        {
                             return true;
+                        }
                     }
                 }
-                childTabs = null;
             }
             return false;
         }
@@ -293,7 +297,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (!AutoShopDetect) return false;
             if (!CurrentCache.Exists(Key.TabNavigationSettings(tab, "Shop")))
             {
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 bool exists = new ModulesDB().ExistModuleProductsInPage(tab, portalSettings.PortalID);
                 CurrentCache.Insert(Key.TabNavigationSettings(tab, "Shop"), exists);
             }
@@ -307,7 +311,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="activePageID">The active page ID.</param>
         protected virtual void ShopMenu(PageStripDetails PageStripDetails, int activePageID)
         {
-            PagesBox childTabs = PageStripDetails.Pages;
+            PagesBox childTabs = PortalPageProvider.Instance.GetPagesBox(PageStripDetails);
             if (childTabs.Count > 0)
             {
                 for (int c = 0; c < childTabs.Count; c++)
@@ -318,11 +322,10 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         AddGraphMenuItem(PageStripDetails.PageID.ToString(), mySubTab.PageID.ToString(),
                                          mySubTab.PageName, mySubTab.PageImage,
                                          HttpUrlBuilder.BuildUrl("~/" + HttpUrlBuilder.DefaultPage, activePageID,
-                                                                 "ItemID=" + mySubTab.PageID.ToString()), false);
+                                                                 "ItemID=" + mySubTab.PageID), false);
                         ShopMenu(mySubTab, activePageID);
                     }
                 }
-                childTabs = null;
             }
         }
 
@@ -332,13 +335,17 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="tab">The tab.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        private string giveMeUrl(string tab, int id)
+        string giveMeUrl(string tab, int id)
         {
-            if (!UseTabNameInUrl) return HttpUrlBuilder.BuildUrl(id);
+            if (!UseTabNameInUrl)
+            {
+                return HttpUrlBuilder.BuildUrl(id);
+            }
             string auxtab = string.Empty;
             foreach (char c in tab)
-                if (char.IsLetterOrDigit(c)) auxtab += c;
-                else auxtab += "_";
+            {
+                auxtab += char.IsLetterOrDigit(c) ? c : '_';
+            }
             return HttpUrlBuilder.BuildUrl("~/" + auxtab + ".aspx", id);
         }
 
@@ -349,7 +356,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="activePageID">The active page ID.</param>
         protected virtual void RecourseMenu(PageStripDetails PageStripDetails, int activePageID)
         {
-            PagesBox childTabs = PageStripDetails.Pages;
+            PagesBox childTabs = PortalPageProvider.Instance.GetPagesBox(PageStripDetails);
             if (childTabs.Count > 0)
             {
                 for (int c = 0; c < childTabs.Count; c++)
@@ -359,8 +366,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     {
                         if (mySubTab.PageImage == null)
                         {
-                            mySubTab.PageImage =
-                                (new PageSettings().GetPageCustomSettings(mySubTab.PageID))["CustomMenuImage"].ToString();
+                            PortalPage portalPage = PortalPageProvider.Instance.InstantiateNewPortalPage(mySubTab.PageID);
+                            mySubTab.PageImage = portalPage.CustomMenuImage;
                         }
                         if (products(mySubTab.PageID))
                         {
@@ -379,7 +386,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         }
                     }
                 }
-                childTabs = null;
             }
         }
 
@@ -414,7 +420,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private void AddGraphMenuItem(string parent, string tab, string tabname, string iconfile, string url,
                                       bool translation, string customcss, string customhighlightcss)
         {
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
             string pathGraph = HttpContext.Current.Server.MapPath(portalSettings.PortalLayoutPath + "/menuimages/");
             string tabTranslation = tabname;
             if (translation) tabTranslation = General.GetString(tabname);
@@ -422,11 +428,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
             XmlNode padre = null;
 
             // gman3001: Line added 2004/10/06
-            XmlNode newNode = null;
+            XmlNode newNode;
 
             if (parent != null)
             {
-                padre = base.FindMenuItem(parent).Node;
+                padre = FindMenuItem(parent).Node;
             }
 
             if (ShowIconMenu)
@@ -435,7 +441,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                 {
                     // gman3001: Line modified 2004/10/06, added assignment to newNode
                     newNode =
-                        base.AddMenuItem(padre, tab, tabTranslation, url, iconfile, false, string.Empty, string.Empty);
+                        AddMenuItem(padre, tab, tabTranslation, url, iconfile, false, string.Empty, string.Empty);
                 }
                 else
                 {
@@ -443,14 +449,14 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     {
                         // gman3001: Line modified 2004/10/06, added assignment to newNode
                         newNode =
-                            base.AddMenuItem(padre, tab, tabTranslation, url, "menu.gif", false, string.Empty,
+                            AddMenuItem(padre, tab, tabTranslation, url, "menu.gif", false, string.Empty,
                                              string.Empty);
                     }
                     else
                     {
                         // gman3001: Line modified 2004/10/06, added assignment to newNode
                         newNode =
-                            base.AddMenuItem(padre, tab, tabTranslation, url, string.Empty, false, string.Empty,
+                            AddMenuItem(padre, tab, tabTranslation, url, string.Empty, false, string.Empty,
                                              string.Empty);
                     }
                 }
@@ -459,7 +465,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 // gman3001: Line modified 2004/10/06, added assignment to newNode
                 newNode =
-                    base.AddMenuItem(padre, tab, tabTranslation, url, string.Empty, false, string.Empty, string.Empty);
+                    AddMenuItem(padre, tab, tabTranslation, url, string.Empty, false, string.Empty, string.Empty);
             }
 
             // gman3001: Added 2004/10/06
@@ -479,7 +485,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="curNode">The cur node.</param>
         /// <param name="AttributeName">Name of the attribute.</param>
         /// <param name="Value">The value.</param>
-        private void AddAttributetoItem(XmlNode curNode, string AttributeName, string Value)
+        static void AddAttributetoItem(XmlNode curNode, string AttributeName, string Value)
         {
             if (curNode != null && AttributeName != null && AttributeName.Length > 0 && Value != null &&
                 Value.Length > 0)
@@ -509,7 +515,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (HttpContext.Current != null)
             {
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
                 switch (Bind)
                 {
@@ -522,7 +528,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     case BindOption.BindOptionCurrentChilds:
                         {
                             int currentTabRoot =
-                                PortalSettings.GetRootPage(portalSettings.ActivePage, portalSettings.DesktopPages).
+                                PortalProvider.Instance.GetRootPage(portalSettings.ActivePage, portalSettings.DesktopPages).
                                     PageID;
                             authorizedTabs =
                                 GetTabs(currentTabRoot, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
@@ -589,6 +595,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             return authorizedTabs;
         }
 
+/*
         /// <summary>
         /// Seems to be unused - Jes1111
         /// </summary>
@@ -617,6 +624,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             }
             return 0;
         }
+*/
 
         /// <summary>
         /// Gets the tabs.
@@ -625,7 +633,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="tabID">The tab ID.</param>
         /// <param name="Tabs">The tabs.</param>
         /// <returns></returns>
-        private ArrayList GetTabs(int parentID, int tabID, IList Tabs)
+        static ArrayList GetTabs(int parentID, int tabID, IList Tabs)
         {
             ArrayList authorizedTabs = new ArrayList();
             //int index = -1;

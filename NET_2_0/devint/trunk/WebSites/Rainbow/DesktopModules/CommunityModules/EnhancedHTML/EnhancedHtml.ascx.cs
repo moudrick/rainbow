@@ -6,12 +6,14 @@ using System.Globalization;
 using System.Web;
 using System.Web.UI;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Content.Data;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Settings.Cache;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -159,7 +161,7 @@ namespace Rainbow.Content.Web.Modules
                     }
                     else
                     {
-                        referencia = "<a href='" + dameUrl("&ModeID=0&EhPageID=" + i.ToString()) + "' " +
+                        referencia = "<a href='" + dameUrl("&ModeID=0&EhPageID=" + i) + "' " +
                                      "class='EnhancedHtmlLink'>" + fila["Title"] + "</a>";
                         upmenu += referencia;
                         if (totalPages - 1 == actualPage)
@@ -168,9 +170,15 @@ namespace Rainbow.Content.Web.Modules
                         }
                     }
                 }
-                if (prevRef.Length != 0) downmenu += prevRef + currentMenuSeparator;
-                downmenu += ehPage + " " + actualPage.ToString() + " " + ehOf + " " + totalPages.ToString();
-                if (nextRef.Length != 0) downmenu += currentMenuSeparator + nextRef;
+                if (prevRef.Length != 0)
+                {
+                    downmenu += prevRef + currentMenuSeparator;
+                }
+                downmenu += string.Format("{0} {1} {2} {3}", ehPage, actualPage, ehOf, totalPages);
+                if (nextRef.Length != 0)
+                {
+                    downmenu += currentMenuSeparator + nextRef;
+                }
 
                 aux = "<br><table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>";
                 if (showTitle)
@@ -225,7 +233,7 @@ namespace Rainbow.Content.Web.Modules
         /// <returns></returns>
         private Control toShow(string text)
         {
-            int module = 0;
+            int module;
             if (text.StartsWith(tokenModule))
             {
                 module = int.Parse(text.Substring(tokenModule.Length));
@@ -234,51 +242,33 @@ namespace Rainbow.Content.Web.Modules
             {
                 module = int.Parse(text.Substring(tokenPortalModule.Length));
             }
-            else return new LiteralControl(text.ToString());
-
-            PortalModuleControl portalModule;
-            string ControlPath = string.Empty;
-            using (SqlDataReader dr = ModuleSettings.GetModuleDefinitionByID(module))
+            else
             {
-                if (dr.Read())
-                    ControlPath = Path.ApplicationRoot + "/" + dr["DesktopSrc"].ToString();
+                return new LiteralControl(text);
             }
+
+            ModuleSettings moduleSettings = ModuleSettingsProvider.InstantiateNewModuleSettings(module, ModuleConfiguration);
+            string controlPath = moduleSettings.DesktopSrc;
+            PortalModuleControl portalModule;
             try
             {
-                if (ControlPath == null || ControlPath.Length == 0)
+                if (controlPath == null || controlPath.Length == 0)
                 {
                     return new LiteralControl("Module '" + module + "' not found! ");
                 }
-                portalModule = (PortalModuleControl) Page.LoadControl(ControlPath);
+                portalModule = (PortalModuleControl) Page.LoadControl(controlPath);
 
                 //Sets portal ID
                 portalModule.PortalID = PortalID;
-
-                ModuleSettings m = new ModuleSettings();
-                m.ModuleID = module;
-                m.PageID = ModuleConfiguration.PageID;
-                m.PaneName = ModuleConfiguration.PaneName;
-                m.ModuleTitle = ModuleConfiguration.ModuleTitle;
-                m.AuthorizedEditRoles = string.Empty;
-                m.AuthorizedViewRoles = string.Empty;
-                m.AuthorizedAddRoles = string.Empty;
-                m.AuthorizedDeleteRoles = string.Empty;
-                m.AuthorizedPropertiesRoles = string.Empty;
-                m.CacheTime = ModuleConfiguration.CacheTime;
-                m.ModuleOrder = ModuleConfiguration.ModuleOrder;
-                m.ShowMobile = ModuleConfiguration.ShowMobile;
-                m.DesktopSrc = ControlPath;
-
-                portalModule.ModuleConfiguration = m;
-
+                portalModule.ModuleConfiguration = moduleSettings;
                 portalModule.Settings["MODULESETTINGS_APPLY_THEME"] = false;
                 portalModule.Settings["MODULESETTINGS_SHOW_TITLE"] = false;
             }
             catch (Exception ex)
             {
-                ErrorHandler.Publish(LogLevel.Warn, "Shortcut: Unable to load control '" + ControlPath + "'!", ex);
+                ErrorHandler.Publish(LogLevel.Warn, "Shortcut: Unable to load control '" + controlPath + "'!", ex);
                 return
-                    new LiteralControl("<br><span class=NormalRed>" + "Unable to load control '" + ControlPath + "'!" +
+                    new LiteralControl("<br><span class=NormalRed>" + "Unable to load control '" + controlPath + "'!" +
                                        "<br>");
             }
 
@@ -332,7 +322,7 @@ namespace Rainbow.Content.Web.Modules
 
             EnhancedHtmlDB ehdb = new EnhancedHtmlDB();
 
-            using (SqlDataReader dr = ehdb.GetLocalizedPages(ModuleID, portalSettings.PortalUILanguage.LCID, Version))
+            using (SqlDataReader dr = ehdb.GetLocalizedPages(ModuleID, PortalSettings.PortalUILanguage.LCID, Version))
             {
                 while (dr.Read())
                 {
@@ -342,11 +332,11 @@ namespace Rainbow.Content.Web.Modules
 
                 if (tabla.Rows.Count == 0)
                 {
-                    if (portalSettings.PortalUILanguage.Parent.LCID != CultureInfo.InvariantCulture.LCID)
+                    if (PortalSettings.PortalUILanguage.Parent.LCID != CultureInfo.InvariantCulture.LCID)
                     {
                         using (
                             SqlDataReader dr1 =
-                                ehdb.GetLocalizedPages(ModuleID, portalSettings.PortalUILanguage.Parent.LCID, Version))
+                                ehdb.GetLocalizedPages(ModuleID, PortalSettings.PortalUILanguage.Parent.LCID, Version))
                         {
                             while (dr1.Read())
                             {
@@ -389,7 +379,6 @@ namespace Rainbow.Content.Web.Modules
         {
             HttpCookie cookie1;
             DateTime time1;
-            TimeSpan span1;
             int num1;
             string moduleCookie;
             bool moduleInUrl = false;
@@ -408,29 +397,29 @@ namespace Rainbow.Content.Web.Modules
             {
                 if (Page.Request.Params["EhPageID"] != null)
                 {
-                    EhPageID = Page.Request.Params["EhPageID"].ToString();
+                    EhPageID = Page.Request.Params["EhPageID"];
                 }
                 else if (Page.Request.Params["ItemID"] != null)
                 {
-                    EhPageID = Page.Request.Params["ItemID"].ToString();
+                    EhPageID = Page.Request.Params["ItemID"];
                 }
             }
             currentModeURL = currentURL;
-            moduleCookie = "EnhancedHtml:" + ModuleID.ToString();
+            moduleCookie = "EnhancedHtml:" + ModuleID;
             modeID = "0";
             if (Page.Request.Params["ModeID"] != null)
             {
-                modeID = Page.Request.Params["ModeID"].ToString();
+                modeID = Page.Request.Params["ModeID"];
                 cookie1 = new HttpCookie(moduleCookie);
                 cookie1.Value = modeID;
                 time1 = DateTime.Now;
-                span1 = new TimeSpan(90, 0, 0, 0);
+                TimeSpan span1 = new TimeSpan(90, 0, 0, 0);
                 cookie1.Expires = time1.Add(span1);
-                base.Response.AppendCookie(cookie1);
+                Response.AppendCookie(cookie1);
             }
             else
             {
-                if (base.Request.Cookies[moduleCookie] != null)
+                if (Request.Cookies[moduleCookie] != null)
                 {
                     modeID = Request.Cookies[moduleCookie].Value;
                 }
@@ -461,11 +450,20 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="n">The n.</param>
         /// <returns></returns>
-        private string dameAlineacion(string n)
+        static string dameAlineacion(string n)
         {
-            if (n.Equals("1")) return "left";
-            if (n.Equals("2")) return "center";
-            if (n.Equals("3")) return "right";
+            if (n.Equals("1"))
+            {
+                return "left";
+            }
+            if (n.Equals("2"))
+            {
+                return "center";
+            }
+            if (n.Equals("3"))
+            {
+                return "right";
+            }
             return "left";
         }
 
@@ -474,7 +472,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="custom">The custom.</param>
         /// <returns></returns>
-        private string dameUrl(string custom)
+        string dameUrl(string custom)
         {
             // Sugerence by Mario Endara mario@softworks.com.uy 21-jun-2004
             // for compatibility with handler splitter
@@ -488,7 +486,7 @@ namespace Rainbow.Content.Web.Modules
         #region constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:EnhancedHtml"/> class.
+        /// Initializes a new instance of the <see cref="EnhancedHtml"/> class.
         /// </summary>
         public EnhancedHtml()
         {
@@ -503,7 +501,7 @@ namespace Rainbow.Content.Web.Modules
             _groupOrderBase = (int) _Group;
             // end of modification
 
-            HtmlEditorDataType.HtmlEditorSettings(_baseSettings, _Group);
+            HtmlEditorDataType.HtmlEditorSettings(baseSettings, _Group);
 
             SettingItem ShowTitlePage = new SettingItem(new BooleanDataType());
             ShowTitlePage.Value = "false";
@@ -511,7 +509,7 @@ namespace Rainbow.Content.Web.Modules
             ShowTitlePage.Group = _Group;
             ShowTitlePage.EnglishName = "Show Title Page?";
             ShowTitlePage.Description = "Mark this if you like see the Title Page";
-            _baseSettings.Add("ENHANCEDHTML_SHOWTITLEPAGE", ShowTitlePage);
+            baseSettings.Add("ENHANCEDHTML_SHOWTITLEPAGE", ShowTitlePage);
 
             SettingItem ShowUpMenu = new SettingItem(new BooleanDataType());
             ShowUpMenu.Value = "false";
@@ -519,7 +517,7 @@ namespace Rainbow.Content.Web.Modules
             ShowUpMenu.Group = _Group;
             ShowUpMenu.EnglishName = "Show Index Menu?";
             ShowUpMenu.Description = "Mark this if you like see a index menu whith the titles of all pages";
-            _baseSettings.Add("ENHANCEDHTML_SHOWUPMENU", ShowUpMenu);
+            baseSettings.Add("ENHANCEDHTML_SHOWUPMENU", ShowUpMenu);
 
             ArrayList alignUpMenu = new ArrayList();
             alignUpMenu.Add(new SettingOption(1, General.GetString("LEFT", "Left")));
@@ -531,7 +529,7 @@ namespace Rainbow.Content.Web.Modules
             labelAlignUpMenu.EnglishName = "Align Index Menu";
             labelAlignUpMenu.Value = "1";
             labelAlignUpMenu.Order = _groupOrderBase + 30;
-            _baseSettings.Add("ENHANCEDHTML_ALIGNUPMENU", labelAlignUpMenu);
+            baseSettings.Add("ENHANCEDHTML_ALIGNUPMENU", labelAlignUpMenu);
 
             SettingItem ShowDownMenu = new SettingItem(new BooleanDataType());
             ShowDownMenu.Value = "true";
@@ -539,7 +537,7 @@ namespace Rainbow.Content.Web.Modules
             ShowDownMenu.Group = _Group;
             ShowDownMenu.EnglishName = "Show Navigation Menu?";
             ShowDownMenu.Description = "Mark this if you like see a navigation menu with previous and next page";
-            _baseSettings.Add("ENHANCEDHTML_SHOWDOWNMENU", ShowDownMenu);
+            baseSettings.Add("ENHANCEDHTML_SHOWDOWNMENU", ShowDownMenu);
 
             ArrayList alignDownMenu = new ArrayList();
             alignDownMenu.Add(new SettingOption(1, General.GetString("LEFT", "Left")));
@@ -551,7 +549,7 @@ namespace Rainbow.Content.Web.Modules
             labelAlignDownMenu.EnglishName = "Align Navigation Menu";
             labelAlignDownMenu.Value = "3";
             labelAlignDownMenu.Order = _groupOrderBase + 50;
-            _baseSettings.Add("ENHANCEDHTML_ALIGNDOWNMENU", labelAlignDownMenu);
+            baseSettings.Add("ENHANCEDHTML_ALIGNDOWNMENU", labelAlignDownMenu);
 
             SettingItem AddInvariant = new SettingItem(new BooleanDataType());
             AddInvariant.Value = "true";
@@ -560,7 +558,7 @@ namespace Rainbow.Content.Web.Modules
             AddInvariant.EnglishName = "Add Invariant Culture?";
             AddInvariant.Description =
                 "Mark this if you like see pages with invariant culture after pages with actual culture code";
-            _baseSettings.Add("ENHANCEDHTML_ADDINVARIANTCULTURE", AddInvariant);
+            baseSettings.Add("ENHANCEDHTML_ADDINVARIANTCULTURE", AddInvariant);
 
             SettingItem ShowMultiMode = new SettingItem(new BooleanDataType());
             ShowMultiMode.Value = "true";
@@ -568,7 +566,7 @@ namespace Rainbow.Content.Web.Modules
             ShowMultiMode.Group = _Group;
             ShowMultiMode.EnglishName = "Show Multi-Mode icon?";
             ShowMultiMode.Description = "Mark this if you like see icon multimode page";
-            _baseSettings.Add("ENHANCEDHTML_SHOWMULTIMODE", ShowMultiMode);
+            baseSettings.Add("ENHANCEDHTML_SHOWMULTIMODE", ShowMultiMode);
 
             SettingItem GetContentsFromPortals = new SettingItem(new BooleanDataType());
             GetContentsFromPortals.Value = "false";
@@ -577,7 +575,7 @@ namespace Rainbow.Content.Web.Modules
             GetContentsFromPortals.EnglishName = "Get contents from others Portals?";
             GetContentsFromPortals.Description =
                 "Mark this if you like get contents from modules in others portals in the same database";
-            _baseSettings.Add("ENHANCEDHTML_GET_CONTENTS_FROM_PORTALS", GetContentsFromPortals);
+            baseSettings.Add("ENHANCEDHTML_GET_CONTENTS_FROM_PORTALS", GetContentsFromPortals);
 
             #endregion
 
@@ -624,9 +622,9 @@ namespace Rainbow.Content.Web.Modules
             string retorno = s.SearchSqlSelect(portalID, userID, searchString);
             if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
             {
-                PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-                retorno += " AND ((itm.CultureCode = '" + pS.PortalUILanguage.LCID.ToString() +
-                           "') OR (itm.CultureCode = '" + CultureInfo.InvariantCulture.LCID.ToString() + "'))";
+                Portal pS = (Portal) HttpContext.Current.Items["PortalSettings"];
+                retorno += " AND ((itm.CultureCode = '" + pS.PortalUILanguage.LCID +
+                           "') OR (itm.CultureCode = '" + CultureInfo.InvariantCulture.LCID + "'))";
             }
             return retorno;
         }
@@ -673,7 +671,7 @@ namespace Rainbow.Content.Web.Modules
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -687,7 +685,7 @@ namespace Rainbow.Content.Web.Modules
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

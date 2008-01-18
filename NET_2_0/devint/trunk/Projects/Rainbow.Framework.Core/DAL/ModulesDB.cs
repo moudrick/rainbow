@@ -3,10 +3,12 @@ using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Data;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Settings.Cache;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Core.BLL;
 using System.Collections.Generic;
 
@@ -68,7 +70,7 @@ namespace Rainbow.Framework.Site.Data
                                                 string MobileSrc, string AssemblyName, string ClassName, bool Admin,
                                                 bool Searchable)
         {
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_AddGeneralModuleDefinitions", myConnection))
                 {
@@ -153,7 +155,7 @@ namespace Rainbow.Framework.Site.Data
         {
             // Changes by Geert.Audenaert@Syntegra.Com Date: 6/2/2003
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_AddModule", myConnection))
                 {
@@ -257,18 +259,16 @@ namespace Rainbow.Framework.Site.Data
         public void DeleteModule(int moduleID)
         {
             //BOWEN 11 June 2005 - BEGIN
-            PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-            bool useRecycler =
-                bool.Parse(
-                    PortalSettings.GetPortalCustomSettings(portalSettings.PortalID,
-                                                           PortalSettings.GetPortalBaseSettings(
-                                                               portalSettings.PortalPath))["SITESETTINGS_USE_RECYCLER"].
-                        ToString());
+            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
+            bool useRecycler = bool.Parse(
+                    PortalProvider.Instance.GetPortalCustomSettings(portalSettings.PortalID,
+                    PortalProvider.Instance.GetPortalBaseSettings(
+                    portalSettings.PortalPath))["SITESETTINGS_USE_RECYCLER"].ToString());
 
 			// TODO: THIS LINE DISABLES THE RECYCLER DUE SOME TROUBLES WITH IT !!!!!! Fix those troubles and then discomment.
 			useRecycler = false;
 
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (
                     SqlCommand myCommand =
@@ -303,7 +303,7 @@ namespace Rainbow.Framework.Site.Data
                     catch (Exception ex)
                     {
                         ErrorHandler.Publish(LogLevel.Warn,
-                                             "An Error Occurred in DeleteModule. Parameter : " + moduleID.ToString(), ex);
+                            "An Error Occurred in DeleteModule. Parameter : " + moduleID, ex);
                     }
                 }
             }
@@ -318,7 +318,7 @@ namespace Rainbow.Framework.Site.Data
         public void DeleteModuleDefinition(Guid defID)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_DeleteModuleDefinition", myConnection))
                 {
@@ -339,8 +339,8 @@ namespace Rainbow.Framework.Site.Data
                     {
                         //ErrorHandler.Publish(Rainbow.Framework.LogLevel.Warn, "An Error Occurred in DeleteModuleDefinition. Parameter : " + defID.ToString(), ex);
                         ErrorHandler.Publish(LogLevel.Warn,
-                                             "An Error Occurred in DeleteModuleDefinition. Parameter : " +
-                                             defID.ToString(), ex);
+                            "An Error Occurred in DeleteModuleDefinition. Parameter : " + defID, 
+                            ex);
                     }
                 }
             }
@@ -355,7 +355,7 @@ namespace Rainbow.Framework.Site.Data
         public bool ExistModuleProductsInPage(int tabID, int portalID)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand(strrb_GetModulesInPage, myConnection))
                 {
@@ -395,7 +395,7 @@ namespace Rainbow.Framework.Site.Data
         public ArrayList FindModuleItemsByGuid(int portalID, Guid guid)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_FindModulesByGuid", myConnection))
                 {
@@ -414,10 +414,9 @@ namespace Rainbow.Framework.Site.Data
 
                     using (SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection))
                     {
-                        ModuleItem m = null;
                         while (result.Read())
                         {
-                            m = new ModuleItem();
+                            ModuleItem m = new ModuleItem();
                             m.ID = (int) result["ModuleId"];
                             modList.Add(m);
                         }
@@ -437,7 +436,7 @@ namespace Rainbow.Framework.Site.Data
         public SqlDataReader FindModulesByGuid(int portalID, Guid guid)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_FindModulesByGuid", myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -465,7 +464,7 @@ namespace Rainbow.Framework.Site.Data
         public SqlDataReader GetCurrentModuleDefinitions(int portalID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetCurrentModuleDefinitions", myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -488,7 +487,7 @@ namespace Rainbow.Framework.Site.Data
         /// <remarks>Other relevant sources: GetModuleDefinitions Stored Procedure</remarks>
         public IList<GeneralModuleDefinition> GetCurrentModuleDefinitionsList( int portalID ) {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand( "rb_GetCurrentModuleDefinitions", myConnection );
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -500,7 +499,7 @@ namespace Rainbow.Framework.Site.Data
             myConnection.Open();
 
             IList<GeneralModuleDefinition> result = new List<GeneralModuleDefinition>();
-            GeneralModuleDefinition genModDef = null;
+            GeneralModuleDefinition genModDef;
             using ( SqlDataReader dr = myCommand.ExecuteReader( CommandBehavior.CloseConnection ) ) {
                 while ( dr.Read() ) {
                     genModDef = new GeneralModuleDefinition();
@@ -527,7 +526,7 @@ namespace Rainbow.Framework.Site.Data
         public Guid GetGeneralModuleDefinitionByName(string moduleName)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetGeneralModuleDefinitionByName", myConnection))
                 {
@@ -563,7 +562,8 @@ namespace Rainbow.Framework.Site.Data
                         catch (Exception ex)
                         {
                             throw new Exception(
-                                "'" + parameterModuleID.Value.ToString() + "' seems not a valid Module GUID.", ex);
+                                string.Format("'{0}' seems not a valid Module GUID.", parameterModuleID.Value), 
+                                ex);
                             // Jes1111
                             //Rainbow.Framework.Configuration.ErrorHandler.HandleException("'" + parameterModuleID.Value.ToString() + "' seems not a valid GUID.", ex);
                             //throw;
@@ -590,7 +590,7 @@ namespace Rainbow.Framework.Site.Data
         public int GetModuleDefinitionByGuid(int portalID, Guid guid)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetModuleDefinitionByGuid", myConnection))
                 {
@@ -616,8 +616,8 @@ namespace Rainbow.Framework.Site.Data
                     catch (Exception ex)
                     {
                         ErrorHandler.Publish(LogLevel.Warn,
-                                             "An Error Occurred in GetModuleDefinitionByGuid. Parameter : " +
-                                             guid.ToString(), ex);
+                            string.Format("An Error Occurred in GetModuleDefinitionByGuid. Parameter : {0}", guid), 
+                            ex);
                     }
                     return (int) parameterModuleID.Value;
                 }
@@ -634,7 +634,7 @@ namespace Rainbow.Framework.Site.Data
         public int GetModuleDefinitionByName(int portalID, string moduleName)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetModuleDefinitionByName", myConnection))
                 {
@@ -677,7 +677,7 @@ namespace Rainbow.Framework.Site.Data
         public SqlDataReader GetModuleDefinitions()
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetModuleDefinitions", myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -699,7 +699,7 @@ namespace Rainbow.Framework.Site.Data
             string cacheGuid = Key.ModuleSettings(moduleID) + "GUID";
             if (CurrentCache.Get(cacheGuid) == null)
             {
-                using (SqlConnection myConnection = Config.SqlConnectionString)
+                using (SqlConnection myConnection = DBHelper.SqlConnection)
                 {
                     using (SqlCommand myCommand = new SqlCommand("rb_GetGuid", myConnection))
                     {
@@ -732,7 +732,7 @@ namespace Rainbow.Framework.Site.Data
         public SqlDataReader GetModuleInUse(Guid defID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetModuleInUse", myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -755,7 +755,7 @@ namespace Rainbow.Framework.Site.Data
         public DataTable GetModulesAllPortals()
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlDataAdapter myCommand = new SqlDataAdapter("rb_GetModulesAllPortals", myConnection))
                 {
@@ -804,7 +804,7 @@ namespace Rainbow.Framework.Site.Data
         public SqlDataReader GetModulesByName(string moduleName, int portalID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetModulesByName", myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -834,7 +834,7 @@ namespace Rainbow.Framework.Site.Data
         public SqlDataReader GetModulesInPage(int portalID, int pageID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand(strrb_GetModulesInPage, myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -861,7 +861,7 @@ namespace Rainbow.Framework.Site.Data
         public DataTable GetModulesSinglePortal(int PortalID)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlDataAdapter myCommand = new SqlDataAdapter("rb_GetModulesSinglePortal", myConnection))
                 {
@@ -912,7 +912,7 @@ namespace Rainbow.Framework.Site.Data
         public SqlDataReader GetSingleModuleDefinition(Guid GeneralModDefID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSingleModuleDefinition", myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -928,31 +928,6 @@ namespace Rainbow.Framework.Site.Data
         }
 
         /// <summary>
-        /// The GetSolutionModuleDefinitions method returns a list of all module type definitions.<br></br>
-        /// GetSolutionModuleDefinitions Stored Procedure
-        /// </summary>
-        /// <param name="solutionID">The solution ID.</param>
-        /// <returns></returns>
-        [Obsolete("Replace me, bad design practive to pass SqlDataReaders to the UI")]
-        public SqlDataReader GetSolutionModuleDefinitions(int solutionID)
-        {
-            // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
-            SqlCommand myCommand = new SqlCommand("rb_GetSolutionModuleDefinitions", myConnection);
-            // Mark the Command as a SPROC
-            myCommand.CommandType = CommandType.StoredProcedure;
-            // Add Parameters to SPROC
-            SqlParameter parameterSolutionID = new SqlParameter("@SolutionID", SqlDbType.Int, 4);
-            parameterSolutionID.Value = solutionID;
-            myCommand.Parameters.Add(parameterSolutionID);
-            // Open the database connection and execute the command
-            myConnection.Open();
-            SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            // Return the datareader
-            return dr;
-        }
-
-        /// <summary>
         /// The GetSolutions method returns the Solution list.
         /// </summary>
         /// <returns></returns>
@@ -961,7 +936,7 @@ namespace Rainbow.Framework.Site.Data
         public SqlDataReader GetSolutions()
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSolutions", myConnection);
             // Mark the Command as a SPROC
             myCommand.CommandType = CommandType.StoredProcedure;
@@ -988,7 +963,7 @@ namespace Rainbow.Framework.Site.Data
                                                    bool Searchable)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_UpdateGeneralModuleDefinitions", myConnection))
                 {
@@ -1070,7 +1045,7 @@ namespace Rainbow.Framework.Site.Data
         {
             // Changes by Geert.Audenaert@Syntegra.Com Date: 6/2/2003
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_UpdateModule", myConnection))
                 {
@@ -1171,13 +1146,13 @@ namespace Rainbow.Framework.Site.Data
         /// The UpdateModuleDefinitions method updates
         /// all module definitions in every portal
         /// </summary>
-        /// <param name="GeneralModDefID">The general mod def ID.</param>
+        /// <param name="generalModDefID">The general mod def ID.</param>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="ischecked">if set to <c>true</c> [ischecked].</param>
-        public void UpdateModuleDefinitions(Guid GeneralModDefID, int portalID, bool ischecked)
+        public void UpdateModuleDefinitions(Guid generalModDefID, int portalID, bool ischecked)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_UpdateModuleDefinitions", myConnection))
                 {
@@ -1186,7 +1161,7 @@ namespace Rainbow.Framework.Site.Data
                     // Add Parameters to SPROC
                     SqlParameter parameterGeneralModDefID =
                         new SqlParameter(strATGeneralModDefID, SqlDbType.UniqueIdentifier);
-                    parameterGeneralModDefID.Value = GeneralModDefID;
+                    parameterGeneralModDefID.Value = generalModDefID;
                     myCommand.Parameters.Add(parameterGeneralModDefID);
                     // Add Parameters to SPROC
                     SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int, 4);
@@ -1211,6 +1186,29 @@ namespace Rainbow.Framework.Site.Data
             }
         }
 
+        ///<summary>
+        ///</summary>
+        ///<param name="solutionID"></param>
+        ///<param name="portalID"></param>
+        public void UpdateSolutionModuleDefinition(int solutionID, int portalID)
+        {
+            // get module definitions
+            SqlDataReader myReader = GetSolutionModuleDefinitions(solutionID);
+
+            // Always call Read before accessing data.
+            try
+            {
+                while (myReader.Read())
+                {
+                    UpdateModuleDefinitions(new Guid(myReader["GeneralModDefID"].ToString()), portalID, true);
+                }
+            }
+            finally
+            {
+                myReader.Close(); //by Manu, fixed bug 807858
+            }
+        }
+
         /// <summary>
         /// The UpdateModuleOrder method update Modules Order.<br/>
         /// UpdateModuleOrder Stored Procedure
@@ -1221,7 +1219,7 @@ namespace Rainbow.Framework.Site.Data
         public void UpdateModuleOrder(int ModuleID, int ModuleOrder, string pane)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_UpdateModuleOrder", myConnection))
                 {
@@ -1263,7 +1261,31 @@ namespace Rainbow.Framework.Site.Data
         [Obsolete("UpdateModuleSetting was moved in ModuleSettings.UpdateModuleSetting", false)]
         public void UpdateModuleSetting(int moduleID, string key, string value)
         {
-            ModuleSettings.UpdateModuleSetting(moduleID, key, value);
+            ModuleSettingsProvider.UpdateModuleSetting(moduleID, key, value);
+        }
+
+        /// <summary>
+        /// The GetSolutionModuleDefinitions method returns a list of all module type definitions.<br></br>
+        /// GetSolutionModuleDefinitions Stored Procedure
+        /// </summary>
+        /// <param name="solutionID">The solution ID.</param>
+        /// <returns></returns>
+        static SqlDataReader GetSolutionModuleDefinitions(int solutionID)
+        {
+            // Create Instance of Connection and Command Object
+            SqlConnection myConnection = DBHelper.SqlConnection;
+            SqlCommand myCommand = new SqlCommand("rb_GetSolutionModuleDefinitions", myConnection);
+            // Mark the Command as a SPROC
+            myCommand.CommandType = CommandType.StoredProcedure;
+            // Add Parameters to SPROC
+            SqlParameter parameterSolutionID = new SqlParameter("@SolutionID", SqlDbType.Int, 4);
+            parameterSolutionID.Value = solutionID;
+            myCommand.Parameters.Add(parameterSolutionID);
+            // Open the database connection and execute the command
+            myConnection.Open();
+            SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
+            // Return the datareader
+            return dr;
         }
     }
 }

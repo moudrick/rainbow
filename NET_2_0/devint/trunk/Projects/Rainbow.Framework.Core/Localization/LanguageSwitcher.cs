@@ -355,200 +355,6 @@ namespace Rainbow.Framework.Web.UI.WebControls
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="langItem"></param>
-        /// <param name="cookieAlias">Cookie name used for persist Language</param>
-        /// <param name="switcher"></param>
-        internal static void SetCurrentLanguage(LanguageCultureItem langItem, string cookieAlias,
-                                                LanguageSwitcher switcher)
-        {
-            Thread.CurrentThread.CurrentUICulture = langItem.UICulture;
-            Thread.CurrentThread.CurrentCulture = langItem.Culture;
-
-            //Persists choice
-            InternalSetViewState(langItem, switcher);
-            InternalSetCookie(langItem, cookieAlias);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public static LanguageCultureItem GetCurrentLanguage()
-        {
-            return new LanguageCultureItem(Thread.CurrentThread.CurrentUICulture, Thread.CurrentThread.CurrentCulture);
-        }
-
-        /// <summary>
-        /// Get current Language from Querystring
-        /// </summary>
-        /// <param name="myLanguagesCultureList"></param>
-        /// <returns></returns>
-        private static LanguageCultureItem InternalGetQuerystring(LanguageCultureCollection myLanguagesCultureList)
-        {
-            if (HttpContext.Current != null && HttpContext.Current.Request.Params["Lang"] != null &&
-                HttpContext.Current.Request.Params["Lang"].Length > 0)
-            {
-                try
-                {
-                    return
-                        myLanguagesCultureList.GetBestMatching(
-                            new CultureInfo(HttpContext.Current.Request.Params["Lang"]));
-                }
-                catch (ArgumentException) //Maybe an invalid CultureInfo
-                {
-                    return null;
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Get current Language from User language list
-        /// </summary>
-        /// <param name="myLanguagesCultureList"></param>
-        /// <returns></returns>
-        private static LanguageCultureItem InternalGetUserLanguages(LanguageCultureCollection myLanguagesCultureList)
-        {
-            //Get userLangs
-            CultureInfo[] userLangs;
-
-            if (HttpContext.Current != null && HttpContext.Current.Request.UserLanguages != null &&
-                HttpContext.Current.Request.UserLanguages.Length > 0)
-            {
-                ArrayList arrUserLangs = new ArrayList(HttpContext.Current.Request.UserLanguages);
-                if (arrUserLangs.Count > 0)
-                {
-                    for (Int32 i = 0; i <= arrUserLangs.Count - 1; i++)
-                    {
-                        string currentLanguage;
-                        if (arrUserLangs[i].ToString().IndexOf(';') >= 0)
-                            currentLanguage =
-                                arrUserLangs[i].ToString().Substring(0, arrUserLangs[i].ToString().IndexOf(';'));
-                        else
-                            currentLanguage = arrUserLangs[i].ToString();
-                        try
-                        {
-                            // We try the full one... if this fails we catch it
-                            arrUserLangs[i] = new CultureInfo(currentLanguage);
-                        }
-                        catch (ArgumentException)
-                        {
-                            try
-                            {
-                                // Some browsers can send an invalid language
-                                // we try to get first two letters.. this is usually valid
-                                arrUserLangs[i] = new CultureInfo(currentLanguage.Substring(2));
-                            }
-                            catch (ArgumentException)
-                            {
-                            }
-                            return null;
-                        }
-                    }
-                }
-                userLangs = (CultureInfo[]) arrUserLangs.ToArray(typeof (CultureInfo));
-
-                // Try to match browser "accept languages" list
-                return myLanguagesCultureList.GetBestMatching(userLangs);
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Get current Language from Cookie
-        /// </summary>
-        /// <param name="myLanguagesCultureList"></param>
-        /// <param name="cookieAlias"></param>
-        /// <returns></returns>
-        private static LanguageCultureItem InternalGetCookie(LanguageCultureCollection myLanguagesCultureList,
-                                                             string cookieAlias)
-        {
-            if (HttpContext.Current != null && cookieAlias != null &&
-                HttpContext.Current.Request.Cookies[SWITCHER_COOKIE_PREFIX + cookieAlias] != null &&
-                HttpContext.Current.Request.Cookies[SWITCHER_COOKIE_PREFIX + cookieAlias].Value.Length > 0)
-            {
-                try
-                {
-                    return
-                        myLanguagesCultureList.GetBestMatching(
-                            new CultureInfo(
-                                HttpContext.Current.Request.Cookies[SWITCHER_COOKIE_PREFIX + cookieAlias].Value));
-                }
-                catch (ArgumentException)
-                {
-                    //Maybe an invalid CultureInfo
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Set current Cookie from Language
-        /// </summary>
-        /// <param name="myLanguageCultureItem"></param>
-        /// <param name="cookieAlias"></param>
-        /// <returns></returns>
-        private static void InternalSetCookie(LanguageCultureItem myLanguageCultureItem, string cookieAlias)
-        {
-            // Set language cookie
-            if (HttpContext.Current != null && cookieAlias != null)
-            {
-                //Trace.WriteLine("Persisting in cookie: '" + SWITCHER_COOKIE_PREFIX + cookieAlias + "'");
-                HttpCookie langCookie = HttpContext.Current.Response.Cookies[SWITCHER_COOKIE_PREFIX + cookieAlias];
-                langCookie.Value = myLanguageCultureItem.UICulture.Name;
-                langCookie.Path = "/";
-
-                // Keep the cookie?
-                if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
-                    langCookie.Expires = DateTime.Now.AddYears(50);
-            }
-        }
-
-        /// <summary>
-        /// Get current Language from ViewState
-        /// </summary>
-        /// <param name="myLanguagesCultureList"></param>
-        /// <returns></returns>
-        private static LanguageCultureItem InternalGetViewState(LanguageCultureCollection myLanguagesCultureList,
-                                                                LanguageSwitcher switcher)
-        {
-            if (switcher != null && switcher.ViewState["RB_Language_CurrentUICulture"] != null &&
-                switcher.ViewState["RB_Language_CurrentCulture"] != null)
-                return
-                    new LanguageCultureItem((CultureInfo) switcher.ViewState["RB_Language_CurrentUICulture"],
-                                            (CultureInfo) switcher.ViewState["RB_Language_CurrentCulture"]);
-            else
-                return null;
-        }
-
-        /// <summary>
-        /// Get current Language from ViewState
-        /// </summary>
-        /// <param name="myLanguageCultureItem"></param>
-        /// <returns></returns>
-        private static void InternalSetViewState(LanguageCultureItem myLanguageCultureItem, LanguageSwitcher switcher)
-        {
-            if (switcher != null)
-            {
-                //Trace.WriteLine("Persisting in viewstate");
-                switcher.ViewState["RB_Language_CurrentUICulture"] = myLanguageCultureItem.UICulture;
-                switcher.ViewState["RB_Language_CurrentCulture"] = myLanguageCultureItem.Culture;
-            }
-        }
-
-        /// <summary>
-        /// Get default
-        /// </summary>
-        /// <param name="myLanguagesCultureList"></param>
-        /// <returns></returns>
-        private static LanguageCultureItem InternalGetDefault(LanguageCultureCollection myLanguagesCultureList)
-        {
-            return myLanguagesCultureList[0];
-        }
-
-        /// <summary>
         /// Examines/combines all the variables involved and sets
         /// CurrentUICulture and CurrentCulture
         /// </summary>
@@ -570,6 +376,15 @@ namespace Rainbow.Framework.Web.UI.WebControls
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static LanguageCultureItem GetCurrentLanguage()
+        {
+            return new LanguageCultureItem(Thread.CurrentThread.CurrentUICulture, Thread.CurrentThread.CurrentCulture);
+        }
+
+        /// <summary>
         /// Examines/combines all the variables involved and sets
         /// CurrentUICulture and CurrentCulture
         /// </summary>
@@ -578,7 +393,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <param name="switcher">A referenct to a Switcher control for accessing viewstate</param>
         internal static void ProcessCultures(string langList, string cookieAlias, LanguageSwitcher switcher)
         {
-            LanguageCultureCollection myLanguagesCultureList = (LanguageCultureCollection) langList;
+            LanguageCultureCollection myLanguagesCultureList = (LanguageCultureCollection)langList;
 
             //Verify that at least on language is provided
             if (myLanguagesCultureList.Count <= 0)
@@ -609,11 +424,202 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             // Default
             langItem = InternalGetDefault(myLanguagesCultureList);
-            //Trace.WriteLine("Evaluated InternalGetDefault: '" + (langItem == null ? "null" : langItem) + "'");
+        //Trace.WriteLine("Evaluated InternalGetDefault: '" + (langItem == null ? "null" : langItem) + "'");
 
             setLanguage:
             // Updates current cultures
             SetCurrentLanguage(langItem, cookieAlias);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="langItem"></param>
+        /// <param name="cookieAlias">Cookie name used for persist Language</param>
+        /// <param name="switcher"></param>
+        internal static void SetCurrentLanguage(LanguageCultureItem langItem, string cookieAlias,
+                                                LanguageSwitcher switcher)
+        {
+            Thread.CurrentThread.CurrentUICulture = langItem.UICulture;
+            Thread.CurrentThread.CurrentCulture = langItem.Culture;
+
+            //Persists choice
+            InternalSetViewState(langItem, switcher);
+            InternalSetCookie(langItem, cookieAlias);
+        }
+
+        static LanguageCultureItem InternalGetQuerystring(LanguageCultureCollection myLanguagesCultureList)
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Request.Params["Lang"] != null &&
+                HttpContext.Current.Request.Params["Lang"].Length > 0)
+            {
+                try
+                {
+                    return
+                        myLanguagesCultureList.GetBestMatching(
+                            new CultureInfo(HttpContext.Current.Request.Params["Lang"]));
+                }
+                catch (ArgumentException) //Maybe an invalid CultureInfo
+                {
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Get current Language from User language list
+        /// </summary>
+        /// <param name="myLanguagesCultureList"></param>
+        /// <returns></returns>
+        static LanguageCultureItem InternalGetUserLanguages(LanguageCultureCollection myLanguagesCultureList)
+        {
+            //Get userLangs
+
+            if (HttpContext.Current != null && HttpContext.Current.Request.UserLanguages != null &&
+                HttpContext.Current.Request.UserLanguages.Length > 0)
+            {
+                ArrayList arrUserLangs = new ArrayList(HttpContext.Current.Request.UserLanguages);
+                if (arrUserLangs.Count > 0)
+                {
+                    for (Int32 i = 0; i <= arrUserLangs.Count - 1; i++)
+                    {
+                        string currentLanguage;
+                        if (arrUserLangs[i].ToString().IndexOf(';') >= 0)
+                        {
+                            currentLanguage = arrUserLangs[i].ToString().Substring(0,
+                                arrUserLangs[i].ToString().IndexOf(';'));
+                        }
+                        else
+                        {
+                            currentLanguage = arrUserLangs[i].ToString();
+                        }
+                        try
+                        {
+                            // We try the full one... if this fails we catch it
+                            arrUserLangs[i] = new CultureInfo(currentLanguage);
+                        }
+                        catch (ArgumentException)
+                        {
+                            try
+                            {
+                                // Some browsers can send an invalid language
+                                // we try to get first two letters.. this is usually valid
+                                arrUserLangs[i] = new CultureInfo(currentLanguage.Substring(2));
+                            }
+                            catch (ArgumentException)
+                            {
+                            }
+                            return null;
+                        }
+                    }
+                }
+                CultureInfo[] userLangs = (CultureInfo[]) arrUserLangs.ToArray(typeof (CultureInfo));
+
+                // Try to match browser "accept languages" list
+                return myLanguagesCultureList.GetBestMatching(userLangs);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Get current Language from Cookie
+        /// </summary>
+        /// <param name="myLanguagesCultureList"></param>
+        /// <param name="cookieAlias"></param>
+        /// <returns></returns>
+        static LanguageCultureItem InternalGetCookie(LanguageCultureCollection myLanguagesCultureList,
+                                                             string cookieAlias)
+        {
+            if (HttpContext.Current != null && cookieAlias != null &&
+                HttpContext.Current.Request.Cookies[SWITCHER_COOKIE_PREFIX + cookieAlias] != null &&
+                HttpContext.Current.Request.Cookies[SWITCHER_COOKIE_PREFIX + cookieAlias].Value.Length > 0)
+            {
+                try
+                {
+                    return
+                        myLanguagesCultureList.GetBestMatching(
+                            new CultureInfo(
+                                HttpContext.Current.Request.Cookies[SWITCHER_COOKIE_PREFIX + cookieAlias].Value));
+                }
+                catch (ArgumentException)
+                {
+                    //Maybe an invalid CultureInfo
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Set current Cookie from Language
+        /// </summary>
+        /// <param name="myLanguageCultureItem"></param>
+        /// <param name="cookieAlias"></param>
+        /// <returns></returns>
+        static void InternalSetCookie(LanguageCultureItem myLanguageCultureItem, string cookieAlias)
+        {
+            // Set language cookie
+            if (HttpContext.Current != null && cookieAlias != null)
+            {
+                //Trace.WriteLine("Persisting in cookie: '" + SWITCHER_COOKIE_PREFIX + cookieAlias + "'");
+                HttpCookie langCookie = HttpContext.Current.Response.Cookies[SWITCHER_COOKIE_PREFIX + cookieAlias];
+                langCookie.Value = myLanguageCultureItem.UICulture.Name;
+                langCookie.Path = "/";
+
+                // Keep the cookie?
+                if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
+                    langCookie.Expires = DateTime.Now.AddYears(50);
+            }
+        }
+
+        /// <summary>
+        /// Get current Language from ViewState
+        /// </summary>
+        /// <param name="myLanguagesCultureList"></param>
+        /// <param name="switcher"></param>
+        /// <returns></returns>
+        static LanguageCultureItem InternalGetViewState(LanguageCultureCollection myLanguagesCultureList,
+                                                                LanguageSwitcher switcher)
+        {
+            if (switcher != null && switcher.ViewState["RB_Language_CurrentUICulture"] != null &&
+                switcher.ViewState["RB_Language_CurrentCulture"] != null)
+            {
+                return
+                    new LanguageCultureItem(
+                        (CultureInfo) switcher.ViewState["RB_Language_CurrentUICulture"],
+                        (CultureInfo) switcher.ViewState["RB_Language_CurrentCulture"]);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get current Language from ViewState
+        /// </summary>
+        /// <param name="myLanguageCultureItem"></param>
+        /// <param name="switcher"></param>
+        /// <returns></returns>
+        static void InternalSetViewState(LanguageCultureItem myLanguageCultureItem, 
+            LanguageSwitcher switcher)
+        {
+            if (switcher != null)
+            {
+                //Trace.WriteLine("Persisting in viewstate");
+                switcher.ViewState["RB_Language_CurrentUICulture"] = myLanguageCultureItem.UICulture;
+                switcher.ViewState["RB_Language_CurrentCulture"] = myLanguageCultureItem.Culture;
+            }
+        }
+
+        /// <summary>
+        /// Get default
+        /// </summary>
+        /// <param name="myLanguagesCultureList"></param>
+        /// <returns></returns>
+        static LanguageCultureItem InternalGetDefault(LanguageCultureCollection myLanguagesCultureList)
+        {
+            return myLanguagesCultureList[0];
         }
 
         #endregion

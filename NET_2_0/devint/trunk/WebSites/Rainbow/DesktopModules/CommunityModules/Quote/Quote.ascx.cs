@@ -4,8 +4,9 @@ using System.Configuration;
 using System.IO;
 using System.Web;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -42,10 +43,15 @@ namespace Rainbow.Content.Web.Modules
 
                 if (ConfigurationManager.AppSettings.Get("QuoteFileFolder") != null)
                 {
-                    if (ConfigurationManager.AppSettings.Get("QuoteFileFolder").ToString().Length > 0)
-                        quoteFile = ConfigurationManager.AppSettings.Get("QuoteFileFolder").ToString() + quoteFile;
+                    if (ConfigurationManager.AppSettings.Get("QuoteFileFolder").Length > 0)
+                    {
+                        quoteFile = ConfigurationManager.AppSettings.Get("QuoteFileFolder") +
+                                    quoteFile;
+                    }
                     else
+                    {
                         quoteFile = "~/DesktopModules/CommunityModules/Quote/" + quoteFile;
+                    }
                 }
                 else
                 {
@@ -115,7 +121,7 @@ namespace Rainbow.Content.Web.Modules
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Quote"/> class.
+        /// Initializes a new instance of the <see cref="Quote"/> class.
         /// </summary>
         public Quote()
         {
@@ -124,7 +130,7 @@ namespace Rainbow.Content.Web.Modules
             setQuoteSource.Order = 1;
             setQuoteSource.EnglishName = "Quote source?";
             setQuoteSource.Description = "Get quotes from a file or display the text from field My Quote";
-            _baseSettings.Add("Quote source", setQuoteSource);
+            baseSettings.Add("Quote source", setQuoteSource);
 
             ListDataType fileList = new ListDataType(GetListOfQuoteFiles());
             SettingItem setQuoteFile = new SettingItem(fileList);
@@ -132,14 +138,14 @@ namespace Rainbow.Content.Web.Modules
             setQuoteFile.Order = 2;
             setQuoteFile.EnglishName = "Quote file";
             setQuoteFile.Description = "The name of the file containing quotes";
-            _baseSettings.Add("Quote file", setQuoteFile);
+            baseSettings.Add("Quote file", setQuoteFile);
 
             SettingItem setMyQuote = new SettingItem(new StringDataType());
             setMyQuote.Value = "Enter your a quote here!";
             setMyQuote.Order = 3;
             setMyQuote.EnglishName = "My Quote";
             setMyQuote.Description = "Enter any quote here and set Quote source to My Quote";
-            _baseSettings.Add("My Quote", setMyQuote);
+            baseSettings.Add("My Quote", setMyQuote);
 
             SettingItem setTextSize =
                 new SettingItem(new ListDataType("Default;H1 (largest);H2;H3;H4;H5;H6 (smallest)"));
@@ -148,21 +154,21 @@ namespace Rainbow.Content.Web.Modules
             setTextSize.EnglishName = "Text size";
             setTextSize.Description =
                 "Text size of the quote text. The 6 build-in heading sizes (HTML tag <H1>,<H2>,etc)";
-            _baseSettings.Add("Text size", setTextSize);
+            baseSettings.Add("Text size", setTextSize);
 
             SettingItem setDisplayInItalic = new SettingItem(new BooleanDataType());
             setDisplayInItalic.Value = "true";
             setDisplayInItalic.Order = 5;
             setDisplayInItalic.EnglishName = "Display in italic?";
             setDisplayInItalic.Description = "Display all the quote text in italic style (HTML tag <i>)";
-            _baseSettings.Add("Display in italic", setDisplayInItalic);
+            baseSettings.Add("Display in italic", setDisplayInItalic);
 
             SettingItem setDisplayInBold = new SettingItem(new BooleanDataType());
             setDisplayInBold.Value = "false";
             setDisplayInBold.Order = 6;
             setDisplayInBold.EnglishName = "Display in bold?";
             setDisplayInBold.Description = "Display all the quote text in bold/fat letters (HTML tag <b>)";
-            _baseSettings.Add("Display in bold", setDisplayInBold);
+            baseSettings.Add("Display in bold", setDisplayInBold);
 
             SettingItem setStartTag = new SettingItem(new StringDataType());
             setStartTag.Value = "";
@@ -170,14 +176,14 @@ namespace Rainbow.Content.Web.Modules
             setStartTag.EnglishName = "Start tag";
             setStartTag.Description =
                 "Enter any special customizing HTML start tag here, e.g. a marquee tag make the text scroll";
-            _baseSettings.Add("Start tag", setStartTag);
+            baseSettings.Add("Start tag", setStartTag);
 
             SettingItem setEndTag = new SettingItem(new StringDataType());
             setEndTag.Value = "";
             setEndTag.Order = 8;
             setEndTag.EnglishName = "End tag";
             setEndTag.Description = "Must correspond to the Start tag";
-            _baseSettings.Add("End tag", setEndTag);
+            baseSettings.Add("End tag", setEndTag);
         }
 
         /// <summary>
@@ -190,11 +196,13 @@ namespace Rainbow.Content.Web.Modules
         /// <returns>FileInfo[]</returns>
         public FileInfo[] GetListOfQuoteFiles()
         {
-            string quoteFilePath = string.Empty;
+            string quoteFilePath;
 
             //jes1111 - if (ConfigurationSettings.AppSettings["QuoteFileFolder"] != null && ConfigurationSettings.AppSettings["QuoteFileFolder"].Length > 0)
             if (Config.QuoteFileFolder.Length != 0)
+            {
                 quoteFilePath = Config.QuoteFileFolder;
+            }
             else
             {
                 //this will default to the folder where the .query files are located by default

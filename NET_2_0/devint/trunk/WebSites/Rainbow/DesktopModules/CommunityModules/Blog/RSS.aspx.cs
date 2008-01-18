@@ -7,9 +7,10 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -25,7 +26,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
             if (Request.Params.Get("mID") != null)
             {
@@ -67,7 +68,7 @@ namespace Rainbow.Content.Web.Modules
 
             Response.ContentType = "text/xml";
 
-            Hashtable moduleSettings = ModuleSettings.GetModuleSettings(moduleID);
+            Hashtable moduleSettings = ModuleSettingsProvider.GetModuleSettings(moduleID);
             Encoding encoding = new UTF8Encoding();
 
             XmlTextWriter xmlTextWriter = new XmlTextWriter(Response.OutputStream, encoding);
@@ -162,7 +163,7 @@ namespace Rainbow.Content.Web.Modules
 
                     xmlTextWriter.WriteStartElement("link");
                     xmlTextWriter.WriteString(Request.Url.ToString().Replace("RSS.aspx", "blogview.aspx") + "&ItemID=" +
-                                              dr["ItemID"].ToString());
+                                              dr["ItemID"]);
                     xmlTextWriter.WriteEndElement();
 
                     xmlTextWriter.WriteStartElement("pubDate");
@@ -172,16 +173,16 @@ namespace Rainbow.Content.Web.Modules
 
                     xmlTextWriter.WriteStartElement("guid");
                     xmlTextWriter.WriteString(Request.Url.ToString().Replace("RSS.aspx", "blogview.aspx") + "&ItemID=" +
-                                              dr["ItemID"].ToString());
+                                              dr["ItemID"]);
                     xmlTextWriter.WriteEndElement();
 
                     xmlTextWriter.WriteStartElement("comments");
                     xmlTextWriter.WriteString(Request.Url.ToString().Replace("RSS.aspx", "blogview.aspx") + "&ItemID=" +
-                                              dr["ItemID"].ToString());
+                                              dr["ItemID"]);
                     xmlTextWriter.WriteEndElement();
 
                     xmlTextWriter.WriteStartElement("description");
-                    xmlTextWriter.WriteCData(Server.HtmlDecode((string) dr["Description"].ToString()));
+                    xmlTextWriter.WriteCData(Server.HtmlDecode(dr["Description"].ToString()));
                     xmlTextWriter.WriteEndElement();
 
 
@@ -204,13 +205,13 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="moduleSettings">The module settings.</param>
         /// <returns></returns>
-        private string TitleText(Hashtable moduleSettings)
+        static string TitleText(Hashtable moduleSettings)
         {
             string titleText = "Rainbow Blog";
 
             if (HttpContext.Current != null) // if it is not design time (and not overriden - Jes1111)
             {
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 if (portalSettings.PortalContentLanguage != CultureInfo.InvariantCulture
                     && moduleSettings["MODULESETTINGS_TITLE_" + portalSettings.PortalContentLanguage.Name] != null
                     &&

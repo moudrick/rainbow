@@ -5,7 +5,6 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Content.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 using ImageButton=Rainbow.Framework.Web.UI.WebControls.ImageButton;

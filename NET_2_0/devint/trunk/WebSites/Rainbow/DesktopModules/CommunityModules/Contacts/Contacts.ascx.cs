@@ -1,13 +1,12 @@
 using System;
 using System.Collections;
 using System.Data;
-using System.IO;
 using System.Web.UI.WebControls;
-using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -18,17 +17,14 @@ namespace Rainbow.Content.Web.Modules
     public partial class Contacts : PortalModuleControl
     {
         /// <summary>
-        /// 
         /// </summary>
         protected DataView myDataView;
 
         /// <summary>
-        /// 
         /// </summary>
         protected string sortField;
 
         /// <summary>
-        /// 
         /// </summary>
         protected string sortDirection;
 
@@ -127,7 +123,7 @@ namespace Rainbow.Content.Web.Modules
             setItem.Order = groupBase + 20;
             // end of modification
             setItem.Description = "Switch for displaying the email column or not.";
-            _baseSettings.Add("SHOW_COLUMN_EMAIL", setItem);
+            baseSettings.Add("SHOW_COLUMN_EMAIL", setItem);
 
             setItem = new SettingItem(new BooleanDataType());
             setItem.Value = "True";
@@ -138,7 +134,7 @@ namespace Rainbow.Content.Web.Modules
             setItem.Order = groupBase + 25;
             // end of modification
             setItem.Description = "Switch for displaying the contact1 column or not.";
-            _baseSettings.Add("SHOW_COLUMN_CONTACT1", setItem);
+            baseSettings.Add("SHOW_COLUMN_CONTACT1", setItem);
 
             setItem = new SettingItem(new BooleanDataType());
             setItem.Value = "True";
@@ -149,7 +145,7 @@ namespace Rainbow.Content.Web.Modules
             setItem.Order = groupBase + 30;
             // end of modification
             setItem.Description = "Switch for displaying the contact2 column or not.";
-            _baseSettings.Add("SHOW_COLUMN_CONTACT2", setItem);
+            baseSettings.Add("SHOW_COLUMN_CONTACT2", setItem);
             //MH: End
 
             setItem = new SettingItem(new BooleanDataType());
@@ -161,7 +157,7 @@ namespace Rainbow.Content.Web.Modules
             setItem.Order = groupBase + 35;
             // end of modification
             setItem.Description = "Switch for displaying the Fax column or not.";
-            _baseSettings.Add("SHOW_COLUMN_FAX", setItem);
+            baseSettings.Add("SHOW_COLUMN_FAX", setItem);
 
             setItem = new SettingItem(new BooleanDataType());
             setItem.Value = "True";
@@ -172,7 +168,7 @@ namespace Rainbow.Content.Web.Modules
             setItem.Order = groupBase + 40;
             // end of modification
             setItem.Description = "Switch for displaying the Address column or not.";
-            _baseSettings.Add("SHOW_COLUMN_ADDRESS", setItem);
+            baseSettings.Add("SHOW_COLUMN_ADDRESS", setItem);
         }
 
         #region Global Implementation
@@ -236,12 +232,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -251,12 +247,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -295,14 +291,18 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="source">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.Web.UI.WebControls.DataGridSortCommandEventArgs"/> instance containing the event data.</param>
-        private void myDataGrid_SortCommand(object source, DataGridSortCommandEventArgs e)
+        void myDataGrid_SortCommand(object source, DataGridSortCommandEventArgs e)
         {
             if (sortField == e.SortExpression)
             {
                 if (sortDirection == "ASC")
+                {
                     sortDirection = "DESC";
+                }
                 else
+                {
                     sortDirection = "ASC";
+                }
             }
 
             ViewState["SortField"] = e.SortExpression;

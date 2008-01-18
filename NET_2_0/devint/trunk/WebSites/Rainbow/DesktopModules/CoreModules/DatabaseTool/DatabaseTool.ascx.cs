@@ -1,8 +1,8 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=System.Web.UI.WebControls.Label;
 
@@ -78,25 +78,25 @@ namespace Rainbow.Content.Web.Modules
         /// <summary>
         /// Connects the specified LBL.
         /// </summary>
-        /// <param name="lbl">The LBL.</param>
+        /// <param name="label">The LBL.</param>
         /// <returns></returns>
-        protected bool Connect(Label lbl)
+        protected bool Connect(Label label)
         {
-            lbl.Text = string.Empty;
+            label.Text = string.Empty;
             bool retValue;
             try
             {
-                SqlConnection SqlCon = new SqlConnection(ConnectionString);
-                SqlDataAdapter DA = new SqlDataAdapter("SELECT NULL", SqlCon);
-                SqlCon.Open();
+                SqlConnection connection = new SqlConnection(ConnectionString);
+                //SqlDataAdapter DA = new SqlDataAdapter("SELECT NULL", connection);
+                connection.Open();
 
-                SqlCon.Close();
-                SqlCon.Dispose();
+                connection.Close();
+                connection.Dispose();
                 retValue = true;
             }
             catch (Exception ex)
             {
-                lbl.Text = "Error: " + ex.Message;
+                label.Text = "Error: " + ex.Message;
                 retValue = false;
             }
             return retValue;
@@ -240,7 +240,7 @@ namespace Rainbow.Content.Web.Modules
         protected void GetObjectInfo_Click(object sender, EventArgs e)
         {
             FillDataGrid("SELECT " + InfoFields + " FROM sysobjects WHERE uid=USER_ID('" + tbUserName.Text +
-                         "') AND id=" + lbObjects.SelectedItem.Value.ToString());
+                         "') AND id=" + lbObjects.SelectedItem.Value);
         }
 
 
@@ -252,7 +252,7 @@ namespace Rainbow.Content.Web.Modules
         protected void GetObjectInfoExtended_Click(object sender, EventArgs e)
         {
             FillDataGrid("SELECT " + InfoExtendedFields + " FROM sysobjects WHERE uid=USER_ID('" + tbUserName.Text +
-                         "') AND id=" + lbObjects.SelectedItem.Value.ToString());
+                         "') AND id=" + lbObjects.SelectedItem.Value);
         }
 
 
@@ -268,7 +268,7 @@ namespace Rainbow.Content.Web.Modules
                 ddObjectSelectList.SelectedItem.Value == "V")
             {
                 SQL += "EXEC sp_columns";
-                SQL += " @table_name = '" + lbObjects.SelectedItem.Text.ToString() + "'";
+                SQL += " @table_name = '" + lbObjects.SelectedItem.Text + "'";
                 SQL += ",@table_owner = '" + tbUserName.Text + "'";
                 FillDataGrid(SQL);
             }
@@ -277,7 +277,7 @@ namespace Rainbow.Content.Web.Modules
                 SQL += " SELECT c.[text] FROM sysobjects o, syscomments c";
                 SQL += " WHERE o.uid=USER_ID('" + tbUserName.Text + "')";
                 SQL += " AND o.id=c.id";
-                SQL += " AND o.id=" + lbObjects.SelectedItem.Value.ToString();
+                SQL += " AND o.id=" + lbObjects.SelectedItem.Value;
 
                 GetTableField(SQL, 0);
             }
@@ -334,7 +334,7 @@ namespace Rainbow.Content.Web.Modules
                     try
                     {
                         int Rowseff = SqlComm.ExecuteNonQuery();
-                        lblRes.Text = "Effected Rows: " + Rowseff.ToString();
+                        lblRes.Text = "Effected Rows: " + Rowseff;
                     }
                     finally
                     {
@@ -376,49 +376,49 @@ namespace Rainbow.Content.Web.Modules
             Trusted_Connection.Order = 1;
             //Trusted_Connection.Required = true;   // hmmm... problem here! Dont set to true!" 
             Trusted_Connection.Value = "True";
-            _baseSettings.Add("Trusted Connection", Trusted_Connection);
+            baseSettings.Add("Trusted Connection", Trusted_Connection);
 
             SettingItem ServerName = new SettingItem(new StringDataType());
             ServerName.Order = 2;
             ServerName.Required = true;
             ServerName.Value = "localhost";
-            _baseSettings.Add("ServerName", ServerName);
+            baseSettings.Add("ServerName", ServerName);
 
             SettingItem DatabaseName = new SettingItem(new StringDataType());
             DatabaseName.Order = 3;
             DatabaseName.Required = true;
             DatabaseName.Value = "Rainbow";
-            _baseSettings.Add("DatabaseName", DatabaseName);
+            baseSettings.Add("DatabaseName", DatabaseName);
 
             SettingItem UserID = new SettingItem(new StringDataType());
             UserID.Order = 4;
             UserID.Required = false;
             UserID.Value = string.Empty;
-            _baseSettings.Add("UserID", UserID);
+            baseSettings.Add("UserID", UserID);
 
             SettingItem Password = new SettingItem(new StringDataType());
             Password.Order = 5;
             Password.Required = false;
             Password.Value = string.Empty;
-            _baseSettings.Add("Password", Password);
+            baseSettings.Add("Password", Password);
 
             SettingItem InfoFields = new SettingItem(new StringDataType());
             InfoFields.Order = 6;
             InfoFields.Required = true;
             InfoFields.Value = "name,id,xtype,uid"; // for table sysobjects
-            _baseSettings.Add("InfoFields", InfoFields);
+            baseSettings.Add("InfoFields", InfoFields);
 
             SettingItem InfoExtendedFields = new SettingItem(new StringDataType());
             InfoExtendedFields.Order = 7;
             InfoExtendedFields.Required = true;
             InfoExtendedFields.Value = "*"; // for table sysobjects
-            _baseSettings.Add("InfoExtendedFields", InfoExtendedFields);
+            baseSettings.Add("InfoExtendedFields", InfoExtendedFields);
 
             SettingItem ShowQueryBox = new SettingItem(new BooleanDataType());
             ShowQueryBox.Order = 8;
             //ShowQueryBox.Required = true;   // hmmm... problem here! Dont set to true!" 
             ShowQueryBox.Value = "True";
-            _baseSettings.Add("Show Query Box", ShowQueryBox);
+            baseSettings.Add("Show Query Box", ShowQueryBox);
 
             SettingItem QueryBoxHeight = new SettingItem(new IntegerDataType());
             QueryBoxHeight.Order = 9;
@@ -426,7 +426,7 @@ namespace Rainbow.Content.Web.Modules
             QueryBoxHeight.Value = "150";
             QueryBoxHeight.MinValue = 10;
             QueryBoxHeight.MaxValue = 2000;
-            _baseSettings.Add("Query Box Height", QueryBoxHeight);
+            baseSettings.Add("Query Box Height", QueryBoxHeight);
         }
 
         #region Web Form Designer generated code

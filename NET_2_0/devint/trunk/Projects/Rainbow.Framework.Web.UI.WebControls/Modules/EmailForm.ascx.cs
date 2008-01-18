@@ -3,8 +3,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
@@ -186,7 +186,7 @@ namespace Rainbow.Content.Web.Modules
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("Subject", "Subject can not contain null values!");
+                    throw new ArgumentNullException("value", "Subject can not contain null values!");
                 txtSubject.Text = value;
             }
         }
@@ -200,7 +200,7 @@ namespace Rainbow.Content.Web.Modules
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("HtmlBodyText", "HtmlBodyText can not contain null values!");
+                    throw new ArgumentNullException("value", "HtmlBodyText can not contain null values!");
                 txtBody.Text = value;
             }
         }
@@ -214,13 +214,12 @@ namespace Rainbow.Content.Web.Modules
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("BodyText", "BodyText can not contain null values!");
+                    throw new ArgumentNullException("value", "BodyText can not contain null values!");
                 txtBody.Text = value;
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public bool AllEmailAddressesOk
         {
@@ -246,7 +245,7 @@ namespace Rainbow.Content.Web.Modules
             _bcc = new EmailAddressList();
 
             HtmlEditorDataType h = new HtmlEditorDataType();
-            PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            Portal pS = (Portal) HttpContext.Current.Items["PortalSettings"];
             try
             {
                 h.Value = pS.CustomSettings["SITESETTINGS_DEFAULT_EDITOR"].ToString();

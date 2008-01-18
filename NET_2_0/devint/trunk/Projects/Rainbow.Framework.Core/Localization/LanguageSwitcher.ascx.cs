@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
-using System.Web;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Framework.Localization
@@ -16,17 +16,14 @@ namespace Rainbow.Framework.Localization
     public class LanguageSwitcher : PortalModuleControl
     {
         /// <summary>
-        /// 
         /// </summary>
         public const string LANGUAGE_DEFAULT = "en-US";
 
         /// <summary>
-        /// 
         /// </summary>
         protected Web.UI.WebControls.LanguageSwitcher LanguageSwitcher1;
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="addInvariantCulture"></param>
         /// <returns></returns>
@@ -34,7 +31,6 @@ namespace Rainbow.Framework.Localization
         {
             return GetLanguageCultureList().ToUICultureArray(addInvariantCulture);
         }
-
 
         /// <summary>
         /// Gets the language culture list.
@@ -44,35 +40,30 @@ namespace Rainbow.Framework.Localization
         {
             string strLangList = LANGUAGE_DEFAULT; //default for design time
 
-            // Obtain PortalSettings from Current Context
-            if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
+            Portal portalSettings = PortalProvider.Instance.CurrentPortal;
+            if (portalSettings != null)
             {
                 //Do not remove these checks!! It fails installing modules on startup
-                PortalSettings _portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-                if (_portalSettings.CustomSettings != null &&
-                    _portalSettings.CustomSettings["SITESETTINGS_LANGLIST"] != null)
-                    strLangList = _portalSettings.CustomSettings["SITESETTINGS_LANGLIST"].ToString();
+                if (portalSettings.CustomSettings != null &&
+                    portalSettings.CustomSettings["SITESETTINGS_LANGLIST"] != null)
+                {
+                    strLangList = portalSettings.CustomSettings["SITESETTINGS_LANGLIST"].ToString();
+                }
             }
             LanguageCultureCollection langList;
             try
             {
-                langList =
-                    (LanguageCultureCollection)
-                    TypeDescriptor.GetConverter(typeof (LanguageCultureCollection)).ConvertTo(strLangList,
-                                                                                              typeof (
-                                                                                                  LanguageCultureCollection
-                                                                                                  ));
+                langList = (LanguageCultureCollection) TypeDescriptor.GetConverter(
+                    typeof (LanguageCultureCollection)).ConvertTo(strLangList,
+                        typeof (LanguageCultureCollection));
             }
             catch (Exception ex)
             {
                 //ErrorHandler.HandleException("Failed to load languages, loading defaults", ex);
                 ErrorHandler.Publish(LogLevel.Warn, "Failed to load languages, loading defaults", ex);
-                langList =
-                    (LanguageCultureCollection)
-                    TypeDescriptor.GetConverter(typeof (LanguageCultureCollection)).ConvertTo(LANGUAGE_DEFAULT,
-                                                                                              typeof (
-                                                                                                  LanguageCultureCollection
-                                                                                                  ));
+                langList = (LanguageCultureCollection) TypeDescriptor.GetConverter(
+                    typeof (LanguageCultureCollection)).ConvertTo(LANGUAGE_DEFAULT,
+                        typeof (LanguageCultureCollection));
             }
             return langList;
         }
@@ -101,7 +92,7 @@ namespace Rainbow.Framework.Localization
             languageSwitchType.Value = ((int) LanguageSwitcherType.VerticalLinksList).ToString();
             languageSwitchType.Order = (int) SettingItemGroup.THEME_LAYOUT_SETTINGS + 910;
             languageSwitchType.Group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
-            _baseSettings.Add("LANGUAGESWITCHER_TYPES", languageSwitchType);
+            baseSettings.Add("LANGUAGESWITCHER_TYPES", languageSwitchType);
 
             // Language Switcher Module - DisplayOptions
             ArrayList languageSwitcherDisplayOptions = new ArrayList();
@@ -123,7 +114,7 @@ namespace Rainbow.Framework.Localization
             languageSwitchFlags.Value = ((int) LanguageSwitcherDisplay.DisplayCultureList).ToString();
             languageSwitchFlags.Order = (int) SettingItemGroup.THEME_LAYOUT_SETTINGS + 920;
             languageSwitchFlags.Group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
-            _baseSettings.Add("LANGUAGESWITCHER_FLAGS", languageSwitchFlags);
+            baseSettings.Add("LANGUAGESWITCHER_FLAGS", languageSwitchFlags);
 
             // Labels
             SettingItem languageSwitchLabels =
@@ -133,7 +124,7 @@ namespace Rainbow.Framework.Localization
             languageSwitchLabels.Value = ((int) LanguageSwitcherDisplay.DisplayCultureList).ToString();
             languageSwitchLabels.Order = (int) SettingItemGroup.THEME_LAYOUT_SETTINGS + 930;
             languageSwitchLabels.Group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
-            _baseSettings.Add("LANGUAGESWITCHER_LABELS", languageSwitchLabels);
+            baseSettings.Add("LANGUAGESWITCHER_LABELS", languageSwitchLabels);
 
             // Language Switcher Module - NamesOptions
             ArrayList languageSwitcherNamesOptions = new ArrayList();
@@ -155,7 +146,7 @@ namespace Rainbow.Framework.Localization
             languageSwitcherName.Value = ((int) LanguageSwitcherName.NativeName).ToString();
             languageSwitcherName.Order = (int) SettingItemGroup.THEME_LAYOUT_SETTINGS + 940;
             languageSwitcherName.Group = SettingItemGroup.THEME_LAYOUT_SETTINGS;
-            _baseSettings.Add("LANGUAGESWITCHER_NAMES", languageSwitcherName);
+            baseSettings.Add("LANGUAGESWITCHER_NAMES", languageSwitcherName);
 
             // Use flag images from portal's images folder?
             SettingItem customFlags = new SettingItem(new BooleanDataType());
@@ -165,7 +156,7 @@ namespace Rainbow.Framework.Localization
             customFlags.Description =
                 "Check this if you want to use custom flags from portal's images folder. Custom flags are located in portal folder. /images/flags/";
             customFlags.Value = "False";
-            _baseSettings.Add("LANGUAGESWITCHER_CUSTOMFLAGS", customFlags);
+            baseSettings.Add("LANGUAGESWITCHER_CUSTOMFLAGS", customFlags);
 
 
             SupportsWorkflow = false;
@@ -234,9 +225,13 @@ namespace Rainbow.Framework.Localization
                 //LanguageSwitcher1.ChangeLanguageUrl = Page.Request.RawUrl;
 
                 if (bool.Parse(Settings["LANGUAGESWITCHER_CUSTOMFLAGS"].ToString()))
-                    LanguageSwitcher1.ImagePath = portalSettings.PortalFullPath + "/images/flags/";
+                {
+                    LanguageSwitcher1.ImagePath = PortalSettings.PortalFullPath + "/images/flags/";
+                }
                 else
+                {
                     LanguageSwitcher1.ImagePath = Path.WebPathCombine(Path.ApplicationRoot, "aspnet_client/flags/");
+                }
             }
         }
     }

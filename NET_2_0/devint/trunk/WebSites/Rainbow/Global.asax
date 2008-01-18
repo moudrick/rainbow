@@ -1,1 +1,1 @@
-<%@ Application Inherits="Rainbow.Global" %>
+<%@ Application Inherits="Rainbow.App_Code.Global" %>

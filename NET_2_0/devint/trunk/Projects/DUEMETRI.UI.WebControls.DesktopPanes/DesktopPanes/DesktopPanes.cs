@@ -15,9 +15,7 @@ namespace DUEMETRI.UI.WebControls
     /// <summary>
     /// DesktopPanes class for supporting three pane browsing
     /// </summary>
-    [
-    Designer("DUEMETRI.UI.Design.WebControls.DesktopPanesDesigner")
-    ]
+    [Designer("DUEMETRI.UI.Design.WebControls.DesktopPanesDesigner")]
     public class DesktopPanes : WebControl, INamingContainer
     {
         #region Member variables

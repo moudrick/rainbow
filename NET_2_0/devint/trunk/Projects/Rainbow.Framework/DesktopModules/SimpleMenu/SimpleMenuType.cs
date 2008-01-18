@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
-using Rainbow.Framework;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -13,18 +11,8 @@ namespace Rainbow.Content.Web.Modules
 	/// </summary>
 	public class SimpleMenuType :UserControl
 	{
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:SimpleMenuType"/> class.
-        /// </summary>
-		public SimpleMenuType()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
+		Hashtable moduleSettings;
 
-
-		private Hashtable _settings;
         /// <summary>
         /// Gets or sets the module settings.
         /// </summary>
@@ -33,34 +21,33 @@ namespace Rainbow.Content.Web.Modules
 		{
 			get
 			{
-				return _settings;
+				return moduleSettings;
 			}
 			set
 			{
-				_settings = value ;
+				moduleSettings = value ;
 			}
 		}
 		
 
-		private PortalSettings _portalSettings;
+		Portal portalSettings;
         /// <summary>
         /// Gets or sets the global portal settings.
         /// </summary>
         /// <value>The global portal settings.</value>
-		public PortalSettings GlobalPortalSettings
+		public Portal GlobalPortalSettings
 		{
 			get
 			{
-				return _portalSettings;
+				return portalSettings;
 			}
 			set
 			{
-				_portalSettings = value ;
+				portalSettings = value;
 			}
 		}
 		
-
-		private BindOption menuBindOption = BindOption.BindOptionNone;
+		BindOption menuBindOption = BindOption.BindOptionNone;
         /// <summary>
         /// Gets the menu bind option.
         /// </summary>
@@ -69,9 +56,11 @@ namespace Rainbow.Content.Web.Modules
 		{
 		get
 		{
-			if (ModuleSettings["sm_MenuBindingType"] != null )
-			menuBindOption = (BindOption) int.Parse("0" +  ModuleSettings["sm_MenuBindingType"].ToString());
-			return menuBindOption;
+		    if (ModuleSettings["sm_MenuBindingType"] != null)
+		    {
+		        menuBindOption = (BindOption) int.Parse("0" + ModuleSettings["sm_MenuBindingType"]);
+		    }
+		    return menuBindOption;
 		}
 }
 
@@ -95,25 +84,22 @@ namespace Rainbow.Content.Web.Modules
 
 			}
 		}
-	
 
-
-		private int parentTabID = 0;
+		int parentTabID = 0;
         /// <summary>
         /// Gets the parent page ID.
         /// </summary>
         /// <value>The parent page ID.</value>
 		public int ParentPageID
 		{
-			get
-			{
-				if (ModuleSettings["sm_ParentPageID"] != null)
-					parentTabID = int.Parse(ModuleSettings["sm_ParentPageID"].ToString());
-			
-				return parentTabID;
-
-			}
+            get
+            {
+                if (ModuleSettings["sm_ParentPageID"] != null)
+                {
+                    parentTabID = int.Parse(ModuleSettings["sm_ParentPageID"].ToString());
+                }
+                return parentTabID;
+            }
 		}
-
 	}
 }

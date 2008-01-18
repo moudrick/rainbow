@@ -5,14 +5,14 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Monitoring;
 using Rainbow.Framework.Scheduler;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
-using Path=System.IO.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -48,7 +48,7 @@ namespace Rainbow.Content.Web.Modules
             setSortField.Value = "ActivityTime";
             setSortField.Group = group;
             setSortField.Order = groupBase + 20; //1;
-            _baseSettings.Add("SortField", setSortField);
+            baseSettings.Add("SortField", setSortField);
         }
 
         /// <summary>
@@ -222,14 +222,14 @@ namespace Rainbow.Content.Web.Modules
                 DataSet monitorData = Utility.GetMonitoringStats(startDate,
                                                                  endDate,
                                                                  cboReportType.SelectedItem.Value,
-                                                                 portalSettings.ActivePage.PageID,
+                                                                 PortalSettings.ActivePage.PageID,
                                                                  CheckBoxIncludeMonitorPage.Checked,
                                                                  CheckBoxIncludeAdminUser.Checked,
                                                                  CheckBoxPageRequests.Checked,
                                                                  CheckBoxLogons.Checked,
                                                                  CheckBoxLogouts.Checked,
                                                                  CheckBoxIncludeMyIPAddress.Checked,
-                                                                 portalSettings.PortalID);
+                                                                 PortalSettings.PortalID);
                 myDataView = monitorData.Tables[0].DefaultView;
                 myDataView.Sort = sortField + " " + sortDirection;
                 myDataGrid.DataSource = myDataView;
@@ -266,8 +266,8 @@ namespace Rainbow.Content.Web.Modules
 
                         ChartImage.ImageUrl =
                             HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Monitoring/ChartGenerator.aspx?" +
-                                                    "xValues=" + xValues.ToString() +
-                                                    "&yValues=" + yValues.ToString() +
+                                                    "xValues=" + xValues +
+                                                    "&yValues=" + yValues +
                                                     "&ChartType=" + chartType);
 
                         ChartImage.Visible = true;
@@ -310,12 +310,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -325,12 +325,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -359,7 +359,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         private void cmdDisplay_Click(object sender, EventArgs e)
         {
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 BindGrid();
             }

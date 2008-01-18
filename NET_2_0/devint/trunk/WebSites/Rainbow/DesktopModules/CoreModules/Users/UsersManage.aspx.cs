@@ -1,21 +1,20 @@
 using System;
 using System.Collections;
-using System.Data.SqlClient;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Settings.Cache;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
 using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
-using System.Web.Security;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
 using System.Collections.Generic;
 
 namespace Rainbow.Content.Web.Modules
@@ -24,10 +23,8 @@ namespace Rainbow.Content.Web.Modules
     /// User manager
     /// </summary>
     [History("jminond", "march 2005", "Changes for moving Tab to Page")]
-    [
-        History("gman3001", "2004/10/06",
-            "Add GetCurrentProfileControl method to properly obtain a custom register control as specified by the 'Register Module ID' setting."
-            )]
+    [History("gman3001", "2004/10/06",
+            "Add GetCurrentProfileControl method to properly obtain a custom register control as specified by the 'Register Module ID' setting.")]
     public partial class UsersManage : EditItemPage
     {
         private Guid userID = Guid.Empty;
@@ -67,7 +64,7 @@ namespace Rainbow.Content.Web.Modules
             }
             if (Request.Params["username"] != null)
             {
-                userName = (string) Request.Params["username"];
+                userName = Request.Params["username"];
             }
 
 
@@ -97,11 +94,16 @@ namespace Rainbow.Content.Web.Modules
                         Exception lastException = null;
                         while (uid == Guid.Empty && i < 99) //Avoid infinite loop
                         {
-                            string friendlyName = "New User created " + DateTime.Now.ToString();
-                            userName = "NewUserEmail" + i.ToString() + "@yoursite.com";
+                            string friendlyName = "New User created " + DateTime.Now;
+                            userName = "NewUserEmail" + i + "@yoursite.com";
                             try
                             {
-                                uid = users.AddUser( friendlyName, userName, string.Empty );
+                                uid =
+                                    users.AddUser(
+                                        PortalProvider.Instance.CurrentPortal.PortalAlias,
+                                        userName,
+                                        string.Empty,
+                                        friendlyName);
                             }
                             catch (Exception ex)
                             {
@@ -111,7 +113,7 @@ namespace Rainbow.Content.Web.Modules
                             i++;
                         }
                         if (uid == Guid.Empty)
-                            throw new Exception("New user creation failed after " + i.ToString() + " retries.",
+                            throw new Exception("New user creation failed after " + i + " retries.",
                                                 lastException);
 
                         // redirect to this page with the corrected querystring args
@@ -139,46 +141,50 @@ namespace Rainbow.Content.Web.Modules
         private Control GetCurrentProfileControl()
         {
             //default
-            string RegisterPage = "register.aspx";
+            string registerPage = "register.aspx";
             if (HttpContext.Current != null)
             {
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal localPortal = PortalProvider.Instance.CurrentPortal;
 
                 //Select the actual register page
-                if (portalSettings.CustomSettings["SITESETTINGS_REGISTER_TYPE"] != null &&
-                    portalSettings.CustomSettings["SITESETTINGS_REGISTER_TYPE"].ToString() != "register.aspx")
+                if (localPortal.CustomSettings["SITESETTINGS_REGISTER_TYPE"] != null &&
+                    localPortal.CustomSettings["SITESETTINGS_REGISTER_TYPE"].ToString() != "register.aspx")
                 {
-                    RegisterPage = portalSettings.CustomSettings["SITESETTINGS_REGISTER_TYPE"].ToString();
+                    registerPage = localPortal.CustomSettings["SITESETTINGS_REGISTER_TYPE"].ToString();
                 }
 
-                int moduleID = int.Parse(portalSettings.CustomSettings["SITESETTINGS_REGISTER_MODULEID"].ToString());
+                int moduleID = int.Parse(localPortal.CustomSettings["SITESETTINGS_REGISTER_MODULEID"].ToString());
                 string moduleDesktopSrc = string.Empty;
                 if (moduleID > 0)
-                    moduleDesktopSrc = ModuleSettings.GetModuleDesktopSrc(moduleID);
+                {
+                    moduleDesktopSrc = ModuleSettingsProvider.GetModuleDesktopSrc(moduleID);
+                }
                 if (moduleDesktopSrc.Length == 0)
-                    moduleDesktopSrc = RegisterPage;
-                        //Changed by moudrick to fix the issue 27
-                        //commented out path combinig and left just assignment since it is already combined in the default configuration
-                        //http://code.google.com/p/rainbow/issues/detail?id=27
-                        //Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/CoreModules/Register", RegisterPage);
-                Control myControl = LoadControl(moduleDesktopSrc);
+                {
+                    moduleDesktopSrc = registerPage;
+                    //Changed by moudrick to fix the issue 27
+                    //commented out path combinig and left just assignment since it is already combined in the default configuration
+                    //http://code.google.com/p/rainbow/issues/detail?id=27
+                    //Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/CoreModules/Register", RegisterPage);
+                }
+                Control control = LoadControl(moduleDesktopSrc);
 
-                PortalModuleControl p = ((PortalModuleControl) myControl);
+                PortalModuleControl portalModuleControl = ((PortalModuleControl) control);
 
                 // changed by Mario Endara <mario@softworks.com.uy> (2004/11/05)
                 // if there's no custom register module, take actual ModuleID, else take the custom ModuleID
                 if (moduleID == 0)
                 {
-                    p.ModuleID = ModuleID;
-                    ((SettingItem) p.Settings["MODULESETTINGS_SHOW_TITLE"]).Value = "false";
+                    portalModuleControl.ModuleID = ModuleID;
+                    ((SettingItem)portalModuleControl.Settings["MODULESETTINGS_SHOW_TITLE"]).Value = "false";
                 }
                 else
-                    p.ModuleID = moduleID;
-
-                return ((Control) p);
+                {
+                    portalModuleControl.ModuleID = moduleID;
+                }
+                return portalModuleControl;
             }
-
-            return (null);
+            return null;
         }
 
         /// <summary>
@@ -273,7 +279,7 @@ namespace Rainbow.Content.Web.Modules
             // Bind the Email and Password
             UsersDB users = new UsersDB();
 
-            Guid currentUserID = PortalSettings.CurrentUser.Identity.ProviderUserKey;
+            Guid currentUserID = RainbowPrincipal.CurrentUser.Identity.ProviderUserKey;
             // bind users in role to DataList
             IList<RainbowRole> roles = users.GetRolesByUser( currentUserID, portalSettings.PortalAlias);
             userRoles.DataSource = roles;

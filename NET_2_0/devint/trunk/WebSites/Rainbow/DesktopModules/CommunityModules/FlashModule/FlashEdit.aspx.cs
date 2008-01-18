@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI;
 
@@ -51,7 +52,7 @@ namespace Rainbow.Content.Web.Modules
                     Hashtable settings;
 
                     // Get settings from the database
-                    settings = ModuleSettings.GetModuleSettings(ModuleID);
+                    settings = ModuleSettingsProvider.GetModuleSettings(ModuleID);
 
                     if (settings["src"] != null)
                         Src.Text = settings["src"].ToString();
@@ -94,10 +95,10 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Update settings in the database
-            ModuleSettings.UpdateModuleSetting(ModuleID, "src", Src.Text);
-            ModuleSettings.UpdateModuleSetting(ModuleID, "height", Height.Text);
-            ModuleSettings.UpdateModuleSetting(ModuleID, "width", Width.Text);
-            ModuleSettings.UpdateModuleSetting(ModuleID, "backcolor", BackgroundCol.Text);
+            ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "src", Src.Text);
+            ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "height", Height.Text);
+            ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "width", Width.Text);
+            ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "backcolor", BackgroundCol.Text);
 
             // Redirect back to the portal home page
             Response.Redirect((string) ViewState["UrlReferrer"]);

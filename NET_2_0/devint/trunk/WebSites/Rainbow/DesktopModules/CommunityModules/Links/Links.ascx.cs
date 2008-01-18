@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.IO;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
@@ -79,14 +78,14 @@ namespace Rainbow.Content.Web.Modules
             // Set the link image type
             if (IsEditable)
             {
-                Image myImage = portalSettings.GetCurrentTheme().GetImage("Buttons_Edit", "edit.gif");
+                Image myImage = PortalSettings.GetCurrentTheme().GetImage("Buttons_Edit", "edit.gif");
                 linkImage = myImage.ImageUrl;
                 linkTextKey = "EDIT_THIS_ITEM";
                 linkAlternateText = "Edit this item";
             }
             else
             {
-                Image myImage = portalSettings.GetCurrentTheme().GetImage("NavLink", "navlink.gif");
+                Image myImage = PortalSettings.GetCurrentTheme().GetImage("NavLink", "navlink.gif");
                 linkImage = myImage.ImageUrl;
                 linkTextKey = string.Empty;
                 linkAlternateText = string.Empty;
@@ -134,7 +133,7 @@ namespace Rainbow.Content.Web.Modules
         // End Change Geert.Audenaert@Syntegra.Com
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Links"/> class.
+        /// Initializes a new instance of the <see cref="Links"/> class.
         /// </summary>
         public Links()
         {
@@ -146,20 +145,20 @@ namespace Rainbow.Content.Web.Modules
             #region MDF Settings
 
             // Note: dont modify the code here! Please set mdfXXX consts in top of this file
-            _baseSettings.Add(MDFSettings.NameApplyMDF, MDFSettings.MakeApplyMDF(MDFSettings.DefaultValueApplyMDF));
-            _baseSettings.Add(MDFSettings.NameDataSource, MDFSettings.MakeDataSource(MDFSettings.DefaultValueDataSource));
-            _baseSettings.Add(MDFSettings.NameMaxHits, MDFSettings.MakeMaxHits(MDFSettings.DefaultValueMaxHits));
-            _baseSettings.Add(MDFSettings.NameModuleList, MDFSettings.MakeModuleList(MDFSettings.DefaultValueModuleList));
-            _baseSettings.Add(MDFSettings.NameAllNotInList,
+            baseSettings.Add(MDFSettings.NameApplyMDF, MDFSettings.MakeApplyMDF(MDFSettings.DefaultValueApplyMDF));
+            baseSettings.Add(MDFSettings.NameDataSource, MDFSettings.MakeDataSource(MDFSettings.DefaultValueDataSource));
+            baseSettings.Add(MDFSettings.NameMaxHits, MDFSettings.MakeMaxHits(MDFSettings.DefaultValueMaxHits));
+            baseSettings.Add(MDFSettings.NameModuleList, MDFSettings.MakeModuleList(MDFSettings.DefaultValueModuleList));
+            baseSettings.Add(MDFSettings.NameAllNotInList,
                               MDFSettings.MakeAllNotInList(MDFSettings.DefaultValueAllNotInList));
-            _baseSettings.Add(MDFSettings.NameSortField,
+            baseSettings.Add(MDFSettings.NameSortField,
                               MDFSettings.MakeSortFieldList(mdfDefaultSortField, mdfSortFieldList));
-            _baseSettings.Add(MDFSettings.NameSortDirection,
+            baseSettings.Add(MDFSettings.NameSortDirection,
                               MDFSettings.MakeSortDirection(MDFSettings.DefaultValueSortDirection));
-            _baseSettings.Add(MDFSettings.NameSearchString,
+            baseSettings.Add(MDFSettings.NameSearchString,
                               MDFSettings.MakeSearchString(MDFSettings.DefaultValueSearchString));
-            _baseSettings.Add(MDFSettings.NameSearchField, MDFSettings.MakeSearchFieldList(mdfSearchFieldList));
-            _baseSettings.Add(MDFSettings.NameMobileOnly, MDFSettings.MakeMobileOnly(MDFSettings.DefaultValueMobileOnly));
+            baseSettings.Add(MDFSettings.NameSearchField, MDFSettings.MakeSearchFieldList(mdfSearchFieldList));
+            baseSettings.Add(MDFSettings.NameMobileOnly, MDFSettings.MakeMobileOnly(MDFSettings.DefaultValueMobileOnly));
 
             #endregion
         }
@@ -220,12 +219,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -235,12 +234,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

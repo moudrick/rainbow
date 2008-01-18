@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -177,7 +177,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetQuestions(int moduleID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSurveyQuestions", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -205,7 +205,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetOptions(int moduleID, string TypeOption)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSurveyOptions", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -236,7 +236,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetOptionList(int QuestionID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSurveyOptionList", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -263,7 +263,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetAnswers(int SurveyID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSurveyAnswers", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -290,7 +290,7 @@ namespace Rainbow.Framework.Content.Data
         public int GetSurveyID(int ModuleID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSurveyID", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -328,7 +328,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetQuestionList(int ModuleID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSurveyQuestionList", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -357,7 +357,7 @@ namespace Rainbow.Framework.Content.Data
         public int AddAnswer(int SurveyID, int QuestionID, int OptionID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddSurveyAnswer", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -405,7 +405,7 @@ namespace Rainbow.Framework.Content.Data
         public int AddQuestion(int ModuleID, string Question, int ViewOrder, string TypeOption)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddSurveyQuestion", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -456,7 +456,7 @@ namespace Rainbow.Framework.Content.Data
         public int AddOption(int QuestionID, string OptionDesc, int ViewOrder)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddSurveyOption", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -501,7 +501,7 @@ namespace Rainbow.Framework.Content.Data
         public int DelQuestion(int QuestionID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DelSurveyQuestion", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -535,7 +535,7 @@ namespace Rainbow.Framework.Content.Data
         public int DelOption(int OptionID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DelSurveyOption", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -570,7 +570,7 @@ namespace Rainbow.Framework.Content.Data
         public int UpdateQuestionOrder(int QuestionID, int Order)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateSurveyQuestionOrder", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -609,7 +609,7 @@ namespace Rainbow.Framework.Content.Data
         public int UpdateOptionOrder(int OptionID, int Order)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateSurveyOptionOrder", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -648,7 +648,7 @@ namespace Rainbow.Framework.Content.Data
         public int GetAnswerNum(int SurveyID, int QuestionID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSurveyAnswersNum", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -690,7 +690,7 @@ namespace Rainbow.Framework.Content.Data
         public int ExistSurvey(int ModuleID)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_ExistSurvey", myConnection);
 
             // Mark the Command as a SPROC
@@ -731,7 +731,7 @@ namespace Rainbow.Framework.Content.Data
         public string ExistAddSurvey(int ModuleID, string CreatedByUser)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_ExistAddSurvey", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 
@@ -776,7 +776,7 @@ namespace Rainbow.Framework.Content.Data
         public int GetDimArray(int ModuleID, string TypeOption)
         {
             // Create Instance of Connection and Command object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSurveyDimArray", myConnection);
             myCommand.CommandType = CommandType.StoredProcedure;
 

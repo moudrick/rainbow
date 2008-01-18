@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -24,7 +24,7 @@ namespace Rainbow.Content.Web.Modules
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:WeatherDE"/> class.
+        /// Initializes a new instance of the <see cref="WeatherDE"/> class.
         /// </summary>
         public WeatherDE()
         {
@@ -34,7 +34,7 @@ namespace Rainbow.Content.Web.Modules
             setZip.Required = true;
             setZip.Value = "88045";
             setZip.Order = 1;
-            _baseSettings.Add("WeatherZip", setZip);
+            baseSettings.Add("WeatherZip", setZip);
 
 
             // Module Weather Options
@@ -46,7 +46,7 @@ namespace Rainbow.Content.Web.Modules
             setOption.Required = true;
             setOption.Value = ((int) WeatherOption.Today).ToString();
             setOption.Order = 2;
-            _baseSettings.Add("WeatherOption", setOption);
+            baseSettings.Add("WeatherOption", setOption);
 
 
             // Module Weather Design
@@ -63,7 +63,7 @@ namespace Rainbow.Content.Web.Modules
             setDesign.Required = true;
             setDesign.Value = "1";
             setDesign.Order = 3;
-            _baseSettings.Add("WeatherDesign", setDesign);
+            baseSettings.Add("WeatherDesign", setDesign);
 
             // Module Weather CityIndex		
             SettingItem setCityIndex = new SettingItem(new DoubleDataType());
@@ -72,7 +72,7 @@ namespace Rainbow.Content.Web.Modules
             setCityIndex.Required = false;
             setCityIndex.Value = "0";
             setCityIndex.Order = 4;
-            _baseSettings.Add("WeatherCityIndex", setCityIndex);
+            baseSettings.Add("WeatherCityIndex", setCityIndex);
         }
 
 

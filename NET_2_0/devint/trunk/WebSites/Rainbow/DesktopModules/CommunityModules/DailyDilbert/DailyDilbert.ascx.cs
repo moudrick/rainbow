@@ -1,6 +1,6 @@
 using System;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -24,8 +24,8 @@ namespace Rainbow.Content.Web.Modules
         private void Page_Load(object sender, EventArgs e)
         {
             // Set the URl for the image
-            imgDilbert.ImageUrl = TemplateSourceDirectory + "/DailyDilbertImage.aspx?mID=" + ModuleID.ToString();
-            imgDilbert.NavigateUrl = TemplateSourceDirectory + "/DailyDilbertImage.aspx?mID=" + ModuleID.ToString();
+            imgDilbert.ImageUrl = TemplateSourceDirectory + "/DailyDilbertImage.aspx?mID=" + ModuleID;
+            imgDilbert.NavigateUrl = TemplateSourceDirectory + "/DailyDilbertImage.aspx?mID=" + ModuleID;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Rainbow.Content.Web.Modules
             setImagePercent.Order = 1;
             setImagePercent.MinValue = 1;
             setImagePercent.MaxValue = 100;
-            _baseSettings.Add("ImagePercent", setImagePercent);
+            baseSettings.Add("ImagePercent", setImagePercent);
         }
 
         #region Web Form Designer generated code

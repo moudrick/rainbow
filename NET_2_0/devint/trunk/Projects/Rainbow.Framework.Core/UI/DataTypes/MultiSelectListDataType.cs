@@ -14,8 +14,8 @@ namespace Rainbow.Framework.DataTypes
     /// </summary>
     public class MultiSelectListDataType : BaseDataType
     {
-        private string _dataValueField;
-        private string _dataTextField;
+        string dataValueField;
+        string dataTextField;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiSelectListDataType"/> class.
@@ -66,8 +66,8 @@ namespace Rainbow.Framework.DataTypes
         /// <value>The data value field.</value>
         public override string DataValueField
         {
-            get { return _dataValueField; }
-            set { _dataValueField = value; }
+            get { return dataValueField; }
+            set { dataValueField = value; }
         }
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace Rainbow.Framework.DataTypes
         /// <value>The data text field.</value>
         public override string DataTextField
         {
-            get { return _dataTextField; }
-            set { _dataTextField = value; }
+            get { return dataTextField; }
+            set { dataTextField = value; }
         }
 
         /// <summary>

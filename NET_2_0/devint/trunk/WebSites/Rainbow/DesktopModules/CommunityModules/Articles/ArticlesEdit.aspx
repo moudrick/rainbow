@@ -3,6 +3,7 @@
 <%@ register src="~/Design/DesktopLayouts/DesktopPortalBanner.ascx" tagname="Banner"
     tagprefix="portal" %>
 <%@ register src="~/Design/DesktopLayouts/DesktopFooter.ascx" tagname="Footer" tagprefix="foot" %>
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Web.UI.WebControls" %>
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="HEAD1" runat="server"> <title></title></head>
 <body id="Body1" runat="server">

@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using Rainbow.Framework;
-using Rainbow.Framework.Settings.Cache;
-using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Site.Data;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -14,14 +14,14 @@ namespace Rainbow.AdminAll
     /// </summary>
     public partial class EditPortal : EditItemPage
     {
-        private int currentPortalID = -1;
+        int currentPortalID = -1;
 
         /// <summary>
         /// Handles the Load event of the Page control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
             // Get portalID from querystring
             if (Request.Params["portalID"] != null)
@@ -33,10 +33,12 @@ namespace Rainbow.AdminAll
             {
                 // Remove cache for reload settings
                 if (!Page.IsPostBack)
+                {
                     CurrentCache.Remove(Key.PortalSettings());
+                }
 
                 // Obtain PortalSettings of this Portal
-                PortalSettings currentPortalSettings = new PortalSettings(currentPortalID);
+                Portal currentPortalSettings = PortalProvider.Instance.InstantiateNewPortal(currentPortalID);
 
                 // If this is the first visit to the page, populate the site data
                 if (!Page.IsPostBack)
@@ -48,8 +50,8 @@ namespace Rainbow.AdminAll
                 }
                 EditTable.DataSource =
                     new SortedList(
-                        PortalSettings.GetPortalCustomSettings(currentPortalSettings.PortalID,
-                                                               PortalSettings.GetPortalBaseSettings(null)));
+                        PortalProvider.Instance.GetPortalCustomSettings(currentPortalSettings.PortalID,
+                            PortalProvider.Instance.GetPortalBaseSettings(null)));
                 EditTable.DataBind();
                 EditTable.ObjectID = currentPortalID;
             }
@@ -63,9 +65,9 @@ namespace Rainbow.AdminAll
         {
             get
             {
-                ArrayList al = new ArrayList();
-                al.Add("366C247D-4CFB-451D-A7AE-649C83B05841");
-                return al;
+                ArrayList list = new ArrayList();
+                list.Add("366C247D-4CFB-451D-A7AE-649C83B05841");
+                return list;
             }
         }
 
@@ -80,7 +82,7 @@ namespace Rainbow.AdminAll
             if (Page.IsValid)
             {
                 //Update main settings and Tab info in the database
-                new PortalsDB().UpdatePortalInfo(currentPortalID, TitleField.Text, PathField.Text, false);
+                PortalProvider.Instance.UpdatePortalInfo(currentPortalID, TitleField.Text, PathField.Text, false);
 
                 // Update custom settings in the database
                 EditTable.ObjectID = currentPortalID;
@@ -101,7 +103,7 @@ namespace Rainbow.AdminAll
         private void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
         {
             SettingsTable edt = (SettingsTable) sender;
-            PortalSettings.UpdatePortalSetting(edt.ObjectID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
+            PortalProvider.Instance.UpdatePortalSetting(edt.ObjectID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
 
         #region Web Form Designer generated code

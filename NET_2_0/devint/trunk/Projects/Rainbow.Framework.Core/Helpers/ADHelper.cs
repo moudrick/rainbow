@@ -3,8 +3,8 @@ using System.Collections;
 using System.Data;
 using System.DirectoryServices;
 using System.Web.Caching;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Settings;
 
 namespace Rainbow.Framework.Helpers
 {
@@ -36,17 +36,6 @@ namespace Rainbow.Framework.Helpers
             ///     
             /// </summary>
             group = 2
-        }
-
-        /// <summary>
-        ///     
-        /// </summary>
-        /// 
-        /// <returns>
-        ///     A void value...
-        /// </returns>
-        public ADHelper()
-        {
         }
 
         /// <summary>
@@ -100,10 +89,9 @@ namespace Rainbow.Framework.Helpers
                             mySearcher.PropertiesToLoad.Add("objectClass");
                             mySearcher.PropertiesToLoad.Add("sAMAccountName");
 
-                            SearchResultCollection mySearcherSearchResult;
                             try
                             {
-                                mySearcherSearchResult = mySearcher.FindAll();
+                                SearchResultCollection mySearcherSearchResult = mySearcher.FindAll();
                                 foreach (SearchResult resEnt in mySearcherSearchResult)
                                 {
                                     DirectoryEntry entry = resEnt.GetDirectoryEntry();
@@ -198,7 +186,7 @@ namespace Rainbow.Framework.Helpers
                 mySearcher.PropertiesToLoad.Add("sAMAccountName");
                 mySearcher.PropertiesToLoad.Add("displayName");
 
-                DirectoryEntry entry = null;
+                DirectoryEntry entry;
                 try
                 {
                     entry = mySearcher.FindOne().GetDirectoryEntry();
@@ -221,11 +209,10 @@ namespace Rainbow.Framework.Helpers
                 {
                     try
                     {
-                        PropertyValueCollection values = (PropertyValueCollection) entry.Properties["sAMAccountName"];
-                        string accountPath = string.Empty;
+                        PropertyValueCollection values = entry.Properties["sAMAccountName"];
                         if (values != null && values.Count > 0)
                         {
-                            accountPath = account[0] + "\\" + values[0].ToString();
+                            string accountPath = account[0] + "\\" + values[0];
                             UGroups.Add(accountPath);
                         }
                         //Add generic system groups to the group list, since this user was authenticated when they entered the website
@@ -239,23 +226,23 @@ namespace Rainbow.Framework.Helpers
                         for (int i = 0; i < entry.Properties["memberOf"].Count; i++)
                         {
                             DirectoryEntry currentEntry =
-                                new DirectoryEntry(rootPath + entry.Properties["memberOf"][i].ToString());
+                                new DirectoryEntry(rootPath + entry.Properties["memberOf"][i]);
                             if (GetAccountType(currentEntry) == ADAccountType.group)
                             {
                                 // add to group list if this is a group
                                 values = currentEntry.Properties["sAMAccountName"];
                                 if (values != null && values.Count > 0)
                                 {
-                                    string GroupName = account[0] + "\\" + values[0].ToString();
+                                    string GroupName = account[0] + "\\" + values[0];
                                     if (!UGroups.Contains(GroupName))
+                                    {
                                         UGroups.Add(GroupName);
+                                    }
                                 }
                             }
                         }
                     }
-                    catch
-                    {
-                    }
+                    catch {;}
                 }
             }
             return (string[]) UGroups.ToArray(typeof (string));
@@ -299,7 +286,7 @@ namespace Rainbow.Framework.Helpers
             mySearcher.PropertiesToLoad.Add("objectClass");
             mySearcher.PropertiesToLoad.Add("member");
 
-            DirectoryEntry entry = null;
+            DirectoryEntry entry;
             try
             {
                 entry = mySearcher.FindOne().GetDirectoryEntry();
@@ -311,10 +298,11 @@ namespace Rainbow.Framework.Helpers
 
             // no object found
             if (entry == null)
+            {
                 return new EmailAddressList();
+            }
 
             // determine accounttype
-
             ADAccountType accounttype = GetAccountType(entry);
 
             EmailAddressList eal = new EmailAddressList();
@@ -325,9 +313,7 @@ namespace Rainbow.Framework.Helpers
                 {
                     eal.Add(entry.Properties["mail"][0]);
                 }
-                catch
-                {
-                }
+                catch {;}
                 return eal;
             }
 
@@ -416,7 +402,7 @@ namespace Rainbow.Framework.Helpers
 
             for (int i = 0; i < group.Properties["member"].Count; i++)
             {
-                DirectoryEntry currentEntry = new DirectoryEntry(rootPath + group.Properties["member"][i].ToString());
+                DirectoryEntry currentEntry = new DirectoryEntry(rootPath + group.Properties["member"][i]);
                 if (GetAccountType(currentEntry) == ADAccountType.user)
                 {
                     // add to eal
@@ -430,9 +416,7 @@ namespace Rainbow.Framework.Helpers
                             {
                                 eal.Add(email);
                             }
-                            catch
-                            {
-                            }
+                            catch {;}
                         }
                     }
                 }
@@ -440,7 +424,9 @@ namespace Rainbow.Framework.Helpers
                 {
                     // see if we already had the group
                     if (!searchedGroups.Contains(currentEntry.Path))
+                    {
                         GetUsersInGroup(currentEntry, eal, searchedGroups);
+                    }
                 }
             }
         }

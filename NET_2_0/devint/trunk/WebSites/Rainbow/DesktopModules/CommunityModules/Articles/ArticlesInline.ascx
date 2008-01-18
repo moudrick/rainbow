@@ -1,5 +1,7 @@
 <%@ control autoeventwireup="false" inherits="Rainbow.Content.Web.Modules.ArticlesInline"
     language="c#" src="ArticlesInline.ascx.cs" %>
+
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Web.UI.WebControls" %>    
 <asp:datalist id="myDataList" runat="server" cellpadding="4" width="100%">
     <itemtemplate>
         <div class="Normal">

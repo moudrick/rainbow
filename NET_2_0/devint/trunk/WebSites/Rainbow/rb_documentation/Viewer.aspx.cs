@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Web.Caching;
@@ -9,13 +8,12 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.Xsl;
-using Rainbow.Framework;using Rainbow.Framework.Site.Data;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Web.UI;
 using Localize = Rainbow.Framework.Web.UI.WebControls.Localize;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Documentation
 {
@@ -61,35 +59,34 @@ namespace Rainbow.Documentation
 		private void Page_Load(object sender, EventArgs e)
 		{
 			// set current directory so paths are relative to this page location
-			Environment.CurrentDirectory = this.Server.MapPath(this.TemplateSourceDirectory);
+			Environment.CurrentDirectory = Server.MapPath(TemplateSourceDirectory);
 
 			// set localized Page Title
-			this.PageTitle =General.GetString("TAB_TITLE_RAINBOW_HELP","Rainbow Help",this);
+			PageTitle = General.GetString("TAB_TITLE_RAINBOW_HELP","Rainbow Help",this);
 			// add the Help css
-			this.ClearCssFileList();
-			this.RegisterCssFile("help","css/help.css");
-			this.RegisterCssFile("menu","css/mainmenu.css");
+			ClearCssFileList();
+			RegisterCssFile("help","css/help.css");
+			RegisterCssFile("menu","css/mainmenu.css");
 
-			if ( !this.IsAdditionalMetaElementRegistered("ie7") )
+			if ( !IsAdditionalMetaElementRegistered("ie7") )
 			{
 				string _ie7 = string.Empty;
-				string _ie7Part = string.Empty;
 
-				foreach ( string _script in Ie7Script.Split(new char[]{';'}) )
+			    foreach ( string _script in Ie7Script.Split(new char[]{';'}) )
 				{
-					_ie7Part = Path.WebPathCombine(Path.ApplicationRoot,_script);
+					string _ie7Part = Path.WebPathCombine(Path.ApplicationRoot,_script);
 					_ie7Part = string.Format("<!--[if lt IE 7]><script src=\"{0}\" type=\"text/javascript\"></script><![endif]-->",_ie7Part);
 					_ie7 += _ie7Part + "\n";
 				}
-				this.RegisterAdditionalMetaElement("ie7",_ie7);
+				RegisterAdditionalMetaElement("ie7",_ie7);
 			}
 
 
-			string loc = string.Empty;
-			string src = string.Empty;
-			string xslt = string.Empty;
-			CultureInfo lang = this.portalSettings.PortalContentLanguage;
-			CultureInfo defaultLang = this.portalSettings.PortalContentLanguage;
+			string loc;
+			string src;
+			string xslt;
+			CultureInfo lang = portalSettings.PortalContentLanguage;
+			CultureInfo defaultLang = portalSettings.PortalContentLanguage;
 			//jes1111 - CultureInfo fallbackLang = new CultureInfo(ConfigurationSettings.AppSettings["DefaultLanguage"]);
 			CultureInfo fallbackLang = new CultureInfo(Config.DefaultLanguage);
 			XslTransform xt; 
@@ -109,12 +106,15 @@ namespace Rainbow.Documentation
 			else
 				src = defaultSource;
 
-			// Read Culture
-			if ( qs["lang"] != null && qs["lang"].Length != 0 )
-			{
-				try{lang = new CultureInfo(qs["lang"],false);}
-				catch{}
-			}
+		    // Read Culture
+		    if (qs["lang"] != null && qs["lang"].Length != 0)
+		    {
+		        try
+		        {
+		            lang = new CultureInfo(qs["lang"], false);
+		        }
+                catch {;}
+		    }
 
 			// Read XSLT Stylesheet
 			if ( qs["xslt"] != null 
@@ -185,14 +185,14 @@ namespace Rainbow.Documentation
 					try
 					{
 						xt = new XslTransform();
-						xslt = this.Server.MapPath(xslt);
+						xslt = Server.MapPath(xslt);
 						XmlUrlResolver xr = new XmlUrlResolver();
 						xt.Load(xslt,xr);
 						Context.Cache.Insert(transformerCacheKey, xt, new CacheDependency(xslt));
 					}		
 					catch(Exception ex)
 					{
-						Rainbow.Framework.ErrorHandler.Publish(Rainbow.Framework.LogLevel.Error, "Failed in Help Transformer load - message was: " + ex.Message);
+						ErrorHandler.Publish(LogLevel.Error, "Failed in Help Transformer load - message was: " + ex.Message);
 						throw new Exception("Failed in Help Transformer load - message was: " + ex.Message);
 					}
 				}
@@ -211,12 +211,12 @@ namespace Rainbow.Documentation
 				//string rootFolder = Rainbow.Framework.Settings.Path.ApplicationRoot + "/rb_documentation/";
 				//xa.AddParam("Location",string.Empty,rootFolder + loc);
 				xa.AddParam("Location",string.Empty,loc);
-				xa.AddParam("Title",string.Empty,this.PageTitle);
+				xa.AddParam("Title",string.Empty,PageTitle);
 				string tocFile = string.Concat(loc.Substring(0,loc.IndexOf("/")),"/map.",languageReturned,sourceExtension);
 				tocFile = tocFile.Replace("..",".");
 				tocFile = string.Concat("../",tocFile);
 				xa.AddParam("TOCfile",string.Empty,tocFile);
-				xa.AddParam("Viewer",string.Empty,this.Request.Url.AbsolutePath);
+				xa.AddParam("Viewer",string.Empty,Request.Url.AbsolutePath);
 				xa.AddParam("myRoot",string.Empty,loc.Substring(0,loc.IndexOf("/")));
 
 				// load up the Xml control
@@ -234,7 +234,7 @@ namespace Rainbow.Documentation
 					{
 						container.Attributes.Add("style","padding:3em;font-size:1.2em;text-align:center");
 						container.Controls.Add(errorMsg);
-						this.ContentHolder.Controls.Add(container);
+						ContentHolder.Controls.Add(container);
 					}
 				}
 			}

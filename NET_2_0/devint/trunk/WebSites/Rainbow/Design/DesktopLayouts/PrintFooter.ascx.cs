@@ -2,7 +2,7 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.BusinessObjects;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -21,7 +21,7 @@ namespace Rainbow.Content.Web.Modules
             string LayoutBasePage = "PrintFooter.ascx";
 			
             // Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+			Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 			
 			try
 			{
@@ -29,7 +29,7 @@ namespace Rainbow.Content.Web.Modules
 			}
 			catch
 			{
-				//No footer available
+                ;//No footer available
 			}
 		}
 

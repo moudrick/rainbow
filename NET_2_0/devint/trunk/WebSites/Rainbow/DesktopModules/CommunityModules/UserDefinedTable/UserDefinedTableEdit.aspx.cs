@@ -6,15 +6,10 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Data;
-using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Site.Data;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Web.UI;
-using Label = System.Web.UI.WebControls.Label;
-using Page = System.Web.UI.Page;
 
 namespace Rainbow.Content.Web.Modules 
 {
@@ -23,8 +18,8 @@ namespace Rainbow.Content.Web.Modules
 	/// Written by: Shaun Walker (IbuySpy Workshop)
 	/// Moved into Rainbow by Jakob Hansen, hansen3000@hotmail.com
 	/// </summary>
-	[Rainbow.Framework.History("Ender", "2003/03/18", "Added file and Xsl functionality")]
-	[Rainbow.Framework.History("mario@hartmann.net", "2004/05/28", "Added image and file selection by dropdown functionality")]
+	[History("Ender", "2003/03/18", "Added file and Xsl functionality")]
+	[History("mario@hartmann.net", "2004/05/28", "Added image and file selection by dropdown functionality")]
 	public partial class UserDefinedTableEdit : EditItemPage
 	{
 		private int UserDefinedRowID = -1;
@@ -40,7 +35,7 @@ namespace Rainbow.Content.Web.Modules
 		{
 
 			if (! (Request.Params["UserDefinedRowID"] == null) )
-				UserDefinedRowID = Int32.Parse(Request.Params["UserDefinedRowID"].ToString());
+				UserDefinedRowID = Int32.Parse(Request.Params["UserDefinedRowID"]);
 
 			BuildTable();
 
@@ -77,7 +72,7 @@ namespace Rainbow.Content.Web.Modules
 				} 
 				else
 				{
-					this.deleteButton.Visible = false;
+					deleteButton.Visible = false;
 				}
 			}
 
@@ -114,7 +109,7 @@ namespace Rainbow.Content.Web.Modules
 					objRow = new TableRow();
 
 					objCell = new TableCell();
-					objCell.Controls.Add(new LiteralControl(dr["FieldTitle"].ToString() + ":"));
+					objCell.Controls.Add(new LiteralControl(dr["FieldTitle"] + ":"));
 					objCell.CssClass = "SubHead";
 					objRow.Cells.Add(objCell);
 
@@ -141,12 +136,12 @@ namespace Rainbow.Content.Web.Modules
 
 						
 							HtmlInputFile fileInputBox = new HtmlInputFile();
-							fileInputBox.ID = dr["FieldTitle"].ToString()+ "_Upload";
+							fileInputBox.ID = dr["FieldTitle"]+ "_Upload";
 							fileInputBox.Size = 30;
 
 
-							string pathToFiles = string.Empty;
-							string [] fileArray = new string[0];
+							string pathToFiles;
+							string [] fileArray;
 
 							if (dr["FieldType"].ToString() =="Image")
 							{
@@ -171,12 +166,12 @@ namespace Rainbow.Content.Web.Modules
 								imageList.Items.Add(entry.Substring(entry.LastIndexOf("\\") + 1 ));
 							imageList.DataBind();
 						
-							imageList.Attributes.Add("onChange",dr["FieldTitle"].ToString()+ "_Upload.value='';");
+							imageList.Attributes.Add("onChange",dr["FieldTitle"]+ "_Upload.value='';");
 							objCell.Controls.Add(imageList);
 						
 							objCell.Controls.Add(new LiteralControl ("&nbsp;"));
 
-							fileInputBox.Attributes.Add("onChange",dr["FieldTitle"].ToString()+".selectedIndex=0;");
+							fileInputBox.Attributes.Add("onChange",dr["FieldTitle"]+".selectedIndex=0;");
 							objCell.Controls.Add(fileInputBox);
 						}
 							break;
@@ -231,44 +226,44 @@ namespace Rainbow.Content.Web.Modules
 							case "Int32":
 								try 
 								{
-									int obj = int.Parse(Request.Form[prefix + dr["FieldTitle"].ToString()]);
+									int obj = int.Parse(Request.Form[prefix + dr["FieldTitle"]]);
 								} 
 								catch 
 								{
-									strMessage += "<br>" + dr["FieldTitle"].ToString() + " "+General.GetString("UDT_VALIDINTEGER", "must contain a valid integer value");
+									strMessage += "<br>" + dr["FieldTitle"] + " "+General.GetString("UDT_VALIDINTEGER", "must contain a valid integer value");
 									ValidInput = false;
 								}
 								break;
 							case "Decimal":
 								try 
 								{
-									Decimal obj = Decimal.Parse(Request.Form[prefix + dr["FieldTitle"].ToString()]);
+									Decimal obj = Decimal.Parse(Request.Form[prefix + dr["FieldTitle"]]);
 								} 
 								catch 
 								{
-									strMessage += "<br>" + dr["FieldTitle"].ToString() + " "+General.GetString("UDT_VALIDDECIMAL", "must contain a valid decimal value");
+									strMessage += "<br>" + dr["FieldTitle"] + " "+General.GetString("UDT_VALIDDECIMAL", "must contain a valid decimal value");
 									ValidInput = false;
 								}
 								break;
 							case "DateTime":
 								try 
 								{
-									DateTime obj = DateTime.Parse(Request.Form[prefix + dr["FieldTitle"].ToString()]);
+									DateTime obj = DateTime.Parse(Request.Form[prefix + dr["FieldTitle"]]);
 								} 
 								catch 
 								{
-									strMessage += "<br>" + dr["FieldTitle"].ToString() + " "+General.GetString("UDT_VALIDDATE", "must contain a valid date value");
+									strMessage += "<br>" + dr["FieldTitle"] + " "+General.GetString("UDT_VALIDDATE", "must contain a valid date value");
 									ValidInput = false;
 								}
 								break;
 							case "Boolean":
 								try 
 								{
-									bool obj = bool.Parse(Request.Form[prefix + dr["FieldTitle"].ToString()]);
+									bool obj = bool.Parse(Request.Form[prefix + dr["FieldTitle"]]);
 								} 
 								catch 
 								{
-									strMessage += "<br>" + dr["FieldTitle"].ToString() + " "+General.GetString("UDT_VALIDBOOLEAN", "must contain a valid true/false value");
+									strMessage += "<br>" + dr["FieldTitle"] + " "+General.GetString("UDT_VALIDBOOLEAN", "must contain a valid true/false value");
 									ValidInput = false;
 								}
 								break;
@@ -291,21 +286,26 @@ namespace Rainbow.Content.Web.Modules
 				{
 					while (dr.Read())
 					{
-						string fieldValue = Request.Form[prefix + dr["FieldTitle"].ToString()];
+						string fieldValue = Request.Form[prefix + dr["FieldTitle"]];
 
 						if(dr["FieldType"].ToString() == "File" || dr["FieldType"].ToString() == "Image")
 						{
-							HtmlInputFile fileControl = (HtmlInputFile)Page.FindControl(prefix + dr["FieldTitle"].ToString()+ "_Upload");
+							HtmlInputFile fileControl = (HtmlInputFile)Page.FindControl(prefix + dr["FieldTitle"] + "_Upload");
 							if (fileControl.PostedFile.ContentLength > 0 )
 							{
 								fieldValue = fileControl.PostedFile.FileName.Substring(fileControl.PostedFile.FileName.LastIndexOf("\\") + 1);
 
-								string pathToSave=string.Empty ;
+							    string pathToSave;
 
-								if (dr["FieldType"].ToString() == "Image")
-									pathToSave = Server.MapPath(((SettingItem) moduleSettings["ImagePath"]).FullPath) + "\\";
-								else
-									pathToSave = Server.MapPath(((SettingItem) moduleSettings["DocumentPath"]).FullPath) + "\\";
+							    if (dr["FieldType"].ToString() == "Image")
+							    {
+							        pathToSave = Server.MapPath(((SettingItem) moduleSettings["ImagePath"]).FullPath) + "\\";
+							    }
+							    else
+							    {
+							        pathToSave =
+							            Server.MapPath(((SettingItem) moduleSettings["DocumentPath"]).FullPath) + "\\";
+                                }
 
 								try
 								{
@@ -335,7 +335,7 @@ namespace Rainbow.Content.Web.Modules
                 objUserDefinedTable.UpdateUserDefinedRow(UserDefinedRowID);
 
 				// Redirect back to the portal home page
-				this.RedirectBackToReferringPage();
+				RedirectBackToReferringPage();
 			} 
 			else 
 			{
@@ -363,7 +363,7 @@ namespace Rainbow.Content.Web.Modules
 			}
 
             // Redirect back to the portal home page
-			this.RedirectBackToReferringPage();
+			RedirectBackToReferringPage();
         }
 
 

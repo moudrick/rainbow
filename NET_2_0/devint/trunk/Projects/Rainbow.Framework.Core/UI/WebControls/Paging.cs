@@ -8,11 +8,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// <summary>
     /// Paging class, Rainbow special edition
     /// </summary>
-    [
-        DefaultProperty("PageNumber"),
-            ToolboxData("<{0}:Paging TextKey='' runat=server></{0}:Paging>"),
-            Designer("Rainbow.Framework.UI.Design.PagingDesigner")
-        ]
+    [DefaultProperty("PageNumber"),
+        ToolboxData("<{0}:Paging TextKey='' runat=server></{0}:Paging>"),
+        Designer("Rainbow.Framework.UI.Design.PagingDesigner")]
     public class Paging : WebControl, IPaging
     {
         /// <summary>

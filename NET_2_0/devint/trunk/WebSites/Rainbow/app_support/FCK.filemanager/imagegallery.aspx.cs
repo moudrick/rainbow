@@ -5,48 +5,48 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Rainbow.Framework;using Rainbow.Framework.Site.Data;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Image = System.Drawing.Image;
-using Page = System.Web.UI.Page;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 {
 	/// <summary>
 	/// Imagegallery.
 	/// </summary>
-	[Rainbow.Framework.History("jviladiu@portalservices.net", "2004/06/09", "First Implementation FCKEditor in Rainbow")]
+	[Framework.History("jviladiu@portalservices.net", "2004/06/09", "First Implementation FCKEditor in Rainbow")]
 	public partial class imagegallery : EditItemPage
 	{
 		#region Declerations
-		#region Messages
-		private string NoFileMessage = "No file selected";
-		private string UploadSuccessMessage = "Uploaded Sucess";
-		private string NoImagesMessage = "No Images";
-		private string NoFolderSpecifiedMessage = "No folder";
-		private string NoFileToDeleteMessage = "No file to delete";
-		private string InvalidFileTypeMessage = "Invalid file type";
-		#endregion
-		private string[] AcceptedFileTypes = new string[] {"jpg","jpeg","jpe","gif","bmp","png"};
+
+        //TODO: [moudrick] to be resourced and localized
+	    readonly string NoFileMessage = "No file selected";
+	    readonly string UploadSuccessMessage = "Uploaded Sucess";
+	    readonly string NoImagesMessage = "No Images";
+	    readonly string NoFolderSpecifiedMessage = "No folder";
+	    readonly string NoFileToDeleteMessage = "No file to delete";
+	    readonly string InvalidFileTypeMessage = "Invalid file type";
+
+	    readonly string[] AcceptedFileTypes = new string[] {"jpg","jpeg","jpe","gif","bmp","png"};
 
 		// Configuration
-		private bool UploadIsEnabled = true;
-		private bool DeleteIsEnabled = true;
+		bool UploadIsEnabled = true;
+		bool DeleteIsEnabled = true;
 		#endregion
 
         /// <summary>
         /// LoadSettings
         /// Check if user has edit permissions
         /// </summary>
-		protected override void LoadSettings()
-		{
-			if (PortalSecurity.HasEditPermissions(this.portalSettings.ActiveModule) == false)
-				PortalSecurity.AccessDeniedEdit();
-		}
+        protected override void LoadSettings()
+        {
+            if (PortalSecurity.HasEditPermissions(portalSettings.ActiveModule) == false)
+            {
+                PortalSecurity.AccessDeniedEdit();
+            }
+        }
 
         /// <summary>
         /// Handles the Load event of the Page control.
@@ -72,7 +72,7 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 				} 
 				else
 				{
-					Hashtable ms = ModuleSettings.GetModuleSettings(portalSettings.ActiveModule);
+					Hashtable ms = ModuleSettingsProvider.GetModuleSettings(portalSettings.ActiveModule);
 					string DefaultImageFolder = "default";
 					if (ms["MODULE_IMAGE_FOLDER"] != null) 
 					{
@@ -131,14 +131,12 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 						{
 							try 
 							{
-								string UploadFileName = string.Empty;
-								string UploadFileDestination = string.Empty;
-								UploadFileName = UploadFile.PostedFile.FileName;
-								UploadFileName = UploadFileName.Substring(UploadFileName.LastIndexOf("\\")+1);
-								UploadFileDestination = HttpContext.Current.Request.PhysicalApplicationPath;
-								UploadFileDestination += CurrentImagesFolder.Value;
-								UploadFileDestination += "\\";
-								UploadFile.PostedFile.SaveAs(UploadFileDestination + UploadFileName);
+							    string uploadFileName = UploadFile.PostedFile.FileName;
+								uploadFileName = uploadFileName.Substring(uploadFileName.LastIndexOf("\\")+1);
+								string uploadFileDestination = HttpContext.Current.Request.PhysicalApplicationPath;
+								uploadFileDestination += CurrentImagesFolder.Value;
+								uploadFileDestination += "\\";
+								UploadFile.PostedFile.SaveAs(uploadFileDestination + uploadFileName);
 								ResultsMessage.Text = UploadSuccessMessage;
 							} 
 							catch
@@ -279,7 +277,7 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 		/// </summary>
 		public void DisplayImages() 
 		{
-			string[] FilesArray = ReturnFilesArray();
+			string[] filesArray = ReturnFilesArray();
 			string[] DirectoriesArray = ReturnDirectoriesArray();
 			string AppPath = HttpContext.Current.Request.PhysicalApplicationPath;
 			string AppUrl;
@@ -290,16 +288,13 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 			AppUrl = AppUrl.Replace("//", "/");
 	
 			GalleryPanel.Controls.Clear();
-			if ( (FilesArray == null || FilesArray.Length == 0) && (DirectoriesArray == null || DirectoriesArray.Length == 0) ) 
+			if ( (filesArray == null || filesArray.Length == 0) && (DirectoriesArray == null || DirectoriesArray.Length == 0) ) 
 			{
 				gallerymessage.Text = NoImagesMessage + ": " + RootImagesFolder.Value;
 			} 
 			else 
 			{
-				string ImageFileName = string.Empty;
-				string ImageFileLocation = string.Empty;
-
-				int thumbWidth = 94;
+			    int thumbWidth = 94;
 				int thumbHeight = 94;
 		
 				if (CurrentImagesFolder.Value != RootImagesFolder.Value) 
@@ -310,13 +305,13 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 					myHtmlImage.Attributes["align"]="absmiddle"; 
 					myHtmlImage.Attributes["vspace"]="36"; 
 
-					string ParentFolder = CurrentImagesFolder.Value.Substring(0,CurrentImagesFolder.Value.LastIndexOf("\\"));
+					string parentFolder = CurrentImagesFolder.Value.Substring(0,CurrentImagesFolder.Value.LastIndexOf("\\"));
 
 					Panel myImageHolder = new Panel();					
 					myImageHolder.CssClass = "imageholder";
 					myImageHolder.Attributes["unselectable"]="on"; 
 					myImageHolder.Attributes["onclick"]="divClick(this,'');";  
-					myImageHolder.Attributes["ondblclick"]="gotoFolder('" + RootImagesFolder.Value + "','" + ParentFolder.Replace("\\","\\\\") + "');";  
+					myImageHolder.Attributes["ondblclick"]="gotoFolder('" + RootImagesFolder.Value + "','" + parentFolder.Replace("\\","\\\\") + "');";  
 					myImageHolder.Controls.Add(myHtmlImage);
 
 					Panel myMainHolder = new Panel();
@@ -332,11 +327,11 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 			
 				}
 		
-				foreach (string _Directory in DirectoriesArray) 
+				foreach (string directory in DirectoriesArray) 
 				{
 					try 
 					{
-						string DirectoryName = _Directory.ToString();
+						string DirectoryName = directory;
 
 						HtmlImage myHtmlImage = new HtmlImage();
 						myHtmlImage.Src = Path.ApplicationRoot + "/DesktopModules/FCK/filemanager/folder.gif";
@@ -364,26 +359,26 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 					} 
 					catch 
 					{
-						// nothing for error
+                        ;// nothing for error
 					}
 				}
 		
-				foreach (string ImageFile in FilesArray) 
+				foreach (string imageFile in filesArray) 
 				{
 					try 
 					{
-						ImageFileName = ImageFile.ToString();
-						ImageFileName = ImageFileName.Substring(ImageFileName.LastIndexOf("\\")+1);
-						ImageFileLocation = AppUrl;
+						string imageFileName = imageFile;
+						imageFileName = imageFileName.Substring(imageFileName.LastIndexOf("\\")+1);
+						string imageFileLocation = AppUrl;
 //						ImageFileLocation = ImageFileLocation.Substring(ImageFileLocation.LastIndexOf("\\")+1);
 						//galleryfilelocation += "/";
-						ImageFileLocation += CurrentImagesFolder.Value;
-						ImageFileLocation += "/";
-						ImageFileLocation += ImageFileName;
-						ImageFileLocation = ImageFileLocation.Replace("//", "/");
+						imageFileLocation += CurrentImagesFolder.Value;
+						imageFileLocation += "/";
+						imageFileLocation += imageFileName;
+						imageFileLocation = imageFileLocation.Replace("//", "/");
 						HtmlImage myHtmlImage = new HtmlImage();
-						myHtmlImage.Src = ImageFileLocation;
-						System.Drawing.Image myImage = Image.FromFile(ImageFile.ToString());
+						myHtmlImage.Src = imageFileLocation;
+						Image myImage = Image.FromFile(imageFile);
 						myHtmlImage.Attributes["unselectable"]="on";  
 						//myHtmlImage.border=0;
 
@@ -424,8 +419,8 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 
 						Panel myImageHolder = new Panel();					
 						myImageHolder.CssClass = "imageholder";
-						myImageHolder.Attributes["onclick"]="divClick(this,'" + ImageFileName + "');";  
-						myImageHolder.Attributes["ondblclick"]="returnImage('" + ImageFileLocation.Replace("\\","/") + "','" + myImage.Width.ToString() + "','" + myImage.Height.ToString() + "');";  
+						myImageHolder.Attributes["onclick"]="divClick(this,'" + imageFileName + "');";  
+						myImageHolder.Attributes["ondblclick"]="returnImage('" + imageFileLocation.Replace("\\","/") + "','" + myImage.Width + "','" + myImage.Height + "');";  
 						myImageHolder.Controls.Add(myHtmlImage);
 
 
@@ -435,18 +430,15 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 
 						Panel myTitleHolder = new Panel();
 						myTitleHolder.CssClass = "titleHolder";
-						myTitleHolder.Controls.Add(new LiteralControl(ImageFileName + "<BR>" + myImage.Width.ToString() + "x" + myImage.Height.ToString()));
+						myTitleHolder.Controls.Add(new LiteralControl(imageFileName + "<BR>" + myImage.Width + "x" + myImage.Height));
 						myMainHolder.Controls.Add(myTitleHolder);
 
 						//GalleryPanel.Controls.Add(myImage);
 						GalleryPanel.Controls.Add(myMainHolder);
 				
 						myImage.Dispose();
-					} 
-					catch 
-					{
-
 					}
+                    catch {;}
 				}
 				gallerymessage.Text = string.Empty;
 			}
@@ -472,7 +464,7 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 		/// </summary>
 		private void InitializeComponent()
 		{    
-			this.Load += new EventHandler(this.Page_Load);
+			Load += this.Page_Load;
 
 		}
 		#endregion

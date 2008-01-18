@@ -1,15 +1,13 @@
 using System;
 using System.Collections;
-using System.Data;
-using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using History = Rainbow.Framework.History;
 using System.Web.Security;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
 
 namespace Rainbow.Content.Web.Modules {
     /// <summary>
@@ -42,7 +40,7 @@ namespace Rainbow.Content.Web.Modules {
             base.OnLoad( e );
 
             if ( Request.Params[ "roleID" ] != null ) {
-                roleId = new Guid( ( string )Request.Params[ "roleID" ] );
+                roleId = new Guid( Request.Params[ "roleID" ] );
             }
 
             // If this is the first visit to the page, bind the role data to the datalist
@@ -115,26 +113,22 @@ namespace Rainbow.Content.Web.Modules {
         /// <summary>
         /// The BindData helper method is used to bind the list of
         /// security roles for this portal to an asp:datalist server control
-        /// </summary>
-        private void BindData() {
+        private void BindData()
+        {
             // add the role name to the title
-            if ( roleId != Guid.Empty ) {
+            if (roleId != Guid.Empty)
+            {
+                RainbowRoleProvider roleProvider = (RainbowRoleProvider) System.Web.Security.Roles.Provider;
+                RainbowRole role = roleProvider.GetRoleById(roleId);
 
-                RainbowRoleProvider roleProvider = ( RainbowRoleProvider )System.Web.Security.Roles.Provider;
-                RainbowRole role = roleProvider.GetRoleById( roleId );
-    
-                title.InnerText = General.GetString( "ROLE_MEMBERSHIP" ) + role.Name;
+                title.InnerText = General.GetString("ROLE_MEMBERSHIP") + role.Name;
             }
 
-            // Get the portal's roles from the database
-            UsersDB users = new UsersDB();
-
-            // bind users in role to DataList
-            usersInRole.DataSource = users.GetRoleMembers( roleId );
+            string portalAlias = PortalProvider.Instance.CurrentPortal.PortalAlias;
+            usersInRole.DataSource = RainbowRoleProvider.Instance.GetUsersInRole(portalAlias, roleId);
             usersInRole.DataBind();
 
-            // bind all portal users to dropdownlist
-            allUsers.DataSource = users.GetUsers();
+            allUsers.DataSource = RainbowMembershipProvider.Instance.GetUsers(portalAlias);
             allUsers.DataBind();
         }
     }

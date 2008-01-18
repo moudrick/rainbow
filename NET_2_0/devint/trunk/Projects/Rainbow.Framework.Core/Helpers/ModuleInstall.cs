@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Helpers
 {
@@ -115,7 +115,7 @@ namespace Rainbow.Framework.Helpers
                                      "Installing MobileModule '" + friendlyName + "' from '" + mobileSource + "'");
 
             string controlFullPath = Path.ApplicationRoot + "/" + desktopSource;
-
+            
             // Instantiate the module
             Page page = new Page();
             //http://sourceforge.net/tracker/index.php?func=detail&aid=738670&group_id=66837&atid=515929

@@ -5,9 +5,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
+using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -15,9 +16,6 @@ using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
 
 namespace Rainbow.Content.Web.Modules
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [History("Jes1111", "2003/03/04", "Cache flushing now handled by inherited page")]
     public partial class ArticlesEdit : AddEditItemPage
     {
@@ -121,7 +119,7 @@ namespace Rainbow.Content.Web.Modules
                     ExpireField.Text =
                         DateTime.Now.AddDays(int.Parse(moduleSettings["DefaultVisibleDays"].ToString())).
                             ToShortDateString();
-                    CreatedBy.Text = PortalSettings.CurrentUser.Identity.Email;
+                    CreatedBy.Text = RainbowPrincipal.CurrentUser.Identity.Email;
                     CreatedDate.Text = DateTime.Now.ToString();
                 }
             }
@@ -151,7 +149,7 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only Update if Input Data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 ArticlesDB Articles = new ArticlesDB();
 
@@ -161,7 +159,7 @@ namespace Rainbow.Content.Web.Modules
                 }
                 if (ItemID == 0)
                 {
-                    Articles.AddArticle(ModuleID, PortalSettings.CurrentUser.Identity.Email,
+                    Articles.AddArticle(ModuleID, RainbowPrincipal.CurrentUser.Identity.Email,
                                         ((HTMLText) TitleField.Text).InnerText,
                                         ((HTMLText) SubtitleField.Text).InnerText, AbstractText.Text,
                                         Server.HtmlEncode(DesktopText.Text), DateTime.Parse(StartField.Text),
@@ -169,7 +167,7 @@ namespace Rainbow.Content.Web.Modules
                 }
                 else
                 {
-                    Articles.UpdateArticle(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email,
+                    Articles.UpdateArticle(ModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email,
                                            ((HTMLText) TitleField.Text).InnerText,
                                            ((HTMLText) SubtitleField.Text).InnerText, AbstractText.Text,
                                            Server.HtmlEncode(DesktopText.Text), DateTime.Parse(StartField.Text),

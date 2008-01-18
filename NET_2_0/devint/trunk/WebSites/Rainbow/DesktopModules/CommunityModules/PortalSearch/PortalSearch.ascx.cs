@@ -6,7 +6,9 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using BoundColumn=Rainbow.Framework.Web.UI.WebControls.BoundColumn;
@@ -113,32 +115,31 @@ namespace Rainbow.Content.Web.Modules
         {
             try
             {
-                Guid userID = Guid.Empty;
+                Guid userID;
                 if (testUserID != Guid.Empty)
+                {
                     userID = testUserID;
+                }
                 else
                 {
                     UsersDB u = new UsersDB();
-                    System.Web.Security.MembershipUser s = u.GetSingleUser(PortalSettings.CurrentUser.Identity.Email);
-                    try
-                    {
-                            userID =  (Guid) s.ProviderUserKey;
-                    }
-                    finally
-                    {
-                    //    s.Close(); //by Manu, fixed bug 807858
-                    }
+                    System.Web.Security.MembershipUser s = u.GetSingleUser(RainbowPrincipal.CurrentUser.Identity.Email);
+                    userID = (Guid) s.ProviderUserKey;
                 }
 
                 //Get topic
                 string topicName = ddTopics.SelectedItem.Value;
                 //All = no filter
                 if (topicName == General.GetString("PORTALSEARCH_ALL", "All", null))
+                {
                     topicName = string.Empty;
+                }
 
                 if (txtSearchString.Text.Length <= 2)
+                {
                     throw new Exception(
                         General.GetString("PORTALSEARCH_TONARROW", "Search string to narrow to be searched", null));
+                }
 
                 SqlDataReader r =
                     SearchHelper.SearchPortal(PortalID, userID, ddSearchModule.SelectedItem.Value, txtSearchString.Text,
@@ -148,10 +149,12 @@ namespace Rainbow.Content.Web.Modules
                 int hits;
                 DataSet ds = FillPortalDS(PortalID, userID, r, out hits);
 
-                DataView myDataView = new DataView();
-                myDataView = ds.Tables[0].DefaultView;
+                DataView myDataView = ds.Tables[0].DefaultView;
 
-                if (sortOrder.Equals("Title")) sortOrder = "cleanTitle";
+                if (sortOrder.Equals("Title"))
+                {
+                    sortOrder = "cleanTitle";
+                }
 
                 for (int i = 0; i < myDataView.Table.Columns.Count; i++)
                 {
@@ -259,33 +262,31 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="portalSearchResult">The portal search result.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        private DataSet FillPortalDS(int portalID, Guid userID, SqlDataReader portalSearchResult, out int hits)
+        private DataSet FillPortalDS(int portalID, Guid userID, IDataReader portalSearchResult, out int hits)
         {
             hits = 0;
             DataSet ds = new DataSet();
             try
             {
                 ds = CreatePortalDS(ds);
-
-                string strTmp, strLink, strModuleName;
-                string strModuleID, strItemID, strLocate;
-                string strTabID, strTabName;
-                string strModuleGuidID, strModuleTitle;
-                DataRow dr;
-
                 try
 
                 {
                     while (hits <= maxHits && portalSearchResult.Read())
                     {
-                        dr = ds.Tables["PortalSearch"].NewRow();
+                        string strTmp, strLink, strModuleName;
+                        string strModuleID, strItemID, strLocate;
+                        string strTabID, strTabName;
+                        string strModuleGuidID, strModuleTitle;
+
+                        DataRow dr = ds.Tables["PortalSearch"].NewRow();
 
                         strModuleName = portalSearchResult.GetString(0);
                         strModuleID = portalSearchResult.GetInt32(3).ToString();
                         strItemID = portalSearchResult.GetInt32(4).ToString();
                         strLocate = "mID=" + strModuleID + "&ItemID=" + strItemID;
                         strTabID = portalSearchResult.GetInt32(7).ToString();
-                        strTabName = portalSearchResult.GetString(8).ToString();
+                        strTabName = portalSearchResult.GetString(8);
                         strModuleGuidID = portalSearchResult.GetGuid(9).ToString().ToUpper();
                         strModuleTitle = portalSearchResult.GetString(10);
                         //strLink = Rainbow.Framework.Settings.Path.ApplicationRoot;
@@ -315,9 +316,9 @@ namespace Rainbow.Content.Web.Modules
                                 break;
                             case "EC24FABD-FB16-4978-8C81-1ADD39792377": //Products
                                 // Manu
-                                int tabID =
-                                    PortalSettings.GetRootPage(Convert.ToInt32(strTabID), portalSettings.DesktopPages).
-                                        PageID;
+                                int tabID = PortalProvider.Instance.GetRootPage(
+                                    Convert.ToInt32(strTabID), PortalSettings.DesktopPages)
+                                        .PageID;
                                 strLink =
                                     HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", tabID,
                                                             "mID=" + strModuleID + "&ItemID=" + strTabID);
@@ -437,7 +438,7 @@ namespace Rainbow.Content.Web.Modules
                         {
                             dr["TestInfo"] = "ModuleGuidID=" + strModuleGuidID + "<br>" +
                                              "ModuleID=" + strModuleID + ", ItemID=" + strItemID + "<br>" +
-                                             "PortalID=" + portalID.ToString() + ", UserID=" + userID.ToString() +
+                                             "PortalID=" + portalID + ", UserID=" + userID +
                                              "<br>" +
                                              "TabID=" + strTabID + ", TabName=" + strTabName;
                         }
@@ -463,7 +464,7 @@ namespace Rainbow.Content.Web.Modules
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:PortalSearch"/> class.
+        /// Initializes a new instance of the <see cref="PortalSearch"/> class.
         /// </summary>
         public PortalSearch()
         {
@@ -472,85 +473,85 @@ namespace Rainbow.Content.Web.Modules
             setSortOrder.Required = true;
             setSortOrder.Value = "ModuleName";
             setSortOrder.Order = 1;
-            _baseSettings.Add("SortOrder", setSortOrder);
+            baseSettings.Add("SortOrder", setSortOrder);
 
             //SettingItem showImage = new SettingItem(new BooleanDataType());
             //showImage.Order = 2;
             //showImage.Value = "True";
-            //this._baseSettings.Add("ShowImage", showImage);
+            //this.baseSettings.Add("ShowImage", showImage);
 
-            SettingItem showModuleName = new SettingItem(new BooleanDataType());
-            showModuleName.Order = 3;
-            showModuleName.Value = "True";
-            _baseSettings.Add("ShowModuleName", showModuleName);
+            SettingItem showModuleNameLocal = new SettingItem(new BooleanDataType());
+            showModuleNameLocal.Order = 3;
+            showModuleNameLocal.Value = "True";
+            baseSettings.Add("ShowModuleName", showModuleNameLocal);
 
             SettingItem showSearchTitle = new SettingItem(new BooleanDataType());
             showSearchTitle.Order = 4;
             showSearchTitle.Value = "True";
-            _baseSettings.Add("ShowSearchTitle", showSearchTitle);
+            baseSettings.Add("ShowSearchTitle", showSearchTitle);
 
-            SettingItem showAbstract = new SettingItem(new BooleanDataType());
-            showAbstract.Order = 5;
-            showAbstract.Value = "True";
-            _baseSettings.Add("ShowAbstract", showAbstract);
+            SettingItem showAbstractLocal = new SettingItem(new BooleanDataType());
+            showAbstractLocal.Order = 5;
+            showAbstractLocal.Value = "True";
+            baseSettings.Add("ShowAbstract", showAbstractLocal);
 
-            SettingItem showCreatedByUser = new SettingItem(new BooleanDataType());
-            showCreatedByUser.Order = 6;
-            showCreatedByUser.Value = "True";
-            _baseSettings.Add("ShowCreatedByUser", showCreatedByUser);
+            SettingItem showCreatedByUserLocal = new SettingItem(new BooleanDataType());
+            showCreatedByUserLocal.Order = 6;
+            showCreatedByUserLocal.Value = "True";
+            baseSettings.Add("ShowCreatedByUser", showCreatedByUserLocal);
 
-            SettingItem showCreatedDate = new SettingItem(new BooleanDataType());
-            showCreatedDate.Order = 7;
-            showCreatedDate.Value = "True";
-            _baseSettings.Add("ShowCreatedDate", showCreatedDate);
+            SettingItem showCreatedDateLocal = new SettingItem(new BooleanDataType());
+            showCreatedDateLocal.Order = 7;
+            showCreatedDateLocal.Value = "True";
+            baseSettings.Add("ShowCreatedDate", showCreatedDateLocal);
 
-            SettingItem showLink = new SettingItem(new BooleanDataType());
-            showLink.Order = 8;
-            showLink.Value = "False";
-            _baseSettings.Add("ShowLink", showLink);
+            SettingItem showLinkLocal = new SettingItem(new BooleanDataType());
+            showLinkLocal.Order = 8;
+            showLinkLocal.Value = "False";
+            baseSettings.Add("ShowLink", showLinkLocal);
 
-            SettingItem showTabName = new SettingItem(new BooleanDataType());
-            showTabName.Order = 9;
-            showTabName.Value = "True";
-            _baseSettings.Add("ShowTabName", showTabName);
+            SettingItem settingItemLocal = new SettingItem(new BooleanDataType());
+            settingItemLocal.Order = 9;
+            settingItemLocal.Value = "True";
+            baseSettings.Add("ShowTabName", settingItemLocal);
 
-            SettingItem showTestInfo = new SettingItem(new BooleanDataType());
-            showTestInfo.Order = 10;
-            showTestInfo.Value = "False";
-            _baseSettings.Add("ShowTestInfo", showTestInfo);
+            SettingItem showTestInfoLocal = new SettingItem(new BooleanDataType());
+            showTestInfoLocal.Order = 10;
+            showTestInfoLocal.Value = "False";
+            baseSettings.Add("ShowTestInfo", showTestInfoLocal);
 
-            SettingItem maxHits = new SettingItem(new IntegerDataType());
-            maxHits.Required = true;
-            maxHits.Order = 11;
-            maxHits.Value = "100";
+            SettingItem maxHitsLocal = new SettingItem(new IntegerDataType());
+            maxHitsLocal.Required = true;
+            maxHitsLocal.Order = 11;
+            maxHitsLocal.Value = "100";
             //maxHits.MinValue = 1;
             //maxHits.MaxValue = 1000;
-            _baseSettings.Add("MaxHits", maxHits);
+            baseSettings.Add("MaxHits", maxHitsLocal);
 
-            SettingItem showModuleTitle = new SettingItem(new BooleanDataType());
-            showModuleTitle.Order = 12;
-            showModuleTitle.Value = "False";
-            _baseSettings.Add("ShowModuleTitle", showModuleTitle);
+            SettingItem showModuleTitleLocal = new SettingItem(new BooleanDataType());
+            showModuleTitleLocal.Order = 12;
+            showModuleTitleLocal.Value = "False";
+            baseSettings.Add("ShowModuleTitle", showModuleTitleLocal);
 
-            SettingItem testUserID = new SettingItem(new IntegerDataType());
-            testUserID.Required = true;
-            testUserID.Order = 13;
-            testUserID.Value = "-1";
-            _baseSettings.Add("TestUserID", testUserID);
+            SettingItem testUserIDLocal = new SettingItem(new IntegerDataType());
+            testUserIDLocal.Required = true;
+            testUserIDLocal.Order = 13;
+            testUserIDLocal.Value = "-1";
+            baseSettings.Add("TestUserID", testUserIDLocal);
 
             SettingItem showddModule = new SettingItem(new BooleanDataType());
             showddModule.Value = "true";
             showddModule.Order = 14;
             showddModule.EnglishName = "Show Module list";
             showddModule.Description = "Show the module drop down list.";
-            _baseSettings.Add("showddModule", showddModule);
+            baseSettings.Add("showddModule", showddModule);
 
             SettingItem showddTopic = new SettingItem(new BooleanDataType());
             showddTopic.Value = "true";
             showddTopic.Order = 15;
             showddTopic.EnglishName = "Show Topics list";
             showddTopic.Description = "Show the topics drop down list.";
-            _baseSettings.Add("showddTopic", showddTopic);
+            baseSettings.Add("showddTopic", showddTopic);
 
             //Added by Rob Siera - 19 aug 2004 - Provide default Topic to search for
             SettingItem defaultTopic = new SettingItem(new StringDataType());
@@ -558,7 +559,7 @@ namespace Rainbow.Content.Web.Modules
             defaultTopic.Order = 16;
             defaultTopic.EnglishName = "Default Topic";
             defaultTopic.Description = "Set the default Topic to search.";
-            _baseSettings.Add("defaultTopic", defaultTopic);
+            baseSettings.Add("defaultTopic", defaultTopic);
             //End addition Rob Siera
 
             SettingItem showddField = new SettingItem(new BooleanDataType());
@@ -566,7 +567,7 @@ namespace Rainbow.Content.Web.Modules
             showddField.Order = 17;
             showddField.EnglishName = "Show Field list";
             showddField.Description = "Show the field drop down list.";
-            _baseSettings.Add("showddField", showddField);
+            baseSettings.Add("showddField", showddField);
         }
 
         // Jes1111
@@ -578,7 +579,6 @@ namespace Rainbow.Content.Web.Modules
         {
             get { return false; }
         }
-
 
         /// <summary>
         /// GUID of module (mandatory)

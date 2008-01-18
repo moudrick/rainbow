@@ -2,8 +2,7 @@ using System;
 using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Content.Web.Modules
@@ -35,12 +34,18 @@ namespace Rainbow.Content.Web.Modules
                 if (ModuleID > 0)
                 {
                     if (moduleSettings["Zip"] != null)
-                        Zip.Text = ((SettingItem) moduleSettings["Zip"]).ToString();
+                    {
+                        Zip.Text = moduleSettings["Zip"].ToString();
+                    }
                     else
+                    {
                         Zip.Text = "10001";
+                    }
 
                     if (moduleSettings["Option"] != null)
-                        Option.SelectedIndex = int.Parse(((SettingItem) moduleSettings["Option"]).ToString());
+                    {
+                        Option.SelectedIndex = int.Parse(moduleSettings["Option"].ToString());
+                    }
                 }
             }
         }
@@ -70,11 +75,11 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             //only Update if the entered data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 // Update settings in the database
-                ModuleSettings.UpdateModuleSetting(ModuleID, "Zip", Zip.Text);
-                ModuleSettings.UpdateModuleSetting(ModuleID, "Option", Option.SelectedIndex.ToString());
+                ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "Zip", Zip.Text);
+                ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "Option", Option.SelectedIndex.ToString());
 
                 RedirectBackToReferringPage();
             }

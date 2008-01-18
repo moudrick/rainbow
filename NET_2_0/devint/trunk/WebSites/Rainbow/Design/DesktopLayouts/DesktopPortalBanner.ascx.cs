@@ -3,17 +3,17 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Site.Configuration;
-using Path = Rainbow.Framework.Settings.Path;
+using Rainbow.Framework.BusinessObjects;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
     /// <summary>
     /// Default user control placed on top of each administrative page
     /// </summary>
-    [Rainbow.Framework.History("john", "2003/03/15", "Some mods")]
-    [Rainbow.Framework.History("manu", "2002/11/18", "Testing attributes")]
-	[Rainbow.Framework.History("Jes1111", "2003/03/09", "Retrieve ShowTabs attribute and pass into new portalSettings.ShowTabs property")]
+    [Framework.History("john", "2003/03/15", "Some mods")]
+    [Framework.History("manu", "2002/11/18", "Testing attributes")]
+	[Framework.History("Jes1111", "2003/03/09", "Retrieve ShowTabs attribute and pass into new portalSettings.ShowTabs property")]
     public abstract class DesktopPortalBanner : UserControl
     {
         /// <summary>
@@ -45,14 +45,14 @@ namespace Rainbow.Content.Web.Modules
 		}
 		#endregion
 
-		[Rainbow.Framework.History("bja@reedtek.com", "2003/05/09", "Validate the control being brought in")]
+		[Framework.History("bja@reedtek.com", "2003/05/09", "Validate the control being brought in")]
         private void DesktopPortalBanner_Load(object sender, EventArgs e)
         {
             
             string LayoutBasePage = "DesktopPortalBanner.ascx";
 			
 			// Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+			Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 			
 			// jes1111 
 			portalSettings.ShowPages = ShowTabs;

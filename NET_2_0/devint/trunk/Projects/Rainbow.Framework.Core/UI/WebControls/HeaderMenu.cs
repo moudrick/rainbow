@@ -6,9 +6,9 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 
 namespace Rainbow.Framework.Web.UI.WebControls
@@ -17,15 +17,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// HeaderMenu
     /// </summary>
     [History("jviladiu@portalServices.net", "2004/09/29", "Added link showHelp for show help window")]
-    [
-        History("ozan@rainbow.web.tr", "2004/07/02",
+    [History("ozan@rainbow.web.tr", "2004/07/02",
             "Added  showTabMan and showTabAdd properties for managing tab and adding tab only one click... ")]
-    [
-        History("John.Mandia@whitelightsolutions.com", "2003/11/04",
-            "Added extra property DataBindOnInit. So you can decide if you wish it to bind automatically or when you call DataBind()"
-            )]
-    [
-        History("John.Mandia@whitelightsolutions.com", "2003/10/25",
+    [History("John.Mandia@whitelightsolutions.com", "2003/11/04",
+            "Added extra property DataBindOnInit. So you can decide if you wish it to bind automatically or when you call DataBind()")]
+    [History("John.Mandia@whitelightsolutions.com", "2003/10/25",
             "Added ability to have more control over the menu by adding more settings.")]
     public class HeaderMenu : DataList
     {
@@ -269,12 +265,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             if (Page is Page)
             {
-                if (!((Page) Page).ClientScript.IsClientScriptIncludeRegistered("rb-popup"))
-                    ((Page) Page).ClientScript.RegisterClientScriptInclude(((Page) Page).GetType(), "rb-popup",
-                                                                           Path.ApplicationRoot +
-                                                                           "/aspnet_client/popupHelper/popup.js");
+                if (!Page.ClientScript.IsClientScriptIncludeRegistered("rb-popup"))
+                {
+                    Page.ClientScript.RegisterClientScriptInclude(Page.GetType(), "rb-popup", 
+                        Path.ApplicationRoot + "/aspnet_client/popupHelper/popup.js");}
             }
-
             return sb.ToString();
         }
 
@@ -283,31 +278,30 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         public override void DataBind()
         {
+            Portal portalSettings = PortalProvider.Instance.CurrentPortal;
             if (HttpContext.Current != null)
             {
                 //Init data
                 ArrayList list = new ArrayList();
-
-                // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
 
                 string homeLink = "<a";
                 string menuLink;
 
                 // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
                 if (CssClass.Length != 0)
+                {
                     homeLink = homeLink + " class=\"" + CssClass + "\"";
-
+                }
                 homeLink = homeLink + " href='" + HttpUrlBuilder.BuildUrl() + "'>" +
                            General.GetString("Rainbow", "HOME") + "</a>";
 
                 // If user logged in, customize welcome message
-                if (HttpContext.Current.Request.IsAuthenticated == true)
+                if (HttpContext.Current.Request.IsAuthenticated)
                 {
                     if (ShowWelcome)
                     {
                         list.Add(General.GetString("HEADER_WELCOME", "Welcome", this) + "&#160;" +
-                                 PortalSettings.CurrentUser.Identity.Name + "!");
+                                 RainbowPrincipal.CurrentUser.Identity.Name + "!");
                     }
 
                     if (ShowHome)
@@ -356,7 +350,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         // added mID by Mario Endara <mario@softworks.com.uy> to support security check (2004/11/09)
                         menuLink = menuLink + " href='" +
                                    HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Pages/PageLayout.aspx?PageID=") +
-                                   portalSettings.ActivePage.PageID + "&amp;mID=" + TabModuleID.ToString() +
+                                   portalSettings.ActivePage.PageID + "&amp;mID=" + TabModuleID +
                                    "&amp;Alias=" + portalSettings.PortalAlias + "&amp;lang=" + portalSettings.PortalUILanguage +
                                    "&amp;returntabid=" + portalSettings.ActivePage.PageID + "'>" +
                                    General.GetString("HEADER_MANAGE_TAB", "Edit This Page", null) + "</a>";
@@ -375,7 +369,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                             menuLink = menuLink + " href='" +
                                        HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
-                                                                                                          PortalSettings
+                                                                                                          RainbowPrincipal
                                                                                                               .CurrentUser
                                                                                                               .Identity.
                                                                                                               Email ) +
@@ -391,7 +385,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                             menuLink = menuLink + " href='" +
                                        HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
-                                                                                                          PortalSettings
+                                                                                                          RainbowPrincipal
                                                                                                               .
                                                                                                               CurrentUser
                                                                                                               .Identity.

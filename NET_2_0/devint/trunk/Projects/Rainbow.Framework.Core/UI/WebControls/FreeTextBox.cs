@@ -1,5 +1,5 @@
 using System.Web;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.BusinessObjects;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -8,7 +8,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// </summary>
     public class FreeTextBox : FreeTextBoxControls.FreeTextBox, IHtmlEditor
     {
-        private string _imageFolder = string.Empty;
+        string _imageFolder = string.Empty;
 
         /// <summary>
         /// Control Image Folder
@@ -20,7 +20,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 if (_imageFolder == string.Empty)
                 {
-                    PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                    Portal pS = (Portal) HttpContext.Current.Items["PortalSettings"];
                     if (pS.CustomSettings != null)
                     {
                         if (pS.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"] != null)

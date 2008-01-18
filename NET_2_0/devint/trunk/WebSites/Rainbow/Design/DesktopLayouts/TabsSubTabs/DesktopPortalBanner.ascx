@@ -1,9 +1,10 @@
+<%@ Import namespace="Rainbow.Framework"%>
 <%@ control language="c#" %>
 <%@ Register Assembly="Rainbow.Framework.Core" Namespace="Rainbow.Framework.Web.UI.WebControls" TagPrefix="rbfwebui" %>
 <%@ Register Assembly="Rainbow.Framework.Web.UI.WebControls" Namespace="Rainbow.Framework.Web.UI.WebControls" TagPrefix="rbfwebui" %>
 <script runat="server">
 
-    private void Page_Load(object sender, System.EventArgs e)
+    private void Page_Load(object sender, EventArgs e)
     {
         PortalHeaderMenu.DataBind();
         PortalTitle.DataBind();
@@ -84,14 +85,14 @@
                     repeatdirection="horizontal">
                     <itemstyle cssclass="Tabs" />
                     <itemtemplate>
-                        <a href="<%#Rainbow.Framework.HttpUrlBuilder.BuildUrl(((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageID)%>">
-                            <%# ((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageName %>
+                        <a href="<%#HttpUrlBuilder.BuildUrl(((Rainbow.Framework.BusinessObjects.PageStripDetails) Container.DataItem).PageID)%>">
+                            <%# ((Rainbow.Framework.BusinessObjects.PageStripDetails)Container.DataItem).PageName%>
                         </a>
                     </itemtemplate>
                     <selecteditemstyle cssclass="SelectedTabs" />
                     <selecteditemtemplate>
-                        <a href="<%#Rainbow.Framework.HttpUrlBuilder.BuildUrl(((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageID)%>">
-                            <%# ((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageName %>
+                        <a href="<%#HttpUrlBuilder.BuildUrl(((Rainbow.Framework.BusinessObjects.PageStripDetails) Container.DataItem).PageID)%>">
+                            <%# ((Rainbow.Framework.BusinessObjects.PageStripDetails)Container.DataItem).PageName%>
                         </a>
                     </selecteditemtemplate>
                 </rbfwebui:desktopnavigation>
@@ -103,14 +104,14 @@
                     enableviewstate="false" horizontalalign="left" repeatdirection="horizontal">
                     <itemstyle cssclass="SubTabs" />
                     <itemtemplate>
-                        <a href="<%#Rainbow.Framework.HttpUrlBuilder.BuildUrl(((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageID)%>">
-                            <%# ((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageName %>
+                        <a href="<%#HttpUrlBuilder.BuildUrl(((Rainbow.Framework.BusinessObjects.PageStripDetails) Container.DataItem).PageID)%>">
+                            <%# ((Rainbow.Framework.BusinessObjects.PageStripDetails)Container.DataItem).PageName%>
                         </a>
                     </itemtemplate>
                     <selecteditemstyle cssclass="SelectedSubTabs" />
                     <selecteditemtemplate>
-                        <a href="<%#Rainbow.Framework.HttpUrlBuilder.BuildUrl(((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageID)%>">
-                            <%# ((Rainbow.Framework.Site.Configuration.PageStripDetails) Container.DataItem).PageName %>
+                        <a href="<%#HttpUrlBuilder.BuildUrl(((Rainbow.Framework.BusinessObjects.PageStripDetails) Container.DataItem).PageID)%>">
+                            <%# ((Rainbow.Framework.BusinessObjects.PageStripDetails)Container.DataItem).PageName%>
                         </a>
                     </selecteditemtemplate>
                 </rbfwebui:desktopnavigation>

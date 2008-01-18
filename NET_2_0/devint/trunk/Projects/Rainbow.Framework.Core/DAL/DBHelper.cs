@@ -6,16 +6,37 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Exceptions;
-using Rainbow.Framework.Settings;
 
 namespace Rainbow.Framework.Data
 {
     /// <summary>
     /// Summary description for DBHelper
     /// </summary>
-    public class DBHelper
+    public static class DBHelper
     {
+        /// <summary>
+        /// Returns a new SqlConnection object using current ConnectionString
+        /// </summary>
+        public static SqlConnection SqlConnection
+        {
+            get
+            {
+                SqlConnection myConnection = new SqlConnection();
+                try
+                {
+                    myConnection.ConnectionString = Config.ConnectionString;
+                }
+                catch (ArgumentException) //connectionstring not well formed
+                {
+                    //redirect to installer
+                    //HttpContext.Current.Response.Redirect(InstallerRedirect);
+                }
+                return myConnection;
+            }
+        }
+
         /// <summary>
         /// Execute script using transaction
         /// </summary>
@@ -24,7 +45,7 @@ namespace Rainbow.Framework.Data
         /// <returns></returns>
         public static ArrayList ExecuteScript(string scriptPath, bool useTransaction)
         {
-            return ExecuteScript(scriptPath, Config.SqlConnectionString, useTransaction);
+            return ExecuteScript(scriptPath, SqlConnection, useTransaction);
         }
 
         /// <summary>
@@ -34,7 +55,7 @@ namespace Rainbow.Framework.Data
         /// <returns></returns>
         public static ArrayList ExecuteScript(string scriptPath)
         {
-            return ExecuteScript(scriptPath, Config.SqlConnectionString);
+            return ExecuteScript(scriptPath, SqlConnection);
         }
 
         /// <summary>
@@ -44,7 +65,7 @@ namespace Rainbow.Framework.Data
         /// <param name="myConnection">My connection.</param>
         /// <param name="useTransaction">if set to <c>true</c> [use transaction].</param>
         /// <returns></returns>
-        public static ArrayList ExecuteScript(string scriptPath, SqlConnection myConnection, bool useTransaction)
+        static ArrayList ExecuteScript(string scriptPath, SqlConnection myConnection, bool useTransaction)
         {
             if (!useTransaction)
                 return ExecuteScript(scriptPath, myConnection); //FIX: Must pass connection as well
@@ -122,6 +143,11 @@ namespace Rainbow.Framework.Data
                 if (myConnection.State == ConnectionState.Open)
                     myConnection.Close();
             }
+//            if (errors.Count > 0)
+//            {
+//                // Call rollback
+//                throw new Exception("Error occurred:" + errors[0]);
+//            }
             return errors;
         }
 
@@ -210,7 +236,7 @@ namespace Rainbow.Framework.Data
         {
             object returnValue;
 
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = SqlConnection)
             {
                 using (SqlCommand sqlCommand = new SqlCommand(sql, myConnection))
                 {
@@ -243,9 +269,8 @@ namespace Rainbow.Framework.Data
         /// <returns>A int value...</returns>
         public static Int32 ExeSQL(string sql)
         {
-            int returnValue = -1;
-
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            int returnValue;
+            using (SqlConnection myConnection = SqlConnection)
             {
                 using (SqlCommand sqlCommand = new SqlCommand(sql, myConnection))
                 {
@@ -283,7 +308,7 @@ namespace Rainbow.Framework.Data
         // TODO --> [Obsolete("Replace me")]
         public static SqlDataReader GetDataReader(string selectCmd)
         {
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = SqlConnection;
 
             using (SqlCommand sqlCommand = new SqlCommand(selectCmd, myConnection))
             {
@@ -310,7 +335,7 @@ namespace Rainbow.Framework.Data
         {
             DataSet ds;
 
-            using (SqlConnection myConnection = Config.SqlConnectionString)
+            using (SqlConnection myConnection = SqlConnection)
             {
                 using (SqlDataAdapter m_SqlDataAdapter = new SqlDataAdapter(selectCmd, myConnection))
                 {
@@ -342,7 +367,7 @@ namespace Rainbow.Framework.Data
         /// </summary>
         /// <param name="scriptPath">The script path.</param>
         /// <returns></returns>
-        private static string GetScript(string scriptPath)
+        static string GetScript(string scriptPath)
         {
             string strScript;
 

@@ -1,12 +1,11 @@
 using System;
-using System.Data;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings.Cache;
-using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
-using Rainbow.Framework.Providers.RainbowSiteMapProvider;
 using History=Rainbow.Framework.History;
 using Label=System.Web.UI.WebControls.Label;
 using LinkButton=System.Web.UI.WebControls.LinkButton;
@@ -128,7 +127,7 @@ namespace Rainbow.Content.Web.Modules.AddModule
         {
             BindData();
             TabTitleTextBox.Text = General.GetString("TAB_NAME", "New Tab Name");
-            AddTabButton.Click += new EventHandler(AddTabButton_Click);
+            AddTabButton.Click += AddTabButton_Click;
         }
 
         #region Methods
@@ -137,14 +136,15 @@ namespace Rainbow.Content.Web.Modules.AddModule
         /// The BindData helper method is used to update the tab's
         /// layout panes with the current configuration information
         /// </summary>
-        private void BindData()
+        void BindData()
         {
             // Populate the "ParentTab" Data
-            DataTable dt_Pages = new PagesDB().GetPagesFlatTable(portalSettings.PortalID);
-            DataColumn[] keys = new DataColumn[2];
-            keys[0] = dt_Pages.Columns["PageID"];
-            dt_Pages.PrimaryKey = keys;
+//            DataTable dt_Pages = PortalPageProvider.Instance.GetPagesFlatTable(PortalSettings.PortalID);
+//            DataColumn[] keys = new DataColumn[2];
+//            keys[0] = dt_Pages.Columns["PageID"];
+//            dt_Pages.PrimaryKey = keys;
 
+            object dt_Pages = PortalPageProvider.Instance.GetPagesFlatTable(PortalSettings.PortalID);
             parentTabDropDown.DataSource = dt_Pages;
             //parentTabDropDown.DataValueField = "PageID";
             //parentTabDropDown.DataTextField = "PageOrder";
@@ -157,7 +157,7 @@ namespace Rainbow.Content.Web.Modules.AddModule
             // Changes for Grischa Brockhaus copied by Mike Stone 7/1/2005
             if (parentTabDropDown.SelectedIndex <= 0)
             {
-                int currentTab = portalSettings.ActivePage.PageID;
+                int currentTab = PortalSettings.ActivePage.PageID;
                 parentTabDropDown.SelectedValue = (currentTab.ToString());
             }
             //	parentTabDropDown.Items.FindByValue(currentTab .ToString()).Selected = true; 
@@ -187,7 +187,7 @@ namespace Rainbow.Content.Web.Modules.AddModule
                 // This allows the user to pick what type of people can view the module being added.
                 // If Authorised Roles is selected from the dropdown then every role that has view permission for the
                 // Add Role module will be added to the view permissions of the module being added.
-                string viewPermissionRoles = PermissionDropDown.SelectedValue.ToString();
+                string viewPermissionRoles = PermissionDropDown.SelectedValue;
                 if (viewPermissionRoles == "Authorised Roles")
                 {
                     viewPermissionRoles = PortalSecurity.GetViewPermissions(ModuleID);
@@ -196,23 +196,22 @@ namespace Rainbow.Content.Web.Modules.AddModule
                 try
                 {
                     // New tabs go to the end of the list
-                    PageItem t = new PageItem();
-                    t.Name = TabTitleTextBox.Text;
-                    t.ID = -1;
-                    t.Order = 990000;
+                    PageItem pageItem = new PageItem();
+                    pageItem.Name = TabTitleTextBox.Text;
+                    pageItem.ID = -1;
+                    pageItem.Order = 990000;
 
                     // Get Parent Tab Id Convert only once used many times
                     int parentTabID = int.Parse(parentTabDropDown.SelectedValue);
 
 
                     // write tab to database
-                    PagesDB tabs = new PagesDB();
                     //t.ID = tabs.AddTab(portalSettings.PortalID, t.Name, viewPermissionRoles, t.Order);
 
                     // Changed to use new method in TabsDB.cs now all parms are possible 
                     // By Mike Stone (mstone@kaskaskia.edu) - 30/12/2004
-                    t.ID =
-                        tabs.AddPage(portalSettings.PortalID, parentTabID, t.Name, t.Order, viewPermissionRoles,
+                    pageItem.ID =
+                        PortalPageProvider.Instance.AddPage(PortalSettings.PortalID, parentTabID, pageItem.Name, pageItem.Order, viewPermissionRoles,
                                      cb_ShowMobile.Checked, tb_MobileTabName.Text);
 
                     //TODO.. the only way to update a parent id is throught update :S
@@ -232,14 +231,14 @@ namespace Rainbow.Content.Web.Modules.AddModule
                     RainbowSiteMapProvider.ClearAllRainbowSiteMapCaches();
 
                     //Jump to Page option
-                    string returnTab = string.Empty;
-                    if (rbl_JumpToTab.SelectedValue.ToString() == "Yes")
+                    string returnTab;
+                    if (rbl_JumpToTab.SelectedValue == "Yes")
                     {
                         // Redirect to New Page/Tab - Mike Stone 30/12/2004
                         // modified by Hongwei Shen 9/25/2005
                         // returnTab = HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", t.ID, "SelectedTabID=" + t.ID.ToString());
-                        string newPage = "~/" + t.Name.Trim().Replace(" ", "_") + ".aspx";
-                        returnTab = HttpUrlBuilder.BuildUrl(newPage, t.ID);
+                        string newPage = "~/" + pageItem.Name.Trim().Replace(" ", "_") + ".aspx";
+                        returnTab = HttpUrlBuilder.BuildUrl(newPage, pageItem.ID);
                     }
                     else
                     {
@@ -250,7 +249,7 @@ namespace Rainbow.Content.Web.Modules.AddModule
                         // Modified by Hongwei Shen 9/25/2005 to fix: QueryString["tabID"] maybe null.
                         // returnTab = HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", int.Parse(Request.QueryString["tabID"]), "SelectedTabID=" + t.ID.ToString());
                         returnTab =
-                            HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", PageID, "SelectedTabID=" + t.ID.ToString());
+                            HttpUrlBuilder.BuildUrl("~/DesktopDefault.aspx", PageID, "SelectedTabID=" + pageItem.ID);
                     }
                     Response.Redirect(returnTab);
                 }
@@ -258,7 +257,7 @@ namespace Rainbow.Content.Web.Modules.AddModule
                 {
                     moduleError.Visible = true;
                     ErrorHandler.Publish(LogLevel.Error,
-                                         "There was an error with the Add Tab Module while trying to add a new tab.", ex);
+                        "There was an error with the Add Tab Module while trying to add a new tab.", ex);
                     return;
                 }
                 // Reload page to pick up changes
@@ -287,12 +286,12 @@ namespace Rainbow.Content.Web.Modules.AddModule
             get { return true; }
         }
 
-        /// <summary>
-        /// Public constructor. Sets base settings for module.
-        /// </summary>
-        public AddPage()
-        {
-        }
+//        /// <summary>
+//        /// Public constructor. Sets base settings for module.
+//        /// </summary>
+//        public AddPage()
+//        {
+//        }
 
         #endregion
 

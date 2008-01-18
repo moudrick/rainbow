@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Context;
 
 namespace Rainbow.Framework.Web
 {
@@ -14,31 +14,31 @@ namespace Rainbow.Framework.Web
 	/// </summary>
 	internal sealed class UrlBuilderHelper
 	{
-		/// <summary>
-		///     ctor
-		/// </summary>
-		/// 
-		/// <returns>
-		///     A void value...
-		/// </returns>
-		private UrlBuilderHelper()
-		{
-		}
+        public const string IsPlaceHolderID = "TabPlaceholder";
+        public const string TabLinkID = "TabLink";
+        public const string PageNameID = "UrlPageName";
+        public const string UrlKeywordsID = "TabUrlKeyword";
 
-		public const string IsPlaceHolderID = "TabPlaceholder";
-		public const string TabLinkID = "TabLink";
-		public const string PageNameID = "UrlPageName";
-		public const string UrlKeywordsID = "TabUrlKeyword";
+        /// <summary>
+        /// ApplicationPath, Application dependent relative Application Path.
+        /// Base dir for all portal code
+        /// Since it is common for all portals is declared as static
+        /// </summary>
+        public static string ApplicationPath
+        {
+            get { return Path.ApplicationRoot; }
+        }
 
-		/// <summary>
-		/// Builds up a cache key for Url Elements/Properties
-		/// </summary>
-		/// <param name="pageID">The ID of the page for which you want to generate a url element cache key for</param>
-		/// <param name="UrlElement">The Url element you are after (IsPlaceHolderID/TabLinkID/PageNameID/UrlKeywordsID) constants</param>
-		/// <returns>A unique key</returns>
-		private static string UrlElementCacheKey(int pageID, string UrlElement)
+        /// <summary>
+        ///     Returns the current site's database connection string
+        /// </summary>
+        static string SiteConnectionString
+        {
+            get { return Config.ConnectionString; }
+        }
+
+		UrlBuilderHelper()
 		{
-			return string.Concat(SiteUniqueID.ToString(), pageID, UrlElement);
 		}
 
 		/// <summary>
@@ -106,7 +106,7 @@ namespace Rainbow.Framework.Web
 						// Open the connection
 						conn.Open();
 
-						using (SqlCommand cmd = new SqlCommand("SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID.ToString() + " AND SettingName = '" + propertyID + "'", conn))
+						using (SqlCommand cmd = new SqlCommand("SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID + " AND SettingName = '" + propertyID + "'", conn))
 						{
 							// 1. Instantiate a new command above
 							// 2. Call ExecuteNonQuery to send command
@@ -123,9 +123,7 @@ namespace Rainbow.Framework.Web
 
 					finally
 					{
-						// Close the connection
-						if (conn != null)
-							conn.Close();
+                        conn.Close();
 					}
 				}
 
@@ -210,7 +208,7 @@ namespace Rainbow.Framework.Web
 						// Open the connection
 						conn.Open();
 
-						using (SqlCommand cmd = new SqlCommand("SELECT ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID.ToString() + " AND SettingName = '" + PageNameID + "'),'') as PageName,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID.ToString() + " AND SettingName = '" + UrlKeywordsID + "'),'') as Keywords,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID.ToString() + " AND SettingName = '" + TabLinkID + "'),'') as ExternalLink,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID.ToString() + " AND SettingName = '" + IsPlaceHolderID + "'),'') as IsPlaceHolder", conn))
+						using (SqlCommand cmd = new SqlCommand("SELECT ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID + " AND SettingName = '" + PageNameID + "'),'') as PageName,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID + " AND SettingName = '" + UrlKeywordsID + "'),'') as Keywords,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID + " AND SettingName = '" + TabLinkID + "'),'') as ExternalLink,ISNULL((SELECT SettingValue FROM rb_TabSettings WHERE TabID=" + pageID + " AND SettingName = '" + IsPlaceHolderID + "'),'') as IsPlaceHolder", conn))
 						{
 							// 1. Instantiate a new command above
 							// 2. populate values
@@ -327,9 +325,7 @@ namespace Rainbow.Framework.Web
 
 					finally
 					{
-						// Close the connection
-						if (conn != null)
-							conn.Close();
+                        conn.Close();
 					}
 				}
 			}
@@ -345,39 +341,15 @@ namespace Rainbow.Framework.Web
 			}
 		}
 
-
-		/// <summary>
-		/// ApplicationPath, Application dependent relative Application Path.
-		/// Base dir for all portal code
-		/// Since it is common for all portals is declared as static
-		/// </summary>
-		public static string ApplicationPath
-		{
-			get { return Path.ApplicationRoot; }
-		}
-
-		/// <summary>
-		///     Returns the current site's database connection string
-		/// </summary>
-		/// <value>
-		///     <para>
-		///         
-		///     </para>
-		/// </value>
-		/// <remarks>
-		///     
-		/// </remarks>
-		private static string SiteConnectionString
-		{
-			get { return Config.ConnectionString; }
-		}
-
-		/// <summary>
-		/// This static string fetches the site's alias either via querystring, cookie or domain and returns it
-		/// </summary>
-		private static string SiteUniqueID
-		{
-			get { return Portal.UniqueID; }
-		}
+        /// <summary>
+        /// Builds up a cache key for Url Elements/Properties
+        /// </summary>
+        /// <param name="pageID">The ID of the page for which you want to generate a url element cache key for</param>
+        /// <param name="UrlElement">The Url element you are after (IsPlaceHolderID/TabLinkID/PageNameID/UrlKeywordsID) constants</param>
+        /// <returns>A unique key</returns>
+        static string UrlElementCacheKey(int pageID, string UrlElement)
+        {
+            return string.Concat(RainbowContext.Current.UniqueID, pageID, UrlElement);
+        }
 	}
 }

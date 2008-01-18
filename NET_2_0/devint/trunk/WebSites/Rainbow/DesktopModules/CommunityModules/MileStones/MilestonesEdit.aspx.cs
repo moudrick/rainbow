@@ -4,7 +4,8 @@ using System.Collections;
 using System.Data.SqlClient;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Content.Web.Modules
@@ -91,16 +92,28 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Update onlyif the entered data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 MilestonesDB milestonesDb = new MilestonesDB();
                 if (ItemID <= 0)
-                    milestonesDb.AddMilestones(ItemID, ModuleID, PortalSettings.CurrentUser.Identity.Email, DateTime.Now,
-                                               TitleField.Text, DateTime.Parse(EstCompleteDate.Text), StatusBox.Text);
+                {
+                    milestonesDb.AddMilestones(ItemID,
+                                               ModuleID,
+                                               RainbowPrincipal.CurrentUser.Identity.Email,
+                                               DateTime.Now,
+                                               TitleField.Text,
+                                               DateTime.Parse(EstCompleteDate.Text),
+                                               StatusBox.Text);
+                }
                 else
-                    milestonesDb.UpdateMilestones(ItemID, ModuleID, PortalSettings.CurrentUser.Identity.Email,
-                                                  DateTime.Now, TitleField.Text, DateTime.Parse(EstCompleteDate.Text),
-                                                  StatusBox.Text);
+                {
+                    milestonesDb.UpdateMilestones(ItemID,
+                                                  ModuleID,
+                                                  RainbowPrincipal.CurrentUser.Identity.Email,
+                                                  DateTime.Now,
+                                                  TitleField.Text,
+                                                  DateTime.Parse(EstCompleteDate.Text),
+                                                  StatusBox.Text);}
 
                 // Redirects to the referring page
                 // This method is provided by the base class

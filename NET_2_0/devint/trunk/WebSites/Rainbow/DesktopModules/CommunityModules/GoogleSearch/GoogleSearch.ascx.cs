@@ -1,13 +1,10 @@
 using System;
 using System.Data;
-using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Site.Data;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Web.UI.WebControls;
 using com.google.api;
-//using Rainbow.DesktopModules.GoogleSearchWebservice.com.google.api;
 
 namespace Rainbow.DesktopModules
 {
@@ -205,7 +202,7 @@ namespace Rainbow.DesktopModules
 			maxResults.Value = "10";
 			maxResults.MinValue = 1;
 			maxResults.MaxValue = 1000;
-			this._baseSettings.Add("MaxResults", maxResults);
+			this.baseSettings.Add("MaxResults", maxResults);
 
 			SettingItem licKey = new SettingItem(new StringDataType());
 			licKey.Required = true;
@@ -213,26 +210,26 @@ namespace Rainbow.DesktopModules
 			licKey.EnglishName = "Licence Key";
 			licKey.Group = group;
 			licKey.Order = groupBase + 25; //2;
-			this._baseSettings.Add("LicKey", licKey);
+			this.baseSettings.Add("LicKey", licKey);
 
 			SettingItem showSnippet = new SettingItem(new BooleanDataType());
 			showSnippet.Group = group;
 			showSnippet.Order = groupBase + 30; //3;
 			showSnippet.Value = "true";
-			this._baseSettings.Add("ShowSnippet", showSnippet);
+			this.baseSettings.Add("ShowSnippet", showSnippet);
 
 			SettingItem showSummary = new SettingItem(new BooleanDataType());
 			showSummary.Group = group;
 			showSummary.Order = groupBase + 35; //4;
 			showSummary.Value = "true";
-			this._baseSettings.Add("ShowSummary", showSummary);
+			this.baseSettings.Add("ShowSummary", showSummary);
 
 			SettingItem showURL = new SettingItem(new BooleanDataType());
 			showURL.Group = group;
 			showURL.Order = groupBase + 40; //5;
 			showURL.EnglishName = "Show URL";
 			showURL.Value = "false";
-			this._baseSettings.Add("ShowURL", showURL);
+			this.baseSettings.Add("ShowURL", showURL);
 			
 			SettingItem restrictToThisDomain = new SettingItem(new StringDataType());
 			restrictToThisDomain.Value = "";
@@ -240,7 +237,7 @@ namespace Rainbow.DesktopModules
 			restrictToThisDomain.Description = "Set this field to restrict the search to a specific domain. This overrides 'Search this site only'";
 			restrictToThisDomain.Group = group;
 			restrictToThisDomain.Order = groupBase + 45; //6;
-			this._baseSettings.Add("GOOGLESEARCH_RESTRICT_DOMAIN", restrictToThisDomain);
+			this.baseSettings.Add("GOOGLESEARCH_RESTRICT_DOMAIN", restrictToThisDomain);
 
 			SettingItem searchThisSiteOnly = new SettingItem(new BooleanDataType());
 			searchThisSiteOnly.Group = group;
@@ -248,14 +245,14 @@ namespace Rainbow.DesktopModules
 			searchThisSiteOnly.EnglishName = "Search this site only";
 			searchThisSiteOnly.Description = "Search this site only. For work be sure restrict to domain option is blank.";
 			searchThisSiteOnly.Value = "true";
-			this._baseSettings.Add("GOOGLESEARCH_SEARCH_THIS_SITE_ONLY", searchThisSiteOnly);
+			this.baseSettings.Add("GOOGLESEARCH_SEARCH_THIS_SITE_ONLY", searchThisSiteOnly);
 
 			SettingItem setTarget = new SettingItem(new ListDataType("blank;parent;self;top"));
 			setTarget.Required = true;
 			setTarget.Group = group;
 			setTarget.Order = groupBase + 55; //10;
 			setTarget.Value = "blank";
-			this._baseSettings.Add("Target", setTarget);
+			this.baseSettings.Add("Target", setTarget);
 
 		}
 

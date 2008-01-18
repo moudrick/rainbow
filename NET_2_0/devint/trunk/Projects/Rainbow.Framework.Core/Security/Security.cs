@@ -1,17 +1,17 @@
 using System;
-using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Principal;
 using System.Text;
 using System.Web;
 using System.Web.Security;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Data;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
 using System.Collections.Generic;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
 
 namespace Rainbow.Framework.Security
 {
@@ -28,8 +28,6 @@ namespace Rainbow.Framework.Security
 	[History("Thierry (tiptopweb)", "2003/04/12", "Migrate shopping cart in SignOn for E-Commerce")]
 	public class PortalSecurity 
 	{
-		const string strPortalSettings = "PortalSettings";
-
 		//        [Flags]
 		//        public enum SecurityPermission : uint
 		//        {
@@ -58,7 +56,7 @@ namespace Rainbow.Framework.Security
 			{
 				// Obtain PortalSettings from Current Context
 				// WindowsAdmins added 28.4.2003 Cory Isakson
-				PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+				Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 				StringBuilder winRoles = new StringBuilder();
 				winRoles.Append(portalSettings.CustomSettings["WindowsAdmins"]);
 				winRoles.Append(";");
@@ -66,13 +64,15 @@ namespace Rainbow.Framework.Security
 				winRoles.Append(Config.ADAdministratorGroup);
 				return IsInRoles(winRoles.ToString());
 			}
-			// Allow giving access to users 
-			if ( useNTLM && role == HttpContext.Current.User.Identity.Name )
-				return true;
-			else
+            // Allow giving access to users 
+            if (useNTLM && role == HttpContext.Current.User.Identity.Name)
             {
-				return HttpContext.Current.User.IsInRole(role);
-		}
+                return true;
+            }
+            else
+            {
+                return HttpContext.Current.User.IsInRole(role);
+            }
         }
 
         /// <summary>
@@ -130,19 +130,24 @@ namespace Rainbow.Framework.Security
         /// </returns>
 		private static bool hasPermissions (int moduleID, string procedureName, string parameterRol) 
 		{
-			
-			if (RecyclerDB.ModuleIsInRecycler(moduleID))
-				procedureName = procedureName + "Recycler";
-			
-			if (moduleID <= 0) return false;
-			// Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+            if (RecyclerDB.ModuleIsInRecycler(moduleID))
+            {
+                procedureName = procedureName + "Recycler";
+            }
+
+            if (moduleID <= 0)
+            {
+                return false;
+            }
+
+			Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 			int portalID = portalSettings.PortalID;
+
 			// jviladiu@portalServices.net: Get users & roles from true portal (2004/09/23)
 			if (Config.UseSingleUserBase) portalID = 0;
 			
 			// Create Instance of Connection and Command Object
-			using (SqlConnection myConnection = Config.SqlConnectionString)
+			using (SqlConnection myConnection = DBHelper.SqlConnection)
 			{
 				using (SqlCommand myCommand = new SqlCommand(procedureName, myConnection))
 				{
@@ -290,16 +295,16 @@ namespace Rainbow.Framework.Security
 		
 		#region GetRoleList Methods - Added by John Mandia (www.whitelightsolutions.com) 15/08/04
 
-		private static string getPermissions (int moduleID, string procedureName, string parameterRol) 
+		static string getPermissions (int moduleID, string procedureName, string parameterRol) 
 		{
 			// Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+			Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 			int portalID = portalSettings.PortalID;
 			// jviladiu@portalServices.net: Get users & roles from true portal (2004/09/23)
 			if (Config.UseSingleUserBase) portalID = 0;
 
 			// Create Instance of Connection and Command Object
-			using (SqlConnection myConnection = Config.SqlConnectionString)
+			using (SqlConnection myConnection = DBHelper.SqlConnection)
 			{
 				using (SqlCommand myCommand = new SqlCommand(procedureName, myConnection))
 				{
@@ -486,8 +491,7 @@ namespace Rainbow.Framework.Security
 		[History("bja@reedtek.com", "2003/05/16", "Support for collapsable")]
 		public static string SignOn(string user, string password, bool persistent, string redirectPage)
 		{
-			// Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+			Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 
             MembershipUser usr;
 			UsersDB accountSystem = new UsersDB();
@@ -575,7 +579,7 @@ namespace Rainbow.Framework.Security
         /// </summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="minuteAdd">The minute add.</param>
-		public static void ExtendCookie(PortalSettings portalSettings, int minuteAdd)
+		public static void ExtendCookie(Portal portalSettings, int minuteAdd)
 		{
 			DateTime time = DateTime.Now;
 			TimeSpan span = new TimeSpan(0, 0, minuteAdd, 0, 0); 
@@ -589,7 +593,7 @@ namespace Rainbow.Framework.Security
         /// ExtendCookie
         /// </summary>
         /// <param name="portalSettings">The portal settings.</param>
-		public static void ExtendCookie(PortalSettings portalSettings)
+		public static void ExtendCookie(Portal portalSettings)
 		{
 			int minuteAdd = Config.CookieExpire;
 			ExtendCookie(portalSettings, minuteAdd);
@@ -634,7 +638,7 @@ namespace Rainbow.Framework.Security
 			if (removeLogin)
 			{
 				// Obtain PortalSettings from Current Context
-				PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+				Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 
 				// Invalidate Portal Alias Cookie security
 				HttpCookie xhck = HttpContext.Current.Response.Cookies["Rainbow_" + portalSettings.PortalAlias.ToLower()];
@@ -648,13 +652,12 @@ namespace Rainbow.Framework.Security
 			// valid user
 			if (HttpContext.Current.User != null)
 			{
-                // Obtain PortalSettings from Current Context
                 //Ender 4 July 2003: Added to support the Monitoring module by Paul Yarrow
-                PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items[strPortalSettings];
+                Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 
                 // User Information
-                UsersDB users = new UsersDB();
-                MembershipUser user = users.GetSingleUser( HttpContext.Current.User.Identity.Name );
+			    MembershipUser user = RainbowMembershipProvider.Instance.GetSingleUser(
+                    portalSettings.PortalAlias, HttpContext.Current.User.Identity.Name);
 				
 				// get user id
 				Guid uid = (Guid)user.ProviderUserKey;
@@ -667,15 +670,17 @@ namespace Rainbow.Framework.Security
 						{
 							Monitoring.LogEntry(uid, portalSettings.PortalID, -1, "Logoff", string.Empty);  
 						}
-					} 
-					catch {}
+					}
+                    catch {;}
 				}
 			}
 			// [END ]  bja@reedtek.com remove user window information
 
-			//Redirect user back to the Portal Home Page
-			if (urlToRedirect.Length > 0)
-				HttpContext.Current.Response.Redirect(urlToRedirect);
+		    //Redirect user back to the Portal Home Page
+		    if (urlToRedirect.Length > 0)
+		    {
+		        HttpContext.Current.Response.Redirect(urlToRedirect);
+            }
 		}
 		#endregion
 
@@ -694,23 +699,33 @@ namespace Rainbow.Framework.Security
 		/// </summary>
 		public static void AccessDenied()
 		{
-			if (HttpContext.Current.User.Identity.IsAuthenticated)
-				throw new HttpException(403, "Access Denied", 2);
-			else
-				HttpContext.Current.Response.Redirect(HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Admin/Logon.aspx"));
+		    if (HttpContext.Current.User.Identity.IsAuthenticated)
+		    {
+		        throw new HttpException(403, "Access Denied", 2);
+		    }
+		    else
+		    {
+		        HttpContext.Current.Response.Redirect(
+		            HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Admin/Logon.aspx"));
+            }
 		}
 
-		/// <summary>
-		/// Single point edit access deny.
-		/// Called when there is an unauthorized access attempt to an edit page.
-		/// </summary>
-		public static void AccessDeniedEdit()
-		{
-			if (HttpContext.Current.User.Identity.IsAuthenticated)
-				throw new HttpException(403, "Access Denied Edit", 3);
-			else
-				HttpContext.Current.Response.Redirect(HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Admin/Logon.aspx"));
-		}
+	    /// <summary>
+	    /// Single point edit access deny.
+	    /// Called when there is an unauthorized access attempt to an edit page.
+	    /// </summary>
+	    public static void AccessDeniedEdit()
+	    {
+	        if (HttpContext.Current.User.Identity.IsAuthenticated)
+	        {
+	            throw new HttpException(403, "Access Denied Edit", 3);
+	        }
+	        else
+	        {
+	            HttpContext.Current.Response.Redirect(
+	                HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Admin/Logon.aspx"));
+	        }
+	    }
 
 		/// <summary>
 		/// Single point edit access deny from the Secure server (SSL)
@@ -727,7 +742,7 @@ namespace Rainbow.Framework.Security
         public static IList<RainbowRole> GetRoles()
 		{
 			// Obtain PortalSettings from Current Context
-			PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items[strPortalSettings];
+			Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 			int portalID = portalSettings.PortalID;
 			// john.mandia@whitelightsolutions.com: 29th May 2004 When retrieving/editing/adding roles or users etc then portalID should be 0 if it is shared
 			// But I commented this out as this check is done in UsersDB.GetRoles Anyway

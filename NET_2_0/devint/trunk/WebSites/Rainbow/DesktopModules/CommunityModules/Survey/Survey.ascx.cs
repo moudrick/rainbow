@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
 using System.Data.SqlClient;
-using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
@@ -48,9 +48,11 @@ namespace Rainbow.Content.Web.Modules
 
             // Creation of the Survey - Begin
             // It uses cookies to find out whether the user has already done it
-            string CookieName = "Survey" + ModuleID.ToString();
+            string CookieName = "Survey" + ModuleID;
             if (test == 1)
+            {
                 CookieName += "Test";
+            }
             if (Request.Cookies[CookieName] == null)
             {
                 // Finds the dimension of the arrays
@@ -72,10 +74,10 @@ namespace Rainbow.Content.Web.Modules
                 // Indexes of the Arrays
                 int i = 0;
                 int j = 0;
-                int ControlIndex = 0;
+                int controlIndex = 0;
 
                 if (SurveyHolder.Controls.Count > 0)
-                    ControlIndex = SurveyHolder.Controls.Count;
+                    controlIndex = SurveyHolder.Controls.Count;
 
                 SurveyDB Questions = new SurveyDB();
                 SqlDataReader result = Questions.GetQuestions(ModuleID);
@@ -100,12 +102,12 @@ namespace Rainbow.Content.Web.Modules
                             {
                                 Label lbl = new Label();
                                 lbl.Visible = true;
-                                lbl.Text = "<br />" + result["Question"].ToString();
+                                lbl.Text = "<br />" + result["Question"];
                                 lbl.CssClass = "SurveyQuestion";
                                 SurveyHolder.Controls.Add(lbl);
-                                ControlIndex = ControlIndex + 1;
+                                controlIndex = controlIndex + 1;
                                 SurveyHolder.Controls.Add(new LiteralControl("<br /><br />"));
-                                ControlIndex = ControlIndex + 1;
+                                controlIndex = controlIndex + 1;
                                 GroupQuestionPrev = (int) result["QuestionID"];
                             }
                         }
@@ -113,13 +115,13 @@ namespace Rainbow.Content.Web.Modules
                         {
                             Label lbl = new Label();
                             lbl.Visible = true;
-                            lbl.Text = "<br />" + result["Question"].ToString();
+                            lbl.Text = "<br />" + result["Question"];
                             lbl.CssClass = "SurveyQuestion";
                             SurveyHolder.Controls.Add(lbl);
-                            ControlIndex = ControlIndex + 1;
+                            controlIndex = controlIndex + 1;
                             SurveyHolder.Controls.Add(new LiteralControl("<br /><br />"));
 
-                            ControlIndex = ControlIndex + 1;
+                            controlIndex = controlIndex + 1;
                             GroupQuestionPrev = (int) result["QuestionID"];
                             FirstTime = false;
                         }
@@ -128,37 +130,37 @@ namespace Rainbow.Content.Web.Modules
                         {
                             i++;
                             RadioButton RdButton = new RadioButton();
-                            RdButton.ID = "RdButton_" + i.ToString();
-                            RdButton.GroupName = "Option_" + GroupQuestionPrev.ToString();
+                            RdButton.ID = "RdButton_" + i;
+                            RdButton.GroupName = "Option_" + GroupQuestionPrev;
                             RdButton.Text = result["OptionDesc"].ToString();
                             RdButton.CssClass = "SurveyOption";
                             SurveyHolder.Controls.Add(RdButton);
-                            ControlIndex = ControlIndex + 1;
+                            controlIndex = controlIndex + 1;
                             // Save RadioButton position
-                            ArrRadioButton.SetValue(ControlIndex, i);
+                            ArrRadioButton.SetValue(controlIndex, i);
                             arrRadioQuestionID.SetValue((int) result["QuestionID"], i);
                             arrRadioOptionID.SetValue((int) result["OptionID"], i);
                             // Adds a Literal
                             SurveyHolder.Controls.Add(new LiteralControl("<br>"));
-                            ControlIndex = ControlIndex + 1;
+                            controlIndex = controlIndex + 1;
                         }
                         else
                         {
                             j++;
                             ;
                             CheckBox ChButton = new CheckBox();
-                            ChButton.ID = "ChButton_" + j.ToString();
+                            ChButton.ID = "ChButton_" + j;
                             ChButton.Text = result["OptionDesc"].ToString();
                             ChButton.CssClass = "SurveyOption";
                             SurveyHolder.Controls.Add(ChButton);
-                            ControlIndex++;
+                            controlIndex++;
                             // Saves Checkbox position
-                            ArrCheckButton.SetValue(ControlIndex, j);
+                            ArrCheckButton.SetValue(controlIndex, j);
                             arrCheckQuestionID.SetValue((int) result["QuestionID"], j);
                             arrCheckOptionID.SetValue((int) result["OptionID"], j);
                             // Adds a literal
                             SurveyHolder.Controls.Add(new LiteralControl("<br>"));
-                            ControlIndex++;
+                            controlIndex++;
                         }
                     }
                 }
@@ -167,19 +169,19 @@ namespace Rainbow.Content.Web.Modules
                     result.Close(); //by Manu, fixed bug 807858
                 }
                 // Checks whether the Survey exist
-                SurveyDB SurveyCheck = new SurveyDB();
-                int RowCount = 0;
-                RowCount = SurveyCheck.ExistSurvey(ModuleID);
-                if (RowCount > 0)
+                SurveyDB surveyCheck = new SurveyDB();
+                int rowCount;
+                rowCount = surveyCheck.ExistSurvey(ModuleID);
+                if (rowCount > 0)
                 {
                     SurveyHolder.Controls.Add(new LiteralControl("<br />"));
-                    ControlIndex = ControlIndex + 1;
+                    controlIndex = controlIndex + 1;
                     SubmitButton = new LinkButton();
                     SubmitButton.ID = "Submit";
                     SubmitButton.Text = General.GetString("SURVEY_SUBMIT", "Submit", this);
                     SubmitButton.CssClass = "SurveyButton";
                     SurveyHolder.Controls.Add(SubmitButton);
-                    SubmitButton.Click += new EventHandler(SubmitButton_Click);
+                    SubmitButton.Click += SubmitButton_Click;
                 }
                 ViewState["arrRadioButton"] = ArrRadioButton;
                 ViewState["arrRadioQuestionID"] = arrRadioQuestionID;
@@ -234,9 +236,13 @@ namespace Rainbow.Content.Web.Modules
                             tot = GetTotAnswer(SurveyID, GroupQuestionPrev);
                         }
                         if (tot == 0)
+                        {
                             perc = 0;
+                        }
                         else
-                            perc = (float.Parse(result["Num"].ToString())/(float) tot)*100;
+                        {
+                            perc = (float.Parse(result["Num"].ToString()) / (float) tot) * 100;
+                        }
 
                         // Shows the AnswerOptions
                         Panel Pan = new Panel();
@@ -247,8 +253,8 @@ namespace Rainbow.Content.Web.Modules
 
                         Label lblOptDesc = new Label();
                         lblOptDesc.Visible = true;
-                        lblOptDesc.Text = result["OptionDesc"].ToString() + "   " + perc.ToString("0") + "%  " +
-                                          result["Num"].ToString() + " " +
+                        lblOptDesc.Text = result["OptionDesc"] + "   " + perc.ToString("0") + "%  " +
+                                          result["Num"] + " " +
                                           General.GetString("SURVEY_VOTES", "votes", this) + "<br />";
                         lblOptDesc.CssClass = "SurveyOption";
                         SurveyHolder.Controls.Add(lblOptDesc);
@@ -268,7 +274,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="SurveyID">The survey ID.</param>
         /// <param name="QuestionID">The question ID.</param>
         /// <returns></returns>
-        protected int GetTotAnswer(int SurveyID, int QuestionID)
+        protected static int GetTotAnswer(int SurveyID, int QuestionID)
         {
             return new SurveyDB().GetAnswerNum(SurveyID, QuestionID); // get the number of answers for a QuestionID
         }
@@ -291,9 +297,8 @@ namespace Rainbow.Content.Web.Modules
 
             for (int i = 1; i <= MaxRdIndex; i++)
             {
-                RadioButton RadioButtonID = new RadioButton();
-                RadioButtonID = (RadioButton) SurveyHolder.Controls[((int) (ArrRadioButton.GetValue(i))) - 1];
-                if (RadioButtonID.Checked)
+                RadioButton radioButtonID = (RadioButton) SurveyHolder.Controls[((int) (ArrRadioButton.GetValue(i))) - 1];
+                if (radioButtonID.Checked)
                 {
                     // get { The QuestionID and OptionID
                     int QuestionID = (int) arrRadioQuestionID.GetValue(i);
@@ -305,9 +310,8 @@ namespace Rainbow.Content.Web.Modules
             }
             for (int j = 1; j <= MaxChIndex; j++)
             {
-                CheckBox CheckButtonID = new CheckBox();
-                CheckButtonID = (CheckBox) SurveyHolder.Controls[((int) (ArrCheckButton.GetValue(j))) - 1];
-                if (CheckButtonID.Checked)
+                CheckBox checkButtonID = (CheckBox) SurveyHolder.Controls[((int) (ArrCheckButton.GetValue(j))) - 1];
+                if (checkButtonID.Checked)
                 {
                     int QuestionID = (int) arrCheckQuestionID.GetValue(j);
                     int OptionID = (int) arrCheckOptionID.GetValue(j);
@@ -318,7 +322,7 @@ namespace Rainbow.Content.Web.Modules
                 }
             }
             // Store a cookie to show the chart after the submit
-            string CookieName = "Survey" + ModuleID.ToString();
+            string CookieName = "Survey" + ModuleID;
             Response.Cookies[CookieName].Value = ViewState["SurveyID"].ToString();
             Response.Cookies[CookieName].Expires = DateTime.Now.AddDays(VoteDayPeriod);
             Response.Redirect(ViewState["URL"].ToString());
@@ -344,13 +348,13 @@ namespace Rainbow.Content.Web.Modules
             itmVoteDayPeriod.Value = "7";
             itmVoteDayPeriod.MinValue = 1;
             itmVoteDayPeriod.MaxValue = 365;
-            _baseSettings.Add("VoteDayPeriod", itmVoteDayPeriod);
+            baseSettings.Add("VoteDayPeriod", itmVoteDayPeriod);
 
             SettingItem itmTest = new SettingItem(new IntegerDataType());
             itmTest.Required = true;
             itmTest.Order = 2;
             itmTest.Value = "0";
-            _baseSettings.Add("Test", itmTest);
+            baseSettings.Add("Test", itmTest);
         }
 
         /// <summary>
@@ -359,12 +363,12 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
@@ -374,11 +378,11 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="stateSaver"></param>
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
+            string currentScriptName = System.IO.Path.Combine(Server.MapPath(TemplateSourceDirectory), "uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
-                throw new Exception("Error occurred:" + errors[0].ToString()); // Call rollback
+                throw new Exception("Error occurred:" + errors[0]); // Call rollback
             }
         }
 

@@ -1,5 +1,7 @@
 <%@ control autoeventwireup="false" codefile="Books.ascx.cs" inherits="Rainbow.Content.Web.Modules.AmazonBooks"
     language="c#" %>
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Web.UI.WebControls" %>    
+
 <asp:datalist id="myDataList" runat="server" cellpadding="4" enableviewstate="false"
     width="100%">
     <itemstyle verticalalign="Top" />

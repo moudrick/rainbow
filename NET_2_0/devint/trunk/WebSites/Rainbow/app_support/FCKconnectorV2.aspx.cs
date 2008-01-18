@@ -13,10 +13,12 @@ using System.Security;
 using System.Text;
 using System.Web;
 using System.Xml;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
-using Path = Rainbow.Framework.Settings.Path;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.FCKeditorV2
 {
@@ -34,8 +36,10 @@ namespace Rainbow.FCKeditorV2
 		/// </summary>
 		protected override void LoadSettings()
 		{
-			if (PortalSecurity.HasEditPermissions(this.portalSettings.ActiveModule) == false)
-				PortalSecurity.AccessDeniedEdit();
+		    if (PortalSecurity.HasEditPermissions(portalSettings.ActiveModule) == false)
+		    {
+		        PortalSecurity.AccessDeniedEdit();
+		    }
 		}
 
 		/// <summary>
@@ -64,7 +68,7 @@ namespace Rainbow.FCKeditorV2
 			// File Upload doesn't have to return XML, so it must be intercepted before anything.
 			if ( sCommand == "FileUpload" )
 			{
-				this.FileUpload( sResourceType, sCurrentFolder ) ;
+				FileUpload( sResourceType, sCurrentFolder ) ;
 				return ;
 			}
 
@@ -86,14 +90,14 @@ namespace Rainbow.FCKeditorV2
 			switch( sCommand )
 			{
 				case "GetFolders" :
-					this.GetFolders( oConnectorNode, sResourceType, sCurrentFolder ) ;
+					GetFolders( oConnectorNode, sResourceType, sCurrentFolder ) ;
 					break ;
 				case "GetFoldersAndFiles" :
-					this.GetFolders( oConnectorNode, sResourceType, sCurrentFolder ) ;
-					this.GetFiles( oConnectorNode, sResourceType, sCurrentFolder ) ;
+					GetFolders( oConnectorNode, sResourceType, sCurrentFolder ) ;
+					GetFiles( oConnectorNode, sResourceType, sCurrentFolder ) ;
 					break ;
 				case "CreateFolder" :
-					this.CreateFolder( oConnectorNode, sResourceType, sCurrentFolder ) ;
+					CreateFolder( oConnectorNode, sResourceType, sCurrentFolder ) ;
 					break ;
 			}
 
@@ -144,7 +148,7 @@ namespace Rainbow.FCKeditorV2
 		private void GetFolders( XmlNode connectorNode, string resourceType, string currentFolder )
 		{
 			// Map the virtual path to the local server path.
-			string sServerDir = this.ServerMapFolder( resourceType, currentFolder ) ;
+			string sServerDir = ServerMapFolder( resourceType, currentFolder ) ;
 
 			// Create the "Folders" node.
 			XmlNode oFoldersNode = XmlUtil.AppendElement( connectorNode, "Folders" ) ;
@@ -169,7 +173,7 @@ namespace Rainbow.FCKeditorV2
 		private void GetFiles( XmlNode connectorNode, string resourceType, string currentFolder )
 		{
 			// Map the virtual path to the local server path.
-			string sServerDir = this.ServerMapFolder( resourceType, currentFolder ) ;
+			string sServerDir = ServerMapFolder( resourceType, currentFolder ) ;
 
 			// Create the "Files" node.
 			XmlNode oFilesNode = XmlUtil.AppendElement( connectorNode, "Files" ) ;
@@ -206,7 +210,7 @@ namespace Rainbow.FCKeditorV2
 			else
 			{
 				// Map the virtual path to the local server path of the current folder.
-				string sServerDir = this.ServerMapFolder( resourceType, currentFolder ) ;
+				string sServerDir = ServerMapFolder( resourceType, currentFolder ) ;
 
 				try
 				{
@@ -254,7 +258,7 @@ namespace Rainbow.FCKeditorV2
 			if ( oFile != null )
 			{
 				// Map the virtual path to the local server path.
-				string sServerDir = this.ServerMapFolder( resourceType, currentFolder ) ;
+				string sServerDir = ServerMapFolder( resourceType, currentFolder ) ;
 
 				// Get the uploaded file name.
 				sFileName = System.IO.Path.GetFileName( oFile.FileName ) ;
@@ -307,25 +311,29 @@ namespace Rainbow.FCKeditorV2
 		private string ServerMapFolder( string resourceType, string folderPath )
 		{
 			// Ensure that the directory exists.
-			Directory.CreateDirectory( this.UserFilesDirectory ) ;
+			Directory.CreateDirectory( UserFilesDirectory ) ;
 
 			// Return the resource type directory combined with the required path.
-			return System.IO.Path.Combine( this.UserFilesDirectory, folderPath.TrimStart('/') ) ;
+			return System.IO.Path.Combine( UserFilesDirectory, folderPath.TrimStart('/') ) ;
 		}
 
-		/// <summary>
-		/// Gets the URL from path.
-		/// </summary>
-		/// <param name="resourceType">Type of the resource.</param>
-		/// <param name="folderPath">The folder path.</param>
-		/// <returns></returns>
-		private string GetUrlFromPath( string resourceType, string folderPath )
-		{
-			if ( resourceType == null || resourceType.Length == 0 )
-				return this.UserFilesPath.TrimEnd('/') + folderPath ;
-			else
-				return this.UserFilesPath + folderPath ;
-		}
+	    /// <summary>
+	    /// Gets the URL from path.
+	    /// </summary>
+	    /// <param name="resourceType">Type of the resource.</param>
+	    /// <param name="folderPath">The folder path.</param>
+	    /// <returns></returns>
+	    string GetUrlFromPath(string resourceType, string folderPath)
+	    {
+	        if (resourceType == null || resourceType.Length == 0)
+	        {
+	            return UserFilesPath.TrimEnd('/') + folderPath;
+	        }
+	        else
+	        {
+	            return UserFilesPath + folderPath;
+	        }
+	    }
 
 		/// <summary>
 		/// Gets the user files path.
@@ -337,40 +345,40 @@ namespace Rainbow.FCKeditorV2
 			{
 				if ( sUserFilesPath == null )
 				{
-					PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-					if (portalSettings == null) return null;
-					Hashtable ms = ModuleSettings.GetModuleSettings(portalSettings.ActiveModule);
+					Portal localPOrtalSettings = PortalProvider.Instance.CurrentPortal;
+					if (localPOrtalSettings == null) return null;
+					Hashtable ms = ModuleSettingsProvider.GetModuleSettings(localPOrtalSettings.ActiveModule);
 					string DefaultImageFolder = "default";
 					if (ms["MODULE_IMAGE_FOLDER"] != null) 
 					{
 						DefaultImageFolder = ms["MODULE_IMAGE_FOLDER"].ToString();
 					}
-					else if (portalSettings.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"] != null) 
+					else if (localPOrtalSettings.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"] != null) 
 					{
-						DefaultImageFolder = portalSettings.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"].ToString();
+						DefaultImageFolder = localPOrtalSettings.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"].ToString();
 					}
-					sUserFilesPath = Path.WebPathCombine(Path.ApplicationRoot, portalSettings.PortalPath, "images", DefaultImageFolder);
+					sUserFilesPath = Path.WebPathCombine(Path.ApplicationRoot, localPOrtalSettings.PortalPath, "images", DefaultImageFolder);
 				}
 				return sUserFilesPath ;
 			}
 		}
 
-		/// <summary>
-		/// Gets the user files directory.
-		/// </summary>
-		/// <value>The user files directory.</value>
-		private string UserFilesDirectory
-		{
-			get	
-			{
-				if ( sUserFilesDirectory == null )
-				{
-					// Get the local (server) directory path translation.
-					sUserFilesDirectory = Server.MapPath( this.UserFilesPath ) ;
-				}
-				return sUserFilesDirectory ;
-			}
-		}
+	    /// <summary>
+	    /// Gets the user files directory.
+	    /// </summary>
+	    /// <value>The user files directory.</value>
+	    string UserFilesDirectory
+	    {
+	        get
+	        {
+	            if (sUserFilesDirectory == null)
+	            {
+	                // Get the local (server) directory path translation.
+	                sUserFilesDirectory = Server.MapPath(UserFilesPath);
+	            }
+	            return sUserFilesDirectory;
+	        }
+	    }
 
 		#endregion
 	}

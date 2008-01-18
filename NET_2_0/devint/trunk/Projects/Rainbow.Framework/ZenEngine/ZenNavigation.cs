@@ -8,9 +8,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.Xsl;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Site.Configuration;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -20,12 +20,10 @@ namespace Rainbow.Framework.Web.UI.WebControls
     public class ZenNavigation : WebControl //, INavigation
     {
         /// <summary>
-        /// 
         /// </summary>
-        protected PortalSettings portalSettings;
+        protected Portal portalSettings;
 
         /// <summary>
-        /// 
         /// </summary>
         protected XmlDocument PortalPagesXml;
 
@@ -35,7 +33,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         public ZenNavigation()
         {
             EnableViewState = false;
-            Load += new EventHandler(LoadControl);
+            Load += LoadControl;
         }
 
         private string _containerCssClass = string.Empty;
@@ -113,7 +111,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private void LoadControl(object sender, EventArgs e)
         {
             // Obtain PortalSettings from Current Context
-            portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
 
             PortalPagesXml = portalSettings.PortalPagesXml;
 
@@ -170,7 +168,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         /// <param name="targetPage">The target page.</param>
         /// <returns></returns>
-        private string CleanPageName(string targetPage)
+        string CleanPageName(string targetPage)
         {
             string splitter = ConfigurationManager.AppSettings["HandlerDefaultSplitter"];
             if (splitter == string.Empty || splitter == null)

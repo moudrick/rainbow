@@ -8,14 +8,12 @@ using System.Web.Caching;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
-using Rainbow.Framework;using Rainbow.Framework.Site.Data;
+using Rainbow.Framework;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Settings.Cache;
 using Label = System.Web.UI.WebControls.Label;
 using Page = Rainbow.Framework.Web.UI.Page;
-using Path = Rainbow.Framework.Settings.Path;
-using Utils = Rainbow.Framework.Helpers.Utilities;
+using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Error
 {
@@ -24,6 +22,19 @@ namespace Rainbow.Error
     /// </summary>
 	public class SmartError : Page
 	{
+        /// <summary>
+        /// Determines whether the specified STR is integer.
+        /// </summary>
+        /// <param name="str">The STR.</param>
+        /// <returns>
+        /// 	<c>true</c> if the specified STR is integer; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsInteger(string str)
+        {
+            int aux;
+            return int.TryParse(str, out aux);
+        }
+
 		protected PlaceHolder PageContent;
 
 		protected Label Label1;
@@ -31,8 +42,8 @@ namespace Rainbow.Error
 		protected Label Label3;
 		//protected Esperantus.WebControls.HyperLink ReturnHome;
 
-		protected System.Web.UI.WebControls.Label myTest;
-		protected System.Web.UI.WebControls.Label myTest2;
+		protected Label myTest;
+		protected Label myTest2;
 
 		protected const int _LOGLEVEL_ = 0;
 		protected const int _GUID_ = 1;
@@ -58,13 +69,15 @@ namespace Rainbow.Error
 			base.OnLoad (e);
 
 			// load the dedicated CSS
-			if ( !this.IsCssFileRegistered("SmartError") )
-				this.RegisterCssFile("Mod_SmartError");
+		    if (!IsCssFileRegistered("SmartError"))
+		    {
+		        RegisterCssFile("Mod_SmartError");
+            }
 
 			ArrayList storedError = null;
 			StringBuilder sb = new StringBuilder(); // to build response text
-			int _httpStatusCode = (int)HttpStatusCode.InternalServerError; // default value
-			string _renderedEvent = string.Empty;
+			int httpStatusCode = (int)HttpStatusCode.InternalServerError; // default value
+			string renderedEvent;
 			string validStatus = "301;307;403;404;410;500;501;502;503;504";
 
 			if ( Request.QueryString[0] != null )
@@ -72,36 +85,43 @@ namespace Rainbow.Error
 				// is this a "MagicUrl" request
 				if ( Request.QueryString[0].StartsWith("404;http://") )
 				{
-					Hashtable magicUrlList = null;
+					Hashtable magicUrlList;
 					string redirectUrl = string.Empty;
-					string qPart = string.Empty;
-					int qPartPos = Request.QueryString[0].LastIndexOf("/") + 1 ;
-					qPart = qPartPos < Request.QueryString[0].Length ? Request.QueryString[0].Substring(qPartPos) : string.Empty;
-					if ( qPart.Length > 0 )
-					{
-						if ( Utils.IsInteger(qPart) )
-							redirectUrl = HttpUrlBuilder.BuildUrl(Int32.Parse(qPart));
-						else 
-						{
-							magicUrlList = GetMagicUrlList(Portal.UniqueID);
-							if ( magicUrlList != null && magicUrlList.ContainsKey(HttpUtility.HtmlEncode(qPart)) )
-							{
-								redirectUrl = HttpUtility.HtmlDecode(magicUrlList[HttpUtility.HtmlEncode(qPart)].ToString());
-								if ( Utils.IsInteger(redirectUrl) )
-									redirectUrl = HttpUrlBuilder.BuildUrl(Int32.Parse(redirectUrl));
-							}
-						}
-						if ( redirectUrl.Length != 0 )
-							Response.Redirect(redirectUrl, true);
-						else
-							_httpStatusCode = (int)HttpStatusCode.NotFound;
-					}
+				    int qPartPos = Request.QueryString[0].LastIndexOf("/") + 1 ;
+					string qPart = qPartPos < Request.QueryString[0].Length ? Request.QueryString[0].Substring(qPartPos) : string.Empty;
+				    if (qPart.Length > 0)
+				    {
+				        if (IsInteger(qPart))
+				        {
+				            redirectUrl = HttpUrlBuilder.BuildUrl(Int32.Parse(qPart));
+				        }
+				        else
+				        {
+				            magicUrlList = GetMagicUrlList(RainbowContext.Current.UniqueID);
+				            if (magicUrlList != null && magicUrlList.ContainsKey(HttpUtility.HtmlEncode(qPart)))
+				            {
+				                redirectUrl = HttpUtility.HtmlDecode(magicUrlList[HttpUtility.HtmlEncode(qPart)].ToString());
+				                if (IsInteger(redirectUrl))
+				                {
+				                    redirectUrl = HttpUrlBuilder.BuildUrl(Int32.Parse(redirectUrl));
+				                }
+				            }
+				        }
+				        if (redirectUrl.Length != 0)
+				        {
+				            Response.Redirect(redirectUrl, true);
+				        }
+				        else
+				        {
+				            httpStatusCode = (int) HttpStatusCode.NotFound;
+				        }
+				    }
 
 				}
 				// get status code from querystring
-				else if ( Utils.IsInteger(Request.QueryString[0]) && validStatus.IndexOf(Request.QueryString[0]) > -1 )
+				else if ( IsInteger(Request.QueryString[0]) && validStatus.IndexOf(Request.QueryString[0]) > -1 )
 				{
-					_httpStatusCode = int.Parse(Request.QueryString[0]);
+					httpStatusCode = int.Parse(Request.QueryString[0]);
 				}
 			}
 
@@ -111,9 +131,9 @@ namespace Rainbow.Error
 				storedError = (ArrayList)CurrentCache.Get(Request.QueryString["eid"]);
 			}
 			if ( storedError != null && storedError[_RENDEREDEVENT_] != null )
-				_renderedEvent = storedError[_RENDEREDEVENT_].ToString();
+				renderedEvent = storedError[_RENDEREDEVENT_].ToString();
 			else
-				_renderedEvent = @"<p>No exception event stored or cache has expired.</p>";
+				renderedEvent = @"<p>No exception event stored or cache has expired.</p>";
 
 
 			// get home link
@@ -122,7 +142,7 @@ namespace Rainbow.Error
 			// try localizing message
 			try
 			{
-				switch ( _httpStatusCode )
+				switch ( httpStatusCode )
 				{
 					case (int)HttpStatusCode.NotFound : // 404
 					case (int)HttpStatusCode.Gone : // 410
@@ -144,7 +164,7 @@ namespace Rainbow.Error
 			}
 			catch // default to english message
 			{
-				switch ( _httpStatusCode )
+				switch ( httpStatusCode )
 				{
 					case (int)HttpStatusCode.NotFound :
 						sb.Append("<h3>Page Not Found</h3>");
@@ -183,57 +203,52 @@ namespace Rainbow.Error
 					if ( ipList.CheckNumber(Request.UserHostAddress) )
 					{
 						// we can show error details
-						sb.AppendFormat("<h3>{0} - {1}</h3>",General.GetString("SMARTERROR_SUPPORTDETAILS_HEADING","Support Details", null), _httpStatusCode.ToString());
-						sb.Append(_renderedEvent);
+						sb.AppendFormat("<h3>{0} - {1}</h3>",General.GetString("SMARTERROR_SUPPORTDETAILS_HEADING","Support Details", null), httpStatusCode);
+						sb.Append(renderedEvent);
 					}
 				}
 				catch
 				{
-					// if there was a problem, let's assume that user is not authorised
+                    ;// if there was a problem, let's assume that user is not authorised
 				}
 			}
 			PageContent.Controls.Add(new LiteralControl(sb.ToString()));
-			Response.StatusCode = _httpStatusCode;
+			Response.StatusCode = httpStatusCode;
 			Response.Cache.SetCacheability(HttpCacheability.NoCache);
 		}
 
-		/// <summary>
-		/// Gets the magic URL list.
-		/// </summary>
-		/// <param name="portalID">The portal ID.</param>
-		/// <returns></returns>
-		private Hashtable GetMagicUrlList(string portalID)
-		{
-			Hashtable _result = new Hashtable();
-
-			if ( Cache["rainbow_MagicUrlList_" + Portal.UniqueID] == null )
-			{
-				string myPath = Server.MapPath(Path.WebPathCombine(portalSettings.PortalFullPath, "MagicUrl/MagicUrlList.xml"));
-				if ( File.Exists(myPath) )
-				{
-					XmlDocument xmlDoc = new XmlDocument();
-					xmlDoc.Load(myPath);
-					XmlNodeList xnl = xmlDoc.SelectNodes("/MagicUrlList/MagicUrl");
-					foreach ( XmlNode node in xnl )
-					{
-						try
-						{
-							_result.Add(node.Attributes["key"].Value, HttpUtility.HtmlDecode(node.Attributes["value"].Value));
-						}
-						catch
-						{}
-					}
-					Cache.Insert("rainbow_MagicUrlList_" + Portal.UniqueID, _result, new CacheDependency(myPath));
-				}
-			}
-			else
-			{
-				_result = (Hashtable) Cache["rainbow_MagicUrlList_" + Portal.UniqueID];
-			}
-
-			return _result;
-		}
-
+        Hashtable GetMagicUrlList(string portalID)
+        {
+            Hashtable result = new Hashtable();
+            if (Cache["rainbow_MagicUrlList_" + portalID] == null)
+            {
+                string myPath =
+                    Server.MapPath(Path.WebPathCombine(portalSettings.PortalFullPath, "MagicUrl/MagicUrlList.xml"));
+                if (File.Exists(myPath))
+                {
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.Load(myPath);
+                    XmlNodeList xnl = xmlDoc.SelectNodes("/MagicUrlList/MagicUrl");
+                    foreach (XmlNode node in xnl)
+                    {
+                        try
+                        {
+                            result.Add(node.Attributes["key"].Value,
+                                       HttpUtility.HtmlDecode(node.Attributes["value"].Value));
+                        }
+                        catch {;}
+                    }
+                    Cache.Insert("rainbow_MagicUrlList_" + RainbowContext.Current.UniqueID,
+                                 result,
+                                 new CacheDependency(myPath));
+                }
+            }
+            else
+            {
+                result = (Hashtable) Cache["rainbow_MagicUrlList_" + RainbowContext.Current.UniqueID];
+            }
+            return result;
+        }
        
 		#region Web Form Designer generated code
         /// <summary>

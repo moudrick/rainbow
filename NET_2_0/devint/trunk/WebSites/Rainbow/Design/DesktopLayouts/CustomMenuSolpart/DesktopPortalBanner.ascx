@@ -1,15 +1,20 @@
+<%@ Import namespace="Rainbow.Framework.Providers"%>
 <%@ Control Language="c#" %>
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Core" %>
+
+<%@ Import namespace="Rainbow.Framework.BusinessObjects"%>
+<%@ Import namespace="Rainbow.Framework.Security"%>
 <%@ Import Namespace="Rainbow.Framework.Design" %>
 <script runat="server" language="C#">
     public Hashtable userProfile;
     private void Page_Load( object sender, System.EventArgs e ) {
-        PortalSettings portalSettings = ( PortalSettings )HttpContext.Current.Items["PortalSettings"];
+        Portal portalSettings = PortalProvider.Instance.CurrentPortal;
 
         // Obtain the Profile details for the current user
 
         // TODO Ver esto
         /*         
-        userProfile = PortalSettings.GetCurrentUserProfile(portalSettings.PortalID);
+        userProfile = portalSettings.GetCurrentUserProfile(portalSettings.PortalID);
 
           PortalHeaderMenu.DataBind();
           PortalImage.DataBind();
@@ -54,7 +59,7 @@
                             </tr>
                             <tr>
                                 <td align="right" class="headerUserInfo" nowrap="nowrap">
-                                    <%=PortalSettings.CurrentUser.Identity.UserName%>
+                                    <%=RainbowPrincipal.CurrentUser.Identity.UserName%>
                                     <br />
                                     <%=userProfile["Title"]%>
                                 </td>

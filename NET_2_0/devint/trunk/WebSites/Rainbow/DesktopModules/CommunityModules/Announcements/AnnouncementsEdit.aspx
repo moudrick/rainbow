@@ -4,7 +4,7 @@
 
 <%@ page autoeventwireup="false" codefile="AnnouncementsEdit.aspx.cs" inherits="Rainbow.Content.Web.Modules.AnnouncementsEdit"
     language="c#" %>
-
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Web.UI.WebControls" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server"><title></title>

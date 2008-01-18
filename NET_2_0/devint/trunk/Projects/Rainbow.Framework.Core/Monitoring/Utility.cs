@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
-using Rainbow.Framework.Settings;
 using System.Web.Security;
 
 namespace Rainbow.Framework.Monitoring
@@ -45,7 +45,7 @@ namespace Rainbow.Framework.Monitoring
             // TODO: THis should not display, login, logout, or administrator hits.
             string sql = "Select count(ID) as hits " +
                          " from rb_monitoring " +
-                         " where [PortalID] = " + portalID.ToString() + " ";
+                         " where [PortalID] = " + portalID + " ";
 
             return Convert.ToInt32(DBHelper.ExecuteSQLScalar(sql));
         }
@@ -205,7 +205,7 @@ namespace Rainbow.Framework.Monitoring
             endDate = endDate.AddDays(1);
 
             // Firstly get the logged in users
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlDataAdapter myCommand = new SqlDataAdapter("rb_GetMonitoringEntries", myConnection);
             myCommand.SelectCommand.CommandType = CommandType.StoredProcedure;
 

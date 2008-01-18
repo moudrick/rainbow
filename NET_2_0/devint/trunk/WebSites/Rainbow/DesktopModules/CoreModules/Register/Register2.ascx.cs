@@ -1,13 +1,10 @@
 using System;
 using System.Data;
-using System.Configuration;
-using System.Collections;
 using System.Web;
-using System.Web.Security;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Data;
@@ -15,9 +12,6 @@ using Rainbow.Framework;
 using Rainbow.Framework.Users.Data;
 using System.Text;
 using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Providers.RainbowMembershipProvider;
 
 namespace Rainbow.Content.Web.Modules {
 
@@ -133,7 +127,7 @@ namespace Rainbow.Content.Web.Modules {
         private void BindState() {
             StateRow.Visible = false;
             if ( CountryField.SelectedItem != null ) {
-                string currentCountry = CountryField.SelectedItem.Value.ToString();
+                string currentCountry = CountryField.SelectedItem.Value;
                 //added next line to clear the list. 
                 //The stateField seems to remember it's values even when you set the 
                 //DataSource to null
@@ -181,7 +175,7 @@ namespace Rainbow.Content.Web.Modules {
                     if ( userName == string.Empty ) {
                         // Add New User to Portal User Database
                         returnID =
-                            accountSystem.AddUser( NameField.Text, CompanyField.Text,
+                            accountSystem.AddUser(PortalProvider.Instance.CurrentPortal.PortalAlias, NameField.Text, CompanyField.Text,
                                                   AddressField.Text, CityField.Text, ZipField.Text, CountryID, StateID,
                                                   PhoneField.Text, FaxField.Text,
                                                   PasswordField.Text, EmailField.Text, SendNewsletter.Checked );
@@ -218,7 +212,7 @@ namespace Rainbow.Content.Web.Modules {
 
             sb.Append( "New User Registration\n" );
             sb.Append( "---------------------\n" );
-            sb.Append( "PORTAL         : " + portalSettings.PortalTitle + "\n" );
+            sb.Append( "PORTAL         : " + PortalSettings.PortalTitle + "\n" );
             sb.Append( "Name           : " + NameField.Text + "\n" );
             sb.Append( "Company        : " + CompanyField.Text + "\n" );
             sb.Append( "Address        : " + AddressField.Text + "\n" );
@@ -230,12 +224,12 @@ namespace Rainbow.Content.Web.Modules {
             sb.Append( "                 " + PhoneField.Text + "\n" );
             sb.Append( "Fax            : " + FaxField.Text + "\n" );
             sb.Append( "Email          : " + EmailField.Text + "\n" );
-            sb.Append( "Send Newsletter: " + SendNewsletter.Checked.ToString() + "\n" );
+            sb.Append( "Send Newsletter: " + SendNewsletter.Checked + "\n" );
 
             MailHelper.SendMailNoAttachment(
-                portalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
-                portalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
-                "New User Registration for " + portalSettings.PortalAlias,
+                PortalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
+                PortalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString(),
+                "New User Registration for " + PortalSettings.PortalAlias,
                 sb.ToString(),
                 string.Empty,
                 string.Empty,
@@ -255,7 +249,7 @@ namespace Rainbow.Content.Web.Modules {
             Guid returnID = SaveUserData();
 
             if ( returnID != Guid.Empty ) {
-                if ( portalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString().Length > 0 )
+                if ( PortalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString().Length > 0 )
                     SendRegistrationNoticeToAdmin();
                 //Full signon
                 PortalSecurity.SignOn( EmailField.Text, PasswordField.Text, false, RedirectPage );
@@ -314,7 +308,7 @@ namespace Rainbow.Content.Web.Modules {
                 if ( EditMode ) // Someone requested edit this record
                 {
                     //True is use is editing himself, false if is edited by an admin
-                    selfEdit = ( userName == PortalSettings.CurrentUser.Identity.Email );
+                    selfEdit = ( userName == RainbowPrincipal.CurrentUser.Identity.Email );
 
                     // Removed by Mario Endara <mario@softworks.com.uy> (2004/11/04)
                     //					if (PortalSecurity.IsInRoles("Admins") || selfEdit)
@@ -359,7 +353,7 @@ namespace Rainbow.Content.Web.Modules {
                             //stores original password for later check
                             // originalPassword = memberUser.GetPassword();  NOT STILL SUPPORTED
                         }
-                        catch ( System.ArgumentNullException error ) {
+                        catch ( ArgumentNullException ) {
                             // no  existe el usuario;
                         }
                     }
@@ -379,7 +373,7 @@ namespace Rainbow.Content.Web.Modules {
                     RegisterBtn.Visible = true;
                 }
 
-                string termsOfService = portalSettings.GetTermsOfService;
+                string termsOfService = PortalSettings.GetTermsOfService;
 
                 //Verify if we have to show conditions
                 if ( termsOfService.Length != 0 ) {

@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using System.Web;
-using Rainbow.Framework;using Rainbow.Framework.Site.Data;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 
@@ -12,17 +10,18 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.upload.aspx
 	/// <summary>
 	/// upload files to server.
 	/// </summary>
-	[Rainbow.Framework.History("jviladiu@portalservices.net", "2004/06/09", "First Implementation FCKEditor in Rainbow")]
+	[Framework.History("jviladiu@portalservices.net", "2004/06/09", "First Implementation FCKEditor in Rainbow")]
 	public partial class upload : EditItemPage 
 	{
-
 		/// <summary>
 		/// Load settings
 		/// </summary>
 		protected override void LoadSettings()
 		{
-			if (PortalSecurity.HasEditPermissions(this.portalSettings.ActiveModule) == false)
-				PortalSecurity.AccessDeniedEdit();
+		    if (PortalSecurity.HasEditPermissions(portalSettings.ActiveModule) == false)
+		    {
+		        PortalSecurity.AccessDeniedEdit();
+		    }
 		}
 
 		/// <summary>
@@ -37,7 +36,7 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.upload.aspx
 				HttpPostedFile oFile = Request.Files.Get("FCKeditor_File") ;
 	
 				string fileName = oFile.FileName.Substring(oFile.FileName.LastIndexOf("\\") + 1);
-				Hashtable ms = ModuleSettings.GetModuleSettings(portalSettings.ActiveModule);
+				Hashtable ms = ModuleSettingsProvider.GetModuleSettings(portalSettings.ActiveModule);
 				string DefaultImageFolder = "default";
 				if (ms["MODULE_IMAGE_FOLDER"] != null) 
 				{
@@ -65,15 +64,15 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.upload.aspx
 			InitializeComponent();
 			base.OnInit(e);
 		}
-		
-		/// <summary>
-		/// Método necesario para admitir el Diseñador. No se puede modificar
-		/// el contenido del método con el editor de código.
-		/// </summary>
-		private void InitializeComponent()
-		{    
-			this.Load += new EventHandler(this.Page_Load);
-		}
+
+	    /// <summary>
+	    /// Método necesario para admitir el Diseñador. No se puede modificar
+	    /// el contenido del método con el editor de código.
+	    /// </summary>
+	    void InitializeComponent()
+	    {
+	        Load += this.Page_Load;
+	    }
 		#endregion
 	}
 }

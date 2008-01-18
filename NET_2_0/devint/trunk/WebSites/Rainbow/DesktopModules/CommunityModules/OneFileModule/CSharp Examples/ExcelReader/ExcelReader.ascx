@@ -1,5 +1,7 @@
+<%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
+<%@ Import namespace="Rainbow.Framework.Providers"%>
 <%@ control inherits="Rainbow.Content.Web.Modules.OneFileModule" language="c#" %>
-<%@ register assembly="Rainbow.Framework" namespace="Rainbow.Framework.Web.UI.WebControls"
+<%@ register assembly="Rainbow.Framework.Web" namespace="Rainbow.Framework.Web.UI.WebControls"
     tagprefix="rbfwebui" %>
 
 <script runat="server" language="C#">
@@ -16,8 +18,8 @@
                 // Settings are : ExcelFile + RangeName
 
                 // pick the Excel file from settings adding the path from the portal Data directory
-                Rainbow.Framework.DataTypes.PortalUrlDataType pt;
-                pt = new Rainbow.Framework.DataTypes.PortalUrlDataType();
+                Rainbow.Framework.DataTypes.PortalUrl pt;
+                pt = PortalProvider.Instance.CurrentPortal.PortalUrl;
                 pt.Value = GetSetting("ExcelFile");
                 String sExcelFile = Server.MapPath("~/DeskTopModules/" + pt.Value);
 
@@ -53,7 +55,7 @@
 
         catch (Exception ex)
         {
-            Response.Write("Problem in ExcelReader. Message:" + ex.ToString());
+            Response.Write("Problem in ExcelReader. Message:" + ex);
         }
     }
 

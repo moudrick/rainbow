@@ -5,7 +5,6 @@ using System.IO;
 using Rainbow.Framework;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -40,7 +39,7 @@ namespace Rainbow.Framework.Content.Data
         public DataSet GetDocuments(int moduleID, WorkFlowVersion version, int userId) 
         {
             // Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlDataAdapter myCommand = new SqlDataAdapter("rb_GetSecureDocuments", myConnection);
 
 			// Mark the Command as a SPROC
@@ -101,7 +100,7 @@ namespace Rainbow.Framework.Content.Data
 		public static SqlDataReader GetDocumentFiles(int documentId, WorkFlowVersion version) 
 		{
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_GetSecureDocumentFiles", myConnection);
 
 			// Mark the Command as a SPROC
@@ -137,7 +136,7 @@ namespace Rainbow.Framework.Content.Data
 				return string.Empty;
 
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_GetSingleSecureDocumentRoles", myConnection);
 
 			// Mark the Command as a SPROC
@@ -198,7 +197,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSingleDocument(int itemID, WorkFlowVersion version) 
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSingleSecureDocument", myConnection);
 
             // Mark the Command as a SPROC
@@ -243,7 +242,7 @@ namespace Rainbow.Framework.Content.Data
 		public SqlDataReader GetDocumentContent(int itemID, WorkFlowVersion version) 
 		{
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSecureDocumentContent", myConnection);
 
             // Mark the Command as a SPROC
@@ -278,7 +277,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteDocument(int itemID, string fileName)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
 
             // Delete from DB
             SqlCommand myCommand = new SqlCommand("rb_DeleteSecureDocument", myConnection);
@@ -333,7 +332,7 @@ namespace Rainbow.Framework.Content.Data
 				userName = "unknown";
             }
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateSecureDocument", myConnection);
 
             // Mark the Command as a SPROC
@@ -395,7 +394,7 @@ namespace Rainbow.Framework.Content.Data
 				return;
 
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_UpdateSecureDocumentFile", myConnection);
 
 			// Mark the Command as a SPROC
@@ -457,7 +456,7 @@ namespace Rainbow.Framework.Content.Data
 				return;
 
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_AddSecureDocumentAccess", myConnection);
 
 			// Mark the Command as a SPROC
@@ -494,7 +493,7 @@ namespace Rainbow.Framework.Content.Data
 				return;
 
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_DeleteSecureDocumentAccess", myConnection);
 
 			// Mark the Command as a SPROC
@@ -527,7 +526,7 @@ namespace Rainbow.Framework.Content.Data
 				return;
 
 			// Create Instance of Connection and Command Object
-			SqlConnection myConnection = Config.SqlConnectionString;
+			SqlConnection myConnection = DBHelper.SqlConnection;
 			SqlCommand myCommand = new SqlCommand("rb_DeleteSecureDocumentFile", myConnection);
 
 			// Mark the Command as a SPROC

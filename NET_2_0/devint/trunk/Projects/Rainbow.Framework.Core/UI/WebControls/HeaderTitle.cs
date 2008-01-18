@@ -1,9 +1,11 @@
 using System.Web;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    ///<summary>
+    ///</summary>
     public class HeaderTitle : Label
     {
         /// <summary>
@@ -11,15 +13,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         override public void DataBind()
         {
-            if(HttpContext.Current != null)
+            if (HttpContext.Current != null)
             {
-                // Obtain PortalSettings from Current Context
-            	PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-
                 // Dynamically Populate the Portal Site Name
-                this.Text = portalSettings.PortalName;
+                Text = PortalProvider.Instance.CurrentPortal.PortalName;
             }
-
             base.DataBind();
         }
     }

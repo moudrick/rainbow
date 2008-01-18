@@ -1,6 +1,6 @@
 using System.Web;
 using FredCK.FCKeditorV2;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.BusinessObjects;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -32,7 +32,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 if (_imageFolder == string.Empty)
                 {
-                    PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                    Portal pS = (Portal) HttpContext.Current.Items["PortalSettings"];
                     if (pS.CustomSettings != null)
                     {
                         if (pS.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"] != null)

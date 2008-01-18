@@ -4,6 +4,8 @@
 <%@ register src="~/Design/DesktopLayouts/DesktopFooter.ascx" tagname="Footer" tagprefix="foot" %>
 <%@ register src="~/Design/DesktopLayouts/DesktopPortalBanner.ascx" tagname="Banner"
     tagprefix="portal" %>
+    
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Web.UI.WebControls" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
@@ -22,7 +24,7 @@
                             <rbfwebui:localize id="SyndicationLabel" runat="server" text="Syndication" textkey="BLOG_SYNDICATION">
                             </rbfwebui:localize></b><br />
                         <a id="lnkRSS" runat="server" href="/DesktopModules/Blog/rss.aspx">
-                            <img id="imgRSS" runat="server" alt="xml" src="/rainbow/DesktopModules/Blog/xml.gif"
+                            <img id="imgRSS" runat="server" alt="xml" src="/DesktopModules/Blog/xml.gif"
                                 style="border: none 0 #000" /></a>
                         <br />
                         <br />
@@ -82,7 +84,7 @@
                                     <div class="BlogTitle">
                                         <rbfwebui:imagebutton id="btnDelete" runat="server" commandargument='<%# DataBinder.Eval(Container.DataItem,"BlogCommentID")%>'
                                             commandname="DeleteComment" imageurl='<%# CurrentTheme.GetImage("Buttons_Delete", "Delete.gif").ImageUrl %>'
-                                            text="Delete" textkey="DELETE" visible="<% # IsDeleteable %>" />
+                                            Text="Delete" textkey="DELETE" visible="<% # IsDeleteable %>" />
                                         <%# DataBinder.Eval(Container.DataItem,"Title") %>
                                         &#160;
                                     </div>

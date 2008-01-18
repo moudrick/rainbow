@@ -1,6 +1,6 @@
 using System;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
 
@@ -16,8 +16,7 @@ namespace Rainbow.Content.Web.Modules
         /// <summary>
         /// Initializes a new instance of the <see cref="WeatherUS"/> class.
         /// </summary>
-        [
-            History("mario@hartmann.net", "2003/06/11",
+        [History("mario@hartmann.net", "2003/06/11",
                 "changed DataType of setZip to StringdataType to enable leading zeros in zip.")]
         public WeatherUS()
         {
@@ -27,13 +26,13 @@ namespace Rainbow.Content.Web.Modules
             setZip.Required = true;
             setZip.Value = "10001";
             setZip.Order = 1;
-            _baseSettings.Add("Zip", setZip);
+            baseSettings.Add("Zip", setZip);
 
             SettingItem setOption = new SettingItem(new StringDataType());
             setOption.Required = true;
             setOption.Value = "0";
             setOption.Order = 2;
-            _baseSettings.Add("Option", setOption);
+            baseSettings.Add("Option", setOption);
         }
 
         /// <summary>

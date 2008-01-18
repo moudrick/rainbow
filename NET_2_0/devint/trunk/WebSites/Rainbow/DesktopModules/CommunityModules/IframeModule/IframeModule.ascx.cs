@@ -1,7 +1,7 @@
 using System;
 using System.Text;
-using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -70,7 +70,7 @@ namespace Rainbow.Content.Web.Modules
             url.Group = group;
             url.Order = groupBase + 20; //1;
             url.Value = "http://www.rainbowportal.net";
-            _baseSettings.Add("URL", url);
+            baseSettings.Add("URL", url);
 
             //MH: added to support width values
             SettingItem width = new SettingItem(new StringDataType());
@@ -80,7 +80,7 @@ namespace Rainbow.Content.Web.Modules
             width.Value = "250";
             //width.MinValue = 1;
             //width.MaxValue = 2000;
-            _baseSettings.Add("Width", width);
+            baseSettings.Add("Width", width);
 
             //MH: changed to StringDataType to support  percent or pixel values
             //SettingItem width = new SettingItem(new IntegerDataType());
@@ -91,7 +91,7 @@ namespace Rainbow.Content.Web.Modules
             height.Value = "250";
             //height.MinValue = 1;
             //height.MaxValue = 2000;
-            _baseSettings.Add("Height", height);
+            baseSettings.Add("Height", height);
         }
 
         #region Web Form Designer generated code

@@ -15,16 +15,17 @@ using System;
 using System.Drawing;
 using System.IO;
 using Osmosis.Web.UI;
-using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
     /// <summary>
-    /// 
     /// </summary>
     [History("mario@hartmann.net", "2004/08/24", "Bug fixed: Unexisting flash movie freezes IE")]
     [History("mario@hartmann.net", "2004/06/04", "Changed Flash movie control]")]
@@ -46,35 +47,37 @@ namespace Rainbow.Content.Web.Modules
             src.Required = true;
             src.Group = group;
             src.Order = groupBase + 20; //1;
-            _baseSettings.Add("src", src);
+            baseSettings.Add("src", src);
 
             SettingItem width = new SettingItem(new StringDataType());
             //	width.MinValue = 1;
             //	width.MaxValue = 400;
             width.Group = group;
             width.Order = groupBase + 25; //2;
-            _baseSettings.Add("width", width);
+            baseSettings.Add("width", width);
 
             SettingItem height = new SettingItem(new StringDataType());
             //	height.MinValue = 1;
             //	height.MaxValue = 200;
             height.Group = group;
             height.Order = groupBase + 30; //3;
-            _baseSettings.Add("height", height);
+            baseSettings.Add("height", height);
 
             SettingItem backColor = new SettingItem(new StringDataType());
             backColor.Required = false;
             backColor.Value = "#FFFFFF";
             backColor.Group = group;
             backColor.Order = groupBase + 35; //4;
-            _baseSettings.Add("backcolor", backColor);
+            baseSettings.Add("backcolor", backColor);
 
-            SettingItem FlashPath = new SettingItem(new PortalUrlDataType());
-            FlashPath.Required = true;
-            FlashPath.Value = "FlashGallery";
-            FlashPath.Group = group;
-            FlashPath.Order = groupBase + 40; //5;
-            _baseSettings.Add("FlashPath", FlashPath);
+            Portal currentPortal = PortalProvider.Instance.CurrentPortal;
+            PortalUrl portalUrl = currentPortal != null ? currentPortal.PortalUrl : new PortalUrl(string.Empty);
+            SettingItem flashPath = new SettingItem(portalUrl);
+            flashPath.Required = true;
+            flashPath.Value = "FlashGallery";
+            flashPath.Group = group;
+            flashPath.Order = groupBase + 40; //5;
+            baseSettings.Add("FlashPath", flashPath);
         }
 
         /// <summary>
@@ -87,8 +90,8 @@ namespace Rainbow.Content.Web.Modules
 //			if (!IsPostBack) //Or it does not work with singon...
 //			{
             string flashSrc = ((SettingItem) Settings["src"]).Value;
-            flashSrc = flashSrc.Replace("~~", portalSettings.PortalFullPath);
-            flashSrc = flashSrc.Replace("~", portalSettings.PortalPath);
+            flashSrc = flashSrc.Replace("~~", PortalSettings.PortalFullPath);
+            flashSrc = flashSrc.Replace("~", PortalSettings.PortalPath);
 
             string flashHeight = (SettingItem) Settings["height"];
             string flashWidth = (SettingItem) Settings["width"];
@@ -99,7 +102,7 @@ namespace Rainbow.Content.Web.Modules
 
             //Always make sure you have a valid movie or your browser will hang.
             if (flashSrc == null || flashSrc.Length == 0)
-                flashSrc = Path.WebPathCombine(portalSettings.PortalFullPath, "/FlashGallery/effect2-marquee.swf");
+                flashSrc = Path.WebPathCombine(PortalSettings.PortalFullPath, "/FlashGallery/effect2-marquee.swf");
 
             string movieName = string.Empty;
             try
@@ -109,9 +112,7 @@ namespace Rainbow.Content.Web.Modules
                     movieName = Server.MapPath(flashSrc);
                 }
             }
-            catch
-            {
-            }
+            catch {;}
 
             //Added existing file check by Manu
             if (movieName.Length != 0)
@@ -136,9 +137,7 @@ namespace Rainbow.Content.Web.Modules
                     {
                         FlashMovie1.MovieBGColor = ColorTranslator.FromHtml(flashBGColor);
                     }
-                    catch
-                    {
-                    }
+                    catch {;}
                 }
 
                 //this.FlashMovie1.AutoLoop = false;

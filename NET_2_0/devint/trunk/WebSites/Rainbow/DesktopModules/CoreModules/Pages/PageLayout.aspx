@@ -1,7 +1,7 @@
 <%@ page autoeventwireup="false" inherits="Rainbow.Admin.PageLayout" language="c#" codefile="PageLayout.aspx.cs" %>
 <%@ register src="~/Design/DesktopLayouts/DesktopPortalBanner.ascx" tagname="Banner" tagprefix="portal" %>
 <%@ register src="~/Design/DesktopLayouts/DesktopFooter.ascx" tagname="Footer" tagprefix="foot" %>
-<%@ register assembly="Rainbow.Framework" Namespace="Rainbow.Framework.Web.UI.WebControls" tagprefix="rbfwebui" %>
+<%@ register assembly="Rainbow.Framework.Web" Namespace="Rainbow.Framework.Web.UI.WebControls" tagprefix="rbfwebui" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server"><title></title>
 </head>

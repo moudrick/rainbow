@@ -1,3 +1,4 @@
+<%@ Import namespace="Rainbow.Framework.Providers"%>
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Rainbow.Framework.Design.PictureItem" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
 <%@ Register Assembly="Rainbow.Framework.Core" Namespace="Rainbow.Framework.Web.UI.WebControls" TagPrefix="rbfwebui" %>
 <%@ Register Assembly="Rainbow.Framework.Web.UI.WebControls" Namespace="Rainbow.Framework.Web.UI.WebControls" TagPrefix="rbfwebui" %>
@@ -12,7 +13,7 @@
 <tr>
 		<td align="left" valign="middle" class="Normal">
 			<%#GetMetadata("ShortDescription")%>
-			<rbfwebui:HyperLink id="editLink" ImageUrl='<%# GetCurrentImageFromTheme("Buttons_Edit", "Edit.gif") %>' NavigateUrl='<%# "~/DesktopModules/Pictures/PicturesEdit.aspx?ItemID=" + GetMetadata("ItemID") + "&mid=" + GetMetadata("ModuleID")%>' Visible='<%# GetMetadata("IsEditable") == "True"%>' runat="server" />
+			<rbfwebui:HyperLink id="editLink" ImageUrl='<%# PortalProvider.Instance.GetCurrentImageFromTheme("Buttons_Edit", "Edit.gif") %>' NavigateUrl='<%# "~/DesktopModules/Pictures/PicturesEdit.aspx?ItemID=" + GetMetadata("ItemID") + "&mid=" + GetMetadata("ModuleID")%>' Visible='<%# GetMetadata("IsEditable") == "True"%>' runat="server" />
 		</td>
 
 	</tr>

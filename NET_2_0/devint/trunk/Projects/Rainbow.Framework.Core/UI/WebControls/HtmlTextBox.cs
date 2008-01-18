@@ -1,6 +1,6 @@
-using System.Web;
 using ActiveUp.WebControls.HtmlTextBox;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -9,7 +9,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// </summary>
     public class HtmlTextBox : Editor, IHtmlEditor
     {
-        private string _imageFolder = string.Empty;
+        string imageFolder = string.Empty;
 
         /// <summary>
         /// Control Image Folder
@@ -19,20 +19,20 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             get
             {
-                if (_imageFolder == string.Empty)
+                if (imageFolder == string.Empty)
                 {
-                    PortalSettings pS = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
-                    if (pS.CustomSettings != null)
+                    Portal portal = PortalProvider.Instance.CurrentPortal;
+                    if (portal.CustomSettings != null)
                     {
-                        if (pS.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"] != null)
+                        if (portal.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"] != null)
                         {
-                            _imageFolder = pS.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"].ToString();
+                            imageFolder = portal.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"].ToString();
                         }
                     }
                 }
-                return "/images/" + _imageFolder;
+                return "/images/" + imageFolder;
             }
-            set { _imageFolder = value; }
+            set { imageFolder = value; }
         }
     }
 }

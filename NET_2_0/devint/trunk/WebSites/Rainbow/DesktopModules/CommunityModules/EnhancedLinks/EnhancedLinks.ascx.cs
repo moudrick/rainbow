@@ -10,6 +10,7 @@ using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -83,11 +84,11 @@ namespace Rainbow.Content.Web.Modules
                 string auxImage;
                 if ((imageStr != null) && (imageStr.Length > 0))
                 {
-                    auxImage = portalSettings.PortalFullPath + "/" + iconContainer + "/" + imageStr;
+                    auxImage = PortalSettings.PortalFullPath + "/" + iconContainer + "/" + imageStr;
                 }
                 else if ((defaultImage != null) && (defaultImage.Length > 0))
                 {
-                    auxImage = portalSettings.PortalFullPath + "/" + iconContainer + "/" + defaultImage;
+                    auxImage = PortalSettings.PortalFullPath + "/" + iconContainer + "/" + defaultImage;
                 }
                 else
                 {
@@ -200,7 +201,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="Value">The value.</param>
         /// <param name="dt">The dt.</param>
         /// <returns></returns>
-        private DataRow CreateRow(string Text, string Value, DataTable dt)
+        static DataRow CreateRow(string Text, string Value, DataTable dt)
         {
             DataRow dr = dt.NewRow();
             dr[0] = Text;
@@ -221,9 +222,9 @@ namespace Rainbow.Content.Web.Modules
             {
                 if (IsEditable)
                 {
-                    return
-                        HttpUrlBuilder.BuildUrl("~/DesktopModules/CommunityModules/EnhancedLinks/EnhancedLinksEdit.aspx",
-                                                "ItemID=" + itemID.ToString() + "&mID=" + ModuleID.ToString());
+                    return HttpUrlBuilder.BuildUrl(
+                        "~/DesktopModules/CommunityModules/EnhancedLinks/EnhancedLinksEdit.aspx",
+                        string.Format("ItemID={0}&mID={1}", itemID, ModuleID));
                 }
                 else
                 {
@@ -255,7 +256,7 @@ namespace Rainbow.Content.Web.Modules
         #region General Module Implementation
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:EnhancedLinks"/> class.
+        /// Initializes a new instance of the <see cref="EnhancedLinks"/> class.
         /// </summary>
         public EnhancedLinks()
         {
@@ -268,11 +269,11 @@ namespace Rainbow.Content.Web.Modules
             // end of modification
 
             SettingItem IconPath = null;
-            if (portalSettings != null)
+            if (PortalSettings != null)
             {
                 IconPath =
                     new SettingItem(
-                        new FolderDataType(HttpContext.Current.Server.MapPath(portalSettings.PortalFullPath),
+                        new FolderDataType(HttpContext.Current.Server.MapPath(PortalSettings.PortalFullPath),
                                            "IconContainer"));
                 IconPath.Value = "IconContainer";
                 // Modified by Hongwei Shen
@@ -284,7 +285,7 @@ namespace Rainbow.Content.Web.Modules
                 IconPath.EnglishName = "Container for Icons";
                 IconPath.Description = "Portal directory for upload used icons";
             }
-            _baseSettings.Add("ENHANCEDLINKS_ICONPATH", IconPath);
+            baseSettings.Add("ENHANCEDLINKS_ICONPATH", IconPath);
 
             ArrayList styleLink = new ArrayList();
             styleLink.Add(new SettingOption(1, General.GetString("ENHANCEDLINKS_DROPDOWNLIST", "DropDownList", null)));
@@ -301,7 +302,7 @@ namespace Rainbow.Content.Web.Modules
             MaxColums.Group = group;
             MaxColums.Order = groupBase + 20;
             // end of modification
-            _baseSettings.Add("ENHANCEDLINKS_MAXCOLUMS", MaxColums);
+            baseSettings.Add("ENHANCEDLINKS_MAXCOLUMS", MaxColums);
 
             SettingItem labelStyleLink = new SettingItem(new CustomListDataType(styleLink, "Name", "Val"));
             labelStyleLink.Description = "Select here how your module should look like";
@@ -313,7 +314,7 @@ namespace Rainbow.Content.Web.Modules
             labelStyleLink.Group = group;
             labelStyleLink.Order = groupBase + 25;
             // end of modification
-            _baseSettings.Add("ENHANCEDLINKS_SWITCHERTYPES", labelStyleLink);
+            baseSettings.Add("ENHANCEDLINKS_SWITCHERTYPES", labelStyleLink);
 
             SettingItem ImageDefault = new SettingItem(new StringDataType());
             ImageDefault.Value = "navLink.gif";
@@ -325,7 +326,7 @@ namespace Rainbow.Content.Web.Modules
             ImageDefault.Group = group;
             ImageDefault.Order = groupBase + 30;
             // end of modification
-            _baseSettings.Add("ENHANCEDLINKS_DEFAULTIMAGE", ImageDefault);
+            baseSettings.Add("ENHANCEDLINKS_DEFAULTIMAGE", ImageDefault);
 
             SettingItem ExpandAll = new SettingItem(new BooleanDataType());
             ExpandAll.Value = "false";
@@ -337,7 +338,7 @@ namespace Rainbow.Content.Web.Modules
             ExpandAll.Group = group;
             ExpandAll.Order = groupBase + 35;
             // end of modification
-            _baseSettings.Add("ENHANCEDLINKS_EXPANDALL", ExpandAll);
+            baseSettings.Add("ENHANCEDLINKS_EXPANDALL", ExpandAll);
         }
 
         /// <summary>
@@ -431,23 +432,23 @@ namespace Rainbow.Content.Web.Modules
 
         public override void Install(IDictionary stateSaver)
         {
-            string currentScriptName = Server.MapPath(this.TemplateSourceDirectory + "/Install.sql");
+            string currentScriptName = Server.MapPath(TemplateSourceDirectory + "/Install.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 
         public override void Uninstall(IDictionary stateSaver)
         {
-            string currentScriptName = Server.MapPath(this.TemplateSourceDirectory + "/Uninstall.sql");
+            string currentScriptName = Server.MapPath(TemplateSourceDirectory + "/Uninstall.sql");
             ArrayList errors = DBHelper.ExecuteScript(currentScriptName, true);
             if (errors.Count > 0)
             {
                 // Call rollback
-                throw new Exception("Error occurred:" + errors[0].ToString());
+                throw new Exception("Error occurred:" + errors[0]);
             }
         }
 

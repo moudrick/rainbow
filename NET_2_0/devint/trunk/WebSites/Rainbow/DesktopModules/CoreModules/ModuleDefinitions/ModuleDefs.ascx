@@ -1,6 +1,6 @@
 <%@ control autoeventwireup="false" codefile="ModuleDefs.ascx.cs" inherits="Rainbow.Content.Web.Modules.ModuleDefs"
     language="c#" %>
-<%@ register assembly="Rainbow.Framework" namespace="Rainbow.Framework.Web.UI.WebControls"
+<%@ register assembly="Rainbow.Framework.Web" namespace="Rainbow.Framework.Web.UI.WebControls"
     tagprefix="rbfwebui" %>
 <div class="settings-table">
     <fieldset class="SettingsTableGroup">

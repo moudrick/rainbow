@@ -1,6 +1,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Framework.DataTypes
@@ -8,13 +9,14 @@ namespace Rainbow.Framework.DataTypes
     /// <summary>
     /// Allows upload a file on current portal folder
     /// </summary>
-    public class UploadedFileDataType : PortalUrlDataType
+    public class UploadedFileDataType : PortalUrl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UploadedFileDataType"/> class.
         /// </summary>
-        public UploadedFileDataType()
-            : base()
+        /// <param name="portal">The portal.</param>
+        public UploadedFileDataType(Portal portal)
+            : this(portal.PortalFullPath)
         {
         }
 
@@ -61,8 +63,9 @@ namespace Rainbow.Framework.DataTypes
             get
             {
                 if (innerControl == null)
+                {
                     InitializeComponents();
-
+                }
                 //Update value in control
                 UploadDialogTextBox upload = (UploadDialogTextBox) innerControl;
                 upload.UploadDirectory = PortalPathPrefix;
@@ -83,7 +86,7 @@ namespace Rainbow.Framework.DataTypes
                 else
                     throw new ArgumentException(
                         "A UploadDialogTextBox values is required, a '" + value.GetType().Name + "' is given.",
-                        "EditControl");
+                        "value");
             }
         }
 
@@ -98,10 +101,13 @@ namespace Rainbow.Framework.DataTypes
             {
                 //Remove portal path if present
                 if (value.StartsWith(PortalPathPrefix))
+                {
                     innerValue = value.Substring(PortalPathPrefix.Length);
+                }
                 else
+                {
                     innerValue = value;
-
+                }
                 innerValue = innerValue.TrimStart('/');
             }
         }

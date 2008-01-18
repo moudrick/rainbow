@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Data.SqlClient;
-using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Settings.Cache;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
@@ -16,9 +17,7 @@ using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
 using ImageButton=System.Web.UI.WebControls.ImageButton;
-using Rainbow.Framework.Providers.RainbowRoleProvider;
 using System.Collections.Generic;
-using Rainbow.Framework.Providers.RainbowSiteMapProvider;
 
 namespace Rainbow.Admin
 {
@@ -50,7 +49,6 @@ namespace Rainbow.Admin
         /// The Page_Load server event handler on this page is used
         /// to populate a tab's layout settings on the page
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         protected override void OnLoad( EventArgs e ) {
             base.OnLoad( e );
@@ -58,8 +56,8 @@ namespace Rainbow.Admin
             //Confirm delete
             if ( !( ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) ) {
                 string[] s = { "CONFIRM_DELETE" };
-                ClientScript.RegisterClientScriptBlock( this.GetType(), "confirmDelete",
-                                                       PortalSettings.GetStringResource(
+                ClientScript.RegisterClientScriptBlock( GetType(), "confirmDelete",
+                                                       General.GetStringResource(
                                                            "CONFIRM_DELETE_SCRIPT", s ) );
             }
 
@@ -155,7 +153,7 @@ namespace Rainbow.Admin
             time = DateTime.Now;
             span = new TimeSpan(0, 2, 0, 0, 0); // 120 minutes to expire
             cookie.Expires = time.Add(span);
-            base.Response.AppendCookie(cookie);
+            Response.AppendCookie(cookie);
         }
 
         /// <summary>
@@ -164,7 +162,7 @@ namespace Rainbow.Admin
         /// <param name="listBox">Listbox that contains the list of modules</param>
         /// <param name="modules">ArrayList containing the Module Items</param>
         /// <param name="moduleID">moduleID of the module that needs to be selected</param>
-        private void SelectModule(ListBox listBox, ArrayList modules, int moduleID)
+        static void SelectModule(ListControl listBox, IList modules, int moduleID)
         {
             for (int i = 0; i < modules.Count; i++)
             {
@@ -175,7 +173,6 @@ namespace Rainbow.Admin
                     return;
                 }
             }
-            return;
         }
 
         /// <summary>
@@ -184,7 +181,7 @@ namespace Rainbow.Admin
         /// <param name="url">The URL.</param>
         /// <param name="moduleID">The module ID.</param>
         /// <returns></returns>
-        private string AppendModuleID(string url, int moduleID)
+        static string AppendModuleID(string url, int moduleID)
         {
             int selectedModIDPos = url.IndexOf("&selectedmodid");
             if (selectedModIDPos >= 0)
@@ -233,9 +230,9 @@ namespace Rainbow.Admin
             // The new module inherits security from Pages module (current ModuleID) 
             // so who can edit the tab properties/content can edit the module properties/content (except view that remains =)
             m.ID =
-                _mod.AddModule(PageID, m.Order, paneLocation.SelectedItem.Value.ToString(), m.Title, m.ModuleDefID, 0,
+                _mod.AddModule(PageID, m.Order, paneLocation.SelectedItem.Value, m.Title, m.ModuleDefID, 0,
                                PortalSecurity.GetEditPermissions(ModuleID),
-                               viewPermissions.SelectedItem.Value.ToString(),
+                               viewPermissions.SelectedItem.Value,
                                PortalSecurity.GetAddPermissions(ModuleID), PortalSecurity.GetDeletePermissions(ModuleID),
                                PortalSecurity.GetPropertiesPermissions(ModuleID),
                                PortalSecurity.GetMoveModulePermissions(ModuleID),
@@ -244,8 +241,8 @@ namespace Rainbow.Admin
             // End Change Geert.Audenaert@Syntegra.Com
 
             // reload the portalSettings from the database
-            Context.Items["PortalSettings"] = new PortalSettings(PageID, portalSettings.PortalAlias);
-            portalSettings = (PortalSettings) Context.Items["PortalSettings"];
+            Context.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortal(PageID, portalSettings.PortalAlias);
+            portalSettings = (Portal) Context.Items["PortalSettings"];
 
             // reorder the modules in the content pane
             ArrayList modules = GetModules("ContentPane");
@@ -278,21 +275,25 @@ namespace Rainbow.Admin
             if (_listbox.SelectedIndex != -1)
             {
                 int delta;
-                int selection = -1;
+                //int selection = -1;
 
                 // Determine the delta to apply in the order number for the module
                 // within the list.  +3 moves down one item; -3 moves up one item
                 if (cmd == "down")
                 {
                     delta = 3;
-                    if (_listbox.SelectedIndex < _listbox.Items.Count - 1)
-                        selection = _listbox.SelectedIndex + 1;
+//                    if (_listbox.SelectedIndex < _listbox.Items.Count - 1)
+//                    {
+//                        selection = _listbox.SelectedIndex + 1;
+//                    }
                 }
                 else
                 {
                     delta = -3;
-                    if (_listbox.SelectedIndex > 0)
-                        selection = _listbox.SelectedIndex - 1;
+//                    if (_listbox.SelectedIndex > 0)
+//                    {
+//                        selection = _listbox.SelectedIndex - 1;
+//                    }
                 }
 
                 ModuleItem m;
@@ -335,7 +336,7 @@ namespace Rainbow.Admin
             string sourcePane = ((ImageButton) sender).Attributes["sourcepane"];
             string targetPane = ((ImageButton) sender).Attributes["targetpane"];
             ListBox sourceBox = (ListBox) Page.FindControl(sourcePane);
-            ListBox targetBox = (ListBox) Page.FindControl(targetPane);
+            //ListBox targetBox = (ListBox) Page.FindControl(targetPane);
 
             if (sourceBox.SelectedIndex != -1)
             {
@@ -356,8 +357,8 @@ namespace Rainbow.Admin
                     sourceList.RemoveAt(sourceBox.SelectedIndex);
 
                     // reload the portalSettings from the database
-                    HttpContext.Current.Items["PortalSettings"] = new PortalSettings(PageID, portalSettings.PortalAlias);
-                    portalSettings = (PortalSettings) Context.Items["PortalSettings"];
+                    HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortal(PageID, portalSettings.PortalAlias);
+                    portalSettings = (Portal) Context.Items["PortalSettings"];
 
                     // reorder the modules in the source pane
                     sourceList = GetModules(sourcePane);
@@ -365,7 +366,9 @@ namespace Rainbow.Admin
 
                     // resave the order
                     foreach (ModuleItem item in sourceList)
+                    {
                         admin.UpdateModuleOrder(item.ID, item.Order, sourcePane);
+                    }
 
                     // reorder the modules in the target pane
                     ArrayList targetList = GetModules(targetPane);
@@ -373,7 +376,9 @@ namespace Rainbow.Admin
 
                     // resave the order
                     foreach (ModuleItem item in targetList)
+                    {
                         admin.UpdateModuleOrder(item.ID, item.Order, targetPane);
+                    }
 
                     // Redirect to the same page to pick up changes
                     Response.Redirect(AppendModuleID(Request.RawUrl, m.ID));
@@ -394,7 +399,7 @@ namespace Rainbow.Admin
         protected override void OnUpdate(EventArgs e)
         {
             // Only Update if Input Data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 try
                 {
@@ -456,14 +461,16 @@ namespace Rainbow.Admin
             // Construct Authorized User Roles string
             string authorizedRoles = string.Empty;
 
-            foreach ( ListItem item in authRoles.Items ) {
-                if ( item.Selected == true ) {
+            foreach (ListItem item in authRoles.Items)
+            {
+                if (item.Selected)
+                {
                     authorizedRoles = authorizedRoles + item.Text + ";";
                 }
             }
 
             // update Page info in the database
-            new PagesDB().UpdatePage(portalSettings.PortalID, PageID, Int32.Parse(parentPage.SelectedItem.Value),
+            PortalPageProvider.Instance.UpdatePage(portalSettings.PortalID, PageID, Int32.Parse(parentPage.SelectedItem.Value),
                                      tabName.Text, portalSettings.ActivePage.PageOrder, authorizedRoles,
                                      mobilePageName.Text, showMobile.Checked);
 
@@ -542,7 +549,7 @@ namespace Rainbow.Admin
         /// layout panes with the current configuration information
         /// </summary>
         private void BindData() {
-            PageSettings page = portalSettings.ActivePage;
+            PortalPage page = portalSettings.ActivePage;
 
             // Populate Page Names, etc.
             tabName.Text = page.PageName;
@@ -550,8 +557,7 @@ namespace Rainbow.Admin
             showMobile.Checked = page.ShowMobile;
 
             // Populate the "ParentPage" Data
-            PagesDB t = new PagesDB();
-            IList<PageItem> items = t.GetPagesParent( portalSettings.PortalID, PageID );
+            IList<PageItem> items = PortalPageProvider.Instance.GetPagesParent( portalSettings.PortalID, PageID );
             parentPage.DataSource = items;
             parentPage.DataBind();
 
@@ -587,19 +593,22 @@ namespace Rainbow.Admin
 
             // Populate the "Add Module" Data
             ModulesDB m = new ModulesDB();
-
-            SqlDataReader drCurrentModuleDefinitions = m.GetCurrentModuleDefinitions( portalSettings.PortalID );
-            try {
-                while ( drCurrentModuleDefinitions.Read() ) {
-                    if ( PortalSecurity.IsInRoles( "Admins" ) == true ||
-                        !( bool.Parse( drCurrentModuleDefinitions["Admin"].ToString() ) ) ) {
+            SqlDataReader drCurrentModuleDefinitions = m.GetCurrentModuleDefinitions(portalSettings.PortalID);
+            try
+            {
+                while (drCurrentModuleDefinitions.Read())
+                {
+                    if (PortalSecurity.IsInRoles("Admins") ||
+                        !(bool.Parse(drCurrentModuleDefinitions["Admin"].ToString())))
+                    {
                         moduleType.Items.Add(
-                            new ListItem( drCurrentModuleDefinitions["FriendlyName"].ToString(),
-                                         drCurrentModuleDefinitions["ModuleDefID"].ToString() ) );
+                            new ListItem(drCurrentModuleDefinitions["FriendlyName"].ToString(),
+                                         drCurrentModuleDefinitions["ModuleDefID"].ToString()));
                     }
                 }
             }
-            finally {
+            finally
+            {
                 drCurrentModuleDefinitions.Close();
             }
 
@@ -648,7 +657,7 @@ namespace Rainbow.Admin
         /// order for modules within a pane
         /// </summary>
         /// <param name="list">The list.</param>
-        private void OrderModules(ArrayList list)
+        static void OrderModules(ArrayList list)
         {
             int i = 1;
 
@@ -672,7 +681,7 @@ namespace Rainbow.Admin
         /// <param name="e">The <see cref="T:Rainbow.Framework.Web.UI.WebControls.SettingsTableEventArgs"/> instance containing the event data.</param>
         protected void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
         {
-            PageSettings.UpdatePageSettings(PageID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
+            PortalPageProvider.Instance.UpdatePageSettings(PageID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
     }
 }

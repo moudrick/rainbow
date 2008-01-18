@@ -3,7 +3,7 @@ using System.Collections;
 using System.Drawing;
 using System.Web;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -18,27 +18,28 @@ namespace Rainbow.Content.Web.Modules
         private void Page_Load(object sender, EventArgs e)
         {
             int rb_cacheCount = 0;
-            int rb_cacheSize = 0;
+            int rb_cacheSize;
             int rb_cacheTotal = 0;
             int asp_cacheTotal = 0;
-            SortedList cacheContents = new SortedList();
 
+            //TODO: [moudrick] move it to RainbowContext
+            SortedList cacheContents = new SortedList();
             foreach (DictionaryEntry cacheItem in HttpContext.Current.Cache)
             {
                 asp_cacheTotal = asp_cacheTotal + cacheItem.Value.ToString().Length;
 
-                if (cacheItem.Key.ToString().StartsWith(Portal.UniqueID))
+                if (cacheItem.Key.ToString().StartsWith(RainbowContext.Current.UniqueID))
                 {
                     cacheContents.Add(cacheItem.Key.ToString(), cacheItem.Value.ToString());
                 }
             }
 
-            Table t = new Table();
-            t.CellSpacing = 0;
-            t.CellPadding = 4;
-            TableRow r;
-            TableCell c;
-            t.CssClass = "Normal";
+            Table table = new Table();
+            table.CellSpacing = 0;
+            table.CellPadding = 4;
+            TableRow row;
+            TableCell cell;
+            table.CssClass = "Normal";
 
             foreach (DictionaryEntry contentsItem in cacheContents)
             {
@@ -46,70 +47,70 @@ namespace Rainbow.Content.Web.Modules
                 rb_cacheCount = rb_cacheCount + 1;
                 rb_cacheTotal = rb_cacheTotal + rb_cacheSize;
 
-                r = new TableRow();
-                r.BackColor = Color.Gray;
-                r.ForeColor = Color.White;
-                c = new TableCell();
-                c.Text = contentsItem.Key.ToString();
-                r.Cells.Add(c);
-                c = new TableCell();
-                c.Text = string.Concat("approx. ", rb_cacheSize.ToString("n0"), " characters");
-                c.HorizontalAlign = HorizontalAlign.Right;
-                r.Cells.Add(c);
-                t.Rows.Add(r);
+                row = new TableRow();
+                row.BackColor = Color.Gray;
+                row.ForeColor = Color.White;
+                cell = new TableCell();
+                cell.Text = contentsItem.Key.ToString();
+                row.Cells.Add(cell);
+                cell = new TableCell();
+                cell.Text = string.Concat("approx. ", rb_cacheSize.ToString("n0"), " characters");
+                cell.HorizontalAlign = HorizontalAlign.Right;
+                row.Cells.Add(cell);
+                table.Rows.Add(row);
 
-                r = new TableRow();
-                c = new TableCell();
-                c.ColumnSpan = 2;
-                c.Text = contentsItem.Value.ToString();
-                r.Cells.Add(c);
-                t.Rows.Add(r);
+                row = new TableRow();
+                cell = new TableCell();
+                cell.ColumnSpan = 2;
+                cell.Text = contentsItem.Value.ToString();
+                row.Cells.Add(cell);
+                table.Rows.Add(row);
             }
 
-            CachePanel.Controls.Add(t);
+            CachePanel.Controls.Add(table);
 
-            t = new Table();
-            t.CellSpacing = 0;
-            t.CellPadding = 4;
-            t.CssClass = "Normal";
+            table = new Table();
+            table.CellSpacing = 0;
+            table.CellPadding = 4;
+            table.CssClass = "Normal";
 
-            r = new TableRow();
-            c = new TableCell();
-            c.Text = "Rainbow Cache Count:";
-            r.Cells.Add(c);
-            c = new TableCell();
-            c.Text = rb_cacheCount.ToString("n0") + " items";
-            r.Cells.Add(c);
-            t.Rows.Add(r);
+            row = new TableRow();
+            cell = new TableCell();
+            cell.Text = "Rainbow Cache Count:";
+            row.Cells.Add(cell);
+            cell = new TableCell();
+            cell.Text = rb_cacheCount.ToString("n0") + " items";
+            row.Cells.Add(cell);
+            table.Rows.Add(row);
 
-            r = new TableRow();
-            c = new TableCell();
-            c.Text = "Total Cache Count:";
-            r.Cells.Add(c);
-            c = new TableCell();
-            c.Text = HttpContext.Current.Cache.Count.ToString("n0") + " items";
-            r.Cells.Add(c);
-            t.Rows.Add(r);
+            row = new TableRow();
+            cell = new TableCell();
+            cell.Text = "Total Cache Count:";
+            row.Cells.Add(cell);
+            cell = new TableCell();
+            cell.Text = HttpContext.Current.Cache.Count.ToString("n0") + " items";
+            row.Cells.Add(cell);
+            table.Rows.Add(row);
 
-            r = new TableRow();
-            c = new TableCell();
-            c.Text = "Rainbow Cache Size:";
-            r.Cells.Add(c);
-            c = new TableCell();
-            c.Text = rb_cacheTotal.ToString("n0") + " characters";
-            r.Cells.Add(c);
-            t.Rows.Add(r);
+            row = new TableRow();
+            cell = new TableCell();
+            cell.Text = "Rainbow Cache Size:";
+            row.Cells.Add(cell);
+            cell = new TableCell();
+            cell.Text = rb_cacheTotal.ToString("n0") + " characters";
+            row.Cells.Add(cell);
+            table.Rows.Add(row);
 
-            r = new TableRow();
-            c = new TableCell();
-            c.Text = "Total Cache Size:";
-            r.Cells.Add(c);
-            c = new TableCell();
-            c.Text = asp_cacheTotal.ToString("n0") + " characters";
-            r.Cells.Add(c);
-            t.Rows.Add(r);
+            row = new TableRow();
+            cell = new TableCell();
+            cell.Text = "Total Cache Size:";
+            row.Cells.Add(cell);
+            cell = new TableCell();
+            cell.Text = asp_cacheTotal.ToString("n0") + " characters";
+            row.Cells.Add(cell);
+            table.Rows.Add(row);
 
-            CachePanel.Controls.Add(t);
+            CachePanel.Controls.Add(table);
         }
 
         #region Web Form Designer generated code

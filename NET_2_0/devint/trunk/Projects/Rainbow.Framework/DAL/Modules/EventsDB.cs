@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Content.Data
 {
@@ -24,7 +24,7 @@ namespace Rainbow.Framework.Content.Data
         public DataSet GetEvents(int moduleID, WorkFlowVersion version)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlDataAdapter myCommand = new SqlDataAdapter("rb_GetEvents", myConnection);
 
             // Mark the Command as a SPROC
@@ -66,7 +66,7 @@ namespace Rainbow.Framework.Content.Data
         public SqlDataReader GetSingleEvent(int itemID, WorkFlowVersion version)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetSingleEvent", myConnection);
 
             // Mark the Command as a SPROC
@@ -100,7 +100,7 @@ namespace Rainbow.Framework.Content.Data
         public void DeleteEvent(int itemID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_DeleteEvent", myConnection);
 
             // Mark the Command as a SPROC
@@ -147,7 +147,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_AddEvent", myConnection);
 
             // Mark the Command as a SPROC
@@ -237,7 +237,7 @@ namespace Rainbow.Framework.Content.Data
             }
 
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_UpdateEvent", myConnection);
 
             // Mark the Command as a SPROC

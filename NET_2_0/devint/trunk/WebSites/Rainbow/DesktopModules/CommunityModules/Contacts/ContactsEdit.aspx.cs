@@ -3,7 +3,8 @@ using System.Collections;
 using System.Data.SqlClient;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Core;
+using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
 
@@ -109,7 +110,7 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Only Update if Entered data is Valid
-            if (Page.IsValid == true)
+            if (Page.IsValid)
             {
                 // Create an instance of the ContactsDB component
                 ContactsDB contacts = new ContactsDB();
@@ -117,14 +118,14 @@ namespace Rainbow.Content.Web.Modules
                 if (ItemID == 0)
                 {
                     // Add the contact within the contacts table
-                    contacts.AddContact(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email, NameField.Text,
+                    contacts.AddContact(ModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email, NameField.Text,
                                         RoleField.Text, EmailField.Text, Contact1Field.Text, Contact2Field.Text,
                                         FaxField.Text, AddressField.Text);
                 }
                 else
                 {
                     // Update the contact within the contacts table
-                    contacts.UpdateContact(ModuleID, ItemID, PortalSettings.CurrentUser.Identity.Email, NameField.Text,
+                    contacts.UpdateContact(ModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email, NameField.Text,
                                            RoleField.Text, EmailField.Text, Contact1Field.Text, Contact2Field.Text,
                                            FaxField.Text, AddressField.Text);
                 }

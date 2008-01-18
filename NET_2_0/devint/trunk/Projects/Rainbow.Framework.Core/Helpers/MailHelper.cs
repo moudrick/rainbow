@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Data;
 using System.IO;
@@ -6,11 +5,11 @@ using System.Net.Mail;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mail;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Exceptions;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Security;
 using MailMessage=System.Net.Mail.MailMessage;
 
 namespace Rainbow.Framework.Helpers
@@ -24,10 +23,10 @@ namespace Rainbow.Framework.Helpers
         /// <summary>
         /// Gets the email addresses in roles.
         /// </summary>
-        /// <param name="Roles">The roles.</param>
+        /// <param name="roles">The roles.</param>
         /// <param name="portalID">The portal ID.</param>
         /// <returns>A string[] value...</returns>
-        public static string[] GetEmailAddressesInRoles(string[] Roles, int portalID)
+        public static string[] GetEmailAddressesInRoles(string[] roles, int portalID)
         {
             if (Config.UseSingleUserBase) portalID = 0;
 
@@ -35,15 +34,18 @@ namespace Rainbow.Framework.Helpers
             {
                 ArrayList addresses = new ArrayList();
 
-                for (int i = 0; i < Roles.Length; i++)
+                for (int i = 0; i < roles.Length; i++)
                 {
-                    string account = Roles[i];
+                    string account = roles[i];
                     EmailAddressList eal = ADHelper.GetEmailAddresses(account);
 
                     for (int j = 0; j < eal.Count; j++)
-
+                    {
                         if (!addresses.Contains(eal[j]))
+                        {
                             addresses.Add(eal[j]);
+                        }
+                    }
                 }
                 return (string[]) addresses.ToArray(typeof (string));
             }
@@ -51,19 +53,23 @@ namespace Rainbow.Framework.Helpers
             else
             {
                 // No roles --> no email addresses
-                if (Roles.Length == 0)
+                if (roles.Length == 0)
+                {
                     return new string[0];
+                }
                 // Build the sql select
-                string[] adaptedRoles = new string[Roles.Length];
+                string[] adaptedRoles = new string[roles.Length];
 
-                for (int i = 0; i < Roles.Length; i++)
-                    adaptedRoles[i] = Roles[i].Replace("'", "''");
+                for (int i = 0; i < roles.Length; i++)
+                {
+                    adaptedRoles[i] = roles[i].Replace("'", "''");
+                }
                 string delimitedRoleList = "N'" + string.Join("', N'", adaptedRoles) + "'";
                 string sql = "SELECT DISTINCT rb_Users.Email " +
                              "FROM rb_UserRoles INNER JOIN " +
                              " rb_Users ON rb_UserRoles.UserID = rb_Users.UserID INNER JOIN " +
                              " rb_Roles ON rb_UserRoles.RoleID = rb_Roles.RoleID " +
-                             "WHERE (rb_Users.PortalID = " + portalID.ToString() + ") " +
+                             "WHERE (rb_Users.PortalID = " + portalID + ") " +
                              " AND (rb_Roles.RoleName IN (" + delimitedRoleList + "))";
                 // Execute the sql
                 EmailAddressList eal = new EmailAddressList();
@@ -74,21 +80,20 @@ namespace Rainbow.Framework.Helpers
                     while (myReader.Read())
                     {
                         if (!myReader.IsDBNull(0))
-
+                        {
                             try
                             {
                                 string email = myReader.GetString(0);
 
                                 if (email.Trim().Length != 0)
+                                {
                                     eal.Add(email);
+                                }
                             }
-
-                            catch
-                            {
-                            }
+                            catch {;}
+                        }
                     }
                 }
-
                 finally
                 {
                     myReader.Close();
@@ -155,7 +160,7 @@ namespace Rainbow.Framework.Helpers
             {
                 // Get the logged on email address from the context
                 //string email = System.Web.HttpContext.Current.User.Identity.Name;
-                string email = PortalSettings.CurrentUser.Identity.Email;
+                string email = RainbowPrincipal.CurrentUser.Identity.Email;
 
                 if (!Validated)
                     return email;
@@ -308,42 +313,34 @@ namespace Rainbow.Framework.Helpers
         {
             MailMessage myMessage;
 
-            try
+            myMessage = new MailMessage();
+            myMessage.To.Add(sendTo);
+            myMessage.From = new MailAddress(From);
+            myMessage.Subject = Subject;
+            myMessage.Body = Body;
+            myMessage.IsBodyHtml = (mf == MailFormat.Html ? true : false);
+
+            if (CC.Length != 0) myMessage.CC.Add(CC);
+
+            if (BCC.Length != 0) myMessage.Bcc.Add(BCC);
+
+            if (AttachmentFiles != null)
             {
-                myMessage = new MailMessage();
-                myMessage.To.Add(sendTo);
-                myMessage.From = new MailAddress(From);
-                myMessage.Subject = Subject;
-                myMessage.Body = Body;
-                myMessage.IsBodyHtml = (mf == MailFormat.Html ? true : false);
-
-                if (CC.Length != 0) myMessage.CC.Add(CC);
-
-                if (BCC.Length != 0) myMessage.Bcc.Add(BCC);
-
-                if (AttachmentFiles != null)
+                foreach (string x in AttachmentFiles)
                 {
-                    foreach (string x in AttachmentFiles)
-                    {
-                        if (File.Exists(x)) myMessage.Attachments.Add(new Attachment(x));
-                    }
-                }
-
-                if (SMTPServer.Length != 0)
-                {
-                    SmtpClient smtp = new SmtpClient(SMTPServer);
-
-                    smtp.Send(myMessage);
-                }
-                else
-                {
-                    throw new RainbowException("SMTPServer configuration error");
+                    if (File.Exists(x)) myMessage.Attachments.Add(new Attachment(x));
                 }
             }
 
-            catch (Exception myexp)
+            if (SMTPServer.Length != 0)
             {
-                throw myexp;
+                SmtpClient smtp = new SmtpClient(SMTPServer);
+
+                smtp.Send(myMessage);
+            }
+            else
+            {
+                throw new RainbowException("SMTPServer configuration error");
             }
         }
 

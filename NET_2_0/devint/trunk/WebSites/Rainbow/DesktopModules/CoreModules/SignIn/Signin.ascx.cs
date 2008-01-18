@@ -1,19 +1,16 @@
 using System;
-using System.Data.SqlClient;
 using System.Text;
 using System.Web.Mail;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Security;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
-
 using System.Web.Security;
-using System.Web.Profile;
-using System.Data;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -87,7 +84,7 @@ namespace Rainbow.Content.Web.Modules
 
             if ( true ) {
                 string Pswrd;
-                string AppName = portalSettings.PortalName;
+                string AppName = PortalSettings.PortalName;
                 bool encrypted = Config.EncryptPassword;
                 string Name = memberUser.Email;
                 if ( encrypted ) {
@@ -98,7 +95,7 @@ namespace Rainbow.Content.Web.Modules
                     Pswrd = memberUser.GetPassword();
                 }
                 string LoginUrl = Path.ApplicationFullPath + "DesktopModules/Admin/Logon.aspx?Usr=" + Name + "&Pwd=" +
-                                  Pswrd + "&Alias=" + portalSettings.PortalAlias;
+                                  Pswrd + "&Alias=" + PortalSettings.PortalAlias;
                 MailMessage mail = new MailMessage();
 
                 // Geert.Audenaert@Syntegra.Com
@@ -165,7 +162,7 @@ namespace Rainbow.Content.Web.Modules
             HideAutomatically.Value = "True";
             HideAutomatically.EnglishName = "Hide automatically";
             HideAutomatically.Order = 20;
-            _baseSettings.Add("SIGNIN_AUTOMATICALLYHIDE", HideAutomatically);
+            baseSettings.Add("SIGNIN_AUTOMATICALLYHIDE", HideAutomatically);
 
             //1.2.8.1743b - 09/10/2003
             //New setting on Signin fo disable IE autocomplete by Mike Stone
@@ -177,21 +174,21 @@ namespace Rainbow.Content.Web.Modules
             AutoComplete.EnglishName = "Allow IE Autocomplete";
             AutoComplete.Description = "If Checked IE Will try to remember logins";
             AutoComplete.Order = 30;
-            _baseSettings.Add("SIGNIN_ALLOW_AUTOCOMPLETE", AutoComplete);
+            baseSettings.Add("SIGNIN_ALLOW_AUTOCOMPLETE", AutoComplete);
 
             SettingItem RememberLogin = new SettingItem(new BooleanDataType());
             RememberLogin.Value = "True";
             RememberLogin.EnglishName = "Allow Remember Login";
             RememberLogin.Description = "If Checked allows to remember logins";
             RememberLogin.Order = 40;
-            _baseSettings.Add("SIGNIN_ALLOW_REMEMBER_LOGIN", RememberLogin);
+            baseSettings.Add("SIGNIN_ALLOW_REMEMBER_LOGIN", RememberLogin);
 
             SettingItem SendPassword = new SettingItem(new BooleanDataType());
             SendPassword.Value = "True";
             SendPassword.EnglishName = "Allow Send Password";
             SendPassword.Description = "If Checked allows user to ask to get password by email if he forgotten";
             SendPassword.Order = 50;
-            _baseSettings.Add("SIGNIN_ALLOW_SEND_PASSWORD", SendPassword);
+            baseSettings.Add("SIGNIN_ALLOW_SEND_PASSWORD", SendPassword);
         }
 
         /// <summary>
@@ -246,28 +243,40 @@ namespace Rainbow.Content.Web.Modules
         {
             bool hide = true;
             bool autocomplete = false;
-            if (this.ModuleID == 0)
+            if (ModuleID == 0)
+            {
                 ((SettingItem) Settings["MODULESETTINGS_SHOW_TITLE"]).Value = "false";
+            }
 
-            if (portalSettings.CustomSettings["SITESETTINGS_ALLOW_NEW_REGISTRATION"] != null)
-                if (!bool.Parse(portalSettings.CustomSettings["SITESETTINGS_ALLOW_NEW_REGISTRATION"].ToString()))
+            if (PortalSettings.CustomSettings["SITESETTINGS_ALLOW_NEW_REGISTRATION"] != null)
+            {
+                if ( !bool.Parse(PortalSettings.CustomSettings["SITESETTINGS_ALLOW_NEW_REGISTRATION"].ToString()))
+                {
                     RegisterBtn.Visible = false;
-
+                }
+            }
             if (Settings["SIGNIN_AUTOMATICALLYHIDE"] != null)
+            {
                 hide = bool.Parse(Settings["SIGNIN_AUTOMATICALLYHIDE"].ToString());
-
+            }
             if (Settings["SIGNIN_ALLOW_AUTOCOMPLETE"] != null)
+            {
                 autocomplete = bool.Parse(Settings["SIGNIN_ALLOW_AUTOCOMPLETE"].ToString());
-
+            }
             if (Settings["SIGNIN_ALLOW_REMEMBER_LOGIN"] != null)
-                RememberCheckBox.Visible = bool.Parse(Settings["SIGNIN_ALLOW_REMEMBER_LOGIN"].ToString());
-
+            {
+                RememberCheckBox.Visible =
+                    bool.Parse(Settings["SIGNIN_ALLOW_REMEMBER_LOGIN"].ToString());
+            }
             if (Settings["SIGNIN_ALLOW_SEND_PASSWORD"] != null)
-                SendPasswordBtn.Visible = bool.Parse(Settings["SIGNIN_ALLOW_SEND_PASSWORD"].ToString());
+            {
+                SendPasswordBtn.Visible =
+                    bool.Parse(Settings["SIGNIN_ALLOW_SEND_PASSWORD"].ToString());
+            }
 
             if (hide && Request.IsAuthenticated)
             {
-                this.Visible = false;
+                Visible = false;
             }
             else if (!autocomplete)
             {

@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using System.Data.SqlClient;
+using System.Configuration.Provider;
 using System.Web.UI;
 using Rainbow.Framework;
-using Rainbow.Framework.Site.Data;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -35,24 +35,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         private void Page_Load(object sender, EventArgs e)
         {
-            portals = new ArrayList();
-            PortalsDB portalsDb = new PortalsDB();
-            SqlDataReader dr = portalsDb.GetPortals();
-            try
-            {
-                while (dr.Read())
-                {
-                    PortalItem p = new PortalItem();
-                    p.Name = dr["PortalName"].ToString();
-                    p.Path = dr["PortalPath"].ToString();
-                    p.ID = Convert.ToInt32(dr["PortalID"].ToString());
-                    portals.Add(p);
-                }
-            }
-            finally
-            {
-                dr.Close(); //by Manu, fixed bug 807858
-            }
+            portals = PortalProvider.Instance.GetPortals();
 
             // If this is the first visit to the page, bind the tab data to the page listbox
             if (Page.IsPostBack == false)
@@ -101,21 +84,17 @@ namespace Rainbow.Content.Web.Modules
                 {
                     // must delete from database too
                     PortalItem p = (PortalItem) portals[portalList.SelectedIndex];
-                    PortalsDB portalsdb = new PortalsDB();
                     //Response.Write("Will delete " + p.Name);
-                    portalsdb.DeletePortal(p.ID);
+                    PortalProvider.Instance.DeletePortal(p.ID);
 
                     // remove item from list
                     portals.RemoveAt(portalList.SelectedIndex);
                     // rebind list
                     portalList.DataBind();
                 }
-                catch (SqlException sqlex)
+                catch (ProviderException ex)
                 {
-                    string aux =
-                        General.GetString("DELETE_PORTAL_ERROR", "There was an error on deleting the portal", this);
-                    Rainbow.Framework.ErrorHandler.Publish(Rainbow.Framework.LogLevel.Error, aux, sqlex);
-                    Controls.Add(new LiteralControl("<br><span class=NormalRed>" + aux + "<br>"));
+                    Controls.Add(new LiteralControl("<br><span class=NormalRed>" + ex.Message + "<br>"));
                 }
             }
             base.OnDelete();
@@ -134,14 +113,16 @@ namespace Rainbow.Content.Web.Modules
                 //Add new portal
                 // added mID by Mario Endara <mario@softworks.com.uy> to support security check (2004/11/09)
                 Response.Redirect(HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/PortalsAdministration/EditPortal.aspx", 0,
-                                                          "PortalID=" + p.ID + "&mID=" + ModuleID.ToString()));
+                                                          "PortalID=" + p.ID + "&mID=" + ModuleID));
             }
             base.OnEdit();
         }
+
         protected void EditBtn_Click(object sender, ImageClickEventArgs e)
         {
             OnEdit();
         }
+
         protected void DeleteBtn_Click(object sender, ImageClickEventArgs e)
         {
             OnDelete();

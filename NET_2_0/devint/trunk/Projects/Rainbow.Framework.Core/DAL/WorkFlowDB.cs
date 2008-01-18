@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Site.Data
 {
@@ -18,7 +18,7 @@ namespace Rainbow.Framework.Site.Data
         public static void Publish(int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_Publish", myConnection);
 
             // Mark the Command as a SPROC
@@ -47,7 +47,7 @@ namespace Rainbow.Framework.Site.Data
         public static void Revert(int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_Revert", myConnection);
 
             // Mark the Command as a SPROC
@@ -76,7 +76,7 @@ namespace Rainbow.Framework.Site.Data
         public static void RequestApproval(int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_RequestApproval", myConnection);
 
             // Mark the Command as a SPROC
@@ -105,7 +105,7 @@ namespace Rainbow.Framework.Site.Data
         public static void Approve(int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_Approve", myConnection);
 
             // Mark the Command as a SPROC
@@ -134,7 +134,7 @@ namespace Rainbow.Framework.Site.Data
         public static void Reject(int moduleID)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_Reject", myConnection);
 
             // Mark the Command as a SPROC
@@ -156,11 +156,17 @@ namespace Rainbow.Framework.Site.Data
             }
         }
 
-        public static void GetLastModified(int moduleID, WorkFlowVersion Version, ref string Email,
-                                           ref DateTime Timestamp)
+        ///<summary>
+        ///</summary>
+        ///<param name="moduleID"></param>
+        ///<param name="version"></param>
+        ///<param name="email"></param>
+        ///<param name="timestamp"></param>
+        public static void GetLastModified(int moduleID, WorkFlowVersion version, ref string email,
+                                           ref DateTime timestamp)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_GetLastModified", myConnection);
 
             // Mark the Command as a SPROC
@@ -172,7 +178,7 @@ namespace Rainbow.Framework.Site.Data
             myCommand.Parameters.Add(parameterModuleID);
 
             SqlParameter parameterWorkflowVersion = new SqlParameter("@WorkflowVersion", SqlDbType.Int, 4);
-            parameterWorkflowVersion.Value = (int) Version;
+            parameterWorkflowVersion.Value = (int) version;
             myCommand.Parameters.Add(parameterWorkflowVersion);
 
             SqlParameter parameterEmail = new SqlParameter("@LastModifiedBy", SqlDbType.NVarChar, 256);
@@ -187,8 +193,8 @@ namespace Rainbow.Framework.Site.Data
             try
             {
                 myCommand.ExecuteNonQuery();
-                Email = Convert.IsDBNull(parameterEmail.Value) ? string.Empty : (string) parameterEmail.Value;
-                Timestamp = Convert.IsDBNull(parameterDate.Value) ? DateTime.MinValue : (DateTime) parameterDate.Value;
+                email = Convert.IsDBNull(parameterEmail.Value) ? string.Empty : (string) parameterEmail.Value;
+                timestamp = Convert.IsDBNull(parameterDate.Value) ? DateTime.MinValue : (DateTime) parameterDate.Value;
             }
             finally
             {
@@ -196,10 +202,14 @@ namespace Rainbow.Framework.Site.Data
             }
         }
 
+        ///<summary>
+        ///</summary>
+        ///<param name="moduleID"></param>
+        ///<param name="email"></param>
         public static void SetLastModified(int moduleID, string email)
         {
             // Create Instance of Connection and Command Object
-            SqlConnection myConnection = Config.SqlConnectionString;
+            SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand("rb_SetLastModified", myConnection);
 
             // Mark the Command as a SPROC

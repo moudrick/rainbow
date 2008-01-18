@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework.Data;
 using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Site.Data
@@ -17,11 +17,11 @@ namespace Rainbow.Framework.Site.Data
         /// MoveModuleToNewTab assigns the given module to the given tab
         /// </summary>
         /// <param name="TabID">The tab ID.</param>
-        /// <param name="ModuleID">The module ID.</param>
-        public static void MoveModuleToNewTab(int TabID, int ModuleID)
+        /// <param name="moduleID">The module ID.</param>
+        public static void MoveModuleToNewTab(int TabID, int moduleID)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection MyConnection = Config.SqlConnectionString)
+            using (SqlConnection MyConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand MyCommand = new SqlCommand("rb_MoveModuleToNewTab", MyConnection))
                 {
@@ -30,7 +30,7 @@ namespace Rainbow.Framework.Site.Data
 
                     // Add Parameters to SPROC
                     SqlParameter ParameterModuleID = new SqlParameter("@ModuleID", SqlDbType.Int, 4);
-                    ParameterModuleID.Value = ModuleID;
+                    ParameterModuleID.Value = moduleID;
                     MyCommand.Parameters.Add(ParameterModuleID);
 
                     SqlParameter ParameterTabID = new SqlParameter("@TabID", SqlDbType.Int, 4);
@@ -46,7 +46,7 @@ namespace Rainbow.Framework.Site.Data
                     {
                         ErrorHandler.Publish(LogLevel.Warn,
                                              "An Error Occurred in MoveModuleToNewTab. Parameter : " +
-                                             ModuleID.ToString(), ex);
+                                             moduleID, ex);
                     }
                 }
             }
@@ -63,7 +63,7 @@ namespace Rainbow.Framework.Site.Data
         public static DataTable GetModulesInRecycler(int PortalID, string SortField)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection MyConnection = Config.SqlConnectionString)
+            using (SqlConnection MyConnection = DBHelper.SqlConnection)
             {
                 using (SqlDataAdapter MyCommand = new SqlDataAdapter("rb_GetModulesInRecycler", MyConnection))
                 {
@@ -132,7 +132,7 @@ namespace Rainbow.Framework.Site.Data
         public static ModuleSettings GetModuleSettingsForIndividualModule(int ModuleID)
         {
             // Create Instance of Connection and Command Object
-            using (SqlConnection MyConnection = Config.SqlConnectionString)
+            using (SqlConnection MyConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand MyCommand = new SqlCommand("rb_GetModuleSettingsForIndividualModule", MyConnection))
                 {

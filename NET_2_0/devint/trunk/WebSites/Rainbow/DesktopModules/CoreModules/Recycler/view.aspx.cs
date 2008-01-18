@@ -1,6 +1,7 @@
 using System;
 using System.Data;
-using Rainbow.Framework.Settings;
+using Rainbow.Framework;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;
@@ -13,7 +14,7 @@ namespace Rainbow
     /// </summary>
     public partial class recyclerViewPage : ViewItemPage
     {
-        private int _moduleID;
+        private int moduleID;
 
         // TODO check if this works
         //protected ArrayList portalTabs;
@@ -32,18 +33,18 @@ namespace Rainbow
 
             try
             {
-                _moduleID = int.Parse(Request.Params["mID"]);
+                moduleID = int.Parse(Request.Params["mID"]);
 
-                module = RecyclerDB.GetModuleSettingsForIndividualModule(_moduleID);
-                if (RecyclerDB.ModuleIsInRecycler(_moduleID))
+                module = RecyclerDB.GetModuleSettingsForIndividualModule(moduleID);
+                if (RecyclerDB.ModuleIsInRecycler(moduleID))
                 {
                     if (!Page.IsPostBack)
                     {
                         //load tab names for the dropdown list, then bind them
                         // TODO check if this works
                         //portalTabs = new PagesDB().GetPagesFlat(portalSettings.PortalID);
-                        portalTabs = new PagesDB().GetPagesFlatTable(portalSettings.PortalID);
-
+                        //portalTabs = PortalPageProvider.Instance.GetPagesFlatTable(portalSettings.PortalID);
+                        ddTabs.DataSource = PortalPageProvider.Instance.GetPagesFlatTable(portalSettings.PortalID);
                         ddTabs.DataBind();
 
                         //on initial load, disable the restore button until they make a selection
@@ -83,9 +84,9 @@ namespace Rainbow
 
             ModulesDB modules = new ModulesDB();
             // TODO add userEmail and useRecycler
-            modules.DeleteModule(_moduleID);
+            modules.DeleteModule(moduleID);
 
-            _moduleID = 0;
+            moduleID = 0;
 
             RedirectBackToReferringPage();
         }
@@ -114,9 +115,13 @@ namespace Rainbow
         protected void ddTabs_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddTabs.SelectedIndex == 0)
-                this.restoreButton.Enabled = false;
+            {
+                restoreButton.Enabled = false;
+            }
             else
-                this.restoreButton.Enabled = true;
+            {
+                restoreButton.Enabled = true;
+            }
         }
 
         /// <summary>
@@ -126,8 +131,8 @@ namespace Rainbow
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         protected void restoreButton_Click(object sender, EventArgs e)
         {
-            RecyclerDB.MoveModuleToNewTab(int.Parse(this.ddTabs.SelectedValue), this._moduleID);
-            this.RedirectBackToReferringPage();
+            RecyclerDB.MoveModuleToNewTab(int.Parse(ddTabs.SelectedValue), moduleID);
+            RedirectBackToReferringPage();
         }
     }
 }

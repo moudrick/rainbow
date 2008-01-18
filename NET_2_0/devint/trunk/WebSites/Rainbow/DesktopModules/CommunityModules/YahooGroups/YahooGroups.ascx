@@ -1,3 +1,5 @@
+<%@ Import namespace="Rainbow.Framework.Security"%>
+<%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
 <%@ control inherits="Rainbow.Content.Web.Modules.OneFileModule" language="c#" %>
 <%@ import namespace="System.Web.Mail" %>
 <%@ import namespace="Rainbow.Framework.Web.UI" %>
@@ -30,7 +32,7 @@
                 Message.Text = "Debug info: " + yahooGroupName + " - " + yahooServerName;
         }
 
-        email.Text = PortalSettings.CurrentUser.Identity.Email;
+        email.Text = RainbowPrincipal.CurrentUser.Identity.Email;
     }
 
     void SubscribeBtn_Click(Object sender, EventArgs e)
@@ -52,7 +54,7 @@
         mail.To.Add(listname + "-subscribe " + yahooServerName);
         mail.Subject = "subscribe";
         mail.Body = "subscribe";
-        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Settings.Config.SmtpServer);
+        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Context.Config.SmtpServer);
         smtp.Send(mail);
 
         //MailMessage Mailer = new MailMessage();
@@ -71,7 +73,7 @@
         mail.To.Add(listname + "-unsubscribe " + yahooServerName);
         mail.Subject = "unsubscribe";
         mail.Body = "unsubscribe";
-        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Settings.Config.SmtpServer);
+        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Rainbow.Framework.Context.Config.SmtpServer);
         smtp.Send(mail);
 
         //MailMessage Mailer = new MailMessage();

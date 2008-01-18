@@ -1,6 +1,6 @@
 using System;
 using System.Web;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Site.Data;
 
 namespace Rainbow.Framework.DataTypes
@@ -30,7 +30,7 @@ namespace Rainbow.Framework.DataTypes
             get
             {
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
                 return new ModulesDB().GetModulesByName(InnerDataSource.ToString(), portalSettings.PortalID);
             }
         }
@@ -51,7 +51,7 @@ namespace Rainbow.Framework.DataTypes
         public override string DataValueField
         {
             get { return "ModuleID"; }
-            set { throw new ArgumentException("Value cannot be set", "ModuleID"); }
+            set { throw new ArgumentException("Value cannot be set", "value"); }
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Rainbow.Framework.DataTypes
         public override string DataTextField
         {
             get { return "ModuleTitle"; }
-            set { throw new ArgumentException("Value cannot be set", "ModuleTitle"); }
+            set { throw new ArgumentException("Value cannot be set", "value"); }
         }
     }
 }

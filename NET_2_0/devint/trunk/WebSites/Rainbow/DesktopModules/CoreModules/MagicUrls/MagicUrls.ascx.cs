@@ -5,7 +5,7 @@ using System.Web.UI;
 using System.Xml;
 using Rainbow.Framework;
 using Rainbow.Framework.Web.UI.WebControls;
-using Path=Rainbow.Framework.Settings.Path;
+using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -39,7 +39,7 @@ namespace Rainbow.Content.Web.Modules
             {
                 XmlDocument _checkXml = new XmlDocument();
 
-                myFolder = Path.WebPathCombine(portalSettings.PortalPath, "MagicUrl");
+                myFolder = Path.WebPathCombine(PortalSettings.PortalPath, "MagicUrl");
                 if (!Directory.Exists(Server.MapPath(myFolder)))
                     Directory.CreateDirectory(Server.MapPath(myFolder));
 
