@@ -201,7 +201,7 @@ namespace Rainbow.Framework.Logging
         /// Fills the text writer.
         /// </summary>
         /// <param name="sw">The sw.</param>
-        private void FillTextWriter(TextWriter sw)
+        static void FillTextWriter(TextWriter sw)
         {
             if (ma != null)
             {

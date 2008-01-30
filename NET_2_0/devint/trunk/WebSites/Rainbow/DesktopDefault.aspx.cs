@@ -3,6 +3,7 @@ using System.IO;
 using Rainbow.Framework;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Design;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
@@ -85,7 +86,7 @@ namespace Rainbow
                 LayoutPlaceHolder.Controls.Add(Page.LoadControl(defaultLayoutPath));
             }
 
-             LogEntry();
+            LogEntry();
             //System.Threading.Thread t = new System.Threading.Thread(new System.Threading.ThreadStart(LogEntry()));
             //t.Start();
         }
@@ -101,20 +102,38 @@ namespace Rainbow
             if (Config.EnableMonitoring)
             {
                 // TODO: after next compile, or whenever use MonitoringAction.PageRequest doe "PageRequest"
+                // TODO: [moudrick] catch exceptions inside the method
                 try
                 {
-                    
-                    Monitoring.LogEntry(RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, portalSettings.PortalID,
-                                        Convert.ToInt32(PageID), Rainbow.Framework.Monitoring.MonitoringAction.PageRequest, string.Empty);
+                    MonitoringProvider.Instance.LogEntry(RainbowPrincipal.CurrentUser.Identity.ProviderUserKey,
+                                        portalSettings.PortalID,
+                                        Convert.ToInt32(PageID),
+                                        MonitoringAction.PageRequest,
+                                        string.Empty);
                 }
-                catch (System.Data.SqlClient.SqlException sqex)
+                catch (System.Data.SqlClient.SqlException ex)
                 {
-                    ErrorHandler.Publish(LogLevel.Debug, "SQL Monitoring LogEntry Error", sqex);
+                    ErrorHandler.Publish(LogLevel.Debug, "SQL Monitoring LogEntry Error", ex);
                 }
                 catch (Exception ex)
                 {
                     ErrorHandler.Publish(LogLevel.Debug, "Monitoring LogEntry Error", ex);
                 }
+            }
+        }
+
+        /// <summary>
+        /// strings used for actions
+        /// </summary>
+        static class MonitoringAction
+        {
+            /// <summary>
+            /// Gets the page request.
+            /// </summary>
+            /// <value>The page request.</value>
+            static public string PageRequest
+            {
+                get { return "PageRequest"; }
             }
         }
     }

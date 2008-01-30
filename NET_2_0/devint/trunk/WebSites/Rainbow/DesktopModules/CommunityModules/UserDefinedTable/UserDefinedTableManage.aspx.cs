@@ -5,15 +5,8 @@ using System.Data.SqlClient;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Data;
-using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
-using Label = System.Web.UI.WebControls.Label;
-using LinkButton = System.Web.UI.WebControls.LinkButton;
-using Page = System.Web.UI.Page;
 
 namespace Rainbow.Content.Web.Modules 
 {
@@ -22,7 +15,7 @@ namespace Rainbow.Content.Web.Modules
 	/// Written by: Shaun Walker (IbuySpy Workshop)
 	/// Moved into Rainbow by Jakob Hansen, hansen3000@hotmail.com
 	/// </summary>
-	[Rainbow.Framework.History("Ender", "2003/03/18", "Added file and Xsl functionality")]
+	[History("Ender", "2003/03/18", "Added file and Xsl functionality")]
 	public partial class UserDefinedTableManage : EditItemPage
 	{
         /// <summary>
@@ -65,7 +58,7 @@ namespace Rainbow.Content.Web.Modules
 		protected void cmdCancel_Click(object sender, EventArgs e)
 		{
 			// Redirect back to the portal home page
-			this.RedirectBackToReferringPage();
+			RedirectBackToReferringPage();
 		}
 
 
@@ -328,8 +321,8 @@ namespace Rainbow.Content.Web.Modules
 		public string IfVisible(object data, string trueStr, string falseStr)
 		{
 			bool check = bool.Parse(DataBinder.Eval(data, "Visible").ToString());
-			return (check ? this.CurrentTheme.GetImage(trueStr, trueStr + ".gif").ImageUrl : 
-							this.CurrentTheme.GetImage(falseStr, falseStr + ".gif").ImageUrl);
+			return (check ? CurrentTheme.GetImage(trueStr, trueStr + ".gif").ImageUrl : 
+							CurrentTheme.GetImage(falseStr, falseStr + ".gif").ImageUrl);
 		}
 
         /// <summary>

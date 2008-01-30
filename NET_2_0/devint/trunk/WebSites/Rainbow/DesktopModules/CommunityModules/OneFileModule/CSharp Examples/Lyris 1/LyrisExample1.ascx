@@ -1,11 +1,9 @@
-<%@ Import namespace="Rainbow.Framework.Security"%>
-<%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
 <%@ Control Language="c#" inherits="Rainbow.Content.Web.Modules.OneFileModule" %>
 <%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" assembly="Rainbow.Framework.Web" %>
 <%@ Import Namespace="System.Web.Mail" %>
 <%@ Import Namespace="Rainbow.Framework.Web.UI" %>
 <%@ Import Namespace="Rainbow.Framework.Web.UI.WebControls" %>
-<%@ import namespace="Rainbow.Framework.Site.Configuration" %>
+<%@ Import namespace="Rainbow.Framework.Security"%>
 
 <script language="C#" runat="server">
 

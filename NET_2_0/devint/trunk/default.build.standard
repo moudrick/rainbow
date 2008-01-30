@@ -5,6 +5,11 @@
   This file should be named default.build to impact
   Put here your custom initialization of standard build process
 -->
+
+  <property name="tests.impersonated.domain" value="" /> <!-- ${environment::get-variable('USERDOMAIN')} -->
+  <property name="tests.impersonated.username" value="${environment::get-user-name()}" />  <!-- ${environment::get-variable('USERNAME')} -->
+  <property name="tests.impersonated.password" value="set me here!!!" />
+
   <include buildfile="nant.build" />
 
   <target name="imtest">

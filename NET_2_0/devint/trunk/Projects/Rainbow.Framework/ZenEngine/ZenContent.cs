@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -97,7 +96,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
             // Loop through each entry in the configuration system for this tab
             // Ensure that the visiting user has access to view the module
-            foreach (ModuleSettings _moduleSettings in portalSettings.ActivePage.Modules)
+            foreach (RainbowModule _moduleSettings in portalSettings.ActivePage.Modules)
             {
                 if (_moduleSettings.PaneName.ToLower() == Content.ToLower()
                     && PortalSecurity.IsInRoles(_moduleSettings.AuthorizedViewRoles))

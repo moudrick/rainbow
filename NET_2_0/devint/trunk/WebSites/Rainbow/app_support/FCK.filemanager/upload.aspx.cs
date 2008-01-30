@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Web;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 
@@ -36,7 +36,7 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.upload.aspx
 				HttpPostedFile oFile = Request.Files.Get("FCKeditor_File") ;
 	
 				string fileName = oFile.FileName.Substring(oFile.FileName.LastIndexOf("\\") + 1);
-				Hashtable ms = ModuleSettingsProvider.GetModuleSettings(portalSettings.ActiveModule);
+				Hashtable ms = RainbowModuleProvider.GetModuleSettings(portalSettings.ActiveModule);
 				string DefaultImageFolder = "default";
 				if (ms["MODULE_IMAGE_FOLDER"] != null) 
 				{

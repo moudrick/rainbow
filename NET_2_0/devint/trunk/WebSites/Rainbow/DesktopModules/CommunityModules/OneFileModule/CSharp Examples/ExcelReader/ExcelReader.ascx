@@ -1,4 +1,3 @@
-<%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
 <%@ Import namespace="Rainbow.Framework.Providers"%>
 <%@ control inherits="Rainbow.Content.Web.Modules.OneFileModule" language="c#" %>
 <%@ register assembly="Rainbow.Framework.Web" namespace="Rainbow.Framework.Web.UI.WebControls"

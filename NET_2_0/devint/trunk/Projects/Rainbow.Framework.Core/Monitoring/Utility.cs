@@ -9,21 +9,6 @@ using System.Web.Security;
 namespace Rainbow.Framework.Monitoring
 {
     /// <summary>
-    /// strings used for actions
-    /// </summary>
-    public static class MonitoringAction
-    {
-        /// <summary>
-        /// Gets the page request.
-        /// </summary>
-        /// <value>The page request.</value>
-        static public string PageRequest
-        {
-            get { return "PageRequest"; }
-        }
-    }
-
-    /// <summary>
     /// Utility Helper class for Rainbow Framework Monitoring purposes.
     /// You get some static methods like
     /// <list type="string">
@@ -31,6 +16,7 @@ namespace Rainbow.Framework.Monitoring
     /// <item>DataSet GetMonitoringStats(DateTime startDate</item>
     /// </list>
     /// </summary>
+    //TODO: [moudrick] move these methods to Monitoring Provider
     public static class Utility
     {
         /// <summary>

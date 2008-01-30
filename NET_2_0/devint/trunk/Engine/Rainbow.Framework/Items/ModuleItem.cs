@@ -1,6 +1,6 @@
 using System;
 
-namespace Rainbow.Framework
+namespace Rainbow.Framework.Items
 {
     /// <summary>
     /// This class encapsulates the basic attributes of a Module, and is used
@@ -11,11 +11,11 @@ namespace Rainbow.Framework
     /// </summary>
     public class ModuleItem : IComparable
     {
-        private int _moduleOrder;
-        private string _title;
-        private string _pane;
-        private int _ID;
-        private int _defID;
+        int moduleOrder;
+        string title;
+        string pane;
+        int id;
+        int defID;
 
         /// <summary>
         /// Order
@@ -23,8 +23,8 @@ namespace Rainbow.Framework
         /// <value>The order.</value>
         public int Order
         {
-            get { return _moduleOrder; }
-            set { _moduleOrder = value; }
+            get { return moduleOrder; }
+            set { moduleOrder = value; }
         }
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace Rainbow.Framework
         /// <value>The title.</value>
         public string Title
         {
-            get { return _title; }
-            set { _title = value; }
+            get { return title; }
+            set { title = value; }
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace Rainbow.Framework
         /// <value>The name of the pane.</value>
         public string PaneName
         {
-            get { return _pane; }
-            set { _pane = value; }
+            get { return pane; }
+            set { pane = value; }
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace Rainbow.Framework
         /// <value>The ID.</value>
         public int ID
         {
-            get { return _ID; }
-            set { _ID = value; }
+            get { return id; }
+            set { id = value; }
         }
 
         /// <summary>
@@ -63,8 +63,8 @@ namespace Rainbow.Framework
         /// <value>The module def ID.</value>
         public int ModuleDefID
         {
-            get { return _defID; }
-            set { _defID = value; }
+            get { return defID; }
+            set { defID = value; }
         }
 
         /// <summary>

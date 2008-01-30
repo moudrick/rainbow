@@ -2,14 +2,12 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
-using System.Web;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Core.BLL;
 using System.Collections.Generic;
 
 namespace Rainbow.Framework.Site.Data
@@ -244,7 +242,6 @@ namespace Rainbow.Framework.Site.Data
                         //ErrorHandler.Publish(Rainbow.Framework.LogLevel.Warn, "An Error Occurred in AddModule. ", ex);
                         ErrorHandler.Publish(LogLevel.Warn, "An Error Occurred in AddModule. ", ex);
                     }
-
                     return (int) parameterModuleID.Value;
                 }
             }
@@ -259,7 +256,7 @@ namespace Rainbow.Framework.Site.Data
         public void DeleteModule(int moduleID)
         {
             //BOWEN 11 June 2005 - BEGIN
-            Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
+            Portal portalSettings = PortalProvider.Instance.CurrentPortal;
             bool useRecycler = bool.Parse(
                     PortalProvider.Instance.GetPortalCustomSettings(portalSettings.PortalID,
                     PortalProvider.Instance.GetPortalBaseSettings(
@@ -485,7 +482,7 @@ namespace Rainbow.Framework.Site.Data
         /// <param name="portalID">The portal ID.</param>
         /// <returns></returns>
         /// <remarks>Other relevant sources: GetModuleDefinitions Stored Procedure</remarks>
-        public IList<GeneralModuleDefinition> GetCurrentModuleDefinitionsList( int portalID ) {
+        public IList<RainbowModuleDefinition> GetCurrentModuleDefinitionsList( int portalID ) {
             // Create Instance of Connection and Command Object
             SqlConnection myConnection = DBHelper.SqlConnection;
             SqlCommand myCommand = new SqlCommand( "rb_GetCurrentModuleDefinitions", myConnection );
@@ -498,11 +495,11 @@ namespace Rainbow.Framework.Site.Data
             // Open the database connection and execute the command
             myConnection.Open();
 
-            IList<GeneralModuleDefinition> result = new List<GeneralModuleDefinition>();
-            GeneralModuleDefinition genModDef;
+            IList<RainbowModuleDefinition> result = new List<RainbowModuleDefinition>();
+            RainbowModuleDefinition genModDef;
             using ( SqlDataReader dr = myCommand.ExecuteReader( CommandBehavior.CloseConnection ) ) {
                 while ( dr.Read() ) {
-                    genModDef = new GeneralModuleDefinition();
+                    genModDef = new RainbowModuleDefinition();
 
                     genModDef.FriendlyName = dr.GetString( 0 );
                     genModDef.DesktopSource = dr.GetString( 1 );
@@ -1261,7 +1258,7 @@ namespace Rainbow.Framework.Site.Data
         [Obsolete("UpdateModuleSetting was moved in ModuleSettings.UpdateModuleSetting", false)]
         public void UpdateModuleSetting(int moduleID, string key, string value)
         {
-            ModuleSettingsProvider.UpdateModuleSetting(moduleID, key, value);
+            RainbowModuleProvider.UpdateModuleSetting(moduleID, key, value);
         }
 
         /// <summary>

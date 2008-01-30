@@ -12,7 +12,6 @@ using Rainbow.Framework.Exceptions;
 namespace Rainbow.Framework.Data
 {
     /// <summary>
-    /// Summary description for DBHelper
     /// </summary>
     public static class DBHelper
     {

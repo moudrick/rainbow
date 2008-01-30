@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using Rainbow.Framework;
 
-namespace Rainbow.Framework.Site.Configuration
+namespace Rainbow.Framework.BusinessObjects
 {
 	/// <summary>
 	/// ModuleSettings Class encapsulates the detailed settings 
@@ -10,11 +10,10 @@ namespace Rainbow.Framework.Site.Configuration
 	/// </summary>
 	[History("gman3001", "2004/10/06", "Added GetModuleDesktopSrc method to return the source path of a Module specified by its ID")]
 	[History("Jes1111", "2003/04/24", "Added Cacheable property")]
-	public class ModuleSettings
+	public class RainbowModule
 	{
 		const string strAdmin = "Admin;";
 
-	    #region Public Fields
         /// <summary>
 		/// ModuleID
 		/// </summary>
@@ -128,12 +127,12 @@ namespace Rainbow.Framework.Site.Configuration
 		/// Is Cacheable?
 		/// </summary>
 		public bool Cacheable;
-        #endregion
 
         /// <summary>
 		/// ModuleSettings
 		/// </summary>
-		public ModuleSettings()
+		//TODO: [moudrick] make it internal
+        public RainbowModule()
 		{
 			ModuleID = 0;
 			PaneName = "no pane";

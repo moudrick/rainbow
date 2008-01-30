@@ -138,7 +138,7 @@ namespace Rainbow.App_Code
                     if ((context.Request.IsAuthenticated) &&
                         (context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias] == null))
                     {
-                        PortalSecurity.KillSession();
+                        SignOnController.KillSession();
                     }
                 }
 

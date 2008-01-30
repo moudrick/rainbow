@@ -1,18 +1,15 @@
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
 using Rainbow.Framework.Data;
-using System;
 
-namespace Rainbow.Framework.Security
+namespace Rainbow.Framework.Providers.MsSql
 {
-    /// <summary>
-    /// Monitoring class is called by the rainbow components to write an entry
-    /// into the monitoring database table.  It is used to maintain and show
-    /// site statistics such as who has logged on and at what time.
-    /// Written by Paul Yarrow, paul@paulyarrow.com
-    /// </summary>
-    public class Monitoring
+    ///<summary>
+    /// Monitoring provider implementation for MS SQL databases 
+    ///</summary>
+    public class MsSqlMonitoringProvider : MonitoringProvider
     {
         /// <summary>
         /// Logs the entry.
@@ -22,7 +19,11 @@ namespace Rainbow.Framework.Security
         /// <param name="pageID">The page ID.</param>
         /// <param name="actionType">Type of the action.</param>
         /// <param name="userField">The user field.</param>
-        public static void LogEntry(Guid userID, int portalID, long pageID, string actionType, string userField)
+        public override void LogEntry(Guid userID,
+                             int portalID,
+                             long pageID,
+                             string actionType,
+                             string userField)
         {
             // note by manu: This exception is already managed at higher level
             // a nested try catch slows down with no real use
@@ -31,7 +32,10 @@ namespace Rainbow.Framework.Security
             // if a tab id of 0 is received, this is the home page
             // so change the number to 1
             // A page ID of -1 is sent when logging in and out
-            if (pageID == 0) pageID = 1;
+            if (pageID == 0)
+            {
+                pageID = 1;
+            }
 
             // Create Instance of Connection and Command Object
             using (SqlConnection myConnection = DBHelper.SqlConnection)

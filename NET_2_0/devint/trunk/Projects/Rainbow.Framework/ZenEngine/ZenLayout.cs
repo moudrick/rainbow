@@ -8,7 +8,6 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -685,7 +684,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (portal.ActivePage.Modules.Count > 0)
             {
                 // Loop through each entry in the configuration system for this tab
-                foreach (ModuleSettings moduleSettings in portal.ActivePage.Modules)
+                foreach (RainbowModule moduleSettings in portal.ActivePage.Modules)
                 {
                     // Ensure that the visiting user has access to view the current module
                     if (PortalSecurity.IsInRoles(moduleSettings.AuthorizedViewRoles))

@@ -11,7 +11,6 @@ using Rainbow.Framework.Context;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -63,7 +62,7 @@ namespace Rainbow.Admin
 
             object value = GetModule();
             if ( value != null ) {
-                ModuleSettings m = ( ModuleSettings )value;
+                RainbowModule m = ( RainbowModule )value;
 
                 // Construct Authorized User Roles string
 
@@ -236,7 +235,7 @@ namespace Rainbow.Admin
             object value = GetModule();
             if (value != null)
             {
-                ModuleSettings m = (ModuleSettings)value;
+                RainbowModule m = (RainbowModule)value;
 
                 moduleType.Text = giveMeFriendlyName(m.GuidID);
 
@@ -319,9 +318,9 @@ namespace Rainbow.Admin
             }
         }
 
-        ModuleSettings GetModule()
+        RainbowModule GetModule()
         {
-            foreach (ModuleSettings module in portalSettings.ActivePage.Modules)
+            foreach (RainbowModule module in portalSettings.ActivePage.Modules)
             {
                 if (module.ModuleID == ModuleID)
                 {

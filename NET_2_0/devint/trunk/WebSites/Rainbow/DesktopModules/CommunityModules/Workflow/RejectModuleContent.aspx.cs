@@ -1,10 +1,10 @@
 using System;
 using System.Web.Mail;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;
 
@@ -30,23 +30,27 @@ namespace Rainbow.Content.Web.Modules
             if (!IsPostBack)
             {
                 // Destinators
-                ModuleSettings ms = null;
+                RainbowModule module = null;
                 for (int i = 0; i < portalSettings.ActivePage.Modules.Count; i++)
                 {
-                    ms = (ModuleSettings) portalSettings.ActivePage.Modules[i];
-                    if (ms.ModuleID == ModuleID)
+                    module = (RainbowModule) portalSettings.ActivePage.Modules[i];
+                    if (module.ModuleID == ModuleID)
+                    {
                         break;
+                    }
                 }
-                string tmp = ms.AuthorizedAddRoles.Trim();
-                tmp += ms.AuthorizedEditRoles.Trim();
-                tmp += ms.AuthorizedDeleteRoles.Trim();
+                string tmp = module.AuthorizedAddRoles.Trim();
+                tmp += module.AuthorizedEditRoles.Trim();
+                tmp += module.AuthorizedDeleteRoles.Trim();
                 string[] emails =
                     MailHelper.GetEmailAddressesInRoles(tmp.Split(";".ToCharArray()), portalSettings.PortalID);
                 for (int i = 0; i < emails.Length; i++)
+                {
                     emailForm.To.Add(emails[i]);
+                }
                 // Subject
                 emailForm.Subject = General.GetString("SWI_REJECT_SUBJECT1", "The new content of ") + "'" +
-                                    ms.ModuleTitle + "'" +
+                                    module.ModuleTitle + "'" +
                                     General.GetString("SWI_REJECT_SUBJECT2", " has been rejected");
                 // Message
                 emailForm.HtmlBodyText = General.GetString("SWI_REJECT_BODY", "You can find the rejected content at:") +

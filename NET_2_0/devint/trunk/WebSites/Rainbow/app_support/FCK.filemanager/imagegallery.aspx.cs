@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Image = System.Drawing.Image;
@@ -72,7 +72,7 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 				} 
 				else
 				{
-					Hashtable ms = ModuleSettingsProvider.GetModuleSettings(portalSettings.ActiveModule);
+					Hashtable ms = RainbowModuleProvider.GetModuleSettings(portalSettings.ActiveModule);
 					string DefaultImageFolder = "default";
 					if (ms["MODULE_IMAGE_FOLDER"] != null) 
 					{

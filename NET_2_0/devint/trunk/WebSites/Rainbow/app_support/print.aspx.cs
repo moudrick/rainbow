@@ -1,7 +1,7 @@
 using System;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -21,9 +21,9 @@ namespace Rainbow
 		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
 		private void Page_Load(object sender, EventArgs e)
 		{
-			foreach (ModuleSettings module in portalSettings.ActivePage.Modules)
+			foreach (RainbowModule module in portalSettings.ActivePage.Modules)
 			{
-				if (this.Request.Params["ModID"] != null && module.ModuleID == int.Parse(this.Request.Params["ModID"]))
+				if (Request.Params["ModID"] != null && module.ModuleID == int.Parse(Request.Params["ModID"]))
 				{
 					// create an instance of the module
 					PortalModuleControl myPortalModule = (PortalModuleControl) LoadControl(Path.ApplicationRoot + "/" + module.DesktopSrc);
@@ -36,7 +36,6 @@ namespace Rainbow
 					break;
 				}
 			}
-
 		}
 
 		#region Web Form Designer generated code

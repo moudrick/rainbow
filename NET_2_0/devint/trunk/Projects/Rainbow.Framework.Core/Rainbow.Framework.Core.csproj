@@ -74,22 +74,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLL\Base\BLLBase.cs" />
-    <Compile Include="BLL\GeneralModuleDefinition.cs" />
     <Compile Include="BLL\MergeEngine.cs" />
     <Compile Include="BLL\Utils\BagHolder.cs" />
     <Compile Include="BLL\Utils\CookieUtil.cs" />
     <Compile Include="BLL\Utils\GlobalResources.cs" />
-    <Compile Include="Configuration\LogProperties.cs" />
-    <Compile Include="Configuration\Settings\ModuleSettings.cs" />
-    <Compile Include="Configuration\Settings\Providers\ModuleSettingsProvider.cs" />
-    <Compile Include="Configuration\Settings\Providers\PortalProvider.cs" />
+    <Compile Include="Logging\LogProperties.cs" />
+    <Compile Include="Provider\RainbowModuleProvider.cs" />
     <Compile Include="DAL\DatabaseUpdater.cs" />
     <Compile Include="DAL\DBHelper.cs" />
     <Compile Include="DAL\ModulesDB.cs" />
     <Compile Include="DAL\RecyclerDB.cs" />
     <Compile Include="DAL\UpdateEntry.cs" />
     <Compile Include="DAL\UsersDb.cs" />
+    <Compile Include="Security\MsSqlMonitoringProvider.cs" />
     <Compile Include="UI\DataTypes\ApplicationUrlDataType.cs" />
     <Compile Include="UI\DataTypes\CheckBoxListDataType.cs" />
     <Compile Include="UI\DataTypes\CultureItem.cs" />
@@ -123,8 +120,6 @@
     <Compile Include="Helpers\SearchHelper.cs" />
     <Compile Include="Helpers\WebPartHelper.cs" />
     <Compile Include="Helpers\XslHelper.cs" />
-    <Compile Include="Configuration\Items\ModuleItem.cs" />
-    <Compile Include="Configuration\Items\PortalItem.cs" />
     <Compile Include="KickStarter\CommonClasses\DataChangeEventArgs.cs" />
     <Compile Include="KickStarter\CommonClasses\Error.cs" />
     <Compile Include="KickStarter\CommonClasses\SQLHelper.cs" />
@@ -133,8 +128,7 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="GlobalEnums.cs" />
-    <Compile Include="Configuration\Log4NetLogProvider.cs" />
+    <Compile Include="Logging\Log4NetLogProvider.cs" />
     <Compile Include="Provider\Web\SqlUrlBuilderProvider.cs" />
     <Compile Include="Provider\Web\UrlBuilderHelper.cs" />
     <Compile Include="Scheduler\CachedScheduler.cs" />
@@ -145,7 +139,6 @@
     <Compile Include="Scheduler\SchedulerTask.cs" />
     <Compile Include="Scheduler\SimpleScheduler.cs" />
     <Compile Include="Security\IEditUserProfile.cs" />
-    <Compile Include="Security\Monitoring.cs" />
     <Compile Include="Security\RainbowPrincipal.cs" />
     <Compile Include="Security\Security.cs" />
     <Compile Include="Security\SpecialRoles.cs" />
@@ -229,6 +222,9 @@
       <Project>{DCDA0619-FD70-42B6-B2DA-78EAFA4BE955}</Project>
       <Name>DUEMETRI.UI.WebControls.HWMenu</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BLL\Base\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

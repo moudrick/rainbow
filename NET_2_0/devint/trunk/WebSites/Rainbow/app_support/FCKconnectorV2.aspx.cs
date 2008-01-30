@@ -14,7 +14,6 @@ using System.Text;
 using System.Web;
 using System.Xml;
 using Rainbow.Framework.BusinessObjects;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
@@ -347,7 +346,7 @@ namespace Rainbow.FCKeditorV2
 				{
 					Portal localPOrtalSettings = PortalProvider.Instance.CurrentPortal;
 					if (localPOrtalSettings == null) return null;
-					Hashtable ms = ModuleSettingsProvider.GetModuleSettings(localPOrtalSettings.ActiveModule);
+					Hashtable ms = RainbowModuleProvider.GetModuleSettings(localPOrtalSettings.ActiveModule);
 					string DefaultImageFolder = "default";
 					if (ms["MODULE_IMAGE_FOLDER"] != null) 
 					{

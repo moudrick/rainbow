@@ -83,9 +83,9 @@ namespace Rainbow.Content.Web.Modules
                 try
                 {
                     // must delete from database too
-                    PortalItem p = (PortalItem) portals[portalList.SelectedIndex];
+                    PortalItem portalItem = (PortalItem) portals[portalList.SelectedIndex];
                     //Response.Write("Will delete " + p.Name);
-                    PortalProvider.Instance.DeletePortal(p.ID);
+                    PortalProvider.Instance.DeletePortal(portalItem.ID);
 
                     // remove item from list
                     portals.RemoveAt(portalList.SelectedIndex);
@@ -108,12 +108,13 @@ namespace Rainbow.Content.Web.Modules
             if (portalList.SelectedIndex != -1)
             {
                 // must delete from database too
-                PortalItem p = (PortalItem) portals[portalList.SelectedIndex];
+                PortalItem portalItem = (PortalItem) portals[portalList.SelectedIndex];
 
                 //Add new portal
                 // added mID by Mario Endara <mario@softworks.com.uy> to support security check (2004/11/09)
-                Response.Redirect(HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/PortalsAdministration/EditPortal.aspx", 0,
-                                                          "PortalID=" + p.ID + "&mID=" + ModuleID));
+                Response.Redirect(HttpUrlBuilder.BuildUrl(
+                    "~/DesktopModules/CoreModules/PortalsAdministration/EditPortal.aspx", 0,
+                    "PortalID=" + portalItem.ID + "&mID=" + ModuleID));
             }
             base.OnEdit();
         }

@@ -31,9 +31,8 @@ namespace Rainbow.Framework.Core
             //2) Connection problems are thown immediately as errors.
             get
             {
-                //Caches dbversion
-
-                if (HttpContext.Current.Application[DbKey] == null)
+                HttpContext httpContext = RainbowContext.Current.HttpContext;
+                if (httpContext.Application[DbKey] == null)
                 {
                     try
                     {
@@ -48,7 +47,6 @@ namespace Rainbow.Framework.Core
                             ;
                         DBHelper.ExeSQL(createRbVersions);
                     }
-
                     catch (SqlException ex)
                     {
                         throw new DatabaseUnreachableException(
@@ -72,11 +70,11 @@ namespace Rainbow.Framework.Core
                         // TODO: This should be the best place
                         // where run the codefor empty db
                     }
-                    HttpContext.Current.Application.Lock();
-                    HttpContext.Current.Application[DbKey] = curVersion;
-                    HttpContext.Current.Application.UnLock();
+                    httpContext.Application.Lock();
+                    httpContext.Application[DbKey] = curVersion;
+                    httpContext.Application.UnLock();
                 }
-                return (int)HttpContext.Current.Application[DbKey];
+                return (int)httpContext.Application[DbKey];
             }
         }
 
@@ -88,20 +86,19 @@ namespace Rainbow.Framework.Core
         {
             get
             {
-                HttpContext httpContext = HttpContext.Current; //TODO: use RainbowContext here
-                const string codeVersionParameterName = "CodeVersion";
+                HttpContext httpContext = RainbowContext.Current.HttpContext;
+                const string contextApplicationKey = "CodeVersion";
                 if (httpContext != null)
                 {
-                    if (httpContext.Application[codeVersionParameterName] == null)
+                    if (httpContext.Application[contextApplicationKey] == null)
                     {
-                        FileVersionInfo f =
-                            FileVersionInfo.GetVersionInfo(
-                                Assembly.GetAssembly(typeof (RainbowContext)).Location);
+                        FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(
+                            Assembly.GetAssembly(typeof (RainbowContext)).Location);
                         httpContext.Application.Lock();
-                        httpContext.Application[codeVersionParameterName] = f.FilePrivatePart;
+                        httpContext.Application[contextApplicationKey] = fileVersionInfo.FilePrivatePart;
                         httpContext.Application.UnLock();
                     }
-                    return (int)httpContext.Application[codeVersionParameterName];
+                    return (int)httpContext.Application[contextApplicationKey];
                 }
                 else
                 {
@@ -118,14 +115,17 @@ namespace Rainbow.Framework.Core
         {
             get
             {
-                if (HttpContext.Current.Application["ProductVersion"] == null)
+                HttpContext httpContext = RainbowContext.Current.HttpContext;
+                const string contextApplicationKey = "ProductVersion";
+                if (httpContext.Application[contextApplicationKey] == null)
                 {
-                    FileVersionInfo f = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-                    HttpContext.Current.Application.Lock();
-                    HttpContext.Current.Application["ProductVersion"] = f.ProductVersion;
-                    HttpContext.Current.Application.UnLock();
+                    FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(
+                        Assembly.GetExecutingAssembly().Location);
+                    httpContext.Application.Lock();
+                    httpContext.Application[contextApplicationKey] = fileVersionInfo.ProductVersion;
+                    httpContext.Application.UnLock();
                 }
-                return (string)HttpContext.Current.Application["ProductVersion"];
+                return (string)httpContext.Application[contextApplicationKey];
             }
         }
 
@@ -139,11 +139,11 @@ namespace Rainbow.Framework.Core
             get
             {
                 //Clear version cache so we are sure we update correctly
-                HttpContext.Current.Application.Lock();
-                HttpContext.Current.Application[DbKey] = null;
-                HttpContext.Current.Application.UnLock();
+                HttpContext httpContext = HttpContext.Current;
+                httpContext.Application.Lock();
+                httpContext.Application[DbKey] = null;
+                httpContext.Application.UnLock();
                 int version = DatabaseVersion;
-                Debug.WriteLine("DatabaseVersion: " + version);
                 return version;
             }
         }
@@ -211,6 +211,5 @@ namespace Rainbow.Framework.Core
             }
             return true;
         }
-
     }
 }

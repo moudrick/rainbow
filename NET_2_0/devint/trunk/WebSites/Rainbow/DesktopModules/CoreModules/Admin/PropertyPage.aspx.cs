@@ -3,7 +3,7 @@ using System.Collections;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using Config=Rainbow.Framework.Context.Config;
@@ -189,7 +189,7 @@ namespace Rainbow.Content.Web.Modules
         private void EditTable_UpdateControl(object sender,
                                              SettingsTableEventArgs e)
         {
-            ModuleSettingsProvider.UpdateModuleSetting(ModuleID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
+            RainbowModuleProvider.UpdateModuleSetting(ModuleID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
     }
 }

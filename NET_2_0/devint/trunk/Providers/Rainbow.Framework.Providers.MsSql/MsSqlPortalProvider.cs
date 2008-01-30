@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.Data;
 using System.Data.SqlClient;
@@ -10,7 +11,6 @@ using System.Web;
 using System.Web.Caching;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
@@ -18,7 +18,6 @@ using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Scheduler;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
 using Path=Rainbow.Framework.Path;
@@ -154,38 +153,33 @@ namespace Rainbow.Framework.Providers.MsSql
         /// <summary>
         /// Fills brief portal settings for edit
         /// </summary>
-        /// <param name="settings"></param>
+        /// <param name="portal"></param>
         /// <param name="portalID"></param>
-        public override void FillPortalSettingsBrief(Portal settings, int portalID)
+        public override void FillPortalSettingsBrief(Portal portal, int portalID)
         {
-            // Create Instance of Connection and Command Object
             using (SqlConnection myConnection = DBHelper.SqlConnection)
             {
                 using (SqlCommand myCommand = new SqlCommand("rb_GetPortalSettingsPortalID", myConnection))
                 {
-                    // Mark the Command as a SPROC
                     myCommand.CommandType = CommandType.StoredProcedure;
-                    // Add Parameters to SPROC
                     SqlParameter parameterPortalID = new SqlParameter(strATPortalID, SqlDbType.Int);
                     parameterPortalID.Value = portalID;
                     myCommand.Parameters.Add(parameterPortalID);
-                    // Open the database connection and execute the command
                     myConnection.Open();
                     SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection); //by Manu CloseConnection
-
                     try
                     {
                         if (result.Read())
                         {
-                            settings.PortalID = Int32.Parse(result["PortalID"].ToString());
-                            settings.PortalName = result["PortalName"].ToString();
-                            settings.PortalAlias = result["PortalAlias"].ToString();
+                            portal.PortalID = Int32.Parse(result["PortalID"].ToString());
+                            portal.PortalName = result["PortalName"].ToString();
+                            portal.PortalAlias = result["PortalAlias"].ToString();
                             //jes1111 - this.PortalTitle = ConfigurationSettings.AppSettings["PortalTitlePrefix"] + result["PortalName"].ToString();
-                            settings.PortalTitle = string.Concat(Config.PortalTitlePrefix, result["PortalName"].ToString());
-                            settings.PortalPath = result["PortalPath"].ToString();
-                            SetPageID(settings.ActivePage, 0);
-                            SetPortalPath(settings.ActivePage, settings.PortalPath);
-                            settings.ActiveModule = 0;
+                            portal.PortalTitle = string.Concat(Config.PortalTitlePrefix, result["PortalName"].ToString());
+                            portal.PortalPath = result["PortalPath"].ToString();
+                            SetPageID(portal.ActivePage, 0);
+                            SetPortalPath(portal.ActivePage, portal.PortalPath);
+                            portal.ActiveModule = 0;
                         }
                         else
                         {
@@ -350,7 +344,7 @@ namespace Rainbow.Framework.Providers.MsSql
             }
             catch (ProviderException ex)
             {
-                Uri requestUri = HttpContext.Current.Request.Url;
+                Uri requestUri = RainbowContext.Current.HttpContext.Request.Url;
                 string databaseUpdateRedirect = Config.DatabaseUpdateRedirect;
                 if (databaseUpdateRedirect.StartsWith("~/"))
                 {
@@ -682,7 +676,7 @@ namespace Rainbow.Framework.Providers.MsSql
 
                     while (result.Read())
                     {
-                        ModuleSettings m = new ModuleSettings();
+                        RainbowModule m = RainbowModuleProvider.CreateModuleSettings();
                         m.ModuleID = (int) result["ModuleID"];
                         m.ModuleDefID = (int) result["ModuleDefID"];
                         m.PageID = newTabID;
@@ -789,7 +783,7 @@ namespace Rainbow.Framework.Providers.MsSql
 
                             while (dr.Read())
                             {
-                                ModuleSettingsProvider.UpdateModuleSetting(newModuleID,
+                                RainbowModuleProvider.UpdateModuleSetting(newModuleID,
                                                                            dr["SettingName"].ToString(),
                                                                            dr["SettingValue"].ToString());
                             }
@@ -834,27 +828,26 @@ namespace Rainbow.Framework.Providers.MsSql
         /// Gets the portals.
         /// </summary>
         /// <returns></returns>
-        public override DataSet GetPortalsDataSet()
+        public override IList<PortalAliasItem> GetPortalAliasesList()
         {
-            // Create Instance of Connection and Command Object
-            SqlConnection myConnection = GetConnection();
             string selectSQL = "SELECT PortalID, PortalAlias from rb_Portals WHERE PortalID >= 0";
-            SqlDataAdapter myCommand = new SqlDataAdapter(selectSQL, myConnection);
-
-            // Create and Fill the DataSet
-            DataSet myDataSet = new DataSet();
+            SqlDataReader reader = ExecuteReader(CommandType.Text, selectSQL);
+            List<PortalAliasItem> portals = new List<PortalAliasItem>();
             try
             {
-                myCommand.Fill(myDataSet);
+                while (reader.Read())
+                {
+                    PortalAliasItem item = new PortalAliasItem();
+                    item.ID = Convert.ToInt32(reader["PortalID"].ToString());
+                    item.PortalAlias = reader["PortalAlias"].ToString();
+                    portals.Add(item);
+                }
             }
             finally
             {
-                myCommand.Dispose();
-                myConnection.Close();
-                myConnection.Dispose();
+                reader.Close();
             }
-            // Return the dataset
-            return myDataSet;
+            return portals;
         }
 
         /// <summary>
@@ -964,70 +957,24 @@ namespace Rainbow.Framework.Providers.MsSql
         /// <returns></returns>
         public override ArrayList GetPortals()
         {
-            ArrayList list = new ArrayList();
-
-            SqlDataReader dr = GetPortalsSqlDataReader();
+            SqlDataReader dataReader = ExecuteReader(CommandType.StoredProcedure, strrb_GetPortals);
+            ArrayList portals = new ArrayList();
             try
             {
-                while (dr.Read())
+                while (dataReader.Read())
                 {
                     PortalItem portalItem = new PortalItem();
-                    portalItem.Name = dr["PortalName"].ToString();
-                    portalItem.Path = dr["PortalPath"].ToString();
-                    portalItem.ID = Convert.ToInt32(dr["PortalID"].ToString());
-                    list.Add(portalItem);
+                    portalItem.Name = dataReader["PortalName"].ToString();
+                    portalItem.Path = dataReader["PortalPath"].ToString();
+                    portalItem.ID = Convert.ToInt32(dataReader["PortalID"].ToString());
+                    portals.Add(portalItem);
                 }
             }
             finally
             {
-                dr.Close(); //by Manu, fixed bug 807858
+                dataReader.Close(); //by Manu, fixed bug 807858
             }
-            return list;
-        }
-
-        /// <summary>
-        /// The GetPortals method returns an ArrayList containing all of the
-        /// Portals registered in this database.<br/>
-        /// GetPortals Stored Procedure
-        /// </summary>
-        /// <returns>portals</returns>
-        public override ArrayList GetPortalsArrayList()
-        {
-            ArrayList portals = new ArrayList();
-
-            // Create Instance of Connection and Command Object
-            using (SqlConnection myConnection = DBHelper.SqlConnection)
-            {
-                using (SqlCommand myCommand = new SqlCommand(strrb_GetPortals, myConnection))
-                {
-                    // Mark the Command as a SPROC
-                    myCommand.CommandType = CommandType.StoredProcedure;
-                    // Execute the command
-                    myConnection.Open();
-
-                    using (SqlDataReader dr = myCommand.ExecuteReader(CommandBehavior.CloseConnection))
-                    {
-                        try
-                        {
-                            while (dr.Read())
-                            {
-                                PortalItem p = new PortalItem();
-                                p.Name = dr["PortalName"].ToString();
-                                p.Path = dr["PortalPath"].ToString();
-                                p.ID = Convert.ToInt32(dr["PortalID"].ToString());
-                                portals.Add(p);
-                            }
-                        }
-
-                        finally
-                        {
-                            dr.Close(); //by Manu, fixed bug 807858
-                        }
-                    }
-                    // Return the portals
-                    return portals;
-                }
-            }
+            return portals;
         }
 
         /// <summary>
@@ -1701,7 +1648,7 @@ namespace Rainbow.Framework.Providers.MsSql
 
                         while (result.Read())
                         {
-                            ModuleSettings m = new ModuleSettings();
+                            RainbowModule m = RainbowModuleProvider.CreateModuleSettings();
                             m.ModuleID = (int)result["ModuleID"];
                             m.ModuleDefID = (int)result["ModuleDefID"];
                             m.GuidID = (Guid)result["GeneralModDefID"];
@@ -2079,24 +2026,6 @@ namespace Rainbow.Framework.Providers.MsSql
             }
         }
 
-        /// GetPortals Stored Procedure
-        static SqlDataReader GetPortalsSqlDataReader()
-        {
-            // Create Instance of Connection and Command Object
-            SqlConnection myConnection = DBHelper.SqlConnection;
-            SqlCommand myCommand = new SqlCommand("rb_GetPortals", myConnection);
-
-            // Mark the Command as a SPROC
-            myCommand.CommandType = CommandType.StoredProcedure;
-
-            // Execute the command
-            myConnection.Open();
-            SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection);
-
-            // Return the datareader 
-            return result;
-        }
-
         /// <summary>
         /// Gets the connection.
         /// </summary>
@@ -2122,6 +2051,26 @@ namespace Rainbow.Framework.Providers.MsSql
             }
 
             return (new SqlConnection(strSqlConnection));
+        }
+
+        SqlDataReader ExecuteReader(CommandType commandType, string cmdText)
+        {
+            SqlCommand command = new SqlCommand(cmdText, GetNewConnection());
+            command.CommandType = commandType;
+            using (command)
+            {
+                command.Connection.Open();
+                return command.ExecuteReader(CommandBehavior.CloseConnection);
+            }
+        }
+
+        /// <summary>
+        /// Gets new connection by default connection string.
+        /// </summary>
+        /// <returns>New connection</returns>
+        SqlConnection GetNewConnection()
+        {
+            return DBHelper.SqlConnection;
         }
     }
 }

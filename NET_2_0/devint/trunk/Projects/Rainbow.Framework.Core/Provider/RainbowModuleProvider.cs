@@ -1,23 +1,40 @@
 using System;
 using System.Collections;
+using System.Configuration.Provider;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Web.UI.WebControls;
 
-namespace Rainbow.Framework.Core.Configuration.Settings.Providers
+namespace Rainbow.Framework.Providers
 {
     ///<summary>
     /// This is interface class for get module settings values 
     /// from appropriate persistence localtion
     ///</summary>
-    public class ModuleSettingsProvider
+    public class RainbowModuleProvider : ProviderBase
     {
+        const string providerType = "module";
+
+        /// <summary>
+        /// Gets default configured Module provider.
+        /// Singleton pattern standard member.
+        /// </summary>
+        /// <returns>Default instance of Portal Provider class</returns>
+        public static RainbowModuleProvider Instance
+        {
+            get
+            {
+                return ProviderConfiguration.GetDefaultProviderFromCache<RainbowModuleProvider>(
+                    providerType, RainbowContext.Current.HttpContext.Cache);
+            }
+        }
+
         const string strDesktopSrc = "DesktopSrc";
         const string strATModuleID = "@ModuleID";
         
@@ -102,7 +119,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
         /// <param name="moduleID">Module ID</param>
         /// <param name="moduleConfiguration">Current module configuration</param>
         /// <returns>New module instance</returns>
-        public static ModuleSettings InstantiateNewModuleSettings(int moduleID, ModuleSettings moduleConfiguration)
+        public static RainbowModule InstantiateNewModuleSettings(int moduleID, RainbowModule moduleConfiguration)
         {
             string controlPath = string.Empty;
             SqlDataReader dr = GetModuleDefinitionByID(moduleID);
@@ -118,7 +135,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
                 dr.Close();
             }
             //Update settings
-            ModuleSettings moduleSettings = new ModuleSettings();
+            RainbowModule moduleSettings = CreateModuleSettings();
             moduleSettings.ModuleID = moduleID;
             moduleSettings.PageID = moduleConfiguration.PageID;
             moduleSettings.PaneName = moduleConfiguration.PaneName;
@@ -270,7 +287,7 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             {
                 // Rainbow.Framework.Configuration.ErrorHandler.HandleException("There was a problem loading: '" + ControlPath + "'", ex);
                 // throw;
-                throw new Exceptions.RainbowException(LogLevel.Fatal, "There was a problem loading: '" + controlPath + "'", ex);
+                throw new Framework.Exceptions.RainbowException(LogLevel.Fatal, "There was a problem loading: '" + controlPath + "'", ex);
             }
         }
 
@@ -400,6 +417,11 @@ namespace Rainbow.Framework.Core.Configuration.Settings.Providers
             }
             //Invalidate cache
             CurrentCache.Remove(Key.ModuleSettings(moduleID));
+        }
+
+        public static RainbowModule CreateModuleSettings()
+        {
+            return new RainbowModule();
         }
     }
 }

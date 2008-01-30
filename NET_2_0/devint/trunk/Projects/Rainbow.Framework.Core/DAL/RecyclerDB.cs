@@ -1,8 +1,9 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Data;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Providers;
 
 namespace Rainbow.Framework.Site.Data
 {
@@ -16,9 +17,9 @@ namespace Rainbow.Framework.Site.Data
         /// <summary>
         /// MoveModuleToNewTab assigns the given module to the given tab
         /// </summary>
-        /// <param name="TabID">The tab ID.</param>
+        /// <param name="tabID">The tab ID.</param>
         /// <param name="moduleID">The module ID.</param>
-        public static void MoveModuleToNewTab(int TabID, int moduleID)
+        public static void MoveModuleToNewTab(int tabID, int moduleID)
         {
             // Create Instance of Connection and Command Object
             using (SqlConnection MyConnection = DBHelper.SqlConnection)
@@ -34,7 +35,7 @@ namespace Rainbow.Framework.Site.Data
                     MyCommand.Parameters.Add(ParameterModuleID);
 
                     SqlParameter ParameterTabID = new SqlParameter("@TabID", SqlDbType.Int, 4);
-                    ParameterTabID.Value = TabID;
+                    ParameterTabID.Value = tabID;
                     MyCommand.Parameters.Add(ParameterTabID);
 
                     MyConnection.Open();
@@ -57,10 +58,10 @@ namespace Rainbow.Framework.Site.Data
         /// Modules for a specific portal module that have been 'deleted' to the recycler.
         /// <a href="GetModulesInRecycler.htm" style="color:green">GetModulesInRecycler Stored Procedure</a>
         /// </summary>
-        /// <param name="PortalID">The portal ID.</param>
+        /// <param name="portalID">The portal ID.</param>
         /// <param name="SortField">The sort field.</param>
         /// <returns>SqlDataReader</returns>
-        public static DataTable GetModulesInRecycler(int PortalID, string SortField)
+        public static DataTable GetModulesInRecycler(int portalID, string SortField)
         {
             // Create Instance of Connection and Command Object
             using (SqlConnection MyConnection = DBHelper.SqlConnection)
@@ -72,7 +73,7 @@ namespace Rainbow.Framework.Site.Data
 
                     // Add Parameters to SPROC
                     SqlParameter ParameterModuleID = new SqlParameter("@PortalID", SqlDbType.Int, 4);
-                    ParameterModuleID.Value = PortalID;
+                    ParameterModuleID.Value = portalID;
                     MyCommand.SelectCommand.Parameters.Add(ParameterModuleID);
 
                     SqlParameter ParameterSortField = new SqlParameter("@SortField", SqlDbType.VarChar, 50);
@@ -111,15 +112,12 @@ namespace Rainbow.Framework.Site.Data
         /// <summary>
         /// Modules the is in recycler.
         /// </summary>
-        /// <param name="ModuleID">The module ID.</param>
+        /// <param name="moduleID">The module ID.</param>
         /// <returns></returns>
-        public static bool ModuleIsInRecycler(int ModuleID)
+        public static bool ModuleIsInRecycler(int moduleID)
         {
-            ModuleSettings ms = GetModuleSettingsForIndividualModule(ModuleID);
-            if (ms.PageID == 0)
-                return true;
-            else
-                return false;
+            RainbowModule ms = GetModuleSettingsForIndividualModule(moduleID);
+            return ms.PageID == 0;
         }
 
         /// <summary>
@@ -127,9 +125,9 @@ namespace Rainbow.Framework.Site.Data
         /// THE RECYCLER NEEDS TO BE ABLE TO RETRIEVE A MODULE'S ModuleSettings INDEPENDENT
         /// OF THE TAB THE MODULE IS LOCATED ON (AND INDEPENDENT OF THE CURRENT 'ActiveTab'
         /// </summary>
-        /// <param name="ModuleID">The module ID.</param>
+        /// <param name="moduleID">The module ID.</param>
         /// <returns></returns>
-        public static ModuleSettings GetModuleSettingsForIndividualModule(int ModuleID)
+        public static RainbowModule GetModuleSettingsForIndividualModule(int moduleID)
         {
             // Create Instance of Connection and Command Object
             using (SqlConnection MyConnection = DBHelper.SqlConnection)
@@ -141,16 +139,15 @@ namespace Rainbow.Framework.Site.Data
 
                     // Add Parameters to SPROC
                     SqlParameter ParameterModuleID = new SqlParameter("@ModuleID", SqlDbType.Int, 4);
-                    ParameterModuleID.Value = ModuleID;
+                    ParameterModuleID.Value = moduleID;
                     MyCommand.Parameters.Add(ParameterModuleID);
 
                     // Open the database connection and execute the command
                     MyConnection.Open();
                     SqlDataReader result;
-                    object myValue;
                     result = MyCommand.ExecuteReader(CommandBehavior.CloseConnection);
 
-                    ModuleSettings m = new ModuleSettings();
+                    RainbowModule m = RainbowModuleProvider.CreateModuleSettings();
 
                     // Read the resultset -- There is only one row!
                     while (result.Read())
@@ -161,7 +158,7 @@ namespace Rainbow.Framework.Site.Data
                         m.PaneName = (string) result["PaneName"];
                         m.ModuleTitle = (string) result["ModuleTitle"];
 
-                        myValue = result["AuthorizedEditRoles"];
+                        object myValue = result["AuthorizedEditRoles"];
                         m.AuthorizedEditRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
 
                         myValue = result["AuthorizedViewRoles"];

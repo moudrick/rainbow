@@ -4,10 +4,7 @@ using Rainbow.Framework.Core;
 
 namespace Rainbow.Framework.Logging
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class LogCodeVersionProperty
+    class LogCodeVersionProperty
     {
         /// <summary>
         /// Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
@@ -27,11 +24,8 @@ namespace Rainbow.Framework.Logging
             }
         }
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class LogUserNameProperty
+    
+    class LogUserNameProperty
     {
         /// <summary>
         /// Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
@@ -43,7 +37,7 @@ namespace Rainbow.Framework.Logging
         {
             try
             {
-                return HttpContext.Current.User.Identity.Name;
+                return RainbowContext.Current.HttpContext.User.Identity.Name;
             }
             catch
             {
@@ -52,10 +46,7 @@ namespace Rainbow.Framework.Logging
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class LogRewrittenUrlProperty
+    class LogRewrittenUrlProperty
     {
         /// <summary>
         /// Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
@@ -67,7 +58,7 @@ namespace Rainbow.Framework.Logging
         {
             try
             {
-                return HttpContext.Current.Server.HtmlDecode(HttpContext.Current.Request.Url.ToString());
+                return HttpUtility.HtmlDecode(RainbowContext.Current.HttpContext.Request.Url.ToString());
             }
             catch
             {
@@ -76,10 +67,7 @@ namespace Rainbow.Framework.Logging
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class LogUserAgentProperty
+    class LogUserAgentProperty
     {
         /// <summary>
         /// Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
@@ -91,7 +79,7 @@ namespace Rainbow.Framework.Logging
         {
             try
             {
-                return HttpContext.Current.Request.UserAgent;
+                return RainbowContext.Current.HttpContext.Request.UserAgent;
             }
             catch
             {
@@ -100,10 +88,7 @@ namespace Rainbow.Framework.Logging
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class LogUserLanguagesProperty
+    class LogUserLanguagesProperty
     {
         /// <summary>
         /// Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
@@ -115,7 +100,7 @@ namespace Rainbow.Framework.Logging
         {
             try
             {
-                return string.Join(";", HttpContext.Current.Request.UserLanguages);
+                return string.Join(";", RainbowContext.Current.HttpContext.Request.UserLanguages);
             }
             catch
             {
@@ -124,10 +109,7 @@ namespace Rainbow.Framework.Logging
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class LogUserIpProperty
+    class LogUserIpProperty
     {
         /// <summary>
         /// Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
@@ -139,7 +121,7 @@ namespace Rainbow.Framework.Logging
         {
             try
             {
-                return HttpContext.Current.Request.UserHostAddress;
+                return RainbowContext.Current.HttpContext.Request.UserHostAddress;
             }
             catch
             {
@@ -148,9 +130,7 @@ namespace Rainbow.Framework.Logging
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    /*
     public class PortalAliasProperty
     {
         /// <summary>
@@ -171,4 +151,5 @@ namespace Rainbow.Framework.Logging
             }
         }
     }
+     */
 }

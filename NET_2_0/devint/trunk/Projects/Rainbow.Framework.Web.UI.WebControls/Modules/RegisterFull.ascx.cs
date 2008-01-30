@@ -357,7 +357,7 @@ namespace Rainbow.Content.Web.Modules
                     SendRegistrationNoticeToAdmin();
                 }
                 //Full signon
-                PortalSecurity.SignOn(EmailField.Text, PasswordField.Text, false, RedirectPage);
+                SignOnController.SignOn(EmailField.Text, PasswordField.Text, false, RedirectPage);
             }
         }
 
@@ -373,7 +373,7 @@ namespace Rainbow.Content.Web.Modules
                     {
                         //All should be ok now
                         //Try logoff user
-                        PortalSecurity.SignOut(string.Empty, true);
+                        SignOnController.SignOut(string.Empty, true);
 
                         //Logon user again with new settings
                         string actualPassword;
@@ -386,7 +386,7 @@ namespace Rainbow.Content.Web.Modules
                             actualPassword = originalPassword;
                         }
                         //Full signon
-                        PortalSecurity.SignOn(EmailField.Text, actualPassword, false, RedirectPage);
+                        SignOnController.SignOn(EmailField.Text, actualPassword, false, RedirectPage);
                     }
                     else if (RedirectPage == string.Empty)
                     {

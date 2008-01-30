@@ -11,11 +11,9 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Path = Rainbow.Framework.Path;
 
@@ -214,7 +212,7 @@ namespace Rainbow.Framework.Web.UI
                 if ( !Config.ForceExpire ) {
                     //jminond - option to kill cookie after certain time always
                     int minuteAdd = Config.CookieExpire;
-                    PortalSecurity.ExtendCookie( portalSettings, minuteAdd );
+                    SignOnController.ExtendCookie( portalSettings, minuteAdd );
                 }
             }
 
@@ -909,18 +907,18 @@ namespace Rainbow.Framework.Web.UI
             }
         }
 
-        private ModuleSettings _module;
+        private RainbowModule _module;
 
         /// <summary>
         /// Stores current module if applicable
         /// </summary>
         /// <value>The module.</value>
-        public ModuleSettings Module {
+        public RainbowModule Module {
             get {
                 if ( _module == null ) {
                     if ( ModuleID > 0 ) {
                         // Obtain selected module data
-                        foreach ( ModuleSettings _mod in portalSettings.ActivePage.Modules ) {
+                        foreach ( RainbowModule _mod in portalSettings.ActivePage.Modules ) {
                             if ( _mod.ModuleID == ModuleID ) {
                                 _module = _mod;
                                 return _module;
@@ -947,7 +945,7 @@ namespace Rainbow.Framework.Web.UI
                 if ( _moduleSettings == null ) {
                     if ( ModuleID > 0 )
                         // Get settings from the database
-                        _moduleSettings = ModuleSettingsProvider.GetModuleSettings( ModuleID, this );
+                        _moduleSettings = RainbowModuleProvider.GetModuleSettings( ModuleID, this );
                     else
                         // Or provides an empty hashtable
                         _moduleSettings = new Hashtable();
@@ -1143,7 +1141,7 @@ namespace Rainbow.Framework.Web.UI
             ModulesDB mdb = new ModulesDB();
 
             if ( portalSettings.ActivePage.Modules.Count > 0 ) {
-                foreach ( ModuleSettings ms in portalSettings.ActivePage.Modules ) {
+                foreach ( RainbowModule ms in portalSettings.ActivePage.Modules ) {
                     guid = mdb.GetModuleGuid( ms.ModuleID );
                     if ( guid != Guid.Empty ) guidsInUse += guid.ToString().ToUpper() + "@";
                 }

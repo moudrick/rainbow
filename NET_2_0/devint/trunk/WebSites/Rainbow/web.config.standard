@@ -13,6 +13,8 @@
       <section name="geographic" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
       <section name="portal"     type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
       <section name="portalPage" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="module"     type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="monitoring" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
       <section name="urlBuilder" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
     </sectionGroup>
     <section name="urlrewritingnet" restartOnExternalChanges="true" requirePermission="false" type="UrlRewritingNet.Configuration.UrlRewriteSection, UrlRewritingNet.UrlRewriter" />
@@ -374,7 +376,6 @@
         <add namespace="Rainbow" />
         <add namespace="Rainbow.Framework.Core" />
         <add namespace="Rainbow.Framework" />
-        <add namespace="Rainbow.Framework.Site.Configuration" />
         <!-- 
         <add namespace="Rainbow.Framework.Settings" />
         <add namespace="Rainbow.Framework.Web" />
@@ -662,6 +663,18 @@
         <add name="PortalPageProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlPortalPageProvider, Rainbow.Framework.Providers.MsSql" />
       </providers>
     </portalPage>
+    <module defaultProvider="ModuleProvider">
+      <providers>
+        <clear/>
+        <add name="ModuleProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlModuleProvider, Rainbow.Framework.Providers.MsSql" />
+      </providers>
+    </module>
+    <monitoring defaultProvider="MonitoringProvider">
+      <providers>
+        <clear/>
+        <add name="MonitoringProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlMonitoringProvider, Rainbow.Framework.Providers.MsSql" />
+      </providers>
+    </monitoring>
   </providers>
   <urlrewritingnet xmlns="http://www.urlrewriting.net/schemas/config/2006/07">
     <providers>

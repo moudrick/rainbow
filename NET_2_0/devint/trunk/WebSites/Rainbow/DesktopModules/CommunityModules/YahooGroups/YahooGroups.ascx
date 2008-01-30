@@ -1,10 +1,9 @@
-<%@ Import namespace="Rainbow.Framework.Security"%>
-<%@ Import namespace="Rainbow.Framework.Core.Configuration.Settings"%>
 <%@ control inherits="Rainbow.Content.Web.Modules.OneFileModule" language="c#" %>
+
 <%@ import namespace="System.Web.Mail" %>
 <%@ import namespace="Rainbow.Framework.Web.UI" %>
 <%@ import namespace="Rainbow.Framework.Web.UI.WebControls" %>
-<%@ import namespace="Rainbow.Framework.Site.Configuration" %>
+<%@ Import namespace="Rainbow.Framework.Security"%>
 
 <script runat="server" language="C#">
 

@@ -17,26 +17,25 @@ namespace Rainbow.Admin
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         private void Page_Load(object sender, EventArgs e)
         {
-            string _user = string.Empty;
-            string _password = string.Empty;
-            string _alias = string.Empty;
+            string password = string.Empty;
+            string alias = string.Empty;
 
             // Get Login User from querystring
             if (Request.Params["usr"] != null)
             {
-                _user = Request.Params["usr"];
+                string user = Request.Params["usr"];
                 // Get Login Password from querystring
                 if (Request.Params["pwd"] != null)
                 {
-                    _password = Request.Params["pwd"];
+                    password = Request.Params["pwd"];
                 }
                 // Get portalaias
                 if (Request.Params["alias"] != null)
                 {
-                    _alias = HttpUrlBuilder.BuildUrl("~/Default.aspx", 0, string.Empty, Request.Params["alias"]);
+                    alias = HttpUrlBuilder.BuildUrl("~/Default.aspx", 0, string.Empty, Request.Params["alias"]);
                 }
                 //try to validate logon
-                if (PortalSecurity.SignOn(_user, _password, false, _alias) == null)
+                if (SignOnController.SignOn(user, password, false, alias) == null)
                 {
                     // Login failed
                     PortalSecurity.AccessDenied();

@@ -5,10 +5,9 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Items;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 
@@ -48,14 +47,12 @@ namespace Rainbow.Content.Web.Modules
             if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
             {
                 //Do not remove these checks!! It fails installing modules on startup
-                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
-
-                int p = portalSettings.PortalID;
+                int portalID = PortalProvider.Instance.CurrentPortal.PortalID;
 
                 // Get a list of modules of the current running portal
                 SettingItem linkedModule =
                     new SettingItem(
-                        new CustomListDataType(new ModulesDB().GetModulesSinglePortal(p), "ModuleTitle", "ModuleID"));
+                        new CustomListDataType(new ModulesDB().GetModulesSinglePortal(portalID), "ModuleTitle", "ModuleID"));
                 linkedModule.Required = true;
                 linkedModule.Order = 0;
                 linkedModule.Value = "0";
@@ -84,7 +81,7 @@ namespace Rainbow.Content.Web.Modules
             //Try to get info on linked control
             int linkedModuleID = Int32.Parse(Settings["LinkedModule"].ToString());
 
-            ModuleSettings moduleSettings = ModuleSettingsProvider.InstantiateNewModuleSettings(linkedModuleID, ModuleConfiguration);
+            RainbowModule moduleSettings = RainbowModuleProvider.InstantiateNewModuleSettings(linkedModuleID, ModuleConfiguration);
             string controlPath = moduleSettings.DesktopSrc;
             //Load control
             PortalModuleControl portalModule;

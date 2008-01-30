@@ -4,9 +4,8 @@ using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -175,7 +174,7 @@ namespace Rainbow.Content.Web.Modules
                             //Add to linked
 
                             //Get default assignee from module setting
-                            Hashtable linkedModuleSettings = ModuleSettingsProvider.GetModuleSettings(linkedModuleID, this);
+                            Hashtable linkedModuleSettings = RainbowModuleProvider.GetModuleSettings(linkedModuleID, this);
                             string linkedModuleAssignee = linkedModuleSettings["TASKS_DEFAULT_ASSIGNEE"].ToString();
 
                             tasks.AddTask(linkedModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email,
@@ -238,7 +237,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="key"></param>
         /// <param name="translation"></param>
         /// <param name="sender"></param>
-        protected void AddListItem(string key, string translation, DropDownList sender)
+        protected static void AddListItem(string key, string translation, DropDownList sender)
         {
             ListItem Item = new ListItem();
             Item.Value = key.Substring(key.Length - 1, 1);

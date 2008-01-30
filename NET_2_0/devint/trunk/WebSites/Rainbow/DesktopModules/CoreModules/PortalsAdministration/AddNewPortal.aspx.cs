@@ -31,11 +31,8 @@ namespace Rainbow.AdminAll
             // If this is the first visit to the page, populate the site data
             if (Page.IsPostBack == false)
             {
-                // Bind the Portals to the SolutionsList
-                SolutionsList.DataSource = PortalProvider.Instance.GetPortalsDataSet();
+                SolutionsList.DataSource = PortalProvider.Instance.GetPortalAliasesList();
                 SolutionsList.DataBind();
-
-                //Preselect default Portal
                 if (SolutionsList.Items.FindByValue("Default") != null)
                 {
                     SolutionsList.Items.FindByValue("Default").Selected = true;

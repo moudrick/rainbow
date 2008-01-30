@@ -6,7 +6,6 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
@@ -157,7 +156,7 @@ namespace Rainbow.Content.Web.Modules
                 string moduleDesktopSrc = string.Empty;
                 if (moduleID > 0)
                 {
-                    moduleDesktopSrc = ModuleSettingsProvider.GetModuleDesktopSrc(moduleID);
+                    moduleDesktopSrc = RainbowModuleProvider.GetModuleDesktopSrc(moduleID);
                 }
                 if (moduleDesktopSrc.Length == 0)
                 {

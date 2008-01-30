@@ -15,7 +15,6 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Helpers;
@@ -23,7 +22,6 @@ using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Setup;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Path=Rainbow.Framework.Path;
 
@@ -57,7 +55,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
     {
         #region Private field variables
 
-        private ModuleSettings _moduleConfiguration;
+        private RainbowModule _moduleConfiguration;
         private int _canEdit = 0;
         private int _canAdd = 0;
         private int _canView = 0;
@@ -382,7 +380,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             //Default configuration
             _tabID = 0;
 
-            _moduleConfiguration = new ModuleSettings();
+            _moduleConfiguration = RainbowModuleProvider.CreateModuleSettings();
         }
 
         #endregion
@@ -404,7 +402,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             {
                 if (_settings == null)
                 {
-                    _settings = ModuleSettingsProvider.GetModuleSettings(ModuleID, baseSettings);
+                    _settings = RainbowModuleProvider.GetModuleSettings(ModuleID, baseSettings);
                 }
                 return _settings;
             }
@@ -526,7 +524,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// Configuration
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ModuleSettings ModuleConfiguration
+        public RainbowModule ModuleConfiguration
         {
             get
             {
@@ -2985,7 +2983,7 @@ end of modification
             ArrayList paneModules = new ArrayList();
 
             // get the portal setting at the Tab level and not from this class as it is not refreshed
-            foreach (ModuleSettings _module in (Page).portalSettings.ActivePage.Modules)
+            foreach (RainbowModule _module in (Page).portalSettings.ActivePage.Modules)
             {
                 if (PortalSettings.ActivePage.PageID == _module.PageID && _module.PaneName.ToLower() == pane.ToLower())
                 {

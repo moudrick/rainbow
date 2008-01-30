@@ -9,12 +9,11 @@ using Rainbow.Framework;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Context;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Items;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
 
@@ -247,7 +246,7 @@ namespace Rainbow.Content.Web.Modules
                 return new LiteralControl(text);
             }
 
-            ModuleSettings moduleSettings = ModuleSettingsProvider.InstantiateNewModuleSettings(module, ModuleConfiguration);
+            RainbowModule moduleSettings = RainbowModuleProvider.InstantiateNewModuleSettings(module, ModuleConfiguration);
             string controlPath = moduleSettings.DesktopSrc;
             PortalModuleControl portalModule;
             try

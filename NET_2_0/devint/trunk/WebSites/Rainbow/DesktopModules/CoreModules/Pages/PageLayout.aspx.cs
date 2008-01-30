@@ -10,7 +10,6 @@ using Rainbow.Framework.Context;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
@@ -635,7 +634,7 @@ namespace Rainbow.Admin
         {
             ArrayList paneModules = new ArrayList();
 
-            foreach (ModuleSettings _module in portalSettings.ActivePage.Modules)
+            foreach (RainbowModule _module in portalSettings.ActivePage.Modules)
             {
                 if ((_module.PaneName).ToLower() == pane.ToLower() && portalSettings.ActivePage.PageID == _module.PageID
                     )

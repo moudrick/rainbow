@@ -7,6 +7,8 @@
       <section name="geographic" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
       <section name="portal"     type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
       <section name="portalPage" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="module"     type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="monitoring" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
     </sectionGroup>
   </configSections>
   <connectionStrings>
@@ -130,5 +132,17 @@
         <add name="PortalPageProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlPortalPageProvider, Rainbow.Framework.Providers.MsSql" />
       </providers>
     </portalPage>
-  </providers>
+    <module defaultProvider="ModuleProvider">
+      <providers>
+        <clear/>
+        <add name="ModuleProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlModuleProvider, Rainbow.Framework.Providers.MsSql" />
+      </providers>
+    </module>
+    <monitoring defaultProvider="MonitoringProvider">
+      <providers>
+        <clear/>
+        <add name="MonitoringProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlMonitoringProvider, Rainbow.Framework.Providers.MsSql" />
+      </providers>
+    </monitoring>
+ </providers>
 </configuration>

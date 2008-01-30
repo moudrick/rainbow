@@ -5,7 +5,6 @@ using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -32,7 +31,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (portalSettings.ActivePage.Modules.Count > 0)
             {
                 // Loop through each entry in the configuration system for this tab
-                foreach (ModuleSettings _moduleSettings in portalSettings.ActivePage.Modules)
+                foreach (RainbowModule _moduleSettings in portalSettings.ActivePage.Modules)
                 {
                     if (!_moduleSettings.Cacheable) _moduleSettings.CacheTime = -1; // Disable cache
 

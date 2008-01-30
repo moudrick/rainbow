@@ -39,6 +39,8 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="MsSqlRainbowModuleProvider.cs" />
+    <Compile Include="MsSqlMonitoringProvider.cs" />
     <Compile Include="MsSqlPortalPageProvider.cs" />
     <Compile Include="MsSqlPortalProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

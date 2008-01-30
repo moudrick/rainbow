@@ -50,7 +50,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void LoginBtn_Click(Object sender, EventArgs e)
         {
-            if (PortalSecurity.SignOn(email.Text, password.Text, RememberCheckBox.Checked) == null)
+            if (SignOnController.SignOn(email.Text, password.Text, RememberCheckBox.Checked) == null)
             {
                 Message.Text = "Login failed";
                 Message.TextKey = "LOGIN_FAILED";

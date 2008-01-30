@@ -2,8 +2,7 @@ using System;
 using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
@@ -62,10 +61,8 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         private void PageCustomPropertyPage_Load(object sender, EventArgs e)
         {
-            EditTable.DataSource =
-                new SortedList(
-                    ModuleSettingsProvider.GetModuleUserSettings(this.ModuleID,
-                                                               (Guid)RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, this));
+            EditTable.DataSource = new SortedList(RainbowModuleProvider.GetModuleUserSettings(ModuleID,
+                RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, this));
             EditTable.DataBind();
         }
 
@@ -98,11 +95,12 @@ namespace Rainbow.Content.Web.Modules
             Response.Redirect(Rainbow.Framework.HttpUrlBuilder.BuildUrl("~/Default.aspx", PageID));
         }
 
-        private void EditTable_UpdateControl(object sender,
-                                             Rainbow.Framework.Web.UI.WebControls.SettingsTableEventArgs e)
+        void EditTable_UpdateControl(object sender,
+            Framework.Web.UI.WebControls.SettingsTableEventArgs e)
         {
-            ModuleSettingsProvider.UpdateCustomModuleSetting(ModuleID, (Guid)RainbowPrincipal.CurrentUser.Identity.ProviderUserKey,
-                                                           e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
+            RainbowModuleProvider.UpdateCustomModuleSetting(ModuleID, 
+                RainbowPrincipal.CurrentUser.Identity.ProviderUserKey,
+                e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
     }
 }

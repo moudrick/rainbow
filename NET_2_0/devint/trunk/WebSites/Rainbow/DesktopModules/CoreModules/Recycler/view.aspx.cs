@@ -1,8 +1,8 @@
 using System;
 using System.Data;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
@@ -14,12 +14,12 @@ namespace Rainbow
     /// </summary>
     public partial class recyclerViewPage : ViewItemPage
     {
-        private int moduleID;
+        int moduleID;
 
         // TODO check if this works
         //protected ArrayList portalTabs;
         protected DataTable portalTabs;
-        protected ModuleSettings module;
+        protected RainbowModule module;
 
         /// <summary>
         /// Handles the Load event of the Page control.

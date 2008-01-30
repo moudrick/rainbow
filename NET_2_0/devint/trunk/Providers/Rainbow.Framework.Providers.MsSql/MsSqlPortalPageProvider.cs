@@ -17,8 +17,7 @@ using Rainbow.Framework.Design;
 namespace Rainbow.Framework.Providers.MsSql
 {
     ///<summary>
-    /// This is interface class for get module settings values 
-    /// from appropriate persistence localtion
+    /// Portal page provider implementation for MS SQL databases 
     ///</summary>
     public class MsSqlPortalPageProvider : PortalPageProvider
     {

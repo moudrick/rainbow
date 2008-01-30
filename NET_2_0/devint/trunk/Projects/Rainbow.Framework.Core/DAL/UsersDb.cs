@@ -205,10 +205,11 @@ namespace Rainbow.Framework.Users.Data
         /// The GetPortalRoles method returns a list of all roles for the specified portal.
         /// </summary>
         /// <param name="portalAlias">The portal alias.</param>
-        /// <returns>A <see cref="T:IList<RainbowRole>"/> containing all role objects.
+        /// <returns>A <see cref="IList{RainbowRole}"/> containing all role objects.
         /// </returns>
-        public IList<RainbowRole> GetPortalRoles( string portalAlias ) {
-            return RoleProvider.GetAllRoles( portalAlias );
+        public IList<RainbowRole> GetPortalRoles(string portalAlias)
+        {
+            return RoleProvider.GetAllRoles(portalAlias);
         }
 
         /// <summary>
@@ -287,34 +288,6 @@ namespace Rainbow.Framework.Users.Data
         //TODO: [moudrick]  inline this method
         {
             return MembershipProvider.GetSingleUser(CurrentPortalSettings.PortalAlias, userName);
-        }
-
-        /// <summary>
-        /// UsersDB.Login() Method.
-        /// The Login method validates a email/password hash pair against credentials
-        /// stored in the users database.  If the email/password hash pair is valid,
-        /// the method returns user's name.
-        /// </summary>
-        /// <param name="email">The email.</param>
-        /// <param name="password">The password.</param>
-        /// <returns></returns>
-        /// <remarks>UserLogin Stored Procedure</remarks>
-        public MembershipUser Login( string email, string password ) {
-
-            string userName = MembershipProvider.GetUserNameByEmail( CurrentPortalSettings.PortalAlias, email );
-
-            if ( string.IsNullOrEmpty( userName ) ) {
-                return null;
-            }
-            RainbowUser user = ( RainbowUser )MembershipProvider.GetUser( userName, true );
-            bool isValid = MembershipProvider.ValidateUser( user.UserName, password );
-
-            if ( isValid ) {
-                return user;
-            }
-            else {
-                return null;
-            }
         }
 
         /// <summary>

@@ -68,8 +68,8 @@
                                         <asp:checkbox id="chkUseTemplate" runat="server" autopostback="True" text="Use Template?"
                                             textkey="AM_USETEMPLATE" /></td>
                                     <td class="Normal">
-                                        <asp:dropdownlist id="SolutionsList" runat="server" cssclass="NormalTextBox" datatextfield="PortalAlias"
-                                            datavaluefield="PortalID" width="350px">
+                                        <asp:dropdownlist id="SolutionsList" runat="server" CssClass="NormalTextBox" 
+                                            DataTextField="PortalAlias" DataValueField="ID" Width="350px">
                                         </asp:dropdownlist></td>
                                     <td class="Normal">
                                     </td>

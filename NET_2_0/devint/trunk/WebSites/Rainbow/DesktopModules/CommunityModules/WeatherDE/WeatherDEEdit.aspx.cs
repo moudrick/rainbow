@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
 using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Content.Web.Modules
@@ -90,11 +90,11 @@ namespace Rainbow.Content.Web.Modules
             if (Page.IsValid)
             {
                 // UpProviderdate settings in the database
-                ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "ProviderWeatherZip", WeatherZip.Text);
-                ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "WeatherCityProviderIndex", WeatherCityIndex.Text);
-                ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "WeatherSetting",
+                RainbowModuleProvider.UpdateModuleSetting(ModuleID, "ProviderWeatherZip", WeatherZip.Text);
+                RainbowModuleProvider.UpdateModuleSetting(ModuleID, "WeatherCityProviderIndex", WeatherCityIndex.Text);
+                RainbowModuleProvider.UpdateModuleSetting(ModuleID, "WeatherSetting",
                                                    WeatherSetting.Items[WeatherSetting.SelectedIndex].Value);
-                ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "WeatherDesign",
+                RainbowModuleProvider.UpdateModuleSetting(ModuleID, "WeatherDesign",
                                                    WeatherDesign.Items[WeatherDesign.SelectedIndex].Value);
                 RedirectBackToReferringPage();
             }

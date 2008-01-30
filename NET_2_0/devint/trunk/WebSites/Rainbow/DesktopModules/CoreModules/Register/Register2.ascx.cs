@@ -252,7 +252,7 @@ namespace Rainbow.Content.Web.Modules {
                 if ( PortalSettings.CustomSettings["SITESETTINGS_ON_REGISTER_SEND_TO"].ToString().Length > 0 )
                     SendRegistrationNoticeToAdmin();
                 //Full signon
-                PortalSecurity.SignOn( EmailField.Text, PasswordField.Text, false, RedirectPage );
+                SignOnController.SignOn( EmailField.Text, PasswordField.Text, false, RedirectPage );
             }
         }
 

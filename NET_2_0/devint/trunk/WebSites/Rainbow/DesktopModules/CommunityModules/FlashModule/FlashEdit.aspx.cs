@@ -13,14 +13,12 @@
 
 using System;
 using System.Collections;
-using Rainbow.Framework.Core.Configuration.Settings.Providers;
-using Rainbow.Framework.Site.Configuration;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI;
 
 namespace Rainbow.Content.Web.Modules
 {
     /// <summary>
-    /// 
     /// </summary>
     public partial class FlashEdit : AddEditItemPage
     {
@@ -52,7 +50,7 @@ namespace Rainbow.Content.Web.Modules
                     Hashtable settings;
 
                     // Get settings from the database
-                    settings = ModuleSettingsProvider.GetModuleSettings(ModuleID);
+                    settings = RainbowModuleProvider.GetModuleSettings(ModuleID);
 
                     if (settings["src"] != null)
                         Src.Text = settings["src"].ToString();
@@ -95,10 +93,10 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Update settings in the database
-            ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "src", Src.Text);
-            ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "height", Height.Text);
-            ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "width", Width.Text);
-            ModuleSettingsProvider.UpdateModuleSetting(ModuleID, "backcolor", BackgroundCol.Text);
+            RainbowModuleProvider.UpdateModuleSetting(ModuleID, "src", Src.Text);
+            RainbowModuleProvider.UpdateModuleSetting(ModuleID, "height", Height.Text);
+            RainbowModuleProvider.UpdateModuleSetting(ModuleID, "width", Width.Text);
+            RainbowModuleProvider.UpdateModuleSetting(ModuleID, "backcolor", BackgroundCol.Text);
 
             // Redirect back to the portal home page
             Response.Redirect((string) ViewState["UrlReferrer"]);
@@ -123,7 +121,7 @@ namespace Rainbow.Content.Web.Modules
         protected override void OnInit(EventArgs e)
         {
             // CODEGEN: This call is required by the ASP.NET Web Form Designer.           
-            Load += new EventHandler(Page_Load);
+            Load += Page_Load;
             base.OnInit(e);
         }
 

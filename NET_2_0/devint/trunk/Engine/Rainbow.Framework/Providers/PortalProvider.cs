@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Configuration.Provider;
-using System.Data;
 using System.Net;
 using System.Web;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Exceptions;
+using Rainbow.Framework.Items;
+using Rainbow.Framework.Security;
 
 namespace Rainbow.Framework.Providers
 {
@@ -56,9 +58,9 @@ namespace Rainbow.Framework.Providers
         /// <summary>
         /// Fills brief portal settings for edit
         /// </summary>
-        /// <param name="settings"></param>
+        /// <param name="portal"></param>
         /// <param name="portalID"></param>
-        public abstract void FillPortalSettingsBrief(Portal settings, int portalID);
+        public abstract void FillPortalSettingsBrief(Portal portal, int portalID);
 
         /// <summary>
         /// The PortalSettings Factory Method encapsulates all of the logic
@@ -115,7 +117,7 @@ namespace Rainbow.Framework.Providers
         /// Gets the portals.
         /// </summary>
         /// <returns></returns>
-        public abstract DataSet GetPortalsDataSet();
+        public abstract IList<PortalAliasItem> GetPortalAliasesList();
 
         /// <summary>
         /// Removes portal from database. All tabs, modules and data wil be removed.
@@ -139,14 +141,6 @@ namespace Rainbow.Framework.Providers
         /// </summary>
         /// <returns></returns>
         public abstract ArrayList GetPortals();
-
-        /// <summary>
-        /// The GetPortals method returns an ArrayList containing all of the
-        /// Portals registered in this database.<br/>
-        /// GetPortals Stored Procedure
-        /// </summary>
-        /// <returns>portals</returns>
-        public abstract ArrayList GetPortalsArrayList();
 
         /// <summary>
         /// Gets the portal base settings.
@@ -369,7 +363,7 @@ namespace Rainbow.Framework.Providers
                     httpContext.Response.Cookies["refreshed"].Expires = DateTime.Now.AddMinutes(1);
 
                     // sign-out, if refreshed param on the command line we will not call it again
-                    Rainbow.Framework.Security.PortalSecurity.SignOut(rawUrl, false);
+                    SignOnController.SignOut(rawUrl, false);
                 }
             }
 

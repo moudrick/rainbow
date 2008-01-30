@@ -140,7 +140,9 @@ namespace Rainbow.Framework.Context
             if (settingValue != null)
             {
                 if (settingValue.Length != 0 || allowEmpty)
+                {
                     return settingValue;
+                }
             }
             return defaultValue;
         }

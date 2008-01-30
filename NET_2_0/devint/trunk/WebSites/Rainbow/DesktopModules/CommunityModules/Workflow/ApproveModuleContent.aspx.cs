@@ -1,10 +1,10 @@
 using System;
 using System.Web.Mail;
 using Rainbow.Framework;
+using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Configuration;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;
 using History=Rainbow.Framework.History;
@@ -36,22 +36,24 @@ namespace Rainbow.Content.Web.Modules
             if (!IsPostBack)
             {
                 // Destinators
-                ModuleSettings ms = null;
+                RainbowModule module = null;
                 for (int i = 0; i < portalSettings.ActivePage.Modules.Count; i++)
                 {
-                    ms = (ModuleSettings) portalSettings.ActivePage.Modules[i];
-                    if (ms.ModuleID == ModuleID)
+                    module = (RainbowModule) portalSettings.ActivePage.Modules[i];
+                    if (module.ModuleID == ModuleID)
+                    {
                         break;
+                    }
                 }
                 string[] emails =
-                    MailHelper.GetEmailAddressesInRoles(ms.AuthorizedPublishingRoles.Split(";".ToCharArray()),
+                    MailHelper.GetEmailAddressesInRoles(module.AuthorizedPublishingRoles.Split(";".ToCharArray()),
                                                         portalSettings.PortalID);
                 for (int i = 0; i < emails.Length; i++)
                     emailForm.To.Add(emails[i]);
                 // Subject
                 emailForm.Subject =
                     General.GetString("SWI_REQUEST_PUBLISH_SUBJECT", "Request publishing for the new content of '") +
-                    ms.ModuleTitle + "'";
+                    module.ModuleTitle + "'";
                 // Message
                 emailForm.HtmlBodyText = General.GetString("SWI_REQUEST_BODY", "You can find the new content at:") +
                                          "<br><br><a href='" + UrlReferrer + "'>" + UrlReferrer + "</a>";
