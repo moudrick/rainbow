@@ -1,0 +1,82 @@
+=This is the worst wiki implementation, i've ever seen. It is completely unusable.=
+
+=== Web.Config ===
+  * blowery.web
+  * yafnet
+  * Bankgateways
+  * !ShippingObjects
+  * log4net
+  * !BrowserCaps and other Browser Testing/Detection Resources (Web.Config):
+   * included: http://slingfive.com/pages/code/browserCaps/
+   * Latest Version now on !CodeProject: http://www.codeproject.com/KB/aspnet/browsercaps.aspx (from http://dotnetslackers.com/WSE/re-16146_Better_BrowserCaps_file.aspx)
+
+
+=== Libs ===
+The first column is the dll, the second the home/source/description, the third is a
+search pattern to find references in source code.
+|| *AJAX* ||
+||!AjaxControlToolkit.dll||http://www.codeplex.com/AtlasControlToolkit/Release/ProjectReleases.aspx?ReleaseId=8513||ajax||
+||Microsoft.Web.Preview.dll||???||
+||System.Web.Extensions.Design.dll||???||
+||System.Web.Extensions.dll||???||
+|| *Open Source !WebControls* ||
+||FredCK.!FCKeditorV2.dll||http://www.fckeditor.net/||fckeditor||
+||!SolpartWebControls.dll||???||solpart||
+||!FlashMovie.dll||http://www.codeproject.com/KB/custom-controls/AspNetFlashMovieControl.aspx||osmosis||
+||flashwebcontrol.dll||http://www.aspheute.com/artikel/20020321.htm||dots||
+||yaf.dll, !RainbowForum.dll, !ForumModule.dll||http://www.yetanotherforum.net/||yaf||
+|| *Utilities* ||
+||!UrlRewritingNet.!UrlRewriter.dll||http://www.urlrewriting.net/de/Default.aspx||rewrite||
+||blowery.Web.!HttpCompress.dll, blowery.Web.!HttpCompress.xml||http://blowery.org/code/HttpCompressionModule.html||httpcompress||
+||!ICSharpCode.!SharpZipLib.dll, !ICSharpCode.!SharpZipLib.xml||http://www.icsharpcode.net/OpenSource/SharpZipLib/||sharpziplib||
+||log4net.dll||http://logging.apache.org/log4net/||log4net||
+||NAnt.Core.dll, NAnt.Core.xml||http://nant.sourceforge.net/||
+|| *Testing* ||
+||!WatiN.Core.dll||http://watin.sourceforge.net/||
+||Interop.!SHDocVw.dll||http://www.devasp.net/net/search/rating/73647.html||shdocvw||
+||!MbUnit.Framework.dll||http://www.mbunit.com/||mbunit||
+||nunit.framework.dll||http://www.nunit.org/index.php||
+|| *Closed Source !WebControls* ||
+||!ActiveUp.!WebControls.!HtmlTextBox.dll||http://www.activeup.com/products/components/htmltextbox/||htmltextbox||
+||!DateTextBoxControls.dll<br>|DateTextBoxWebForms.dll||http://www.peterblum.com/DES/DateAndTime.aspx||datetextbox||
+||!DevSolution.Portal.dll||http://community.rainbowportal.net/forums/permalink/14074/14078/ShowThread.aspx#14078||eventcalendar||
+||!EasyListBox.dll||http://easylistbox.com/home.aspx||easylistbox|elb||
+||!FreeTextBox.dll||http://freetextbox.com/default.aspx||freetextbox||
+||!StaticDust.Web.UI.Controls.UploadDialog.dll||http://www.asp.net/community/control-gallery/Item.aspx?i=812||staticdust||
+||!TripleASP.!TableEditor.dll||http://scottwater.com/blog/pages/6424/||tripleasp||
+|| *Unclassified* ||
+||Microsoft.Web.Services3.dll||http://msdn2.microsoft.com/en-us/library/microsoft.web.services3.aspx||services3||
+||Mono.Security.dll||http://www.mono-project.com/Cryptography||mono.security|x509||
+||Novell.Directory.Ldap.dll||???||ldap||
+
+
+=== aspnet_client===
+||!ActiveUp||!ActiveUp.!WebControls.!HtmlTextBox||
+||!DUEMETRI_UI_!WebControls_HWMenu||???||
+||ELB||!EasyListBox||
+||Ext||???||
+||!FCKEditorV2||!FredCK.FCKeditorV2||
+||flags||GIFs with flags for all the countries||
+||ie7||http://dean.edwards.name/IE7/||
+||logo_sml.gif||???||
+||popupHelper||???||
+||Rainbow_scripts||???||
+||sitelogo.ashx||??? ||
+||!SolpartWebControls_SolpartMenu||!SolpartWebControls||
+||system_web||???||
+||x||X Libary: http://www.cross-browser.com/||
+
+
+=== app_support ===
+||App_!LocalResources||???||
+||css||???||
+|| *Error Handling* ||
+||ErrorXXX, !GeneralError.html||
+||!SmartError.aspx[.cs]||
+|| *Print support* ||
+||print.aspx[.cs]||
+|| *FCKeditor Support* ||
+||FCK.filemanager||
+||FCKconnector.aspx[.cs]||
+|| *!FreeTextbox Support* ||
+||ftb.XXX||
