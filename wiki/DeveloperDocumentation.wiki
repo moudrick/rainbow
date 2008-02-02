@@ -61,7 +61,7 @@ search pattern to find references in source code.
 ||logo_sml.gif||???||
 ||popupHelper||???||
 ||Rainbow_scripts||???||
-||sitelogo.ashx||??? ||
+||sitelogo.ashx||used by Zen theme to make upload of logo possible using site settings ||
 ||!SolpartWebControls_SolpartMenu||!SolpartWebControls||
 ||system_web||???||
 ||x||X Libary: http://www.cross-browser.com/||
