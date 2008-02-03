@@ -24,7 +24,7 @@ namespace Rainbow.Framework.Data.MsSql
 	
 	
 	[System.Data.Linq.Mapping.DatabaseAttribute(Name="Rainbow")]
-	public partial class DataClassesDataContext : System.Data.Linq.DataContext
+	internal partial class DataClassesDataContext : System.Data.Linq.DataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
@@ -299,7 +299,7 @@ namespace Rainbow.Framework.Data.MsSql
 		private void InsertModule(Module obj)
 		{
 			System.Nullable<int> p1 = obj.ModuleId;
-			this.rb_AddModule(((System.Nullable<int>)(obj.PageId)), ((System.Nullable<int>)(obj.Order)), obj.Title, obj.PaneName, ((System.Nullable<int>)(obj.DefinitionId)), ((System.Nullable<int>)(obj.CacheTime)), obj.AuthorizedRolesEdit, obj.AuthorizedRolesAdd, obj.AuthorizedRolesView, obj.AuthorizedRolesDelete, obj.AuthorizedRolesProperties, obj.AuthorizedRolesModuleMove, obj.AuthorizedRolesModuleDelete, ((System.Nullable<bool>)(obj.IsShowMobile)), obj.AuthorizedRolesPublishing, ((System.Nullable<bool>)(obj.IsSupportWorkflow)), ((System.Nullable<bool>)(obj.IsShowEveryWhere)), ((System.Nullable<bool>)(obj.IsCollapsable)), ref p1);
+			this.rb_AddModule(((System.Nullable<int>)(obj.PageId)), ((System.Nullable<int>)(obj.Order)), obj.Title, obj.PaneName, ((System.Nullable<int>)(obj.ModuleDefId)), ((System.Nullable<int>)(obj.CacheTime)), obj.AuthorizedRolesEdit, obj.AuthorizedRolesAdd, obj.AuthorizedRolesView, obj.AuthorizedRolesDelete, obj.AuthorizedRolesProperties, obj.AuthorizedRolesModuleMove, obj.AuthorizedRolesModuleDelete, ((System.Nullable<bool>)(obj.IsShowMobile)), obj.AuthorizedRolesPublishing, ((System.Nullable<bool>)(obj.IsSupportWorkflow)), ((System.Nullable<bool>)(obj.IsShowEveryWhere)), ((System.Nullable<bool>)(obj.IsCollapsable)), ref p1);
 			obj.ModuleId = p1.GetValueOrDefault();
 		}
 		
@@ -3480,7 +3480,7 @@ namespace Rainbow.Framework.Data.MsSql
 		
 		[Column(Name="ModuleDefID", Storage="_ModuleDefID", DbType="Int NOT NULL")]
 		[DataMember(Order=3)]
-		public int DefinitionId
+		public int ModuleDefId
 		{
 			get
 			{

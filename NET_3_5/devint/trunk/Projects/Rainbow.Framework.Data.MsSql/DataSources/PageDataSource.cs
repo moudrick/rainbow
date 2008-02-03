@@ -12,14 +12,39 @@ using System.Collections;
 
 namespace Rainbow.Framework.Data.MsSql.DataSources
 {
-    public class PageDataSource : IPageDataSource
+    public class MsSqlPageProvider : PageProvider
     {
+        #region Provider
+
+        /// <summary>
+        /// The initialize method lets you retrieve provider specific settings from web.config
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="configValue">The config value.</param>
+        public override void Initialize(string name, NameValueCollection configValue)
+        {
+            base.Initialize(name, configValue);
+
+            //// For legacy support first check provider settings then web.config/rainbow.config legacy settings
+            //if (configValue["handlersplitter"] != null)
+            //{
+            //    _defaultSplitter = configValue["handlersplitter"].ToString();
+            //}
+            //else
+            //{
+            //    if (ConfigurationManager.AppSettings["HandlerDefaultSplitter"] != null)
+            //        _defaultSplitter = ConfigurationManager.AppSettings["HandlerDefaultSplitter"];
+            //}
+        }
+
+        #endregion
+
         DataClassesDataContext db;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PageDataSource"/> class.
+        /// Initializes a new instance of the <see cref="MsSqlPageProvider"/> class.
         /// </summary>
-        public PageDataSource()
+        public MsSqlPageProvider()
         {
             db = new DataClassesDataContext(Config.ConnectionString);
             db.Log = new DebuggerWriter();
@@ -101,6 +126,16 @@ namespace Rainbow.Framework.Data.MsSql.DataSources
         public IPage GetPortalHomePage(int portalId)
         {
             return GetById(GetPortalHomePageId(portalId));
+        }
+
+        /// <summary>
+        /// Gets the by id.
+        /// </summary>
+        /// <param name="Id">The id.</param>
+        /// <returns></returns>
+        public override IPage GetById(Guid Id)
+        {
+            return db.Pages.Single(p => p.Id == Id);
         }
 
         /// <summary>
@@ -449,7 +484,8 @@ namespace Rainbow.Framework.Data.MsSql.DataSources
                                 select new Page
                                 {
                                     Id = p.Id,
-                                    Name = delegate() {
+                                    Name = delegate()
+                                    {
                                         string d = string.Empty;
                                         for (int i = 0; i < lastLevel * 2; i++) d = d + "-";
                                         d = d + p.Name;
@@ -477,7 +513,8 @@ namespace Rainbow.Framework.Data.MsSql.DataSources
             //  INSERT        #TabTree (TabID, TabName, ParentTabID, TabOrder, NestLevel, TreeOrder) 
             var qOrphans = from p in db.Pages
                            where !pageTree.Contains(p)
-                           select new Page {
+                           select new Page
+                           {
                                Id = p.Id,
                                Name = "(Orphan)" + p.Name,
                                ParentId = p.ParentId,
@@ -511,5 +548,7 @@ namespace Rainbow.Framework.Data.MsSql.DataSources
         }
 
         #endregion
+
+
     }
 }

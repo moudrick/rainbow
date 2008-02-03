@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Database Name="Rainbow" EntityNamespace="Rainbow.Framework.Data.MsSql" ContextNamespace="Rainbow.Framework.Data.MsSql" Class="DataClassesDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+<Database Name="Rainbow" EntityNamespace="Rainbow.Framework.Data.MsSql" ContextNamespace="Rainbow.Framework.Data.MsSql" Class="DataClassesDataContext" AccessModifier="Internal" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLExpress;AttachDbFilename=&quot;T:\Users\William Forney\Documents\Visual Studio 2008\Projects\Rainbow\NET_3_5\devint\trunk\WebSites\Rainbow\App_Data\Database.mdf&quot;;Initial Catalog=Rainbow;Integrated Security=True;Asynchronous Processing=True;MultipleActiveResultSets=True" SettingsObjectName="Rainbow.Framework.Data.MsSql.Properties.Settings" SettingsPropertyName="RainbowConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.aspnet_Users" Member="aspnet_Users">
     <Type Name="aspnet_User">

@@ -35,6 +35,7 @@ namespace Rainbow.Framework.Data.MsSql
             IsShowMobile = false;
             IsCollapsable = false;
             IsSupportWorkflow = false;
+            IsDeleted = false;
         }
 
         /// <summary>

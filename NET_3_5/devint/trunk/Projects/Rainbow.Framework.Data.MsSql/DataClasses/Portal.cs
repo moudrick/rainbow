@@ -39,6 +39,18 @@ namespace Rainbow.Framework.Data.MsSql
     [History("bill@improvtech.com", "2007/12/20", "Gutted PortalSettings and merged into the proper places in the new DAL")]
     partial class Portal : IPortal
     {
+        // portal name handled by portal title
+        //string PortalName { get; set; }
+
+        //portal path information irrelevant to rest of application. should only be used within data implementation
+        //string PortalPath { get; set; }
+        //string PortalPathFull { get; set; }
+        //string PortalPathRelative { get; }
+        //string PortalSecurePath { get; }
+
+        //TODO: this is just not implemented... is it in use?
+        //XmlDocument PortalPagesXml { get; }
+
         //private XDocument _portalPagesXml;
         //private XPathDocument _desktopPagesXml;
         private const string LANGUAGE_DEFAULT = "en-US";
