@@ -35,10 +35,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\ActiveUp.WebControls.HtmlTextBox.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.9.0, Culture=neutral, PublicKeyToken=b32731d11ce58905">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -47,6 +43,7 @@
     <Reference Include="System.Data.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -61,11 +58,24 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="DataSources\IPageDataSource.cs" />
-    <Compile Include="DataSources\IPortalDataSource.cs" />
+    <Compile Include="DataSources\IEntityDataSource.cs" />
+    <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="Entities\IItem.cs" />
+    <Compile Include="Entities\ILayout.cs" />
     <Compile Include="Entities\IModule.cs" />
+    <Compile Include="Entities\IModuleInstance.cs" />
+    <Compile Include="Entities\IModuleSetting.cs" />
     <Compile Include="Entities\IPageSetting.cs" />
+    <Compile Include="Entities\IPermission.cs" />
+    <Compile Include="Entities\IPermissionMembership.cs" />
     <Compile Include="Entities\IPortal.cs" />
+    <Compile Include="Entities\IPortalSetting.cs" />
+    <Compile Include="Entities\ISecuredEntity.cs" />
+    <Compile Include="Entities\ISetting.cs" />
+    <Compile Include="Entities\ISettingGroup.cs" />
+    <Compile Include="Entities\ISettingType.cs" />
+    <Compile Include="Entities\ITheme.cs" />
+    <Compile Include="Entities\IModuleInstanceSetting.cs" />
     <Compile Include="Exceptions\CodeVersionException.cs" />
     <Compile Include="Exceptions\DatabaseUnreachableException.cs" />
     <Compile Include="Exceptions\DatabaseVersionException.cs" />
@@ -73,10 +83,10 @@
     <Compile Include="Exceptions\RainbowException.cs" />
     <Compile Include="Exceptions\RainbowRedirect.cs" />
     <Compile Include="Entities\IPage.cs" />
-    <Compile Include="Log4NetLogProvider.cs" />
-    <Compile Include="LogLevel.cs" />
-    <Compile Include="LogProperties.cs" />
-    <Compile Include="LogProvider.cs" />
+    <Compile Include="Logging\Log4NetLogProvider.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\LogProperties.cs" />
+    <Compile Include="Logging\LogProvider.cs" />
     <Compile Include="Pages.cs" />
     <Compile Include="Providers\GeographicProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,6 +125,9 @@
       <Project>{552CCD6F-0A37-4366-9E3E-22B2A0221584}</Project>
       <Name>Rainbow.Framework.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Entities\Interfaces.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

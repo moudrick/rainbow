@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Linq;
 using System.Linq;
 using System.Text;
-using Rainbow.Framework.Design;
 
 namespace Rainbow.Framework.Data.Entities
 {
-    public interface IPageSetting : ISetting
+    public interface IItem : IEntity, ISecuredEntity, IComparable<IItem>
     {
-        Guid PageId { get; set; }
+        string Name { get; set; }
     }
 }

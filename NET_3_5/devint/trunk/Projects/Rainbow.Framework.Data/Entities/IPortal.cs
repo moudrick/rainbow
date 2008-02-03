@@ -10,40 +10,20 @@ namespace Rainbow.Framework.Data.Entities
     /// <summary>
     /// Portal Interface
     /// </summary>
-    public interface IPortal : IComparable, IComparable<IPortal>, IConvertible
+    public interface IPortal : IEntity, ISecuredEntity, IComparable<IPortal>
     {
-        // portal name handled by portal title
-        //string PortalName { get; set; }
-
-        //portal path information irrelevant to rest of application. should only be used within data implementation
-        //string PortalPath { get; set; }
-        //string PortalPathFull { get; set; }
-        //string PortalPathRelative { get; }
-        //string PortalSecurePath { get; }
-
-        //TODO: this is just not implemented... is it in use?
-        //XmlDocument PortalPagesXml { get; }
-
-        /// <summary>
-        /// Gets or sets the portal id.
-        /// </summary>
-        /// <value>The portal id.</value>
-        int PortalId { get; set; }
-
-        
         /// <summary>
         /// Gets or sets the portal title.
         /// </summary>
         /// <value>The portal title.</value>
-        string PortalTitle { get; set; }
+        string Title { get; set; }
 
         /// <summary>
         /// Gets or sets the portal alias.
         /// </summary>
         /// <value>The portal alias.</value>
-        string PortalAlias { get; set; }
+        string Alias { get; set; }
 
-        
         /// <summary>
         /// Gets or sets a value indicating whether this instance is always show edit button.
         /// </summary>
@@ -64,19 +44,19 @@ namespace Rainbow.Framework.Data.Entities
         /// Gets or sets the current layout.
         /// </summary>
         /// <value>The current layout.</value>
-        string CurrentLayout { get; set; }
+        ILayout Layout { get; set; }
 
         /// <summary>
-        /// Gets or sets the current theme default.
+        /// Gets or sets the theme primary.
         /// </summary>
-        /// <value>The current theme default.</value>
-        Theme CurrentThemeDefault { get; set; }
+        /// <value>The theme primary.</value>
+        ITheme ThemePrimary { get; set; }
 
         /// <summary>
-        /// Gets or sets the current theme alternate.
+        /// Gets or sets the theme secondary.
         /// </summary>
-        /// <value>The current theme alternate.</value>
-        Theme CurrentThemeAlternate { get; set; }
+        /// <value>The theme secondary.</value>
+        ITheme ThemeSecondary { get; set; }
 
         /// <summary>
         /// Gets or sets the terms of service.
@@ -89,19 +69,21 @@ namespace Rainbow.Framework.Data.Entities
         /// Gets or sets the portal content language.
         /// </summary>
         /// <value>The portal content language.</value>
-        CultureInfo PortalContentLanguage { get; set; }
+        CultureInfo ContentLanguage { get; set; }
 
         /// <summary>
         /// Gets or sets the portal UI language.
         /// </summary>
         /// <value>The portal UI language.</value>
-        CultureInfo PortalUILanguage { get; set; }
-        
+        CultureInfo UILanguage { get; set; }
+
         /// <summary>
         /// Gets or sets the portal data formatting culture.
         /// </summary>
         /// <value>The portal data formatting culture.</value>
-        CultureInfo PortalDataFormattingCulture { get; set; }
+        CultureInfo DataFormattingCulture { get; set; }
+
+        #region Collections
 
         /// <summary>
         /// Gets the pages.
@@ -114,5 +96,13 @@ namespace Rainbow.Framework.Data.Entities
         /// </summary>
         /// <value>The pages mobile.</value>
         IEnumerable<IPage> PagesMobile { get; }
+
+        /// <summary>
+        /// Gets the settings.
+        /// </summary>
+        /// <value>The settings.</value>
+        IEnumerable<IPortalSetting> Settings { get; }
+
+        #endregion
     }
 }

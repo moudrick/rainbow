@@ -6,59 +6,58 @@ using Rainbow.Framework.Data.Entities;
 
 namespace Rainbow.Framework.Data.DataSources
 {
-    interface IPageDataSource
+    public interface IEntityDataSource
     {
         #region Select
 
         /// <summary>
-        /// Gets all pages.
+        /// Gets all.
         /// </summary>
-        /// <returns>IEnumerable&lt;IPage&gt;</returns>
-        IEnumerable<IPage> GetAll();
+        /// <returns></returns>
+        IEnumerable<IEntity> GetAll();
 
         /// <summary>
-        /// Gets the page by id.
+        /// Gets the by id.
         /// </summary>
-        /// <param name="Id">The page id.</param>
-        /// <returns>IPage</returns>
-        IPage GetById(int Id);
+        /// <param name="Id">The id.</param>
+        /// <returns></returns>
+        IEntity GetById(Guid Id);
 
         #endregion
 
         #region Insert
 
         /// <summary>
-        /// Adds the specified new page.
+        /// Adds the specified new entity.
         /// </summary>
-        /// <param name="newpage">The new page.</param>
-        /// <returns></returns>
-        void Add(ref IPage newpage);
+        /// <param name="newEntity">The new entity.</param>
+        void Add(ref IEntity newEntity);
 
         /// <summary>
         /// Creates the new.
         /// </summary>
-        /// <returns>IPage</returns>
-        IPage CreateNew();
+        /// <returns></returns>
+        IEntity CreateNew();
 
         #endregion
 
         #region Update
 
         /// <summary>
-        /// Updates the specified page id.
+        /// Updates the specified entity.
         /// </summary>
-        /// <param name="Id">The page id.</param>
-        void Update(IPage page);
+        /// <param name="entity">The entity.</param>
+        void Update(IEntity entity);
 
         #endregion
 
         #region Delete
 
         /// <summary>
-        /// Removes the specified page id.
+        /// Removes the specified entity.
         /// </summary>
-        /// <param name="Id">The page id.</param>
-        void Remove(IPage page);
+        /// <param name="entity">The entity.</param>
+        void Remove(IEntity entity);
 
         #endregion
 

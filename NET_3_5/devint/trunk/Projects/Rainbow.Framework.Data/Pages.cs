@@ -18,21 +18,22 @@ namespace Rainbow.Framework.Data
         /// <param name="source">The source.</param>
         /// <param name="Id">The page id.</param>
         /// <param name="name">The name.</param>
-        void Add(IPageDataSource source, int Id, string name) //add params as appropriate
+        void Add(IEntityDataSource source, Guid Id, string name) //add params as appropriate
         {
-            IPage record = source.CreateNew();  //create new entity in memory
+            IPage record = source.CreateNew() as IPage;  //create new entity in memory
 
             //add values
             record.Id = Id;
             record.Name = name;
 
-            source.Add(ref record);      //add record to data source in memory
+            IEntity addme = record as IEntity;
+            source.Add(ref addme);      //add record to data source in memory
             source.CommitChanges();     //write changes back to data source
         }
 
-        void Remove(IPageDataSource source, int Id)
+        void Remove(IEntityDataSource source, Guid Id)
         {
-            IPage record = source.GetById(Id);  //grab page from data source as IPage interface object
+            IPage record = source.GetById(Id) as IPage;  //grab page from data source as IPage interface object
 
             source.Remove(record);      //delete record from data source in memory
             source.CommitChanges();     //write changes back to data source
