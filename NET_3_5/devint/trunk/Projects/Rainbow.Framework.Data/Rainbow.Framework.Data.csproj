@@ -59,6 +59,7 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="DataSources\IEntityDataSource.cs" />
+    <Compile Include="DataSources\PageProvider.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\IItem.cs" />
     <Compile Include="Entities\ILayout.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Exceptions\RainbowException.cs" />
     <Compile Include="Exceptions\RainbowRedirect.cs" />
     <Compile Include="Entities\IPage.cs" />
-    <Compile Include="Logging\Log4NetLogProvider.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogProperties.cs" />
     <Compile Include="Logging\LogProvider.cs" />

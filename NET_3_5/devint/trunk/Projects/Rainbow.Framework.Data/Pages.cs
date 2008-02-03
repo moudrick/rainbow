@@ -15,28 +15,33 @@ namespace Rainbow.Framework.Data
         /// <summary>
         /// Add a Page to the data source.
         /// </summary>
-        /// <param name="source">The source.</param>
         /// <param name="Id">The page id.</param>
         /// <param name="name">The name.</param>
-        void Add(IEntityDataSource source, Guid Id, string name) //add params as appropriate
+        void Add(Guid Id, string name) //add params as appropriate
         {
-            IPage record = source.CreateNew() as IPage;  //create new entity in memory
+            using (PageProvider source = PageProvider.Instance())
+            {
+                IPage record = source.CreateNew() as IPage;  //create new entity in memory
 
-            //add values
-            record.Id = Id;
-            record.Name = name;
+                //add values
+                record.Id = Id;
+                record.Name = name;
 
-            IEntity addme = record as IEntity;
-            source.Add(ref addme);      //add record to data source in memory
-            source.CommitChanges();     //write changes back to data source
+                IEntity addme = record as IEntity;
+                source.Add(ref addme);      //add record to data source in memory
+                source.CommitChanges();     //write changes back to data source
+            }
         }
 
-        void Remove(IEntityDataSource source, Guid Id)
+        void Remove(Guid Id)
         {
-            IPage record = source.GetById(Id) as IPage;  //grab page from data source as IPage interface object
+            using (PageProvider source = PageProvider.Instance())
+            {
+                IPage record = source.GetById(Id) as IPage;  //grab page from data source as IPage interface object
 
-            source.Remove(record);      //delete record from data source in memory
-            source.CommitChanges();     //write changes back to data source
+                source.Remove(record);      //delete record from data source in memory
+                source.CommitChanges();     //write changes back to data source
+            }
         }
     }
 }
