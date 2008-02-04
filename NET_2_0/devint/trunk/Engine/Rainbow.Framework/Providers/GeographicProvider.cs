@@ -5,6 +5,7 @@ using System.Web.Caching;
 using Rainbow.Framework.BusinessObjects;
 using System.Collections;
 using System.Globalization;
+using Rainbow.Framework.Providers.Configuration;
 using Rainbow.Framework.Providers.Exceptions;
 
 namespace Rainbow.Framework.Providers

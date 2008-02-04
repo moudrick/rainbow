@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Web;
 using System.Web.Caching;
 using Rainbow.Framework.Providers;
+using Rainbow.Framework.Providers.Configuration;
 
 namespace Rainbow.Framework.Providers
 {

@@ -77,7 +77,6 @@
     <Compile Include="BLL\MergeEngine.cs" />
     <Compile Include="BLL\Utils\BagHolder.cs" />
     <Compile Include="BLL\Utils\CookieUtil.cs" />
-    <Compile Include="BLL\Utils\GlobalResources.cs" />
     <Compile Include="Logging\LogProperties.cs" />
     <Compile Include="Provider\RainbowModuleProvider.cs" />
     <Compile Include="DAL\DatabaseUpdater.cs" />
@@ -129,8 +128,6 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Logging\Log4NetLogProvider.cs" />
-    <Compile Include="Provider\Web\SqlUrlBuilderProvider.cs" />
-    <Compile Include="Provider\Web\UrlBuilderHelper.cs" />
     <Compile Include="Scheduler\CachedScheduler.cs" />
     <Compile Include="Scheduler\ISchedulable.cs" />
     <Compile Include="Scheduler\IScheduler.cs" />
@@ -224,7 +221,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BLL\Base\" />
+    <Folder Include="Provider\Web\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,7 +4,7 @@ using Rainbow.Framework;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Items;
-using Rainbow.Framework.Monitoring;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -59,7 +59,7 @@ namespace Rainbow.Content.Web.Modules
 
             int anonUserCount, regUsersOnlineCount;
             string regUsersString;
-            Utility.FillUsersOnlineCache(PortalSettings.PortalID,
+            MonitoringProvider.Instance.FillUsersOnlineCache(PortalSettings.PortalID,
                                          minutesToCheckForUsers,
                                          cacheTime,
                                          out anonUserCount,

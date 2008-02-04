@@ -3074,6 +3074,7 @@ end of modification
             admin.UpdateModuleOrder(OriginalModuleID, 99, targetPane);
 
             // reload the portalSettings from the database
+            //TODO: [moudrick] CurrentPortal encapsulate initialization
             HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortal(PageID, PortalSettings.PortalAlias);
             (Page).portalSettings = (Portal) Context.Items["PortalSettings"];
 

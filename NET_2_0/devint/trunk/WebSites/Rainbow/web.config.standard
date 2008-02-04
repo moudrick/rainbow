@@ -9,13 +9,13 @@
     <section name="ShippingObjects" type="System.Configuration.NameValueSectionHandler, System, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, Custom=null" requirePermission="false" />
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" requirePermission="false" />
     <sectionGroup name="providers">
-      <section name="log"        type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="geographic" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="portal"     type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="portalPage" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="module"     type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="monitoring" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="urlBuilder" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="log"        type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="geographic" type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="portal"     type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="portalPage" type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="module"     type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="monitoring" type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="urlBuilder" type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
     </sectionGroup>
     <section name="urlrewritingnet" restartOnExternalChanges="true" requirePermission="false" type="UrlRewritingNet.Configuration.UrlRewriteSection, UrlRewritingNet.UrlRewriter" />
     <sectionGroup name="system.web.extensions" type="System.Web.Configuration.SystemWebExtensionsSectionGroup, System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -634,7 +634,7 @@
     <urlBuilder defaultProvider="SqlUrlBuilder">
       <providers>
         <clear />
-        <add name="SqlUrlBuilder" type="Rainbow.Framework.Web.SqlUrlBuilderProvider, Rainbow.Framework.Core" 
+        <add name="SqlUrlBuilder" type="Rainbow.Framework.Providers.MsSql.SqlUrlBuilderProvider, Rainbow.Framework.Providers.MsSql" 
           handlerflag="site" 
           handlersplitter="__" 
           pageidnosplitter="true" 

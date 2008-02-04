@@ -3,12 +3,12 @@
   <configSections>
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" requirePermission="false"/>
     <sectionGroup name="providers">
-      <section name="log"        type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="geographic" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="portal"     type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="portalPage" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="module"     type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
-      <section name="monitoring" type="Rainbow.Framework.Providers.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="log"        type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="geographic" type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="portal"     type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="portalPage" type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="module"     type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
+      <section name="monitoring" type="Rainbow.Framework.Providers.Configuration.ProviderConfigurationHandler, Rainbow.Framework" requirePermission="false" />
     </sectionGroup>
   </configSections>
   <connectionStrings>

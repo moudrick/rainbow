@@ -1,8 +1,8 @@
 using System.Configuration;
 using System.Xml;
-using Rainbow.Framework.Providers;
+using Rainbow.Framework.Providers.Configuration;
 
-namespace Rainbow.Framework.Providers
+namespace Rainbow.Framework.Providers.Configuration
 {
     /// <summary>
     /// </summary>

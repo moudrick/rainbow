@@ -11,7 +11,6 @@ using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Data;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -49,23 +48,26 @@ namespace Rainbow.Admin
         /// to populate a tab's layout settings on the page
         /// </summary>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        protected override void OnLoad( EventArgs e ) {
-            base.OnLoad( e );
+        protected override void OnLoad(EventArgs e) 
+        {
+            base.OnLoad(e);
 
             //Confirm delete
-            if ( !( ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) ) {
+            if ( !( ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) )
+            {
                 string[] s = { "CONFIRM_DELETE" };
                 ClientScript.RegisterClientScriptBlock( GetType(), "confirmDelete",
                                                        General.GetStringResource(
                                                            "CONFIRM_DELETE_SCRIPT", s ) );
             }
 
-            LeftDeleteBtn.Attributes.Add( "OnClick", "return confirmDelete()" );
-            RightDeleteBtn.Attributes.Add( "OnClick", "return confirmDelete()" );
-            ContentDeleteBtn.Attributes.Add( "OnClick", "return confirmDelete()" );
+            LeftDeleteBtn.Attributes.Add("OnClick", "return confirmDelete()");
+            RightDeleteBtn.Attributes.Add("OnClick", "return confirmDelete()");
+            ContentDeleteBtn.Attributes.Add("OnClick", "return confirmDelete()");
 
             // If first visit to the page, update all entries
-            if ( !Page.IsPostBack ) {
+            if (!Page.IsPostBack) 
+            {
                 msgError.Visible = false;
 
                 // Set images for buttons from current theme
@@ -95,17 +97,20 @@ namespace Rainbow.Admin
                 // 2/27/2003 Start - Ender Malkoc
                 // After up or down button when the page is refreshed, select the previously selected
                 // tab from the list.
-                if ( Request.Params[ "selectedmodid" ] != null ) {
-                    try {
+                if (Request.Params["selectedmodid"] != null)
+                {
+                    try
+                    {
                         int modIndex = Int32.Parse(Request.Params["selectedmodid"]);
                         SelectModule(leftPane, GetModules("LeftPane"), modIndex);
                         SelectModule(contentPane, GetModules("ContentPane"), modIndex);
                         SelectModule(rightPane, GetModules("RightPane"), modIndex);
                     }
-                    catch ( Exception ex ) {
+                    catch (Exception ex)
+                    {
                         ErrorHandler.Publish(LogLevel.Error,
-                                             "After up or down button when the page is refreshed, select the previously selected tab from the list.",
-                                             ex);
+                            "After up or down button when the page is refreshed, select the previously selected tab from the list.",
+                            ex);
                     }
                 }
                 // 2/27/2003 end - Ender Malkoc
@@ -120,7 +125,7 @@ namespace Rainbow.Admin
         /// to access property pages of selected module in tab.
         /// jviladiu@portalServices.net (2004/07/23)
         /// </summary>
-        private void SetSecurityAccess()
+        void SetSecurityAccess()
         {
             HttpCookie cookie;
             DateTime time;
@@ -129,23 +134,29 @@ namespace Rainbow.Admin
             Guid guid;
 
             ModulesDB mdb = new ModulesDB();
-
             foreach (ListItem li in leftPane.Items)
             {
                 guid = mdb.GetModuleGuid(int.Parse(li.Value));
-                if (guid != Guid.Empty) guidsInUse += guid.ToString().ToUpper() + "@";
+                if (guid != Guid.Empty)
+                {
+                    guidsInUse += guid.ToString().ToUpper() + "@";
+                }
             }
-
             foreach (ListItem li in contentPane.Items)
             {
                 guid = mdb.GetModuleGuid(int.Parse(li.Value));
-                if (guid != Guid.Empty) guidsInUse += guid.ToString().ToUpper() + "@";
+                if (guid != Guid.Empty)
+                {
+                    guidsInUse += guid.ToString().ToUpper() + "@";
+                }
             }
-
             foreach (ListItem li in rightPane.Items)
             {
                 guid = mdb.GetModuleGuid(int.Parse(li.Value));
-                if (guid != Guid.Empty) guidsInUse += guid.ToString().ToUpper() + "@";
+                if (guid != Guid.Empty)
+                {
+                    guidsInUse += guid.ToString().ToUpper() + "@";
+                }
             }
 
             cookie = new HttpCookie("RainbowSecurity", guidsInUse);
@@ -167,7 +178,10 @@ namespace Rainbow.Admin
             {
                 if (((ModuleItem) modules[i]).ID == moduleID)
                 {
-                    if (listBox.SelectedItem != null) listBox.SelectedItem.Selected = false;
+                    if (listBox.SelectedItem != null)
+                    {
+                        listBox.SelectedItem.Selected = false;
+                    }
                     listBox.Items[i].Selected = true;
                     return;
                 }
@@ -188,9 +202,8 @@ namespace Rainbow.Admin
                 int selectedModIDEndPos = url.IndexOf("&", selectedModIDPos + 1);
                 if (selectedModIDEndPos >= 0)
                 {
-                    return
-                        url.Substring(0, selectedModIDPos) + "&selectedmodid=" + moduleID +
-                        url.Substring(selectedModIDEndPos);
+                    return url.Substring(0, selectedModIDPos) 
+                        + "&selectedmodid=" + moduleID + url.Substring(selectedModIDEndPos);
                 }
                 else
                 {
@@ -215,10 +228,10 @@ namespace Rainbow.Admin
         protected void AddModuleToPane_Click(Object sender, EventArgs e)
         {
             // All new modules go to the end of the contentpane
-            ModuleItem m = new ModuleItem();
-            m.Title = moduleTitle.Text;
-            m.ModuleDefID = Int32.Parse(moduleType.SelectedItem.Value);
-            m.Order = 999;
+            ModuleItem moduleItem = new ModuleItem();
+            moduleItem.Title = moduleTitle.Text;
+            moduleItem.ModuleDefID = Int32.Parse(moduleType.SelectedItem.Value);
+            moduleItem.Order = 999;
 
             // save to database
             ModulesDB _mod = new ModulesDB();
@@ -228,8 +241,8 @@ namespace Rainbow.Admin
             // Changed by Mario Endara <mario@softworks.com.uy> (2004/11/09)
             // The new module inherits security from Pages module (current ModuleID) 
             // so who can edit the tab properties/content can edit the module properties/content (except view that remains =)
-            m.ID =
-                _mod.AddModule(PageID, m.Order, paneLocation.SelectedItem.Value, m.Title, m.ModuleDefID, 0,
+            moduleItem.ID =
+                _mod.AddModule(PageID, moduleItem.Order, paneLocation.SelectedItem.Value, moduleItem.Title, moduleItem.ModuleDefID, 0,
                                PortalSecurity.GetEditPermissions(ModuleID),
                                viewPermissions.SelectedItem.Value,
                                PortalSecurity.GetAddPermissions(ModuleID), PortalSecurity.GetDeletePermissions(ModuleID),
@@ -240,6 +253,7 @@ namespace Rainbow.Admin
             // End Change Geert.Audenaert@Syntegra.Com
 
             // reload the portalSettings from the database
+            //TODO: [moudrick] CurrentPortal encapsulate initialization
             Context.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortal(PageID, portalSettings.PortalAlias);
             portalSettings = (Portal) Context.Items["PortalSettings"];
 
@@ -254,7 +268,7 @@ namespace Rainbow.Admin
             }
 
             // Redirect to the same page to pick up changes
-            Response.Redirect(AppendModuleID(Request.RawUrl, m.ID));
+            Response.Redirect(AppendModuleID(Request.RawUrl, moduleItem.ID));
         }
 
         /// <summary>
@@ -344,18 +358,19 @@ namespace Rainbow.Admin
 
                 // get a reference to the module to move
                 // and assign a high order number to send it to the end of the target list
-                ModuleItem m = (ModuleItem) sourceList[sourceBox.SelectedIndex];
+                ModuleItem moduleItem = (ModuleItem) sourceList[sourceBox.SelectedIndex];
 
-                if (PortalSecurity.IsInRoles(PortalSecurity.GetMoveModulePermissions(m.ID)))
+                if (PortalSecurity.IsInRoles(PortalSecurity.GetMoveModulePermissions(moduleItem.ID)))
                 {
                     // add it to the database
                     ModulesDB admin = new ModulesDB();
-                    admin.UpdateModuleOrder(m.ID, 99, targetPane);
+                    admin.UpdateModuleOrder(moduleItem.ID, 99, targetPane);
 
                     // delete it from the source list
                     sourceList.RemoveAt(sourceBox.SelectedIndex);
 
                     // reload the portalSettings from the database
+                    //TODO: [moudrick] CurrentPortal encapsulate initialization
                     HttpContext.Current.Items["PortalSettings"] = PortalProvider.Instance.InstantiateNewPortal(PageID, portalSettings.PortalAlias);
                     portalSettings = (Portal) Context.Items["PortalSettings"];
 
@@ -380,7 +395,7 @@ namespace Rainbow.Admin
                     }
 
                     // Redirect to the same page to pick up changes
-                    Response.Redirect(AppendModuleID(Request.RawUrl, m.ID));
+                    Response.Redirect(AppendModuleID(Request.RawUrl, moduleItem.ID));
                 }
                 else
                 {
@@ -418,7 +433,6 @@ namespace Rainbow.Admin
                     // Updated 6_Aug_2004 by Cory Isakson to accomodate addtional Page Management
                     string retPage = Request.QueryString["returnPageID"];
                     string returnPage;
-
                     if (retPage != null) // user is returned to the calling tab.
                     {
                         returnPage = HttpUrlBuilder.BuildUrl(int.Parse(retPage));
@@ -455,7 +469,7 @@ namespace Rainbow.Admin
         /// The SavePageData helper method is used to persist the
         /// current tab settings to the database.
         /// </summary>
-        private void SavePageData()
+        void SavePageData()
         {
             // Construct Authorized User Roles string
             string authorizedRoles = string.Empty;
@@ -520,16 +534,16 @@ namespace Rainbow.Admin
 
             if (_listbox.SelectedIndex != -1)
             {
-                ModuleItem m = (ModuleItem) modules[_listbox.SelectedIndex];
-                if (m.ID > -1)
+                ModuleItem moduleItem = (ModuleItem) modules[_listbox.SelectedIndex];
+                if (moduleItem.ID > -1)
                 {
                     // jviladiu@portalServices.net (20/08/2004) Add role control for delete module
-                    if (PortalSecurity.IsInRoles(PortalSecurity.GetDeleteModulePermissions(m.ID)))
+                    if (PortalSecurity.IsInRoles(PortalSecurity.GetDeleteModulePermissions(moduleItem.ID)))
                     {
                         // must delete from database too
                         ModulesDB moddb = new ModulesDB();
                         // TODO add userEmail and useRecycler
-                        moddb.DeleteModule(m.ID);
+                        moddb.DeleteModule(moduleItem.ID);
                     }
                     else
                     {
@@ -547,7 +561,8 @@ namespace Rainbow.Admin
         /// The BindData helper method is used to update the tab's
         /// layout panes with the current configuration information
         /// </summary>
-        private void BindData() {
+        private void BindData() 
+        {
             PortalPage page = portalSettings.ActivePage;
 
             // Populate Page Names, etc.
@@ -556,37 +571,40 @@ namespace Rainbow.Admin
             showMobile.Checked = page.ShowMobile;
 
             // Populate the "ParentPage" Data
-            IList<PageItem> items = PortalPageProvider.Instance.GetPagesParent( portalSettings.PortalID, PageID );
+            IList<PageItem> items = PortalPageProvider.Instance.GetPagesParent(portalSettings.PortalID, PageID);
             parentPage.DataSource = items;
             parentPage.DataBind();
 
-            if ( parentPage.Items.FindByValue( page.ParentPageID.ToString() ) != null ) {
+            if (parentPage.Items.FindByValue(page.ParentPageID.ToString()) != null) 
+            {
                 //parentPage.Items.FindByValue( tab.ParentPageID.ToString() ).Selected = true;
-
                 parentPage.SelectedValue = page.ParentPageID.ToString();
             }
 
             // Translate
-            if ( parentPage.Items.FindByText( " ROOT_LEVEL" ) != null )
-                parentPage.Items.FindByText( " ROOT_LEVEL" ).Text =
-                    General.GetString( "ROOT_LEVEL", "Root Level", parentPage );
+            if (parentPage.Items.FindByText(" ROOT_LEVEL") != null)
+            {
+                parentPage.Items.FindByText(" ROOT_LEVEL").Text =
+                    General.GetString("ROOT_LEVEL", "Root Level", parentPage);
+            }
 
             // Populate checkbox list with all security roles for this portal
             // and "check" the ones already configured for this tab
-            UsersDB users = new UsersDB();
-            IList<RainbowRole> roles = users.GetPortalRoles( portalSettings.PortalAlias );
+            IList<RainbowRole> roles = RainbowRoleProvider.Instance.GetAllRoles(portalSettings.PortalAlias);
 
             // Clear existing items in checkboxlist
             authRoles.Items.Clear();
 
-            foreach ( RainbowRole role in roles ) {
+            foreach (RainbowRole role in roles) 
+            {
                 ListItem item = new ListItem();
                 item.Text = role.Name;
                 item.Value = role.Id.ToString();
 
-                if ( ( page.AuthorizedRoles.LastIndexOf( item.Text ) ) > -1 )
+                if ((page.AuthorizedRoles.LastIndexOf(item.Text)) > -1)
+                {
                     item.Selected = true;
-
+                }
                 authRoles.Items.Add( item );
             }
 
@@ -630,24 +648,22 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="pane">The pane.</param>
         /// <returns></returns>
-        private ArrayList GetModules(string pane)
+        ArrayList GetModules(string pane)
         {
             ArrayList paneModules = new ArrayList();
 
-            foreach (RainbowModule _module in portalSettings.ActivePage.Modules)
+            foreach (RainbowModule module in portalSettings.ActivePage.Modules)
             {
-                if ((_module.PaneName).ToLower() == pane.ToLower() && portalSettings.ActivePage.PageID == _module.PageID
-                    )
+                if ((module.PaneName).ToLower() == pane.ToLower() && portalSettings.ActivePage.PageID == module.PageID)
                 {
-                    ModuleItem m = new ModuleItem();
-                    m.Title = _module.ModuleTitle;
-                    m.ID = _module.ModuleID;
-                    m.ModuleDefID = _module.ModuleDefID;
-                    m.Order = _module.ModuleOrder;
-                    paneModules.Add(m);
+                    ModuleItem moduleItem = new ModuleItem();
+                    moduleItem.Title = module.ModuleTitle;
+                    moduleItem.ID = module.ModuleID;
+                    moduleItem.ModuleDefID = module.ModuleDefID;
+                    moduleItem.Order = module.ModuleOrder;
+                    paneModules.Add(moduleItem);
                 }
             }
-
             return paneModules;
         }
 
@@ -664,11 +680,11 @@ namespace Rainbow.Admin
             list.Sort();
 
             // renumber the order
-            foreach (ModuleItem m in list)
+            foreach (ModuleItem moduleItem in list)
             {
                 // number the items 1, 3, 5, etc. to provide an empty order
                 // number when moving items up and down in the list.
-                m.Order = i;
+                moduleItem.Order = i;
                 i += 2;
             }
         }

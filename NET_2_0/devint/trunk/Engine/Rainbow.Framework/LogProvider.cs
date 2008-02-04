@@ -6,7 +6,7 @@ using System.IO;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
-using Rainbow.Framework.Providers;
+using Rainbow.Framework.Providers.Configuration;
 
 namespace Rainbow.Framework.Logging
 {

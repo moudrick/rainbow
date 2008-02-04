@@ -12,29 +12,50 @@ namespace Rainbow.Framework.Items
     /// </summary>
     public class PageItem : IComparable
     {
+        int order;
+        string name;
+        int id;
+        int nestLevel;
+
         /// <summary>
         /// Order
         /// </summary>
         /// <value>The order.</value>
-        public int Order;
+        public int Order
+        {
+            get { return order; }
+            set { order = value; }
+        }
 
         /// <summary>
         /// Name
         /// </summary>
         /// <value>The name.</value>
-        public string Name;
+        public string Name
+        {
+            get { return name;}
+            set { name = value;}
+        }
 
         /// <summary>
         /// ID
         /// </summary>
         /// <value>The ID.</value>
-        public int ID;
+        public int ID
+        {
+            get { return id; }
+            set { id = value; }
+        }
 
         /// <summary>
         /// NestLevel
         /// </summary>
         /// <value>The nest level.</value>
-        public int NestLevel;
+        public int NestLevel
+        {
+            get { return nestLevel; }
+            set { nestLevel = value; }
+        }
 
         /// <summary>
         /// Public comparer

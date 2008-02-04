@@ -2,6 +2,7 @@ using System;
 using System.Configuration.Provider;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Providers;
+using Rainbow.Framework.Providers.Configuration;
 
 namespace Rainbow.Framework.Providers
 {
@@ -42,5 +43,34 @@ namespace Rainbow.Framework.Providers
                                       long pageID,
                                       string actionType,
                                       string userField);
+
+        /// <summary>
+        /// returns the total hit count for a portal
+        /// </summary>
+        /// <param name="portalID">portal id to get stats for</param>
+        /// <returns>
+        /// total number of hits to the portal of all types
+        /// </returns>
+        public abstract int GetTotalPortalHits(int portalID);
+
+        /// <summary>
+        /// Get Users Online
+        /// Add to the Cache
+        /// HttpContext.Current.Cache.Insert("WhoIsOnlineAnonUserCount", anonUserCount, null, DateTime.Now.AddMinutes(cacheTimeout), TimeSpan.Zero);
+        /// HttpContext.Current.Cache.Insert("WhoIsOnlineRegUserCount", regUsersOnlineCount, null, DateTime.Now.AddMinutes(cacheTimeout), TimeSpan.Zero);
+        /// HttpContext.Current.Cache.Insert("WhoIsOnlineRegUsersString", regUsersString, null, DateTime.Now.AddMinutes(cacheTimeout), TimeSpan.Zero);
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="minutesToCheckForUsers">The minutes to check for users.</param>
+        /// <param name="cacheTimeout">The cache timeout.</param>
+        /// <param name="anonUserCount">The anon user count.</param>
+        /// <param name="regUsersOnlineCount">The reg users online count.</param>
+        /// <param name="regUsersString">The reg users string.</param>
+        public abstract void FillUsersOnlineCache(int portalID,
+                                                int minutesToCheckForUsers,
+                                                int cacheTimeout,
+                                                out int anonUserCount,
+                                                out int regUsersOnlineCount,
+                                                out string regUsersString);
     }
 }

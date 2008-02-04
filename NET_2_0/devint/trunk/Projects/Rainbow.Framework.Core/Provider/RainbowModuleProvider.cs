@@ -8,6 +8,7 @@ using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers.Configuration;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI.WebControls;
 

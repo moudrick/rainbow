@@ -8,6 +8,7 @@ using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Items;
+using Rainbow.Framework.Providers.Configuration;
 using Rainbow.Framework.Security;
 
 namespace Rainbow.Framework.Providers

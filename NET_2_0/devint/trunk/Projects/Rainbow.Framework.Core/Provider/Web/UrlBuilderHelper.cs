@@ -9,10 +9,7 @@ using Rainbow.Framework.Context;
 
 namespace Rainbow.Framework.Web
 {
-	/// <summary>
-	/// Summary description for Helper.
-	/// </summary>
-	internal sealed class UrlBuilderHelper
+	sealed class UrlBuilderHelper
 	{
         public const string IsPlaceHolderID = "TabPlaceholder";
         public const string TabLinkID = "TabLink";

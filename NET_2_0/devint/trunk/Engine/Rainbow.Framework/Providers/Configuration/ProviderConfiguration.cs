@@ -5,7 +5,7 @@ using System.Configuration.Provider;
 using System.Web.Caching;
 using System.Xml;
 
-namespace Rainbow.Framework.Providers
+namespace Rainbow.Framework.Providers.Configuration
 {
     /// <summary>
     /// </summary>
@@ -40,7 +40,7 @@ namespace Rainbow.Framework.Providers
         public static ProviderConfiguration GetProviderConfiguration(string provider)
         {
             return (ProviderConfiguration) ConfigurationManager
-                .GetSection("providers/" + provider);
+                                               .GetSection("providers/" + provider);
         }
 
         public static ProviderType GetDefaultProviderFromCache<ProviderType>(string providerType, Cache cache)
@@ -48,7 +48,7 @@ namespace Rainbow.Framework.Providers
         {
             ProviderConfiguration providerConfiguration = GetProviderConfiguration(providerType);
             ProviderSettings providerSettings = (ProviderSettings)providerConfiguration
-                .Providers[providerConfiguration.DefaultProvider];
+                                                                      .Providers[providerConfiguration.DefaultProvider];
             string cacheKey = string.Format("Rainbow::Web::Provider::{0}::{1}",
                                             providerType, providerConfiguration.DefaultProvider);
 

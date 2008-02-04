@@ -48,6 +48,7 @@
     <Compile Include="RainbowSqlRoleProvider.cs" />
     <Compile Include="RainbowSqlSiteMapProvider.cs" />
     <Compile Include="SqlGeographicProvider.cs" />
+    <Compile Include="SqlUrlBuilderProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Engine\Rainbow.Framework\Rainbow.Framework.csproj">

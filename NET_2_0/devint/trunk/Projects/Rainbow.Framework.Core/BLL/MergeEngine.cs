@@ -736,6 +736,7 @@ namespace Rainbow.Framework.BLL.MergeEngine
     /// files and merge them into a new file with differences
     /// highlighted
     /// </summary>
+    //Used in HtmlModule.CompareButton only?
     public class Merger
     {
         private WordsCollection _original;
