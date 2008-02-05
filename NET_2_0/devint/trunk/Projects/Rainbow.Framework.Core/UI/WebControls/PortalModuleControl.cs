@@ -62,7 +62,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
         private int _canDelete = 0;
         private int _canProperties = 0;
         private int _portalID = 0;
-        private Hashtable _settings;
+        private Hashtable settings;
         private WorkFlowVersion _version = WorkFlowVersion.Production;
         private bool _supportsWorkflow = false;
         private bool _cacheable = true;
@@ -380,7 +380,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             //Default configuration
             _tabID = 0;
 
-            _moduleConfiguration = RainbowModuleProvider.CreateModuleSettings();
+            _moduleConfiguration = RainbowModuleProvider.Instance.CreateModuleSettings();
         }
 
         #endregion
@@ -400,11 +400,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             get
             {
-                if (_settings == null)
+                if (settings == null)
                 {
-                    _settings = RainbowModuleProvider.GetModuleSettings(ModuleID, baseSettings);
+                    settings = RainbowModuleProvider.Instance.GetModuleSettings(ModuleID, baseSettings);
                 }
-                return _settings;
+                return settings;
             }
         }
 
@@ -490,7 +490,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             set //made changeable by Manu, please be careful on changing it
             {
                 _moduleConfiguration.ModuleID = value;
-                _settings = null; //force cached settings to be reloaded
+                settings = null; //force cached settings to be reloaded
             }
         }
 
@@ -3060,7 +3060,7 @@ end of modification
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RightLeft_Click(Object sender, EventArgs e)
+        void RightLeft_Click(Object sender, EventArgs e)
         {
             string sourcePane = ((ModuleButton) sender).Attributes["sourcepane"];
             string targetPane = ((ModuleButton) sender).Attributes["targetpane"];
@@ -3071,7 +3071,7 @@ end of modification
             // add it to the database
             // tiptopweb : OriginalModuleID to have it work with shortcut module
             ModulesDB admin = new ModulesDB();
-            admin.UpdateModuleOrder(OriginalModuleID, 99, targetPane);
+            RainbowModuleProvider.Instance.UpdateModuleOrder(OriginalModuleID, 99, targetPane);
 
             // reload the portalSettings from the database
             //TODO: [moudrick] CurrentPortal encapsulate initialization
@@ -3084,7 +3084,9 @@ end of modification
 
             // resave the order
             foreach (ModuleItem item in sourceList)
-                admin.UpdateModuleOrder(item.ID, item.Order, sourcePane);
+            {
+                RainbowModuleProvider.Instance.UpdateModuleOrder(item.ID, item.Order, sourcePane);
+            }
 
             // reorder the modules in the target pane
             ArrayList targetList = GetModules(targetPane);
@@ -3092,7 +3094,9 @@ end of modification
 
             // resave the order
             foreach (ModuleItem item in targetList)
-                admin.UpdateModuleOrder(item.ID, item.Order, targetPane);
+            {
+                RainbowModuleProvider.Instance.UpdateModuleOrder(item.ID, item.Order, targetPane);
+            }
 
             // Redirect to the same page to pick up changes
             Page.Response.Redirect(AppendModuleID(Page.Request.RawUrl, ModuleID));
@@ -3104,7 +3108,7 @@ end of modification
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UpDown_Click(Object sender, EventArgs e)
+        void UpDown_Click(object sender, EventArgs e)
         {
             int delta;
 
@@ -3119,23 +3123,30 @@ end of modification
             // Determine the delta to apply in the order number for the module
             // within the list.  +3 moves down one item; -3 moves up one item
             if (cmd == "down")
+            {
                 delta = 3;
+            }
             else
+            {
                 delta = -3;
+            }
 
             foreach (ModuleItem item in modules)
             {
                 if (item.ID == ModuleID)
+                {
                     item.Order += delta;
+                }
             }
 
             // reorder the modules in the content pane
             OrderModules(modules);
 
             // resave the order
-            ModulesDB admin = new ModulesDB();
             foreach (ModuleItem item in modules)
-                admin.UpdateModuleOrder(item.ID, item.Order, pane);
+            {
+                RainbowModuleProvider.Instance.UpdateModuleOrder(item.ID, item.Order, pane);
+            }
 
             // Redirect to the same page to pick up changes
             Page.Response.Redirect(AppendModuleID(Page.Request.RawUrl, ModuleID));
@@ -3184,13 +3195,11 @@ end of modification
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DeleteModuleButton_Click(Object sender, EventArgs e)
+        void DeleteModuleButton_Click(Object sender, EventArgs e)
         {
-            ModulesDB admin = new ModulesDB();
-
             //admin.DeleteModule(this.ModuleID);
             // TODO - add userEmail and useRecycler
-            admin.DeleteModule(ModuleID);
+            RainbowModuleProvider.Instance.DeleteModule(ModuleID);
             // Redirect to the same page to pick up changes
             Page.Response.Redirect(Page.Request.RawUrl);
         }
@@ -3472,7 +3481,7 @@ end of modification
         /// <summary>
         /// used to hold the consolidated list of buttons for the module
         /// </summary>
-        ArrayList ButtonList = new ArrayList(3);
+        readonly ArrayList ButtonList = new ArrayList(3);
 
         /// <summary>
         /// User Buttons
@@ -3492,7 +3501,7 @@ end of modification
         // switches used for building module hierarchy
         bool _buildTitle = true;
         bool buildButtons = true;
-        bool _buildBody = true;
+        readonly bool _buildBody = true;
         bool _beforeContent = true;
         bool _isPrint = false;
 
@@ -3626,7 +3635,7 @@ end of modification
 
         }
 
-        void HtmRenderButtons( PlaceHolder placeHolder )
+        void HtmRenderButtons(PlaceHolder placeHolder)
         {
             if (buildButtons)
             {

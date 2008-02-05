@@ -135,7 +135,7 @@
     <module defaultProvider="ModuleProvider">
       <providers>
         <clear/>
-        <add name="ModuleProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlModuleProvider, Rainbow.Framework.Providers.MsSql" />
+        <add name="ModuleProvider" type="Rainbow.Framework.Providers.MsSql.MsSqlRainbowModuleProvider, Rainbow.Framework.Providers.MsSql" />
       </providers>
     </module>
     <monitoring defaultProvider="MonitoringProvider">

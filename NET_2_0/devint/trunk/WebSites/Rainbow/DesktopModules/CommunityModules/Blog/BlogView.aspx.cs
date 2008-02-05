@@ -53,7 +53,7 @@ namespace Rainbow.Content.Web.Modules
                 }
                 lnkRSS.HRef = HttpUrlBuilder.BuildUrl("~/DesktopModules/CommunityModules/Blog/RSS.aspx", PageID, "&mID=" + ModuleID);
                 imgRSS.Src = HttpUrlBuilder.BuildUrl("~/DesktopModules/CommunityModules/Blog/xml.gif");
-                lblCopyright.Text = moduleSettings["Copyright"].ToString();
+                lblCopyright.Text = ModuleSettings["Copyright"].ToString();
 
                 BindData();
             }
@@ -104,7 +104,7 @@ namespace Rainbow.Content.Web.Modules
             }
         }
 
-        private bool IsValidComment()
+        bool IsValidComment()
         {
             bool result = true;
             //TODO do we need validation?
@@ -112,7 +112,7 @@ namespace Rainbow.Content.Web.Modules
             return result;
         }
 
-        private void SetCookies()
+        void SetCookies()
         {
             HttpCookie blogUserCookie = new HttpCookie("blogUser", txtName.Text);
             HttpCookie blogUrlCookie = new HttpCookie("blogUrl", txtURL.Text);
@@ -127,7 +127,7 @@ namespace Rainbow.Content.Web.Modules
         /// from the Blogs table, and update the page with
         /// the message content.
         /// </summary>
-        private void BindData()
+        void BindData()
         {
             // Obtain the selected item from the Blogs table
             BlogDB blogDB = new BlogDB();
@@ -139,10 +139,10 @@ namespace Rainbow.Content.Web.Modules
                 if (dataReader.Read())
                 {
                     // Update labels with message contents
-                    Title.Text = (string) dataReader["Title"].ToString();
-                    txtTitle.Text = "re: " + (string) dataReader["Title"].ToString();
+                    Title.Text = dataReader["Title"].ToString();
+                    txtTitle.Text = "re: " + dataReader["Title"];
                     StartDate.Text = ((DateTime) dataReader["StartDate"]).ToString("dddd MMMM d yyyy hh:mm tt");
-                    Description.Text = Server.HtmlDecode((string) dataReader["Description"].ToString());
+                    Description.Text = Server.HtmlDecode(dataReader["Description"].ToString());
                 }
             }
             finally
@@ -170,9 +170,9 @@ namespace Rainbow.Content.Web.Modules
                 if (dataReader.Read())
                 {
                     lblEntryCount.Text = General.GetString("BLOG_ENTRIES", "Entries", null) +
-                                         " (" + (string) dataReader["EntryCount"].ToString() + ")";
+                                         " (" + dataReader["EntryCount"] + ")";
                     lblCommentCount.Text = General.GetString("BLOG_COMMENTS", "Comments", null) +
-                                           " (" + (string) dataReader["CommentCount"].ToString() + ")";
+                                           " (" + dataReader["CommentCount"] + ")";
                 }
             }
             finally

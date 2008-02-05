@@ -46,13 +46,13 @@ namespace Rainbow.Content.Web.Modules
             //Added support for Rainbow WYSIWYG editors.
             //Editor placeholder setup
             HtmlEditorDataType h = new HtmlEditorDataType();
-            h.Value = moduleSettings["Editor"].ToString();
+            h.Value = ModuleSettings["Editor"].ToString();
             DesktopText =
-                h.GetEditor(DescriptionField, ModuleID, bool.Parse(moduleSettings["ShowUpload"].ToString()),
+                h.GetEditor(DescriptionField, ModuleID, bool.Parse(ModuleSettings["ShowUpload"].ToString()),
                             portalSettings);
 
-            DesktopText.Width = new Unit(moduleSettings["Width"].ToString());
-            DesktopText.Height = new Unit(moduleSettings["Height"].ToString());
+            DesktopText.Width = new Unit(ModuleSettings["Width"].ToString());
+            DesktopText.Height = new Unit(ModuleSettings["Height"].ToString());
             //end Chris Farrell changes, 5/28/04
 
 
@@ -120,7 +120,7 @@ namespace Rainbow.Content.Web.Modules
                 }
                 else //default for new
                 {
-                    AssignedField.Text = moduleSettings["TASKS_DEFAULT_ASSIGNEE"].ToString();
+                    AssignedField.Text = ModuleSettings["TASKS_DEFAULT_ASSIGNEE"].ToString();
                 }
             }
         }
@@ -162,7 +162,7 @@ namespace Rainbow.Content.Web.Modules
 
                     //by Manu
                     //First get linked task modules
-                    string[] linkedModules = moduleSettings["TASKS_LINKED_MODULES"].ToString().Split(';');
+                    string[] linkedModules = ModuleSettings["TASKS_LINKED_MODULES"].ToString().Split(';');
 
                     for (int i = 0; i < linkedModules.Length; i++)
                     {
@@ -174,7 +174,7 @@ namespace Rainbow.Content.Web.Modules
                             //Add to linked
 
                             //Get default assignee from module setting
-                            Hashtable linkedModuleSettings = RainbowModuleProvider.GetModuleSettings(linkedModuleID, this);
+                            Hashtable linkedModuleSettings = RainbowModuleProvider.Instance.GetModuleSettings(linkedModuleID, this);
                             string linkedModuleAssignee = linkedModuleSettings["TASKS_DEFAULT_ASSIGNEE"].ToString();
 
                             tasks.AddTask(linkedModuleID, ItemID, RainbowPrincipal.CurrentUser.Identity.Email,

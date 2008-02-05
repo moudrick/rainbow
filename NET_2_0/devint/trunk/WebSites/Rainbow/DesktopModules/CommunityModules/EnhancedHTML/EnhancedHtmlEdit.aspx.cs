@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Data;
@@ -21,21 +20,19 @@ namespace Rainbow.Content.Web.Modules
     /// Written by: José Viladiu, jviladiu@portalServices.net
     /// </summary>
     [History("jminond", "march 2005", "Changes for moving Tab to Page")]
-    [
-        History("jviladiu@portalServices.net", "2004/12/28",
+    [History("jviladiu@portalServices.net", "2004/12/28",
             "Add support for include contents from others modules in a page")]
-    [
-        History("jviladiu@portalServices.net", "2004/07/05",
+    [History("jviladiu@portalServices.net", "2004/07/05",
             "Changed SelectedValue for SelectedItem.Value in many places for compatibility with 1.0")]
     public partial class EnhancedHtmlEdit : EditItemPage
     {
+        readonly string tokenModule = "#MODULE#";
+        readonly string tokenPortalModule = "#PORTALMODULE#";
+
         /// <summary>
         /// Html Text editor for the control
         /// </summary>
         protected IHtmlEditor DesktopText;
-
-        private readonly string tokenModule = "#MODULE#";
-        private readonly string tokenPortalModule = "#PORTALMODULE#";
 
         /// <summary>
         /// Handles the Load event of the Page control.
@@ -45,16 +42,16 @@ namespace Rainbow.Content.Web.Modules
         private void Page_Load(object sender, EventArgs e)
         {
             HtmlEditorDataType h = new HtmlEditorDataType();
-            h.Value = moduleSettings["Editor"].ToString();
+            h.Value = ModuleSettings["Editor"].ToString();
             DesktopText =
-                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(moduleSettings["ShowUpload"].ToString()),
+                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(ModuleSettings["ShowUpload"].ToString()),
                             portalSettings);
-            DesktopText.Width = new Unit(moduleSettings["Width"].ToString());
-            DesktopText.Height = new Unit(moduleSettings["Height"].ToString());
+            DesktopText.Width = new Unit(ModuleSettings["Width"].ToString());
+            DesktopText.Height = new Unit(ModuleSettings["Height"].ToString());
 
             if (!Page.IsPostBack)
             {
-                if (bool.Parse(moduleSettings["ENHANCEDHTML_GET_CONTENTS_FROM_PORTALS"].ToString()))
+                if (bool.Parse(ModuleSettings["ENHANCEDHTML_GET_CONTENTS_FROM_PORTALS"].ToString()))
                 {
                     kindOfContent.Items.Add(new ListItem("External Module", "Portal"));
                     CustomListDataType cldtAll =
@@ -244,7 +241,7 @@ namespace Rainbow.Content.Web.Modules
             if ((lstPages.SelectedItem.Value != null) && (lstPages.SelectedItem.Value != "-1"))
             {
                 EnhancedHtmlDB tdb1 = new EnhancedHtmlDB();
-                tdb1.DeletePage(int.Parse(this.lstPages.SelectedItem.Value));
+                tdb1.DeletePage(int.Parse(lstPages.SelectedItem.Value));
                 if (lstPages.Items.Count > 0)
                 {
                     lstPages.SelectedIndex = 0;
@@ -274,8 +271,8 @@ namespace Rainbow.Content.Web.Modules
             txtViewOrder.Text = "100";
 
             EnhancedHtmlDB ehdb = new EnhancedHtmlDB();
-            SqlDataReader dr =
-                ehdb.GetSinglePage(int.Parse(lstPages.SelectedItem.Value), Rainbow.Framework.WorkFlowVersion.Staging);
+            SqlDataReader dr = ehdb.GetSinglePage(int.Parse(lstPages.SelectedItem.Value), 
+                WorkFlowVersion.Staging);
 
             try
             {
@@ -350,9 +347,7 @@ namespace Rainbow.Content.Web.Modules
             {
                 order = int.Parse(orderView);
             }
-            catch
-            {
-            }
+            catch {;}
             if (order < 1)
             {
                 orderView = "100";
@@ -371,12 +366,12 @@ namespace Rainbow.Content.Web.Modules
                     break;
                 case "Module":
                     i = int.Parse(listModules.SelectedValue);
-                    if (i == 0 || i == this.ModuleID) return; // Cannot select this module
+                    if (i == 0 || i == ModuleID) return; // Cannot select this module
                     text = tokenModule + listModules.SelectedValue;
                     break;
                 case "Portal":
                     i = int.Parse(listAllModules.SelectedValue);
-                    if (i == 0 || i == this.ModuleID) return; // Cannot select this module
+                    if (i == 0 || i == ModuleID) return; // Cannot select this module
                     text = tokenPortalModule + listAllModules.SelectedValue;
                     break;
             }

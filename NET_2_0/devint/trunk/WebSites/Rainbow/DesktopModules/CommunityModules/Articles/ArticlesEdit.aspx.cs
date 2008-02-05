@@ -5,7 +5,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
@@ -41,30 +40,30 @@ namespace Rainbow.Content.Web.Modules
         {
             // Add the setting
             HtmlEditorDataType editor = new HtmlEditorDataType();
-            editor.Value = moduleSettings["Editor"].ToString();
+            editor.Value = ModuleSettings["Editor"].ToString();
             DesktopText =
-                editor.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(moduleSettings["ShowUpload"].ToString()),
+                editor.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(ModuleSettings["ShowUpload"].ToString()),
                                  portalSettings);
-            DesktopText.Width = new Unit(moduleSettings["Width"].ToString());
-            DesktopText.Height = new Unit(moduleSettings["Height"].ToString());
+            DesktopText.Width = new Unit(ModuleSettings["Width"].ToString());
+            DesktopText.Height = new Unit(ModuleSettings["Height"].ToString());
 
             HtmlEditorDataType abstractEditor = new HtmlEditorDataType();
-            if (moduleSettings["ARTICLES_RICHABSTRACT"] != null &&
-                bool.Parse(moduleSettings["ARTICLES_RICHABSTRACT"].ToString()))
+            if (ModuleSettings["ARTICLES_RICHABSTRACT"] != null &&
+                bool.Parse(ModuleSettings["ARTICLES_RICHABSTRACT"].ToString()))
             {
-                abstractEditor.Value = moduleSettings["Editor"].ToString();
+                abstractEditor.Value = ModuleSettings["Editor"].ToString();
                 AbstractText =
                     abstractEditor.GetEditor(PlaceHolderAbstractHTMLEditor, ModuleID,
-                                             bool.Parse(moduleSettings["ShowUpload"].ToString()), portalSettings);
+                                             bool.Parse(ModuleSettings["ShowUpload"].ToString()), portalSettings);
             }
             else
             {
                 abstractEditor.Value = "Plain Text";
                 AbstractText =
                     abstractEditor.GetEditor(PlaceHolderAbstractHTMLEditor, ModuleID,
-                                             bool.Parse(moduleSettings["ShowUpload"].ToString()), portalSettings);
+                                             bool.Parse(ModuleSettings["ShowUpload"].ToString()), portalSettings);
             }
-            AbstractText.Width = new Unit(moduleSettings["Width"].ToString());
+            AbstractText.Width = new Unit(ModuleSettings["Width"].ToString());
             AbstractText.Height = new Unit("130px");
 
             // Construct the page
@@ -94,11 +93,11 @@ namespace Rainbow.Content.Web.Modules
                         {
                             StartField.Text = ((DateTime) dr["StartDate"]).ToShortDateString();
                             ExpireField.Text = ((DateTime) dr["ExpireDate"]).ToShortDateString();
-                            TitleField.Text = (string) dr["Title"].ToString();
-                            SubtitleField.Text = (string) dr["Subtitle"].ToString();
-                            AbstractText.Text = (string) dr["Abstract"].ToString();
+                            TitleField.Text = dr["Title"].ToString();
+                            SubtitleField.Text = dr["Subtitle"].ToString();
+                            AbstractText.Text = dr["Abstract"].ToString();
                             DesktopText.Text = Server.HtmlDecode(dr["Description"].ToString());
-                            CreatedBy.Text = (string) dr["CreatedByUser"].ToString();
+                            CreatedBy.Text = dr["CreatedByUser"].ToString();
                             CreatedDate.Text = ((DateTime) dr["CreatedDate"]).ToString();
                             // 15/7/2004 added localization by Mario Endara mario@softworks.com.uy
                             if (CreatedBy.Text == "unknown")
@@ -117,7 +116,7 @@ namespace Rainbow.Content.Web.Modules
                     //New article - set defaults
                     StartField.Text = DateTime.Now.ToShortDateString();
                     ExpireField.Text =
-                        DateTime.Now.AddDays(int.Parse(moduleSettings["DefaultVisibleDays"].ToString())).
+                        DateTime.Now.AddDays(int.Parse(ModuleSettings["DefaultVisibleDays"].ToString())).
                             ToShortDateString();
                     CreatedBy.Text = RainbowPrincipal.CurrentUser.Identity.Email;
                     CreatedDate.Text = DateTime.Now.ToString();

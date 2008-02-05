@@ -59,9 +59,9 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void PageCustomPropertyPage_Load(object sender, EventArgs e)
+        void PageCustomPropertyPage_Load(object sender, EventArgs e)
         {
-            EditTable.DataSource = new SortedList(RainbowModuleProvider.GetModuleUserSettings(ModuleID,
+            EditTable.DataSource = new SortedList(RainbowModuleProvider.Instance.GetModuleUserSettings(ModuleID,
                 RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, this));
             EditTable.DataBind();
         }
@@ -98,7 +98,7 @@ namespace Rainbow.Content.Web.Modules
         void EditTable_UpdateControl(object sender,
             Framework.Web.UI.WebControls.SettingsTableEventArgs e)
         {
-            RainbowModuleProvider.UpdateCustomModuleSetting(ModuleID, 
+            RainbowModuleProvider.Instance.UpdateCustomModuleSetting(ModuleID, 
                 RainbowPrincipal.CurrentUser.Identity.ProviderUserKey,
                 e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }

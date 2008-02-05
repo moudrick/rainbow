@@ -68,7 +68,7 @@ namespace Rainbow.Content.Web.Modules
 
             uploadpanel.Visible = _uploadIsEnabled;
 
-            _imageFolder = ((SettingItem) moduleSettings["FlashPath"]).FullPath;
+            _imageFolder = ((SettingItem) ModuleSettings["FlashPath"]).FullPath;
             if (IOHelper.CreateDirectory(Server.MapPath(_imageFolder)))
                 DisplayImages();
             else
@@ -174,7 +174,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         public void DisplayImages()
         {
-            _returnPath = "~~/" + ((SettingItem) moduleSettings["FlashPath"]).Value;
+            _returnPath = "~~/" + ((SettingItem) ModuleSettings["FlashPath"]).Value;
             string[] galleryfolderarray = ReturnFolderContentArray();
             flashTable.Controls.Clear();
             if (galleryfolderarray == null || galleryfolderarray.Length == 0)

@@ -314,6 +314,14 @@
         <KeepNontrivialAlias>True</KeepNontrivialAlias>
       </ImportsSettings>
     </VB>
+    <Naming>
+      <DefaultExceptionName>e</DefaultExceptionName>
+      <PreferLongerNames>False</PreferLongerNames>
+      <Field prefix="" suffix="" />
+      <StaticField prefix="" suffix="" />
+      <Parameter prefix="" suffix="" />
+      <LocalVariable prefix="" suffix="" />
+    </Naming>
     <SkipRegions length="4">
       <_0>Windows Form Designer generated code</_0>
       <_1>Component Designer generated code</_1>

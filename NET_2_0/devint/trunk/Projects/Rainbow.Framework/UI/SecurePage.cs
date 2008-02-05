@@ -1,5 +1,5 @@
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Data;
 
 namespace Rainbow.Framework.Web.UI
 {
@@ -20,21 +20,26 @@ namespace Rainbow.Framework.Web.UI
             if (AllowedModules != null)
             {
                 string guidsInUse = string.Empty;
-                if (base.Request.Cookies["RainbowSecurity"] != null)
+                if (Request.Cookies["RainbowSecurity"] != null)
                 {
                     guidsInUse = Request.Cookies["RainbowSecurity"].Value;
                 }
-                foreach (string mg in AllowedModules)
+                foreach (string moduleGuidString in AllowedModules)
                 {
-                    if (guidsInUse.IndexOf(mg.ToUpper()) > -1) return;
+                    if (guidsInUse.IndexOf(moduleGuidString.ToUpper()) > -1)
+                    {
+                        return;
+                    }
                 }
                 if (ModuleID != 0)
                 {
-                    guidsInUse = (new ModulesDB()).GetModuleGuid(ModuleID).ToString().ToUpper();
-                    ;
-                    foreach (string mg in AllowedModules)
+                    guidsInUse = RainbowModuleProvider.Instance.GetModuleGuid(ModuleID).ToString().ToUpper();
+                    foreach (string moduleGuidString in AllowedModules)
                     {
-                        if (guidsInUse.IndexOf(mg.ToUpper()) > -1) return;
+                        if (guidsInUse.IndexOf(moduleGuidString.ToUpper()) > -1)
+                        {
+                            return;
+                        }
                     }
                 }
                 PortalSecurity.AccessDenied();

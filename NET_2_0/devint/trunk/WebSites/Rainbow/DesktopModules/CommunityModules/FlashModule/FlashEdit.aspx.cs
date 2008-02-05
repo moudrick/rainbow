@@ -38,7 +38,9 @@ namespace Rainbow.Content.Web.Modules
             scriptString += "}</script>";
 
             if (!ClientScript.IsClientScriptBlockRegistered("newWindow"))
+            {
                 ClientScript.RegisterClientScriptBlock(GetType(), "newWindow", scriptString);
+            }
 
             showGalleryButton.NavigateUrl = "javascript:newWindow('UploadFlash.aspx?FieldID=Src&mID=" + ModuleID +
                                             "','gallery')";
@@ -47,21 +49,25 @@ namespace Rainbow.Content.Web.Modules
             {
                 if (ModuleID > 0)
                 {
-                    Hashtable settings;
-
                     // Get settings from the database
-                    settings = RainbowModuleProvider.GetModuleSettings(ModuleID);
-
+                    Hashtable settings = RainbowModuleProvider.Instance.GetModuleSettings(ModuleID);
                     if (settings["src"] != null)
+                    {
                         Src.Text = settings["src"].ToString();
+                    }
                     if (settings["width"] != null)
+                    {
                         Width.Text = settings["width"].ToString();
+                    }
                     if (settings["height"] != null)
+                    {
                         Height.Text = settings["height"].ToString();
+                    }
                     if (settings["backcolor"] != null)
+                    {
                         BackgroundCol.Text = settings["backcolor"].ToString();
+                    }
                 }
-
                 // Store URL Referrer to return to portal
                 ViewState["UrlReferrer"] = Request.UrlReferrer.ToString();
             }
@@ -93,10 +99,10 @@ namespace Rainbow.Content.Web.Modules
             base.OnUpdate(e);
 
             // Update settings in the database
-            RainbowModuleProvider.UpdateModuleSetting(ModuleID, "src", Src.Text);
-            RainbowModuleProvider.UpdateModuleSetting(ModuleID, "height", Height.Text);
-            RainbowModuleProvider.UpdateModuleSetting(ModuleID, "width", Width.Text);
-            RainbowModuleProvider.UpdateModuleSetting(ModuleID, "backcolor", BackgroundCol.Text);
+            RainbowModuleProvider.Instance.UpdateModuleSetting(ModuleID, "src", Src.Text);
+            RainbowModuleProvider.Instance.UpdateModuleSetting(ModuleID, "height", Height.Text);
+            RainbowModuleProvider.Instance.UpdateModuleSetting(ModuleID, "width", Width.Text);
+            RainbowModuleProvider.Instance.UpdateModuleSetting(ModuleID, "backcolor", BackgroundCol.Text);
 
             // Redirect back to the portal home page
             Response.Redirect((string) ViewState["UrlReferrer"]);

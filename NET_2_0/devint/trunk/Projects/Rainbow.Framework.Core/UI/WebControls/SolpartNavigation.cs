@@ -21,7 +21,6 @@ using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Data;
 using Solpart.WebControls;
 using Path=Rainbow.Framework.Path;
 
@@ -297,8 +296,8 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (!AutoShopDetect) return false;
             if (!CurrentCache.Exists(Key.TabNavigationSettings(tab, "Shop")))
             {
-                Portal portalSettings = (Portal) HttpContext.Current.Items["PortalSettings"];
-                bool exists = new ModulesDB().ExistModuleProductsInPage(tab, portalSettings.PortalID);
+                Portal portalSettings = PortalProvider.Instance.CurrentPortal;
+                bool exists = RainbowModuleProvider.Instance.ExistModuleProductsInPage(tab, portalSettings.PortalID);
                 CurrentCache.Insert(Key.TabNavigationSettings(tab, "Shop"), exists);
             }
             return (bool) CurrentCache.Get(Key.TabNavigationSettings(tab, "Shop"));
@@ -307,11 +306,11 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <summary>
         /// Shops the menu.
         /// </summary>
-        /// <param name="PageStripDetails">The page strip details.</param>
+        /// <param name="pageStripDetails">The page strip details.</param>
         /// <param name="activePageID">The active page ID.</param>
-        protected virtual void ShopMenu(PageStripDetails PageStripDetails, int activePageID)
+        protected virtual void ShopMenu(PageStripDetails pageStripDetails, int activePageID)
         {
-            PagesBox childTabs = PortalPageProvider.Instance.GetPagesBox(PageStripDetails);
+            PagesBox childTabs = PortalPageProvider.Instance.GetPagesBox(pageStripDetails);
             if (childTabs.Count > 0)
             {
                 for (int c = 0; c < childTabs.Count; c++)
@@ -319,7 +318,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     PageStripDetails mySubTab = childTabs[c];
                     if (PortalSecurity.IsInRoles(mySubTab.AuthorizedRoles))
                     {
-                        AddGraphMenuItem(PageStripDetails.PageID.ToString(), mySubTab.PageID.ToString(),
+                        AddGraphMenuItem(pageStripDetails.PageID.ToString(), mySubTab.PageID.ToString(),
                                          mySubTab.PageName, mySubTab.PageImage,
                                          HttpUrlBuilder.BuildUrl("~/" + HttpUrlBuilder.DefaultPage, activePageID,
                                                                  "ItemID=" + mySubTab.PageID), false);

@@ -5,7 +5,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
@@ -46,13 +45,13 @@ namespace Rainbow.Content.Web.Modules
 
             //Indah Fuldner
             HtmlEditorDataType h = new HtmlEditorDataType();
-            h.Value = moduleSettings["Editor"].ToString();
+            h.Value = ModuleSettings["Editor"].ToString();
             DesktopText =
-                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(moduleSettings["ShowUpload"].ToString()),
+                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(ModuleSettings["ShowUpload"].ToString()),
                             portalSettings);
 
-            DesktopText.Width = new Unit(moduleSettings["Width"].ToString());
-            DesktopText.Height = new Unit(moduleSettings["Height"].ToString());
+            DesktopText.Width = new Unit(ModuleSettings["Width"].ToString());
+            DesktopText.Height = new Unit(ModuleSettings["Height"].ToString());
             //End Indah Fuldner
 
             // Construct the page
@@ -102,7 +101,7 @@ namespace Rainbow.Content.Web.Modules
                 else
                 {
                     ExpireField.Text =
-                        DateTime.Now.AddDays(Int32.Parse(moduleSettings["DelayExpire"].ToString())).ToShortDateString();
+                        DateTime.Now.AddDays(Int32.Parse(ModuleSettings["DelayExpire"].ToString())).ToShortDateString();
                     deleteButton.Visible = false; // Cannot delete an unexsistent item
                 }
             }

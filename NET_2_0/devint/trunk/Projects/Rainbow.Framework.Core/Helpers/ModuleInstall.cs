@@ -3,7 +3,7 @@ using System.Data;
 using System.IO;
 using System.Web;
 using System.Web.UI;
-using Rainbow.Framework.Site.Data;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI.WebControls;
 using Path=Rainbow.Framework.Path;
 
@@ -49,7 +49,7 @@ namespace Rainbow.Framework.Helpers
         /// </summary>
         /// <param name="groupFileName">Name of the group file.</param>
         /// <returns></returns>
-        private static DataTable GetInstallGroup(string groupFileName)
+        static DataTable GetInstallGroup(string groupFileName)
         {
             //Load the XML as dataset
             using (DataSet ds = new DataSet())
@@ -109,10 +109,12 @@ namespace Rainbow.Framework.Helpers
         public static void Install(string friendlyName, string desktopSource, string mobileSource, bool install)
         {
             ErrorHandler.Publish(LogLevel.Info,
-                                 "Installing DesktopModule '" + friendlyName + "' from '" + desktopSource + "'");
+                string.Format("Installing DesktopModule '{0}' from '{1}'", friendlyName, desktopSource));
             if (mobileSource != null && mobileSource.Length > 0)
+            {
                 ErrorHandler.Publish(LogLevel.Info,
-                                     "Installing MobileModule '" + friendlyName + "' from '" + mobileSource + "'");
+                    string.Format("Installing MobileModule '{0}' from '{1}'", friendlyName, mobileSource));
+            }
 
             string controlFullPath = Path.ApplicationRoot + "/" + desktopSource;
             
@@ -121,19 +123,27 @@ namespace Rainbow.Framework.Helpers
             //http://sourceforge.net/tracker/index.php?func=detail&aid=738670&group_id=66837&atid=515929
             //Rainbow.Framework.Web.UI.Page page = new Rainbow.Framework.Web.UI.Page();
 
-            Control myControl = page.LoadControl(controlFullPath);
-            if (!(myControl is PortalModuleControl))
-                throw new Exception("Module '" + myControl.GetType().FullName + "' is not a PortalModule Control");
+            Control control = page.LoadControl(controlFullPath);
+            if (!(control is PortalModuleControl))
+            {
+                throw new Exception(
+                    string.Format("Module '{0}' is not a PortalModule Control", 
+                        control.GetType().FullName));
+            }
 
-            PortalModuleControl portalModule = (PortalModuleControl) myControl;
+            PortalModuleControl portalModule = (PortalModuleControl) control;
 
             // Check mobile module
             if (mobileSource != null && mobileSource.Length != 0 && mobileSource.ToLower().EndsWith(".ascx"))
             {
                 //TODO: Check mobile module
                 //TODO: MobilePortalModuleControl mobileModule = (MobilePortalModuleControl) page.LoadControl(Rainbow.Framework.Settings.Path.ApplicationRoot + "/" + mobileSource);
-                if (!File.Exists(HttpContext.Current.Server.MapPath(Path.ApplicationRoot + "/" + mobileSource)))
+                if (!File.Exists(
+                    HttpContext.Current.Server.MapPath(
+                        Path.ApplicationRoot + "/" + mobileSource)))
+                {
                     throw new FileNotFoundException("Mobile Control not found");
+                }
             }
 
             // Get Module ID
@@ -147,8 +157,6 @@ namespace Rainbow.Framework.Helpers
             string className = portalModule.GetType().BaseType.FullName;
 
             // Now we add the definition to module list 
-            ModulesDB modules = new ModulesDB();
-
             if (install)
             {
                 //Install as new module
@@ -164,20 +172,26 @@ namespace Rainbow.Framework.Helpers
                     //Error occurred
                     portalModule.Rollback(null);
                     //Rethrow exception
-                    throw new Exception("Exception occurred installing '" + portalModule.GuidID.ToString() + "'!", ex);
+                    throw new Exception("Exception occurred installing '" + portalModule.GuidID + "'!", ex);
                 }
 
                 try
                 {
                     // Add a new module definition to the database
-                    modules.AddGeneralModuleDefinitions(defID, friendlyName, desktopSource, mobileSource, assemblyName,
-                                                        className, portalModule.AdminModule, portalModule.Searchable);
+                    RainbowModuleProvider.Instance.AddGeneralModuleDefinitions(defID,
+                                                        friendlyName,
+                                                        desktopSource,
+                                                        mobileSource,
+                                                        assemblyName,
+                                                        className,
+                                                        portalModule.AdminModule,
+                                                        portalModule.Searchable);
                 }
                 catch (Exception ex)
                 {
                     //Rethrow exception
                     throw new Exception(
-                        "AddGeneralModuleDefinitions Exception '" + portalModule.GuidID.ToString() + "'!", ex);
+                        "AddGeneralModuleDefinitions Exception '" + portalModule.GuidID + "'!", ex);
                 }
 
                 // All is fine: we can call Commit
@@ -188,21 +202,27 @@ namespace Rainbow.Framework.Helpers
                 // Update the general module definition
                 try
                 {
-                    ErrorHandler.Publish(LogLevel.Debug, "Updating '" + friendlyName + "' as new module.");
-                    modules.UpdateGeneralModuleDefinitions(defID, friendlyName, desktopSource, mobileSource,
-                                                           assemblyName, className, portalModule.AdminModule,
+                    ErrorHandler.Publish(LogLevel.Debug,
+                        string.Format("Updating '{0}' as new module.", friendlyName));
+                    RainbowModuleProvider.Instance.UpdateGeneralModuleDefinitions(defID,
+                                                           friendlyName,
+                                                           desktopSource,
+                                                           mobileSource,
+                                                           assemblyName,
+                                                           className,
+                                                           portalModule.AdminModule,
                                                            portalModule.Searchable);
                 }
                 catch (Exception ex)
                 {
                     //Rethrow exception
                     throw new Exception(
-                        "UpdateGeneralModuleDefinitions Exception '" + portalModule.GuidID.ToString() + "'!", ex);
+                        "UpdateGeneralModuleDefinitions Exception '" + portalModule.GuidID + "'!", ex);
                 }
             }
 
             // Update the module definition - install for portal 0
-            modules.UpdateModuleDefinitions(defID, 0, true);
+            RainbowModuleProvider.Instance.UpdateModuleDefinitions(defID, 0, true);
         }
 
         /// <summary>
@@ -230,7 +250,7 @@ namespace Rainbow.Framework.Helpers
             }
 
             // Delete definition
-            new ModulesDB().DeleteModuleDefinition(portalModule.GuidID);
+            RainbowModuleProvider.Instance.DeleteModuleDefinition(portalModule.GuidID);
         }
     }
 }

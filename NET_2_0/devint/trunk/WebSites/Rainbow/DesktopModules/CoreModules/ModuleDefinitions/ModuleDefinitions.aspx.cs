@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Helpers;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;
 
@@ -15,7 +16,7 @@ namespace Rainbow.AdminAll
     /// </summary>
     public partial class ModuleDefinitions : EditItemPage
     {
-        private Guid defID;
+        Guid defID;
 
         /// <summary>
         /// The Page_Load server event handler on this page is used
@@ -32,7 +33,9 @@ namespace Rainbow.AdminAll
 
             // Calculate security defID
             if (Request.Params["defID"] != null)
+            {
                 defID = new Guid(Request.Params["defID"]);
+            }
 
             ModulesDB modules = new ModulesDB();
 
@@ -100,9 +103,9 @@ namespace Rainbow.AdminAll
         {
             get
             {
-                ArrayList al = new ArrayList();
-                al.Add("D04BB5EA-A792-4E87-BFC7-7D0ED3ADD582");
-                return al;
+                ArrayList list = new ArrayList();
+                list.Add("D04BB5EA-A792-4E87-BFC7-7D0ED3ADD582");
+                return list;
             }
         }
 
@@ -117,21 +120,25 @@ namespace Rainbow.AdminAll
                 try
                 {
                     if (!btnUseInstaller.Visible)
-                        ModuleInstall.InstallGroup(Server.MapPath(Path.ApplicationRoot + "/" + InstallerFileName.Text),
-                                                   lblGUID.Text == string.Empty);
+                    {
+                        ModuleInstall.InstallGroup(
+                            Server.MapPath(Path.ApplicationRoot + "/" + InstallerFileName.Text),
+                            lblGUID.Text == string.Empty);
+                    }
                     else
-                        ModuleInstall.Install(FriendlyName.Text, DesktopSrc.Text, MobileSrc.Text,
+                    {
+                        ModuleInstall.Install(FriendlyName.Text,
+                                              DesktopSrc.Text,
+                                              MobileSrc.Text,
                                               lblGUID.Text == string.Empty);
-
-                    ModulesDB modules = new ModulesDB();
-
+                    }
                     // Update the module definition
                     for (int i = 0; i < PortalsName.Items.Count; i++)
                     {
-                        modules.UpdateModuleDefinitions(defID, Convert.ToInt32(PortalsName.Items[i].Value),
-                                                        PortalsName.Items[i].Selected);
+                        RainbowModuleProvider.Instance.UpdateModuleDefinitions(defID,
+                            Convert.ToInt32(PortalsName.Items[i].Value),
+                            PortalsName.Items[i].Selected);
                     }
-
                     // Redirect back to the portal admin page
                     RedirectBackToReferringPage();
                 }
@@ -146,18 +153,23 @@ namespace Rainbow.AdminAll
                         "<br>";
                     lblErrorDetail.Text += ex.Message + "<br>";
                     if (!btnUseInstaller.Visible)
-                        lblErrorDetail.Text += " Installer: " +
-                                               Server.MapPath(Path.ApplicationRoot + "/" + InstallerFileName.Text);
+                    {
+                        lblErrorDetail.Text += string.Format(" Installer: {0}",
+                            Server.MapPath(Path.ApplicationRoot + "/" + InstallerFileName.Text));
+                    }
                     else
-                        lblErrorDetail.Text += " Module: '" + FriendlyName.Text + "' - Source: '" + DesktopSrc.Text +
-                                               "' - Mobile: '" + MobileSrc.Text + "'";
+                    {
+                        lblErrorDetail.Text += string.Format(" Module: '{0}' - Source: '{1}' - Mobile: '{2}'",
+                                          FriendlyName.Text,
+                                          DesktopSrc.Text,
+                                          MobileSrc.Text);
+                    }
                     lblErrorDetail.Visible = true;
 
                     ErrorHandler.Publish(LogLevel.Error, lblErrorDetail.Text, ex);
                 }
             }
         }
-
 
         /// <summary>
         /// Delete a Module definition
@@ -168,10 +180,14 @@ namespace Rainbow.AdminAll
             try
             {
                 if (!btnUseInstaller.Visible)
-                    ModuleInstall.UninstallGroup(Server.MapPath(Path.ApplicationRoot + "/" + InstallerFileName.Text));
+                {
+                    ModuleInstall.UninstallGroup(
+                        Server.MapPath(Path.ApplicationRoot + "/" + InstallerFileName.Text));
+                }
                 else
+                {
                     ModuleInstall.Uninstall(DesktopSrc.Text, MobileSrc.Text);
-
+                }
                 // Redirect back to the portal admin page
                 RedirectBackToReferringPage();
             }
@@ -193,7 +209,7 @@ namespace Rainbow.AdminAll
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void selectAllButton_Click(object sender, EventArgs e)
+        void selectAllButton_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < PortalsName.Items.Count; i++)
             {
@@ -206,7 +222,7 @@ namespace Rainbow.AdminAll
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void selectNoneButton_Click(object sender, EventArgs e)
+        void selectNoneButton_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < PortalsName.Items.Count; i++)
             {
@@ -237,7 +253,7 @@ namespace Rainbow.AdminAll
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void btnUseInstaller_Click(object sender, EventArgs e)
+        void btnUseInstaller_Click(object sender, EventArgs e)
         {
             ShowInstaller(true);
         }
@@ -246,7 +262,7 @@ namespace Rainbow.AdminAll
         /// Shows the installer.
         /// </summary>
         /// <param name="installer">if set to <c>true</c> [installer].</param>
-        private void ShowInstaller(bool installer)
+        void ShowInstaller(bool installer)
         {
             if (installer)
             {
@@ -269,7 +285,7 @@ namespace Rainbow.AdminAll
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void btnDescription_Click(object sender, EventArgs e)
+        void btnDescription_Click(object sender, EventArgs e)
         {
             ShowInstaller(false);
         }

@@ -45,7 +45,7 @@ namespace Rainbow.Content.Web.Modules
             Double dblImagePercent;
             try
             {
-                ImagePercent = moduleSettings["ImagePercent"].ToString();
+                ImagePercent = ModuleSettings["ImagePercent"].ToString();
                 dblImagePercent = Convert.ToDouble(ImagePercent);
             }
             catch

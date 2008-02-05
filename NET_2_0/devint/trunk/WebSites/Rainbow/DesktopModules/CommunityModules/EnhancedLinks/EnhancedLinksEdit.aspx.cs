@@ -3,7 +3,6 @@ using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
 using Localize=Rainbow.Framework.Web.UI.WebControls.Localize;
@@ -29,12 +28,12 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
             Src.FileNameOnly = true;
             Src.PreselectedFile = Src.Text;
             Src.UploadDirectory = portalSettings.PortalFullPath + "/" +
-                                  moduleSettings["ENHANCEDLINKS_ICONPATH"];
+                                  ModuleSettings["ENHANCEDLINKS_ICONPATH"];
 
             if (!Page.IsPostBack)
             {
@@ -79,11 +78,10 @@ namespace Rainbow.Content.Web.Modules
             }
         }
 
-
         /// <summary>
         /// Estableces the visibilidad.
         /// </summary>
-        private void estableceVisibilidad()
+        void estableceVisibilidad()
         {
             if (IsGroup.Checked)
             {

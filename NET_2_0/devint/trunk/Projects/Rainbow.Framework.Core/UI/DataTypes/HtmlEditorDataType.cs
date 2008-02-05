@@ -81,17 +81,29 @@ namespace Rainbow.Framework.DataTypes
                 if (portal.CustomSettings != null)
                 {
                     if (portal.CustomSettings["SITESETTINGS_DEFAULT_EDITOR"] != null)
+                    {
                         editor.Value = portal.CustomSettings["SITESETTINGS_DEFAULT_EDITOR"].ToString();
+                    }
                     if (portal.CustomSettings["SITESETTINGS_EDITOR_WIDTH"] != null)
+                    {
                         controlWidth.Value = portal.CustomSettings["SITESETTINGS_EDITOR_WIDTH"].ToString();
+                    }
                     if (portal.CustomSettings["SITESETTINGS_EDITOR_HEIGHT"] != null)
+                    {
                         controlHeight.Value = portal.CustomSettings["SITESETTINGS_EDITOR_HEIGHT"].ToString();
+                    }
                     if (portal.CustomSettings["SITESETTINGS_EDITOR_HEIGHT"] != null)
+                    {
                         controlHeight.Value = portal.CustomSettings["SITESETTINGS_EDITOR_HEIGHT"].ToString();
+                    }
                     if (portal.CustomSettings["SITESETTINGS_SHOWUPLOAD"] != null)
+                    {
                         showUpload.Value = portal.CustomSettings["SITESETTINGS_SHOWUPLOAD"].ToString();
+                    }
                     if (portal.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"] != null)
+                    {
                         moduleImageFolder.Value = portal.CustomSettings["SITESETTINGS_DEFAULT_IMAGE_FOLDER"].ToString();
+                    }
                 }
             }
 
@@ -198,11 +210,13 @@ namespace Rainbow.Framework.DataTypes
         /// <param name="showUpload">if set to <c>true</c> [show upload].</param>
         /// <param name="portal">The portal settings.</param>
         /// <returns></returns>
-        public IHtmlEditor GetEditor(Control placeHolderHTMLEditor, int moduleID, bool showUpload,
+        public IHtmlEditor GetEditor(Control placeHolderHTMLEditor,
+                                     int moduleID,
+                                     bool showUpload,
                                      Portal portal)
         {
             IHtmlEditor desktopText;
-            string moduleImageFolder = RainbowModuleProvider.GetModuleSettings(moduleID)["MODULE_IMAGE_FOLDER"].ToString();
+            string moduleImageFolder = RainbowModuleProvider.Instance.GetModuleSettings(moduleID)["MODULE_IMAGE_FOLDER"].ToString();
 
             // Grabs ID from the place holder so that a unique editor is on the page if more than one
             // But keeps same ID so that the information can be submitted to be saved. [CDT]

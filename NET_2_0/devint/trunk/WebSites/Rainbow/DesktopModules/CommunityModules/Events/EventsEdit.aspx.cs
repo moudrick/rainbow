@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
@@ -57,13 +56,13 @@ namespace Rainbow.Content.Web.Modules
 
             //Change Indah Fuldner indah@die-seitenweber.de
             HtmlEditorDataType h = new HtmlEditorDataType();
-            h.Value = moduleSettings["Editor"].ToString();
+            h.Value = ModuleSettings["Editor"].ToString();
             DescriptionField =
-                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(moduleSettings["ShowUpload"].ToString()),
+                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(ModuleSettings["ShowUpload"].ToString()),
                             portalSettings);
 
-            DescriptionField.Width = new Unit(moduleSettings["Width"].ToString());
-            DescriptionField.Height = new Unit(moduleSettings["Height"].ToString());
+            DescriptionField.Width = new Unit(ModuleSettings["Width"].ToString());
+            DescriptionField.Height = new Unit(ModuleSettings["Height"].ToString());
             //End Change Indah Fuldner indah@die-seitenweber.de
 
             // If the page is being	requested the first	time, determine	if an
@@ -103,21 +102,31 @@ namespace Rainbow.Content.Web.Modules
 
                                 try
                                 {
-                                    if (TimeParts[0].Length > 0) hour = int.Parse(TimeParts[0]);
-                                    if (TimeParts.Length > 1) minute = int.Parse(TimeParts[1]);
+                                    if (TimeParts[0].Length > 0)
+                                    {
+                                        hour = int.Parse(TimeParts[0]);
+                                    }
+                                    if (TimeParts.Length > 1)
+                                    {
+                                        minute = int.Parse(TimeParts[1]);
+                                    }
                                 }
-                                catch
-                                {
-                                }
+                                catch {;}
 
                                 if (hour > 11)
                                 {
                                     StartAMPM.SelectedIndex = 1;
-                                    if (hour > 12) hour -= 12;
+                                    if (hour > 12)
+                                    {
+                                        hour -= 12;
+                                    }
                                 }
                                 else
                                 {
-                                    if (hour == 0) hour = 12;
+                                    if (hour == 0)
+                                    {
+                                        hour = 12;
+                                    }
                                     StartAMPM.SelectedIndex = 0;
                                 }
 
@@ -125,9 +134,13 @@ namespace Rainbow.Content.Web.Modules
                                 StartMinute.SelectedIndex = minute/5;
                             }
                             if (dr["StartDate"] != DBNull.Value)
+                            {
                                 StartDate.Text = ((DateTime) dr["StartDate"]).ToShortDateString();
+                            }
                             else
+                            {
                                 StartDate.Text = string.Empty;
+                            }
                             // devsolution 2003/6/17: Finished - Added items for calendar control
 
                             ExpireField.Text = ((DateTime) dr["ExpireDate"]).ToShortDateString();
@@ -149,7 +162,7 @@ namespace Rainbow.Content.Web.Modules
                 else
                 {
                     ExpireField.Text =
-                        DateTime.Now.AddDays(Int32.Parse(moduleSettings["DelayExpire"].ToString())).ToShortDateString();
+                        DateTime.Now.AddDays(Int32.Parse(ModuleSettings["DelayExpire"].ToString())).ToShortDateString();
                     deleteButton.Visible = false; // Cannot	delete an unexsistent item
                 }
             }
@@ -176,7 +189,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">Who is sending the request</param>
         /// <param name="e">Standard EventArgs</param>
-        private void AllDay_SelectedIndexChanged(object sender, EventArgs e)
+        void AllDay_SelectedIndexChanged(object sender, EventArgs e)
         {
             StartMinute.Enabled = StartAMPM.Enabled = StartHour.Enabled = (AllDay.SelectedItem.Value == "0");
         }

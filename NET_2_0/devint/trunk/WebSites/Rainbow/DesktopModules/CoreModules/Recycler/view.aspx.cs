@@ -82,12 +82,9 @@ namespace Rainbow
         {
             base.OnDelete(e);
 
-            ModulesDB modules = new ModulesDB();
             // TODO add userEmail and useRecycler
-            modules.DeleteModule(moduleID);
-
+            RainbowModuleProvider.Instance.DeleteModule(moduleID);
             moduleID = 0;
-
             RedirectBackToReferringPage();
         }
 

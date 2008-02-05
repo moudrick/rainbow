@@ -50,7 +50,7 @@ namespace Rainbow.Content.Web.Modules
         /// Renders the RSS.
         /// </summary>
         /// <param name="moduleID">The module ID.</param>
-        private void RenderRSS(int moduleID)
+        void RenderRSS(int moduleID)
         {
             /*
 			 
@@ -68,7 +68,7 @@ namespace Rainbow.Content.Web.Modules
 
             Response.ContentType = "text/xml";
 
-            Hashtable moduleSettings = RainbowModuleProvider.GetModuleSettings(moduleID);
+            Hashtable moduleSettings = RainbowModuleProvider.Instance.GetModuleSettings(moduleID);
             Encoding encoding = new UTF8Encoding();
 
             XmlTextWriter xmlTextWriter = new XmlTextWriter(Response.OutputStream, encoding);
@@ -229,7 +229,7 @@ namespace Rainbow.Content.Web.Modules
         /// Renders the error.
         /// </summary>
         /// <param name="message">The message.</param>
-        private void RenderError(string message)
+        void RenderError(string message)
         {
             Response.Write(message);
             Response.End();

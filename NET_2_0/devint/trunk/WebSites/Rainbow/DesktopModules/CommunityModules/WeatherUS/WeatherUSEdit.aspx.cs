@@ -33,18 +33,18 @@ namespace Rainbow.Content.Web.Modules
             {
                 if (ModuleID > 0)
                 {
-                    if (moduleSettings["Zip"] != null)
+                    if (ModuleSettings["Zip"] != null)
                     {
-                        Zip.Text = moduleSettings["Zip"].ToString();
+                        Zip.Text = ModuleSettings["Zip"].ToString();
                     }
                     else
                     {
                         Zip.Text = "10001";
                     }
 
-                    if (moduleSettings["Option"] != null)
+                    if (ModuleSettings["Option"] != null)
                     {
-                        Option.SelectedIndex = int.Parse(moduleSettings["Option"].ToString());
+                        Option.SelectedIndex = int.Parse(ModuleSettings["Option"].ToString());
                     }
                 }
             }
@@ -78,8 +78,8 @@ namespace Rainbow.Content.Web.Modules
             if (Page.IsValid)
             {
                 // Update settings in the database
-                RainbowModuleProvider.UpdateModuleSetting(ModuleID, "Zip", Zip.Text);
-                RainbowModuleProvider.UpdateModuleSetting(ModuleID, "Option", Option.SelectedIndex.ToString());
+                RainbowModuleProvider.Instance.UpdateModuleSetting(ModuleID, "Zip", Zip.Text);
+                RainbowModuleProvider.Instance.UpdateModuleSetting(ModuleID, "Option", Option.SelectedIndex.ToString());
 
                 RedirectBackToReferringPage();
             }

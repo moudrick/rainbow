@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Web.UI;
 
@@ -43,22 +42,30 @@ namespace Rainbow.Content.Web.Modules
 
                 if (ModuleID > 0)
                 {
-                    if (moduleSettings["WeatherZip"] != null)
-                        WeatherZip.Text = ((SettingItem) moduleSettings["WeatherZip"]).ToString();
+                    if (ModuleSettings["WeatherZip"] != null)
+                    {
+                        WeatherZip.Text = ModuleSettings["WeatherZip"].ToString();
+                    }
 
-                    if (moduleSettings["WeatherCityIndex"] != null)
-                        WeatherCityIndex.Text = ((SettingItem) moduleSettings["WeatherCityIndex"]).ToString();
+                    if (ModuleSettings["WeatherCityIndex"] != null)
+                    {
+                        WeatherCityIndex.Text = ModuleSettings["WeatherCityIndex"].ToString();
+                    }
 
-                    if (moduleSettings["WeatherSetting"] != null)
-                        WeatherSetting.SelectedIndex =
-                            int.Parse(((SettingItem) moduleSettings["WeatherSetting"]).ToString());
+                    if (ModuleSettings["WeatherSetting"] != null)
+                    {
+                        WeatherSetting.SelectedIndex = int.Parse(ModuleSettings["WeatherSetting"].ToString());
+                    }
 
-                    if (moduleSettings["WeatherDesign"] != null)
+                    if (ModuleSettings["WeatherDesign"] != null)
                     {
                         for (int i = 0; i < WeatherDesign.Items.Count; i++)
-                            if (WeatherDesign.Items[i].Value ==
-                                (((SettingItem) moduleSettings["WeatherDesign"]).ToString()))
+                        {
+                            if (WeatherDesign.Items[i].Value == (ModuleSettings["WeatherDesign"].ToString()))
+                            {
                                 WeatherDesign.SelectedIndex = i;
+                            }
+                        }
                     }
                 }
             }
@@ -90,12 +97,10 @@ namespace Rainbow.Content.Web.Modules
             if (Page.IsValid)
             {
                 // UpProviderdate settings in the database
-                RainbowModuleProvider.UpdateModuleSetting(ModuleID, "ProviderWeatherZip", WeatherZip.Text);
-                RainbowModuleProvider.UpdateModuleSetting(ModuleID, "WeatherCityProviderIndex", WeatherCityIndex.Text);
-                RainbowModuleProvider.UpdateModuleSetting(ModuleID, "WeatherSetting",
-                                                   WeatherSetting.Items[WeatherSetting.SelectedIndex].Value);
-                RainbowModuleProvider.UpdateModuleSetting(ModuleID, "WeatherDesign",
-                                                   WeatherDesign.Items[WeatherDesign.SelectedIndex].Value);
+                RainbowModuleProvider.Instance.UpdateModuleSetting(ModuleID, "ProviderWeatherZip", WeatherZip.Text);
+                RainbowModuleProvider.Instance.UpdateModuleSetting(ModuleID, "WeatherCityProviderIndex", WeatherCityIndex.Text);
+                RainbowModuleProvider.Instance.UpdateModuleSetting(ModuleID, "WeatherSetting", WeatherSetting.Items[WeatherSetting.SelectedIndex].Value);
+                RainbowModuleProvider.Instance.UpdateModuleSetting(ModuleID, "WeatherDesign", WeatherDesign.Items[WeatherDesign.SelectedIndex].Value);
                 RedirectBackToReferringPage();
             }
         }

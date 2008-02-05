@@ -14,7 +14,6 @@ using Rainbow.Framework.Context;
 using Rainbow.Framework.Design;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Data;
 using Path = Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Web.UI 
@@ -65,14 +64,15 @@ namespace Rainbow.Framework.Web.UI
 
         #endregion
 
-        ResourceSet userCultureSet = null;
+        readonly ResourceSet userCultureSet = null;
         string userCulture = "en-us";
 
         /// <summary>
         /// Gets the user culture.
         /// </summary>
         /// <value>The user culture.</value>
-        public string UserCulture {
+        public string UserCulture
+        {
             get { return userCulture; }
         }
 
@@ -80,10 +80,13 @@ namespace Rainbow.Framework.Web.UI
         /// Gets the user culture set.
         /// </summary>
         /// <value>The user culture set.</value>
-        public ResourceSet UserCultureSet {
-            get {
+        public ResourceSet UserCultureSet
+        {
+            get
+            {
                 // TODO: Leverage HttpContext.GetGlobalResourceObject(key, key); ???
-                if ( userCultureSet == null ) {
+                if (userCultureSet == null)
+                {
                     userCulture = Thread.CurrentThread.CurrentCulture.Name;
                     //if (Cache.Get("Culture_" + userCulture) == null)
                     //userCultureSet = new ResourceSet(Rainbow.Framework.Settings.Path.ApplicationRoot + "\\App_GlobalResources\\Resource" + userCulture + ".resx");
@@ -101,8 +104,9 @@ namespace Rainbow.Framework.Web.UI
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void CancelBtn_Click( Object sender, EventArgs e ) {
-            OnCancel( e );
+        void CancelBtn_Click(Object sender, EventArgs e)
+        {
+            OnCancel(e);
         }
 
         /// <summary>
@@ -110,8 +114,9 @@ namespace Rainbow.Framework.Web.UI
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void UpdateBtn_Click( Object sender, EventArgs e ) {
-            OnUpdate( e );
+        void UpdateBtn_Click(Object sender, EventArgs e) 
+        {
+            OnUpdate(e);
         }
 
         /// <summary>
@@ -119,19 +124,19 @@ namespace Rainbow.Framework.Web.UI
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void DeleteBtn_Click( Object sender, EventArgs e ) {
-            OnDelete( e );
+        void DeleteBtn_Click(Object sender, EventArgs e) 
+        {
+            OnDelete(e);
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnPreInit( EventArgs e ) {
+        protected override void OnPreInit(EventArgs e)
+        {
             // TODO : Assign masters and themes here... :-)
             // this.Theme = "Default";
-
-            base.OnPreInit( e );
+            base.OnPreInit(e);
         }
 
         /// <summary>
@@ -140,18 +145,18 @@ namespace Rainbow.Framework.Web.UI
         /// Can be overridden
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data.</param>
-        protected override void OnInit( EventArgs e ) {
+        protected override void OnInit(EventArgs e) 
+        {
             LoadSettings();
 
             //if (cancelButton != null)
-            Control myControl = null;
+            Control control = null;
 
-            if ( cancelButton != null || ( myControl = Page.FindControl( "cancelButton" ) ) != null )
-
+            if (cancelButton != null || (control = Page.FindControl("cancelButton")) != null)
             //if ((myControl=Page.FindControl("cancelButton")) != null)
             {
                 if ( cancelButton == null ) {
-                    cancelButton = ( LinkButton )myControl;
+                    cancelButton = ( LinkButton )control;
                 }
 
                 cancelButton.Click += CancelBtn_Click;
@@ -160,38 +165,46 @@ namespace Rainbow.Framework.Web.UI
                 cancelButton.EnableViewState = false;
             }
             //if (updateButton != null)
-            if ( updateButton != null || ( myControl = Page.FindControl( "updateButton" ) ) != null ) {
-                if ( updateButton == null ) {
-                    updateButton = ( LinkButton )myControl;
+            if (updateButton != null || (control = Page.FindControl("updateButton")) != null)
+            {
+                if (updateButton == null)
+                {
+                    updateButton = (LinkButton) control;
                 }
 
                 updateButton.Click += UpdateBtn_Click;
-                updateButton.Text = General.GetString( "APPLY", "Apply", updateButton );
+                updateButton.Text = General.GetString("APPLY", "Apply", updateButton);
                 updateButton.EnableViewState = false;
             }
             //if (deleteButton != null)
-            if ( deleteButton != null || ( myControl = Page.FindControl( "deleteButton" ) ) != null ) {
-                if ( deleteButton == null ) {
-                    deleteButton = ( LinkButton )myControl;
+            if (deleteButton != null || (control = Page.FindControl("deleteButton")) != null)
+            {
+                if (deleteButton == null)
+                {
+                    deleteButton = (LinkButton) control;
                 }
 
                 deleteButton.Click += DeleteBtn_Click;
-                deleteButton.Text = General.GetString( "DELETE", "Delete", deleteButton );
+                deleteButton.Text = General.GetString("DELETE", "Delete", deleteButton);
                 deleteButton.EnableViewState = false;
 
                 // Assign current permissions to Delete button
-                if ( PortalSecurity.HasDeletePermissions( ModuleID ) == false ) {
+                if (PortalSecurity.HasDeletePermissions(ModuleID) == false)
+                {
                     deleteButton.Visible = false;
                 }
-                else {
-                    if ( !( ClientScript.IsClientScriptBlockRegistered( "confirmDelete" ) ) ) {
-                        string[] s = { "CONFIRM_DELETE" };
-                        ClientScript.RegisterClientScriptBlock( GetType(), "confirmDelete",
+                else
+                {
+                    if (!(ClientScript.IsClientScriptBlockRegistered("confirmDelete")))
+                    {
+                        string[] s = {"CONFIRM_DELETE"};
+                        ClientScript.RegisterClientScriptBlock(GetType(),
+                                                               "confirmDelete",
                                                                General.GetStringResource(
                                                                    "CONFIRM_DELETE_SCRIPT",
-                                                                   s ) );
+                                                                   s));
                     }
-                    deleteButton.Attributes.Add( "OnClick", "return confirmDelete()" );
+                    deleteButton.Attributes.Add("OnClick", "return confirmDelete()");
                 }
             }
             ModuleGuidInCookie();
@@ -204,22 +217,28 @@ namespace Rainbow.Framework.Web.UI
         /// Performs OnLoad actions that are common to all Pages.
         /// </summary>
         /// <param name="e">The <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
-        protected override void OnLoad( EventArgs e ) {
+        protected override void OnLoad(EventArgs e)
+        {
             // add CurrentTheme CSS
-            RegisterCssFile( CurrentTheme.Name, CurrentTheme.CssFile );
+            RegisterCssFile(CurrentTheme.Name, CurrentTheme.CssFile);
 
-            if ( Request.Cookies["Rainbow_" + portalSettings.PortalAlias] != null ) {
-                if ( !Config.ForceExpire ) {
+            if (Request.Cookies["Rainbow_" + portalSettings.PortalAlias] != null)
+            {
+                if (!Config.ForceExpire)
+                {
                     //jminond - option to kill cookie after certain time always
                     int minuteAdd = Config.CookieExpire;
-                    SignOnController.ExtendCookie( portalSettings, minuteAdd );
+                    SignOnController.ExtendCookie(portalSettings, minuteAdd);
                 }
             }
 
             // Stores referring URL in viewstate
-            if ( !Page.IsPostBack ) {
-                if ( Request.UrlReferrer != null )
+            if (!Page.IsPostBack)
+            {
+                if (Request.UrlReferrer != null)
+                {
                     UrlReferrer = Request.UrlReferrer.ToString();
+                }
             }
 
 
@@ -247,7 +266,7 @@ namespace Rainbow.Framework.Web.UI
             //    }
             //}
 
-            base.OnLoad( e );
+            base.OnLoad(e);
         }
 
         /// <summary>
@@ -261,8 +280,9 @@ namespace Rainbow.Framework.Web.UI
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        protected void OnAdd( object source, EventArgs e ) {
-            OnAdd( e );
+        protected void OnAdd(object source, EventArgs e) 
+        {
+            OnAdd(e);
         }
 
         /// <summary>
@@ -271,16 +291,21 @@ namespace Rainbow.Framework.Web.UI
         /// Can be overridden
         /// </summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected virtual void OnAdd( EventArgs e ) {
-            if ( Add != null )
-                Add( this, e ); //Invokes the delegates
+        protected virtual void OnAdd(EventArgs e)
+        {
+            if (Add != null)
+            {
+                Add(this, e); //Invokes the delegates
+            }
 
             //Flush cache
             OnFlushCache();
 
             // Verify that the current user has access to edit this module
-            if ( PortalSecurity.HasAddPermissions( ModuleID ) == false )
+            if (PortalSecurity.HasAddPermissions(ModuleID) == false)
+            {
                 PortalSecurity.AccessDeniedEdit();
+            }
 
             // any other code goes here
         }
@@ -296,8 +321,9 @@ namespace Rainbow.Framework.Web.UI
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        protected virtual void OnUpdate( object source, EventArgs e ) {
-            OnUpdate( e );
+        protected virtual void OnUpdate(object source, EventArgs e)
+        {
+            OnUpdate(e);
         }
 
         /// <summary>
@@ -306,9 +332,12 @@ namespace Rainbow.Framework.Web.UI
         /// Can be overridden
         /// </summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected virtual void OnUpdate( EventArgs e ) {
-            if ( Update != null )
-                Update( this, e ); //Invokes the delegates
+        protected virtual void OnUpdate(EventArgs e)
+        {
+            if (Update != null)
+            {
+                Update(this, e); //Invokes the delegates
+            }
 
             //Flush cache
             OnFlushCache();
@@ -316,9 +345,11 @@ namespace Rainbow.Framework.Web.UI
             // Verify that the current user has access to edit this module
             // June 23, 2003: Mark McFarlane made change to check for both Add AND Edit permissions
             // Since UI.Page.EditPage and UI.Page.AddPage both inherit from this UI.Page class
-            if ( PortalSecurity.HasEditPermissions( ModuleID ) == false &&
-                PortalSecurity.HasAddPermissions( ModuleID ) == false )
+            if (PortalSecurity.HasEditPermissions(ModuleID) == false &&
+                PortalSecurity.HasAddPermissions(ModuleID) == false)
+            {
                 PortalSecurity.AccessDeniedEdit();
+            }
 
             // any other code goes here
         }
@@ -334,27 +365,31 @@ namespace Rainbow.Framework.Web.UI
         /// Performs FlushCache actions that are common to all Pages<br/>
         /// Can be overridden
         /// </summary>
-        protected virtual void OnFlushCache() {
-            if ( FlushCache != null )
-                FlushCache( this, new EventArgs() ); //Invokes the delegates
+        protected virtual void OnFlushCache()
+        {
+            if (FlushCache != null)
+            {
+                FlushCache(this, new EventArgs()); //Invokes the delegates
+            }
 
             // remove module output from cache, if it's there
             StringBuilder sb = new StringBuilder();
-            sb.Append( "rb_" );
-            sb.Append( portalSettings.PortalAlias.ToLower() );
-            sb.Append( "_mid" );
-            sb.Append( ModuleID.ToString() );
-            sb.Append( "[" );
-            sb.Append( portalSettings.PortalContentLanguage );
-            sb.Append( "+" );
-            sb.Append( portalSettings.PortalUILanguage );
-            sb.Append( "+" );
-            sb.Append( portalSettings.PortalDataFormattingCulture );
-            sb.Append( "]" );
+            sb.Append("rb_");
+            sb.Append(portalSettings.PortalAlias.ToLower());
+            sb.Append("_mid");
+            sb.Append(ModuleID.ToString());
+            sb.Append("[");
+            sb.Append(portalSettings.PortalContentLanguage);
+            sb.Append("+");
+            sb.Append(portalSettings.PortalUILanguage);
+            sb.Append("+");
+            sb.Append(portalSettings.PortalDataFormattingCulture);
+            sb.Append("]");
 
-            if ( Context.Cache[sb.ToString()] != null ) {
-                Context.Cache.Remove( sb.ToString() );
-                Debug.WriteLine( "************* Remove " + sb );
+            if (Context.Cache[sb.ToString()] != null)
+            {
+                Context.Cache.Remove(sb.ToString());
+                Debug.WriteLine("************* Remove " + sb);
             }
 
             // any other code goes here
@@ -371,8 +406,9 @@ namespace Rainbow.Framework.Web.UI
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        protected void OnDelete( object source, EventArgs e ) {
-            OnDelete( e );
+        protected void OnDelete(object source, EventArgs e)
+        {
+            OnDelete(e);
         }
 
         /// <summary>
@@ -381,16 +417,21 @@ namespace Rainbow.Framework.Web.UI
         /// Can be overridden
         /// </summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected virtual void OnDelete( EventArgs e ) {
-            if ( Delete != null )
-                Delete( this, e ); //Invokes the delegates
+        protected virtual void OnDelete(EventArgs e)
+        {
+            if (Delete != null)
+            {
+                Delete(this, e); //Invokes the delegates
+            }
 
             //Flush cache
             OnFlushCache();
 
             // Verify that the current user has access to delete in this module
-            if ( PortalSecurity.HasDeletePermissions( ModuleID ) == false )
+            if (PortalSecurity.HasDeletePermissions(ModuleID) == false)
+            {
                 PortalSecurity.AccessDeniedEdit();
+            }
 
             // any other code goes here
         }
@@ -404,8 +445,9 @@ namespace Rainbow.Framework.Web.UI
         /// <summary>
         /// Called when [cancel].
         /// </summary>
-        protected virtual void OnCancel() {
-            OnCancel( new EventArgs() );
+        protected virtual void OnCancel()
+        {
+            OnCancel(new EventArgs());
         }
 
         /// <summary>
@@ -413,8 +455,9 @@ namespace Rainbow.Framework.Web.UI
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        protected void OnCancel( object source, EventArgs e ) {
-            OnCancel( e );
+        protected void OnCancel(object source, EventArgs e)
+        {
+            OnCancel(e);
         }
 
         /// <summary>
@@ -423,9 +466,12 @@ namespace Rainbow.Framework.Web.UI
         /// Can be overridden
         /// </summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected virtual void OnCancel( EventArgs e ) {
-            if ( Cancel != null )
-                Cancel( this, e ); //Invokes the delegates
+        protected virtual void OnCancel(EventArgs e)
+        {
+            if (Cancel != null)
+            {
+                Cancel(this, e); //Invokes the delegates
+            }
 
             // any other code goes here
 
@@ -890,67 +936,87 @@ namespace Rainbow.Framework.Web.UI
 
         #region Properties (Modules)
 
-        private int _moduleID = 0;
+        int moduleID = 0;
 
         /// <summary>
         /// Stores current linked module ID if applicable
         /// </summary>
         /// <value>The module ID.</value>
-        public int ModuleID {
-            get {
-                if ( _moduleID == 0 ) {
+        public int ModuleID
+        {
+            get
+            {
+                if (moduleID == 0)
+                {
                     // Determine ModuleID if specified
-                    if ( HttpContext.Current != null && Request.Params["Mid"] != null )
-                        _moduleID = Int32.Parse( Request.Params["Mid"] );
+                    if (HttpContext.Current != null && Request.Params["Mid"] != null)
+                    {
+                        moduleID = Int32.Parse(Request.Params["Mid"]);
+                    }
                 }
-                return _moduleID;
+                return moduleID;
             }
         }
 
-        private RainbowModule _module;
+        RainbowModule module;
 
         /// <summary>
         /// Stores current module if applicable
         /// </summary>
         /// <value>The module.</value>
-        public RainbowModule Module {
-            get {
-                if ( _module == null ) {
-                    if ( ModuleID > 0 ) {
+        public RainbowModule Module
+        {
+            get
+            {
+                if (module == null)
+                {
+                    if (ModuleID > 0)
+                    {
                         // Obtain selected module data
-                        foreach ( RainbowModule _mod in portalSettings.ActivePage.Modules ) {
-                            if ( _mod.ModuleID == ModuleID ) {
-                                _module = _mod;
-                                return _module;
+                        foreach (RainbowModule localModule in portalSettings.ActivePage.Modules)
+                        {
+                            if (localModule.ModuleID == ModuleID)
+                            {
+                                module = localModule;
+                                return module;
                             }
                         }
                     }
-                    else {
+                    else
+                    {
                         // Return null
                         return null;
                     }
                 }
-                return _module;
+                return module;
             }
         }
 
-        private Hashtable _moduleSettings;
+        Hashtable moduleSettings;
 
         /// <summary>
         /// Stores current module settings
         /// </summary>
         /// <value>The module settings.</value>
-        public Hashtable moduleSettings {
-            get {
-                if ( _moduleSettings == null ) {
-                    if ( ModuleID > 0 )
+        public Hashtable ModuleSettings 
+        {
+            get 
+            {
+                if (moduleSettings == null)
+                {
+                    if (ModuleID > 0)
+                    {
                         // Get settings from the database
-                        _moduleSettings = RainbowModuleProvider.GetModuleSettings( ModuleID, this );
+                        moduleSettings =
+                            RainbowModuleProvider.Instance.GetModuleSettings(ModuleID, this);
+                    }
                     else
+                    {
                         // Or provides an empty hashtable
-                        _moduleSettings = new Hashtable();
+                        moduleSettings = new Hashtable();
+                    }
                 }
-                return _moduleSettings;
+                return moduleSettings;
             }
         }
 
@@ -983,13 +1049,14 @@ namespace Rainbow.Framework.Web.UI
         /// <summary>
         /// Load settings
         /// </summary>
-        protected virtual void LoadSettings() {
-        }
+        protected virtual void LoadSettings()
+        {}
 
         /// <summary>
         /// Redirect back to the referring page
         /// </summary>
-        public void RedirectBackToReferringPage() {
+        public void RedirectBackToReferringPage()
+        {
             // Response.Redirect throws a ThreadAbortException to make it work,
             // which is handled by the ASP.NET runtime.
             // By catching an Exception (not a specialized exception, just the
@@ -998,29 +1065,34 @@ namespace Rainbow.Framework.Web.UI
             // catches this exception and handles it itself, hence your page never really
             // realized an exception occurred. So by catching this exception, you stop the
             // normal order of events that happen when redirecting.
-            try {
-                Response.Redirect( UrlReferrer );
+            try
+            {
+                Response.Redirect(UrlReferrer);
             }
-            catch ( ThreadAbortException ) {
-            } //Do nothing it is normal
+            catch (ThreadAbortException)
+            {} //Do nothing it is normal
         }
 
         /// <summary>
         /// Overrides Render() and writes out &lt;html&gt;, &lt;head&gt; and &lt;body&gt; elements along with page contents.
         /// </summary>
         /// <param name="writer">the HtmlTextWriter connected to the output stream</param>
-        protected override void Render( HtmlTextWriter writer ) {
+        protected override void Render(HtmlTextWriter writer)
+        {
             BuildDocType();
             BuildHead();
             BuildBody();
-            base.Render( writer );
+            base.Render(writer);
         }
 
         /// <summary>
         /// Builds the DOCTYPE statement when requested by the Render() override.
         /// </summary>
-        protected virtual void BuildDocType() {
-            if ( string.IsNullOrEmpty( DocType ) && ( CurrentTheme.Type == "zen" || Request.Url.PathAndQuery.IndexOf( "Viewer" ) > 0 ) ) {
+        protected virtual void BuildDocType()
+        {
+            if (string.IsNullOrEmpty(DocType) &&
+                (CurrentTheme.Type == "zen" || Request.Url.PathAndQuery.IndexOf("Viewer") > 0))
+            {
                 //this.DocType = Server.HtmlDecode( Config.DefaultDOCTYPE );
             }
         }
@@ -1028,70 +1100,101 @@ namespace Rainbow.Framework.Web.UI
         /// <summary>
         /// Builds the HTML &lt;body&gt; element, adding meta tags, stylesheets and client scripts
         /// </summary>
-        protected virtual void BuildHead() {
+        protected virtual void BuildHead()
+        {
             Title = PageTitle;
-            Header.Controls.Add( new LiteralControl( "<meta name=\"generator\" content=\"Rainbow Portal - see http://www.rainbowportal.net\"/>\n" ) );
+            Header.Controls.Add(
+                new LiteralControl(
+                    "<meta name=\"generator\" content=\"Rainbow Portal - see http://www.rainbowportal.net\"/>\n"));
 
-            if ( PageMetaKeyWords.Length != 0 ) {
-                Header.Controls.Add( new LiteralControl( string.Format( "<meta name=\"keywords\" content=\"{0}\"/>\n", PageMetaKeyWords ) ) );
+            if (PageMetaKeyWords.Length != 0)
+            {
+                Header.Controls.Add(
+                    new LiteralControl(
+                        string.Format("<meta name=\"keywords\" content=\"{0}\"/>\n",
+                                      PageMetaKeyWords)));
             }
 
-            if ( PageMetaDescription.Length != 0 ) {
-                Header.Controls.Add( new LiteralControl( string.Format( "<meta name=\"description\" content=\"{0}\"/>\n", PageMetaDescription ) ) );
+            if (PageMetaDescription.Length != 0)
+            {
+                Header.Controls.Add(
+                    new LiteralControl(
+                        string.Format("<meta name=\"description\" content=\"{0}\"/>\n",
+                                      PageMetaDescription)));
             }
 
-            if ( PageMetaEncoding.Length != 0 ) {
-                Header.Controls.Add( new LiteralControl( PageMetaEncoding + "\n" ) );
+            if (PageMetaEncoding.Length != 0)
+            {
+                Header.Controls.Add(new LiteralControl(PageMetaEncoding + "\n"));
             }
 
-            if ( PageMetaOther.Length != 0 ) {
-                Header.Controls.Add( new LiteralControl( PageMetaOther + "\n" ) );
+            if (PageMetaOther.Length != 0)
+            {
+                Header.Controls.Add(new LiteralControl(PageMetaOther + "\n"));
             }
 
             // additional metas (added by code)
-            foreach ( string _metaElement in additionalMetaElements.Values ) {
-                Header.Controls.Add( new LiteralControl( _metaElement + "\n" ) );
+            foreach (string _metaElement in additionalMetaElements.Values)
+            {
+                Header.Controls.Add(new LiteralControl(_metaElement + "\n"));
             }
 
             // ADD THE CSS <LINK> ELEMENT(S)
-            foreach ( string _cssFile in cssFileList.Values ) {
-                Header.Controls.Add( new LiteralControl( string.Format( "<link rel=\"stylesheet\" href=\"{0}\" type=\"text/css\"/>\n", _cssFile ) ) );
+            foreach (string _cssFile in cssFileList.Values)
+            {
+                Header.Controls.Add(
+                    new LiteralControl(
+                        string.Format(
+                            "<link rel=\"stylesheet\" href=\"{0}\" type=\"text/css\"/>\n", _cssFile)));
             }
 
-            Header.Controls.Add( new LiteralControl( string.Format( "<link rel=\"SHORTCUT ICON\" href=\"{0}/portalicon.ico\"/>\n",
-                             Path.WebPathCombine( Path.ApplicationRoot, portalSettings.PortalPath ) ) ) );
+            Header.Controls.Add(
+                new LiteralControl(
+                    string.Format("<link rel=\"SHORTCUT ICON\" href=\"{0}/portalicon.ico\"/>\n",
+                                  Path.WebPathCombine(Path.ApplicationRoot,
+                                                      portalSettings.PortalPath))));
 
-            if ( cssImportList.Count > 0 ) {
+            if (cssImportList.Count > 0)
+            {
                 StringBuilder sb = new StringBuilder();
 
-                sb.AppendLine( "<style type=\"text/css\">" );
-                sb.AppendLine( "<!--" );
-                foreach ( string _cssBlock in cssImportList.Values ) {
-                    sb.AppendLine( _cssBlock );
+                sb.AppendLine("<style type=\"text/css\">");
+                sb.AppendLine("<!--");
+                foreach (string _cssBlock in cssImportList.Values)
+                {
+                    sb.AppendLine(_cssBlock);
                 }
-                sb.AppendLine( "-->" );
-                sb.AppendLine( "</style>" );
+                sb.AppendLine("-->");
+                sb.AppendLine("</style>");
 
-                Header.Controls.Add( new LiteralControl( sb + "\n" ) );
+                Header.Controls.Add(new LiteralControl(sb + "\n"));
             }
 
             // ADD CLIENTSCRIPTS 
-            foreach ( string _script in clientScripts.Values ) {
-                Header.Controls.Add( new LiteralControl( string.Format( "<script type=\"text/javascript\" src=\"{0}\"></script>\n", _script ) ) );
+            foreach (string _script in clientScripts.Values)
+            {
+                Header.Controls.Add(
+                    new LiteralControl(
+                        string.Format("<script type=\"text/javascript\" src=\"{0}\"></script>\n",
+                                      _script)));
             }
         }
 
         /// <summary>
         /// Builds the HTML &lt;head&gt; element, adding body's onload event listeners
         /// </summary>
-        protected virtual void BuildBody() {
+        protected virtual void BuildBody()
+        {
             HtmlGenericControl body = null;
 
-            foreach ( Control c in Controls ) {
-                if ( c is HtmlGenericControl ) {
-                    HtmlGenericControl myControl = ( HtmlGenericControl )c;
+            foreach (Control control in Controls)
+            {
+                if (control is HtmlGenericControl)
+                {
+                    HtmlGenericControl myControl = (HtmlGenericControl) control;
 
-                    if ( myControl.TagName.ToLower() == "body" ) {
+                    if (myControl.TagName.ToLower() == "body")
+                    {
                         body = myControl;
                         break;
                     }
@@ -1099,11 +1202,13 @@ namespace Rainbow.Framework.Web.UI
             }
 
             // output onload attribute
-            if ( bodyOnLoadList.Count > 0 ) {
+            if (bodyOnLoadList.Count > 0)
+            {
                 StringBuilder sb = new StringBuilder();
 
-                foreach ( string _functionCall in bodyOnLoadList.Values ) {
-                    sb.Append( _functionCall );
+                foreach (string _functionCall in bodyOnLoadList.Values)
+                {
+                    sb.Append(_functionCall);
                 }
 
                 body.Attributes["onload"] = sb.ToString();
@@ -1131,29 +1236,32 @@ namespace Rainbow.Framework.Web.UI
         /// and pass or denied access to edit or view module.
         /// jviladiu@portalServices.net (2004/07/22)
         /// </summary>
-        protected virtual void ModuleGuidInCookie() {
+        protected virtual void ModuleGuidInCookie() 
+        {
             HttpCookie cookie;
             DateTime time;
             TimeSpan span;
             string guidsInUse = string.Empty;
             Guid guid;
 
-            ModulesDB mdb = new ModulesDB();
-
-            if ( portalSettings.ActivePage.Modules.Count > 0 ) {
-                foreach ( RainbowModule ms in portalSettings.ActivePage.Modules ) {
-                    guid = mdb.GetModuleGuid( ms.ModuleID );
-                    if ( guid != Guid.Empty ) guidsInUse += guid.ToString().ToUpper() + "@";
+            if (portalSettings.ActivePage.Modules.Count > 0)
+            {
+                foreach (RainbowModule ms in portalSettings.ActivePage.Modules)
+                {
+                    guid = RainbowModuleProvider.Instance.GetModuleGuid(ms.ModuleID);
+                    if (guid != Guid.Empty)
+                    {
+                        guidsInUse += guid.ToString().ToUpper() + "@";
+                    }
                 }
             }
-            cookie = new HttpCookie( "RainbowSecurity", guidsInUse );
+            cookie = new HttpCookie("RainbowSecurity", guidsInUse);
             time = DateTime.Now;
-            span = new TimeSpan( 0, 2, 0, 0, 0 ); // 120 minutes to expire
-            cookie.Expires = time.Add( span );
-            Response.AppendCookie( cookie );
+            span = new TimeSpan(0, 2, 0, 0, 0); // 120 minutes to expire
+            cookie.Expires = time.Add(span);
+            Response.AppendCookie(cookie);
         }
 
         #endregion
-
     }
 }

@@ -14,7 +14,6 @@ namespace Rainbow.Framework.Monitoring
     /// <item>DataSet GetMonitoringStats(DateTime startDate</item>
     /// </list>
     /// </summary>
-    //TODO: [moudrick] move these methods to Monitoring Provider
     public static class Utility
     {
         /// <summary>
@@ -33,6 +32,8 @@ namespace Rainbow.Framework.Monitoring
         /// <param name="includeMyIPAddress">include the current ip address</param>
         /// <param name="portalID">portal id to get stats for</param>
         /// <returns></returns>
+        //TODO: [moudrick] change return type to a Monitoring Items collection
+        //TODO: [moudrick] then move these methods to Monitoring Provider
         public static DataSet GetMonitoringStats(DateTime startDate,
                                                  DateTime endDate,
                                                  string reportType,

@@ -109,7 +109,7 @@ namespace Rainbow.Admin
             string moduleDesktopSrc = string.Empty;
             if (moduleID > 0)
             {
-                moduleDesktopSrc = RainbowModuleProvider.GetModuleDesktopSrc(moduleID);
+                moduleDesktopSrc = RainbowModuleProvider.Instance.GetModuleDesktopSrc(moduleID);
             }
             if (moduleDesktopSrc.Length == 0)
             {

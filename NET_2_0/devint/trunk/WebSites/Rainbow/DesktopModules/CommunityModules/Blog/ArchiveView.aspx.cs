@@ -122,7 +122,7 @@ namespace Rainbow.Content.Web.Modules
         {
             lnkRSS.HRef = HttpUrlBuilder.BuildUrl("~/DesktopModules/CommunityModules/Blog/RSS.aspx", PageID, "&mID=" + ModuleID);
             imgRSS.Src = HttpUrlBuilder.BuildUrl("~/DesktopModules/CommunityModules/Blog/xml.gif");
-            lblCopyright.Text = moduleSettings["Copyright"].ToString();
+            lblCopyright.Text = ModuleSettings["Copyright"].ToString();
 
             BlogDB blogDB = new BlogDB();
             int month = -1;
@@ -132,14 +132,12 @@ namespace Rainbow.Content.Web.Modules
                 month = int.Parse(Request.Params.Get("month"));
                 year = int.Parse(Request.Params.Get("year"));
             }
-            catch
-            {
-            }
+            catch {;}
 
             if ((month > -1) && (year > -1))
             {
                 lblHeader.Text = (String) HttpContext.GetGlobalResourceObject("Rainbow", "BLOG_POSTSFROM") +
-                                 " " + DateTime.Parse(month.ToString() + "/1/" + year.ToString()).ToString("MMMM, yyyy");
+                                 " " + DateTime.Parse(month + "/1/" + year).ToString("MMMM, yyyy");
                 myDataList.DataSource = blogDB.GetBlogEntriesByMonth(month, year, ModuleID);
             }
             else
@@ -157,9 +155,9 @@ namespace Rainbow.Content.Web.Modules
                 if (dataReader.Read())
                 {
                     lblEntryCount.Text = (String) HttpContext.GetGlobalResourceObject("Rainbow", "BLOG_ENTRIES") +
-                                         " (" + dataReader["EntryCount"].ToString() + ")";
+                                         " (" + dataReader["EntryCount"] + ")";
                     lblCommentCount.Text = (String) HttpContext.GetGlobalResourceObject("Rainbow", "BLOG_COMMENTS") +
-                                           " (" + dataReader["CommentCount"].ToString() + ")";
+                                           " (" + dataReader["CommentCount"] + ")";
                 }
             }
             finally

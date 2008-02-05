@@ -146,7 +146,7 @@ namespace Rainbow.Content.Web.Modules
 							if (dr["FieldType"].ToString() =="Image")
 							{
 								// get the path to the files
-								pathToFiles = Server.MapPath(((SettingItem) moduleSettings["ImagePath"]).FullPath) + "\\";
+								pathToFiles = Server.MapPath(((SettingItem) ModuleSettings["ImagePath"]).FullPath) + "\\";
 								// retrieving a list of files for the dropdownbox
 								fileArray = IOHelper.GetFiles(pathToFiles,"*.jpg;*.png;*.gif");
 
@@ -156,7 +156,7 @@ namespace Rainbow.Content.Web.Modules
 							else
 							{
 								// get the path to the files
-								pathToFiles = Server.MapPath(((SettingItem) moduleSettings["DocumentPath"]).FullPath) + "\\";
+								pathToFiles = Server.MapPath(((SettingItem) ModuleSettings["DocumentPath"]).FullPath) + "\\";
 								// retrieving a list of files for the dropdownbox
 								fileArray = IOHelper.GetFiles(pathToFiles,"*.*");
 							}
@@ -299,12 +299,12 @@ namespace Rainbow.Content.Web.Modules
 
 							    if (dr["FieldType"].ToString() == "Image")
 							    {
-							        pathToSave = Server.MapPath(((SettingItem) moduleSettings["ImagePath"]).FullPath) + "\\";
+							        pathToSave = Server.MapPath(((SettingItem) ModuleSettings["ImagePath"]).FullPath) + "\\";
 							    }
 							    else
 							    {
 							        pathToSave =
-							            Server.MapPath(((SettingItem) moduleSettings["DocumentPath"]).FullPath) + "\\";
+							            Server.MapPath(((SettingItem) ModuleSettings["DocumentPath"]).FullPath) + "\\";
                                 }
 
 								try

@@ -346,7 +346,7 @@ namespace Rainbow.FCKeditorV2
 				{
 					Portal localPOrtalSettings = PortalProvider.Instance.CurrentPortal;
 					if (localPOrtalSettings == null) return null;
-					Hashtable ms = RainbowModuleProvider.GetModuleSettings(localPOrtalSettings.ActiveModule);
+					Hashtable ms = RainbowModuleProvider.Instance.GetModuleSettings(localPOrtalSettings.ActiveModule);
 					string DefaultImageFolder = "default";
 					if (ms["MODULE_IMAGE_FOLDER"] != null) 
 					{

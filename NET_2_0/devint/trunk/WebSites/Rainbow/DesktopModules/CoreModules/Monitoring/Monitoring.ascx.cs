@@ -357,7 +357,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void cmdDisplay_Click(object sender, EventArgs e)
+        void cmdDisplay_Click(object sender, EventArgs e)
         {
             if (Page.IsValid)
             {
@@ -370,7 +370,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void cboReportType_SelectedIndexChanged(object sender, EventArgs e)
+        void cboReportType_SelectedIndexChanged(object sender, EventArgs e)
         {
             BindGrid();
         }

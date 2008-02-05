@@ -229,22 +229,21 @@ namespace Rainbow.Content.Web.Modules.AddModule
 
                 try
                 {
-                    ModuleItem m = new ModuleItem();
-                    m.Title = moduleTitle.Text;
-                    m.ModuleDefID = moduleID;
-                    m.Order = 999;
+                    ModuleItem moduleItem = new ModuleItem();
+                    moduleItem.Title = moduleTitle.Text;
+                    moduleItem.ModuleDefID = moduleID;
+                    moduleItem.Order = 999;
 
                     // save to database
-                    ModulesDB _mod = new ModulesDB();
-                    m.ID =
-                        _mod.AddModule(pid, m.Order, paneLocation.SelectedValue, m.Title, m.ModuleDefID, 0,
-                                       PortalSecurity.GetEditPermissions(ModuleID), viewPermissionRoles,
-                                       PortalSecurity.GetAddPermissions(ModuleID),
-                                       PortalSecurity.GetDeletePermissions(ModuleID),
-                                       PortalSecurity.GetPropertiesPermissions(ModuleID),
-                                       PortalSecurity.GetMoveModulePermissions(ModuleID),
-                                       PortalSecurity.GetDeleteModulePermissions(ModuleID), false,
-                                       PortalSecurity.GetPublishPermissions(ModuleID), false, false, false);
+                    moduleItem.ID = RainbowModuleProvider.Instance.AddModule(
+                        pid, moduleItem.Order, paneLocation.SelectedValue, moduleItem.Title, moduleItem.ModuleDefID, 0,
+                        PortalSecurity.GetEditPermissions(ModuleID), viewPermissionRoles,
+                        PortalSecurity.GetAddPermissions(ModuleID),
+                        PortalSecurity.GetDeletePermissions(ModuleID),
+                        PortalSecurity.GetPropertiesPermissions(ModuleID),
+                        PortalSecurity.GetMoveModulePermissions(ModuleID),
+                        PortalSecurity.GetDeleteModulePermissions(ModuleID), false,
+                        PortalSecurity.GetPublishPermissions(ModuleID), false, false, false);
                 }
                 catch (Exception ex)
                 {

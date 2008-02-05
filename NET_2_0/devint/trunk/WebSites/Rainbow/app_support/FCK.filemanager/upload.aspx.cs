@@ -29,14 +29,14 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.upload.aspx
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-		private void Page_Load(object sender, EventArgs e)
+		void Page_Load(object sender, EventArgs e)
 		{
 			if (Request.Files.Count > 0)
 			{
 				HttpPostedFile oFile = Request.Files.Get("FCKeditor_File") ;
 	
 				string fileName = oFile.FileName.Substring(oFile.FileName.LastIndexOf("\\") + 1);
-				Hashtable ms = RainbowModuleProvider.GetModuleSettings(portalSettings.ActiveModule);
+				Hashtable ms = RainbowModuleProvider.Instance.GetModuleSettings(portalSettings.ActiveModule);
 				string DefaultImageFolder = "default";
 				if (ms["MODULE_IMAGE_FOLDER"] != null) 
 				{

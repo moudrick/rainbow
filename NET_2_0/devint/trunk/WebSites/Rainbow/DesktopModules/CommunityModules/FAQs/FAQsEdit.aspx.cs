@@ -6,7 +6,6 @@ using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Web.UI;
@@ -41,13 +40,13 @@ namespace Rainbow.Content.Web.Modules
         {
             //Editor placeholder setup
             HtmlEditorDataType h = new HtmlEditorDataType();
-            h.Value = moduleSettings["Editor"].ToString();
+            h.Value = ModuleSettings["Editor"].ToString();
             DesktopText =
-                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(moduleSettings["ShowUpload"].ToString()),
+                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(ModuleSettings["ShowUpload"].ToString()),
                             portalSettings);
 
-            DesktopText.Width = new Unit(moduleSettings["Width"].ToString());
-            DesktopText.Height = new Unit(moduleSettings["Height"].ToString());
+            DesktopText.Width = new Unit(ModuleSettings["Width"].ToString());
+            DesktopText.Height = new Unit(ModuleSettings["Height"].ToString());
 
 
             //  Determine itemID of FAQ to Update

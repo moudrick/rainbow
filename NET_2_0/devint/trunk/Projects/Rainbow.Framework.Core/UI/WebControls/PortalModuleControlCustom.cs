@@ -61,7 +61,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     }
 
                     //Now, replace the default settings with the custom settings for this user from the database.
-                    return RainbowModuleProvider.GetModuleUserSettings(ModuleConfiguration.ModuleID,
+                    return RainbowModuleProvider.Instance.GetModuleUserSettings(ModuleConfiguration.ModuleID,
                         RainbowPrincipal.CurrentUser.Identity.ProviderUserKey,
                         tempSettings);
                 }

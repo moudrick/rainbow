@@ -246,7 +246,7 @@ namespace Rainbow.Content.Web.Modules
                 return new LiteralControl(text);
             }
 
-            RainbowModule moduleSettings = RainbowModuleProvider.InstantiateNewModuleSettings(module, ModuleConfiguration);
+            RainbowModule moduleSettings = RainbowModuleProvider.Instance.InstantiateNewModuleSettings(module, ModuleConfiguration);
             string controlPath = moduleSettings.DesktopSrc;
             PortalModuleControl portalModule;
             try

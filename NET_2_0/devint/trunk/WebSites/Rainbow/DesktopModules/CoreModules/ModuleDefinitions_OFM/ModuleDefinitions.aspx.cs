@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Threading;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
+using Rainbow.Framework.Providers;
 using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Web.UI;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
@@ -94,10 +95,13 @@ namespace Rainbow.AdminAll
                         item.Value = portals["PortalID"].ToString();
 
                         if ((portals["checked"].ToString()) == "1")
+                        {
                             item.Selected = true;
+                        }
                         else
+                        {
                             item.Selected = false;
-
+                        }
                         PortalsName.Items.Add(item);
                     }
                 }
@@ -129,16 +133,20 @@ namespace Rainbow.AdminAll
             {
                 try
                 {
-                    ModulesDB modules = new ModulesDB();
-                    modules.AddGeneralModuleDefinitions(new Guid(ModuleGuid.Text), FriendlyName.Text, DesktopSrc.Text,
+                    RainbowModuleProvider.Instance.AddGeneralModuleDefinitions(new Guid(ModuleGuid.Text),
+                                                        FriendlyName.Text,
+                                                        DesktopSrc.Text,
                                                         MobileSrc.Text,
                                                         "Rainbow.Modules.OneFileModule.dll",
-                                                        "Rainbow.Content.Web.ModulesOneFileModule", false, false);
+                                                        "Rainbow.Content.Web.ModulesOneFileModule",
+                                                        false,
+                                                        false);
 
                     // Update the module definition
                     for (int i = 0; i < PortalsName.Items.Count; i++)
                     {
-                        modules.UpdateModuleDefinitions(defID, Convert.ToInt32(PortalsName.Items[i].Value),
+                        RainbowModuleProvider.Instance.UpdateModuleDefinitions(defID,
+                                                        Convert.ToInt32(PortalsName.Items[i].Value),
                                                         PortalsName.Items[i].Selected);
                     }
 
@@ -155,15 +163,16 @@ namespace Rainbow.AdminAll
                         General.GetString("MODULE_DEFINITIONS_INSTALLING", "An error occurred installing.", this) +
                         "<br>";
                     lblErrorDetail.Text += ex.Message + "<br>";
-                    lblErrorDetail.Text += " Module: '" + FriendlyName.Text + "' - Source: '" + DesktopSrc.Text +
-                                           "' - Mobile: '" + MobileSrc.Text + "'";
+                    lblErrorDetail.Text += string.Format(" Module: '{0}' - Source: '{1}' - Mobile: '{2}'",
+                                      FriendlyName.Text,
+                                      DesktopSrc.Text,
+                                      MobileSrc.Text);
                     lblErrorDetail.Visible = true;
 
                     ErrorHandler.Publish(LogLevel.Error, lblErrorDetail.Text, ex);
                 }
             }
         }
-
 
         /// <summary>
         /// Delete a Module definition
@@ -173,8 +182,7 @@ namespace Rainbow.AdminAll
         {
             try
             {
-                ModulesDB modules = new ModulesDB();
-                modules.DeleteModuleDefinition(new Guid(ModuleGuid.Text));
+                RainbowModuleProvider.Instance.DeleteModuleDefinition(new Guid(ModuleGuid.Text));
 
                 // Redirect back to the portal admin page
                 RedirectBackToReferringPage();

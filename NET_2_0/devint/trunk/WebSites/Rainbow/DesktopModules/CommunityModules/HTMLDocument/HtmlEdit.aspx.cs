@@ -14,7 +14,6 @@ using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
 namespace Rainbow.Content.Web.Modules
 {
     /// <summary>
-    /// 
     /// </summary>
     [History("Jes1111", "2003/03/04", "Cache flushing now handled by inherited page")]
     public partial class HtmlEdit : EditItemPage
@@ -50,17 +49,17 @@ namespace Rainbow.Content.Web.Modules
         {
             // Add the setting
             HtmlEditorDataType h = new HtmlEditorDataType();
-            h.Value = moduleSettings["Editor"].ToString();
+            h.Value = ModuleSettings["Editor"].ToString();
             DesktopText =
-                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(moduleSettings["ShowUpload"].ToString()),
+                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(ModuleSettings["ShowUpload"].ToString()),
                             portalSettings);
-            DesktopText.Width = new Unit(moduleSettings["Width"].ToString());
-            DesktopText.Height = new Unit(moduleSettings["Height"].ToString());
-            if (bool.Parse(moduleSettings["ShowMobile"].ToString()))
+            DesktopText.Width = new Unit(ModuleSettings["Width"].ToString());
+            DesktopText.Height = new Unit(ModuleSettings["Height"].ToString());
+            if (bool.Parse(ModuleSettings["ShowMobile"].ToString()))
             {
                 MobileRow.Visible = true;
-                MobileSummary.Width = new Unit(moduleSettings["Width"].ToString());
-                MobileDetails.Width = new Unit(moduleSettings["Width"].ToString());
+                MobileSummary.Width = new Unit(ModuleSettings["Width"].ToString());
+                MobileDetails.Width = new Unit(ModuleSettings["Width"].ToString());
             }
             else
             {

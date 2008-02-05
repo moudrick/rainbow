@@ -43,7 +43,7 @@ namespace Rainbow.Content.Web.Modules
             // Populate message contents if this is the first visit to the page
             if (!Page.IsPostBack && ModuleID > 0 && ItemID > 0)
             {
-                StartDate.Visible = bool.Parse(moduleSettings["ShowDate"].ToString());
+                StartDate.Visible = bool.Parse(ModuleSettings["ShowDate"].ToString());
                 BindData();
             }
 
@@ -113,7 +113,7 @@ namespace Rainbow.Content.Web.Modules
                     }
 
                     //Chris Farrell, chris@cftechconsulting.com, 5/24/2004
-                    if (!bool.Parse(moduleSettings["MODULESETTINGS_SHOW_MODIFIED_BY"].ToString()))
+                    if (!bool.Parse(ModuleSettings["MODULESETTINGS_SHOW_MODIFIED_BY"].ToString()))
                     {
                         CreatedLabel.Visible = false;
                         CreatedDate.Visible = false;

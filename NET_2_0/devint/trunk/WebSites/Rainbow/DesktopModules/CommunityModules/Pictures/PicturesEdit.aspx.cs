@@ -129,7 +129,7 @@ namespace Rainbow.Content.Web.Modules
                 {
                     Metadata.AppendChild(Metadata.CreateElement("Metadata"));
                     MetadataXml = Metadata.OuterXml;
-                    if (bool.Parse((SettingItem) moduleSettings["AllowBulkLoad"]))
+                    if (bool.Parse((SettingItem) ModuleSettings["AllowBulkLoad"]))
                     {
                         // Esperantus.Esperantus.Localize.y are adding, and we are allowed to bulk load so
                         // make Esperantus.Esperantus.Localize. controls visible
@@ -178,30 +178,30 @@ namespace Rainbow.Content.Web.Modules
 
                 //Get Esperantus.Esperantus.Localize. resize option for Esperantus.Esperantus.Localize. thumbnail
                 Pictures.ResizeOption thumbnailResize =
-                    moduleSettings["ThumbnailResize"].ToString() == string.Empty
+                    ModuleSettings["ThumbnailResize"].ToString() == string.Empty
                         ?
                     Pictures.ResizeOption.FixedWidthHeight
                         :
-                    (Pictures.ResizeOption) Int32.Parse((SettingItem) moduleSettings["ThumbnailResize"]);
+                    (Pictures.ResizeOption) Int32.Parse((SettingItem) ModuleSettings["ThumbnailResize"]);
 
                 //Get Esperantus.Esperantus.Localize. resize option for Esperantus.Esperantus.Localize. original picture
                 Pictures.ResizeOption originalResize =
-                    moduleSettings["OriginalResize"].ToString() == string.Empty
+                    ModuleSettings["OriginalResize"].ToString() == string.Empty
                         ?
                     Pictures.ResizeOption.NoResize
                         :
-                    (Pictures.ResizeOption) Int32.Parse((SettingItem) moduleSettings["OriginalResize"]);
+                    (Pictures.ResizeOption) Int32.Parse((SettingItem) ModuleSettings["OriginalResize"]);
 
                 //Where are we going to save Esperantus.Esperantus.Localize. picture?
-                string PathToSave = Server.MapPath(((SettingItem) moduleSettings["AlbumPath"]).FullPath) + "\\";
+                string PathToSave = Server.MapPath(((SettingItem) ModuleSettings["AlbumPath"]).FullPath) + "\\";
 
                 //Dimensions of Esperantus.Esperantus.Localize. thumbnail as specified in settings
-                int thumbnailWidth = Int32.Parse((SettingItem) moduleSettings["ThumbnailWidth"]);
-                int thumbnailHeight = Int32.Parse((SettingItem) moduleSettings["ThumbnailHeight"]);
+                int thumbnailWidth = Int32.Parse((SettingItem) ModuleSettings["ThumbnailWidth"]);
+                int thumbnailHeight = Int32.Parse((SettingItem) ModuleSettings["ThumbnailHeight"]);
 
                 //Dimensions of Esperantus.Esperantus.Localize. original picture as specified in settings
-                int originalWidth = Int32.Parse((SettingItem) moduleSettings["OriginalWidth"]);
-                int originalHeight = Int32.Parse((SettingItem) moduleSettings["OriginalHeight"]);
+                int originalWidth = Int32.Parse((SettingItem) ModuleSettings["OriginalWidth"]);
+                int originalHeight = Int32.Parse((SettingItem) ModuleSettings["OriginalHeight"]);
 
                 // See if Esperantus.Esperantus.Localize.y are doing a bulk load.  Esperantus.Esperantus.Localize.y must have specified
                 // a bulk load directory (which is on Esperantus.Esperantus.Localize. server) and Esperantus.Esperantus.Localize.y must not
@@ -492,7 +492,7 @@ namespace Rainbow.Content.Web.Modules
             if (ItemID != 0)
             {
                 PicturesDB pictures = new PicturesDB();
-                string PathToDelete = Server.MapPath(((SettingItem) moduleSettings["AlbumPath"]).FullPath) + "\\";
+                string PathToDelete = Server.MapPath(((SettingItem) ModuleSettings["AlbumPath"]).FullPath) + "\\";
 
                 SqlDataReader dr = pictures.GetSinglePicture(ItemID, WorkFlowVersion.Staging);
 
@@ -679,7 +679,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="flip">The flip.</param>
         /// <param name="rotate">The rotate.</param>
         /// <returns></returns>
-        private Bitmap RotateFlip(Bitmap original, string flip, string rotate)
+        Bitmap RotateFlip(Bitmap original, string flip, string rotate)
         {
             RotateFlipType rotateFlipType = RotateFlipType.RotateNoneFlipNone;
 
@@ -760,7 +760,7 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="newHeight">New height of Esperantus.Esperantus.Localize. bitmap</param>
         /// <param name="option">Option for resizing</param>
         /// <returns></returns>
-        private Bitmap ResizeImage(Bitmap original, int newWidth, int newHeight, Pictures.ResizeOption option)
+        Bitmap ResizeImage(Bitmap original, int newWidth, int newHeight, Pictures.ResizeOption option)
         {
             if (original.Width == 0 || original.Height == 0 || newWidth == 0 || newHeight == 0) return null;
             if (original.Width < newWidth) newWidth = original.Width;

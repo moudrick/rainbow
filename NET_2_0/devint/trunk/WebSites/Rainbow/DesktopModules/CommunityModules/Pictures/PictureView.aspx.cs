@@ -48,12 +48,12 @@ namespace Rainbow.Content.Web.Modules
                         pictureItem =
                             (PictureItem)
                             Page.LoadControl(Path.ApplicationRoot + "/Design/PictureLayouts/" +
-                                             moduleSettings["ImageLayout"]);
+                                             ModuleSettings["ImageLayout"]);
 
                         metadata.LoadXml((string) dr["MetadataXml"]);
 
                         XmlAttribute albumPath = metadata.CreateAttribute("AlbumPath");
-                        albumPath.Value = ((SettingItem) moduleSettings["AlbumPath"]).FullPath;
+                        albumPath.Value = ((SettingItem) ModuleSettings["AlbumPath"]).FullPath;
 
                         XmlAttribute itemID = metadata.CreateAttribute("ItemID");
                         itemID.Value = ((int) dr["ItemID"]).ToString();

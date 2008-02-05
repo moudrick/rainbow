@@ -147,53 +147,53 @@ namespace Rainbow.Framework.Site.Data
                     SqlDataReader result;
                     result = MyCommand.ExecuteReader(CommandBehavior.CloseConnection);
 
-                    RainbowModule m = RainbowModuleProvider.CreateModuleSettings();
+                    RainbowModule module = RainbowModuleProvider.Instance.CreateModuleSettings();
 
                     // Read the resultset -- There is only one row!
                     while (result.Read())
                     {
-                        m.ModuleID = (int) result["ModuleID"];
-                        m.ModuleDefID = (int) result["ModuleDefID"];
-                        m.PageID = (int) result["TabID"];
-                        m.PaneName = (string) result["PaneName"];
-                        m.ModuleTitle = (string) result["ModuleTitle"];
+                        module.ModuleID = (int) result["ModuleID"];
+                        module.ModuleDefID = (int) result["ModuleDefID"];
+                        module.PageID = (int) result["TabID"];
+                        module.PaneName = (string) result["PaneName"];
+                        module.ModuleTitle = (string) result["ModuleTitle"];
 
                         object myValue = result["AuthorizedEditRoles"];
-                        m.AuthorizedEditRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
+                        module.AuthorizedEditRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
 
                         myValue = result["AuthorizedViewRoles"];
-                        m.AuthorizedViewRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
+                        module.AuthorizedViewRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
 
                         myValue = result["AuthorizedAddRoles"];
-                        m.AuthorizedAddRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
+                        module.AuthorizedAddRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
 
                         myValue = result["AuthorizedDeleteRoles"];
-                        m.AuthorizedDeleteRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
+                        module.AuthorizedDeleteRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
 
                         myValue = result["AuthorizedPropertiesRoles"];
-                        m.AuthorizedPropertiesRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
+                        module.AuthorizedPropertiesRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
 
                         // jviladiu@portalServices.net (19/08/2004) Add support for move & delete module roles
                         myValue = result["AuthorizedMoveModuleRoles"];
-                        m.AuthorizedMoveModuleRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
+                        module.AuthorizedMoveModuleRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
 
                         myValue = result["AuthorizedDeleteModuleRoles"];
-                        m.AuthorizedDeleteModuleRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
+                        module.AuthorizedDeleteModuleRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
 
                         // Change by Geert.Audenaert@Syntegra.Com
                         // Date: 6/2/2003
                         myValue = result["AuthorizedPublishingRoles"];
-                        m.AuthorizedPublishingRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
+                        module.AuthorizedPublishingRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
 
                         myValue = result["SupportWorkflow"];
-                        m.SupportWorkflow = !Convert.IsDBNull(myValue) ? (bool) myValue : false;
+                        module.SupportWorkflow = !Convert.IsDBNull(myValue) ? (bool) myValue : false;
 
                         // Date: 27/2/2003
                         myValue = result["AuthorizedApproveRoles"];
-                        m.AuthorizedApproveRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
+                        module.AuthorizedApproveRoles = !Convert.IsDBNull(myValue) ? (string) myValue : "";
 
                         myValue = result["WorkflowState"];
-                        m.WorkflowStatus = !Convert.IsDBNull(myValue)
+                        module.WorkflowStatus = !Convert.IsDBNull(myValue)
                                                ? (WorkflowState) (0 + (byte) myValue)
                                                : WorkflowState.Original;
                         // End Change Geert.Audenaert@Syntegra.Com
@@ -207,7 +207,7 @@ namespace Rainbow.Framework.Site.Data
                         {
                             myValue = DBNull.Value;
                         }
-                        m.SupportCollapsable = DBNull.Value != myValue ? (bool) myValue : false;
+                        module.SupportCollapsable = DBNull.Value != myValue ? (bool) myValue : false;
                         // End Change  bja@reedtek.com
 
                         // Start Change john.mandia@whitelightsolutions.com
@@ -219,20 +219,20 @@ namespace Rainbow.Framework.Site.Data
                         {
                             myValue = DBNull.Value;
                         }
-                        m.ShowEveryWhere = DBNull.Value != myValue ? (bool) myValue : false;
+                        module.ShowEveryWhere = DBNull.Value != myValue ? (bool) myValue : false;
                         // End Change  john.mandia@whitelightsolutions.com
 
-                        m.CacheTime = int.Parse(result["CacheTime"].ToString());
-                        m.ModuleOrder = int.Parse(result["ModuleOrder"].ToString());
+                        module.CacheTime = int.Parse(result["CacheTime"].ToString());
+                        module.ModuleOrder = int.Parse(result["ModuleOrder"].ToString());
 
                         myValue = result["ShowMobile"];
-                        m.ShowMobile = !Convert.IsDBNull(myValue) ? (bool) myValue : false;
+                        module.ShowMobile = !Convert.IsDBNull(myValue) ? (bool) myValue : false;
 
-                        m.DesktopSrc = result["DesktopSrc"].ToString();
-                        m.MobileSrc = result["MobileSrc"].ToString();
-                        m.Admin = bool.Parse(result["Admin"].ToString());
+                        module.DesktopSrc = result["DesktopSrc"].ToString();
+                        module.MobileSrc = result["MobileSrc"].ToString();
+                        module.Admin = bool.Parse(result["Admin"].ToString());
                     }
-                    return m;
+                    return module;
                 }
             }
         }

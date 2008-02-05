@@ -16,8 +16,8 @@ namespace Rainbow.Setup
     /// Exclusive use with Rainbowportal
     /// Any other use strictly prohibited
     /// </summary>
-    [History( "moudrick", "2007/12/22", "extracted DatabaseUpdater" )]
-    [History( "jminond", "2006/02/22", "Converted to partial class" )]
+    [History("moudrick", "2007/12/22", "extracted DatabaseUpdater")]
+    [History("jminond", "2006/02/22", "Converted to partial class")]
     public partial class Update : Page 
     {
         #region Web Form Designer generated code
@@ -49,7 +49,7 @@ namespace Rainbow.Setup
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void Update_Load(object sender, EventArgs e)
+        void Update_Load(object sender, EventArgs e)
         {
             if (!IsPostBack) 
             {
@@ -62,7 +62,8 @@ namespace Rainbow.Setup
                     InfoPanel.Visible = true;
                     UpdatePanel.Visible = true;
                 }
-                else {
+                else 
+                {
                     AuthenticationPanel.Visible = true;
                     InfoPanel.Visible = false;
                     UpdatePanel.Visible = false;
@@ -97,7 +98,7 @@ namespace Rainbow.Setup
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void UpdateDatabaseCommand_Click( object sender, EventArgs e ) 
+        void UpdateDatabaseCommand_Click(object sender, EventArgs e) 
         {
             updater.PerformUpdate(VersionController.Instance);
 
@@ -135,11 +136,12 @@ namespace Rainbow.Setup
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void FinishButton_Click( object sender, EventArgs e ) {
-            ErrorHandler.Publish( LogLevel.Info, "Update complete" );
+        void FinishButton_Click(object sender, EventArgs e) 
+        {
+            ErrorHandler.Publish(LogLevel.Info, "Update complete");
 
             //Global.dbNeedsUpdate = false;
-            Response.Redirect( Path.ApplicationRoot + "/Default.aspx" );
+            Response.Redirect(Path.ApplicationRoot + "/Default.aspx");
         }
 
         /// <summary>
@@ -147,7 +149,8 @@ namespace Rainbow.Setup
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void authenticateUser_Click( object sender, EventArgs e ) {
+        void authenticateUser_Click(object sender, EventArgs e)
+        {
             // jes1111 - if (ConfigurationSettings.AppSettings["UpdateUserName"] != null)
             string providedUser = Config.UpdateUserName;
 
@@ -155,18 +158,20 @@ namespace Rainbow.Setup
             string providedPassword = Config.UpdatePassword;
 
             //			if(providedUser.ToLower().Equals(updateUsername.Text.ToLower()) && providedPassword.Equals(updatePassword.Text))
-            if ( String.Compare( providedUser, updateUsername.Text, true ) == 0 &&
-                String.Compare( providedPassword, updatePassword.Text ) == 0 ) {
+            if (string.Compare(providedUser, updateUsername.Text, true) == 0 &&
+                string.Compare(providedPassword, updatePassword.Text) == 0)
+            {
                 AuthenticationPanel.Visible = false;
                 UpdatePanel.Visible = true;
             }
-            else {
+            else
+            {
                 loginError.Visible = true;
-                ErrorHandler.Publish( LogLevel.Warn,
+                ErrorHandler.Publish(LogLevel.Warn,
                     "Someone has incorrectly tried to log into the setup / update page. User IP: '" +
                     HttpContext.Current.Request.UserHostAddress +
                     "' Username Entered: '" + updateUsername.Text +
-                    "' Password Entered: '" + updatePassword.Text + "'" );
+                    "' Password Entered: '" + updatePassword.Text + "'");
             }
         }
     }

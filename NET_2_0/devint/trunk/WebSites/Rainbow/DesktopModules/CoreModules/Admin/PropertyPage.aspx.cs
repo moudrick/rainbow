@@ -138,7 +138,7 @@ namespace Rainbow.Content.Web.Modules
             EditTable.Width = Config.SettingsGroupingWidth;
             EditTable.Height = Config.SettingsGroupingHeight;
             EditTable.CssClass = "st_control";
-            EditTable.DataSource = new SortedList(moduleSettings);
+            EditTable.DataSource = new SortedList(ModuleSettings);
             EditTable.DataBind();
         }
 
@@ -186,10 +186,9 @@ namespace Rainbow.Content.Web.Modules
             Response.Redirect(HttpUrlBuilder.BuildUrl("~/Default.aspx", PageID));
         }
 
-        private void EditTable_UpdateControl(object sender,
-                                             SettingsTableEventArgs e)
+        void EditTable_UpdateControl(object sender, SettingsTableEventArgs e)
         {
-            RainbowModuleProvider.UpdateModuleSetting(ModuleID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
+            RainbowModuleProvider.Instance.UpdateModuleSetting(ModuleID, e.CurrentItem.EditControl.ID, e.CurrentItem.Value);
         }
     }
 }

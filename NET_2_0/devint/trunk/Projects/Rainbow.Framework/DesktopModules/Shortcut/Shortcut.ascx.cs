@@ -65,7 +65,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
 
             /* Remove the IsPostBack check to allow contained controls to interpret the event
@@ -81,7 +81,7 @@ namespace Rainbow.Content.Web.Modules
             //Try to get info on linked control
             int linkedModuleID = Int32.Parse(Settings["LinkedModule"].ToString());
 
-            RainbowModule moduleSettings = RainbowModuleProvider.InstantiateNewModuleSettings(linkedModuleID, ModuleConfiguration);
+            RainbowModule moduleSettings = RainbowModuleProvider.Instance.InstantiateNewModuleSettings(linkedModuleID, ModuleConfiguration);
             string controlPath = moduleSettings.DesktopSrc;
             //Load control
             PortalModuleControl portalModule;

@@ -11,7 +11,7 @@ namespace Rainbow.Framework.Web.UI
     /// </summary>
     public class PropertyPageCustom : PropertyPage
     {
-        private Hashtable customUserSettings;
+        Hashtable customUserSettings;
 
         /// <summary>
         /// Stores current module settings
@@ -26,7 +26,7 @@ namespace Rainbow.Framework.Web.UI
                     if (ModuleID > 0)
                     {
                         // Get settings from the database
-                        customUserSettings = RainbowModuleProvider.GetModuleUserSettings(ModuleID,
+                        customUserSettings = RainbowModuleProvider.Instance.GetModuleUserSettings(ModuleID,
                             RainbowPrincipal.CurrentUser.Identity.ProviderUserKey, this);
                     }
                     else

@@ -18,7 +18,6 @@ using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Scheduler;
-using Rainbow.Framework.Site.Data;
 using Rainbow.Framework.Users.Data;
 using Path=Rainbow.Framework.Path;
 
@@ -452,9 +451,8 @@ namespace Rainbow.Framework.Providers.MsSql
         {
             // Create a new portal
             int portalID = AddPortal(portalAlias, portalName, portalPath);
-
-            ModulesDB modules = new ModulesDB();
-            modules.UpdateSolutionModuleDefinition(solutionID, portalID);
+            RainbowModuleProvider moduleProvider = RainbowModuleProvider.Instance;
+            moduleProvider.UpdateSolutionModuleDefinition(solutionID, portalID);
 
             if (!Config.UseSingleUserBase)
             {
@@ -480,41 +478,41 @@ namespace Rainbow.Framework.Providers.MsSql
             int adminPageID = PortalPageProvider.Instance.AddPage(portalID, localizedString, strAdmins, 9999);
             // Add Modules for portal use
             // Html Document
-            modules.UpdateModuleDefinitions(new Guid(strGUIDHTMLDocument), portalID, true);
+            moduleProvider.UpdateModuleDefinitions(new Guid(strGUIDHTMLDocument), portalID, true);
             // Add Modules for portal administration
             // Site Settings (Admin)
             localizedString = General.GetString("MODULE_SITE_SETTINGS");
-            modules.UpdateModuleDefinitions(new Guid(strGUIDSiteSettings), portalID, true);
-            modules.AddModule(adminPageID, 1, strContentPane, localizedString,
-                              modules.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDSiteSettings)), 0, strAdmins,
+            moduleProvider.UpdateModuleDefinitions(new Guid(strGUIDSiteSettings), portalID, true);
+            moduleProvider.AddModule(adminPageID, 1, strContentPane, localizedString,
+                              moduleProvider.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDSiteSettings)), 0, strAdmins,
                               strAllUsers, strAdmins, strAdmins, strAdmins, strAdmins, strAdmins, false, string.Empty,
                               false, false, false);
             // Pages (Admin)
             localizedString = General.GetString("MODULE_TABS");
-            modules.UpdateModuleDefinitions(new Guid(strGUIDPages), portalID, true);
-            modules.AddModule(adminPageID, 2, strContentPane, localizedString,
-                              modules.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDPages)), 0, strAdmins,
+            moduleProvider.UpdateModuleDefinitions(new Guid(strGUIDPages), portalID, true);
+            moduleProvider.AddModule(adminPageID, 2, strContentPane, localizedString,
+                              moduleProvider.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDPages)), 0, strAdmins,
                               strAllUsers, strAdmins, strAdmins, strAdmins, strAdmins, strAdmins, false, string.Empty,
                               false, false, false);
             // Roles (Admin)
             localizedString = General.GetString("MODULE_SECURITY_ROLES");
-            modules.UpdateModuleDefinitions(new Guid(strGUIDSecurityRoles), portalID, true);
-            modules.AddModule(adminPageID, 3, strContentPane, localizedString,
-                              modules.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDSecurityRoles)), 0, strAdmins,
+            moduleProvider.UpdateModuleDefinitions(new Guid(strGUIDSecurityRoles), portalID, true);
+            moduleProvider.AddModule(adminPageID, 3, strContentPane, localizedString,
+                              moduleProvider.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDSecurityRoles)), 0, strAdmins,
                               strAllUsers, strAdmins, strAdmins, strAdmins, strAdmins, strAdmins, false, string.Empty,
                               false, false, false);
             // Manage Users (Admin)
             localizedString = General.GetString("MODULE_MANAGE_USERS");
-            modules.UpdateModuleDefinitions(new Guid(strGUIDManageUsers), portalID, true);
-            modules.AddModule(adminPageID, 4, strContentPane, localizedString,
-                              modules.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDManageUsers)), 0, strAdmins,
+            moduleProvider.UpdateModuleDefinitions(new Guid(strGUIDManageUsers), portalID, true);
+            moduleProvider.AddModule(adminPageID, 4, strContentPane, localizedString,
+                              moduleProvider.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDManageUsers)), 0, strAdmins,
                               strAllUsers, strAdmins, strAdmins, strAdmins, strAdmins, strAdmins, false, string.Empty,
                               false, false, false);
             // Module Definitions (Admin)
             localizedString = General.GetString("MODULE_MODULES");
-            modules.UpdateModuleDefinitions(new Guid(strGUIDModules), portalID, true);
-            modules.AddModule(adminPageID, 1, strRightPane, localizedString,
-                              modules.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDModules)), 0, strAdmins,
+            moduleProvider.UpdateModuleDefinitions(new Guid(strGUIDModules), portalID, true);
+            moduleProvider.AddModule(adminPageID, 1, strRightPane, localizedString,
+                              moduleProvider.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDModules)), 0, strAdmins,
                               strAllUsers, strAdmins, strAdmins, strAdmins, strAdmins, strAdmins, false, string.Empty,
                               false, false, false);
             // End Change Geert.Audenaert@Syntegra.Com
@@ -522,14 +520,14 @@ namespace Rainbow.Framework.Providers.MsSql
             // Add Signin Module and put it on the hometab
             // Signin
             localizedString = General.GetString("MODULE_LOGIN", "Login");
-            modules.UpdateModuleDefinitions(new Guid(strGUIDLogin), portalID, true);
-            modules.AddModule(homePageID, -1, strLeftPane, localizedString,
-                              modules.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDLogin)), 0, strAdmins,
+            moduleProvider.UpdateModuleDefinitions(new Guid(strGUIDLogin), portalID, true);
+            moduleProvider.AddModule(homePageID, -1, strLeftPane, localizedString,
+                              moduleProvider.GetModuleDefinitionByGuid(portalID, new Guid(strGUIDLogin)), 0, strAdmins,
                               "Unauthenticated Users;Admins;", strAdmins, strAdmins, strAdmins, strAdmins, strAdmins,
                               false, string.Empty, false, false, false);
             // Add language switcher to available modules
             // Language Switcher
-            modules.UpdateModuleDefinitions(new Guid(strGUIDLanguageSwitcher), portalID, true);
+            moduleProvider.UpdateModuleDefinitions(new Guid(strGUIDLanguageSwitcher), portalID, true);
             // End of change by john.mandia@whitelightsolutions.com
             // Create paths
             CreatePortalPath(portalPath);
@@ -552,7 +550,6 @@ namespace Rainbow.Framework.Providers.MsSql
                                          string portalPath)
         {
             int newPortalID;
-            ModulesDB modules = new ModulesDB();
 
             // create an Array to stores modules ID and GUID for finding them later
             ArrayList templateModules = new ArrayList();
@@ -583,7 +580,7 @@ namespace Rainbow.Framework.Providers.MsSql
                 try
                 {
                     // save module definitions in the new portal
-                    modules.UpdateModuleDefinitions(module.GuidID, newPortalID, true);
+                    RainbowModuleProvider.Instance.UpdateModuleDefinitions(module.GuidID, newPortalID, true);
                     // Save the modules into a list for finding them later
                     templateModules.Add(module);
                 }
@@ -676,45 +673,45 @@ namespace Rainbow.Framework.Providers.MsSql
 
                     while (result.Read())
                     {
-                        RainbowModule m = RainbowModuleProvider.CreateModuleSettings();
-                        m.ModuleID = (int) result["ModuleID"];
-                        m.ModuleDefID = (int) result["ModuleDefID"];
-                        m.PageID = newTabID;
-                        m.PaneName = (string) result["PaneName"];
-                        m.ModuleTitle = (string) result["ModuleTitle"];
+                        RainbowModule localModule = RainbowModuleProvider.Instance.CreateModuleSettings();
+                        localModule.ModuleID = (int) result["ModuleID"];
+                        localModule.ModuleDefID = (int) result["ModuleDefID"];
+                        localModule.PageID = newTabID;
+                        localModule.PaneName = (string) result["PaneName"];
+                        localModule.ModuleTitle = (string) result["ModuleTitle"];
 
                         object myValue = result["AuthorizedEditRoles"];
-                        m.AuthorizedEditRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
+                        localModule.AuthorizedEditRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
 
                         myValue = result["AuthorizedViewRoles"];
-                        m.AuthorizedViewRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
+                        localModule.AuthorizedViewRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
 
                         myValue = result["AuthorizedAddRoles"];
-                        m.AuthorizedAddRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
+                        localModule.AuthorizedAddRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
 
                         myValue = result["AuthorizedDeleteRoles"];
-                        m.AuthorizedDeleteRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
+                        localModule.AuthorizedDeleteRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
 
                         myValue = result["AuthorizedPropertiesRoles"];
-                        m.AuthorizedPropertiesRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
+                        localModule.AuthorizedPropertiesRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
 
                         myValue = result["AuthorizedMoveModuleRoles"];
-                        m.AuthorizedMoveModuleRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
+                        localModule.AuthorizedMoveModuleRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
 
                         myValue = result["AuthorizedDeleteModuleRoles"];
-                        m.AuthorizedDeleteModuleRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
+                        localModule.AuthorizedDeleteModuleRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
 
                         myValue = result["AuthorizedPublishingRoles"];
-                        m.AuthorizedPublishingRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
+                        localModule.AuthorizedPublishingRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
 
                         myValue = result["SupportWorkflow"];
-                        m.SupportWorkflow = !Convert.IsDBNull(myValue) ? (bool) myValue : false;
+                        localModule.SupportWorkflow = !Convert.IsDBNull(myValue) ? (bool) myValue : false;
 
                         myValue = result["AuthorizedApproveRoles"];
-                        m.AuthorizedApproveRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
+                        localModule.AuthorizedApproveRoles = !Convert.IsDBNull(myValue) ? (string) myValue : string.Empty;
 
                         myValue = result["WorkflowState"];
-                        m.WorkflowStatus = !Convert.IsDBNull(myValue)
+                        localModule.WorkflowStatus = !Convert.IsDBNull(myValue)
                                                ? (WorkflowState) (0 + (byte) myValue)
                                                : WorkflowState.Original;
 
@@ -726,7 +723,7 @@ namespace Rainbow.Framework.Providers.MsSql
                         {
                             myValue = DBNull.Value;
                         }
-                        m.SupportCollapsable = DBNull.Value != myValue ? (bool) myValue : false;
+                        localModule.SupportCollapsable = DBNull.Value != myValue ? (bool) myValue : false;
 
                         try
                         {
@@ -736,13 +733,13 @@ namespace Rainbow.Framework.Providers.MsSql
                         {
                             myValue = DBNull.Value;
                         }
-                        m.ShowEveryWhere = DBNull.Value != myValue ? (bool) myValue : false;
+                        localModule.ShowEveryWhere = DBNull.Value != myValue ? (bool) myValue : false;
 
-                        m.CacheTime = int.Parse(result["CacheTime"].ToString());
-                        m.ModuleOrder = int.Parse(result["ModuleOrder"].ToString());
+                        localModule.CacheTime = int.Parse(result["CacheTime"].ToString());
+                        localModule.ModuleOrder = int.Parse(result["ModuleOrder"].ToString());
 
                         myValue = result["ShowMobile"];
-                        m.ShowMobile = !Convert.IsDBNull(myValue) ? (bool) myValue : false;
+                        localModule.ShowMobile = !Convert.IsDBNull(myValue) ? (bool) myValue : false;
 
                         // Find the new ModuleDefID assigned to the module in the new portal
                         myEnumerator = templateModules.GetEnumerator();
@@ -751,41 +748,42 @@ namespace Rainbow.Framework.Providers.MsSql
                         while (myEnumerator.MoveNext() && newModuleDefID == 0)
                         {
                             module = (moduleTemplate) myEnumerator.Current;
-                            if (module.id == m.ModuleDefID)
+                            if (module.id == localModule.ModuleDefID)
                             {
-                                newModuleDefID = modules.GetModuleDefinitionByGuid(newPortalID, module.GuidID);
+                                newModuleDefID = RainbowModuleProvider.Instance.GetModuleDefinitionByGuid(newPortalID, module.GuidID);
                             }
                         }
 
                         if (newModuleDefID > 0)
                         {
                             // add the module to the new tab
-                            int newModuleID = modules.AddModule(newTabID,
-                                                                m.ModuleOrder,
-                                                                m.PaneName,
-                                                                m.ModuleTitle,
+                            int newModuleID = RainbowModuleProvider.Instance.AddModule(newTabID,
+                                                                localModule.ModuleOrder,
+                                                                localModule.PaneName,
+                                                                localModule.ModuleTitle,
                                                                 newModuleDefID,
-                                                                m.CacheTime,
-                                                                m.AuthorizedEditRoles,
-                                                                m.AuthorizedViewRoles,
-                                                                m.AuthorizedAddRoles,
-                                                                m.AuthorizedDeleteRoles,
-                                                                m.AuthorizedPropertiesRoles,
-                                                                m.AuthorizedMoveModuleRoles,
-                                                                m.AuthorizedDeleteModuleRoles,
-                                                                m.ShowMobile,
-                                                                m.AuthorizedPublishingRoles,
-                                                                m.SupportWorkflow,
-                                                                m.ShowEveryWhere,
-                                                                m.SupportCollapsable);
+                                                                localModule.CacheTime,
+                                                                localModule.AuthorizedEditRoles,
+                                                                localModule.AuthorizedViewRoles,
+                                                                localModule.AuthorizedAddRoles,
+                                                                localModule.AuthorizedDeleteRoles,
+                                                                localModule.AuthorizedPropertiesRoles,
+                                                                localModule.AuthorizedMoveModuleRoles,
+                                                                localModule.AuthorizedDeleteModuleRoles,
+                                                                localModule.ShowMobile,
+                                                                localModule.AuthorizedPublishingRoles,
+                                                                localModule.SupportWorkflow,
+                                                                localModule.ShowEveryWhere,
+                                                                localModule.SupportCollapsable);
                             // At the end, get all ModuleSettings and save them in the new module
-                            SqlDataReader dr = GetModuleSettings(m.ModuleID, my3rdConnection);
+                            SqlDataReader dr = GetModuleSettings(localModule.ModuleID, my3rdConnection);
 
                             while (dr.Read())
                             {
-                                RainbowModuleProvider.UpdateModuleSetting(newModuleID,
-                                                                           dr["SettingName"].ToString(),
-                                                                           dr["SettingValue"].ToString());
+                                RainbowModuleProvider.Instance.UpdateModuleSetting(
+                                    newModuleID,
+                                    dr["SettingName"].ToString(),
+                                    dr["SettingValue"].ToString());
                             }
                             dr.Close();
                         }
@@ -1648,7 +1646,7 @@ namespace Rainbow.Framework.Providers.MsSql
 
                         while (result.Read())
                         {
-                            RainbowModule m = RainbowModuleProvider.CreateModuleSettings();
+                            RainbowModule m = RainbowModuleProvider.Instance.CreateModuleSettings();
                             m.ModuleID = (int)result["ModuleID"];
                             m.ModuleDefID = (int)result["ModuleDefID"];
                             m.GuidID = (Guid)result["GeneralModDefID"];

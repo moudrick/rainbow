@@ -37,7 +37,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
             // If the page is being requested the first time, determine if an
             // document itemID value is specified, and if so populate page
@@ -46,7 +46,7 @@ namespace Rainbow.Content.Web.Modules
             if (!Page.IsPostBack)
             {
                 if (ModuleID > 0)
-                    PathToSave = ((SettingItem) moduleSettings["DocumentPath"]).FullPath;
+                    PathToSave = ((SettingItem) ModuleSettings["DocumentPath"]).FullPath;
 
                 if (ItemID > 0)
                 {
@@ -116,7 +116,7 @@ namespace Rainbow.Content.Web.Modules
                 if (FileUpload.PostedFile.FileName != string.Empty)
                 {
                     FileInfo fInfo = new FileInfo(FileUpload.PostedFile.FileName);
-                    if (bool.Parse(moduleSettings["DOCUMENTS_DBSAVE"].ToString()))
+                    if (bool.Parse(ModuleSettings["DOCUMENTS_DBSAVE"].ToString()))
                     {
                         Stream stream = FileUpload.PostedFile.InputStream;
                         buffer = new byte[FileUpload.PostedFile.ContentLength];
@@ -133,7 +133,7 @@ namespace Rainbow.Content.Web.Modules
                     }
                     else
                     {
-                        PathToSave = ((SettingItem) moduleSettings["DocumentPath"]).FullPath;
+                        PathToSave = ((SettingItem) ModuleSettings["DocumentPath"]).FullPath;
                         // jviladiu@portalServices.net (02/07/2004). Create the Directory if not exists.
                         if (!Directory.Exists(Server.MapPath(PathToSave)))
                             Directory.CreateDirectory(Server.MapPath(PathToSave));

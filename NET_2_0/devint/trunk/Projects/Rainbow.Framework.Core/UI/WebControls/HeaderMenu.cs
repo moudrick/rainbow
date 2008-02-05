@@ -10,7 +10,6 @@ using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Site.Data;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
@@ -317,41 +316,42 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                     // Added by Mario Endara <mario@softworks.com.uy> (2004/11/06)
                     // Find Tab module to see if the user has add/edit rights
-                    ModulesDB modules = new ModulesDB();
-                    Guid TabGuid = new Guid("{1C575D94-70FC-4A83-80C3-2087F726CBB3}");
+                    Guid tabGuid = new Guid("{1C575D94-70FC-4A83-80C3-2087F726CBB3}");
                     // Added by Xu Yiming <ymhsu@ms2.hinet.net> (2004/12/6)
                     // Modify for support Multi or zero Pages Modules in a single portal.
-                    bool HasEditPermissionsOnTabs = false;
-                    int TabModuleID = 0;
+                    bool hasEditPermissionsOnTabs = false;
+                    int tabModuleID = 0;
 
 //					SqlDataReader result = modules.FindModulesByGuid(portalSettings.PortalID, TabGuid);
 //					while(result.Read()) 
 //					{
 //						TabModuleID=(int)result["ModuleId"];
 
-                    foreach (ModuleItem m in modules.FindModuleItemsByGuid(portalSettings.PortalID, TabGuid))
+                    foreach (ModuleItem moduleItem in RainbowModuleProvider.Instance.FindModuleItemsByGuid(portalSettings.PortalID, tabGuid))
                     {
-                        HasEditPermissionsOnTabs = PortalSecurity.HasEditPermissions(m.ID);
-                        if (HasEditPermissionsOnTabs)
+                        hasEditPermissionsOnTabs = PortalSecurity.HasEditPermissions(moduleItem.ID);
+                        if (hasEditPermissionsOnTabs)
                         {
-                            TabModuleID = m.ID;
+                            tabModuleID = moduleItem.ID;
                             break;
                         }
                     }
 
                     // If user logged in and has Edit permission in the Tab module, reach tab management just one click
-                    if ((ShowTabMan) && (HasEditPermissionsOnTabs))
+                    if ((ShowTabMan) && (hasEditPermissionsOnTabs))
                     {
                         // added by Mario Endara 2004/08/06 so PageLayout can return to this page
                         // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
                         menuLink = "<a";
                         if (CssClass.Length != 0)
+                        {
                             menuLink = menuLink + " class=\"" + CssClass + "\"";
+                        }
 
                         // added mID by Mario Endara <mario@softworks.com.uy> to support security check (2004/11/09)
                         menuLink = menuLink + " href='" +
                                    HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Pages/PageLayout.aspx?PageID=") +
-                                   portalSettings.ActivePage.PageID + "&amp;mID=" + TabModuleID +
+                                   portalSettings.ActivePage.PageID + "&amp;mID=" + tabModuleID +
                                    "&amp;Alias=" + portalSettings.PortalAlias + "&amp;lang=" + portalSettings.PortalUILanguage +
                                    "&amp;returntabid=" + portalSettings.ActivePage.PageID + "'>" +
                                    General.GetString("HEADER_MANAGE_TAB", "Edit This Page", null) + "</a>";
@@ -362,38 +362,44 @@ namespace Rainbow.Framework.Web.UI.WebControls
                     {
                         // 19/08/2004 Jonathan Fong
                         // www.gt.com.au
-                        if ( Context.User.Identity.AuthenticationType == "LDAP" ) {
+                        if (Context.User.Identity.AuthenticationType == "LDAP")
+                        {
                             // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
                             menuLink = "<a";
-                            if ( CssClass.Length != 0 )
+                            if (CssClass.Length != 0)
+                            {
                                 menuLink = menuLink + " class=\"" + CssClass + "\"";
+                            }
 
                             menuLink = menuLink + " href='" +
-                                       HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
-                                                                                                          RainbowPrincipal
-                                                                                                              .CurrentUser
-                                                                                                              .Identity.
-                                                                                                              Email ) +
+                                       HttpUrlBuilder.BuildUrl(
+                                           "~/DesktopModules/CoreModules/Register/Register.aspx",
+                                           "userName=" +
+                                           RainbowPrincipal
+                                               .CurrentUser
+                                               .Identity.
+                                               Email) +
                                        "'>" + "Profile" + "</a>";
-                            list.Add( menuLink );
+                            list.Add(menuLink);
                         }
                         // If user is form add edit user link
-                        else if ( !( HttpContext.Current.User is WindowsPrincipal ) ) {
+                        else if (!(HttpContext.Current.User is WindowsPrincipal))
+                        {
                             // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
                             menuLink = "<a";
-                            if ( CssClass.Length != 0 )
+                            if (CssClass.Length != 0)
+                            {
                                 menuLink = menuLink + " class=\"" + CssClass + "\"";
+                            }
 
                             menuLink = menuLink + " href='" +
-                                       HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Register/Register.aspx", "userName=" +
-                                                                                                          RainbowPrincipal
-                                                                                                              .
-                                                                                                              CurrentUser
-                                                                                                              .Identity.
-                                                                                                              Email ) +
+                                       HttpUrlBuilder.BuildUrl(
+                                           "~/DesktopModules/CoreModules/Register/Register.aspx",
+                                           "userName=" + RainbowPrincipal.CurrentUser.Identity.Email) +
                                        "'>" +
-                                       General.GetString( "HEADER_EDIT_PROFILE", "Edit profile", this ) + "</a>";
-                            list.Add( menuLink );
+                                       General.GetString("HEADER_EDIT_PROFILE", "Edit profile", this) +
+                                       "</a>";
+                            list.Add(menuLink);
                         }
                     }
 
@@ -454,7 +460,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
                         // added Class support by Mario Endara <mario@softworks.com.uy> 2004/10/04
                         menuLink = "<a";
                         if (CssClass.Length != 0)
+                        {
                             menuLink = menuLink + " class=\"" + CssClass + "\"";
+                        }
 
                         menuLink = menuLink + " href='" + portalSettings.PortalSecurePath + "/Logon.aspx'>" +
                                    General.GetString("LOGON", "Logon", null) + "</a>";

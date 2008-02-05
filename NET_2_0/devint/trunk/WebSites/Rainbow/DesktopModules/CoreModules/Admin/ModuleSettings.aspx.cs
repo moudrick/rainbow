@@ -28,11 +28,10 @@ namespace Rainbow.Admin
     [History( "jviladiu@portalServices.net", "2004/08/19", "Added authMoveModuleRoles & authDeleteModuleRoles propertys" )]
     [History( "Jes1111", "2003/03/04", "Cache flushing now handled by inherited page" )]
     [History( "Jes1111", "2003/04/24", "Added Cacheable property" )]
-    public partial class ModuleSettingsPage : Framework.Web.UI.EditItemPage {
+    public partial class ModuleSettingsPage : Framework.Web.UI.EditItemPage
+    {
         protected HyperLink moduleSettingsButton;
         protected LinkButton saveAndCloseButton;
-
-
         protected ArrayList portalTabs;
 
         /// <summary>
@@ -41,9 +40,12 @@ namespace Rainbow.Admin
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Page_Load( object sender, EventArgs e ) {
-            if ( !Page.IsPostBack )
+        void Page_Load(object sender, EventArgs e)
+        {
+            if (!Page.IsPostBack)
+            {
                 BindData();
+            }
         }
 
         /// <summary>
@@ -51,9 +53,9 @@ namespace Rainbow.Admin
         /// to save the module settings into the portal configuration system.
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnUpdate( EventArgs e ) 
+        protected override void OnUpdate(EventArgs e)
         {
-            base.OnUpdate( e );
+            base.OnUpdate(e);
             bool useNTLM = HttpContext.Current.User is WindowsPrincipal;
 
             // add by Jonathan Fong 22/07/2004 to support LDAP
@@ -61,63 +63,78 @@ namespace Rainbow.Admin
             useNTLM |= Config.LDAPLogin.Length != 0 ? true : false;
 
             object value = GetModule();
-            if ( value != null ) {
-                RainbowModule m = ( RainbowModule )value;
+            if (value != null)
+            {
+                RainbowModule m = (RainbowModule) value;
 
                 // Construct Authorized User Roles string
 
                 // Edit Roles
                 string editRoles = string.Empty;
-                foreach ( ListItem editItem in authEditRoles.Items ) {
-                    if ( editItem.Selected ) {
+                foreach (ListItem editItem in authEditRoles.Items)
+                {
+                    if (editItem.Selected)
+                    {
                         editRoles = editRoles + editItem.Text + ";";
                     }
                 }
 
                 // View Roles
                 string viewRoles = string.Empty;
-                foreach ( ListItem viewItem in authViewRoles.Items ) {
-                    if ( viewItem.Selected ) {
+                foreach (ListItem viewItem in authViewRoles.Items)
+                {
+                    if (viewItem.Selected)
+                    {
                         viewRoles = viewRoles + viewItem.Text + ";";
                     }
                 }
 
                 // Add Roles
                 string addRoles = string.Empty;
-                foreach ( ListItem addItem in authAddRoles.Items ) {
-                    if ( addItem.Selected ) {
+                foreach (ListItem addItem in authAddRoles.Items)
+                {
+                    if (addItem.Selected)
+                    {
                         addRoles = addRoles + addItem.Text + ";";
                     }
                 }
 
                 // Delete Roles
                 string deleteRoles = string.Empty;
-                foreach ( ListItem deleteItem in authDeleteRoles.Items ) {
-                    if ( deleteItem.Selected ) {
+                foreach (ListItem deleteItem in authDeleteRoles.Items)
+                {
+                    if (deleteItem.Selected)
+                    {
                         deleteRoles = deleteRoles + deleteItem.Text + ";";
                     }
                 }
 
                 // Move Module Roles
                 string moveModuleRoles = string.Empty;
-                foreach ( ListItem li in authMoveModuleRoles.Items ) {
-                    if ( li.Selected ) {
+                foreach (ListItem li in authMoveModuleRoles.Items)
+                {
+                    if (li.Selected)
+                    {
                         moveModuleRoles += li.Text + ";";
                     }
                 }
 
                 // Delete Module Roles
                 string deleteModuleRoles = string.Empty;
-                foreach ( ListItem li in authDeleteModuleRoles.Items ) {
-                    if ( li.Selected ) {
+                foreach (ListItem li in authDeleteModuleRoles.Items)
+                {
+                    if (li.Selected)
+                    {
                         deleteModuleRoles += li.Text + ";";
                     }
                 }
 
                 // Properties Roles
                 string PropertiesRoles = string.Empty;
-                foreach ( ListItem PropertiesItem in authPropertiesRoles.Items ) {
-                    if ( PropertiesItem.Selected ) {
+                foreach (ListItem PropertiesItem in authPropertiesRoles.Items)
+                {
+                    if (PropertiesItem.Selected)
+                    {
                         PropertiesRoles = PropertiesRoles + PropertiesItem.Text + ";";
                     }
                 }
@@ -126,8 +143,10 @@ namespace Rainbow.Admin
                 // Date: 6/2/2003
                 // Publishing Roles
                 string PublishingRoles = string.Empty;
-                foreach ( ListItem PropertiesItem in authPublishingRoles.Items ) {
-                    if ( PropertiesItem.Selected ) {
+                foreach (ListItem PropertiesItem in authPublishingRoles.Items)
+                {
+                    if (PropertiesItem.Selected)
+                    {
                         PublishingRoles = PublishingRoles + PropertiesItem.Text + ";";
                     }
                 }
@@ -135,21 +154,34 @@ namespace Rainbow.Admin
                 // Change by Geert.Audenaert@Syntegra.Com
                 // Date: 27/2/2003
                 string ApprovalRoles = string.Empty;
-                foreach ( ListItem PropertiesItem in authApproveRoles.Items ) {
-                    if ( PropertiesItem.Selected ) {
+                foreach (ListItem PropertiesItem in authApproveRoles.Items)
+                {
+                    if (PropertiesItem.Selected)
+                    {
                         ApprovalRoles = ApprovalRoles + PropertiesItem.Text + ";";
                     }
                 }
-
                 // End Change Geert.Audenaert@Syntegra.Com
 
-                // update module
-                ModulesDB modules = new ModulesDB();
-                modules.UpdateModule( Int32.Parse( tabDropDownList.SelectedItem.Value ), ModuleID, m.ModuleOrder,
-                                     m.PaneName, moduleTitle.Text, Int32.Parse( cacheTime.Text ), editRoles, viewRoles,
-                                     addRoles, deleteRoles, PropertiesRoles, moveModuleRoles, deleteModuleRoles,
-                                     ShowMobile.Checked, PublishingRoles, enableWorkflowSupport.Checked, ApprovalRoles,
-                                     showEveryWhere.Checked, allowCollapsable.Checked );
+                RainbowModuleProvider.Instance.UpdateModule(Int32.Parse(tabDropDownList.SelectedItem.Value),
+                                     ModuleID,
+                                     m.ModuleOrder,
+                                     m.PaneName,
+                                     moduleTitle.Text,
+                                     Int32.Parse(cacheTime.Text),
+                                     editRoles,
+                                     viewRoles,
+                                     addRoles,
+                                     deleteRoles,
+                                     PropertiesRoles,
+                                     moveModuleRoles,
+                                     deleteModuleRoles,
+                                     ShowMobile.Checked,
+                                     PublishingRoles,
+                                     enableWorkflowSupport.Checked,
+                                     ApprovalRoles,
+                                     showEveryWhere.Checked,
+                                     allowCollapsable.Checked);
             }
         }
 
@@ -164,25 +196,26 @@ namespace Rainbow.Admin
         }
 
         //Used to populate all checklist roles with Roles in portal
-        private void populateRoles( ref CheckBoxList listRoles, string moduleRoles ) {
+        void populateRoles(ref CheckBoxList listRoles, string moduleRoles)
+        {
             //Get roles from db
             UsersDB users = new UsersDB();
-            IList<RainbowRole> roles = users.GetPortalRoles( portalSettings.PortalAlias );
+            IList<RainbowRole> roles = users.GetPortalRoles(portalSettings.PortalAlias);
 
             // Clear existing items in checkboxlist
             listRoles.Items.Clear();
 
             //All Users
-            ListItem allItem = new ListItem( "All Users" );
-            listRoles.Items.Add( allItem );
+            ListItem allItem = new ListItem("All Users");
+            listRoles.Items.Add(allItem);
 
             // Authenticated user role added 15 nov 2002 - by manudea
-            ListItem authItem = new ListItem( "Authenticated Users" );
-            listRoles.Items.Add( authItem );
+            ListItem authItem = new ListItem("Authenticated Users");
+            listRoles.Items.Add(authItem);
 
             // Unauthenticated user role added 30/01/2003 - by manudea
-            ListItem unauthItem = new ListItem( "Unauthenticated Users" );
-            listRoles.Items.Add( unauthItem );
+            ListItem unauthItem = new ListItem("Unauthenticated Users");
+            listRoles.Items.Add(unauthItem);
 
             listRoles.DataSource = roles;
             listRoles.DataTextField = "Name";
@@ -190,25 +223,35 @@ namespace Rainbow.Admin
             listRoles.DataBind();
 
             //Splits up the role string and use array 30/01/2003 - by manudea
-            while ( moduleRoles.EndsWith( ";" ) )
-                moduleRoles = moduleRoles.Substring( 0, moduleRoles.Length - 1 );
-            string[] arrModuleRoles = moduleRoles.Split( ';' );
-            int roleCount = arrModuleRoles.GetUpperBound( 0 );
+            while (moduleRoles.EndsWith(";"))
+            {
+                moduleRoles = moduleRoles.Substring(0, moduleRoles.Length - 1);
+            }
+            string[] arrModuleRoles = moduleRoles.Split(';');
+            int roleCount = arrModuleRoles.GetUpperBound(0);
 
             //Cycle every role and select it if needed
-            foreach ( ListItem ls in listRoles.Items ) {
-                for ( int i = 0; i <= roleCount; i++ ) {
-                    if ( arrModuleRoles[i].ToLower() == ls.Text.ToLower() )
+            foreach (ListItem ls in listRoles.Items)
+            {
+                for (int i = 0; i <= roleCount; i++)
+                {
+                    if (arrModuleRoles[i].ToLower() == ls.Text.ToLower())
+                    {
                         ls.Selected = true;
+                    }
                 }
             }
         }
 
-        private static string giveMeFriendlyName( Guid guid ) {
+        static string giveMeFriendlyName(Guid guid)
+        {
             string friendlyName = string.Empty;
-            using ( SqlDataReader auxDr = new ModulesDB().GetSingleModuleDefinition( guid ) ) {
-                if ( auxDr.Read() )
+            using (SqlDataReader auxDr = new ModulesDB().GetSingleModuleDefinition(guid))
+            {
+                if (auxDr.Read())
+                {
                     friendlyName = auxDr["FriendlyName"] as string;
+                }
             }
             return friendlyName;
         }
@@ -223,60 +266,61 @@ namespace Rainbow.Admin
             bool useNTLM = HttpContext.Current.User is WindowsPrincipal;
             // add by Jonathan Fong 22/07/2004 to support LDAP
             // jes1111 - useNTLM |= ConfigurationSettings.AppSettings["LDAPLogin"] != null ? true : false;
-            useNTLM |= Config.LDAPLogin.Length != 0 ? true : false;
+            useNTLM |= ((Config.LDAPLogin.Length != 0) ? true : false);
 
-            authAddRoles.Visible = authApproveRoles.Visible = authDeleteRoles.Visible =
-                                                              authEditRoles.Visible =
-                                                              authPropertiesRoles.Visible =
-                                                              authPublishingRoles.Visible =
-                                                              authMoveModuleRoles.Visible =
-                                                              authDeleteModuleRoles.Visible =
-                                                              authViewRoles.Visible = !useNTLM;
+            authAddRoles.Visible = 
+                authApproveRoles.Visible = 
+                authDeleteRoles.Visible =
+                authEditRoles.Visible =
+                authPropertiesRoles.Visible =
+                authPublishingRoles.Visible =
+                authMoveModuleRoles.Visible =
+                authDeleteModuleRoles.Visible =
+                authViewRoles.Visible = !useNTLM;
             object value = GetModule();
             if (value != null)
             {
-                RainbowModule m = (RainbowModule)value;
-
-                moduleType.Text = giveMeFriendlyName(m.GuidID);
+                RainbowModule module = (RainbowModule)value;
+                moduleType.Text = giveMeFriendlyName(module.GuidID);
 
                 // Update Textbox Settings
-                moduleTitle.Text = m.ModuleTitle;
-                cacheTime.Text = m.CacheTime.ToString();
+                moduleTitle.Text = module.ModuleTitle;
+                cacheTime.Text = module.CacheTime.ToString();
 
                 portalTabs = PortalPageProvider.Instance.GetPagesFlat(portalSettings.PortalID);
                 tabDropDownList.DataBind();
                 tabDropDownList.ClearSelection();
-                if (tabDropDownList.Items.FindByValue(m.PageID.ToString()) != null)
+                if (tabDropDownList.Items.FindByValue(module.PageID.ToString()) != null)
                 {
-                    tabDropDownList.Items.FindByValue(m.PageID.ToString()).Selected = true;
+                    tabDropDownList.Items.FindByValue(module.PageID.ToString()).Selected = true;
                 }
 
                 // Change by John.Mandia@whitelightsolutions.com
                 //Date: 19/5/2003
-                showEveryWhere.Checked = m.ShowEveryWhere;
+                showEveryWhere.Checked = module.ShowEveryWhere;
 
                 // is the window mgmt support enabled
                 // jes1111 - allowCollapsable.Enabled = GlobalResources.SupportWindowMgmt;
                 allowCollapsable.Enabled = Config.WindowMgmtControls;
-                allowCollapsable.Checked = m.SupportCollapsable;
+                allowCollapsable.Checked = module.SupportCollapsable;
 
-                ShowMobile.Checked = m.ShowMobile;
+                ShowMobile.Checked = module.ShowMobile;
                 // Change by Geert.Audenaert@Syntegra.Com
                 // Date: 6/2/2003
                 PortalModuleControl pm;
                 string controlPath;
-                controlPath = Path.WebPathCombine(Path.ApplicationRoot, m.DesktopSrc);
+                controlPath = Path.WebPathCombine(Path.ApplicationRoot, module.DesktopSrc);
 
                 try
                 {
                     pm = (PortalModuleControl)LoadControl(controlPath);
                     if (pm.InnerSupportsWorkflow)
                     {
-                        enableWorkflowSupport.Checked = m.SupportWorkflow;
-                        authApproveRoles.Enabled = m.SupportWorkflow;
-                        authPublishingRoles.Enabled = m.SupportWorkflow;
-                        populateRoles(ref authPublishingRoles, m.AuthorizedPublishingRoles);
-                        populateRoles(ref authApproveRoles, m.AuthorizedApproveRoles);
+                        enableWorkflowSupport.Checked = module.SupportWorkflow;
+                        authApproveRoles.Enabled = module.SupportWorkflow;
+                        authPublishingRoles.Enabled = module.SupportWorkflow;
+                        populateRoles(ref authPublishingRoles, module.AuthorizedPublishingRoles);
+                        populateRoles(ref authApproveRoles, module.AuthorizedApproveRoles);
                     }
                     else
                     {
@@ -297,13 +341,13 @@ namespace Rainbow.Admin
 
                 // Populate checkbox list with all security roles for this portal
                 // and "check" the ones already configured for this module
-                populateRoles(ref authEditRoles, m.AuthorizedEditRoles);
-                populateRoles(ref authViewRoles, m.AuthorizedViewRoles);
-                populateRoles(ref authAddRoles, m.AuthorizedAddRoles);
-                populateRoles(ref authDeleteRoles, m.AuthorizedDeleteRoles);
-                populateRoles(ref authMoveModuleRoles, m.AuthorizedMoveModuleRoles);
-                populateRoles(ref authDeleteModuleRoles, m.AuthorizedDeleteModuleRoles);
-                populateRoles(ref authPropertiesRoles, m.AuthorizedPropertiesRoles);
+                populateRoles(ref authEditRoles, module.AuthorizedEditRoles);
+                populateRoles(ref authViewRoles, module.AuthorizedViewRoles);
+                populateRoles(ref authAddRoles, module.AuthorizedAddRoles);
+                populateRoles(ref authDeleteRoles, module.AuthorizedDeleteRoles);
+                populateRoles(ref authMoveModuleRoles, module.AuthorizedMoveModuleRoles);
+                populateRoles(ref authDeleteModuleRoles, module.AuthorizedDeleteModuleRoles);
+                populateRoles(ref authPropertiesRoles, module.AuthorizedPropertiesRoles);
 
                 // Jes1111
                 if (!pm.Cacheable)
@@ -424,7 +468,8 @@ namespace Rainbow.Admin
 
         #endregion
 
-        private void enableWorkflowSupport_CheckedChanged( object sender, EventArgs e ) {
+        void enableWorkflowSupport_CheckedChanged(object sender, EventArgs e)
+        {
             authApproveRoles.Enabled = enableWorkflowSupport.Checked;
             authPublishingRoles.Enabled = enableWorkflowSupport.Checked;
         }
@@ -444,21 +489,23 @@ namespace Rainbow.Admin
             OnDelete(e);
         }
 
-        private ArrayList _allowedModules = null;
+        ArrayList allowedModules = null;
 
         /// <summary>
         /// Only can use this page from tab with original module
         /// jviladiu@portalServices.net (2004/07/22)
         /// </summary>
-        protected override ArrayList AllowedModules {
-            get {
-                if ( _allowedModules == null ) {
-                    ModulesDB mdb = new ModulesDB();
-                    ArrayList al = new ArrayList();
-                    al.Add( mdb.GetModuleGuid( ModuleID ).ToString() );
-                    _allowedModules = al;
+        protected override ArrayList AllowedModules
+        {
+            get
+            {
+                if (allowedModules == null)
+                {
+                    ArrayList list = new ArrayList();
+                    list.Add(RainbowModuleProvider.Instance.GetModuleGuid(ModuleID).ToString());
+                    allowedModules = list;
                 }
-                return _allowedModules;
+                return allowedModules;
             }
         }
     }

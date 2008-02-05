@@ -5,7 +5,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
-using Rainbow.Framework.Core;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Security;
@@ -35,13 +34,13 @@ namespace Rainbow.Content.Web.Modules
         {
             // Add the setting
             HtmlEditorDataType h = new HtmlEditorDataType();
-            h.Value = moduleSettings["Editor"].ToString();
+            h.Value = ModuleSettings["Editor"].ToString();
             DesktopText =
-                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(moduleSettings["ShowUpload"].ToString()),
+                h.GetEditor(PlaceHolderHTMLEditor, ModuleID, bool.Parse(ModuleSettings["ShowUpload"].ToString()),
                             portalSettings);
             // Construct the page
-            DesktopText.Width = new Unit(moduleSettings["Width"].ToString());
-            DesktopText.Height = new Unit(moduleSettings["Height"].ToString());
+            DesktopText.Width = new Unit(ModuleSettings["Width"].ToString());
+            DesktopText.Height = new Unit(ModuleSettings["Height"].ToString());
             // Construct the page
             // Added css Styles by Mario Endara <mario@softworks.com.uy> (2004/10/26)
             updateButton.CssClass = "CommandButton";
@@ -67,10 +66,10 @@ namespace Rainbow.Content.Web.Modules
                         if (dr.Read())
                         {
                             StartField.Text = ((DateTime) dr["StartDate"]).ToString();
-                            TitleField.Text = (string) dr["Title"].ToString();
-                            ExcerptField.Text = (string) dr["Excerpt"].ToString();
+                            TitleField.Text = dr["Title"].ToString();
+                            ExcerptField.Text = dr["Excerpt"].ToString();
                             DesktopText.Text = Server.HtmlDecode(dr["Description"].ToString());
-                            CreatedBy.Text = (string) dr["CreatedByUser"].ToString();
+                            CreatedBy.Text = dr["CreatedByUser"].ToString();
                             CreatedDate.Text = ((DateTime) dr["CreatedDate"]).ToString();
 
                             // 15/7/2004 added localization by Mario Endara mario@softworks.com.uy

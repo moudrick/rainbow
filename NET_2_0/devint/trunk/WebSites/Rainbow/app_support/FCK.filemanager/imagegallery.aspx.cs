@@ -72,7 +72,7 @@ namespace Rainbow.Content.Web.Modules.FCK.filemanager.browse
 				} 
 				else
 				{
-					Hashtable ms = RainbowModuleProvider.GetModuleSettings(portalSettings.ActiveModule);
+					Hashtable ms = RainbowModuleProvider.Instance.GetModuleSettings(portalSettings.ActiveModule);
 					string DefaultImageFolder = "default";
 					if (ms["MODULE_IMAGE_FOLDER"] != null) 
 					{

@@ -34,14 +34,14 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         private void Page_Load(object sender, EventArgs e)
         {
-            lblQuiz.Text = moduleSettings["QuizName"].ToString();
+            lblQuiz.Text = ModuleSettings["QuizName"].ToString();
 
             PieUrl = PortalProvider.Instance.CurrentPortal.PortalUrl;
             PieUrl.Value = "/Quiz/Pie.gif";
 
             PortalUrl pt;
             pt = PortalProvider.Instance.CurrentPortal.PortalUrl;
-            pt.Value = moduleSettings["XMLsrc"].ToString();
+            pt.Value = ModuleSettings["XMLsrc"].ToString();
             string xmlsrc = pt.FullPath;
 
             bool xmlsrcOk = false;
@@ -145,7 +145,7 @@ namespace Rainbow.Content.Web.Modules
         /// Shows the question.
         /// </summary>
         /// <param name="intQuestionNo">The int question no.</param>
-        private void ShowQuestion(int intQuestionNo)
+        void ShowQuestion(int intQuestionNo)
         {
             XmlNodeList xNodeList;
             XmlNode xNode;
