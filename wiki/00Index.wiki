@@ -1,4 +1,4 @@
 #Index page to point to the different pieces of documentation
 
-* Google Wiki: http://code.google.com/p/rainbow/w/list (here)
-* rainbow-developer Pages: http://groups.google.com/group/rainbow-developers/web
+  * Google Wiki: http://code.google.com/p/rainbow/w/list (here)
+  * rainbow-developer Pages: http://groups.google.com/group/rainbow-developers/web
