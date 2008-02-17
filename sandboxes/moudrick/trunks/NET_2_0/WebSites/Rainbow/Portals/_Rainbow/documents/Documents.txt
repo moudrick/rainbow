@@ -1,3 +1,0 @@
-Folder for storing docs.
-This file prevents CVS automatically delete empty folder.
-You can safely remove it.
