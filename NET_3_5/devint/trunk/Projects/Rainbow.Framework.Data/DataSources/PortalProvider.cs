@@ -11,36 +11,33 @@ using System.Configuration;
 
 namespace Rainbow.Framework.Data.DataSources
 {
-    /// <summary>
-    /// Page Provider
-    /// </summary>
-    public abstract class PageProvider : ProviderBase
+    public abstract class PortalProvider : ProviderBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PageProvider"/> class.
+        /// Initializes a new instance of the <see cref="PortalProvider"/> class.
         /// </summary>
         /// <remarks>
         /// Note: Constructor is 'protected' (Singleton pattern)
         /// </remarks>
-        protected PageProvider() { }
+        protected PortalProvider() { }
 
         #region Provider
 
         /// <summary>
         /// Camel case. Must match web.config section name
         /// </summary>
-        private const string providerType = "pageDataSource";
+        private const string providerType = "portalDataSource";
 
         /// <summary>
         /// private instance
         /// </summary>
-        private static PageProvider _instance;
+        private static PortalProvider _instance;
 
         /// <summary>
         /// Instances this instance.
         /// </summary>
         /// <returns></returns>
-        public static PageProvider Instance()
+        public static PortalProvider Instance()
         {
             // Use 'Lazy initialization'
             if (_instance == null)
@@ -53,7 +50,7 @@ namespace Rainbow.Framework.Data.DataSources
                 // Read specific configuration information for this provider
                 ProviderSettings providerSettings = (ProviderSettings)config.Providers[config.DefaultProvider];
                 // In the cache?
-                cacheKey = "Rainbow::Data::PageDataSource::" + config.DefaultProvider;
+                cacheKey = "Rainbow::Data::PortalDataSource::" + config.DefaultProvider;
 
                 if (cache[cacheKey] == null)
                 {
@@ -62,15 +59,16 @@ namespace Rainbow.Framework.Data.DataSources
                     try
                     {
                         cache.Insert(cacheKey,
-                                     ProviderHelper.InstantiateProvider(providerSettings, typeof(PageProvider)));
+                                     ProviderHelper.InstantiateProvider(providerSettings, typeof(PortalProvider)));
                     }
+
                     catch (Exception e)
                     {
                         throw new Exception("Unable to load provider", e);
                     }
                 }
 
-                _instance = (PageProvider)cache[cacheKey];
+                _instance = (PortalProvider)cache[cacheKey];
             }
 
             return _instance;
@@ -82,29 +80,29 @@ namespace Rainbow.Framework.Data.DataSources
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        public abstract IEnumerable<IPage> GetAll();
+        public abstract IEnumerable<IPortal> GetAll();
         /// <summary>
         /// Gets the by id.
         /// </summary>
         /// <param name="Id">The id.</param>
         /// <returns></returns>
-        public abstract IPage GetById(Guid Id);
+        public abstract IPortal GetById(Guid Id);
         /// <summary>
-        /// Adds the specified new Page.
+        /// Adds the specified new Portal.
         /// </summary>
-        /// <param name="newPage">The new Page.</param>
-        public abstract void Add(ref IPage newPage);
-        public abstract IPage CreateNew();
+        /// <param name="newPortal">The new Portal.</param>
+        public abstract void Add(ref IPortal newPortal);
+        public abstract IPortal CreateNew();
         /// <summary>
-        /// Updates the specified Page.
+        /// Updates the specified Portal.
         /// </summary>
-        /// <param name="Page">The Page.</param>
-        public abstract void Update(IPage Page);
+        /// <param name="Portal">The Portal.</param>
+        public abstract void Update(IPortal Portal);
         /// <summary>
-        /// Removes the specified Page.
+        /// Removes the specified Portal.
         /// </summary>
-        /// <param name="Page">The Page.</param>
-        public abstract void Remove(IPage Page);
+        /// <param name="Portal">The Portal.</param>
+        public abstract void Remove(IPortal Portal);
         /// <summary>
         /// Commits the changes.
         /// </summary>
