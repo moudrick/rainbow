@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Configuration.Provider;
 using System.Net;
 using System.Web;
 using Rainbow.Framework.BusinessObjects;
@@ -17,7 +16,7 @@ namespace Rainbow.Framework.Providers
     /// This is interface class for get portal settings values 
     /// from appropriate persistence localtion
     ///</summary>
-    public abstract class PortalProvider : ProviderBase
+    public abstract class PortalProvider : BaseRainbowProvider
     {
         const string providerType = "portal";
 
@@ -31,7 +30,7 @@ namespace Rainbow.Framework.Providers
             get
             {
                 return ProviderConfiguration.GetDefaultProviderFromCache<PortalProvider>(
-                    providerType, HttpContext.Current.Cache);
+                    providerType, Cache);
             }
         }
 

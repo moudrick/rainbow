@@ -9,7 +9,6 @@ using Rainbow.Framework.Context;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
@@ -26,8 +25,8 @@ namespace Rainbow.Content.Web.Modules
             "Add GetCurrentProfileControl method to properly obtain a custom register control as specified by the 'Register Module ID' setting.")]
     public partial class UsersManage : EditItemPage
     {
-        private Guid userID = Guid.Empty;
-        private string userName = string.Empty;
+        Guid userID = Guid.Empty;
+        string userName = string.Empty;
         //        int tabIndex = 0;
         protected Localize name;
         protected IEditUserProfile EditControl;
@@ -38,7 +37,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
             // Verify that the current user has access to access this page
             // Removed by Mario Endara <mario@softworks.com.uy> (2004/11/04)
@@ -84,8 +83,6 @@ namespace Rainbow.Content.Web.Modules
                 {
                     try
                     {
-                        UsersDB users = new UsersDB();
-
                         // make a unique new user record
                         Guid uid = Guid.Empty;
                         int i = 0;
@@ -97,8 +94,7 @@ namespace Rainbow.Content.Web.Modules
                             userName = "NewUserEmail" + i + "@yoursite.com";
                             try
                             {
-                                uid =
-                                    users.AddUser(
+                                uid = AccountSystem.Instance.AddUser(
                                         PortalProvider.Instance.CurrentPortal.PortalAlias,
                                         userName,
                                         string.Empty,
@@ -112,8 +108,10 @@ namespace Rainbow.Content.Web.Modules
                             i++;
                         }
                         if (uid == Guid.Empty)
+                        {
                             throw new Exception("New user creation failed after " + i + " retries.",
                                                 lastException);
+                        }
 
                         // redirect to this page with the corrected querystring args
                         Response.Redirect(
@@ -137,7 +135,7 @@ namespace Rainbow.Content.Web.Modules
         /// Gets the current profile control.
         /// </summary>
         /// <returns></returns>
-        private Control GetCurrentProfileControl()
+        Control GetCurrentProfileControl()
         {
             //default
             string registerPage = "register.aspx";
@@ -214,7 +212,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="Sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void Save_Click(Object Sender, EventArgs e)
+        void Save_Click(object Sender, EventArgs e)
         {
             // Persists user data
             EditControl.SaveUserData();
@@ -232,19 +230,12 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void AddRole_Click(Object sender, EventArgs e)
+        void AddRole_Click(object sender, EventArgs e)
         {
-            Guid roleID;
-
             //get user id from dropdownlist of existing users
-            roleID = new Guid( allRoles.SelectedItem.Value );
-
-            // Add a new userRole to the database
-            UsersDB users = new UsersDB();
-            users.AddUserRole(roleID, userID);
-
-            // Rebind list
-            BindData();
+            Guid roleID = new Guid(allRoles.SelectedItem.Value);
+            AccountSystem.Instance.AddUserRole(roleID, userID);
+            BindData(); // Rebind list
         }
 
         /// <summary>
@@ -254,38 +245,29 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.Web.UI.WebControls.DataListCommandEventArgs"/> instance containing the event data.</param>
-        private void UserRoles_ItemCommand(object sender, DataListCommandEventArgs e)
+        void UserRoles_ItemCommand(object sender, DataListCommandEventArgs e)
         {
-            UsersDB users = new UsersDB();
             Guid roleID = (Guid) userRoles.DataKeys[e.Item.ItemIndex];
-
-            // update database
-            users.DeleteUserRole(roleID, userID);
-
-            // Ensure that item is not editable
-            userRoles.EditItemIndex = -1;
-
-            // Repopulate list
-            BindData();
+            AccountSystem.Instance.DeleteUserRole(roleID, userID);
+            userRoles.EditItemIndex = -1; // Ensure that item is not editable
+            BindData(); // Repopulate list
         }
 
         /// <summary>
         /// The BindData helper method is used to bind the list of
         /// security roles for this portal to an asp:datalist server control
         /// </summary>
-        private void BindData()
+        void BindData()
         {
             // Bind the Email and Password
-            UsersDB users = new UsersDB();
-
             Guid currentUserID = RainbowPrincipal.CurrentUser.Identity.ProviderUserKey;
-            // bind users in role to DataList
-            IList<RainbowRole> roles = users.GetRolesByUser( currentUserID, portalSettings.PortalAlias);
+            IList<RainbowRole> roles =
+                AccountSystem.Instance.GetRolesByUser(currentUserID, portalSettings.PortalAlias);
             userRoles.DataSource = roles;
             userRoles.DataBind();
 
             // bind all portal roles to dropdownlist
-            IList<RainbowRole> allRolesList = users.GetPortalRoles( portalSettings.PortalAlias );
+            IList<RainbowRole> allRolesList = AccountSystem.Instance.GetPortalRoles( portalSettings.PortalAlias );
             allRoles.DataSource = allRolesList;
             allRoles.DataBind();
         }

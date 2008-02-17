@@ -39,7 +39,7 @@ namespace Rainbow.Framework.Security
                                     string redirectPage)
         {
             Portal portal = PortalProvider.Instance.CurrentPortal;
-            // Attempt to Validate User Credentials using UsersDB
+            // Attempt to Validate User Credentials using AccountSystem
             MembershipUser user = Login(login, password);
 
             // Thierry (tiptopweb), 12 Apr 2003: Save old ShoppingCartID

@@ -5,6 +5,7 @@ using System.Configuration.Provider;
 using System.Globalization;
 using System.Web;
 using System.Web.Caching;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Providers.Configuration;
 
@@ -47,7 +48,7 @@ namespace Rainbow.Framework.Providers
             get
             {
                 // Use the cache because the reflection used later is expensive
-                Cache cache = HttpRuntime.Cache;
+                Cache cache = RainbowContext.Current.Cache; //HttpRuntime.Cache;
                 string cacheKey;
                 // Get the names of providers
                 ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(providerType);

@@ -84,7 +84,6 @@
     <Compile Include="DAL\ModulesDB.cs" />
     <Compile Include="DAL\RecyclerDB.cs" />
     <Compile Include="DAL\UpdateEntry.cs" />
-    <Compile Include="DAL\UsersDb.cs" />
     <Compile Include="Security\MsSqlMonitoringProvider.cs" />
     <Compile Include="UI\DataTypes\ApplicationUrlDataType.cs" />
     <Compile Include="UI\DataTypes\CheckBoxListDataType.cs" />

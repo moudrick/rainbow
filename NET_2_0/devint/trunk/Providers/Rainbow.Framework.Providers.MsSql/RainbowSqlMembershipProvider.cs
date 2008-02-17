@@ -231,16 +231,16 @@ namespace Rainbow.Framework.Providers.MsSql
             }
 
             // Initialize SqlConnection.
-            ConnectionStringSettings ConnectionStringSettings =
+            ConnectionStringSettings connectionStringSettings =
                 ConfigurationManager.ConnectionStrings[config["connectionStringName"]];
 
-            if (ConnectionStringSettings == null ||
-                ConnectionStringSettings.ConnectionString.Trim().Equals(string.Empty))
+            if (connectionStringSettings == null ||
+                connectionStringSettings.ConnectionString.Trim().Equals(string.Empty))
             {
                 throw new RainbowMembershipProviderException("Connection string cannot be blank.");
             }
 
-            connectionString = ConnectionStringSettings.ConnectionString;
+            connectionString = connectionStringSettings.ConnectionString;
 
             if (EnablePasswordRetrieval && (PasswordFormat == MembershipPasswordFormat.Hashed))
             {
@@ -748,25 +748,25 @@ namespace Rainbow.Framework.Providers.MsSql
         {
             MembershipUserCollection users = new MembershipUserCollection();
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "aspnet_Membership_GetAllUsers";
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "aspnet_Membership_GetAllUsers";
+            command.CommandType = CommandType.StoredProcedure;
 
-            cmd.Connection = new SqlConnection(connectionString);
+            command.Connection = new SqlConnection(connectionString);
 
-            cmd.Parameters.Add("@ApplicationName", SqlDbType.NVarChar, 256).Value = portalAlias;
-            cmd.Parameters.Add("@PageIndex", SqlDbType.Int).Value = pageIndex;
-            cmd.Parameters.Add("@PageSize", SqlDbType.Int).Value = pageSize;
+            command.Parameters.Add("@ApplicationName", SqlDbType.NVarChar, 256).Value = portalAlias;
+            command.Parameters.Add("@PageIndex", SqlDbType.Int).Value = pageIndex;
+            command.Parameters.Add("@PageSize", SqlDbType.Int).Value = pageSize;
 
-            SqlParameter totalRecordsParam = cmd.Parameters.Add("@TotalRecords", SqlDbType.Int);
+            SqlParameter totalRecordsParam = command.Parameters.Add("@TotalRecords", SqlDbType.Int);
             totalRecordsParam.Direction = ParameterDirection.ReturnValue;
 
             SqlDataReader reader = null;
             try
             {
-                cmd.Connection.Open();
+                command.Connection.Open();
 
-                using (reader = cmd.ExecuteReader())
+                using (reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -796,7 +796,7 @@ namespace Rainbow.Framework.Providers.MsSql
                 {
                     reader.Close();
                 }
-                cmd.Connection.Close();
+                command.Connection.Close();
             }
         }
 
@@ -1414,32 +1414,32 @@ namespace Rainbow.Framework.Providers.MsSql
 
             SqlConnection conn = new SqlConnection(connectionString);
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "aspnet_Membership_ResetPassword";
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "aspnet_Membership_ResetPassword";
+            command.CommandType = CommandType.StoredProcedure;
 
-            cmd.Connection = conn;
+            command.Connection = conn;
 
-            cmd.Parameters.Add("@ApplicationName", SqlDbType.NVarChar, 256).Value = portalAlias;
-            cmd.Parameters.Add("@UserName", SqlDbType.NVarChar, 256).Value = username;
-            cmd.Parameters.Add("@NewPassword", SqlDbType.NVarChar, 128).Value = encodedPassword;
-            cmd.Parameters.Add("@MaxInvalidPasswordAttempts", SqlDbType.Int).Value =
+            command.Parameters.Add("@ApplicationName", SqlDbType.NVarChar, 256).Value = portalAlias;
+            command.Parameters.Add("@UserName", SqlDbType.NVarChar, 256).Value = username;
+            command.Parameters.Add("@NewPassword", SqlDbType.NVarChar, 128).Value = encodedPassword;
+            command.Parameters.Add("@MaxInvalidPasswordAttempts", SqlDbType.Int).Value =
                 MaxInvalidPasswordAttempts;
-            cmd.Parameters.Add("@PasswordAttemptWindow", SqlDbType.Int).Value =
+            command.Parameters.Add("@PasswordAttemptWindow", SqlDbType.Int).Value =
                 PasswordAttemptWindow;
-            cmd.Parameters.Add("@PasswordSalt", SqlDbType.NVarChar, 128).Value = passwordSalt;
-            cmd.Parameters.Add("@CurrentTimeUtc", SqlDbType.DateTime).Value = DateTime.Now;
-            cmd.Parameters.Add("@PasswordFormat", SqlDbType.Int).Value = PasswordFormat;
-            cmd.Parameters.Add("@PasswordAnswer", SqlDbType.NVarChar, 128).Value = answer;
+            command.Parameters.Add("@PasswordSalt", SqlDbType.NVarChar, 128).Value = passwordSalt;
+            command.Parameters.Add("@CurrentTimeUtc", SqlDbType.DateTime).Value = DateTime.Now;
+            command.Parameters.Add("@PasswordFormat", SqlDbType.Int).Value = PasswordFormat;
+            command.Parameters.Add("@PasswordAnswer", SqlDbType.NVarChar, 128).Value = answer;
 
-            SqlParameter returnCodeParam = cmd.Parameters.Add("@ReturnCode", SqlDbType.Int);
+            SqlParameter returnCodeParam = command.Parameters.Add("@ReturnCode", SqlDbType.Int);
             returnCodeParam.Direction = ParameterDirection.ReturnValue;
 
             try
             {
                 conn.Open();
 
-                cmd.ExecuteNonQuery();
+                command.ExecuteNonQuery();
 
                 int returnCode = (int) returnCodeParam.Value;
 

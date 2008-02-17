@@ -20,7 +20,7 @@ namespace Rainbow.Tests.Data.MsSql.PortalTests
             httpSimulator = new HttpSimulator("/Rainbow", Hepler.RainbowWebApplicationRoot);
 
             httpSimulator.SimulateRequest(new Uri("http://localhost/Rainbow/"));
-            Assert.AreEqual(1882, VersionController.Instance.DatabaseVersion);
+            Assert.AreEqual(1883, VersionController.Instance.DatabaseVersion);
             portalSettings = PortalProvider.Instance.InstantiateNewPortal(0, "Rainbow");
             Assert.IsNotNull(portalSettings);
 

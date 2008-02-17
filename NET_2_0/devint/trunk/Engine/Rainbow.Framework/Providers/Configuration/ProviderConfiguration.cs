@@ -39,8 +39,7 @@ namespace Rainbow.Framework.Providers.Configuration
         /// <returns></returns>
         public static ProviderConfiguration GetProviderConfiguration(string provider)
         {
-            return (ProviderConfiguration) ConfigurationManager
-                                               .GetSection("providers/" + provider);
+            return (ProviderConfiguration) ConfigurationManager.GetSection("providers/" + provider);
         }
 
         public static ProviderType GetDefaultProviderFromCache<ProviderType>(string providerType, Cache cache)

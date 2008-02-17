@@ -33,37 +33,48 @@ namespace Rainbow.Framework.Providers
         /// </summary>
         /// <param name="status">The status.</param>
         /// <returns></returns>
-        public string GetErrorMessage( MembershipCreateStatus status ) {
-            switch ( status ) {
+        public string GetErrorMessage(MembershipCreateStatus status)
+        {
+            //TODO: [moudrick] use resource GetString here
+            switch (status)
+            {
                 case MembershipCreateStatus.DuplicateUserName:
                     return "Username already exists. Please enter a different user name.";
 
                 case MembershipCreateStatus.DuplicateEmail:
-                    return "A username for that e-mail address already exists. Please enter a different e-mail address.";
+                    return
+                        "A username for that e-mail address already exists. Please enter a different e-mail address.";
 
                 case MembershipCreateStatus.InvalidPassword:
                     return "The password provided is invalid. Please enter a valid password value.";
 
                 case MembershipCreateStatus.InvalidEmail:
-                    return "The e-mail address provided is invalid. Please check the value and try again.";
+                    return
+                        "The e-mail address provided is invalid. Please check the value and try again.";
 
                 case MembershipCreateStatus.InvalidAnswer:
-                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
+                    return
+                        "The password retrieval answer provided is invalid. Please check the value and try again.";
 
                 case MembershipCreateStatus.InvalidQuestion:
-                    return "The password retrieval question provided is invalid. Please check the value and try again.";
+                    return
+                        "The password retrieval question provided is invalid. Please check the value and try again.";
 
                 case MembershipCreateStatus.InvalidUserName:
-                    return "The user name provided is invalid. Please check the value and try again.";
+                    return
+                        "The user name provided is invalid. Please check the value and try again.";
 
                 case MembershipCreateStatus.ProviderError:
-                    return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return
+                        "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
 
                 case MembershipCreateStatus.UserRejected:
-                    return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return
+                        "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
 
                 default:
-                    return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return
+                        "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
             }
         }
 
@@ -91,19 +102,20 @@ namespace Rainbow.Framework.Providers
         /// Saves the user profile.
         /// </summary>
         /// <param name="user">The user.</param>
-        protected virtual void SaveUserProfile( RainbowUser user ) {
-            ProfileBase profile = ProfileBase.Create( user.UserName );
+        protected virtual void SaveUserProfile(RainbowUser user)
+        {
+            ProfileBase profile = ProfileBase.Create(user.UserName);
 
-            profile.SetPropertyValue( "Name", user.Name ?? string.Empty );
-            profile.SetPropertyValue( "Company", user.Company ?? string.Empty);
-            profile.SetPropertyValue( "Address", user.Address ?? string.Empty );
-            profile.SetPropertyValue( "Zip", user.Zip ?? string.Empty );
-            profile.SetPropertyValue( "City", user.City ?? string.Empty );
-            profile.SetPropertyValue( "CountryID", user.CountryID ?? string.Empty );
-            profile.SetPropertyValue( "StateID", user.StateID );
-            profile.SetPropertyValue( "Fax", user.Fax ?? string.Empty );
-            profile.SetPropertyValue( "Phone", user.Phone ?? string.Empty );
-            profile.SetPropertyValue( "SendNewsletter", user.SendNewsletter );
+            profile.SetPropertyValue("Name", user.Name ?? string.Empty);
+            profile.SetPropertyValue("Company", user.Company ?? string.Empty);
+            profile.SetPropertyValue("Address", user.Address ?? string.Empty);
+            profile.SetPropertyValue("Zip", user.Zip ?? string.Empty);
+            profile.SetPropertyValue("City", user.City ?? string.Empty);
+            profile.SetPropertyValue("CountryID", user.CountryID ?? string.Empty);
+            profile.SetPropertyValue("StateID", user.StateID);
+            profile.SetPropertyValue("Fax", user.Fax ?? string.Empty);
+            profile.SetPropertyValue("Phone", user.Phone ?? string.Empty);
+            profile.SetPropertyValue("SendNewsletter", user.SendNewsletter);
             profile.Save();
         }
 
@@ -111,8 +123,9 @@ namespace Rainbow.Framework.Providers
         /// Deletes the user profile.
         /// </summary>
         /// <param name="userName">Name of the user.</param>
-        protected virtual bool DeleteUserProfile( string userName ) {
-            return ProfileManager.DeleteProfile( userName );
+        protected virtual bool DeleteUserProfile(string userName)
+        {
+            return ProfileManager.DeleteProfile(userName);
         }
 
         /// <summary>
@@ -132,12 +145,34 @@ namespace Rainbow.Framework.Providers
         /// <param name="lastPasswordChangeDate">The last password change date.</param>
         /// <param name="lastLockoutDate">The last lockout date.</param>
         /// <returns></returns>
-        protected virtual RainbowUser InstanciateNewUser( string providerName, string name, Guid providerUserKey, string email, string passwordQuestion, 
-                                                          string comment, bool isApproved, bool isLockedOut, DateTime creationDate, DateTime lastLoginDate, DateTime lastActivityDate, DateTime lastPasswordChangeDate, DateTime lastLockoutDate ) {
-
-            return new RainbowUser( providerName, name, providerUserKey, email, passwordQuestion, 
-                                    comment, isApproved, isLockedOut, creationDate, lastLoginDate, lastActivityDate, lastPasswordChangeDate, lastLockoutDate);
-                                                          }
+        protected virtual RainbowUser InstanciateNewUser(string providerName,
+                                                         string name,
+                                                         Guid providerUserKey,
+                                                         string email,
+                                                         string passwordQuestion,
+                                                         string comment,
+                                                         bool isApproved,
+                                                         bool isLockedOut,
+                                                         DateTime creationDate,
+                                                         DateTime lastLoginDate,
+                                                         DateTime lastActivityDate,
+                                                         DateTime lastPasswordChangeDate,
+                                                         DateTime lastLockoutDate)
+        {
+            return new RainbowUser(providerName,
+                                   name,
+                                   providerUserKey,
+                                   email,
+                                   passwordQuestion,
+                                   comment,
+                                   isApproved,
+                                   isLockedOut,
+                                   creationDate,
+                                   lastLoginDate,
+                                   lastActivityDate,
+                                   lastPasswordChangeDate,
+                                   lastLockoutDate);
+        }
 
         /// <summary>
         /// Instanciates a new user.
@@ -165,7 +200,14 @@ namespace Rainbow.Framework.Providers
         /// <param name="status">An out parameter (in Visual Basic, ByRef) that returns a MembershipCreateStatus value indicating whether the user was 
         /// successfully created or, if the user was not created, the reason why.</param>
         /// <returns>A new <code>MembershipUser</code>. If the user was not created, CreateUser returns null.</returns>
-        public abstract MembershipUser CreateUser( string portalAlias, string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, out MembershipCreateStatus status );
+        public abstract MembershipUser CreateUser(string portalAlias,
+                                                  string username,
+                                                  string password,
+                                                  string email,
+                                                  string passwordQuestion,
+                                                  string passwordAnswer,
+                                                  bool isApproved,
+                                                  out MembershipCreateStatus status);
 
         /// <summary>
         /// Takes as an input a RainbowMembershipUser, a password and a passwordAnswer and creates a user saving its profile. 
@@ -174,12 +216,22 @@ namespace Rainbow.Framework.Providers
         /// <param name="password">the user's account password (it can't be passed in user)</param>
         /// <param name="passwordAnswer">the user's account password answer (it can't be passed in user)</param>
         /// <returns>A new <code>MembershipUser</code>. If the user was not created, CreateUser returns null.</returns>
-        public virtual MembershipUser CreateUser( RainbowUser user, string password, string passwordAnswer ) {
+        public virtual MembershipUser CreateUser(RainbowUser user,
+                                                 string password,
+                                                 string passwordAnswer)
+        {
             MembershipCreateStatus status;
-
-            RainbowUser membershipUser = ( RainbowUser )CreateUser( user.UserName, password, user.Email, user.PasswordQuestion, passwordAnswer, user.IsApproved, user.ProviderUserKey, out status );
-            if ( user != null ) {
-                SaveUserProfile( membershipUser );
+            RainbowUser membershipUser = (RainbowUser) CreateUser(user.UserName,
+                           password,
+                           user.Email,
+                           user.PasswordQuestion,
+                           passwordAnswer,
+                           user.IsApproved,
+                           user.ProviderUserKey,
+                           out status);
+            if (user != null)
+            {
+                SaveUserProfile(membershipUser);
             }
             return membershipUser;
         }
@@ -461,6 +513,88 @@ namespace Rainbow.Framework.Providers
         {
             RainbowUser user = GetUser(portalAlias, userName, true) as RainbowUser;
             return user;
+        }
+
+        /// <summary>
+        /// Adds the user.
+        /// </summary>
+        /// <param name="portalAlias">Portal alias where user to be added</param>
+        /// <param name="email">The email.</param>
+        /// <param name="password">The password.</param>
+        /// <param name="fullName">The full name.</param>
+        /// <returns></returns>
+        public Guid AddUser(string portalAlias, string email, string password, string fullName)
+        {
+            Guid newUserId = AddUser(portalAlias,
+                                     email,
+                                     string.Empty,
+                                     string.Empty,
+                                     string.Empty,
+                                     string.Empty,
+                                     string.Empty,
+                                     0,
+                                     string.Empty,
+                                     string.Empty,
+                                     password,
+                                     email,
+                                     false);
+            RainbowUser user = GetUser(newUserId, false) as RainbowUser;
+            if (user == null)
+            {
+                throw new RainbowMembershipProviderException("Could not load user");
+            }
+            user.Name = fullName;
+            UpdateUser(user);
+            return newUserId;
+        }
+
+        /// <summary>
+        /// AddUser
+        /// </summary>
+        /// <param name="portalAlias">Portal alias where user to be added</param>
+        /// <param name="name">The name.</param>
+        /// <param name="company">The company.</param>
+        /// <param name="address">The address.</param>
+        /// <param name="city">The city.</param>
+        /// <param name="zip">The zip.</param>
+        /// <param name="countryID">The country ID.</param>
+        /// <param name="stateID">The state ID.</param>
+        /// <param name="phone">The phone.</param>
+        /// <param name="fax">The fax.</param>
+        /// <param name="password">The password.</param>
+        /// <param name="email">The email.</param>
+        /// <param name="sendNewsletter">if set to <c>true</c> [send newsletter].</param>
+        /// <returns>The newly created ID</returns>
+        public Guid AddUser(string portalAlias,
+                            string name,
+                            string company,
+                            string address,
+                            string city,
+                            string zip,
+                            string countryID,
+                            int stateID,
+                            string phone,
+                            string fax,
+                            string password,
+                            string email,
+                            bool sendNewsletter)
+        {
+            MembershipCreateStatus status;
+            MembershipUser user = CreateUser(portalAlias,
+                name,
+                password,
+                email,
+                "vacia",
+                "llena",
+                true,
+                out status);
+
+            if (user == null)
+            {
+                //TODO: [moudrick] throw RainbowMembershipException here
+                throw new ApplicationException(GetErrorMessage(status));
+            }
+            return (Guid)user.ProviderUserKey;
         }
     }
 }

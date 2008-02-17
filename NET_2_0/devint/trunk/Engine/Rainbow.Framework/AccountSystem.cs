@@ -5,14 +5,15 @@ using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Providers.Exceptions;
 
-namespace Rainbow.Framework.Users.Data 
+namespace Rainbow.Framework
 {
     /// <summary>
-    /// The UsersDB class encapsulates all data logic necessary to add/login/query
+    /// The AccountSystem class encapsulates all data logic necessary to add/login/query
     /// users within the Portal Users database.
-    ///
+    /// It is a facade (see http://www.dofactory.com/Patterns/PatternFacade.aspx)
+    /// for RainbowMembershipProvider, RainbowRoleProvider and PortalProvider.
     /// <remarks>
-    /// Important Note: The UsersDB class is only used when forms-based cookie
+    /// Important Note: The AccountSystem class is only used when forms-based cookie
     /// authentication is enabled within the portal.  When windows based
     /// authentication is used instead, then either the Windows SAM or Active Directory
     /// is used to store and validate all username/password credentials.
@@ -20,31 +21,43 @@ namespace Rainbow.Framework.Users.Data
     /// </summary>
     [History( "jminond", "2005/03/10", "Tab to page conversion" )]
     [History( "gman3001", "2004/09/29", "Added the UpdateLastVisit method to update the user's last visit date indicator." )]
-    //[Obsolete("//TODO: Get rid of this class")]
-    public class UsersDB 
+    //TODO: [moudrick] move it to Rainbow.Framework
+    public class AccountSystem 
     {
-        static RainbowMembershipProvider MembershipProvider
+        static readonly AccountSystem instance = new AccountSystem(RainbowMembershipProvider.Instance,
+                                                                   RainbowRoleProvider.Instance,
+                                                                   PortalProvider.Instance);
+
+        readonly RainbowMembershipProvider membershipProvider;
+        readonly RainbowRoleProvider roleProvider;
+        readonly PortalProvider portalProvider;
+
+        /// <summary>
+        /// Singletone pattern standard member (http://www.dofactory.com/Patterns/PatternSingleton.aspx)
+        /// </summary>
+        public static AccountSystem Instance
         {
             get
             {
-                return RainbowMembershipProvider.Instance;
+                return instance;
             }
         }
 
-        static RainbowRoleProvider RoleProvider 
+        Portal CurrentPortal 
         {
             get 
             {
-                return RainbowRoleProvider.Instance;
+                return portalProvider.CurrentPortal;
             }
         }
 
-        static Portal CurrentPortalSettings 
+        AccountSystem(RainbowMembershipProvider membershipProvider, 
+                      RainbowRoleProvider roleProvider,
+                      PortalProvider portalProvider)
         {
-            get 
-            {
-                return PortalProvider.Instance.CurrentPortal;
-            }
+            this.membershipProvider = membershipProvider;
+            this.portalProvider = portalProvider;
+            this.roleProvider = roleProvider;
         }
 
         #region Add Roles and Users
@@ -59,7 +72,7 @@ namespace Rainbow.Framework.Users.Data
         /// <param name="roleName">Name of the role.</param>
         public Guid AddRole(string roleName)
         {
-            return RoleProvider.CreateRole(PortalProvider.Instance.CurrentPortal.PortalAlias, roleName);
+            return roleProvider.CreateRole(PortalProvider.Instance.CurrentPortal.PortalAlias, roleName);
         }
 
         /// <summary>
@@ -94,7 +107,7 @@ namespace Rainbow.Framework.Users.Data
                             bool sendNewsletter)
         {
             MembershipCreateStatus status;
-            MembershipUser user = MembershipProvider.CreateUser(portalAlias,
+            MembershipUser user = membershipProvider.CreateUser(portalAlias,
                                                                 name,
                                                                 password,
                                                                 email,
@@ -105,7 +118,7 @@ namespace Rainbow.Framework.Users.Data
 
             if (user == null)
             {
-                throw new ApplicationException(MembershipProvider.GetErrorMessage(status));
+                throw new ApplicationException(membershipProvider.GetErrorMessage(status));
             }
             return (Guid) user.ProviderUserKey;
         }
@@ -133,13 +146,13 @@ namespace Rainbow.Framework.Users.Data
                                      password,
                                      email,
                                      false);
-            RainbowUser user = MembershipProvider.GetUser(newUserId, false) as RainbowUser;
+            RainbowUser user = membershipProvider.GetUser(newUserId, false) as RainbowUser;
             if (user == null)
             {
                 throw new RainbowMembershipProviderException("Could not load user");
             }
             user.Name = fullName;
-            MembershipProvider.UpdateUser(user);
+            membershipProvider.UpdateUser(user);
             return newUserId;
         }
 
@@ -149,8 +162,11 @@ namespace Rainbow.Framework.Users.Data
         /// </summary>
         /// <param name="roleID">The role ID.</param>
         /// <param name="userID">The user ID.</param>
-        public void AddUserRole( Guid roleID, Guid userID ) {
-            RoleProvider.AddUsersToRoles( CurrentPortalSettings.PortalAlias, new Guid[] { userID }, new Guid[] { roleID } );
+        public void AddUserRole(Guid roleID, Guid userID)
+        {
+            roleProvider.AddUsersToRoles(CurrentPortal.PortalAlias,
+                                         new Guid[] {userID},
+                                         new Guid[] {roleID});
         }
 
         #endregion
@@ -164,17 +180,19 @@ namespace Rainbow.Framework.Users.Data
         /// + <a href="DeleteRole.htm" style="color:green">DeleteRole Stored Procedure</a>
         /// </summary>
         /// <param name="roleID">The role id.</param>
-        public void DeleteRole( Guid roleID ) {
-            RoleProvider.DeleteRole( CurrentPortalSettings.PortalAlias, roleID, false );
+        public void DeleteRole(Guid roleID)
+        {
+            roleProvider.DeleteRole(CurrentPortal.PortalAlias, roleID, false);
         }
 
         /// <summary>
         /// The DeleteUser method deleted a  user record from the "Users" database table.
         /// </summary>
         /// <param name="userID">The user ID.</param>
-        public void DeleteUser( Guid userID ) {
-            MembershipUser user = Membership.GetUser( userID );
-            Membership.DeleteUser( user.UserName );
+        public void DeleteUser(Guid userID)
+        {
+            MembershipUser user = Membership.GetUser(userID);
+            Membership.DeleteUser(user.UserName);
         }
 
         /// <summary>
@@ -185,21 +203,14 @@ namespace Rainbow.Framework.Users.Data
         /// </summary>
         /// <param name="roleID">The role ID.</param>
         /// <param name="userID">The user ID.</param>
-        public void DeleteUserRole( Guid roleID, Guid userID ) {
-            RoleProvider.RemoveUsersFromRoles(CurrentPortalSettings.PortalAlias, new Guid[] { userID }, new Guid[] { roleID } );
+        public void DeleteUserRole(Guid roleID, Guid userID)
+        {
+            roleProvider.RemoveUsersFromRoles(CurrentPortal.PortalAlias,
+                                              new Guid[] {userID},
+                                              new Guid[] {roleID});
         }
 
         #endregion
-
-//        /// <summary>
-//       /// Get Current UserID
-//        /// </summary>
-//        /// <pa ram name="portalID">The portal ID.</param>
-//        /// <returns></returns>
-        //public Guid GetCurrentUserID( int portalID ) {
-        //    MembershipUser user = Membership.GetUser();
-        //    return (Guid)user.ProviderUserKey;
-        //}
 
         /// <summary>
         /// The GetPortalRoles method returns a list of all roles for the specified portal.
@@ -209,23 +220,26 @@ namespace Rainbow.Framework.Users.Data
         /// </returns>
         public IList<RainbowRole> GetPortalRoles(string portalAlias)
         {
-            return RoleProvider.GetAllRoles(portalAlias);
+            return roleProvider.GetAllRoles(portalAlias);
         }
 
         /// <summary>
         /// The GetUsersNoRole method retuns a list of all members that doesn´t have any roles.
         /// </summary>
-        /// <param name="PortalID">The portal id</param>
+        /// <param name="portalID">The portal id</param>
         /// <returns></returns>
-        public string[] GetUsersNoRole( int PortalID ) {
+        public string[] GetUsersNoRole(int portalID)
+        {
             IList<string> res = new List<string>();
             MembershipUserCollection userCollection = Membership.GetAllUsers();
-            foreach ( MembershipUser user in userCollection ) {
-                if ( Roles.GetRolesForUser( user.UserName ).Length == 0 ) {
-                    res.Add( user.UserName );
+            foreach (MembershipUser user in userCollection)
+            {
+                if (Roles.GetRolesForUser(user.UserName).Length == 0)
+                {
+                    res.Add(user.UserName);
                 }
             }
-            return ( ( List<string> )res ).ToArray();
+            return ((List<string>) res).ToArray();
         }
 
         /// <summary>
@@ -233,17 +247,19 @@ namespace Rainbow.Framework.Users.Data
         /// </summary>
         /// <param name="roleId">The role id.</param>
         /// <param name="portalAlias">The portal alias</param>
-        public IList<RainbowRole> GetRoleNonMembers( Guid roleId, string portalAlias ) {
-            IList<RainbowRole> res = new List<RainbowRole>();
+        public IList<RainbowRole> GetRoleNonMembers(Guid roleId, string portalAlias)
+        {
+            IList<RainbowRole> result = new List<RainbowRole>();
+            IList<RainbowRole> allRoles = roleProvider.GetAllRoles(portalAlias);
 
-            IList<RainbowRole> allRoles = RoleProvider.GetAllRoles( portalAlias );
-
-            foreach ( RainbowRole s in allRoles ) {
-                if ( RoleProvider.GetUsersInRole( portalAlias, s.Id ).Length == 0 ) {
-                    res.Add( s );
+            foreach (RainbowRole s in allRoles)
+            {
+                if (roleProvider.GetUsersInRole(portalAlias, s.Id).Length == 0)
+                {
+                    result.Add(s);
                 }
             }
-            return res;
+            return result;
         }
 
         /// <summary>
@@ -252,10 +268,11 @@ namespace Rainbow.Framework.Users.Data
         /// <param name="email">The email.</param>
         /// <param name="portalAlias">The portal alias.</param>
         /// <returns>A <code>IList&lt;RainbowRole&gt;</code> containing the user's roles</returns>
-        public IList<RainbowRole> GetRoles( string email, string portalAlias ) {
-            string userName = MembershipProvider.GetUserNameByEmail( portalAlias, email );
-            RainbowUser user = (RainbowUser)MembershipProvider.GetUser( portalAlias, userName, true );
-            return RoleProvider.GetRolesForUser( portalAlias, user.ProviderUserKey );
+        public IList<RainbowRole> GetRoles(string email, string portalAlias)
+        {
+            string userName = membershipProvider.GetUserNameByEmail(portalAlias, email);
+            RainbowUser user = (RainbowUser) membershipProvider.GetUser(portalAlias, userName, true);
+            return roleProvider.GetRolesForUser(portalAlias, user.ProviderUserKey);
         }
 
         /// <summary>
@@ -264,9 +281,10 @@ namespace Rainbow.Framework.Users.Data
         /// <param name="userId">The User Id</param>
         /// <param name="portalAlias">The portal alias</param>
         /// <returns></returns>
-        public IList<RainbowRole> GetRolesByUser( Guid userId, string portalAlias ) {
-            RainbowUser user = ( RainbowUser )MembershipProvider.GetUser( userId, true );
-            return RoleProvider.GetRolesForUser( portalAlias, user.ProviderUserKey );
+        public IList<RainbowRole> GetRolesByUser(Guid userId, string portalAlias)
+        {
+            RainbowUser user = (RainbowUser) membershipProvider.GetUser(userId, true);
+            return roleProvider.GetRolesForUser(portalAlias, user.ProviderUserKey);
         }
 
         /// <summary>
@@ -275,8 +293,9 @@ namespace Rainbow.Framework.Users.Data
         /// <param name="roleId">The role id</param>
         /// <param name="newRoleName">The new role name</param>
         /// <param name="portalAlias">The portal alias</param>
-        public void UpdateRole( Guid roleId, string newRoleName, string portalAlias ) {
-            RoleProvider.RenameRole( portalAlias, roleId, newRoleName );
+        public void UpdateRole(Guid roleId, string newRoleName, string portalAlias)
+        {
+            roleProvider.RenameRole(portalAlias, roleId, newRoleName);
         }
 
         /// <summary>
@@ -285,9 +304,8 @@ namespace Rainbow.Framework.Users.Data
         /// <param name="userName">the user's email</param>
         /// <returns></returns>
         public RainbowUser GetSingleUser(string userName) 
-        //TODO: [moudrick]  inline this method
         {
-            return MembershipProvider.GetSingleUser(CurrentPortalSettings.PortalAlias, userName);
+            return membershipProvider.GetSingleUser(CurrentPortal.PortalAlias, userName);
         }
 
         /// <summary>
@@ -326,7 +344,7 @@ namespace Rainbow.Framework.Users.Data
                 throw new ApplicationException("UpdateUser: oldUserID != userID");
             }
 
-            RainbowUser user = MembershipProvider.GetUser(userID, true) as RainbowUser;
+            RainbowUser user = membershipProvider.GetUser(userID, true) as RainbowUser;
             if (user == null)
             {
                 throw new RainbowMembershipProviderException("Could not load user");
@@ -343,7 +361,7 @@ namespace Rainbow.Framework.Users.Data
             user.Phone = phone;
             user.SendNewsletter = sendNewsletter;
 
-            MembershipProvider.UpdateUser(user);
+            membershipProvider.UpdateUser(user);
         }
 
         /// <summary>
@@ -377,7 +395,7 @@ namespace Rainbow.Framework.Users.Data
                                string email,
                                bool sendNewsletter)
         {
-            RainbowUser user = MembershipProvider.GetUser(userID, true) as RainbowUser;
+            RainbowUser user = membershipProvider.GetUser(userID, true) as RainbowUser;
             if (user == null)
             {
                 throw new RainbowMembershipProviderException("Could not load user");
@@ -394,11 +412,11 @@ namespace Rainbow.Framework.Users.Data
             user.Phone = phone;
             user.SendNewsletter = sendNewsletter;
 
-            MembershipProvider.ChangePassword(CurrentPortalSettings.PortalAlias,
+            membershipProvider.ChangePassword(CurrentPortal.PortalAlias,
                                               user.UserName,
                                               user.GetPassword(),
                                               password);
-            MembershipProvider.UpdateUser(user);
+            membershipProvider.UpdateUser(user);
         }
 
         /// <summary>
@@ -430,7 +448,7 @@ namespace Rainbow.Framework.Users.Data
                                string email,
                                bool sendNewsletter)
         {
-            RainbowUser user = MembershipProvider.GetUser(userID, true) as RainbowUser;
+            RainbowUser user = membershipProvider.GetUser(userID, true) as RainbowUser;
             if (user == null)
             {
                 throw new RainbowMembershipProviderException("Could not load user");
@@ -447,7 +465,7 @@ namespace Rainbow.Framework.Users.Data
             user.Phone = phone;
             user.SendNewsletter = sendNewsletter;
 
-            MembershipProvider.UpdateUser(user);
+            membershipProvider.UpdateUser(user);
         }
     }
 }

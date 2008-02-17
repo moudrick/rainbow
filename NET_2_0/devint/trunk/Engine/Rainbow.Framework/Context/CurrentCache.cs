@@ -6,6 +6,11 @@ using Rainbow.Framework.Context;
 
 namespace Rainbow.Framework.Context
 {
+    //TODO: [moudrick] convert this class to classic sealed Singletone from sealed static class
+    //TODO: [moudrick] use RainbowConext.Current.Cache inside members instead of HttpContext.Current.Cache
+    //TODO: [moudrick] inherit this class from IWebCacheStrategy, declare all methods there
+    //TODO: [moudrick] move members implementation to abstract BaseWebCacheStrategy to be inherited by all WebCacheStrategies
+    //TODO: [moudrick] get rid of this class using Rainbow.Context.Current.Cache instead of CurrencCache.Instance
     /// <summary>
     /// Class used by Rainbow for manage current cache
     /// </summary>

@@ -977,6 +977,10 @@ Then break script execution (CTRL-C)
 
   <target name="tests.run">
     <call target="tests.run.prepare" />
+    <call target="tests.run.actual" />
+  </target>
+
+  <target name="tests.run.actual">
     <foreach item="File" property="testAssembly">
       <in>
         <items refid="tests.assemblies" />

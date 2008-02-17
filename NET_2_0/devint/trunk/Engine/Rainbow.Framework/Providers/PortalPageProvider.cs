@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Configuration.Provider;
 using System.Threading;
-using System.Web;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Items;
@@ -12,8 +10,10 @@ using Rainbow.Framework.Providers.Configuration;
 namespace Rainbow.Framework.Providers
 {
     ///<summary>
+    /// This is interface class for get portal page settings values 
+    /// from appropriate persistence localtion
     ///</summary>
-    public abstract class PortalPageProvider : ProviderBase
+    public abstract class PortalPageProvider : BaseRainbowProvider
     {
         const string providerType = "portalPage";
         const string strAllUsers = "All Users;";
@@ -31,7 +31,7 @@ namespace Rainbow.Framework.Providers
             get
             {
                 return ProviderConfiguration.GetDefaultProviderFromCache<PortalPageProvider>(
-                    providerType, HttpContext.Current.Cache);
+                    providerType, Cache);
             }
         }
 
@@ -276,13 +276,12 @@ namespace Rainbow.Framework.Providers
         /// <returns></returns>
         public abstract int PortalHomePageID(int portalID);
 
-
         /// <summary>
         /// Gets the pages flat table.
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <returns></returns>
-#warning //TODO: use PageTreeItem[] instead of DataTable  
+#warning //TODO: [moudrick] use PageTreeItem[] instead of DataTable  
         //public DataTable GetPagesFlatTable(int portalID)
         public abstract object GetPagesFlatTable(int portalID);
 

@@ -53,10 +53,12 @@
     <Compile Include="Context\Config.cs" />
     <Compile Include="Context\ConfigurationManagerStrategy.cs" />
     <Compile Include="Context\CurrentCache.cs" />
+    <Compile Include="Context\IWebCacheStrategy.cs" />
     <Compile Include="Context\IConfigStrategy.cs" />
     <Compile Include="Context\IHttpContextStrategy.cs" />
     <Compile Include="Context\Key.cs" />
     <Compile Include="Context\RainbowContext.cs" />
+    <Compile Include="Context\WebCacheStrategy.cs" />
     <Compile Include="Context\WebHttpContextStrategy.cs" />
     <Compile Include="DataTypes\BaseDataType.cs" />
     <Compile Include="DataTypes\BooleanDataType.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="LogProvider.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\BaseRainbowProvider.cs" />
     <Compile Include="Providers\MonitoringProvider.cs" />
     <Compile Include="Providers\PortalProvider.cs" />
     <Compile Include="Providers\Configuration\ProviderConfigurationHandler.cs" />
@@ -112,6 +115,7 @@
     <Compile Include="Items\SettingItemGroups.cs" />
     <Compile Include="Providers\UrlBuilderProvider.cs" />
     <Compile Include="Security\SignOnController.cs" />
+    <Compile Include="AccountSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Context\History.txt" />

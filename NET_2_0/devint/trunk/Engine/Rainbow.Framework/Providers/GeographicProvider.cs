@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration.Provider;
-using System.Web.Caching;
 using Rainbow.Framework.BusinessObjects;
 using System.Collections;
 using System.Globalization;
@@ -40,7 +38,7 @@ namespace Rainbow.Framework.Providers
     /// <summary>
     /// Geographic prvodider API 
     /// </summary>
-    public abstract class GeographicProvider : ProviderBase
+    public abstract class GeographicProvider : BaseRainbowProvider
     {
         /// <summary>
         /// Camel case. Must match web.config section name
@@ -53,15 +51,6 @@ namespace Rainbow.Framework.Providers
         protected string countriesFilter = string.Empty;
 
         /// <summary>
-        /// Returns the a string of comma separated country IDs. This list is used when retrieving lists of countries.
-        /// </summary>
-        public string CountriesFilter
-        {
-            get { return countriesFilter; }
-            set { countriesFilter = value; }
-        }
-
-        /// <summary>
         /// Instances this instance.
         /// </summary>
         /// <returns></returns>
@@ -70,36 +59,25 @@ namespace Rainbow.Framework.Providers
             get
             {
                 return ProviderConfiguration.GetDefaultProviderFromCache<GeographicProvider>(
-                    providerType, CurrentCache);
+                    providerType, Cache);
             }
         }
 
-        static Cache currentCache = null;
+        /// <summary>
+        /// Get a Country objects that represents the country of the current thread
+        /// </summary>
+        public Country CurrentCountry
+        {
+            get { return GetCountry(RegionInfo.CurrentRegion.Name); }
+        }
 
         /// <summary>
-        /// Gets the current cache.
+        /// Returns the a string of comma separated country IDs. This list is used when retrieving lists of countries.
         /// </summary>
-        /// <value>The current cache.</value>
-        protected static Cache CurrentCache
+        public string CountriesFilter
         {
-            get
-            {
-                //TODO: [moudrick] make this behavior a strategy (IWebCacheStrategy)
-                //TODO: [moudrick] access it from RainbowContext similar to IHttpContextStrategy and IConfigStrategy
-                if (currentCache == null)
-                {
-                    if (System.Web.HttpContext.Current != null)
-                    {
-                        currentCache = System.Web.HttpContext.Current.Cache;
-                    }
-                    else
-                    {
-                        // I'm in a test environment
-                        currentCache = System.Web.HttpRuntime.Cache;
-                    }
-                }
-                return currentCache;
-            }
+            get { return countriesFilter; }
+            set { countriesFilter = value; }
         }
 
         /// <summary>
@@ -162,7 +140,6 @@ namespace Rainbow.Framework.Providers
 
             return filter;
         }
-
 
         /// <summary>
         /// Gets the list of countries
@@ -250,14 +227,6 @@ namespace Rainbow.Framework.Providers
         /// <returns>A <code>State</code> object containing the State info, or null if the state doesn't exist</returns>
         /// <exception cref="StateNotFoundException">If the state is not found</exception>
         public abstract State GetState(int stateID);
-
-        /// <summary>
-        /// Get a Country objects that represents the country of the current thread
-        /// </summary>
-        public Country CurrentCountry
-        {
-            get { return GetCountry(RegionInfo.CurrentRegion.Name); }
-        }
 
         /// <summary>
         /// Intersects the string arrays.

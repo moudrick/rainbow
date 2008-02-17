@@ -6,23 +6,23 @@ using Rainbow.Framework;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using ImageButton=Rainbow.Framework.Web.UI.WebControls.ImageButton;
 
-namespace Rainbow.Content.Web.Modules {
-    public partial class Roles : PortalModuleControl {
+namespace Rainbow.Content.Web.Modules
+{
+    public partial class Roles : PortalModuleControl
+    {
         protected ImageButton RoleDeleteBtn;
 
         /// <summary>
         /// Admin Module
         /// </summary>
         /// <value></value>
-        public override bool AdminModule {
-            get {
-                return true;
-            }
+        public override bool AdminModule
+        {
+            get { return true; }
         }
 
         /// <summary>
@@ -30,9 +30,11 @@ namespace Rainbow.Content.Web.Modules {
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        protected void Page_Load( object sender, EventArgs e ) {
+        protected void Page_Load(object sender, EventArgs e)
+        {
             // If this is the first visit to the page, bind the role data to the datalist
-            if ( !Page.IsPostBack ) {
+            if (!Page.IsPostBack)
+            {
                 BindData();
             }
         }
@@ -76,20 +78,21 @@ namespace Rainbow.Content.Web.Modules {
         /// </summary>
         /// <param name="Sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        protected void AddRole_Click( Object Sender, EventArgs e ) {
+        protected void AddRole_Click(Object Sender, EventArgs e)
+        {
             //http://sourceforge.net/tracker/index.php?func=detail&aid=828580&group_id=66837&atid=515929
-            try {
-                // Add a new role to the database
-                new UsersDB().AddRole( txtNewRole.Text );
-
+            try
+            {
+                AccountSystem.Instance.AddRole(txtNewRole.Text);
                 txtNewRole.Text = string.Empty;
             }
-            catch ( Exception ex ) {
+            catch (Exception ex)
+            {
                 // new role is already present more than likely
-                ErrorHandler.Publish( LogLevel.Error, "AddRole_Click error: new role is already present more than likely",
-                                     ex );
+                ErrorHandler.Publish(LogLevel.Error,
+                                     "AddRole_Click error: new role is already present more than likely",
+                                     ex);
             }
-
             // Rebind list
             BindData();
         }
@@ -101,16 +104,16 @@ namespace Rainbow.Content.Web.Modules {
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.Web.UI.WebControls.DataListCommandEventArgs"/> instance containing the event data.</param>
-        protected void rolesList_ItemCommand( object sender, DataListCommandEventArgs e ) {
+        protected void rolesList_ItemCommand(object sender, DataListCommandEventArgs e)
+        {
             //http://sourceforge.net/tracker/index.php?func=detail&aid=828580&group_id=66837&atid=515929
-            UsersDB users = new UsersDB();
-
             // Apply changes
-            RainbowRole selectedRole = ( RainbowRole )e.Item.DataItem;
+            RainbowRole selectedRole = (RainbowRole) e.Item.DataItem;
 
             bool enable = true; // enable add - bja
             string portalAlias = PortalProvider.Instance.CurrentPortal.PortalAlias;
-            if ( e.CommandName == "edit" ) {
+            if (e.CommandName == "edit")
+            {
                 // Set editable list item index if "edit" button clicked next to the item
                 rolesList.EditItemIndex = e.Item.ItemIndex;
                 // disable the add function
@@ -118,13 +121,12 @@ namespace Rainbow.Content.Web.Modules {
                 // Repopulate the datalist control
                 BindData();
             }
-
-            else if ( e.CommandName == "apply" ) {
-
-                string _roleName = ( ( TextBox )e.Item.FindControl( "roleName" ) ).Text;
+            else if (e.CommandName == "apply")
+            {
+                string _roleName = ((TextBox) e.Item.FindControl("roleName")).Text;
 
                 // update database
-                users.UpdateRole( selectedRole.Id, _roleName, PortalSettings.PortalAlias );
+                AccountSystem.Instance.UpdateRole(selectedRole.Id, _roleName, PortalSettings.PortalAlias);
 
                 // Disable editable list item access
                 rolesList.EditItemIndex = -1;
@@ -132,14 +134,17 @@ namespace Rainbow.Content.Web.Modules {
                 // Repopulate the datalist control
                 BindData();
             }
-            else if ( e.CommandName == "delete" ) {
+            else if (e.CommandName == "delete")
+            {
                 // john.mandia@whitelightsolutions.com: 30th May 2004: Added Try And Catch To Delete Role
                 // update database
-                try {
-                    Guid roleID = new Guid( e.CommandArgument.ToString() );
+                try
+                {
+                    Guid roleID = new Guid(e.CommandArgument.ToString());
                     RainbowRoleProvider.Instance.DeleteRole(portalAlias, roleID, false);
                 }
-                catch {
+                catch
+                {
                     labelError.Visible = true;
                 }
                 // End of john.mandia@whitelightsolutions.com Update
@@ -150,9 +155,10 @@ namespace Rainbow.Content.Web.Modules {
                 // Repopulate list
                 BindData();
             }
-            else if ( e.CommandName == "members" ) {
-
-                string _roleId = ( ( System.Web.UI.WebControls.Label )e.Item.FindControl( "roleId" ) ).Text;
+            else if (e.CommandName == "members")
+            {
+                string _roleId =
+                    ((System.Web.UI.WebControls.Label) e.Item.FindControl("roleId")).Text;
 
                 // Role names shouldn't be editable, it's not supported by the Roles Provider API
                 //// Save role name changes first
@@ -160,8 +166,10 @@ namespace Rainbow.Content.Web.Modules {
 
                 // redirect to edit page
                 Response.Redirect(
-                    HttpUrlBuilder.BuildUrl( "~/DesktopModules/CoreModules/Roles/SecurityRoles.aspx", PageID,
-                                            "mID=" + ModuleID + "&roleID=" + _roleId ) );
+                    HttpUrlBuilder.BuildUrl(
+                        "~/DesktopModules/CoreModules/Roles/SecurityRoles.aspx",
+                        PageID,
+                        "mID=" + ModuleID + "&roleID=" + _roleId));
             }
             // reset the enable state of the add
             // set add button -- bja
@@ -172,26 +180,29 @@ namespace Rainbow.Content.Web.Modules {
         /// The BindData helper method is used to bind the list of
         /// security roles for this portal to an asp:datalist server control
         /// </summary>
-        private void BindData() {
-            // Get the portal's roles from the database
-            UsersDB users = new UsersDB();
-
-            IList<RainbowRole> roles = users.GetPortalRoles( PortalSettings.PortalAlias );
+        void BindData()
+        {
+            IList<RainbowRole> roles = AccountSystem.Instance.GetPortalRoles(PortalSettings.PortalAlias);
 
             // remove "All Users", "Authenticated Users" and "Unauthenticated Users" pseudo-roles
-            RainbowRole pseudoRole = new RainbowRole( RainbowRoleProvider.AllUsersGuid, RainbowRoleProvider.AllUsersRoleName );
-            if ( roles.Contains( pseudoRole ) ) {
-                roles.Remove( pseudoRole );
+            RainbowRole pseudoRole = new RainbowRole(
+                RainbowRoleProvider.AllUsersGuid, RainbowRoleProvider.AllUsersRoleName);
+            if (roles.Contains(pseudoRole))
+            {
+                roles.Remove(pseudoRole);
             }
-            pseudoRole = new RainbowRole( RainbowRoleProvider.AuthenticatedUsersGuid, RainbowRoleProvider.AuthenticatedUsersRoleName );
-            if ( roles.Contains( pseudoRole ) ) {
-                roles.Remove( pseudoRole );
+            pseudoRole = new RainbowRole(
+                RainbowRoleProvider.AuthenticatedUsersGuid, RainbowRoleProvider.AuthenticatedUsersRoleName);
+            if (roles.Contains(pseudoRole))
+            {
+                roles.Remove(pseudoRole);
             }
-            pseudoRole = new RainbowRole( RainbowRoleProvider.UnauthenticatedUsersGuid, RainbowRoleProvider.UnauthenticatedUsersRoleName );
-            if ( roles.Contains( pseudoRole ) ) {
-                roles.Remove( pseudoRole );
+            pseudoRole = new RainbowRole(
+                RainbowRoleProvider.UnauthenticatedUsersGuid, RainbowRoleProvider.UnauthenticatedUsersRoleName);
+            if (roles.Contains(pseudoRole))
+            {
+                roles.Remove(pseudoRole);
             }
-            
             rolesList.DataSource = roles;
             rolesList.DataBind();
         }
@@ -200,10 +211,9 @@ namespace Rainbow.Content.Web.Modules {
         /// Guid
         /// </summary>
         /// <value></value>
-        public override Guid GuidID {
-            get {
-                return new Guid( "{A406A674-76EB-4BC1-BB35-50CD2C251F9C}" );
-            }
+        public override Guid GuidID
+        {
+            get { return new Guid("{A406A674-76EB-4BC1-BB35-50CD2C251F9C}"); }
         }
 
         #region Web Form Designer generated code

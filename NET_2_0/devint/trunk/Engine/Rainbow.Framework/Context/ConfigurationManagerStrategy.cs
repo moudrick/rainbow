@@ -5,7 +5,7 @@ namespace Rainbow.Framework.Context
     /// <summary>
     /// Concrete IConfigStrategy - reads from ConfigurationSettings.AppSettings
     /// </summary>
-    public class ConfigurationManagerStrategy : IConfigStrategy
+    class ConfigurationManagerStrategy : IConfigStrategy
     {
         /// <summary>
         /// Fetches value for key from ConfigurationSettings.AppSettings

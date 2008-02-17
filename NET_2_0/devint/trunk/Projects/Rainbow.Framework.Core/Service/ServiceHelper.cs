@@ -16,6 +16,8 @@ using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Services
 {
+    //TODO: [moudrick] remove unused methods
+    //TODO: [moudrick] isolate SqlClient code
     /// <summary>
     /// This class contains static methods for working with both community 
     /// and RSS services
@@ -771,7 +773,7 @@ namespace Rainbow.Framework.Services
 					else
 					{
 						Rainbow.Framework.Security.User user;
-						UsersDB usersDB = new UsersDB();
+						AccountSystem usersDB = new AccountSystem();
 						user = usersDB.Login(requestInfo.UserName, requestInfo.UserPassword, portalID);
 						if (user != null)
 							userID = int.Parse(user.ID.ToString());

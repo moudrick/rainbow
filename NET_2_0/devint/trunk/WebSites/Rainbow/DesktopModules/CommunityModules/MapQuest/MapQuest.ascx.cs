@@ -174,7 +174,7 @@ namespace Rainbow.Content.Web.Modules
 			' Obtain PortalSettings from Current Context 
 			'Dim _portalSettings As PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), PortalSettings) 
 
-			'Dim objUser As New ASPNetPortal.UsersDB() 
+			'Dim objUser As New ASPNetPortal.AccountSystem() 
 
 			'Dim drUser As SqlDataReader = objUser.GetSingleUser(_portalSettings.PortalID, Int32.Parse(context.User.Identity.Name)) 
 			'If drUser.Read Then 

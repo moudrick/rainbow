@@ -8,7 +8,6 @@ using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using System.Web.Security;
 
@@ -64,38 +63,40 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void SendPasswordBtn_Click( object sender, EventArgs e ) {
-            if ( email.Text == string.Empty ) {
+        void SendPasswordBtn_Click(object sender, EventArgs e)
+        {
+            if (email.Text == string.Empty)
+            {
                 Message.Text = "Please enter you email address";
                 Message.TextKey = "SIGNIN_ENTER_EMAIL_ADDR";
                 return;
             }
 
-
             // generate random password
-            string randomPassword = RandomPassword.Generate( 8, 10 );
-
+            string randomPassword = RandomPassword.Generate(8, 10);
             CryptoHelper crypthelp = new CryptoHelper();
-            UsersDB usersDB = new UsersDB();
-
-            //Obtain single row of User information
-            MembershipUser memberUser = usersDB.GetSingleUser( email.Text );
+            MembershipUser memberUser = AccountSystem.Instance.GetSingleUser(email.Text);
             //ProfileCommon profile = usersDB.GetSingleUserProfile( email.Text, portalSettings.PortalID );
 
-            if ( true ) {
-                string Pswrd;
-                string AppName = PortalSettings.PortalName;
+            if (true)
+            {
+                string localPassword;
+                string appName = PortalSettings.PortalName;
                 bool encrypted = Config.EncryptPassword;
-                string Name = memberUser.Email;
-                if ( encrypted ) {
-                    Pswrd = randomPassword;
-                    crypthelp.ResetPassword( Name, randomPassword );
+                string name = memberUser.Email;
+                if (encrypted)
+                {
+                    localPassword = randomPassword;
+                    crypthelp.ResetPassword(name, randomPassword);
                 }
-                else {
-                    Pswrd = memberUser.GetPassword();
+                else
+                {
+                    localPassword = memberUser.GetPassword();
                 }
-                string LoginUrl = Path.ApplicationFullPath + "DesktopModules/Admin/Logon.aspx?Usr=" + Name + "&Pwd=" +
-                                  Pswrd + "&Alias=" + PortalSettings.PortalAlias;
+                string LoginUrl = Path.ApplicationFullPath + "DesktopModules/Admin/Logon.aspx?Usr=" +
+                                  name + "&Pwd=" +
+                                  localPassword + "&Alias=" + PortalSettings.PortalAlias;
+                //TODO: [moudrick] encapsulate it to MailManager class
                 MailMessage mail = new MailMessage();
 
                 // Geert.Audenaert@Syntegra.Com
@@ -105,50 +106,56 @@ namespace Rainbow.Content.Web.Modules
                 //jes1111 - mail.From = ConfigurationSettings.AppSettings["EmailFrom"].ToString();
                 mail.From = Config.EmailFrom;
                 mail.To = email.Text;
-                mail.Subject = AppName + " - " + General.GetString( "SIGNIN_SEND_PWD", "Send me password", this );
+                mail.Subject = appName + " - " +
+                               General.GetString("SIGNIN_SEND_PWD", "Send me password", this);
 
                 StringBuilder sb = new StringBuilder();
 
-                sb.Append( Name );
-                sb.Append( "," );
-                sb.Append( "\r\n\r\n" );
-                sb.Append( General.GetString( "SIGNIN_PWD_REQUESTED", "This is the password you requested", this ) );
-                sb.Append( " " );
-                sb.Append( Pswrd );
-                sb.Append( "\r\n\r\n" );
-                sb.Append( General.GetString( "SIGNIN_THANK_YOU", "Thanks for your visit.", this ) );
-                sb.Append( " " );
-                sb.Append( AppName );
-                sb.Append( "\r\n\r\n" );
-                sb.Append( General.GetString( "SIGNIN_YOU_CAN_LOGIN_FROM", "You can login from", this ) );
-                sb.Append( ":" );
-                sb.Append( "\r\n" );
-                sb.Append( Path.ApplicationFullPath );
-                sb.Append( "\r\n\r\n" );
-                sb.Append( General.GetString( "SIGNIN_USE_DIRECT_URL", "Or using direct url", this ) );
-                sb.Append( "\r\n" );
-                sb.Append( LoginUrl );
-                sb.Append( "\r\n\r\n" );
+                sb.Append(name);
+                sb.Append(",");
+                sb.Append("\r\n\r\n");
                 sb.Append(
-                    General.GetString( "SIGNIN_URL_WARNING",
-                                      "NOTE: The address above may not show up on your screen as one line. This would prevent you from using the link to access the web page. If this happens, just use the 'cut' and 'paste' options to join the pieces of the URL.",
-                                      this ) );
+                    General.GetString("SIGNIN_PWD_REQUESTED",
+                                      "This is the password you requested",
+                                      this));
+                sb.Append(" ");
+                sb.Append(localPassword);
+                sb.Append("\r\n\r\n");
+                sb.Append(General.GetString("SIGNIN_THANK_YOU", "Thanks for your visit.", this));
+                sb.Append(" ");
+                sb.Append(appName);
+                sb.Append("\r\n\r\n");
+                sb.Append(General.GetString("SIGNIN_YOU_CAN_LOGIN_FROM", "You can login from", this));
+                sb.Append(":");
+                sb.Append("\r\n");
+                sb.Append(Path.ApplicationFullPath);
+                sb.Append("\r\n\r\n");
+                sb.Append(General.GetString("SIGNIN_USE_DIRECT_URL", "Or using direct url", this));
+                sb.Append("\r\n");
+                sb.Append(LoginUrl);
+                sb.Append("\r\n\r\n");
+                sb.Append(General.GetString("SIGNIN_URL_WARNING",
+                      "NOTE: The address above may not show up on your screen as one line. This would prevent you from using the link to access the web page. If this happens, just use the 'cut' and 'paste' options to join the pieces of the URL.",
+                      this));
 
                 mail.Body = sb.ToString();
                 mail.BodyFormat = MailFormat.Text;
 
                 SmtpMail.SmtpServer = Config.SmtpServer;
-                SmtpMail.Send( mail );
+                SmtpMail.Send(mail);
 
                 Message.Text =
-                    General.GetString( "SIGNIN_PWD_WAS_SENT", "Your password was sent to the addess you provided",
-                                      this );
+                    General.GetString("SIGNIN_PWD_WAS_SENT",
+                                      "Your password was sent to the addess you provided",
+                                      this);
                 Message.TextKey = "SIGNIN_PWD_WAS_SENT";
             }
-            else {
+            else
+            {
                 Message.Text =
-                    General.GetString( "SIGNIN_PWD_MISSING_IN_DB",
-                                      "The email you specified does not exists on our database", this );
+                    General.GetString("SIGNIN_PWD_MISSING_IN_DB",
+                                      "The email you specified does not exists on our database",
+                                      this);
                 Message.TextKey = "SIGNIN_PWD_MISSING_IN_DB";
             }
         }
@@ -158,11 +165,11 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         public Signin()
         {
-            SettingItem HideAutomatically = new SettingItem(new BooleanDataType());
-            HideAutomatically.Value = "True";
-            HideAutomatically.EnglishName = "Hide automatically";
-            HideAutomatically.Order = 20;
-            baseSettings.Add("SIGNIN_AUTOMATICALLYHIDE", HideAutomatically);
+            SettingItem hideAutomatically = new SettingItem(new BooleanDataType());
+            hideAutomatically.Value = "True";
+            hideAutomatically.EnglishName = "Hide automatically";
+            hideAutomatically.Order = 20;
+            baseSettings.Add("SIGNIN_AUTOMATICALLYHIDE", hideAutomatically);
 
             //1.2.8.1743b - 09/10/2003
             //New setting on Signin fo disable IE autocomplete by Mike Stone

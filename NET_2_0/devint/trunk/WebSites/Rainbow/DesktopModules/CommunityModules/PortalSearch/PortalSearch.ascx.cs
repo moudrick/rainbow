@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+using System.Web.Security;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.DataTypes;
@@ -9,10 +10,8 @@ using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using BoundColumn=Rainbow.Framework.Web.UI.WebControls.BoundColumn;
-using History=Rainbow.Framework.History;
 
 namespace Rainbow.Content.Web.Modules
 {
@@ -111,7 +110,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Search_Click(object sender, EventArgs e)
+        void Search_Click(object sender, EventArgs e)
         {
             try
             {
@@ -122,9 +121,9 @@ namespace Rainbow.Content.Web.Modules
                 }
                 else
                 {
-                    UsersDB u = new UsersDB();
-                    System.Web.Security.MembershipUser s = u.GetSingleUser(RainbowPrincipal.CurrentUser.Identity.Email);
-                    userID = (Guid) s.ProviderUserKey;
+                    MembershipUser user = AccountSystem.Instance.GetSingleUser(
+                        RainbowPrincipal.CurrentUser.Identity.Email);
+                    userID = (Guid) user.ProviderUserKey;
                 }
 
                 //Get topic
@@ -141,9 +140,14 @@ namespace Rainbow.Content.Web.Modules
                         General.GetString("PORTALSEARCH_TONARROW", "Search string to narrow to be searched", null));
                 }
 
-                SqlDataReader r =
-                    SearchHelper.SearchPortal(PortalID, userID, ddSearchModule.SelectedItem.Value, txtSearchString.Text,
-                                              ddSearchField.SelectedItem.Value, sortOrder, string.Empty, topicName,
+                SqlDataReader r = SearchHelper.SearchPortal(PortalID,
+                                              userID,
+                                              ddSearchModule.SelectedItem.Value,
+                                              txtSearchString.Text,
+                                              ddSearchField.SelectedItem.Value,
+                                              sortOrder,
+                                              string.Empty,
+                                              topicName,
                                               string.Empty);
 
                 int hits;

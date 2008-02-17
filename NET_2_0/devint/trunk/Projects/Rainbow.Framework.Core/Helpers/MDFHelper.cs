@@ -7,7 +7,6 @@ using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Framework.Core.Helpers
@@ -412,9 +411,8 @@ namespace Rainbow.Framework.Core.Helpers
                 _searchFieldList = searchFieldList;
 
                 _portalID = pmc.PortalID;
-                UsersDB u = new UsersDB();
 
-                RainbowUser user = u.GetSingleUser(RainbowPrincipal.CurrentUser.Identity.Email);
+                RainbowUser user = AccountSystem.Instance.GetSingleUser(RainbowPrincipal.CurrentUser.Identity.Email);
                 //_userID = (Guid)user.ProviderUserKey;
                 _userID = user.ProviderUserKey;
 

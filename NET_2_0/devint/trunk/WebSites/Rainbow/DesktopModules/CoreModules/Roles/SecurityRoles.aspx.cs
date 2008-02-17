@@ -4,12 +4,12 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using History = Rainbow.Framework.History;
 using System.Web.Security;
 
-namespace Rainbow.Content.Web.Modules {
+namespace Rainbow.Content.Web.Modules 
+{
     /// <summary>
     /// The SecurityRoles.aspx page is used to create and edit
     /// security roles within the Portal application.
@@ -49,16 +49,16 @@ namespace Rainbow.Content.Web.Modules {
             }
         }
 
-
         /// <summary>
         /// The Save_Click server event handler on this page is used
         /// to save the current security settings to the configuration system
         /// </summary>
         /// <param name="Sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        protected void Save_Click( Object Sender, EventArgs e ) {
+        protected void Save_Click(Object Sender, EventArgs e)
+        {
             // Navigate back to admin page
-            Response.Redirect( HttpUrlBuilder.BuildUrl( PageID ) );
+            Response.Redirect(HttpUrlBuilder.BuildUrl(PageID));
         }
 
         /// <summary>
@@ -67,19 +67,15 @@ namespace Rainbow.Content.Web.Modules {
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        protected void AddUser_Click( Object sender, EventArgs e ) {
-
+        protected void AddUser_Click(Object sender, EventArgs e)
+        {
             //get user id from dropdownlist of existing users
-            Guid userID = new Guid( allUsers.SelectedItem.Value );
-
-            if ( !userID.Equals( Guid.Empty ) ) {
-                // Add a new userRole to the database
-                UsersDB users = new UsersDB();
-                users.AddUserRole( roleId, userID );
+            Guid userID = new Guid(allUsers.SelectedItem.Value);
+            if (!userID.Equals(Guid.Empty))
+            {
+                AccountSystem.Instance.AddUserRole(roleId, userID);
             }
-
-            // Rebind list
-            BindData();
+            BindData(); // Rebind list
         }
 
         /// <summary>
@@ -89,22 +85,16 @@ namespace Rainbow.Content.Web.Modules {
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.Web.UI.WebControls.DataListCommandEventArgs"/> instance containing the event data.</param>
-        protected void usersInRole_ItemCommand( object sender, DataListCommandEventArgs e ) {
-            UsersDB users = new UsersDB();
+        protected void usersInRole_ItemCommand(object sender, DataListCommandEventArgs e)
+        {
+            Label lblUserEmail = (Label) e.Item.FindControl("lblUserEmail");
+            RainbowUser user = (RainbowUser) Membership.GetUser(lblUserEmail.Text);
 
-            Label lblUserEmail = (Label)e.Item.FindControl("lblUserEmail");
-
-            RainbowUser user = ( RainbowUser )Membership.GetUser( lblUserEmail.Text );
-
-            if ( e.CommandName == "delete" ) {
-                // update database
-                users.DeleteUserRole( roleId, user.ProviderUserKey );
-
-                // Ensure that item is not editable
-                usersInRole.EditItemIndex = -1;
-
-                // Repopulate list
-                BindData();
+            if (e.CommandName == "delete")
+            {
+                AccountSystem.Instance.DeleteUserRole(roleId, user.ProviderUserKey); // update database
+                usersInRole.EditItemIndex = -1;  // Ensure that item is not editable
+                BindData(); // Repopulate list
             }
         }
 
@@ -113,7 +103,7 @@ namespace Rainbow.Content.Web.Modules {
         /// <summary>
         /// The BindData helper method is used to bind the list of
         /// security roles for this portal to an asp:datalist server control
-        private void BindData()
+        void BindData()
         {
             // add the role name to the title
             if (roleId != Guid.Empty)

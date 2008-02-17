@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
 using System.Web.UI.WebControls;
+using Rainbow.Framework;
 using Rainbow.Framework.Content.Data;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -18,10 +18,8 @@ namespace Rainbow.Content.Web.Modules
     public class Articles : PortalModuleControl
     {
         /// <summary>
-        /// 
         /// </summary>
         protected DataList myDataList;
-
 
         /// <summary>
         /// Gets a value indicating whether [show date].
@@ -45,17 +43,19 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
             // Obtain Articles information from the Articles table
             // and bind to the datalist control
-            ArticlesDB Articles = new ArticlesDB();
-
+            ArticlesDB articlesDB = new ArticlesDB();
             if (PortalSecurity.IsInRoles(Settings["EXPIRED_PERMISSION_ROLE"].ToString()))
-                myDataList.DataSource = Articles.GetArticlesAll(ModuleID, Version);
+            {
+                myDataList.DataSource = articlesDB.GetArticlesAll(ModuleID, Version);
+            }
             else
-                myDataList.DataSource = Articles.GetArticles(ModuleID, Version);
-
+            {
+                myDataList.DataSource = articlesDB.GetArticles(ModuleID, Version);
+            }
             myDataList.DataBind();
         }
 
@@ -92,43 +92,43 @@ namespace Rainbow.Content.Web.Modules
                 baseSettings.Add("ShowDate", showDate);
 
                 //Added by Rob Siera
-                SettingItem DefaultVisibleDays = new SettingItem(new IntegerDataType());
-                DefaultVisibleDays.Value = "90";
-                DefaultVisibleDays.EnglishName = "Default Days Visible";
+                SettingItem defaultVisibleDays = new SettingItem(new IntegerDataType());
+                defaultVisibleDays.Value = "90";
+                defaultVisibleDays.EnglishName = "Default Days Visible";
                 // modified by Hongwei Shen
                 // DefaultVisibleDays.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
                 // DefaultVisibleDays.Order = 20;
-                DefaultVisibleDays.Group = group;
-                DefaultVisibleDays.Order = groupBase + 25;
+                defaultVisibleDays.Group = group;
+                defaultVisibleDays.Order = groupBase + 25;
                 // end of midification
-                baseSettings.Add("DefaultVisibleDays", DefaultVisibleDays);
+                baseSettings.Add("DefaultVisibleDays", defaultVisibleDays);
 
-                SettingItem RichAbstract = new SettingItem(new BooleanDataType());
-                RichAbstract.Value = "True";
-                RichAbstract.EnglishName = "Rich Abstract";
-                RichAbstract.Description = "User rich editor for abstract";
+                SettingItem richAbstract = new SettingItem(new BooleanDataType());
+                richAbstract.Value = "True";
+                richAbstract.EnglishName = "Rich Abstract";
+                richAbstract.Description = "User rich editor for abstract";
                 // modified by Hongwei Shen
                 // RichAbstract.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
                 // RichAbstract.Order = 30;
-                RichAbstract.Group = group;
-                RichAbstract.Order = groupBase + 30;
+                richAbstract.Group = group;
+                richAbstract.Order = groupBase + 30;
                 // end of midification
-                baseSettings.Add("ARTICLES_RICHABSTRACT", RichAbstract);
+                baseSettings.Add("ARTICLES_RICHABSTRACT", richAbstract);
 
-                UsersDB users = new UsersDB();
-                SettingItem RolesViewExpiredItems =
-                    new SettingItem(
-                        new CheckBoxListDataType(users.GetPortalRoles(PortalSettings.PortalAlias), "RoleName", "RoleName"));
-                RolesViewExpiredItems.Value = "Admins";
-                RolesViewExpiredItems.EnglishName = "Expired items visible to";
-                RolesViewExpiredItems.Description = "Role that can see expire items";
+                SettingItem rolesViewExpiredItems = new SettingItem(new CheckBoxListDataType(
+                        AccountSystem.Instance.GetPortalRoles(PortalSettings.PortalAlias), 
+                        "RoleName", 
+                        "RoleName"));
+                rolesViewExpiredItems.Value = "Admins";
+                rolesViewExpiredItems.EnglishName = "Expired items visible to";
+                rolesViewExpiredItems.Description = "Role that can see expire items";
                 // modified by Hongwei Shen
                 // RolesViewExpiredItems.Group = SettingItemGroup.MODULE_SPECIAL_SETTINGS;
                 // RolesViewExpiredItems.Order = 40;
-                RolesViewExpiredItems.Group = group;
-                RolesViewExpiredItems.Order = groupBase + 40;
+                rolesViewExpiredItems.Group = group;
+                rolesViewExpiredItems.Order = groupBase + 40;
                 // end of midification
-                baseSettings.Add("EXPIRED_PERMISSION_ROLE", RolesViewExpiredItems);
+                baseSettings.Add("EXPIRED_PERMISSION_ROLE", rolesViewExpiredItems);
             }
         }
 

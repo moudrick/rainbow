@@ -9,7 +9,6 @@ using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Site.Data;
-using Rainbow.Framework.Users.Data;
 using System.Collections.Generic;
 
 namespace Rainbow.Framework.Security
@@ -513,10 +512,10 @@ namespace Rainbow.Framework.Security
         public static IList<RainbowRole> GetRoles()
 		{
 			// Obtain PortalSettings from Current Context
-			Portal portalSettings = PortalProvider.Instance.CurrentPortal;
-			int portalID = portalSettings.PortalID;
+			Portal portal = PortalProvider.Instance.CurrentPortal;
+			int portalID = portal.PortalID;
 			// john.mandia@whitelightsolutions.com: 29th May 2004 When retrieving/editing/adding roles or users etc then portalID should be 0 if it is shared
-			// But I commented this out as this check is done in UsersDB.GetRoles Anyway
+			// But I commented this out as this check is done in AccountSystem.GetRoles Anyway
 			//if (Config.UseSingleUserBase) portalID = 0;
 
             IList<RainbowRole> roles;
@@ -529,9 +528,8 @@ namespace Rainbow.Framework.Security
 				try
 				{
 					// Get roles from UserRoles table, and add to cookie
-					UsersDB accountSystem = new UsersDB();
-                    MembershipUser u = accountSystem.GetSingleUser( HttpContext.Current.User.Identity.Name );
-					roles = accountSystem.GetRoles(u.Email, portalSettings.PortalAlias);
+				    MembershipUser user = AccountSystem.Instance.GetSingleUser(RainbowContext.Current.HttpContext.User.Identity.Name);
+				    roles = AccountSystem.Instance.GetRoles(user.Email, portal.PortalAlias);
 				}
 				catch
 				{

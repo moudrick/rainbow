@@ -1,6 +1,4 @@
 using System;
-using System.Configuration.Provider;
-using Rainbow.Framework.Context;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Providers.Configuration;
 
@@ -12,7 +10,7 @@ namespace Rainbow.Framework.Providers
     /// site statistics such as who has logged on and at what time.
     /// Written by Paul Yarrow, paul@paulyarrow.com
     /// </summary>
-    public abstract class MonitoringProvider : ProviderBase
+    public abstract class MonitoringProvider : BaseRainbowProvider
     {
         const string providerType = "monitoring";
 
@@ -26,7 +24,7 @@ namespace Rainbow.Framework.Providers
             get
             {
                 return ProviderConfiguration.GetDefaultProviderFromCache<MonitoringProvider>(
-                    providerType, RainbowContext.Current.HttpContext.Cache);
+                    providerType, Cache);
             }
         }
 

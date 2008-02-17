@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Data;
 using Rainbow.Framework.BusinessObjects;
+using Rainbow.Framework.Context;
 using Rainbow.Framework.Data;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Providers.Exceptions;
@@ -154,19 +155,17 @@ namespace Rainbow.Framework.Providers.MsSql
         {
             string cacheKey = "COUNTRY_" + countryID + " - " + cultureInfo.TwoLetterISOLanguageName;
 
-            if (CurrentCache.Get(cacheKey) == null)
+            if (RainbowContext.Current.Cache.Get(cacheKey) == null)
             {
                 string result = GetLocalizedDisplayName("COUNTRY_" + countryID, cultureInfo);
-
                 if (string.IsNullOrEmpty(result))
                 {
                     result = GetCountry(countryID).NeutralName;
                 }
-
-                CurrentCache.Insert(cacheKey, result);
+                RainbowContext.Current.Cache.Insert(cacheKey, result);
             }
 
-            return (string) CurrentCache.Get(cacheKey);
+            return (string)RainbowContext.Current.Cache.Get(cacheKey);
         }
 
         /// <summary>
@@ -176,19 +175,16 @@ namespace Rainbow.Framework.Providers.MsSql
         {
             string cacheKey = "STATENAME_" + stateID + " - " + cultureInfo.TwoLetterISOLanguageName;
 
-            if (CurrentCache.Get(cacheKey) == null)
+            if (RainbowContext.Current.Cache.Get(cacheKey) == null)
             {
                 string result = GetLocalizedDisplayName("STATENAME_" + stateID, cultureInfo);
-
                 if (string.IsNullOrEmpty(result))
                 {
                     result = GetState(stateID).NeutralName;
                 }
-
-                CurrentCache.Insert(cacheKey, result);
+                RainbowContext.Current.Cache.Insert(cacheKey, result);
             }
-
-            return (string) CurrentCache.Get(cacheKey);
+            return (string)RainbowContext.Current.Cache.Get(cacheKey);
         }
 
         /// <summary>
@@ -200,7 +196,7 @@ namespace Rainbow.Framework.Providers.MsSql
             string cacheKey = "ADMINISTRATIVEDIVISIONNAME_" + administrativeDivisionName + " - " +
                               cultureInfo.TwoLetterISOLanguageName;
 
-            if (CurrentCache.Get(cacheKey) == null)
+            if (RainbowContext.Current.Cache.Get(cacheKey) == null)
             {
                 string result =
                     GetLocalizedDisplayName(
@@ -210,11 +206,10 @@ namespace Rainbow.Framework.Providers.MsSql
                 {
                     result = administrativeDivisionName;
                 }
-
-                CurrentCache.Insert(cacheKey, result);
+                RainbowContext.Current.Cache.Insert(cacheKey, result);
             }
 
-            return (string) CurrentCache.Get(cacheKey);
+            return (string)RainbowContext.Current.Cache.Get(cacheKey);
         }
 
         /// <summary>
@@ -224,19 +219,19 @@ namespace Rainbow.Framework.Providers.MsSql
         {
             Country result;
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText =
+            SqlCommand command = new SqlCommand();
+            command.CommandText =
                 "SELECT NeutralName, AdministrativeDivisionNeutralName FROM rb_Countries WHERE CountryID=@CountryID";
-            cmd.Parameters.Add("@CountryID", SqlDbType.NChar, 2).Value = countryID;
+            command.Parameters.Add("@CountryID", SqlDbType.NChar, 2).Value = countryID;
 
-            cmd.Connection = ConnectionString;
+            command.Connection = ConnectionString;
 
             SqlDataReader reader = null;
             try
             {
-                cmd.Connection.Open();
+                command.Connection.Open();
 
-                reader = cmd.ExecuteReader();
+                reader = command.ExecuteReader();
 
                 if (!reader.Read())
                 {
@@ -252,9 +247,8 @@ namespace Rainbow.Framework.Providers.MsSql
                 {
                     reader.Close();
                 }
-                cmd.Connection.Close();
+                command.Connection.Close();
             }
-
             return result;
         }
 
@@ -265,19 +259,17 @@ namespace Rainbow.Framework.Providers.MsSql
         {
             State result;
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "SELECT CountryID, NeutralName FROM rb_States WHERE StateID=@StateID";
-            cmd.Parameters.Add("@StateID", SqlDbType.Int).Value = stateID;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT CountryID, NeutralName FROM rb_States WHERE StateID=@StateID";
+            command.Parameters.Add("@StateID", SqlDbType.Int).Value = stateID;
 
-            cmd.Connection = ConnectionString;
+            command.Connection = ConnectionString;
 
             SqlDataReader reader = null;
             try
             {
-                cmd.Connection.Open();
-
-                reader = cmd.ExecuteReader();
-
+                command.Connection.Open();
+                reader = command.ExecuteReader();
                 if (!reader.Read())
                 {
                     throw new StateNotFoundException(
@@ -291,7 +283,7 @@ namespace Rainbow.Framework.Providers.MsSql
                 {
                     reader.Close();
                 }
-                cmd.Connection.Close();
+                command.Connection.Close();
             }
 
             return result;

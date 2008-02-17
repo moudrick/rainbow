@@ -5,7 +5,6 @@ using Rainbow.Framework.BusinessObjects;
 using Rainbow.Framework.Context;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI;
 using System.Collections.Generic;
 
@@ -43,7 +42,6 @@ namespace Rainbow.Admin
             Response.Redirect(returnPage);
         }
 
-
         /// <summary>
         /// The SaveButton_Click is used to commit the tab/page
         /// information from the form to the database.
@@ -54,7 +52,6 @@ namespace Rainbow.Admin
         void SaveButton_Click(object sender, EventArgs e)
         {
             //Only Save if Input Data is Valid
-
             if (Page.IsValid)
             {
                 try
@@ -116,8 +113,13 @@ namespace Rainbow.Admin
             }
 
             // Add Page info in the database
-            int newPageID = PortalPageProvider.Instance.AddPage(portalSettings.PortalID, Int32.Parse(parentPage.SelectedItem.Value), tabName.Text,
-                                      990000, authorizedRoles, showMobile.Checked, mobilePageName.Text);
+            int newPageID = PortalPageProvider.Instance.AddPage(portalSettings.PortalID,
+                Int32.Parse(parentPage.SelectedItem.Value),
+                tabName.Text,
+                990000,
+                authorizedRoles,
+                showMobile.Checked,
+                mobilePageName.Text);
             //Clear SiteMaps Cache
             RainbowSiteMapProvider.ClearAllRainbowSiteMapCaches();
 
@@ -154,21 +156,19 @@ namespace Rainbow.Admin
 
             // Populate checkbox list with all security roles for this portal
             // and "check" the ones already configured for this tab
-            UsersDB users = new UsersDB();
-            IList<RainbowRole> roles = users.GetPortalRoles( portalSettings.PortalAlias );
-
-            // Clear existing items in checkboxlist
+            IList<RainbowRole> roles = AccountSystem.Instance.GetPortalRoles(portalSettings.PortalAlias);
             authRoles.Items.Clear();
-
-            foreach ( RainbowRole role in roles ) {
+            foreach (RainbowRole role in roles)
+            {
                 ListItem item = new ListItem();
                 item.Text = role.Name;
                 item.Value = role.Id.ToString();
 
-                if ( ( tab.AuthorizedRoles.LastIndexOf( item.Text ) ) > -1 )
+                if ((tab.AuthorizedRoles.LastIndexOf(item.Text)) > -1)
+                {
                     item.Selected = true;
-
-                authRoles.Items.Add( item );
+                }
+                authRoles.Items.Add(item);
             }
         }
 

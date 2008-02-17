@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Caching;
 using Rainbow.Framework.Exceptions; //RainbowRedirectException, PortalsLockedException
 using Rainbow.Framework.Helpers; //IPList
 
@@ -13,7 +14,10 @@ namespace Rainbow.Framework.Context
 {
     ///<summary>
     ///</summary>
-    public interface IRainbowContext : IHttpContextStrategy, IConfigStrategy
+    public interface IRainbowContext : 
+        IHttpContextStrategy, 
+        IConfigStrategy,
+        IWebCacheStrategy
     { }
 
     ///<summary>
@@ -24,11 +28,14 @@ namespace Rainbow.Framework.Context
         const string QueryStringKey_PageID = "PageID"; // Standardize text PageID
         const string QueryStringKey_TabID = "TabID"; // Support for old TabID
 
-        static readonly RainbowContext current =
-            new RainbowContext(new WebHttpContextStrategy(), new ConfigurationManagerStrategy());
+        static readonly RainbowContext current = new RainbowContext(
+            new WebHttpContextStrategy(), 
+            new ConfigurationManagerStrategy(),
+            new WebCacheStrategy());
 
         readonly IHttpContextStrategy rainbowContextReader;
         readonly IConfigStrategy rainbowConfigReader;
+        readonly IWebCacheStrategy rainbowWebCacheReader;
 
         ///<summary>
         /// Gets current Rainbow Context
@@ -61,6 +68,14 @@ namespace Rainbow.Framework.Context
         }
 
         #endregion
+
+        #region IWebCacheStrategy members
+        public Cache Cache
+        {
+            get { return rainbowWebCacheReader.Cache; }
+        }
+        #endregion
+
 
         /// <summary>
         /// Gets the page ID.
@@ -106,10 +121,13 @@ namespace Rainbow.Framework.Context
             }
         }
 
-        RainbowContext(IHttpContextStrategy contextReader, IConfigStrategy configReader)
+        RainbowContext(IHttpContextStrategy contextReader, 
+            IConfigStrategy configReader,
+            IWebCacheStrategy webCacheStrategy)
         {
             rainbowContextReader = contextReader;
             rainbowConfigReader = configReader;
+            rainbowWebCacheReader = webCacheStrategy;
         }
 
         ///<summary>

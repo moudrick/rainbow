@@ -5,7 +5,6 @@ using System.Web.UI.WebControls;
 using Rainbow.Framework;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using History=Rainbow.Framework.History;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
@@ -17,22 +16,18 @@ namespace Rainbow.Content.Web.Modules
     public partial class Users : PortalModuleControl
     {
         /// <summary>
-        /// 
         /// </summary>
         protected Localize Message;
 
         /// <summary>
-        /// 
         /// </summary>
         protected LinkButton addNew;
 
         /// <summary>
-        /// 
         /// </summary>
         protected Localize name;
 
         /// <summary>
-        /// 
         /// </summary>
         protected IEditUserProfile EditControl;
 
@@ -60,7 +55,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
             // If this is the first visit to the page, bind the role data to the datalist
             if (Page.IsPostBack == false)
@@ -94,7 +89,7 @@ namespace Rainbow.Content.Web.Modules
         /// The BindData helper method is used to bind the list of
         /// users for this portal to an asp:DropDownList server control
         /// </summary>
-        private void BindData()
+        void BindData()
         {
             // change the message between Windows and Forms authentication
             if (Context.User.Identity.AuthenticationType == "Forms")
@@ -110,7 +105,6 @@ namespace Rainbow.Content.Web.Modules
             allUsers.DataSource = RainbowMembershipProvider.Instance.GetUsers(PortalProvider.Instance.CurrentPortal.PortalAlias);
             allUsers.DataBind();
         }
-
 
         /// <summary>
         /// GuidID
@@ -171,10 +165,7 @@ namespace Rainbow.Content.Web.Modules
             GridViewRow row = usersGrid.Rows[e.RowIndex];
             Guid _userID = new Guid(((Rainbow.Framework.Web.UI.WebControls.LinkButton) row.FindControl("DeleteBtn")).CommandArgument);
 
-            // TODO: Fix this
-            UsersDB users = new UsersDB();
-            users.DeleteUser(_userID);
-
+            AccountSystem.Instance.DeleteUser(_userID);
             OnDelete();
         }
 

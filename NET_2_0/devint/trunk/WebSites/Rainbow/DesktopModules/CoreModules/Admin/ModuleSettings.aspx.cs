@@ -12,7 +12,6 @@ using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
 using Rainbow.Framework.Site.Data;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using HyperLink=Rainbow.Framework.Web.UI.WebControls.HyperLink;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
@@ -198,9 +197,7 @@ namespace Rainbow.Admin
         //Used to populate all checklist roles with Roles in portal
         void populateRoles(ref CheckBoxList listRoles, string moduleRoles)
         {
-            //Get roles from db
-            UsersDB users = new UsersDB();
-            IList<RainbowRole> roles = users.GetPortalRoles(portalSettings.PortalAlias);
+            IList<RainbowRole> roles = AccountSystem.Instance.GetPortalRoles(portalSettings.PortalAlias);
 
             // Clear existing items in checkboxlist
             listRoles.Items.Clear();

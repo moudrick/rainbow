@@ -2,7 +2,6 @@ using System;
 using System.Data.SqlClient;
 using System.Security.Principal;
 using System.Text;
-using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rainbow.Framework;
@@ -11,7 +10,6 @@ using Rainbow.Framework.Context;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 using LinkButton=Rainbow.Framework.Web.UI.WebControls.LinkButton;
@@ -84,36 +82,40 @@ namespace Rainbow.Content.Web.Modules
         protected CompareValidator CheckID;
         protected Panel FullProfileInformation;
 
-        string _redirectPage;
-
+        string redirectPage;
 
         public override Guid GuidID
         {
             get { return new Guid("{AE419DCC-B890-43ba-B77C-54955F182041}"); }
         }
 
-        #region Properties
-
         /// <summary>
-        /// 
         /// </summary>
-        public bool EditMode {
-            get { return ( UserName.Length != 0 ); }
+        public bool EditMode
+        {
+            get { return (UserName.Length != 0); }
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public string RedirectPage {
-            get {
-                if ( _redirectPage == null ) {
+        public string RedirectPage
+        {
+            get
+            {
+                if (redirectPage == null)
+                {
                     // changed by Mario Endara <mario@softworks.com.uy> (2004/11/05)
                     // it's necessary the ModuleID in the URL to apply security checking in the target
-                    return string.Format( "{0}?TabID={1}&mID={2}&username={3}", Request.Url.Segments[Request.Url.Segments.Length - 1], PageID, ModuleID, EmailField.Text );
+                    return
+                        string.Format("{0}?TabID={1}&mID={2}&username={3}",
+                                      Request.Url.Segments[Request.Url.Segments.Length - 1],
+                                      PageID,
+                                      ModuleID,
+                                      EmailField.Text);
                 }
-                return _redirectPage;
+                return redirectPage;
             }
-            set { _redirectPage = value; }
+            set { redirectPage = value; }
         }
 
         string UserName
@@ -130,92 +132,71 @@ namespace Rainbow.Content.Web.Modules
                 {
                     userName = RainbowContext.Current.HttpContext.Items["userName"].ToString();
                 }
-#if DEBUG
-                // TODO: Remove this.
-                if (userName.Length == 0)
-                {
-                    HttpContext.Current.Response.Write("username is empty");
-                }
-#endif
                 return userName;
             }
         }
 
-        private Guid originalUserID {
-            get {
-                if ( ViewState["originalUserID"] != null )
-                    return ( Guid )ViewState["originalUserID"];
+        Guid originalUserID
+        {
+            get
+            {
+                if (ViewState["originalUserID"] != null)
+                {
+                    return (Guid) ViewState["originalUserID"];
+                }
                 else
+                {
                     return Guid.Empty;
+                }
             }
             set { ViewState["originalUserID"] = value; }
         }
 
-        private string originalPassword {
-            get {
-                if ( ViewState["originalPassword"] != null )
-                    return ( string )ViewState["originalPassword"];
+        string originalPassword
+        {
+            get
+            {
+                if (ViewState["originalPassword"] != null)
+                {
+                    return (string) ViewState["originalPassword"];
+                }
                 else
+                {
                     return string.Empty;
+                }
             }
             set { ViewState["originalPassword"] = value; }
         }
 
-        private bool selfEdit {
-            get {
-                if ( ViewState["selfEdit"] != null )
-                    return ( bool )ViewState["selfEdit"];
+        bool selfEdit
+        {
+            get
+            {
+                if (ViewState["selfEdit"] != null)
+                {
+                    return (bool) ViewState["selfEdit"];
+                }
                 else
+                {
                     return false;
+                }
             }
             set { ViewState["selfEdit"] = value; }
-        }
-
-        #endregion
-
-        void BindCountry() {
-            CountryField.DataSource = GeographicProvider.Instance.GetCountries( CountryFields.Name );
-            CountryField.DataBind();
-        }
-
-        void BindState() {
-            StateRow.Visible = false;
-            if ( CountryField.SelectedItem != null ) {
-
-                Country selectedCountry = GeographicProvider.Instance.GetCountry( CountryField.SelectedValue );
-
-                //added next line to clear the list. 
-                //The stateField seems to remember it's values even when you set the 
-                //DataSource to null
-                //Michel Barneveld Rainbow@MichelBarneveld.Com
-                StateField.Items.Clear();
-                StateField.DataSource = GeographicProvider.Instance.GetCountryStates( selectedCountry.CountryID );
-                StateField.DataBind();
-
-                StateLabel.Text = selectedCountry.AdministrativeDivisionName;
-
-                if ( StateField.Items.Count > 0 ) {
-                    StateRow.Visible = true;
-                    ThisCountryLabel.Text = CountryField.SelectedItem.Text;
-                }
-                else {
-                    StateRow.Visible = false;
-                }
-
-
-            }
         }
 
         /// <summary>
         /// Save user data
         /// </summary>
         /// <returns></returns>
-        public Guid SaveUserData() {
+        public Guid SaveUserData()
+        {
             Guid returnID = Guid.Empty;
-
-            if ( PasswordField.Text.Length > 0 || ConfirmPasswordField.Text.Length > 0 ) {
-                if ( PasswordField.Text != ConfirmPasswordField.Text )
+            if (PasswordField.Text.Length > 0 || ConfirmPasswordField.Text.Length > 0)
+            {
+                if (PasswordField.Text != ConfirmPasswordField.Text)
+                {
                     ComparePasswords.IsValid = false;
+                }
             }
 
             // Only attempt a login if all form fields on the page are valid
@@ -235,10 +216,9 @@ namespace Rainbow.Content.Web.Modules
 
                 try
                 {
-                    UsersDB accountSystem = new UsersDB();
                     if (UserName == string.Empty)
                     {
-                        returnID = accountSystem.AddUser(
+                        returnID = AccountSystem.Instance.AddUser(
                                 PortalProvider.Instance.CurrentPortal.PortalAlias,
                                 NameField.Text,
                                 CompanyField.Text,
@@ -259,7 +239,7 @@ namespace Rainbow.Content.Web.Modules
                         if (PasswordField.Text.Equals(ConfirmPasswordField.Text) &&
                             PasswordField.Text.Equals(string.Empty))
                         {
-                            accountSystem.UpdateUser(originalUserID,
+                            AccountSystem.Instance.UpdateUser(originalUserID,
                                                      NameField.Text,
                                                      CompanyField.Text,
                                                      AddressField.Text,
@@ -274,7 +254,7 @@ namespace Rainbow.Content.Web.Modules
                         }
                         else
                         {
-                            accountSystem.UpdateUser(originalUserID,
+                            AccountSystem.Instance.UpdateUser(originalUserID,
                                                      NameField.Text,
                                                      CompanyField.Text,
                                                      AddressField.Text,
@@ -296,7 +276,7 @@ namespace Rainbow.Content.Web.Modules
                     Message.Text =
                         General.GetString("REGISTRATION_FAILED", "Registration failed", Message) +
                         " - ";
-
+                    //TODO: [moudrick] move SqlException catch to Provider, throw exact ProviderException instead
                     if (ex is SqlException)
                     {
                         if ((((SqlException) ex).Number == 2627))
@@ -307,7 +287,6 @@ namespace Rainbow.Content.Web.Modules
                                                   Message);
                         }
                     }
-
                     ErrorHandler.Publish(LogLevel.Error, "Error registering user", ex);
                 }
             }
@@ -543,6 +522,41 @@ namespace Rainbow.Content.Web.Modules
         /// <param name="args"></param>
         protected void CheckTermsValidator_ServerValidate( object source, ServerValidateEventArgs args ) {
             args.IsValid = Accept.Checked;
+        }
+
+        void BindCountry()
+        {
+            CountryField.DataSource = GeographicProvider.Instance.GetCountries(CountryFields.Name);
+            CountryField.DataBind();
+        }
+
+        void BindState()
+        {
+            StateRow.Visible = false;
+            if (CountryField.SelectedItem != null)
+            {
+                Country selectedCountry = GeographicProvider.Instance.GetCountry(CountryField.SelectedValue);
+
+                //added next line to clear the list. 
+                //The stateField seems to remember it's values even when you set the 
+                //DataSource to null
+                //Michel Barneveld Rainbow@MichelBarneveld.Com
+                StateField.Items.Clear();
+                StateField.DataSource = GeographicProvider.Instance.GetCountryStates(selectedCountry.CountryID);
+                StateField.DataBind();
+
+                StateLabel.Text = selectedCountry.AdministrativeDivisionName;
+
+                if (StateField.Items.Count > 0)
+                {
+                    StateRow.Visible = true;
+                    ThisCountryLabel.Text = CountryField.SelectedItem.Text;
+                }
+                else
+                {
+                    StateRow.Visible = false;
+                }
+            }
         }
 
         #region Web Form Designer generated code

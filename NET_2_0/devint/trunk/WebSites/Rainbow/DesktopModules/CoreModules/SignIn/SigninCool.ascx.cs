@@ -10,7 +10,6 @@ using Rainbow.Framework.DataTypes;
 using Rainbow.Framework.Helpers;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Security;
-using Rainbow.Framework.Users.Data;
 using Rainbow.Framework.Web.UI.WebControls;
 
 namespace Rainbow.Content.Web.Modules
@@ -34,21 +33,16 @@ namespace Rainbow.Content.Web.Modules
     /// </summary>
     public partial class SigninCool : PortalModuleControl
     {
-        #region Controls
-
         /// <summary>
-        /// 
         /// </summary>
         protected Localize LoginTitle;
-
-        #endregion
 
         /// <summary>
         /// Handles the Click event of the LoginBtn control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void LoginBtn_Click(Object sender, EventArgs e)
+        void LoginBtn_Click(Object sender, EventArgs e)
         {
             if (SignOnController.SignOn(email.Text, password.Text, RememberCheckBox.Checked) == null)
             {
@@ -62,48 +56,51 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void RegisterBtn_Click(object sender, EventArgs e)
+        void RegisterBtn_Click(object sender, EventArgs e)
         {
             Response.Redirect(HttpUrlBuilder.BuildUrl("~/DesktopModules/CoreModules/Register/Register.aspx"));
         }
-
 
         /// <summary>
         /// Handles the Click event of the SendPasswordBtn control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void SendPasswordBtn_Click( object sender, EventArgs e ) {
-            if ( email.Text == string.Empty ) {
+        void SendPasswordBtn_Click(object sender, EventArgs e)
+        {
+            if (email.Text == string.Empty)
+            {
                 Message.Text = "Please enter you email address";
                 Message.TextKey = "SIGNIN_ENTER_EMAIL_ADDR";
                 return;
             }
             // generate random password
-            string randomPassword = RandomPassword.Generate( 8, 10 );
+            string randomPassword = RandomPassword.Generate(8, 10);
 
             CryptoHelper crypthelp = new CryptoHelper();
-            UsersDB usersDB = new UsersDB();
+            RainbowUser user = AccountSystem.Instance.GetSingleUser(email.Text);
 
-            //Obtain single row of User information
-            RainbowUser user = usersDB.GetSingleUser( email.Text );
-
-            if ( user != null ) {
-
-                string Pswrd;
+            if (user != null)
+            {
+                string localPassword;
                 string AppName = PortalSettings.PortalName;
                 bool encrypted = Config.EncryptPassword;
-                string Name = user.Email;
-                if ( encrypted ) {
-                    Pswrd = randomPassword;
-                    crypthelp.ResetPassword( Name, randomPassword );
+                string name = user.Email;
+                if (encrypted)
+                {
+                    localPassword = randomPassword;
+                    crypthelp.ResetPassword(name, randomPassword);
                 }
-                else {
-                    Pswrd = user.GetPassword();
+                else
+                {
+                    localPassword = user.GetPassword();
                 }
-                crypthelp.ResetPassword( Name, randomPassword );
-                string LoginUrl = Path.ApplicationFullPath + "DesktopModules/Admin/Logon.aspx?Usr=" + Name + "&Pwd=" +
-                                  Pswrd + "&Alias=" + PortalSettings.PortalAlias;
+                crypthelp.ResetPassword(name, randomPassword);
+                string loginUrl = string.Format(
+                    "{0}DesktopModules/Admin/Logon.aspx?Usr={1}&Pwd={2}&Alias={3}", 
+                    Path.ApplicationFullPath, name, localPassword, PortalSettings.PortalAlias);
+
+                //TODO: [moudrick] use MailManager class here
                 MailMessage mail = new MailMessage();
 
                 // Geert.Audenaert@Syntegra.Com
@@ -113,50 +110,57 @@ namespace Rainbow.Content.Web.Modules
                 //jes1111 - mail.From = ConfigurationSettings.AppSettings["EmailFrom"].ToString();
                 mail.From = Config.EmailFrom;
                 mail.To = email.Text;
-                mail.Subject = AppName + " - " + General.GetString( "SIGNIN_SEND_PWD", "Send me password", this );
+                mail.Subject = AppName + " - " +
+                               General.GetString("SIGNIN_SEND_PWD", "Send me password", this);
 
                 StringBuilder sb = new StringBuilder();
 
-                sb.Append( Name );
-                sb.Append( "," );
-                sb.Append( "\r\n\r\n" );
-                sb.Append( General.GetString( "SIGNIN_PWD_REQUESTED", "This is the password you requested", this ) );
-                sb.Append( " " );
-                sb.Append( Pswrd );
-                sb.Append( "\r\n\r\n" );
-                sb.Append( General.GetString( "SIGNIN_THANK_YOU", "Thanks for your visit.", this ) );
-                sb.Append( " " );
-                sb.Append( AppName );
-                sb.Append( "\r\n\r\n" );
-                sb.Append( General.GetString( "SIGNIN_YOU_CAN_LOGIN_FROM", "You can login from", this ) );
-                sb.Append( ":" );
-                sb.Append( "\r\n" );
-                sb.Append( Path.ApplicationFullPath );
-                sb.Append( "\r\n\r\n" );
-                sb.Append( General.GetString( "SIGNIN_USE_DIRECT_URL", "Or using direct url", this ) );
-                sb.Append( "\r\n" );
-                sb.Append( LoginUrl );
-                sb.Append( "\r\n\r\n" );
+                sb.Append(name);
+                sb.Append(",");
+                sb.Append("\r\n\r\n");
                 sb.Append(
-                    General.GetString( "SIGNIN_URL_WARNING",
+                    General.GetString("SIGNIN_PWD_REQUESTED",
+                                      "This is the password you requested",
+                                      this));
+                sb.Append(" ");
+                sb.Append(localPassword);
+                sb.Append("\r\n\r\n");
+                sb.Append(General.GetString("SIGNIN_THANK_YOU", "Thanks for your visit.", this));
+                sb.Append(" ");
+                sb.Append(AppName);
+                sb.Append("\r\n\r\n");
+                sb.Append(General.GetString("SIGNIN_YOU_CAN_LOGIN_FROM", "You can login from", this));
+                sb.Append(":");
+                sb.Append("\r\n");
+                sb.Append(Path.ApplicationFullPath);
+                sb.Append("\r\n\r\n");
+                sb.Append(General.GetString("SIGNIN_USE_DIRECT_URL", "Or using direct url", this));
+                sb.Append("\r\n");
+                sb.Append(loginUrl);
+                sb.Append("\r\n\r\n");
+                sb.Append(
+                    General.GetString("SIGNIN_URL_WARNING",
                                       "NOTE: The address above may not show up on your screen as one line. This would prevent you from using the link to access the web page. If this happens, just use the 'cut' and 'paste' options to join the pieces of the URL.",
-                                      this ) );
+                                      this));
 
                 mail.Body = sb.ToString();
                 mail.BodyFormat = MailFormat.Text;
 
                 SmtpMail.SmtpServer = Config.SmtpServer;
-                SmtpMail.Send( mail );
+                SmtpMail.Send(mail);
 
                 Message.Text =
-                    General.GetString( "SIGNIN_PWD_WAS_SENT", "Your password was sent to the addess you provided",
-                                      this );
+                    General.GetString("SIGNIN_PWD_WAS_SENT",
+                                      "Your password was sent to the addess you provided",
+                                      this);
                 Message.TextKey = "SIGNIN_PWD_WAS_SENT";
             }
-            else {
+            else
+            {
                 Message.Text =
-                    General.GetString( "SIGNIN_PWD_MISSING_IN_DB",
-                                      "The email you specified does not exists on our database", this );
+                    General.GetString("SIGNIN_PWD_MISSING_IN_DB",
+                                      "The email you specified does not exists on our database",
+                                      this);
                 Message.TextKey = "SIGNIN_PWD_MISSING_IN_DB";
             }
         }
@@ -247,7 +251,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void Signin_Load(object sender, EventArgs e)
+        void Signin_Load(object sender, EventArgs e)
         {
             bool hide = true;
             bool autocomplete = false;

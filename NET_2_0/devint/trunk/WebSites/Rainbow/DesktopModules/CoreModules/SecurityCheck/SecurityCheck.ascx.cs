@@ -54,13 +54,6 @@ namespace Rainbow.Content.Web.Modules
         }
 
         /// <summary>
-        /// Default constructor
-        /// </summary>
-        public SecurityCheck()
-        {
-        }
-
-        /// <summary>
         /// Guid
         /// </summary>
         /// <value></value>
@@ -153,12 +146,9 @@ namespace Rainbow.Content.Web.Modules
         /// This method is used to bind the list of
         /// security roles for this portal to an asp:dropdownlist server control
         /// </summary>
-        private void BindRoles()
+        void BindRoles()
         {
-            // Get the portal's roles from the database
-            Rainbow.Framework.Users.Data.UsersDB users = new Rainbow.Framework.Users.Data.UsersDB();
-
-            IList<RainbowRole> roles = users.GetPortalRoles(PortalSettings.PortalAlias);
+            IList<RainbowRole> roles = AccountSystem.Instance.GetPortalRoles(PortalSettings.PortalAlias);
             ddlRoles.DataSource = roles;
             ddlRoles.DataBind();
 
@@ -172,7 +162,7 @@ namespace Rainbow.Content.Web.Modules
         /// The BindData method on this User Control is used to obtain a DataSet of Modules'security information
         /// from the rb_Modules table
         /// </summary>
-        private void BindData()
+        void BindData()
         {
             StringBuilder select = new StringBuilder(string.Empty, 2048);
 
@@ -228,7 +218,7 @@ namespace Rainbow.Content.Web.Modules
                 select.Append("End\n");
                 select.Append("from rb_Modules\n");
                 select.Append("Inner Join rb_Tabs on rb_Modules.TabID = rb_Tabs.TabID and PortalID=" +
-                              PortalID.ToString() + "\n");
+                              PortalID + "\n");
                 select.Append(
                     "Inner Join rb_ModuleDefinitions on rb_Modules.ModuleDefID = rb_ModuleDefinitions.ModuleDefID\n");
                 select.Append(
@@ -341,7 +331,7 @@ namespace Rainbow.Content.Web.Modules
         /// <summary>
         /// Binds the grid.
         /// </summary>
-        private void BindGrid()
+        void BindGrid()
         {
             myDataView.Sort = sortField + " " + sortDirection;
             dgModules.DataSource = myDataView;

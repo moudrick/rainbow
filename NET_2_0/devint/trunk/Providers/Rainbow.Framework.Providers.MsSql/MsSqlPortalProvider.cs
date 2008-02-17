@@ -18,7 +18,6 @@ using Rainbow.Framework.Exceptions;
 using Rainbow.Framework.Items;
 using Rainbow.Framework.Providers;
 using Rainbow.Framework.Scheduler;
-using Rainbow.Framework.Users.Data;
 using Path=Rainbow.Framework.Path;
 
 namespace Rainbow.Framework.Providers.MsSql
@@ -457,18 +456,17 @@ namespace Rainbow.Framework.Providers.MsSql
             if (!Config.UseSingleUserBase)
             {
                 // Create the stradmin User for the new portal
-                UsersDB iRainbowMembershipProvider = new UsersDB();
                 // Create the "Admins" role for the new portal
                 //Guid roleID = User.AddRole("Admins");
                 Guid roleID = RainbowRoleProvider.Instance.CreateRole(portalAlias, "Admins");
-                Guid userID = iRainbowMembershipProvider.AddUser(portalAlias,
-                                                                 "admin@rainbowportal.net",
-                                                                 "admin",
-                                                                 "admin");
+                Guid userID = AccountSystem.Instance.AddUser(portalAlias,
+                    "admin@rainbowportal.net",
+                    "admin",
+                    "admin");
 
                 // Create a new row in a many to many table (userroles)
                 // giving the "admins" role to the stradmin user
-                iRainbowMembershipProvider.AddUserRole(roleID, userID);
+                AccountSystem.Instance.AddUserRole(roleID, userID);
             }
 
             // Create a new Page "home"
