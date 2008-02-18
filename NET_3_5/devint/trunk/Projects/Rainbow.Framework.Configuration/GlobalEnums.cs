@@ -5,8 +5,12 @@ namespace Rainbow.Framework.Configuration
     /// by Geert.Audenaert@Syntegra.Com
     /// Date: 6/2/2003
     /// </summary>
-    public enum WorkFlowVersion
+    public enum WorkflowVersion
     {
+        /// <summary>
+        /// None
+        /// </summary>
+        None = 0,
         /// <summary>
         /// Production
         /// </summary>

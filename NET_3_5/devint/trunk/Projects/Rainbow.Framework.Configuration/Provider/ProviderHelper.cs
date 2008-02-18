@@ -22,7 +22,7 @@ namespace Rainbow.Framework.Provider
         /// <param name="providerSettings">The provider settings.</param>
         /// <param name="provType">Type of the prov.</param>
         /// <returns></returns>
-        public static ProviderBase InstantiateProvider(ProviderSettings providerSettings, Type provType)
+        public static ProviderBase InstantiateProvider(ProviderSettings providerSettings, Type providerTypeToInstantiate)
         {
             if ((providerSettings.Type == null) || (providerSettings.Type.Length < 1))
                 throw new ConfigurationErrorsException(
@@ -33,8 +33,8 @@ namespace Rainbow.Framework.Provider
                 throw new ConfigurationErrorsException(
                     "Provider could not be instantiated. The Type could not be found.");
 
-            if (!provType.IsAssignableFrom(providerType))
-                throw new ConfigurationErrorsException("Provider must implement type \'" + provType.ToString() + "\'.");
+            if (!providerTypeToInstantiate.IsAssignableFrom(providerType))
+                throw new ConfigurationErrorsException("Provider must implement type \'" + providerTypeToInstantiate.ToString() + "\'.");
 
             object providerObj = Activator.CreateInstance(providerType);
             if (providerObj == null)
@@ -58,13 +58,13 @@ namespace Rainbow.Framework.Provider
         /// </summary>
         /// <param name="configProviders">The config providers.</param>
         /// <param name="providers">The providers.</param>
-        /// <param name="provType">Type of the prov.</param>
+        /// <param name="typeOfProvider">The type of provider.</param>
         public static void InstantiateProviders(ProviderCollection configProviders, ref ProviderCollection providers,
-                                                Type provType)
+                                                Type typeOfProvider)
         {
             foreach (ProviderSettings providerSettings in configProviders)
             {
-                providers.Add(InstantiateProvider(providerSettings, provType));
+                providers.Add(InstantiateProvider(providerSettings, typeOfProvider));
             }
         }
     }

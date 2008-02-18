@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Configuration;
 using System.Xml;
+using System.Xml.XPath;
 
 namespace Rainbow.Framework.Provider
 {
@@ -37,51 +38,75 @@ namespace Rainbow.Framework.Provider
         /// <returns></returns>
         public static ProviderConfiguration GetProviderConfiguration(string provider)
         {
-            return (ProviderConfiguration) ConfigurationManager.GetSection("providers/" + provider);
+            return (ProviderConfiguration)ConfigurationManager.GetSection("providers/" + provider);
         }
 
         /// <summary>
         /// Loads provider information from the configuration node
         /// </summary>
         /// <param name="node">Node representing configuration information</param>
-        public void LoadValuesFromConfigurationXml(XmlNode node)
+        public void LoadValuesFromConfigurationXml(IXPathNavigable node)
         {
-            XmlAttributeCollection attributeCollection = node.Attributes;
+            XPathNavigator nav = node.CreateNavigator();
+            if (nav.HasAttributes && !string.IsNullOrEmpty(nav.GetAttribute("defaultProvider", string.Empty)))
+                defaultProvider = nav.GetAttribute("defaultProvider", string.Empty);
+
+            //XmlAttributeCollection attributeCollection = node.Attributes;
 
             // Get the default provider
-            defaultProvider = attributeCollection["defaultProvider"].Value;
+            //defaultProvider = attributeCollection["defaultProvider"].Value;
 
             // Read child nodes
-            foreach (XmlNode child in node.ChildNodes)
+            if (nav.HasChildren)
             {
-                if (child.Name == "providers")
+                foreach (XPathNavigator child in nav.SelectChildren("providers", string.Empty))
+                {
                     GetProviders(child);
+                }
             }
+
+            //foreach (XmlNode child in node.ChildNodes)
+            //{
+            //    if (child.Name == "providers")
+            //        GetProviders(child);
+            //}
         }
 
         /// <summary>
         /// Configures Provider(s) based on the configuration node
         /// </summary>
         /// <param name="node"></param>
-        private void GetProviders(XmlNode node)
+        private void GetProviders(XPathNavigator node)
         {
-            foreach (XmlNode provider in node.ChildNodes)
+            if (node.HasChildren)
             {
-                switch (provider.Name)
+                foreach (XPathNavigator provider in node.SelectChildren(XPathNodeType.All))
+                //foreach (XmlNode provider in node.ChildNodes)
                 {
-                    case "add":
-                        providers.Add(provider.Attributes["name"].Value,
-                                      new ProviderSettings(provider.Attributes["name"].Value,
-                                                           provider.Attributes["type"].Value));
-                        break;
+                    switch (provider.Name)
+                    {
+                        case "add":
+                            providers.Add(
+                                provider.GetAttribute("name", string.Empty),
+                                new ProviderSettings(
+                                    provider.GetAttribute("name", string.Empty),
+                                    provider.GetAttribute("type", string.Empty)
+                                )
+                            );
+                            //providers.Add(provider.Attributes["name"].Value,
+                            //              new ProviderSettings(provider.Attributes["name"].Value,
+                            //                                   provider.Attributes["type"].Value));
+                            break;
 
-                    case "remove":
-                        providers.Remove(provider.Attributes["name"].Value);
-                        break;
+                        case "remove":
+                            providers.Remove(provider.GetAttribute("name", string.Empty));
+                            //providers.Remove(provider.Attributes["name"].Value);
+                            break;
 
-                    case "clear":
-                        providers.Clear();
-                        break;
+                        case "clear":
+                            providers.Clear();
+                            break;
+                    }
                 }
             }
         }

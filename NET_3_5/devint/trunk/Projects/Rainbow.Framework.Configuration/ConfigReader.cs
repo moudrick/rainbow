@@ -5,7 +5,7 @@ namespace Rainbow.Framework.Configuration
 	/// <summary>
 	/// Interface for Config Reader Strategy
 	/// </summary>
-	public interface Strategy
+	public interface IStrategy
 	{
 		/// <summary>
 		/// Fetch value for key
@@ -18,7 +18,7 @@ namespace Rainbow.Framework.Configuration
 	/// <summary>
 	/// Concrete Strategy - reads from ConfigurationSettings.AppSettings
 	/// </summary>
-	public class ConfigReader : Strategy
+	public class ConfigReader : IStrategy
 	{
 		/// <summary>
 		/// Fetches value for key from ConfigurationSettings.AppSettings
@@ -38,13 +38,13 @@ namespace Rainbow.Framework.Configuration
 	/// </summary>
 	public class Reader
 	{
-		private Strategy strategy;
+		private IStrategy strategy;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="strategy">a Concrete Strategy</param>
-		public Reader(Strategy strategy)
+		public Reader(IStrategy strategy)
 		{
 			this.strategy = strategy;
 		}

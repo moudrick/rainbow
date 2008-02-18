@@ -15,7 +15,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ProviderFeatureSection"/> class.
         /// </summary>
-        public ProviderFeatureSection()
+        protected ProviderFeatureSection()
         {
             properties.Add(providers);
             properties.Add(defaultProvider);
