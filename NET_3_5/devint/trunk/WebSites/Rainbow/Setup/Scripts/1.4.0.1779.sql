@@ -14,37 +14,37 @@ ALTER TABLE rb_PortalSettings WITH NOCHECK ADD CONSTRAINT
 	) ON DELETE CASCADE
 GO
 
-IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[FK_rb_Modules_rb_Tabs1]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[FK_rb_Modules_rb_Pages1]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE rb_Modules
-	DROP CONSTRAINT FK_rb_Modules_rb_Tabs1
+	DROP CONSTRAINT FK_rb_Modules_rb_Pages1
 GO
 
 --Dropping 1 at the end
-IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[FK_rb_Modules_rb_Tabs]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[FK_rb_Modules_rb_Pages]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE rb_Modules
-	DROP CONSTRAINT FK_rb_Modules_rb_Tabs
+	DROP CONSTRAINT FK_rb_Modules_rb_Pages
 GO
 
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[FK_rb_Modules_rb_Tabs]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[FK_rb_Modules_rb_Pages]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE rb_Modules WITH NOCHECK ADD CONSTRAINT
-	FK_rb_Modules_rb_Tabs FOREIGN KEY
+	FK_rb_Modules_rb_Pages FOREIGN KEY
 	(
 	TabID
-	) REFERENCES rb_Tabs
+	) REFERENCES rb_Pages
 	(
-	TabID
+	PageID
 	) ON DELETE CASCADE
 	
 GO
 
-IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[FK_rb_Tabs_rb_Portals]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE rb_Tabs
-	DROP CONSTRAINT FK_rb_Tabs_rb_Portals
+IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[FK_rb_Pages_rb_Portals]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE rb_Pages
+	DROP CONSTRAINT FK_rb_Pages_rb_Portals
 GO
 
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[FK_rb_Tabs_rb_Portals]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE rb_Tabs WITH NOCHECK ADD CONSTRAINT
-	FK_rb_Tabs_rb_Portals FOREIGN KEY
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[FK_rb_Pages_rb_Portals]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE rb_Pages WITH NOCHECK ADD CONSTRAINT
+	FK_rb_Pages_rb_Portals FOREIGN KEY
 	(
 	PortalID
 	) REFERENCES rb_Portals

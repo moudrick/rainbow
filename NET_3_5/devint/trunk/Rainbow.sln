@@ -9,8 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		DeveloperReadMe.txt = DeveloperReadMe.txt
 		ImportantNotes.txt = ImportantNotes.txt
 		LICENSE.txt = LICENSE.txt
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 		nant.build = nant.build
 		NOTICE.txt = NOTICE.txt
+		Rainbow.vsmdi = Rainbow.vsmdi
 		README.txt = README.txt
 		VersionInfo.cs = VersionInfo.cs
 		VersionInfo.cs.standard = VersionInfo.cs.standard
@@ -22,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Duemetri", "Duemetri", "{92
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BaseProviders", "BaseProviders", "{49412FEE-758A-4C49-9280-FEB3E2D8870E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlProviders", "SqlProviders", "{19BF7B6E-893D-43A9-8D0D-887730547E5E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MsSql", "MsSql", "{19BF7B6E-893D-43A9-8D0D-887730547E5E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Web.UI.WebControls", "Projects\Rainbow.Framework.Web.UI.WebControls\Rainbow.Framework.Web.UI.WebControls.csproj", "{38DA41AC-51C1-4E4D-9610-5370309C2C1E}"
 EndProject
@@ -53,7 +55,7 @@ EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Rainbow", "WebSites\Rainbow\", "{F67D24F2-C7E6-4C2E-B7FC-BD99E5754E5D}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
-		ProjectReferences = "{552CCD6F-0A37-4366-9E3E-22B2A0221584}|Rainbow.Framework.Core.dll;{D3A33CF8-2AEB-4E6E-AC2E-01C676F33616}|Rainbow.Framework.dll;{10F33732-1ACA-492A-A737-DF8314CE7499}|Rainbow.Framework.UrlRewriting.dll;{2C0213D4-00E2-4AD6-B82A-0D42ADAB3FAA}|Rainbow.Framework.Providers.RainbowSqlRoleProvider.dll;{2F8EA798-5AD7-44BA-A062-8B5721D9CFD1}|Rainbow.Framework.Providers.RainbowSqlMembershipProvider.dll;{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF}|Rainbow.Framework.Providers.RainbowSqlSiteMapProvider.dll;{38DA41AC-51C1-4E4D-9610-5370309C2C1E}|Rainbow.Framework.Web.UI.WebControls.dll;{DCDA0619-FD70-42B6-B2DA-78EAFA4BE955}|DUEMETRI.UI.WebControls.HWMenu.dll;{BA2ED003-058E-418B-B0DD-FB7D4D4B2329}|DUEMETRI.UI.WebControls.Panes.dll;{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}|Rainbow.Framework.Providers.RainbowMembershipProvider.dll;{599A82DE-6BBE-47D2-BB28-190ABD3CD702}|Rainbow.Framework.Providers.RainbowRoleProvider.dll;{C667C927-2E8B-44C6-BAC8-85EC9447C2C4}|Rainbow.Framework.Providers.RainbowSiteMapProvider.dll;{F3D1132B-139D-47FF-911E-10A950B572D0}|Rainbow.Framework.Data.MsSql.dll;"
+		ProjectReferences = "{552CCD6F-0A37-4366-9E3E-22B2A0221584}|Rainbow.Framework.Core.dll;{D3A33CF8-2AEB-4E6E-AC2E-01C676F33616}|Rainbow.Framework.dll;{10F33732-1ACA-492A-A737-DF8314CE7499}|Rainbow.Framework.UrlRewriting.dll;{2C0213D4-00E2-4AD6-B82A-0D42ADAB3FAA}|Rainbow.Framework.Providers.RainbowSqlRoleProvider.dll;{2F8EA798-5AD7-44BA-A062-8B5721D9CFD1}|Rainbow.Framework.Providers.RainbowSqlMembershipProvider.dll;{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF}|Rainbow.Framework.Providers.RainbowSqlSiteMapProvider.dll;{38DA41AC-51C1-4E4D-9610-5370309C2C1E}|Rainbow.Framework.Web.UI.WebControls.dll;{DCDA0619-FD70-42B6-B2DA-78EAFA4BE955}|DUEMETRI.UI.WebControls.HWMenu.dll;{BA2ED003-058E-418B-B0DD-FB7D4D4B2329}|DUEMETRI.UI.WebControls.Panes.dll;{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}|Rainbow.Framework.Providers.RainbowMembershipProvider.dll;{599A82DE-6BBE-47D2-BB28-190ABD3CD702}|Rainbow.Framework.Providers.RainbowRoleProvider.dll;{C667C927-2E8B-44C6-BAC8-85EC9447C2C4}|Rainbow.Framework.Providers.RainbowSiteMapProvider.dll;{F3D1132B-139D-47FF-911E-10A950B572D0}|Rainbow.Framework.Data.MsSql.dll;{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}|Rainbow.Framework.Data.dll;{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}|Rainbow.Framework.Configuration.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/Rainbow"
 		Debug.AspNetCompiler.PhysicalPath = "WebSites\Rainbow\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Rainbow\"
@@ -73,7 +75,24 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Rainbow", "WebSites\Rainbow
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Data.MsSql", "Projects\Rainbow.Framework.Data.MsSql\Rainbow.Framework.Data.MsSql.csproj", "{F3D1132B-139D-47FF-911E-10A950B572D0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{B063DD3C-A3EC-407D-85A2-99BB7FF6D5BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Data", "Projects\Rainbow.Framework.Data\Rainbow.Framework.Data.csproj", "{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Helpers", "Projects\Rainbow.Framework.Helpers\Rainbow.Framework.Helpers.csproj", "{72C090B5-4EEE-4D04-80D6-DD59912B367F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Configuration", "Projects\Rainbow.Framework.Configuration\Rainbow.Framework.Configuration.csproj", "{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Security", "Projects\Rainbow.Framework.Security\Rainbow.Framework.Security.csproj", "{C39465AB-102F-4F74-8A6C-8D87323185EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raibow.Framework.Data.MsSql.SS", "Raibow.Framework.Data.MsSql.SubSonic\Raibow.Framework.Data.MsSql.SS.csproj", "{828ADA27-4CB8-4316-97C1-01D96E84C2B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Data.Tests", "Rainbow.Framework.Data.Tests\Rainbow.Framework.Data.Tests.csproj", "{1492BF9E-CB0B-4892-8F03-50968F08DB81}"
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Rainbow.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
 		Debug|Any CPU = Debug|Any CPU
@@ -233,6 +252,66 @@ Global
 		{F3D1132B-139D-47FF-911E-10A950B572D0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F3D1132B-139D-47FF-911E-10A950B572D0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F3D1132B-139D-47FF-911E-10A950B572D0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}.Release|.NET.ActiveCfg = Release|Any CPU
+		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{72C090B5-4EEE-4D04-80D6-DD59912B367F}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{72C090B5-4EEE-4D04-80D6-DD59912B367F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72C090B5-4EEE-4D04-80D6-DD59912B367F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72C090B5-4EEE-4D04-80D6-DD59912B367F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{72C090B5-4EEE-4D04-80D6-DD59912B367F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{72C090B5-4EEE-4D04-80D6-DD59912B367F}.Release|.NET.ActiveCfg = Release|Any CPU
+		{72C090B5-4EEE-4D04-80D6-DD59912B367F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72C090B5-4EEE-4D04-80D6-DD59912B367F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72C090B5-4EEE-4D04-80D6-DD59912B367F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{72C090B5-4EEE-4D04-80D6-DD59912B367F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}.Release|.NET.ActiveCfg = Release|Any CPU
+		{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C39465AB-102F-4F74-8A6C-8D87323185EF}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{C39465AB-102F-4F74-8A6C-8D87323185EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C39465AB-102F-4F74-8A6C-8D87323185EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C39465AB-102F-4F74-8A6C-8D87323185EF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C39465AB-102F-4F74-8A6C-8D87323185EF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C39465AB-102F-4F74-8A6C-8D87323185EF}.Release|.NET.ActiveCfg = Release|Any CPU
+		{C39465AB-102F-4F74-8A6C-8D87323185EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C39465AB-102F-4F74-8A6C-8D87323185EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C39465AB-102F-4F74-8A6C-8D87323185EF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C39465AB-102F-4F74-8A6C-8D87323185EF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{828ADA27-4CB8-4316-97C1-01D96E84C2B3}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{828ADA27-4CB8-4316-97C1-01D96E84C2B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{828ADA27-4CB8-4316-97C1-01D96E84C2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{828ADA27-4CB8-4316-97C1-01D96E84C2B3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{828ADA27-4CB8-4316-97C1-01D96E84C2B3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{828ADA27-4CB8-4316-97C1-01D96E84C2B3}.Release|.NET.ActiveCfg = Release|Any CPU
+		{828ADA27-4CB8-4316-97C1-01D96E84C2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{828ADA27-4CB8-4316-97C1-01D96E84C2B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{828ADA27-4CB8-4316-97C1-01D96E84C2B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{828ADA27-4CB8-4316-97C1-01D96E84C2B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1492BF9E-CB0B-4892-8F03-50968F08DB81}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{1492BF9E-CB0B-4892-8F03-50968F08DB81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1492BF9E-CB0B-4892-8F03-50968F08DB81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1492BF9E-CB0B-4892-8F03-50968F08DB81}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1492BF9E-CB0B-4892-8F03-50968F08DB81}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1492BF9E-CB0B-4892-8F03-50968F08DB81}.Release|.NET.ActiveCfg = Release|Any CPU
+		{1492BF9E-CB0B-4892-8F03-50968F08DB81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1492BF9E-CB0B-4892-8F03-50968F08DB81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1492BF9E-CB0B-4892-8F03-50968F08DB81}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1492BF9E-CB0B-4892-8F03-50968F08DB81}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -244,9 +323,13 @@ Global
 		{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC} = {49412FEE-758A-4C49-9280-FEB3E2D8870E}
 		{599A82DE-6BBE-47D2-BB28-190ABD3CD702} = {49412FEE-758A-4C49-9280-FEB3E2D8870E}
 		{C667C927-2E8B-44C6-BAC8-85EC9447C2C4} = {49412FEE-758A-4C49-9280-FEB3E2D8870E}
-		{2F8EA798-5AD7-44BA-A062-8B5721D9CFD1} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
+		{19BF7B6E-893D-43A9-8D0D-887730547E5E} = {B063DD3C-A3EC-407D-85A2-99BB7FF6D5BF}
+		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE} = {B063DD3C-A3EC-407D-85A2-99BB7FF6D5BF}
+		{1492BF9E-CB0B-4892-8F03-50968F08DB81} = {B063DD3C-A3EC-407D-85A2-99BB7FF6D5BF}
 		{2C0213D4-00E2-4AD6-B82A-0D42ADAB3FAA} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
 		{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
 		{F3D1132B-139D-47FF-911E-10A950B572D0} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
+		{2F8EA798-5AD7-44BA-A062-8B5721D9CFD1} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
+		{828ADA27-4CB8-4316-97C1-01D96E84C2B3} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
 	EndGlobalSection
 EndGlobal

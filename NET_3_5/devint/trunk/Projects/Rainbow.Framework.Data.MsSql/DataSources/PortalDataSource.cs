@@ -6,18 +6,22 @@ using Rainbow.Framework.Data.DataSources;
 using Rainbow.Framework.Data.Entities;
 using Rainbow.Framework.Configuration;
 using Rainbow.Framework.Data.MsSql.Debugger;
+using System.Security.Principal;
 
 namespace Rainbow.Framework.Data.MsSql.DataSources
 {
-    public class PortalDataSource : IPortalDataSource
+    public class MsSqlPortalProvider : PortalProvider
     {
+        IPrincipal _principal;
         DataClassesDataContext db;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="PortalDataSource"/> class.
         /// </summary>
-        public PortalDataSource()
+        public MsSqlPortalProvider(IPrincipal principal)
         {
+            _principal = principal;
+
             db = new DataClassesDataContext(Config.ConnectionString);
             db.Log = new DebuggerWriter();
         }
@@ -56,11 +60,11 @@ namespace Rainbow.Framework.Data.MsSql.DataSources
         }
 
         /// <summary>
-        /// Gets the portal by id.
+        /// Gets the by id.
         /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>IPortal</returns>
-        public IPortal GetById(int portalId)
+        /// <param name="Id">The id.</param>
+        /// <returns></returns>
+        public override IPortal GetById(Guid Id)
         {
             var p = db.Portals.Single(pid => pid.PortalId == portalId);
 
@@ -98,7 +102,7 @@ namespace Rainbow.Framework.Data.MsSql.DataSources
             Portal p = db.Portals.Single(pt => pt.PortalId == portal.PortalId);
 
             p.PortalTitle = portal.PortalTitle;
-
+            
             //string pd = Config.PortalsDirectory;
             //if (portalPath.IndexOf(pd) > -1)
             //    portalPath = portalPath.Substring(portalPath.IndexOf(pd) + pd.Length);

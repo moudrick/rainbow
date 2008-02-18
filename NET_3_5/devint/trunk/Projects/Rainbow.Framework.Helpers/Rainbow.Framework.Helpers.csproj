@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}</ProjectGuid>
+    <ProjectGuid>{72C090B5-4EEE-4D04-80D6-DD59912B367F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rainbow.Framework.Configuration</RootNamespace>
-    <AssemblyName>Rainbow.Framework.Configuration</AssemblyName>
+    <RootNamespace>Rainbow.Framework.Helpers</RootNamespace>
+    <AssemblyName>Rainbow.Framework.Helpers</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,11 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -50,29 +48,38 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Cache\CurrentCache.cs" />
-    <Compile Include="Cache\Key.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="ConfigReader.cs" />
-    <Compile Include="Path.cs" />
-    <Compile Include="Portal.cs" />
-    <Compile Include="Provider\NotSupportedByProviderException.cs" />
-    <Compile Include="Provider\ProviderFeatureSection.cs" />
-    <Compile Include="Web\ContextReader.cs" />
-    <Compile Include="GlobalEnums.cs" />
-    <Compile Include="GlobalInternalStrings.cs" />
+    <Compile Include="ADHelper.cs" />
+    <Compile Include="CryptoHelper.cs" />
+    <Compile Include="CssHelper.cs" />
+    <Compile Include="ErrorHandler.cs" />
+    <Compile Include="LogHelper.cs" />
+    <Compile Include="MailHelper.cs" />
+    <Compile Include="MDFHelper.cs" />
+    <Compile Include="ModuleInstall.cs" />
+    <Compile Include="Monitoring\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Provider\ProviderConfiguration.cs" />
-    <Compile Include="Provider\ProviderConfigurationHandler.cs" />
-    <Compile Include="Provider\ProviderHelper.cs" />
+    <Compile Include="SearchDefinition.cs" />
+    <Compile Include="SearchHelper.cs" />
+    <Compile Include="ServiceHelper.cs" />
+    <Compile Include="UrlBuilderHelper.cs" />
+    <Compile Include="XslHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Provider\Docs\ProviderHistory.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Provider\Docs\ProviderReadme.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\Rainbow.Framework.Configuration\Rainbow.Framework.Configuration.csproj">
+      <Project>{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}</Project>
+      <Name>Rainbow.Framework.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rainbow.Framework.Core\Rainbow.Framework.Core.csproj">
+      <Project>{552CCD6F-0A37-4366-9E3E-22B2A0221584}</Project>
+      <Name>Rainbow.Framework.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rainbow.Framework.Data\Rainbow.Framework.Data.csproj">
+      <Project>{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}</Project>
+      <Name>Rainbow.Framework.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ModuleInstall.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

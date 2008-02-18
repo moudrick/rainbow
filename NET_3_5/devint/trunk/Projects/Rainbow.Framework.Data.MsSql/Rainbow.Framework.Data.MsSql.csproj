@@ -40,9 +40,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.Entity">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -84,7 +81,7 @@
     <Compile Include="DataClasses\Portal.cs" />
     <Compile Include="DataClasses\PortalSetting.cs" />
     <Compile Include="DataClasses\SettingGroup.cs" />
-    <Compile Include="DataSources\PageDataSource.cs" />
+    <Compile Include="DataSources\MsSqlPageProvider.cs" />
     <Compile Include="DataSources\PortalDataSource.cs" />
     <Compile Include="DBHelper.cs" />
     <Compile Include="Debugger\DebuggerWriter.cs" />

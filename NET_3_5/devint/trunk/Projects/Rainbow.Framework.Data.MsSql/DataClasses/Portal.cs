@@ -39,6 +39,7 @@ namespace Rainbow.Framework.Data.MsSql
     [History("bill@improvtech.com", "2007/12/20", "Gutted PortalSettings and merged into the proper places in the new DAL")]
     partial class Portal : IPortal
     {
+        #region legacy (unused)
         // portal name handled by portal title
         //string PortalName { get; set; }
 
@@ -53,6 +54,9 @@ namespace Rainbow.Framework.Data.MsSql
 
         //private XDocument _portalPagesXml;
         //private XPathDocument _desktopPagesXml;
+        #endregion
+
+        #region constants
         private const string LANGUAGE_DEFAULT = "en-US";
         private const string AdminEmail = "admin@rainbowportal.net";
         private const string stradmin = "admin";
@@ -69,6 +73,7 @@ namespace Rainbow.Framework.Data.MsSql
         private const string strContentPane = "ContentPane";
         private const string strLeftPane = "LeftPane";
         private const string strRightPane = "RightPane";
+        #endregion
 
         partial void OnCreated()
         {
@@ -129,31 +134,6 @@ namespace Rainbow.Framework.Data.MsSql
         {
             get { return _showPages; }
             set { _showPages = value; }
-        }
-
-        /// <summary>
-        /// Gets the mobile pages.
-        /// </summary>
-        /// <value>The mobile pages.</value>
-        public IEnumerable<Page> PagesMobile
-        {
-            get
-            {
-                return this.Pages.Where(p => p.IsShowMobile);
-            }
-        }
-
-        /// <summary>
-        /// Gets the portal title.
-        /// </summary>
-        /// <value>The portal title.</value>
-        /// <remarks>
-        /// jes1111 - this.PortalTitle = ConfigurationSettings.AppSettings["PortalTitlePrefix"] + this.PortalName;
-        /// </remarks>
-        public string PortalTitle
-        {
-            get { return String.Concat(Config.PortalTitlePrefix, this.PortalName); }
-            set { this.PortalName = value; }
         }
 
         /// <summary>
@@ -228,6 +208,18 @@ namespace Rainbow.Framework.Data.MsSql
         /// Federico (ifof@libero.it) 18 jun 2003
         /// </remarks>
         protected static IScheduler scheduler;
+
+        /// <summary>
+        /// Gets the mobile pages.
+        /// </summary>
+        /// <value>The mobile pages.</value>
+        internal IEnumerable<Page> PagesMobile
+        {
+            get
+            {
+                return this.Pages.Where(p => p.IsShowMobile);
+            }
+        }
 
         #region Globalization
 
@@ -399,7 +391,7 @@ namespace Rainbow.Framework.Data.MsSql
         #endregion
 
         #region Static methods
-        
+
         /// <summary>
         /// The UpdatePortalSetting Method updates a single module setting
         /// in the PortalSettings database table.
@@ -858,7 +850,7 @@ namespace Rainbow.Framework.Data.MsSql
         /// Gets the pages.
         /// </summary>
         /// <value>The pages.</value>
-        IEnumerable<IPage> IPortal.Pages
+        public IEnumerable<IPage> IPortal.Pages
         {
             get { return this.Pages as IEnumerable<IPage>; }
         }
@@ -867,10 +859,12 @@ namespace Rainbow.Framework.Data.MsSql
         /// Gets the mobile pages.
         /// </summary>
         /// <value>The mobile pages.</value>
-        IEnumerable<IPage> IPortal.PagesMobile
+        public IEnumerable<IPage> IPortal.PagesMobile
         {
             get { return this.PagesMobile as IEnumerable<IPage>; }
         }
+
+
 
         #endregion
 
@@ -1078,6 +1072,202 @@ namespace Rainbow.Framework.Data.MsSql
         public ulong ToUInt64(IFormatProvider provider)
         {
             return Convert.ToUInt64(this.PortalId);
+        }
+
+        #endregion
+
+        #region IPortal Members
+
+        /// <summary>
+        /// Gets the portal title.
+        /// </summary>
+        /// <value>The portal title.</value>
+        /// <remarks>
+        /// jes1111 - this.PortalTitle = ConfigurationSettings.AppSettings["PortalTitlePrefix"] + this.PortalName;
+        /// </remarks>
+        public string Title
+        {
+            get { return String.Concat(Config.PortalTitlePrefix, this.PortalName); }
+            set { this.PortalName = value; }
+        }
+
+        public string Alias
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public ILayout Layout
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public ITheme ThemePrimary
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public ITheme ThemeSecondary
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public CultureInfo ContentLanguage
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public CultureInfo UILanguage
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public CultureInfo DataFormattingCulture
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IEnumerable<IPortalSetting> Settings
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region IEntity Members
+
+        public Guid Id
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public Guid ObjectTypeId
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsDeleted
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public DateTime CreatedOn
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public DateTime LastModified
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        #endregion
+
+        #region ISecuredEntity Members
+
+        public IEnumerable<IPermission> Permissions
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public IEnumerable<IPermissionMembership> PermissionMemberships
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public Guid LastEditor
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
         #endregion

@@ -80,6 +80,21 @@ namespace Rainbow
             // TODO: Move all URL handling to URLHandler.cs in core
             // TODO: Need to support page name with no id, search db for match
             // TODO: If not, return page with recomended matches..
+
+            // TODO: found this block in portalsettings. use elsewhere or delete
+            //catch (SqlException sqex)
+            //{
+            //    Uri _requestUri = HttpContext.Current.Request.Url;
+            //    string _databaseUpdateRedirect = Config.DatabaseUpdateRedirect;
+            //    if (_databaseUpdateRedirect.StartsWith("~/"))
+            //        _databaseUpdateRedirect = _databaseUpdateRedirect.TrimStart(new char[] { '~' });
+            //    if (!_requestUri.AbsolutePath.ToLower(CultureInfo.InvariantCulture).EndsWith(_databaseUpdateRedirect.ToLower(CultureInfo.InvariantCulture)))
+            //        throw new DatabaseUnreachableException("This may be a new db", sqex);
+            //    else
+            //        ErrorHandler.Publish(Rainbow.Framework.LogLevel.Warn, "This may be a new db"); // Jes1111
+            //    return;
+            //}
+            
             /*
              * QUERY FOR MATCHERS 
              * 			int pageID = Portal.PageID; // Get PageID from QueryString
