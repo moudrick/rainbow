@@ -145,7 +145,7 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
             //Important patch http://support.microsoft.com/?kbid=887459
             if (context.Request.Path.IndexOf('\\') >= 0 ||
                 Path.GetFullPath(context.Request.PhysicalPath) != context.Request.PhysicalPath)
-                throw new RainbowRedirect(LogLevel.Warn, HttpStatusCode.NotFound, "Malformed request", null);
+                throw new RainbowRedirect(LogLevels.Warn, HttpStatusCode.NotFound, "Malformed request", null);
 
             #region 2nd Check: is the AllPortals Lock switched on?
 
@@ -206,12 +206,12 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                             // TODO : Check with people why this was like this....
                             Response.Redirect(Framework.Settings.Path.ApplicationRoot + _databaseUpdateRedirect, true);
                             // so update?
-                            ErrorHandler.Publish(LogLevel.Warn, errorMessage);
+                            ErrorHandler.Publish(LogLevels.Warn, errorMessage);
                             // throw new DatabaseVersionException(errorMessage);
                         }
                         else // DB version is ahead of Code Version
                         {
-                            ErrorHandler.Publish(LogLevel.Warn, errorMessage);
+                            ErrorHandler.Publish(LogLevels.Warn, errorMessage);
                             // Jonathan : WHy wouldnt we redirect to update page?
                             // TODO : Check with people why this was like this....
                             // Who cares ?
@@ -290,7 +290,7 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                     // critical error - neither requested alias nor default alias could be found in DB
                     throw new RainbowRedirect(
                         Config.NoPortalErrorRedirect,
-                        LogLevel.Fatal,
+                        LogLevels.Fatal,
                         Config.NoPortalErrorResponse,
                         "Unable to load any portal - redirecting request to ErrorNoPortal page.",
                         null);
@@ -308,7 +308,7 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                     {
                         throw new RainbowRedirect(
                             Config.InvalidAliasRedirect,
-                            LogLevel.Info,
+                            LogLevels.Info,
                             HttpStatusCode.NotFound,
                             "Invalid Alias specified in request URL - redirecting (404) to InvalidAliasRedirect page.",
                             null);
@@ -318,7 +318,7 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                     {
                         throw new RainbowRedirect(
                             Config.InvalidPageIdRedirect,
-                            LogLevel.Info,
+                            LogLevels.Info,
                             HttpStatusCode.NotFound,
                             "Invalid PageID specified in request URL - redirecting (404) to InvalidPageIdRedirect page.",
                             null);
@@ -510,7 +510,7 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
             HttpContext.Current.Application["CodeVersion"] = f.FilePrivatePart;
             HttpContext.Current.Application.UnLock();
 
-            ErrorHandler.Publish(LogLevel.Info, "Application Started: code version " + Portal.CodeVersion.ToString());
+            ErrorHandler.Publish(LogLevels.Info, "Application Started: code version " + Portal.CodeVersion.ToString());
 
             if (Config.CheckForFilePermission)
             {
@@ -526,7 +526,7 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                 }
                 catch (Exception ex)
                 {
-                    throw new RainbowException(LogLevel.Fatal, HttpStatusCode.ServiceUnavailable,
+                    throw new RainbowException(LogLevels.Fatal, HttpStatusCode.ServiceUnavailable,
                                                "ASPNET Account does not have rights to the filesystem", ex); // Jes1111
                 }
             }
@@ -617,7 +617,7 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
         /// </summary>
         public void Application_OnEnd()
         {
-            ErrorHandler.Publish(LogLevel.Info, "Application Ended");
+            ErrorHandler.Publish(LogLevels.Info, "Application Ended");
         }
     }
 }

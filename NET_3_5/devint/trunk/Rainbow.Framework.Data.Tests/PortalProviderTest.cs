@@ -173,7 +173,7 @@ namespace Rainbow.Framework.Data.Tests
             PortalProvider target = CreatePortalProvider(); // TODO: Initialize to an appropriate value
             IPortal newPortal = null; // TODO: Initialize to an appropriate value
             IPortal newPortalExpected = null; // TODO: Initialize to an appropriate value
-            target.Add(ref newPortal);
+            target.Add(newPortal);
             Assert.AreEqual(newPortalExpected, newPortal);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }

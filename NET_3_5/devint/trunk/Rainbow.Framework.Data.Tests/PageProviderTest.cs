@@ -160,7 +160,7 @@ namespace Rainbow.Framework.Data.Tests
             PageProvider target = CreatePageProvider(); // TODO: Initialize to an appropriate value
             IPage newPage = null; // TODO: Initialize to an appropriate value
             IPage newPageExpected = null; // TODO: Initialize to an appropriate value
-            target.Add(ref newPage);
+            target.Add(newPage);
             Assert.AreEqual(newPageExpected, newPage);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
