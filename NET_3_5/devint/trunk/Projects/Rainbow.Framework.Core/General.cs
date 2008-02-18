@@ -23,7 +23,7 @@ namespace Rainbow.Framework
         /// <returns></returns>
         public static string GetString(string key)
         {
-            return GetString(key, "");
+            return GetString(key, string.Empty);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Rainbow.Framework
         /// <returns></returns>
         public static string GetString(string key, string defaultValue, object o)
         {
-            // TODO: What are objects passed arond for?
+            // TODO: What are objects passed around for?
             return GetString(key, defaultValue);
         }
 

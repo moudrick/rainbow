@@ -104,19 +104,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLL\Base\BLLBase.cs" />
-    <Compile Include="BLL\MergeEngine.cs" />
-    <Compile Include="BLL\Utils\BagHolder.cs" />
-    <Compile Include="BLL\Utils\CookieUtil.cs" />
-    <Compile Include="BLL\Utils\GlobalResources.cs" />
     <Compile Include="Design\Layout.cs" />
-    <Compile Include="Design\LayoutItem.cs" />
-    <Compile Include="Design\LayoutManager.cs" />
     <Compile Include="Design\Theme.cs" />
-    <Compile Include="Design\ThemeImage.cs" />
-    <Compile Include="Design\ThemeItem.cs" />
-    <Compile Include="Design\ThemeManager.cs" />
-    <Compile Include="Design\ThemePart.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\IItem.cs" />
+    <Compile Include="Interfaces\ILayout.cs" />
+    <Compile Include="Interfaces\IModule.cs" />
+    <Compile Include="Interfaces\IModuleInstance.cs" />
+    <Compile Include="Interfaces\IModuleInstanceSetting.cs" />
+    <Compile Include="Interfaces\IModuleSetting.cs" />
+    <Compile Include="Interfaces\IPage.cs" />
+    <Compile Include="Interfaces\IPageSetting.cs" />
+    <Compile Include="Interfaces\IPermission.cs" />
+    <Compile Include="Interfaces\IPermissionMembership.cs" />
+    <Compile Include="Interfaces\IPortal.cs" />
+    <Compile Include="Interfaces\IPortalSetting.cs" />
+    <Compile Include="Interfaces\ISecuredEntity.cs" />
+    <Compile Include="Interfaces\ISetting.cs" />
+    <Compile Include="Interfaces\ISettingGroup.cs" />
+    <Compile Include="Interfaces\ISettingType.cs" />
+    <Compile Include="Interfaces\ITheme.cs" />
     <Compile Include="General.cs" />
     <Compile Include="Helpers\HTMLText.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />
@@ -176,14 +183,6 @@
     <Content Include="UI\WebControls\DesktopModuleTitle.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DUEMETRI.UI.WebControls.DesktopPanes\DesktopPanes\DUEMETRI.UI.WebControls.Panes.csproj">
-      <Project>{BA2ED003-058E-418B-B0DD-FB7D4D4B2329}</Project>
-      <Name>DUEMETRI.UI.WebControls.Panes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DUEMETRI.UI.WebControls.HWMenu\HWMenu\DUEMETRI.UI.WebControls.HWMenu.csproj">
-      <Project>{DCDA0619-FD70-42B6-B2DA-78EAFA4BE955}</Project>
-      <Name>DUEMETRI.UI.WebControls.HWMenu</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Rainbow.Framework.Configuration\Rainbow.Framework.Configuration.csproj">
       <Project>{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}</Project>
       <Name>Rainbow.Framework.Configuration</Name>
