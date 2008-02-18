@@ -55,7 +55,7 @@ namespace Rainbow.Framework
                 string _myGuid;
                 string _auxMessage;
                 string _redirectUrl = Config.SmartErrorRedirect; // default value
-                LogLevel _logLevel = LogLevel.Fatal; // default value
+                LogLevels _logLevel = LogLevels.Fatal; // default value
                 HttpStatusCode _httpStatusCode = HttpStatusCode.InternalServerError; // default value
                 string myCacheKey = string.Empty;
                 StringBuilder sb;
@@ -74,19 +74,19 @@ namespace Rainbow.Framework
                 {
                     if (e is DatabaseUnreachableException || e is SqlException)
                     {
-                        _logLevel = LogLevel.Fatal;
+                        _logLevel = LogLevels.Fatal;
                         _redirectUrl = Config.DatabaseErrorRedirect;
                         _httpStatusCode = Config.DatabaseErrorResponse;
                     }
                     else if (e is DatabaseVersionException) // db version is behind code version
                     {
-                        _logLevel = LogLevel.Fatal;
+                        _logLevel = LogLevels.Fatal;
                         _httpStatusCode = Config.DatabaseUpdateResponse;
                         _redirectUrl = Config.DatabaseUpdateRedirect;
                     }
                     else if (e is CodeVersionException) // code version is behind db version
                     {
-                        _logLevel = LogLevel.Fatal;
+                        _logLevel = LogLevels.Fatal;
                         _httpStatusCode = Config.CodeUpdateResponse;
                         _redirectUrl = Config.CodeUpdateRedirect;
                     }
@@ -111,12 +111,12 @@ namespace Rainbow.Framework
                     }
                     else if (e is HttpException)
                     {
-                        _logLevel = LogLevel.Fatal;
+                        _logLevel = LogLevels.Fatal;
                         _httpStatusCode = (HttpStatusCode) ((HttpException) e).GetHttpCode();
                     }
                     else
                     {
-                        _logLevel = LogLevel.Fatal; // default value
+                        _logLevel = LogLevels.Fatal; // default value
                         _httpStatusCode = HttpStatusCode.InternalServerError; // default value
                     }
 
@@ -205,7 +205,7 @@ namespace Rainbow.Framework
             }
             catch (Exception ex)
             {
-                Publish(LogLevel.Fatal, "Unexpected error in ErrorHandler", ex);
+                Publish(LogLevels.Fatal, "Unexpected error in ErrorHandler", ex);
             }
         }
 
@@ -234,7 +234,7 @@ namespace Rainbow.Framework
         public static void HandleException(Exception e)
         {
             //InnerHandleException(FormatExceptionDescription(e), e);
-            Publish(LogLevel.Error, e);
+            Publish(LogLevels.Error, e);
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace Rainbow.Framework
         public static void HandleException(string message, Exception e)
         {
             //InnerHandleException(message + Environment.NewLine + FormatExceptionDescription(e), e);
-            Publish(LogLevel.Error, message, e);
+            Publish(LogLevels.Error, message, e);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace Rainbow.Framework
         /// </summary>
         /// <param name="logLevel">LogLevel enum</param>
         /// <param name="auxMessage">Text message to be shown in log entry</param>
-        public static void Publish(LogLevel logLevel, string auxMessage)
+        public static void Publish(LogLevels logLevel, string auxMessage)
         {
             PublishToLog(logLevel, auxMessage, null);
         }
@@ -264,7 +264,7 @@ namespace Rainbow.Framework
         /// </summary>
         /// <param name="logLevel">LogLevel enum</param>
         /// <param name="e">Exception object (can be null)</param>
-        public static void Publish(LogLevel logLevel, Exception e)
+        public static void Publish(LogLevels logLevel, Exception e)
         {
             PublishToLog(logLevel, string.Empty, e);
         }
@@ -275,7 +275,7 @@ namespace Rainbow.Framework
         /// <param name="logLevel">LogLevel enum</param>
         /// <param name="auxMessage">Text message to be shown in log entry</param>
         /// <param name="e">Exception object (can be null)</param>
-        public static void Publish(LogLevel logLevel, string auxMessage, Exception e)
+        public static void Publish(LogLevels logLevel, string auxMessage, Exception e)
         {
             PublishToLog(logLevel, auxMessage, e);
         }
@@ -286,7 +286,7 @@ namespace Rainbow.Framework
         /// <param name="_logLevel">Rainbow.Framework.Configuration.LogLevel enumerator</param>
         /// <param name="_auxMessage">Text message to be shown in log entry</param>
         /// <param name="e">Exception object (can be null)</param>
-        private static void PublishToLog(LogLevel _logLevel, string _auxMessage, Exception e)
+        private static void PublishToLog(LogLevels _logLevel, string _auxMessage, Exception e)
         {
             // log it
             LogHelper.Logger.Log(_logLevel, _auxMessage, e);
@@ -299,7 +299,7 @@ namespace Rainbow.Framework
         /// <param name="_auxMessage">Text message to be shown in log entry</param>
         /// <param name="e">Exception object (can be null)</param>
         /// <param name="sw">A StringWriter object which will be filled with a formatted verion of the log entry</param>
-        private static void PublishToLog(LogLevel _logLevel, string _auxMessage, Exception e, StringWriter sw)
+        private static void PublishToLog(LogLevels _logLevel, string _auxMessage, Exception e, StringWriter sw)
         {
             // log it
             LogHelper.Logger.Log(_logLevel, _auxMessage, e, sw);

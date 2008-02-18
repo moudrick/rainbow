@@ -25,7 +25,7 @@ namespace Rainbow.Framework.Data.MsSql
                 using (DataClassesDataContext db = new DataClassesDataContext(Config.ConnectionString))
                 {
                     db.Log = new DebuggerWriter();
-                    if (Config.EnableMultiDbSupport)
+                    if (Config.EnableMultiDBSupport)
                         dbKey = "DatabaseVersion_" + db.Connection.DataSource + "_" +
                                 db.Connection.Database; // For multidb support
                 }

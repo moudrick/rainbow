@@ -22,7 +22,7 @@ namespace Rainbow.Framework.Helpers
             [Obsolete("You should be using ErrorHandler.Publish()")]
 			public static void Debug(object message) 
 			{
-                ErrorHandler.Publish(LogLevel.Debug, message.ToString());
+                ErrorHandler.Publish(LogLevels.Debug, message.ToString());
 			}
 
 			/// <summary>
@@ -33,7 +33,7 @@ namespace Rainbow.Framework.Helpers
             [Obsolete("You should be using ErrorHandler.Publish()")]
 			public static void Debug(object message, Exception ex) 
 			{
-				ErrorHandler.Publish(LogLevel.Debug, message.ToString(), ex);
+				ErrorHandler.Publish(LogLevels.Debug, message.ToString(), ex);
 			}
 
 			/// <summary>
@@ -43,7 +43,7 @@ namespace Rainbow.Framework.Helpers
             [Obsolete("You should be using ErrorHandler.Publish()")]
 			public static void Info(object message) 
 			{
-                ErrorHandler.Publish(LogLevel.Info, message.ToString());
+                ErrorHandler.Publish(LogLevels.Info, message.ToString());
 			}
 			/// <summary>
 			/// Info Level
@@ -53,7 +53,7 @@ namespace Rainbow.Framework.Helpers
             [Obsolete("You should be using ErrorHandler.Publish()")]
 			public static void Info(object message, Exception ex) 
 			{
-                ErrorHandler.Publish(LogLevel.Info, message.ToString(), ex);
+                ErrorHandler.Publish(LogLevels.Info, message.ToString(), ex);
 			}
 
 			/// <summary>
@@ -63,7 +63,7 @@ namespace Rainbow.Framework.Helpers
             [Obsolete("You should be using ErrorHandler.Publish()")]
 			public static void Warn(object message) 
 			{
-                ErrorHandler.Publish(LogLevel.Warn, message.ToString());
+                ErrorHandler.Publish(LogLevels.Warn, message.ToString());
 			}
 
 			/// <summary>
@@ -74,7 +74,7 @@ namespace Rainbow.Framework.Helpers
             [Obsolete("You should be using ErrorHandler.Publish()")]
 			public static void Warn(object message, Exception ex) 
 			{
-                ErrorHandler.Publish(LogLevel.Warn, message.ToString(), ex);
+                ErrorHandler.Publish(LogLevels.Warn, message.ToString(), ex);
 			}
 
 			/// <summary>
@@ -84,7 +84,7 @@ namespace Rainbow.Framework.Helpers
             [Obsolete("You should be using ErrorHandler.Publish()")]
 			public static void Error(object message) 
 			{
-                ErrorHandler.Publish(LogLevel.Error, message.ToString());
+                ErrorHandler.Publish(LogLevels.Error, message.ToString());
 			}
 
 			/// <summary>
@@ -95,7 +95,7 @@ namespace Rainbow.Framework.Helpers
             [Obsolete("You should be using ErrorHandler.Publish()")]
 			public static void Error(object message, Exception ex) 
 			{
-                ErrorHandler.Publish(LogLevel.Error, message.ToString(), ex);
+                ErrorHandler.Publish(LogLevels.Error, message.ToString(), ex);
 			}
 
 			/// <summary>
@@ -105,7 +105,7 @@ namespace Rainbow.Framework.Helpers
             [Obsolete("You should be using ErrorHandler.Publish()")]
 			public static void Fatal(object message) 
 			{
-                ErrorHandler.Publish(LogLevel.Fatal, message.ToString());
+                ErrorHandler.Publish(LogLevels.Fatal, message.ToString());
 			}
 
 			/// <summary>
@@ -116,7 +116,7 @@ namespace Rainbow.Framework.Helpers
             [Obsolete("You should be using ErrorHandler.Publish()")]
 			public static void Fatal(object message, Exception ex) 
 			{
-                ErrorHandler.Publish(LogLevel.Fatal, message.ToString(), ex);
+                ErrorHandler.Publish(LogLevels.Fatal, message.ToString(), ex);
 			}
 		}
 		#endregion

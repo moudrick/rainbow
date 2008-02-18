@@ -577,7 +577,7 @@ namespace Rainbow.Framework.Helpers
 
                 catch (Exception ex)
                 {
-                    ErrorHandler.Publish(LogLevel.Warn, "XSL failed. Metadata Was: '" + metadataXml + "'", ex);
+                    ErrorHandler.Publish(LogLevels.Warn, "XSL failed. Metadata Was: '" + metadataXml + "'", ex);
                 }
             }
             return selectedOptions;

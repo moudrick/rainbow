@@ -32,7 +32,7 @@ namespace Rainbow.Framework.Security {
         public new RainbowUser Identity {
             get {
                 if ( base.Identity is MembershipUser ) {
-                    ErrorHandler.Publish( LogLevel.Info, "RainbowPrincipal::Identity  -> base.Identity is MembershipUser" );
+                    ErrorHandler.Publish( LogLevels.Info, "RainbowPrincipal::Identity  -> base.Identity is MembershipUser" );
                     return base.Identity as RainbowUser;
                 }
 

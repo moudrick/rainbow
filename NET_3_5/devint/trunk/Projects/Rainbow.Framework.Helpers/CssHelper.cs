@@ -167,7 +167,7 @@ namespace Rainbow.Framework.Helpers
 
                 catch (Exception ex)
                 {
-                    ErrorHandler.Publish(LogLevel.Error,
+                    ErrorHandler.Publish(LogLevels.Error,
                                          "Error in parsing CSS file: " + cssFileName + " Message was: " + ex.Message);
                 }
 

@@ -58,7 +58,7 @@ namespace Rainbow.Framework.Data
             if (!useTransaction)
                 return ExecuteScript(scriptPath, myConnection); //FIX: Must pass connection as well
             string strScript = GetScript(scriptPath);
-            ErrorHandler.Publish(LogLevel.Info, "Executing Script '" + scriptPath + "'");
+            ErrorHandler.Publish(LogLevels.Info, "Executing Script '" + scriptPath + "'");
             ArrayList errors = new ArrayList();
             // Subdivide script based on GO keyword
             string[] sqlCommands = Regex.Split(strScript, "\\sGO\\s", RegexOptions.IgnoreCase);
@@ -69,7 +69,7 @@ namespace Rainbow.Framework.Data
             SqlTransaction myTrans;
             string transactionName = "Rainbow";
             myTrans = myConnection.BeginTransaction(IsolationLevel.RepeatableRead, transactionName);
-            ErrorHandler.Publish(LogLevel.Debug, "Start Script Transaction ");
+            ErrorHandler.Publish(LogLevels.Debug, "Start Script Transaction ");
 
             try
             {
@@ -104,13 +104,13 @@ namespace Rainbow.Framework.Data
                                    + ex.Message + "<br>"
                                    + mySqlText
                                    + "</P>");
-                        ErrorHandler.Publish(LogLevel.Warn, "ExecuteScript Failed: " + mySqlText, ex);
+                        ErrorHandler.Publish(LogLevels.Warn, "ExecuteScript Failed: " + mySqlText, ex);
                         throw new DatabaseUnreachableException("ExecuteScript Failed: " + mySqlText, ex);
                     }
                 }
                 // Succesfully applied this script
                 myTrans.Commit();
-                ErrorHandler.Publish(LogLevel.Debug, "Commit Script Transaction.");
+                ErrorHandler.Publish(LogLevels.Debug, "Commit Script Transaction.");
             }
 
             catch (Exception ex)
@@ -143,7 +143,7 @@ namespace Rainbow.Framework.Data
         public static ArrayList ExecuteScript(string scriptPath, DbConnection myConnection)
         {
             string strScript = GetScript(scriptPath);
-            ErrorHandler.Publish(LogLevel.Info, "Executing Script '" + scriptPath + "'");
+            ErrorHandler.Publish(LogLevels.Info, "Executing Script '" + scriptPath + "'");
             ArrayList errors = new ArrayList();
             // Subdivide script based on GO keyword
             string[] sqlCommands = Regex.Split(strScript, "\\sGO\\s", RegexOptions.IgnoreCase);
@@ -162,7 +162,7 @@ namespace Rainbow.Framework.Data
                             //Open connection
                             myConnection.Open();
 
-                            ErrorHandler.Publish(LogLevel.Debug, "Executing: " + mySqlText.Replace("\n", " "));
+                            ErrorHandler.Publish(LogLevels.Debug, "Executing: " + mySqlText.Replace("\n", " "));
                             using (SqlCommand sqldbCommand = new SqlCommand())
                             {
                                 sqldbCommand.Connection = myConnection;
@@ -180,9 +180,9 @@ namespace Rainbow.Framework.Data
                                    + ex.Message + "<br>"
                                    + mySqlText
                                    + "</P>");
-                        ErrorHandler.Publish(LogLevel.Warn, "ExecuteScript Failed: " + mySqlText, ex);
+                        ErrorHandler.Publish(LogLevels.Warn, "ExecuteScript Failed: " + mySqlText, ex);
                         // Rethrow exception
-                        throw new RainbowException(LogLevel.Fatal, HttpStatusCode.ServiceUnavailable,
+                        throw new RainbowException(LogLevels.Fatal, HttpStatusCode.ServiceUnavailable,
                                                    "Script failed, please correct the error and retry: " + mySqlText, ex);
                         //throw new Exception("Script failed, please correct the error and retry", ex);
                     }
@@ -265,7 +265,7 @@ namespace Rainbow.Framework.Data
                 }
                 catch (Exception e)
                 {
-                    ErrorHandler.Publish(LogLevel.Error, "Error in DBHelper - ExeSQL - SQL: '" + sql + "'", e);
+                    ErrorHandler.Publish(LogLevels.Error, "Error in DBHelper - ExeSQL - SQL: '" + sql + "'", e);
                     throw new DatabaseUnreachableException("Error in DBHelper - ExeSQL", e);
                     //throw new Exception("Error in DBHelper:ExeSQL()-> " + e.ToString());
                 }

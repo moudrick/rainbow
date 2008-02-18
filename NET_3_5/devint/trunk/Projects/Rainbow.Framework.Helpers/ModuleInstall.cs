@@ -115,10 +115,10 @@ namespace Rainbow.Framework.Helpers
         {
             Rainbow.Framework.Data.MsSql.DataClassesDataContext db = new Rainbow.Framework.Data.MsSql.DataClassesDataContext(Config.ConnectionString);
 
-            ErrorHandler.Publish(LogLevel.Info,
+            ErrorHandler.Publish(LogLevels.Info,
                                  "Installing DesktopModule '" + friendlyName + "' from '" + desktopSource + "'");
             if (!string.IsNullOrEmpty(mobileSource))
-                ErrorHandler.Publish(LogLevel.Info,
+                ErrorHandler.Publish(LogLevels.Info,
                                      "Installing MobileModule '" + friendlyName + "' from '" + mobileSource + "'");
 
             string controlFullPath = Path.ApplicationRoot + "/" + desktopSource;
@@ -163,7 +163,7 @@ namespace Rainbow.Framework.Helpers
                 //Call Install
                 try
                 {
-                    ErrorHandler.Publish(LogLevel.Debug, "Installing '" + friendlyName + "' as new module.");
+                    ErrorHandler.Publish(LogLevels.Debug, "Installing '" + friendlyName + "' as new module.");
                     portalModule.Install(null);
                 }
                 catch (Exception ex)
@@ -176,7 +176,7 @@ namespace Rainbow.Framework.Helpers
 
                 var rows = db.GeneralModuleDefinitions.Where(d => d.GeneralModDefId == defID);
                 if (rows.Count() > 0)
-                    ErrorHandler.Publish(LogLevel.Warn,
+                    ErrorHandler.Publish(LogLevels.Warn,
                         string.Format("AddGeneralModuleDefinitions: The definition you tried to add already exists. {0} updating...",
                             rows.Count()));
 
@@ -202,7 +202,7 @@ namespace Rainbow.Framework.Helpers
                 // Update the general module definition
                 try
                 {
-                    ErrorHandler.Publish(LogLevel.Debug, "Updating '" + friendlyName + "' as new module.");
+                    ErrorHandler.Publish(LogLevels.Debug, "Updating '" + friendlyName + "' as new module.");
 
                     var q = db.rb_GeneralModuleDefinitions.Where(gmd => gmd.GeneralModDefID == defID).Single();
 

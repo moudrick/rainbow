@@ -526,7 +526,7 @@ namespace Rainbow.Framework.Security
 					}
 					catch
 					{
-						ErrorHandler.Publish(LogLevel.Info, "Cannot monitoring login user " + usr.UserName);
+						ErrorHandler.Publish(LogLevels.Info, "Cannot monitoring login user " + usr.UserName);
 					}
 				}
 

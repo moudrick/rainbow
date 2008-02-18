@@ -170,7 +170,7 @@ namespace Rainbow.Framework.Helpers
 				}
 				catch (Exception e)
 				{
-					ErrorHandler.Publish(LogLevel.Error, "Error in Search:SearchPortal()-> " + e.ToString() + " " + select.ToString(), e);
+					ErrorHandler.Publish(LogLevels.Error, "Error in Search:SearchPortal()-> " + e.ToString() + " " + select.ToString(), e);
 					throw new Exception("Error in Search selection.");
 				}
 			}
