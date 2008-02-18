@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Rainbow.Framework.Data.Entities
 {
-    public interface IEntity : IComparable, IComparable<IEntity>, IConvertible
+    public interface IEntity : IComparable, IConvertible
     {
         /// <summary>
         /// Gets or sets the id.

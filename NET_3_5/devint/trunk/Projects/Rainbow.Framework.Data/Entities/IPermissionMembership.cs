@@ -20,12 +20,6 @@ namespace Rainbow.Framework.Data.Entities
         Guid UserOrRoleId { get; set; }
 
         /// <summary>
-        /// Gets or sets the object type id.
-        /// </summary>
-        /// <value>The object type id.</value>
-        Guid ObjectTypeId { get; set; }
-
-        /// <summary>
         /// Gets or sets the object id.
         /// </summary>
         /// <value>The object id.</value>
