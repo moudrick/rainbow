@@ -12,36 +12,42 @@ namespace Rainbow.Framework.Data
     /// </summary>
     public partial class Pages
     {
+        static PageProvider source = PageProvider.Instance();
+
         /// <summary>
         /// Add a Page to the data source.
         /// </summary>
         /// <param name="Id">The page id.</param>
         /// <param name="name">The name.</param>
-        void Add(Guid Id, string name) //add params as appropriate
+        static void Add(Guid Id, string name) //add params as appropriate
         {
-            using (PageProvider source = PageProvider.Instance())
-            {
-                IPage record = source.CreateNew() as IPage;  //create new entity in memory
+            IPage record = source.CreateNew() as IPage;  //create new entity in memory
 
-                //add values
-                record.Id = Id;
-                record.Name = name;
+            //add values
+            record.Id = Id;
+            record.Name = name;
 
-                IEntity addme = record as IEntity;
-                source.Add(ref addme);      //add record to data source in memory
-                source.CommitChanges();     //write changes back to data source
-            }
+
+            source.Add(ref record);     //add record to data source in memory
+            source.CommitChanges();     //write changes back to data source
         }
 
-        void Remove(Guid Id)
+        static void Remove(Guid Id)
         {
-            using (PageProvider source = PageProvider.Instance())
-            {
-                IPage record = source.GetById(Id) as IPage;  //grab page from data source as IPage interface object
+            IPage record = source.GetById(Id) as IPage;  //grab page from data source as IPage interface object
 
-                source.Remove(record);      //delete record from data source in memory
-                source.CommitChanges();     //write changes back to data source
-            }
+            source.Remove(record);      //delete record from data source in memory
+            source.CommitChanges();     //write changes back to data source
+        }
+
+        static List<IPage> LoadAll()
+        {
+            return source.GetAll() as List<IPage>;
+        }
+
+        static IPage LoadById(Guid id)
+        {
+            return source.GetById(id);
         }
     }
 }
