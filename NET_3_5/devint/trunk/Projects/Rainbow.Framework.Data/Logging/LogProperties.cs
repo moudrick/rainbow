@@ -18,7 +18,8 @@ namespace Rainbow.Framework.Logging
         {
             try
             {
-                return Portal.CodeVersion.ToString();
+                //TODO: Fix this.
+                return ""; //Portal.CodeVersion.ToString();
             }
             catch
             {
@@ -158,7 +159,7 @@ namespace Rainbow.Framework.Logging
         {
             try
             {
-                return Portal.UniqueId;
+                return ""; //Portal.UniqueId;
             }
             catch
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Rainbow.Framework.Configuration;
+using System.Net;
 
 namespace Rainbow.Framework.Data
 {
@@ -16,7 +17,7 @@ namespace Rainbow.Framework.Data
         /// <value>The default portal.</value>
         public static string DefaultPortal
         {
-            get { return GetString("DefaultPortal", "rainbow", false).Trim().ToUpperInvariant(); }
+            get { return Config.GetString("DefaultPortal", "rainbow", false).Trim().ToUpperInvariant(); }
         }
 
         /// <summary>
@@ -29,9 +30,9 @@ namespace Rainbow.Framework.Data
         /// </value>
         public static bool EnableMultiDBSupport
         {
-            get { return GetBoolean("EnableMultiDbSupport", false); }
+            get { return Config.GetBoolean("EnableMultiDbSupport", false); }
         }
-
+        /*
         /// <summary>
         /// The database connection string - checks for EnableMultiDbSupport and returns the
         /// correct connection string for this portal.
@@ -69,6 +70,7 @@ namespace Rainbow.Framework.Data
                 }
             }
         }
+*/
 
         /// <summary>
         /// Removes "www." when attempting to derive alias from hostname
@@ -78,7 +80,7 @@ namespace Rainbow.Framework.Data
         /// <value><c>true</c> if [remove WWW]; otherwise, <c>false</c>.</value>
         public static bool RemoveWWW
         {
-            get { return GetBoolean("RemoveWWW", true); }
+            get { return Config.GetBoolean("RemoveWWW", true); }
         }
 
         /// <summary>
@@ -89,7 +91,7 @@ namespace Rainbow.Framework.Data
         /// <value><c>true</c> if [remove TLD]; otherwise, <c>false</c>.</value>
         public static bool RemoveTLD
         {
-            get { return GetBoolean("RemoveTLD", true); }
+            get { return Config.GetBoolean("RemoveTLD", true); }
         }
 
         /// <summary>
@@ -100,7 +102,7 @@ namespace Rainbow.Framework.Data
         /// <value>The second level domains.</value>
         public static string SecondLevelDomains
         {
-            get { return GetString("SecondLevelDomains", "aero;biz;com;coop;info;museum;name;net;org;pro;gov;edu;mil;int;co;ac;sch;nhs;police;mod;ltd;plc;me", false); }
+            get { return Config.GetString("SecondLevelDomains", "aero;biz;com;coop;info;museum;name;net;org;pro;gov;edu;mil;int;co;ac;sch;nhs;police;mod;ltd;plc;me", false); }
         }
 
         /// <summary>
@@ -111,7 +113,7 @@ namespace Rainbow.Framework.Data
         /// <value>The amazon promo code.</value>
         public static string AmazonPromoCode
         {
-            get { return GetString("AmazonPromoCode", string.Empty, true); }
+            get { return Config.GetString("AmazonPromoCode", string.Empty, true); }
         }
 
         /// <summary>
@@ -122,7 +124,7 @@ namespace Rainbow.Framework.Data
         /// <value>The amazon dev token.</value>
         public static string AmazonDevToken
         {
-            get { return GetString("AmazonDevToken", string.Empty, true); }
+            get { return Config.GetString("AmazonDevToken", string.Empty, true); }
         }
 
         /// <summary>
@@ -133,7 +135,7 @@ namespace Rainbow.Framework.Data
         /// <value>The web master.</value>
         public static string WebMaster
         {
-            get { return GetString("WebMaster", string.Empty, true); }
+            get { return Config.GetString("WebMaster", string.Empty, true); }
         }
 
         /// <summary>
@@ -144,7 +146,7 @@ namespace Rainbow.Framework.Data
         /// <value>The portal templates connection string.</value>
         public static string PortalTemplatesConnectionString
         {
-            get { return GetString("PortalTemplatesConnectionString", string.Empty, true); }
+            get { return Config.GetString("PortalTemplatesConnectionString", string.Empty, true); }
         }
 
         /// <summary>
@@ -155,7 +157,7 @@ namespace Rainbow.Framework.Data
         /// <value>The quote file folder.</value>
         public static string QuoteFileFolder
         {
-            get { return GetString("QuoteFileFolder", string.Empty, true); }
+            get { return Config.GetString("QuoteFileFolder", string.Empty, true); }
         }
 
         /// <summary>
@@ -166,7 +168,7 @@ namespace Rainbow.Framework.Data
         /// <value><c>true</c> if [scheduler enable]; otherwise, <c>false</c>.</value>
         public static bool SchedulerEnable
         {
-            get { return GetBoolean("SchedulerEnable", false); }
+            get { return Config.GetBoolean("SchedulerEnable", false); }
         }
 
         /// <summary>
@@ -177,7 +179,7 @@ namespace Rainbow.Framework.Data
         /// <value><c>true</c> if [enable web compile]; otherwise, <c>false</c>.</value>
         public static bool EnableWebCompile
         {
-            get { return GetBoolean("EnableWebCompile", false); }
+            get { return Config.GetBoolean("EnableWebCompile", false); }
         }
 
         /// <summary>
@@ -188,7 +190,7 @@ namespace Rainbow.Framework.Data
         /// <value>The size of the scheduler cache.</value>
         public static int SchedulerCacheSize
         {
-            get { return GetInteger("SchedulerCacheSize", 100); }
+            get { return Config.GetInteger("SchedulerCacheSize", 100); }
         }
 
         /// <summary>
@@ -199,7 +201,7 @@ namespace Rainbow.Framework.Data
         /// <value>The scheduler period.</value>
         public static int SchedulerPeriod
         {
-            get { return GetInteger("SchedulerPeriod", 60000); }
+            get { return Config.GetInteger("SchedulerPeriod", 60000); }
         }
 
         /// <summary>
@@ -211,7 +213,7 @@ namespace Rainbow.Framework.Data
         /// <value>The SMTP server.</value>
         public static string SmtpServer
         {
-            get { return GetString("SmtpServer", "localhost", true); }
+            get { return Config.GetString("SmtpServer", "localhost", true); }
         }
 
         /// <summary>
@@ -222,7 +224,7 @@ namespace Rainbow.Framework.Data
         /// <value>The email from.</value>
         public static string EmailFrom
         {
-            get { return GetString("EmailFrom", "portal@localhost.com", false); }
+            get { return Config.GetString("EmailFrom", "portal@localhost.com", false); }
         }
 
         /// <summary>
@@ -233,7 +235,7 @@ namespace Rainbow.Framework.Data
         /// <value><c>true</c> if [encrypt password]; otherwise, <c>false</c>.</value>
         public static bool EncryptPassword
         {
-            get { return GetBoolean("EncryptPassword", false); }
+            get { return Config.GetBoolean("EncryptPassword", false); }
         }
 
         /// <summary>
@@ -244,7 +246,7 @@ namespace Rainbow.Framework.Data
         /// <value>The smart error redirect.</value>
         public static string SmartErrorRedirect
         {
-            get { return GetString("SmartErrorRedirect", "~/app_support/SmartError.aspx", false); }
+            get { return Config.GetString("SmartErrorRedirect", "~/app_support/SmartError.aspx", false); }
         }
 
         /// <summary>
@@ -255,7 +257,7 @@ namespace Rainbow.Framework.Data
         /// <value>The invalid alias redirect.</value>
         public static string InvalidAliasRedirect
         {
-            get { return GetString("InvalidAliasRedirect", "~/app_support/SmartError.aspx", false); }
+            get { return Config.GetString("InvalidAliasRedirect", "~/app_support/SmartError.aspx", false); }
         }
 
         /// <summary>
@@ -266,7 +268,7 @@ namespace Rainbow.Framework.Data
         /// <value>The invalid page id redirect.</value>
         public static string InvalidPageIdRedirect
         {
-            get { return GetString("InvalidPageIdRedirect", "~/app_support/SmartError.aspx", false); }
+            get { return Config.GetString("InvalidPageIdRedirect", "~/app_support/SmartError.aspx", false); }
         }
 
         /// <summary>
@@ -281,7 +283,7 @@ namespace Rainbow.Framework.Data
         {
             get
             {
-                int returnValue = GetInteger("UrlToleranceLevel", 3);
+                int returnValue = Config.GetInteger("UrlToleranceLevel", 3);
                 return returnValue < 1 ? 1 : returnValue > 4 ? 4 : returnValue; // make sure number is between 1 and 4
             }
         }
@@ -294,7 +296,7 @@ namespace Rainbow.Framework.Data
         /// <value>The database update response.</value>
         public static HttpStatusCode DatabaseUpdateResponse
         {
-            get { return GetHttpStatusCode("DatabaseUpdateResponse", HttpStatusCode.ServiceUnavailable); }
+            get { return Config.GetHttpStatusCode("DatabaseUpdateResponse", HttpStatusCode.ServiceUnavailable); }
         }
 
         /// <summary>
@@ -305,7 +307,7 @@ namespace Rainbow.Framework.Data
         /// <value>The database update redirect.</value>
         public static string DatabaseUpdateRedirect
         {
-            get { return GetString("DatabaseUpdateRedirect", "~/Setup/Update.aspx", false); }
+            get { return Config.GetString("DatabaseUpdateRedirect", "~/Setup/Update.aspx", false); }
         }
 
         /// <summary>
@@ -316,7 +318,7 @@ namespace Rainbow.Framework.Data
         /// <value>The installer redirect.</value>
         public static string InstallerRedirect
         {
-            get { return GetString("InstallerRedirect", "~/Installer/default.aspx", false); }
+            get { return Config.GetString("InstallerRedirect", "~/Installer/default.aspx", false); }
         }
 
         /// <summary>
@@ -327,7 +329,7 @@ namespace Rainbow.Framework.Data
         /// <value>The database error response.</value>
         public static HttpStatusCode DatabaseErrorResponse
         {
-            get { return GetHttpStatusCode("DatabaseErrorResponse", HttpStatusCode.ServiceUnavailable); }
+            get { return Config.GetHttpStatusCode("DatabaseErrorResponse", HttpStatusCode.ServiceUnavailable); }
         }
 
         /// <summary>
@@ -338,7 +340,7 @@ namespace Rainbow.Framework.Data
         /// <value>The database error redirect.</value>
         public static string DatabaseErrorRedirect
         {
-            get { return GetString("DatabaseErrorRedirect", "~/app_support/GeneralError.html", false); }
+            get { return Config.GetString("DatabaseErrorRedirect", "~/app_support/GeneralError.html", false); }
         }
 
         /// <summary>
@@ -349,7 +351,7 @@ namespace Rainbow.Framework.Data
         /// <value>The code update response.</value>
         public static HttpStatusCode CodeUpdateResponse
         {
-            get { return GetHttpStatusCode("CodeUpdateResponse", HttpStatusCode.ServiceUnavailable); }
+            get { return Config.GetHttpStatusCode("CodeUpdateResponse", HttpStatusCode.ServiceUnavailable); }
         }
 
         /// <summary>
@@ -360,7 +362,7 @@ namespace Rainbow.Framework.Data
         /// <value>The code update redirect.</value>
         public static string CodeUpdateRedirect
         {
-            get { return GetString("CodeUpdateRedirect", "~/app_support/GeneralError.html", false); }
+            get { return Config.GetString("CodeUpdateRedirect", "~/app_support/GeneralError.html", false); }
         }
 
         /// <summary>
@@ -371,7 +373,7 @@ namespace Rainbow.Framework.Data
         /// <value>The critical error response.</value>
         public static HttpStatusCode CriticalErrorResponse
         {
-            get { return GetHttpStatusCode("CriticalErrorResponse", HttpStatusCode.ServiceUnavailable); }
+            get { return Config.GetHttpStatusCode("CriticalErrorResponse", HttpStatusCode.ServiceUnavailable); }
         }
 
         /// <summary>
@@ -382,7 +384,7 @@ namespace Rainbow.Framework.Data
         /// <value>The critical error redirect.</value>
         public static string CriticalErrorRedirect
         {
-            get { return GetString("CriticalErrorRedirect", "~/app_support/GeneralError.html", false); }
+            get { return Config.GetString("CriticalErrorRedirect", "~/app_support/GeneralError.html", false); }
         }
 
         /// <summary>
@@ -393,7 +395,7 @@ namespace Rainbow.Framework.Data
         /// <value>The no portal error response.</value>
         public static HttpStatusCode NoPortalErrorResponse
         {
-            get { return GetHttpStatusCode("NoPortalErrorResponse", HttpStatusCode.NotFound); }
+            get { return Config.GetHttpStatusCode("NoPortalErrorResponse", HttpStatusCode.NotFound); }
         }
 
         /// <summary>
@@ -404,7 +406,7 @@ namespace Rainbow.Framework.Data
         /// <value>The no portal error redirect.</value>
         public static string NoPortalErrorRedirect
         {
-            get { return GetString("NoPortalErrorRedirect", "~/app_support/ErrorNoPortal.html", false); }
+            get { return Config.GetString("NoPortalErrorRedirect", "~/app_support/ErrorNoPortal.html", false); }
         }
 
         /// <summary>
@@ -415,7 +417,7 @@ namespace Rainbow.Framework.Data
         /// <value><c>true</c> if [lock all portals]; otherwise, <c>false</c>.</value>
         public static bool LockAllPortals
         {
-            get { return GetBoolean("LockAllPortals", false); }
+            get { return Config.GetBoolean("LockAllPortals", false); }
         }
 
         /// <summary>
@@ -427,7 +429,7 @@ namespace Rainbow.Framework.Data
         /// <value>The lock key holders.</value>
         public static string LockKeyHolders
         {
-            get { return GetString("LockKeyHolders", "127.0.0.1", false); }
+            get { return Config.GetString("LockKeyHolders", "127.0.0.1", false); }
         }
 
         /// <summary>
@@ -438,7 +440,7 @@ namespace Rainbow.Framework.Data
         /// <value>The lock response.</value>
         public static HttpStatusCode LockResponse
         {
-            get { return GetHttpStatusCode("LockResponse", HttpStatusCode.ServiceUnavailable); }
+            get { return Config.GetHttpStatusCode("LockResponse", HttpStatusCode.ServiceUnavailable); }
         }
 
         /// <summary>
@@ -449,7 +451,7 @@ namespace Rainbow.Framework.Data
         /// <value>The lock redirect.</value>
         public static string LockRedirect
         {
-            get { return GetString("LockRedirect", "~/app_support/GeneralError.html", false); }
+            get { return Config.GetString("LockRedirect", "~/app_support/GeneralError.html", false); }
         }
 
         /// <summary>
@@ -460,7 +462,7 @@ namespace Rainbow.Framework.Data
         /// <value>The cookie expire.</value>
         public static int CookieExpire
         {
-            get { return GetInteger("CookieExpire", 60); }
+            get { return Config.GetInteger("CookieExpire", 60); }
         }
 
         /// <summary>
@@ -472,7 +474,7 @@ namespace Rainbow.Framework.Data
         /// <value><c>true</c> if [force expire]; otherwise, <c>false</c>.</value>
         public static bool ForceExpire
         {
-            get { return GetBoolean("ForceExpire", false); }
+            get { return Config.GetBoolean("ForceExpire", false); }
         }
 
         /// <summary>
@@ -485,7 +487,7 @@ namespace Rainbow.Framework.Data
         /// </value>
         public static bool CheckForFilePermission
         {
-            get { return GetBoolean("CheckForFilePermission", false); }
+            get { return Config.GetBoolean("CheckForFilePermission", false); }
         }
 
         /// <summary>
@@ -498,7 +500,7 @@ namespace Rainbow.Framework.Data
         /// </value>
         public static bool UseProxyServerForServerWebRequests
         {
-            get { return GetBoolean("UseProxyServerForServerWebRequests", false); }
+            get { return Config.GetBoolean("UseProxyServerForServerWebRequests", false); }
         }
 
         /// <summary>
@@ -509,7 +511,7 @@ namespace Rainbow.Framework.Data
         /// <value><c>true</c> if [window MGMT controls]; otherwise, <c>false</c>.</value>
         public static bool WindowMgmtControls
         {
-            get { return GetBoolean("WindowMgmtControls", false); }
+            get { return Config.GetBoolean("WindowMgmtControls", false); }
         }
 
         /// <summary>
@@ -522,7 +524,7 @@ namespace Rainbow.Framework.Data
         /// </value>
         public static bool WindowMgmtWantClose
         {
-            get { return GetBoolean("WindowMgmtWantClose", false); }
+            get { return Config.GetBoolean("WindowMgmtWantClose", false); }
         }
 
         /// <summary>
@@ -533,7 +535,7 @@ namespace Rainbow.Framework.Data
         /// <value><c>true</c> if [enable monitoring]; otherwise, <c>false</c>.</value>
         public static bool EnableMonitoring
         {
-            get { return GetBoolean("EnableMonitoring", false); }
+            get { return Config.GetBoolean("EnableMonitoring", false); }
         }
 
         /// <summary>
@@ -546,7 +548,7 @@ namespace Rainbow.Framework.Data
         /// </value>
         public static bool PortalSettingDesktopPagesXml
         {
-            get { return GetBoolean("PortalSettingDesktopPagesXml", false); }
+            get { return Config.GetBoolean("PortalSettingDesktopPagesXml", false); }
         }
 
         /// <summary>
@@ -557,7 +559,7 @@ namespace Rainbow.Framework.Data
         /// <value>The portal title prefix.</value>
         public static string PortalTitlePrefix
         {
-            get { return GetString("PortalTitlePrefix", string.Empty); }
+            get { return Config.GetString("PortalTitlePrefix", string.Empty); }
         }
 
         /// <summary>
@@ -569,7 +571,7 @@ namespace Rainbow.Framework.Data
         public static string PortalsDirectory
         {
             //an empty directory is allowed
-            get { return GetString("PortalsDirectory", "Portals", true); }
+            get { return Config.GetString("PortalsDirectory", "Portals", true); }
         }
 
         /// <summary>
@@ -580,7 +582,7 @@ namespace Rainbow.Framework.Data
         /// <value>The portal secure directory.</value>
         public static string PortalSecureDirectory
         {
-            get { return GetString("PortalSecureDirectory", "ECommerce/Secure", false); }
+            get { return Config.GetString("PortalSecureDirectory", "ECommerce/Secure", false); }
         }
 
         /// <summary>
@@ -591,7 +593,7 @@ namespace Rainbow.Framework.Data
         /// <value>The AD administrator group.</value>
         public static string ADAdministratorGroup
         {
-            get { return GetString("ADAdministratorGroup", @"MyDomain\Administrators", false); }
+            get { return Config.GetString("ADAdministratorGroup", @"MyDomain\Administrators", false); }
         }
 
         /// <summary>
@@ -602,7 +604,7 @@ namespace Rainbow.Framework.Data
         /// <value>The A DDNS.</value>
         public static string ADdns
         {
-            get { return GetString("ADdns", @"LDAP://DomainControllerName/DC=MyDomain, DC=com; WinNT://MyDomain", false); }
+            get { return Config.GetString("ADdns", @"LDAP://DomainControllerName/DC=MyDomain, DC=com; WinNT://MyDomain", false); }
         }
 
         /// <summary>
@@ -613,7 +615,7 @@ namespace Rainbow.Framework.Data
         /// <value>The default DOCTYPE.</value>
         public static string DefaultDocType
         {
-            get { return GetString("DefaultDOCTYPE", @"&lt;!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' &gt;", false); }
+            get { return Config.GetString("DefaultDOCTYPE", @"&lt;!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' &gt;", false); }
         }
 
         /// <summary>
@@ -624,7 +626,7 @@ namespace Rainbow.Framework.Data
         /// <value>The ie7 script.</value>
         public static string IE7Script
         {
-            get { return GetString("Ie7Script", @"/aspnet_client/ie7-08a/ie7-standard-p.js", false); }
+            get { return Config.GetString("Ie7Script", @"/aspnet_client/ie7-08a/ie7-standard-p.js", false); }
         }
 
         /// <summary>
@@ -635,7 +637,7 @@ namespace Rainbow.Framework.Data
         /// <value>The LDAP administrator group.</value>
         public static string LDAPAdministratorGroup
         {
-            get { return GetString("LDAPAdministratorGroup", string.Empty, true); }
+            get { return Config.GetString("LDAPAdministratorGroup", string.Empty, true); }
         }
 
         /// <summary>
@@ -646,7 +648,7 @@ namespace Rainbow.Framework.Data
         /// <value>The LDAP login.</value>
         public static string LDAPLogin
         {
-            get { return GetString("LDAPLogin", string.Empty, true); }
+            get { return Config.GetString("LDAPLogin", string.Empty, true); }
         }
 
         /// <summary>
@@ -657,7 +659,7 @@ namespace Rainbow.Framework.Data
         /// <value>The LDAP server.</value>
         public static string LDAPServer
         {
-            get { return GetString("LDAPServer", string.Empty, true); }
+            get { return Config.GetString("LDAPServer", string.Empty, true); }
         }
 
         /// <summary>
@@ -668,7 +670,7 @@ namespace Rainbow.Framework.Data
         /// <value>The LDAP group.</value>
         public static string LDAPGroup
         {
-            get { return GetString("LDAPGroup", string.Empty, true); }
+            get { return Config.GetString("LDAPGroup", string.Empty, true); }
         }
 
         /// <summary>
@@ -679,7 +681,7 @@ namespace Rainbow.Framework.Data
         /// <value>The LDAP contexts.</value>
         public static string LDAPContexts
         {
-            get { return GetString("LDAPContexts", string.Empty, true); }
+            get { return Config.GetString("LDAPContexts", string.Empty, true); }
         }
 
         /// <summary>
@@ -690,7 +692,7 @@ namespace Rainbow.Framework.Data
         /// <value>The default language.</value>
         public static string DefaultLanguage
         {
-            get { return GetString("DefaultLanguage", "en-US", false); }
+            get { return Config.GetString("DefaultLanguage", "en-US", false); }
         }
 
         /// <summary>
@@ -701,7 +703,7 @@ namespace Rainbow.Framework.Data
         /// <value>The name of the update user.</value>
         public static string UpdateUserName
         {
-            get { return GetString("UpdateUserName", string.Empty, true); }
+            get { return Config.GetString("UpdateUserName", string.Empty, true); }
         }
 
         /// <summary>
@@ -712,7 +714,7 @@ namespace Rainbow.Framework.Data
         /// <value>The update password.</value>
         public static string UpdatePassword
         {
-            get { return GetString("UpdatePassword", string.Empty, true); }
+            get { return Config.GetString("UpdatePassword", string.Empty, true); }
         }
 
         /// <summary>
@@ -723,7 +725,7 @@ namespace Rainbow.Framework.Data
         /// <value>The proxy server.</value>
         public static string ProxyServer
         {
-            get { return GetString("ProxyServer", "http://127.0.0.1", false); }
+            get { return Config.GetString("ProxyServer", "http://127.0.0.1", false); }
         }
 
         /// <summary>
@@ -734,7 +736,7 @@ namespace Rainbow.Framework.Data
         /// <value>The proxy user ID.</value>
         public static string ProxyUserID
         {
-            get { return GetString("ProxyUserID", string.Empty, true); }
+            get { return Config.GetString("ProxyUserID", string.Empty, true); }
         }
 
         /// <summary>
@@ -745,7 +747,7 @@ namespace Rainbow.Framework.Data
         /// <value>The proxy password.</value>
         public static string ProxyPassword
         {
-            get { return GetString("ProxyPassword", string.Empty, true); }
+            get { return Config.GetString("ProxyPassword", string.Empty, true); }
         }
 
         /// <summary>
@@ -756,7 +758,7 @@ namespace Rainbow.Framework.Data
         /// <value>The proxy domain.</value>
         public static string ProxyDomain
         {
-            get { return GetString("ProxyDomain", string.Empty, true); }
+            get { return Config.GetString("ProxyDomain", string.Empty, true); }
         }
 
         /// <summary>
@@ -767,7 +769,7 @@ namespace Rainbow.Framework.Data
         /// <value>The name of the AD user.</value>
         public static string ADUserName
         {
-            get { return GetString("ADUserName", string.Empty, true); }
+            get { return Config.GetString("ADUserName", string.Empty, true); }
         }
 
         /// <summary>
@@ -778,7 +780,7 @@ namespace Rainbow.Framework.Data
         /// <value>The AD user password.</value>
         public static string ADUserPassword
         {
-            get { return GetString("ADUserPassword", string.Empty, true); }
+            get { return Config.GetString("ADUserPassword", string.Empty, true); }
         }
 
         /// <summary>
@@ -789,7 +791,7 @@ namespace Rainbow.Framework.Data
         /// <value><c>true</c> if [enable AD user]; otherwise, <c>false</c>.</value>
         public static bool EnableADUser
         {
-            get { return GetBoolean("EnableADUser", false); }
+            get { return Config.GetBoolean("EnableADUser", false); }
         }
 
         /// <summary>
@@ -800,7 +802,7 @@ namespace Rainbow.Framework.Data
         /// <value><c>true</c> if [use single user base]; otherwise, <c>false</c>.</value>
         public static bool UseSingleUserBase
         {
-            get { return GetBoolean("UseSingleUserBase", false); }
+            get { return Config.GetBoolean("UseSingleUserBase", false); }
         }
 
         /// <summary>
@@ -812,7 +814,7 @@ namespace Rainbow.Framework.Data
         /// <value>The module override cache.</value>
         public static int ModuleOverrideCache
         {
-            get { return GetInteger("ModuleOverrideCache", 0); }
+            get { return Config.GetInteger("ModuleOverrideCache", 0); }
         }
 
         /// <summary>
@@ -823,7 +825,7 @@ namespace Rainbow.Framework.Data
         /// <value>The XML feed XSL folder.</value>
         public static string XMLFeedXSLFolder
         {
-            get { return GetString("XMLFeedXSLFolder", string.Empty, true); }
+            get { return Config.GetString("XMLFeedXSLFolder", string.Empty, true); }
         }
 
         /// <summary>
@@ -836,7 +838,7 @@ namespace Rainbow.Framework.Data
         /// </value>
         public static bool UseSettingsGroupingTabs
         {
-            get { return GetBoolean("UseSettingsGroupingTabs", false); }
+            get { return Config.GetBoolean("UseSettingsGroupingTabs", false); }
         }
 
         /// <summary>
@@ -848,7 +850,7 @@ namespace Rainbow.Framework.Data
         /// <value>The width of the settings grouping.</value>
         public static int SettingsGroupingWidth
         {
-            get { return GetInteger("SettingsGroupingWidth", 600); }
+            get { return Config.GetInteger("SettingsGroupingWidth", 600); }
         }
 
         /// <summary>
@@ -860,7 +862,7 @@ namespace Rainbow.Framework.Data
         /// <value>The height of the settings grouping.</value>
         public static int SettingsGroupingHeight
         {
-            get { return GetInteger("SettingsGroupingHeight", 350); }
+            get { return Config.GetInteger("SettingsGroupingHeight", 350); }
         }
     }
 }

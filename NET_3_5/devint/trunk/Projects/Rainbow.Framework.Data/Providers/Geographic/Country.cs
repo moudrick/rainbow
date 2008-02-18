@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
-using Rainbow.Framework.Configuration.Cache;
 using System.Threading;
 
 namespace Rainbow.Framework.Data.Providers.Geographic

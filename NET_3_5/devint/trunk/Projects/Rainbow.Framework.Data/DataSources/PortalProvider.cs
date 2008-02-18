@@ -5,9 +5,9 @@ using System.Text;
 using System.Web.Caching;
 using System.Web;
 using Rainbow.Framework.Provider;
-using Rainbow.Framework.Data.Entities;
 using System.Configuration.Provider;
 using System.Configuration;
+using Rainbow.Framework.Interfaces;
 
 namespace Rainbow.Framework.Data.DataSources
 {

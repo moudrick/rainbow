@@ -1,6 +1,6 @@
 ﻿using Rainbow.Framework.Data.DataSources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rainbow.Framework.Data.Entities;
+using Rainbow.Framework.Interfaces;
 using System.Collections.Generic;
 using System;
 

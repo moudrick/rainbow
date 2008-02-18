@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using Rainbow.Framework.Configuration;
+using Rainbow.Framework.Data;
 
 namespace Rainbow.Framework.Exceptions
 {
@@ -124,7 +125,7 @@ namespace Rainbow.Framework.Exceptions
         }
 
         //private string _redirectUrl = ConfigurationSettings.AppSettings["SmartErrorRedirect"];
-        private string _redirectUrl = Config.SmartErrorRedirect;
+        private string _redirectUrl = Settings.SmartErrorRedirect;
 
         /// <summary>
         /// Gets or sets the redirect URL.
