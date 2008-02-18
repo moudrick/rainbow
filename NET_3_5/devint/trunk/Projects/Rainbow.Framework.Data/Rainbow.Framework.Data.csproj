@@ -58,8 +58,12 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Portals.cs" />
     <Compile Include="DataSources\IEntityDataSource.cs" />
-    <Compile Include="DataSources\PageProvider.cs" />
+    <Compile Include="DataSources\PageProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataSources\PortalProvider.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\IItem.cs" />
     <Compile Include="Entities\ILayout.cs" />

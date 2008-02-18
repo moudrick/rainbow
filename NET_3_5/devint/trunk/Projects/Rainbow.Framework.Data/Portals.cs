@@ -21,7 +21,7 @@ namespace Rainbow.Framework.Data
         /// </summary>
         /// <param name="Id">The portal id.</param>
         /// <param name="name">The name.</param>
-        static void Add(Guid id, string alias, CultureInfo contentLanguage, DateTime? createdOn,
+        public static void Add(Guid id, string alias, CultureInfo contentLanguage, DateTime? createdOn,
             CultureInfo dataFormattingCulture, bool? isAlwaysShowEditButton, bool? isDeleted, bool? isShowPages,
             ILayout layout, Guid objectTypeId, string tos, ITheme themePrimary, ITheme themeSecondary,
             string title, CultureInfo uiLanguage) //add params as appropriate
@@ -49,7 +49,7 @@ namespace Rainbow.Framework.Data
             source.CommitChanges();     //write changes back to data source
         }
 
-        static void Remove(Guid Id)
+        public static void Remove(Guid Id)
         {
             IPortal record = source.GetById(Id) as IPortal;  //grab portal from data source as IPortal interface object
 
@@ -57,12 +57,12 @@ namespace Rainbow.Framework.Data
             source.CommitChanges();     //write changes back to data source
         }
 
-        static List<IPortal> LoadAll()
+        public static List<IPortal> LoadAll()
         {
             return source.GetAll() as List<IPortal>;
         }
 
-        static IPortal LoadById(Guid id)
+        public static IPortal LoadById(Guid id)
         {
             return source.GetById(id);
         }
