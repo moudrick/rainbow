@@ -1,0 +1,234 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{552CCD6F-0A37-4366-9E3E-22B2A0221584}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rainbow.Framework.Core</RootNamespace>
+    <AssemblyName>Rainbow.Framework.Core</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Rainbow.Framework.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Rainbow.Framework.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ActiveUp.WebControls.HtmlTextBox, Version=2.1.1188.22068, Culture=neutral, PublicKeyToken=debdbfc6bad3ccfc">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\ActiveUp.WebControls.HtmlTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="FlashMovie, Version=1.0.1587.40940, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\FlashMovie.dll</HintPath>
+    </Reference>
+    <Reference Include="FredCK.FCKeditorV2, Version=2.1.1888.32304, Culture=neutral, PublicKeyToken=4f86767c9b519a06">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\FredCK.FCKeditorV2.dll</HintPath>
+    </Reference>
+    <Reference Include="FreeTextBox, Version=3.1.5000.0, Culture=neutral, PublicKeyToken=5962a4e684a48b87">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\FreeTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.9.0, Culture=neutral, PublicKeyToken=b32731d11ce58905">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Novell.Directory.Ldap, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Novell.Directory.Ldap.dll</HintPath>
+    </Reference>
+    <Reference Include="SolpartWebControls, Version=1.4.0.2, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\SolpartWebControls.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BLL\MergeEngine.cs" />
+    <Compile Include="BLL\Utils\BagHolder.cs" />
+    <Compile Include="BLL\Utils\CookieUtil.cs" />
+    <Compile Include="Logging\LogProperties.cs" />
+    <Compile Include="Provider\RainbowModuleProvider.cs" />
+    <Compile Include="DAL\DatabaseUpdater.cs" />
+    <Compile Include="DAL\DBHelper.cs" />
+    <Compile Include="DAL\ModulesDB.cs" />
+    <Compile Include="DAL\RecyclerDB.cs" />
+    <Compile Include="DAL\UpdateEntry.cs" />
+    <Compile Include="Security\MsSqlMonitoringProvider.cs" />
+    <Compile Include="UI\DataTypes\ApplicationUrlDataType.cs" />
+    <Compile Include="UI\DataTypes\CheckBoxListDataType.cs" />
+    <Compile Include="UI\DataTypes\CultureItem.cs" />
+    <Compile Include="UI\DataTypes\DateDataType.cs" />
+    <Compile Include="UI\DataTypes\DoubleDataType.cs" />
+    <Compile Include="UI\DataTypes\EmailAddressList.cs" />
+    <Compile Include="UI\DataTypes\FolderDataType.cs" />
+    <Compile Include="UI\DataTypes\HtmlEditorDataType.cs" />
+    <Compile Include="UI\DataTypes\IntegerDataType.cs" />
+    <Compile Include="UI\DataTypes\ModuleListDataType.cs" />
+    <Compile Include="UI\DataTypes\MultiSelectListDataType.cs" />
+    <Compile Include="UI\DataTypes\NumericDataType.cs" />
+    <Compile Include="UI\DataTypes\PathDataType.cs" />
+    <Compile Include="UI\DataTypes\Percentage.cs" />
+    <Compile Include="UI\DataTypes\SettingOption.cs" />
+    <Compile Include="UI\DataTypes\UploadedFileDataType.cs" />
+    <Compile Include="UI\DataTypes\UrlDataType.cs" />
+    <Compile Include="VersionController.cs" />
+    <Compile Include="DAL\WorkFlowDB.cs" />
+    <Compile Include="Helpers\ADHelper.cs" />
+    <Compile Include="Helpers\CryptoHelper.cs" />
+    <Compile Include="Helpers\CssHelper.cs" />
+    <Compile Include="Helpers\HTMLText.cs" />
+    <Compile Include="Helpers\HttpHelper.cs" />
+    <Compile Include="Helpers\IOHelper.cs" />
+    <Compile Include="Helpers\JavaScriptBuilder.cs" />
+    <Compile Include="Helpers\MailHelper.cs" />
+    <Compile Include="Helpers\MDFHelper.cs" />
+    <Compile Include="Helpers\ModuleInstall.cs" />
+    <Compile Include="Helpers\SearchDefinition.cs" />
+    <Compile Include="Helpers\SearchHelper.cs" />
+    <Compile Include="Helpers\WebPartHelper.cs" />
+    <Compile Include="Helpers\XslHelper.cs" />
+    <Compile Include="KickStarter\CommonClasses\DataChangeEventArgs.cs" />
+    <Compile Include="KickStarter\CommonClasses\Error.cs" />
+    <Compile Include="KickStarter\CommonClasses\SQLHelper.cs" />
+    <Compile Include="Monitoring\Utility.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Logging\Log4NetLogProvider.cs" />
+    <Compile Include="Scheduler\CachedScheduler.cs" />
+    <Compile Include="Scheduler\ISchedulable.cs" />
+    <Compile Include="Scheduler\IScheduler.cs" />
+    <Compile Include="Scheduler\SchedulerDB.cs" />
+    <Compile Include="Scheduler\SchedulerException.cs" />
+    <Compile Include="Scheduler\SchedulerTask.cs" />
+    <Compile Include="Scheduler\SimpleScheduler.cs" />
+    <Compile Include="Security\IEditUserProfile.cs" />
+    <Compile Include="Security\RainbowPrincipal.cs" />
+    <Compile Include="Security\Security.cs" />
+    <Compile Include="Security\SpecialRoles.cs" />
+    <Compile Include="Service\Client\communityService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service\ServiceClasses.cs" />
+    <Compile Include="Service\ServiceHelper.cs" />
+    <Compile Include="Setup\IInstaller.cs" />
+    <Compile Include="Localization\LanguageCultureCollection.cs" />
+    <Compile Include="Localization\LanguageCultureItem.cs" />
+    <Compile Include="Localization\LanguageGrid.cs" />
+    <Compile Include="Localization\LanguagesTemplateDropDown.cs" />
+    <Compile Include="Localization\LanguagesWebDataGrid.cs" />
+    <Compile Include="Localization\LanguageSwitcher.ascx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Localization\LanguageSwitcher.cs" />
+    <Compile Include="Localization\LanguageSwitcherDesigner.cs" />
+    <Compile Include="Localization\LanguageSwitcherEventArgs.cs" />
+    <Compile Include="Localization\LanguageSwitcherEventHandler.cs" />
+    <Compile Include="Localization\LanguageSwitcherTypes.cs" />
+    <Compile Include="Localization\TypeConvertLanguageCultureCollection.cs" />
+    <Compile Include="UI\Page.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\BindEnum.cs" />
+    <Compile Include="UI\WebControls\BreadCrumbs.cs" />
+    <Compile Include="UI\WebControls\CachedPortalModuleControl.cs" />
+    <Compile Include="UI\WebControls\CustomForm.cs" />
+    <Compile Include="UI\WebControls\DesktopModuleTitle.cs" />
+    <Compile Include="UI\WebControls\DesktopNavigation.cs" />
+    <Compile Include="UI\WebControls\DesktopPanes.cs" />
+    <Compile Include="UI\WebControls\FCKTextBox.cs" />
+    <Compile Include="UI\WebControls\FlashMovie.cs" />
+    <Compile Include="UI\WebControls\FreeTextBox.cs" />
+    <Compile Include="UI\WebControls\HeaderImage.cs" />
+    <Compile Include="UI\WebControls\HeaderMenu.cs" />
+    <Compile Include="UI\WebControls\HeaderTitle.cs" />
+    <Compile Include="UI\WebControls\HtmlTextBox.cs" />
+    <Compile Include="UI\WebControls\IEditModule.cs" />
+    <Compile Include="UI\WebControls\IHtmlEditor.cs" />
+    <Compile Include="UI\WebControls\INavigation.cs" />
+    <Compile Include="UI\WebControls\IPaging.cs" />
+    <Compile Include="UI\WebControls\ISearchable.cs" />
+    <Compile Include="UI\WebControls\ItemNavigation.cs" />
+    <Compile Include="UI\WebControls\MenuNavigation.cs" />
+    <Compile Include="UI\WebControls\ModuleButton.cs" />
+    <Compile Include="UI\WebControls\PageKeyPhrase.cs" />
+    <Compile Include="UI\WebControls\Paging.cs" />
+    <Compile Include="UI\WebControls\PortalModuleControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\PortalModuleControlCustom.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\PowerGrid.cs" />
+    <Compile Include="UI\WebControls\ShopNavigation.cs" />
+    <Compile Include="UI\WebControls\SmartScroller.cs" />
+    <Compile Include="UI\WebControls\SolpartNavigation.cs" />
+    <Compile Include="UI\WebControls\TextEditor.cs" />
+    <Compile Include="UI\WebControls\UploadDialogTextBox.cs" />
+    <Compile Include="UI\WebControls\ViewControlButtons.cs" />
+    <Compile Include="UI\WebControls\XmlEditGrid.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Helpers\ModuleInstall.txt" />
+    <Content Include="UI\WebControls\BreadCrumbs_readme.txt" />
+    <Content Include="UI\WebControls\DesktopModuleTitle.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Engine\Rainbow.Framework\Rainbow.Framework.csproj">
+      <Project>{14CD80D2-D20D-437F-9D8E-0B37CE3A2609}</Project>
+      <Name>Rainbow.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DUEMETRI.UI.WebControls.DesktopPanes\DesktopPanes\DUEMETRI.UI.WebControls.Panes.csproj">
+      <Project>{BA2ED003-058E-418B-B0DD-FB7D4D4B2329}</Project>
+      <Name>DUEMETRI.UI.WebControls.Panes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DUEMETRI.UI.WebControls.HWMenu\HWMenu\DUEMETRI.UI.WebControls.HWMenu.csproj">
+      <Project>{DCDA0619-FD70-42B6-B2DA-78EAFA4BE955}</Project>
+      <Name>DUEMETRI.UI.WebControls.HWMenu</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>@cd $(SolutionDir)
+@copy.standard.by.VS.cmd</PreBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,24 @@
+Move PortalProvider to Rainbow.Framework from Rainbow.Framework.Core
+
+==========
+rbfwebui
+
+Refactor the folloowing classes to be more convenient
+
+<%@ Register TagPrefix="rbfwebui"  Namespace="DUEMETRI.UI.WebControls" Assembly="DUEMETRI.UI.WebControls.Panes" %>
+DesktopPanes
+
+
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Core" %>
+;DesktopPanes
+HeaderMenu
+HeaderImage
+MenuNavigation
+Paging
+
+<%@ Register TagPrefix="rbfwebui" Namespace="Rainbow.Framework.Web.UI.WebControls" Assembly="Rainbow.Framework.Web.UI.WebControls" %>
+LinkButton
+HyperLink
+Localize
+
+

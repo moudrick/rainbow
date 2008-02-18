@@ -1,0 +1,142 @@
+/* Rainbow.Zen Presentation Base File - Jes1111 */
+/*------------------------------------------------------------*
+**  Global
+**------------------------------------------------------------*/
+
+body{
+	background: #fff; /* Optional */
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 75%;
+	text-align: center; /* IE Fix */
+	margin: 0;
+	color: #666;
+}
+
+acronym { cursor: help; border-bottom: 1px dashed #999; }
+a { text-decoration: none; color: #369;  }
+a:hover { color: #49515C; }
+
+#zenpanes{
+	color:Black;
+	padding:5px;
+
+}
+
+/*------------------------------------------------------------*
+**  HEADER
+**------------------------------------------------------------*/
+
+div.zen-hdr{
+	height:65px;
+	background:#FFE000 url(img/headerbg.jpg);
+	/*	background: #49515C url(img/headerbg.jpg) no-repeat 100% 0; */
+	padding: 0px 0px;
+}
+
+/* Title Image Replacement */
+h1.portaltitle{
+	height:60px;
+	width:300px;
+	font-face : Arial,Verdana;
+	font-weight:100;
+	color:#fff;
+	margin:0px;
+	margin-left:175px;
+	margin-top:25px;
+	padding:0px;
+
+}
+
+#portaltitle{
+	height:60px;
+	width:300px;
+	position:absolute;
+	top:0px;
+	left:0px;
+
+}
+
+#portallogo{
+	height:100px;
+	width:100px;
+	/*background: url(img/headerlogo.gif) no-repeat;*/
+
+}
+
+#portaltitle span{
+	display:block;
+	height:60px;
+	width:300px;
+	/*height:100%;
+	width:100%;*/
+	position:absolute;
+	top:0px;
+	left:0px;
+	
+}
+
+/*------------------------------------------------------------*
+**  Footer
+**------------------------------------------------------------*/
+
+/*
+div.zen-footer{
+border-width:1px;
+border-style:solid none none none;
+background:#333333;
+padding:10px 0px;
+text-align:center;
+color: #666666;
+}*/
+
+div.zen-footer {
+	background:#FFFFCC;
+	
+	border-top: 5px solid #c8d92b;
+	text-align: center;	
+	color: #000;
+	font-size: 0.8em;
+	padding: 10px;
+	line-height: 16px;
+	clear: both;
+	}
+
+div.zen-footer a { text-decoration: none; color: #A2AFBF; }
+div.zen-footer a:hover { color: #ccc; }
+
+/*------------------------------------------------------------*
+** COLUMNS
+**------------------------------------------------------------*/
+
+div.zen-cols{
+	background:#FFFFCC;
+	border-left:0px none;
+	border-right:0px none;
+	padding-top:35px
+}
+
+div.zen-col-middle{
+}
+
+div.zen-col-center{
+	margin:0 0em
+}
+
+div.zen-cols-wrapper{
+	border-width:0px;
+}
+
+div.zen-hide-left div.zen-cols-wrapper{
+	border-left:none;
+	margin-left:0;
+}
+
+div.zen-hide-right div.zen-cols-wrapper{
+	border-right:none;
+	margin-right:0
+}
+
+div.zen-hide-both div.zen-cols-wrapper{
+	border-style:none none none none;
+	margin:0
+}

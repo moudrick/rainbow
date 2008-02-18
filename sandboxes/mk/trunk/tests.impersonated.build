@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<project name="Rainbow">
+  <nunit2>
+    <formatter type="Xml" usefile="true" extension=".xml" outputdir="${tests.results.dir}" />
+    <formatter type="Plain" usefile="false" />
+    <test assemblyname="${tests.impersonated.assembly}" >
+      <categories>
+        <include name="Prepare" />
+      </categories>
+    </test>
+  </nunit2>
+</project>
