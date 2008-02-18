@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Rainbow.Framework.Data.Types
 {
@@ -30,23 +32,20 @@ namespace Rainbow.Framework.Data.Types
         }
 
         /// <summary>
-        /// Adds an object to the end of the <see cref="T:System.Collections.ArrayList"></see>.
+        /// Adds the specified value.
         /// </summary>
-        /// <param name="value">The <see cref="T:System.Object"></see> to be added to the end of the <see cref="T:System.Collections.ArrayList"></see>. The value can be null.</param>
-        /// <returns>
-        /// The <see cref="T:System.Collections.ArrayList"></see> index at which the value has been added.
-        /// </returns>
-        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.ArrayList"></see> is read-only.-or- The <see cref="T:System.Collections.ArrayList"></see> has a fixed size. </exception>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public override int Add(object value)
         {
             // Check if the value isn't null
             if (value == null)
                 throw new ArgumentNullException("value", "You can not add null email-addresses to the collection.");
             // Check if the value is a string
-            if (! (value is string))
+            if (!(value is string))
                 throw new ArgumentOutOfRangeException("value", "Only string values are allowed.");
             // Check if the value can be matched to the regular expression
-            if (! emailaddress.IsMatch((string) value))
+            if (!emailaddress.IsMatch((string)value))
                 throw new ArgumentException("value", "Only valid email-addresses are allowed.");
             // This is a valid email address
             return base.Add(value);

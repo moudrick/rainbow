@@ -64,7 +64,7 @@ namespace Rainbow.Framework.Data.DataSources
 
                     catch (Exception e)
                     {
-                        throw new Exception("Unable to load provider", e);
+                        throw new ProviderException("Unable to load provider", e);
                     }
                 }
 
@@ -84,25 +84,29 @@ namespace Rainbow.Framework.Data.DataSources
         /// <summary>
         /// Gets the by id.
         /// </summary>
-        /// <param name="Id">The id.</param>
+        /// <param name="id">The id.</param>
         /// <returns></returns>
-        public abstract IPortal GetById(Guid Id);
+        public abstract IPortal GetById(Guid id);
         /// <summary>
         /// Adds the specified new Portal.
         /// </summary>
-        /// <param name="newPortal">The new Portal.</param>
-        public abstract void Add(ref IPortal newPortal);
+        /// <param name="portal">The portal.</param>
+        public abstract void Add(IPortal portal);
+        /// <summary>
+        /// Creates a new blank IPortal object.
+        /// </summary>
+        /// <returns></returns>
         public abstract IPortal CreateNew();
         /// <summary>
         /// Updates the specified Portal.
         /// </summary>
-        /// <param name="Portal">The Portal.</param>
-        public abstract void Update(IPortal Portal);
+        /// <param name="portal">The portal.</param>
+        public abstract void Update(IPortal portal);
         /// <summary>
         /// Removes the specified Portal.
         /// </summary>
-        /// <param name="Portal">The Portal.</param>
-        public abstract void Remove(IPortal Portal);
+        /// <param name="portal">The portal.</param>
+        public abstract void Remove(IPortal portal);
         /// <summary>
         /// Commits the changes.
         /// </summary>

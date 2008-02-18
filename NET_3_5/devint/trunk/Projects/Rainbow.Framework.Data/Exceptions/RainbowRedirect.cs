@@ -46,7 +46,7 @@ namespace Rainbow.Framework.Exceptions
         /// <param name="redirectUrl">The redirect URL.</param>
         /// <param name="level">The level.</param>
         /// <param name="message">The message.</param>
-        public RainbowRedirect(string redirectUrl, LogLevel level, string message)
+        public RainbowRedirect(string redirectUrl, LogLevels level, string message)
             : base(message)
         {
             Level = level;
@@ -60,7 +60,7 @@ namespace Rainbow.Framework.Exceptions
         /// <param name="statusCode">The status code.</param>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        public RainbowRedirect(LogLevel level, HttpStatusCode statusCode, string message, Exception inner)
+        public RainbowRedirect(LogLevels level, HttpStatusCode statusCode, string message, Exception inner)
             : base(message, inner)
         {
             Level = level;
@@ -74,7 +74,7 @@ namespace Rainbow.Framework.Exceptions
         /// <param name="level">The level.</param>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        public RainbowRedirect(string redirectUrl, LogLevel level, string message, Exception inner)
+        public RainbowRedirect(string redirectUrl, LogLevels level, string message, Exception inner)
             : base(message, inner)
         {
             Level = level;
@@ -89,7 +89,7 @@ namespace Rainbow.Framework.Exceptions
         /// <param name="statusCode">The status code.</param>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        public RainbowRedirect(string redirectUrl, LogLevel level, HttpStatusCode statusCode, string message,
+        public RainbowRedirect(string redirectUrl, LogLevels level, HttpStatusCode statusCode, string message,
                                Exception inner)
             : base(message, inner)
         {
@@ -111,13 +111,13 @@ namespace Rainbow.Framework.Exceptions
             set { _statusCode = value; }
         }
 
-        private LogLevel _level = LogLevel.Info;
+        private LogLevels _level = LogLevels.Info;
 
         /// <summary>
         /// ExceptionLevel enum
         /// </summary>
         /// <value>The level.</value>
-        public LogLevel Level
+        public LogLevels Level
         {
             get { return _level; }
             set { _level = value; }

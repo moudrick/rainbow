@@ -7,7 +7,7 @@ namespace Rainbow.Framework
     /// Defines the level of the event to log
     /// </summary>
     [Flags]
-    public enum LogLevel
+    public enum LogLevels
     {
         /// <summary>
         /// None

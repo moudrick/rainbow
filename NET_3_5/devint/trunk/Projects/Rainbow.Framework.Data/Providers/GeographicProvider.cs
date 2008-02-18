@@ -49,9 +49,7 @@ namespace Rainbow.Framework.Data.Providers.Geographic
 
         public int Compare(Country x, Country y)
         {
-            string xName = x.Name;
-            string yName = y.Name;
-            return new CaseInsensitiveComparer(System.Globalization.CultureInfo.CurrentUICulture).Compare(xName, yName);
+            return new CaseInsensitiveComparer(System.Globalization.CultureInfo.CurrentUICulture).Compare(x.Name, y.Name);
         }
 
         #endregion
@@ -116,7 +114,7 @@ namespace Rainbow.Framework.Data.Providers.Geographic
                     }
                     catch (Exception e)
                     {
-                        throw new Exception("Unable to load provider", e);
+                        throw new ProviderException("Unable to load provider", e);
                     }
                 }
                 return (GeographicProvider)CurrentCache[cacheKey];
@@ -167,7 +165,7 @@ namespace Rainbow.Framework.Data.Providers.Geographic
 
             foreach (string s in configFilterArray)
             {
-                if ((!s.Equals(string.Empty)) && (s.Length != 2))
+                if (!string.IsNullOrEmpty(s) && s.Length != 2)
                 {
                     // this is not a valid country code
                     throw new ArgumentException(string.Format("{0} is not a valid country code", s));
@@ -176,7 +174,7 @@ namespace Rainbow.Framework.Data.Providers.Geographic
 
             foreach (string s in additionalFilterArray)
             {
-                if ((!s.Equals(string.Empty)) && (s.Length != 2))
+                if (!string.IsNullOrEmpty(s) && s.Length != 2)
                 {
                     // this is not a valid country code
                     throw new ArgumentException(string.Format("{0} is not a valid country code", s));

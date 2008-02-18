@@ -8,7 +8,7 @@ namespace Rainbow.Framework.Data.Providers.Geographic {
     /// 
     /// </summary>
     [global::System.Serializable]
-    public class CountryNotFoundException : ApplicationException {
+    public class CountryNotFoundException : Exception {
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CountryNotFoundException"/> class.

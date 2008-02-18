@@ -43,7 +43,7 @@ namespace Rainbow.Framework.Exceptions
 		/// <param name="level">ExceptionLevel enum</param>
 		/// <param name="message">Text message to be included in log.</param>
 		/// <param name="inner">Inner exception</param>
-		public RainbowException(Rainbow.Framework.LogLevel level, string message, Exception inner)
+		public RainbowException(Rainbow.Framework.LogLevels level, string message, Exception inner)
 			: base(message, inner)
 		{
 			_level = level;
@@ -56,7 +56,7 @@ namespace Rainbow.Framework.Exceptions
 		/// <param name="statusCode">HttpStatusCode enum</param>
 		/// <param name="message">Text message to be included in log.</param>
 		/// <param name="inner">Inner exception</param>
-		public RainbowException(Rainbow.Framework.LogLevel level, HttpStatusCode statusCode, string message, Exception inner)
+		public RainbowException(Rainbow.Framework.LogLevels level, HttpStatusCode statusCode, string message, Exception inner)
 			: base(message, inner)
 		{
 			_level = level;
@@ -64,12 +64,12 @@ namespace Rainbow.Framework.Exceptions
 		}
 
 
-		private LogLevel _level = LogLevel.Fatal;
+		private LogLevels _level = LogLevels.Fatal;
 		/// <summary>
 		/// ExceptionLevel enumerator.
 		/// </summary>
 		/// <value>The level.</value>
-		public LogLevel Level
+		public LogLevels Level
 		{
 			get { return _level; }
 			set { _level = value; }
@@ -96,7 +96,7 @@ namespace Rainbow.Framework.Exceptions
 		protected RainbowException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
-			_level = (Rainbow.Framework.LogLevel)info.GetValue("_level", typeof(Rainbow.Framework.LogLevel));
+			_level = (Rainbow.Framework.LogLevels)info.GetValue("_level", typeof(Rainbow.Framework.LogLevels));
 			_statusCode = (HttpStatusCode)info.GetValue("_statusCode", typeof(HttpStatusCode));
 		}
 
@@ -110,7 +110,7 @@ namespace Rainbow.Framework.Exceptions
 		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
-			info.AddValue("_level", (int)_level, typeof(Rainbow.Framework.LogLevel));
+			info.AddValue("_level", (int)_level, typeof(Rainbow.Framework.LogLevels));
 			info.AddValue("_statusCode", (int)_statusCode, typeof(HttpStatusCode));
 			base.GetObjectData(info, context);
 		}

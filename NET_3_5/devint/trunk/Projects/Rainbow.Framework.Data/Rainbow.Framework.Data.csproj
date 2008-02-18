@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRules>-Microsoft.Design#CA1020</CodeAnalysisRules>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -58,40 +60,19 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Portals.cs" />
-    <Compile Include="DataSources\IEntityDataSource.cs" />
     <Compile Include="DataSources\PageProvider.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataSources\PortalProvider.cs" />
-    <Compile Include="Entities\IEntity.cs" />
-    <Compile Include="Entities\IItem.cs" />
-    <Compile Include="Entities\ILayout.cs" />
-    <Compile Include="Entities\IModule.cs" />
-    <Compile Include="Entities\IModuleInstance.cs" />
-    <Compile Include="Entities\IModuleSetting.cs" />
-    <Compile Include="Entities\IPageSetting.cs" />
-    <Compile Include="Entities\IPermission.cs" />
-    <Compile Include="Entities\IPermissionMembership.cs" />
-    <Compile Include="Entities\IPortal.cs" />
-    <Compile Include="Entities\IPortalSetting.cs" />
-    <Compile Include="Entities\ISecuredEntity.cs" />
-    <Compile Include="Entities\ISetting.cs" />
-    <Compile Include="Entities\ISettingGroup.cs" />
-    <Compile Include="Entities\ISettingType.cs" />
-    <Compile Include="Entities\ITheme.cs" />
-    <Compile Include="Entities\IModuleInstanceSetting.cs" />
     <Compile Include="Exceptions\CodeVersionException.cs" />
     <Compile Include="Exceptions\DatabaseUnreachableException.cs" />
     <Compile Include="Exceptions\DatabaseVersionException.cs" />
     <Compile Include="Exceptions\PortalsLockedException.cs" />
     <Compile Include="Exceptions\RainbowException.cs" />
     <Compile Include="Exceptions\RainbowRedirect.cs" />
-    <Compile Include="Entities\IPage.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogProperties.cs" />
     <Compile Include="Logging\LogProvider.cs" />
-    <Compile Include="Pages.cs" />
     <Compile Include="Providers\GeographicProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\Geographic\Country.cs" />
@@ -99,6 +80,7 @@
     <Compile Include="Providers\Geographic\State.cs" />
     <Compile Include="Providers\Geographic\StateNotFoundException.cs" />
     <Compile Include="Providers\UrlBuilderProvider.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Types\ApplicationUrlDataType.cs" />
     <Compile Include="Types\BaseDataType.cs" />
     <Compile Include="Types\BooleanDataType.cs" />
@@ -129,9 +111,6 @@
       <Project>{552CCD6F-0A37-4366-9E3E-22B2A0221584}</Project>
       <Name>Rainbow.Framework.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Entities\Interfaces.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

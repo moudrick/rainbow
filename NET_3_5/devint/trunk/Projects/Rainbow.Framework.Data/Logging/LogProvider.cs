@@ -81,7 +81,7 @@ namespace Rainbow.Framework.Logging
         /// </summary>
         /// <param name="level">The level.</param>
         /// <param name="message">The message.</param>
-        public abstract void Log(LogLevel level, object message);
+        public abstract void Log(LogLevels level, object message);
 
         /// <summary>
         /// Logs the specified level.
@@ -89,7 +89,7 @@ namespace Rainbow.Framework.Logging
         /// <param name="level">The level.</param>
         /// <param name="message">The message.</param>
         /// <param name="t">The t.</param>
-        public abstract void Log(LogLevel level, object message, Exception t);
+        public abstract void Log(LogLevels level, object message, Exception t);
 
         /// <summary>
         /// Logs the specified level.
@@ -97,7 +97,7 @@ namespace Rainbow.Framework.Logging
         /// <param name="level">The level.</param>
         /// <param name="message">The message.</param>
         /// <param name="sw">The sw.</param>
-        public abstract void Log(LogLevel level, object message, StringWriter sw);
+        public abstract void Log(LogLevels level, object message, StringWriter sw);
 
         /// <summary>
         /// Logs the specified level.
@@ -106,6 +106,6 @@ namespace Rainbow.Framework.Logging
         /// <param name="message">The message.</param>
         /// <param name="t">The t.</param>
         /// <param name="sw">The sw.</param>
-        public abstract void Log(LogLevel level, object message, Exception t, StringWriter sw);
+        public abstract void Log(LogLevels level, object message, Exception t, StringWriter sw);
     }
 }

@@ -66,7 +66,7 @@ namespace Rainbow.Framework.Data.DataSources
                     }
                     catch (Exception e)
                     {
-                        throw new Exception("Unable to load provider", e);
+                        throw new ProviderException("Unable to load provider", e);
                     }
                 }
 
@@ -86,25 +86,29 @@ namespace Rainbow.Framework.Data.DataSources
         /// <summary>
         /// Gets the by id.
         /// </summary>
-        /// <param name="Id">The id.</param>
+        /// <param name="id">The id.</param>
         /// <returns></returns>
-        public abstract IPage GetById(Guid Id);
+        public abstract IPage GetById(Guid id);
         /// <summary>
         /// Adds the specified new Page.
         /// </summary>
-        /// <param name="newPage">The new Page.</param>
-        public abstract void Add(ref IPage newPage);
+        /// <param name="page">The page.</param>
+        public abstract void Add(IPage page);
+        /// <summary>
+        /// Creates a new Page.
+        /// </summary>
+        /// <returns>The new blank IPage object.</returns>
         public abstract IPage CreateNew();
         /// <summary>
         /// Updates the specified Page.
         /// </summary>
-        /// <param name="Page">The Page.</param>
-        public abstract void Update(IPage Page);
+        /// <param name="page">The Page.</param>
+        public abstract void Update(IPage page);
         /// <summary>
         /// Removes the specified Page.
         /// </summary>
-        /// <param name="Page">The Page.</param>
-        public abstract void Remove(IPage Page);
+        /// <param name="page">The Page.</param>
+        public abstract void Remove(IPage page);
         /// <summary>
         /// Commits the changes.
         /// </summary>

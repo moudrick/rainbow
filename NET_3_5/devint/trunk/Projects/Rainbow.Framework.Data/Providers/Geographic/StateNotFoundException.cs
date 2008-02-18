@@ -8,7 +8,7 @@ namespace Rainbow.Framework.Data.Providers.Geographic {
     /// 
     /// </summary>
     [global::System.Serializable]
-    public class StateNotFoundException : ApplicationException {
+    public class StateNotFoundException : Exception {
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StateNotFoundException"/> class.
