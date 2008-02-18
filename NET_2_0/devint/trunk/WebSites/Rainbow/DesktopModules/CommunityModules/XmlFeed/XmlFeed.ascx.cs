@@ -30,7 +30,7 @@ namespace Rainbow.Content.Web.Modules
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        void Page_Load(object sender, EventArgs e)
         {
             string xmlsrc;
             string xmlsrcType = Settings["XML Type"].ToString();
@@ -66,16 +66,23 @@ namespace Rainbow.Content.Web.Modules
                     xmlsrc = pathXml.FullPath;
 
                     if (File.Exists(Server.MapPath(xmlsrc)))
+                    {
                         xml1.DocumentSource = xmlsrc;
+                    }
                     else
-                        Controls.Add(
-                            new LiteralControl("<br><div class='error'>File " + xmlsrc + " not found.<br></div>"));
+                    {
+                        Controls.Add(new LiteralControl(
+                            string.Format("<br><div class='error'>File {0} not found.<br></div>", xmlsrc)));
+                    }
                 }
                 else
                 {
                     try
                     {
-                        string message = string.Format("XMLFeed - This should not done more than once in 30 minutes: '{0}'", xmlsrc);
+                        string message =
+                            string.Format(
+                                "XMLFeed - This should not be done more than once in 30 minutes: '{0}'",
+                                xmlsrc);
                         ErrorHandler.Publish(LogLevel.Warn, message);
 
                         // handle on the remote ressource
@@ -85,7 +92,7 @@ namespace Rainbow.Content.Web.Modules
                         //							wr.Proxy = PortalSettings.GetProxy();
 
                         // set the HTTP properties
-                        wr.Timeout = timeout*1000; // milliseconds to seconds
+                        wr.Timeout = timeout * 1000; // milliseconds to seconds
                         // Read the response
                         WebResponse resp = wr.GetResponse();
                         // Stream read the response
@@ -104,9 +111,9 @@ namespace Rainbow.Content.Web.Modules
                     catch (Exception ex)
                     {
                         // connectivity issues
-                        Controls.Add(
-                            new LiteralControl("<br><div class='error'>Error loading: " + xmlsrc + ".<br>" + ex.Message +
-                                               "</div>"));
+                        Controls.Add(new LiteralControl(
+                            string.Format("<br><div class='error'>Error loading: {0}.<br>{1}</div>", 
+                                xmlsrc, ex.Message)));
                         ErrorHandler.Publish(LogLevel.Error, "Error loading: " + xmlsrc + ".", ex);
                     }
                 }
@@ -132,23 +139,34 @@ namespace Rainbow.Content.Web.Modules
                 //					xslsrc = "~/DesktopModules/CommunityModules/XmlFeed/" + xslsrc;
                 //				}
                 if (Config.XMLFeedXSLFolder.Length == 0)
+                {
                     xslsrc = Path.WebPathCombine(TemplateSourceDirectory, xslsrc);
+                }
                 else
+                {
                     xslsrc = Path.WebPathCombine(Config.XMLFeedXSLFolder, xslsrc);
+                }
 
                 if (!xslsrc.EndsWith(".xslt"))
+                {
                     xslsrc += ".xslt";
+                }
             }
 
             if ((xslsrc != null) && (xslsrc.Length != 0))
             {
                 if (File.Exists(Server.MapPath(xslsrc)))
+                {
                     xml1.TransformSource = xslsrc;
+                }
                 else
-                    Controls.Add(new LiteralControl("<br><div class='error'>File " + xslsrc + " not found.<br></div>"));
+                {
+                    Controls.Add(new LiteralControl(
+                        string.Format("<br><div class='error'>File {0} not found.<br></div>", 
+                            xslsrc)));
+                }
             }
         }
-
 
         /// <summary>
         /// Contsructor
@@ -250,7 +268,7 @@ namespace Rainbow.Content.Web.Modules
                 else
                 {
                     ErrorHandler.Publish(LogLevel.Warn,
-                                         "Default XSLT location not found: '" + xsltPath + "'"); 
+                                         "Default XSLT location not found: '" + xsltPath + "'");
                 }
             }
             catch (Exception ex)
