@@ -38,7 +38,7 @@ I.2.3 Run "nant deploy.preview" or just "nant" command line from the root of the
 CAUTION!!! This action will automatically create new databases "Rainbow" and "tests-rainbow" and "Rainbow" web applcation.
 The databases will be overwritten, so back up back up them if you have them and still need their content.
 
-I.2.4 Open http://localhost/Roinbow link in your browser.
+I.2.4 Open http://localhost/Rainbow link in your browser.
 
 
 II. DEPLOYMENT FOR PREVIEW USING Visual Studio.

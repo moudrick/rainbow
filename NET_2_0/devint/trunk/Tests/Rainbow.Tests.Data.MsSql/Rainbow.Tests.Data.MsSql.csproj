@@ -88,7 +88,9 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>@cd $(SolutionDir)
-@copy.standard.by.VS.cmd</PreBuildEvent>
+    <PreBuildEvent>if "*Undefined*"=="$(SolutionDir)" exit
+if "$(ProjectDir)"=="$(SolutionDir)" exit
+@cd $(SolutionDir)
+@ensure.local.settings.cmd</PreBuildEvent>
   </PropertyGroup>
 </Project>

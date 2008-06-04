@@ -8,6 +8,11 @@
 >
 ] -->
 <project name="Rainbow" default="deploy.preview">
+  <property name="wc.localSettingsFile" value="local.settings.build" />
+  <if test="${not file::exists(wc.localSettingsFile)}">
+    <copy file="${wc.localSettingsFile}.standard" tofile="${wc.localSettingsFile}" />
+  </if>
+  <include buildfile="${wc.localSettingsFile}" />
   <!-- ************************************************************ -->
   <!-- **  Optional incoming parameters and their default values ** -->
   <!-- ************************************************************ -->

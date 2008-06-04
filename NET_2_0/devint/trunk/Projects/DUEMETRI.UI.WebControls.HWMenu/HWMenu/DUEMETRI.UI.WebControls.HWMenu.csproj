@@ -122,7 +122,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>@cd $(SolutionDir)
-@copy.standard.by.VS.cmd</PreBuildEvent>
+@ensure.local.settings.cmd</PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>

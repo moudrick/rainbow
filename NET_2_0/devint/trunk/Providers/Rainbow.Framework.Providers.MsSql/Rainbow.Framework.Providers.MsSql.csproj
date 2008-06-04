@@ -68,4 +68,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>@cd $(SolutionDir)
+@ensure.local.settings.cmd</PreBuildEvent>
+  </PropertyGroup>
 </Project>

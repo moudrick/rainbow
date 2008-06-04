@@ -44,7 +44,7 @@
       </exec>
       <exec>
         <executable>svn.exe</executable>
-        <buildArgs>update nant.build</buildArgs>
+        <buildArgs>update default.build</buildArgs>
         <buildTimeoutSeconds>10</buildTimeoutSeconds>
       </exec>
       <nant>

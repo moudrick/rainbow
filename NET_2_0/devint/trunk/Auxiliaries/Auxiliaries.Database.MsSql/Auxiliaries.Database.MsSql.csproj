@@ -46,4 +46,12 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>if "*Undefined*"=="$(SolutionDir)" exit
+if "$(ProjectDir)"=="$(SolutionDir)" exit
+if /I "auxiliaries"=="$(SolutionName)" exit
+@cd $(SolutionDir)
+@ensure.local.settings.cmd
+</PreBuildEvent>
+  </PropertyGroup>
 </Project>

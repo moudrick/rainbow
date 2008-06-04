@@ -87,6 +87,6 @@
   -->
   <PropertyGroup>
     <PreBuildEvent>@cd $(SolutionDir)
-@copy.standard.by.VS.cmd</PreBuildEvent>
+@ensure.local.settings.cmd</PreBuildEvent>
   </PropertyGroup>
 </Project>
