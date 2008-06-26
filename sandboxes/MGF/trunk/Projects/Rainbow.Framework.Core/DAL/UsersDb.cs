@@ -29,6 +29,7 @@ namespace Rainbow.Framework.Users.Data {
     /// is used to store and validate all username/password credentials.
     /// </remarks>
     /// </summary>
+    [History("gschnyder", "2008/05/29", "Create role by portal alias")]
     [History( "jminond", "2005/03/10", "Tab to page conversion" )]
     [History( "gman3001", "2004/09/29", "Added the UpdateLastVisit method to update the user's last visit date indicator." )]
     public class UsersDB {
@@ -72,9 +73,10 @@ namespace Rainbow.Framework.Users.Data {
         /// Other relevant sources:
         /// + <a href="AddRole.htm" style="color:green">AddRole Stored Procedure</a>
         /// </summary>
+        /// <param name="portalAlias">Portal alias.</param>
         /// <param name="roleName">Name of the role.</param>
-        public Guid AddRole( string roleName ) {
-            return RoleProvider.CreateRole( CurrentPortalSettings.PortalAlias, roleName );
+        public Guid AddRole(string portalAlias,  string roleName ) {
+            return RoleProvider.CreateRole( /*CurrentPortalSettings.PortalAlias*/ portalAlias, roleName );
         }
 
         /// <summary>
@@ -95,10 +97,10 @@ namespace Rainbow.Framework.Users.Data {
         /// <returns>The newly created ID</returns>
         public Guid AddUser( string name, string company, string address, string city, string zip,
                            string countryID, int stateID, string phone, string fax,
-                           string password, string email, bool sendNewsletter ) {
+                           string password, string email, bool sendNewsletter, string portalAlias ) {
 
             MembershipCreateStatus status;
-            MembershipUser user = MembershipProvider.CreateUser( CurrentPortalSettings.PortalAlias, name,
+            MembershipUser user = MembershipProvider.CreateUser( /*CurrentPortalSettings.PortalAlias*/ portalAlias, name,
                 password, email, "vacia", "llena", true, out status );
 
             if ( user == null ) {
@@ -115,14 +117,14 @@ namespace Rainbow.Framework.Users.Data {
         /// <param name="email">The email.</param>
         /// <param name="password">The password.</param>
         /// <returns></returns>
-        public Guid AddUser( string fullName, string email, string password ) {
+        public Guid AddUser( string fullName, string email, string password, string portalAlias ) {
 
             Guid newUserId = AddUser( email, string.Empty, string.Empty, string.Empty,
-                string.Empty, string.Empty, 0, string.Empty, string.Empty, password, email, false );
+                string.Empty, string.Empty, 0, string.Empty, string.Empty, password, email, false, portalAlias);
             RainbowUser user = MembershipProvider.GetUser( newUserId, false ) as RainbowUser; 
 
             user.Name = fullName;
-            MembershipProvider.UpdateUser( user );
+            MembershipProvider.UpdateUser(portalAlias, user );
             return newUserId;
         }
 
@@ -132,8 +134,8 @@ namespace Rainbow.Framework.Users.Data {
         /// </summary>
         /// <param name="roleID">The role ID.</param>
         /// <param name="userID">The user ID.</param>
-        public void AddUserRole( Guid roleID, Guid userID ) {
-            RoleProvider.AddUsersToRoles( CurrentPortalSettings.PortalAlias, new Guid[] { userID }, new Guid[] { roleID } );
+        public void AddUserRole( Guid roleID, Guid userID, string portalAlias ) {
+            RoleProvider.AddUsersToRoles( /*CurrentPortalSettings.PortalAlias*/ portalAlias, new Guid[] { userID }, new Guid[] { roleID } );
         }
 
         #endregion
@@ -147,8 +149,8 @@ namespace Rainbow.Framework.Users.Data {
         /// + <a href="DeleteRole.htm" style="color:green">DeleteRole Stored Procedure</a>
         /// </summary>
         /// <param name="roleID">The role id.</param>
-        public void DeleteRole( Guid roleID ) {
-            RoleProvider.DeleteRole( CurrentPortalSettings.PortalAlias, roleID, false );
+        public void DeleteRole( Guid roleID, string portalAlias ) {
+            RoleProvider.DeleteRole( /*CurrentPortalSettings.PortalAlias*/ portalAlias, roleID, false );
         }
 
         /// <summary>
@@ -168,8 +170,8 @@ namespace Rainbow.Framework.Users.Data {
         /// </summary>
         /// <param name="roleID">The role ID.</param>
         /// <param name="userID">The user ID.</param>
-        public void DeleteUserRole( Guid roleID, Guid userID ) {
-            RoleProvider.RemoveUsersFromRoles(CurrentPortalSettings.PortalAlias, new Guid[] { userID }, new Guid[] { roleID } );
+        public void DeleteUserRole( Guid roleID, Guid userID, string portalAlias ) {
+            RoleProvider.RemoveUsersFromRoles( portalAlias /*CurrentPortalSettings.PortalAlias */, new Guid[] { userID }, new Guid[] { roleID } );
         }
 
         #endregion
@@ -200,8 +202,8 @@ namespace Rainbow.Framework.Users.Data {
         /// <param name="roleId">The role id.</param>
         /// <returns>a <code>string[]</code> of user names
         /// </returns>
-        public string[] GetRoleMembers( Guid roleId ) {
-            return RoleProvider.GetUsersInRole( CurrentPortalSettings.PortalAlias, roleId );
+        public string[] GetRoleMembers( Guid roleId, string portalAlias ) {
+            return RoleProvider.GetUsersInRole( portalAlias /*CurrentPortalSettings.PortalAlias*/, roleId );
         }
 
         /// <summary>
@@ -276,9 +278,9 @@ namespace Rainbow.Framework.Users.Data {
         /// </summary>
         /// <param name="userName">the user's email</param>
         /// <returns></returns>
-        public RainbowUser GetSingleUser( string userName ) {
+        public RainbowUser GetSingleUser( string userName, string portalAlias ) {
 
-            RainbowUser user = MembershipProvider.GetUser( CurrentPortalSettings.PortalAlias, userName, true ) as RainbowUser;
+            RainbowUser user = MembershipProvider.GetUser( portalAlias /*CurrentPortalSettings.PortalAlias*/, userName, true ) as RainbowUser;
             return user;
         }
 
@@ -286,9 +288,10 @@ namespace Rainbow.Framework.Users.Data {
         /// The GetUser method returns the collection of users.
         /// </summary>
         /// <returns></returns>
-        public MembershipUserCollection GetUsers() {
+        public MembershipUserCollection GetUsers(string portalAlias)
+        {
             int totalRecords;
-            return MembershipProvider.GetAllUsers( CurrentPortalSettings.PortalAlias, 0, int.MaxValue, out totalRecords );
+            return MembershipProvider.GetAllUsers( /*CurrentPortalSettings.PortalAlias*/ portalAlias, 0, int.MaxValue, out totalRecords );
         }
 
         /// <summary>
@@ -296,9 +299,9 @@ namespace Rainbow.Framework.Users.Data {
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <returns></returns>
-        public int GetUsersCount( int portalID ) {
+        public int GetUsersCount( int portalID, string portalAlias ) {
             int totalRecords;
-            MembershipProvider.GetAllUsers( CurrentPortalSettings.PortalAlias, 0, 1, out totalRecords );
+            MembershipProvider.GetAllUsers( /*CurrentPortalSettings.PortalAlias*/ portalAlias, 0, 1, out totalRecords );
             return totalRecords;
         }
 
@@ -312,9 +315,9 @@ namespace Rainbow.Framework.Users.Data {
         /// <param name="password">The password.</param>
         /// <returns></returns>
         /// <remarks>UserLogin Stored Procedure</remarks>
-        public MembershipUser Login( string email, string password ) {
+        public MembershipUser Login( string email, string password, string portalAlias ) {
 
-            string userName = MembershipProvider.GetUserNameByEmail( CurrentPortalSettings.PortalAlias, email );
+            string userName = MembershipProvider.GetUserNameByEmail( /*CurrentPortalSettings.PortalAlias*/ portalAlias, email );
 
             if ( string.IsNullOrEmpty( userName ) ) {
                 return null;
@@ -390,7 +393,7 @@ namespace Rainbow.Framework.Users.Data {
         /// <param name="sendNewsletter">if set to <c>true</c> [send newsletter].</param>
         public void UpdateUser( Guid userID, string name, string company, string address, string city,
                                string zip, string countryID, int stateID, string phone,
-                               string fax, string password, string email, bool sendNewsletter ) {
+                               string fax, string password, string email, bool sendNewsletter, string portalAlias ) {
 
             RainbowUser user = MembershipProvider.GetUser( userID, true ) as RainbowUser;
             user.Email = email;
@@ -405,7 +408,7 @@ namespace Rainbow.Framework.Users.Data {
             user.Phone = phone;
             user.SendNewsletter = sendNewsletter;
 
-            MembershipProvider.ChangePassword( CurrentPortalSettings.PortalAlias, user.UserName, user.GetPassword(), password );
+            MembershipProvider.ChangePassword( /*CurrentPortalSettings.PortalAlias*/ portalAlias, user.UserName, user.GetPassword(), password );
             MembershipProvider.UpdateUser( user );
         }
 

@@ -105,8 +105,8 @@ namespace Rainbow.Framework.Settings
             }
             else
             {
-                FindAliasFromUri(request.Url, ref alias, Config.DefaultPortal, Config.RemoveWWW, Config.RemoveTLD,
-                                 Config.SecondLevelDomains);
+                FindAliasFromUri(request.Url, ref alias, Config.DefaultPortal, Config.RemoveDomainPrefixes, Config.RemoveTLD,
+                                 Config.SecondLevelDomains, Config.DomainPrefixes);
                 return;
             }
         }
@@ -228,8 +228,8 @@ namespace Rainbow.Framework.Settings
         /// <param name="removeTLD">if set to <c>true</c> [remove TLD].</param>
         /// <param name="secondLevelDomains">The second level domains.</param>
         /// <returns></returns>
-        public static bool FindAliasFromUri(Uri requestUri, ref string alias, string defaultPortal, bool removeWWW,
-                                            bool removeTLD, string secondLevelDomains)
+        public static bool FindAliasFromUri(Uri requestUri, ref string alias, string defaultPortal, bool removeDomainPrefixes,
+                                            bool removeTLD, string secondLevelDomains, string domainPrefixes)
         {
             // if request is to localhost, return default portal 
             if (requestUri.IsLoopback)
@@ -243,10 +243,13 @@ namespace Rainbow.Framework.Settings
 
                 // step 1: split hostname into parts
                 ArrayList hostPartsList = new ArrayList(requestUri.Host.Split(hostDelim));
+                ArrayList prefixes = new ArrayList(domainPrefixes.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries));
 
                 // step 2: do we need to remove "www"?
-                if (removeWWW && hostPartsList[0].ToString() == "www")
+                if (removeDomainPrefixes && prefixes.Contains(hostPartsList[0].ToString()))
+                {
                     hostPartsList.RemoveAt(0);
+                }
 
                 // step 3: do we need to remove TLD?
                 if (removeTLD)

@@ -309,9 +309,9 @@ namespace Rainbow.Framework.Settings
 		/// Removes "www." when attempting to derive alias from hostname
 		/// <br/>
 		/// Default value: true</summary>
-		public static bool RemoveWWW
+		public static bool RemoveDomainPrefixes
 		{
-			get { return GetBoolean("RemoveWWW", true); }
+            get { return GetBoolean("RemoveDomainPrefixes", true); }
 		}
 
 		/// <summary>
@@ -322,6 +322,14 @@ namespace Rainbow.Framework.Settings
 		{
 			get { return GetBoolean("RemoveTLD", true); }
 		}
+
+        /// <summary>
+        /// List of possible domain prefixes to use for removing when attempting to derive alias from hostname
+        /// </summary>
+        public static string DomainPrefixes
+        {
+            get { return GetString("DomainPrefixes", "www;local", false); }
+        }
 
 		/// <summary>
 		/// List of possible second level domains to use for removing two-part TLDs when attempting to derive alias from hostname

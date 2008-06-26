@@ -16,6 +16,12 @@ namespace Rainbow.AdminAll
     {
         private int currentPortalID = -1;
 
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+            CurrentCache.Remove(Key.PortalSettings());
+        }
+
         /// <summary>
         /// Handles the Load event of the Page control.
         /// </summary>

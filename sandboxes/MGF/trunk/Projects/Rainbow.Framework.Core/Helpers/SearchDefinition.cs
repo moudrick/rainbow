@@ -315,7 +315,7 @@ namespace Rainbow.Framework.Helpers
             select.Append(" itm INNER JOIN ");
             select.Append("rb_Modules mod ON itm.ModuleID = mod.ModuleID INNER JOIN ");
             select.Append("rb_ModuleDefinitions modDef ON mod.ModuleDefID = modDef.ModuleDefID INNER JOIN ");
-            select.Append("rb_Tabs tab ON mod.TabID = tab.TabID INNER JOIN ");
+            select.Append("rb_Pages tab ON mod.TabID = tab.PageID INNER JOIN ");
             select.Append("rb_GeneralModuleDefinitions genModDef ON modDef.GeneralModDefID = genModDef.GeneralModDefID ");
             //			if (topicName.Length != 0)
             //				select.Append("INNER JOIN rb_ModuleSettings modSet ON mod.ModuleID = modSet.ModuleID");

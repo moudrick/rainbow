@@ -11,6 +11,8 @@ using ImageButton=Rainbow.Framework.Web.UI.WebControls.ImageButton;
 using Label=Rainbow.Framework.Web.UI.WebControls.Label;
 using System.Collections;
 using Rainbow.Framework.Providers.RainbowRoleProvider;
+using Rainbow.Framework.Site.Configuration;
+using System.Web;
 
 namespace Rainbow.Content.Web.Modules {
     public partial class Roles : PortalModuleControl {
@@ -72,6 +74,15 @@ namespace Rainbow.Content.Web.Modules {
             }
         }
 
+        private PortalSettings CurrentPortalSettings
+        {
+            get
+            {
+                return (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+            }
+        }
+
+
         /// <summary>
         /// Handles the Click event of the AddRole control.
         /// </summary>
@@ -81,7 +92,8 @@ namespace Rainbow.Content.Web.Modules {
             //http://sourceforge.net/tracker/index.php?func=detail&aid=828580&group_id=66837&atid=515929
             try {
                 // Add a new role to the database
-                new UsersDB().AddRole( txtNewRole.Text );
+
+                new UsersDB().AddRole(CurrentPortalSettings.PortalAlias,  txtNewRole.Text );
 
                 txtNewRole.Text = string.Empty;
             }

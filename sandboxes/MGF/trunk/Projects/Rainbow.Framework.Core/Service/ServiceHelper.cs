@@ -371,12 +371,12 @@ namespace Rainbow.Framework.Services
             select.Append(" ,Mod.ModuleID AS ModuleID");
             select.Append(" ,Mod.ModuleTitle AS ModuleTitle");
             select.Append(
-                " FROM rb_Tabs Tab, rb_Tabs ParTab, rb_Modules Mod, rb_ModuleDefinitions ModDef, rb_GeneralModuleDefinitions GenModDef");
+                " FROM rb_Pages Tab, rb_Pages ParTab, rb_Modules Mod, rb_ModuleDefinitions ModDef, rb_GeneralModuleDefinitions GenModDef");
             select.Append(" WHERE");
             select.Append(" Tab.AuthorizedRoles like '%All Users%'");
             select.Append(" AND Tab.ParentPageID *= ParTab.PageID");
             // Jakob: I just luv this outer join! (It's so easy!)
-            select.Append(" AND Tab.PageID = Mod.PageID");
+            select.Append(" AND Tab.PageID = Mod.TabID");
             select.Append(" AND Mod.ModuleDefID = ModDef.ModuleDefID");
             select.Append(" AND ModDef.GeneralModDefID = GenModDef.GeneralModDefID");
             select.Append(" AND Mod.AuthorizedViewRoles like '%All Users%'");

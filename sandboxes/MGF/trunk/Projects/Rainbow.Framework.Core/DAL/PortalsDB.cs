@@ -100,6 +100,14 @@ namespace Rainbow.Framework.Site.Data
             }
         }
 
+        private PortalSettings CurrentPortalSettings
+        {
+            get
+            {
+                return (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+            }
+        }
+
         /// <summary>
         /// The CreatePortal method create a new basic portal based on solutions table.
         /// </summary>
@@ -121,6 +129,7 @@ namespace Rainbow.Framework.Site.Data
             // Create a new portal
             portalID = AddPortal(portalAlias, portalName, portalPath);
             // get module definitions
+            
             SqlDataReader myReader;
             myReader = modules.GetSolutionModuleDefinitions(solutionID);
 
@@ -144,11 +153,11 @@ namespace Rainbow.Framework.Site.Data
                 // Create the stradmin User for the new portal
                 UsersDB User = new UsersDB();
                 // Create the "Admins" role for the new portal
-                Guid roleID = User.AddRole( "Admins" );
-                Guid userID = User.AddUser( stradmin, AdminEmail, stradmin );
+                Guid roleID = User.AddRole( portalAlias, "Admins" );
+                Guid userID = User.AddUser( stradmin, AdminEmail, stradmin, portalAlias );
                 // Create a new row in a many to many table (userroles)
                 // giving the "admins" role to the stradmin user
-                User.AddUserRole( roleID, userID );
+                User.AddUserRole( roleID, userID, portalAlias );
             }
             // Create a new Page "home"
             int homePageID = tabs.AddPage(portalID, "Home", 1);

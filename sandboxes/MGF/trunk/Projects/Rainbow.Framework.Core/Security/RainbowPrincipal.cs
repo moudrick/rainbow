@@ -38,7 +38,8 @@ namespace Rainbow.Framework.Security {
                 }
 
                 UsersDB users = new UsersDB();
-                return users.GetSingleUser( base.Identity.Name );
+                PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+                return users.GetSingleUser( base.Identity.Name, portalSettings.PortalAlias  );
             }
         }
 

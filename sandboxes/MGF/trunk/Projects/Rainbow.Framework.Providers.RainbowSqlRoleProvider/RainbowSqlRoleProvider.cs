@@ -865,8 +865,9 @@ namespace Rainbow.Framework.Providers.RainbowRoleProvider {
             string message = "An exception occurred communicating with the data source.\n\n";
             message += "Action: " + action + "\n\n";
             message += "Exception: " + e.ToString();
+            ErrorHandler.Publish(LogLevel.Error, message, e);
 
-            log.WriteEntry( message );
+            //log.WriteEntry( message );
         }
 
 

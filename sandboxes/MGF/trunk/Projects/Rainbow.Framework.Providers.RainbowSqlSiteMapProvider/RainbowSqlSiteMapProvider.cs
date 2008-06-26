@@ -128,7 +128,14 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
 			lock (_lock) {
 				// Return immediately if this method has been called before
 				if (_root != null) {
-					return _root;
+                    if (_root["PortalID"] == PortalID)
+                    {
+                        return _root;
+                    }
+                    else
+                    {
+                        this.Clear();
+                    }
 				}
 
 				// Query the database for site map nodes
@@ -162,6 +169,7 @@ namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
 					if (reader.Read()){
 						// Create an empty root node and add it to the site map
                         _root = new SiteMapNode(this, _rootNodeID.ToString(), HttpUrlBuilder.BuildUrl(), string.Empty, string.Empty, new string[] { "All Users" } , null, null, null);
+                        _root["PortalID"] = PortalID;
                         _nodes.Add(_rootNodeID, _root);
 						AddNode(_root, null);
 

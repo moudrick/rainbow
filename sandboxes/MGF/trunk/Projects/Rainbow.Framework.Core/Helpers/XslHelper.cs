@@ -32,7 +32,7 @@ namespace Rainbow.Framework.Helpers
                 portalSettings = ( PortalSettings )HttpContext.Current.Items["PortalSettings"];
 
                 Rainbow.Framework.Users.Data.UsersDB users = new Rainbow.Framework.Users.Data.UsersDB();
-                user = users.GetSingleUser( HttpContext.Current.User.Identity.Name );
+                user = users.GetSingleUser( HttpContext.Current.User.Identity.Name, portalSettings.PortalAlias );
             }
         }
 
