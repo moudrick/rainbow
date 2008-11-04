@@ -959,6 +959,16 @@ namespace Rainbow.Framework.Settings
 			get { return GetInteger("SettingsGroupingHeight", 350); }
 		}
 
+
+        /// <summary>
+        /// Indicates if all tokens in topleveldomains and/or secondleveldomains 
+        /// must be removed from url.
+        /// </summary>
+        public static bool ForceFullRemoving
+		{
+            get { return GetBoolean("ForceFullRemoving", false); }
+		}
+
 		#endregion
 	}
 }

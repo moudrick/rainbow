@@ -106,7 +106,7 @@ namespace Rainbow.Framework.Settings
             else
             {
                 FindAliasFromUri(request.Url, ref alias, Config.DefaultPortal, Config.RemoveDomainPrefixes, Config.RemoveTLD,
-                                 Config.SecondLevelDomains, Config.DomainPrefixes);
+                                 Config.SecondLevelDomains, Config.DomainPrefixes, Config.ForceFullRemoving);
                 return;
             }
         }
@@ -229,54 +229,59 @@ namespace Rainbow.Framework.Settings
         /// <param name="secondLevelDomains">The second level domains.</param>
         /// <returns></returns>
         public static bool FindAliasFromUri(Uri requestUri, ref string alias, string defaultPortal, bool removeDomainPrefixes,
-                                            bool removeTLD, string secondLevelDomains, string domainPrefixes)
+                                            bool removeTLD, string secondLevelDomains, string domainPrefixes, bool forceFullRemoving)
         {
             // if request is to localhost, return default portal 
-            if (requestUri.IsLoopback)
-            {
+            if (requestUri.IsLoopback) {
                 alias = defaultPortal;
+
                 return true;
-            }
-            else if (requestUri.HostNameType == UriHostNameType.Dns) // get it from hostname
+
+            } else if (requestUri.HostNameType == UriHostNameType.Dns) // get it from hostname
             {
-                char[] hostDelim = new char[] {'.'};
+                char[] hostDelim = new char[] { '.' };
 
                 // step 1: split hostname into parts
                 ArrayList hostPartsList = new ArrayList(requestUri.Host.Split(hostDelim));
                 ArrayList prefixes = new ArrayList(domainPrefixes.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries));
+                ArrayList gTLDs = new ArrayList(secondLevelDomains.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries));
 
-                // step 2: do we need to remove "www"?
-                if (removeDomainPrefixes && prefixes.Contains(hostPartsList[0].ToString()))
-                {
-                    hostPartsList.RemoveAt(0);
-                }
-
-                // step 3: do we need to remove TLD?
-                if (removeTLD)
-                {
-                    hostPartsList.Reverse();
-                    if (hostPartsList.Count > 2 && hostPartsList[0].ToString().Length == 2)
-                    {
-                        // this is a ccTLD, so need to check if next segment is a pseudo-gTLD
-                        ArrayList gTLDs = new ArrayList(secondLevelDomains.Split(new char[] {';'}));
-                        if (gTLDs.Contains(hostPartsList[1].ToString()))
-                            hostPartsList.RemoveRange(0, 2);
-                        else
-                            hostPartsList.RemoveAt(0);
+                if (forceFullRemoving) {
+                    //Saco todo 
+                    alias = string.Empty;
+                    foreach (string s in hostPartsList){
+                        if (!((prefixes.Contains(s) && removeDomainPrefixes)  || (gTLDs.Contains(s) && removeTLD ))) {
+                            alias += s;
+                        }
                     }
-                    else
-                    {
+                } else {
+
+                    // step 2: do we need to remove "www"?
+                    if (removeDomainPrefixes && prefixes.Contains(hostPartsList[0].ToString())) {
                         hostPartsList.RemoveAt(0);
                     }
-                    hostPartsList.Reverse();
+
+                    // step 3: do we need to remove TLD?
+                    if (removeTLD) {
+                        hostPartsList.Reverse();
+                        if (hostPartsList.Count > 2 && hostPartsList[0].ToString().Length == 2) {
+                            // this is a ccTLD, so need to check if next segment is a pseudo-gTLD                            
+                            if (gTLDs.Contains(hostPartsList[1].ToString()))
+                                hostPartsList.RemoveRange(0, 2);
+                            else
+                                hostPartsList.RemoveAt(0);
+                        } else {
+                            hostPartsList.RemoveAt(0);
+                        }
+                        hostPartsList.Reverse();
+                    }
+
+                    // step 4: re-assemble the remaining parts
+                    alias = String.Join(".", (string[])hostPartsList.ToArray(typeof(String)));
                 }
 
-                // step 4: re-assemble the remaining parts
-                alias = String.Join(".", (string[]) hostPartsList.ToArray(typeof (String)));
                 return true;
-            }
-            else
-            {
+            } else {
                 alias = defaultPortal;
                 return true;
             }
