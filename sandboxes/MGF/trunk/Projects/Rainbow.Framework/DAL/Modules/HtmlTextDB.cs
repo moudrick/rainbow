@@ -10,6 +10,60 @@ namespace Rainbow.Framework.Content.Data
     /// </summary>
     public class HtmlTextDB
     {
+
+        /// <summary>
+        /// GetHtmlTextString
+        /// </summary>
+        /// <param name="moduleID">The module ID.</param>
+        /// <param name="version">The version.</param>
+        /// <returns></returns>
+        public string GetHtmlTextString(int moduleID, WorkFlowVersion version, out string mobileSummary, out string mobileDetails)
+        {
+            string strDesktopHtml = string.Empty;
+
+            // Create Instance of Connection and Command Object
+            using (SqlConnection myConnection = Config.SqlConnectionString) {
+                using (SqlCommand myCommand = new SqlCommand("rb_GetHtmlText", myConnection)) {
+                    // Mark the Command as a SPROC
+                    myCommand.CommandType = CommandType.StoredProcedure;
+
+                    // Add Parameters to SPROC
+                    SqlParameter parameterModuleID = new SqlParameter("@ModuleID", SqlDbType.Int, 4);
+                    parameterModuleID.Value = moduleID;
+                    myCommand.Parameters.Add(parameterModuleID);
+
+                    // Change by Geert.Audenaert@Syntegra.Com
+                    // Date: 6/2/2003
+                    SqlParameter parameterWorkflowVersion = new SqlParameter("@WorkflowVersion", SqlDbType.Int, 4);
+                    parameterWorkflowVersion.Value = (int)version;
+                    myCommand.Parameters.Add(parameterWorkflowVersion);
+                    // End Change Geert.Audenaert@Syntegra.Com
+
+                    // Execute the command
+                    myConnection.Open();
+
+                    using (SqlDataReader result = myCommand.ExecuteReader(CommandBehavior.CloseConnection)) {
+                        try {
+                            if (result.Read()) {
+                                strDesktopHtml = result["DesktopHtml"].ToString();
+                                mobileSummary = result["MobileSummary"].ToString();
+                                mobileDetails = result["MobileDetails"].ToString();
+                            } else {
+                                mobileSummary = string.Empty;
+                                mobileDetails = string.Empty;
+                            }
+                        } finally {
+                            // Close the datareader
+                            result.Close();
+                        }
+                    }
+                }
+            }
+
+            return strDesktopHtml;
+        }
+
+
         /// <summary>
         /// GetHtmlTextString
         /// </summary>
