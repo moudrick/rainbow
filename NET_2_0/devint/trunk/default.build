@@ -400,7 +400,7 @@ blnScriptPermissions = "True"
 blnExecutePermissions = "True"
 blnWritePermissions = "True"
 blnReadPermissions = "True"
-blnIntegratedWindowsAuthentication = "True"
+blnIntegratedWindowsAuthentication = "False" '"True"
 
 Dim strIisSiteRoot: strIisSiteRoot = "IIS://localhost/W3SVC/" &amp; webSiteIdentifier &amp; "/Root"
 Wscript.echo ("strIisSiteRoot = " &amp; strIisSiteRoot)
@@ -451,8 +451,8 @@ objVirtualDirectory.AccessRead = blnReadPermissions
 objVirtualDirectory.AccessExecute = blnExecutePermissions
 objVirtualDirectory.AuthNTLM = blnIntegratedWindowsAuthentication
 objVirtualDirectory.AuthAnonymous =True
-objVirtualDirectory.AnonymousUserName=strOwner
-objVirtualDirectory.AnonymousPasswordSync=True
+' objVirtualDirectory.AnonymousUserName=strOwner
+' objVirtualDirectory.AnonymousPasswordSync=True
 objVirtualDirectory.AppCreate (True)
 objVirtualDirectory.SetInfo 
 
