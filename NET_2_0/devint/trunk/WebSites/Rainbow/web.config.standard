@@ -545,7 +545,7 @@
       </layout>
     </appender>
     <!-- Create db table before using it -->
-    <appender name="SqlNetAppender" type="log4net.Appender.ADONetAppender">
+    <appender name="SqlNetAppender" type="log4net.Appender.AdoNetAppender">
       <param name="BufferSize" value="100" />
       <param name="ConnectionType" value="System.Data.SqlClient.SqlConnection, System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
       <!-- ConnectionString must match your database -->

@@ -20,11 +20,13 @@
 @echo Press Ctrl-C to abort or Enter to continue
 @pause
 
-@set DBNAME=(local)
+@set DBINSTANCE=(local)
 @rem Uncomment the following line for MSDE
-@rem set DBNAME=(local)\NETSDK
+@rem set DBINSTANCE=(local)\NETSDK
 
-@osql -S %DBNAME% -E -n -i createdb_bat.sql
+@set DBNAME=Rainbow
+
+@osql -S %DBINSTANCE% -E -n -i createdb_bat.sql
 
 @echo '
 @echo ------------------------------------------------------------
@@ -41,16 +43,17 @@
 @set ASPNET_ACCOUNT=%COMPUTERNAME%\ASPNET
 @set OUTPUT_FILE=aspnetusr_bat.sql
 
-@echo use [Rainbow]>%OUTPUT_FILE%
+@echo use [%DBNAME%]>%OUTPUT_FILE%
 @echo exec sp_grantlogin '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
 @echo exec sp_addrolemember 'db_owner', '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
 @echo exec sp_grantdbaccess '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
 
-@osql -S %DBNAME% -d Rainbow -E -n -i %OUTPUT_FILE%
+@osql -S %DBINSTANCE% -d %DBNAME% -E -n -i %OUTPUT_FILE%
 
 @endlocal
 @echo ------------------------------------------------------------
 @echo '
+
 
 @echo '
 @echo *******************************************************
@@ -63,14 +66,34 @@
 @echo '
 @pause
 @setlocal
-@set ASPNET_ACCOUNT=%COMPUTERNAME%\ASPNET
+@set ASPNET_ACCOUNT=NT AUTHORITY\NETWORK SERVICE
 @set OUTPUT_FILE=webserverusr.sql
-@echo use [Rainbow]>%OUTPUT_FILE%
-@echo exec sp_grantlogin 'NT AUTHORITY\NETWORK SERVICE'>>%OUTPUT_FILE%
-@echo exec sp_addrolemember 'db_owner', 'NT AUTHORITY\NETWORK SERVICE'>>%OUTPUT_FILE%
-@echo exec sp_grantdbaccess 'NT AUTHORITY\NETWORK SERVICE'>>%OUTPUT_FILE%
+@echo use [%DBNAME%]>%OUTPUT_FILE%
+@echo exec sp_grantlogin '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
+@echo exec sp_addrolemember 'db_owner', '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
+@echo exec sp_grantdbaccess '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
 
-@osql -S %DBNAME% -d Rainbow -E -n -i %OUTPUT_FILE%
+@osql -S %DBINSTANCE% -d %DBNAME% -E -n -i %OUTPUT_FILE%
+
+@endlocal
+
+
+@echo '
+@echo *******************************************************
+@echo                 Windows 7 with IIS7 ONLY
+@echo        Press Ctrl-C to abort or Enter to continue
+@echo *******************************************************
+@echo '
+@pause
+@setlocal
+@set ASPNET_ACCOUNT=IIS APPPOOL\Classic .NET AppPool
+@set OUTPUT_FILE=webserverusr.sql
+@echo use [%DBNAME%]>%OUTPUT_FILE%
+@echo exec sp_grantlogin '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
+@echo exec sp_addrolemember 'db_owner', '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
+@echo exec sp_grantdbaccess '%ASPNET_ACCOUNT%'>>%OUTPUT_FILE%
+
+@osql -S %DBINSTANCE% -d %DBNAME% -E -n -i %OUTPUT_FILE%
 
 @endlocal
 
