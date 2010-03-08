@@ -657,7 +657,19 @@ namespace Rainbow.Framework.Security
                 MembershipUser user = users.GetSingleUser( HttpContext.Current.User.Identity.Name );
 				
 				// get user id
-				Guid uid = (Guid)user.ProviderUserKey;
+				// by ghalib ghniem Guid uid = (Guid)user.ProviderUserKey;
+				//ghalib ghniem admin@itinfoplus.com 22 February 2010
+				//cause already in context there is the old user name, and there is no
+				//data retrived when we ask for that old one that we changed it, it ( Guid userId = (Guid)user.ProviderUserKey;) will make an exception
+				//so we have to check before we say  Guid userId = (Guid)user.ProviderUserKey;
+
+				Guid uid = Guid.Empty;
+
+				if (user != null)
+				{
+					uid = (Guid)user.ProviderUserKey;
+				}
+				//end of ghalib changes
 
 				if ( !uid.Equals(Guid.Empty) )
 				{
