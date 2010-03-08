@@ -157,7 +157,8 @@ namespace Rainbow.Content.Web.Modules
                     moduleDesktopSrc = ModuleSettings.GetModuleDesktopSrc(moduleID);
                 if (moduleDesktopSrc.Length == 0)
                     moduleDesktopSrc =
-                        Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/CoreModules/Register", RegisterPage);
+                        // by admin@itinfoplus.com Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/CoreModules/Register", RegisterPage);
+                        Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/CoreModules/Register", "registerfull.ascx");
                 Control myControl = LoadControl(moduleDesktopSrc);
 
                 PortalModuleControl p = ((PortalModuleControl) myControl);
