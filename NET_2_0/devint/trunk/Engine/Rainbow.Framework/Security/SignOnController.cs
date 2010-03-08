@@ -166,8 +166,19 @@ namespace Rainbow.Framework.Security
                 Portal portal = PortalProvider.Instance.CurrentPortal;
                 MembershipUser user = RainbowMembershipProvider.Instance
                     .GetSingleUser(portal.PortalAlias, httpContext.User.Identity.Name);
+                //ghalib ghniem admin@itinfoplus.com 22 February 2010
+                //cause already in context there is the old user name, and there is no
+                //data retrived when we ask for that old one that we changed it, it ( Guid userId = (Guid)user.ProviderUserKey;) will make an exception
+                //so we have to check before we say  Guid userId = (Guid)user.ProviderUserKey;
 
-                Guid userId = (Guid) user.ProviderUserKey;
+                Guid userId = Guid.Empty;
+
+                if (user != null)
+                {
+                     userId = (Guid)user.ProviderUserKey;
+                }
+                //end of ghalib changes
+
                 if (!userId.Equals(Guid.Empty))
                 {
                     try
