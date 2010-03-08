@@ -158,11 +158,15 @@ namespace Rainbow.Content.Web.Modules
                 }
                 if (moduleDesktopSrc.Length == 0)
                 {
-                    moduleDesktopSrc = registerPage;
+                    moduleDesktopSrc = //registerPage;
                     //Changed by moudrick to fix the issue 27
                     //commented out path combinig and left just assignment since it is already combined in the default configuration
                     //http://code.google.com/p/rainbow/issues/detail?id=27
                     //Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/CoreModules/Register", RegisterPage);
+
+                        // issue #78 - inserted to keep code bases as close as possible with stage.
+                        // by admin@itinfoplus.com Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/CoreModules/Register", RegisterPage);
+                        Path.WebPathCombine(Path.ApplicationRoot, "DesktopModules/CoreModules/Register", "RegisterFull.ascx");
                 }
                 Control control = LoadControl(moduleDesktopSrc);
 
