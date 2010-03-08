@@ -34,7 +34,7 @@ JOIN THE RAINBOW DEVELOPER TEAM
 
 Note that you can use the Tortoise GUI to do the above also. Please contact
 Alexey Moudrick at moudrick@gmail.com if you have questions about using 
-Novell Forge, Subversion, or Tortoise to branch from devint and create your
+Google Code, Subversion, or Tortoise to branch from devint and create your
 local copy.  Alexey can will also help merge changes back into devint when
 they are ready to be tested with other developer's code.
 

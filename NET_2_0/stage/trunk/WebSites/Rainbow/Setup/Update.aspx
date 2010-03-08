@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'DTD/xhtml1-transitional.dtd' >
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-    <title>Rainbow Portal 2.0 Alpha 3 Install | Update</title>
+    <title>Rainbow Portal 2.0 Beta 2 Install | Update</title>
    
 </head>
 <body >
@@ -18,7 +18,7 @@
                         <table class="Normal" id="infopaneltable" cellspacing="1" cellpadding="1" width="450"
                             border="0">
                             <tr>
-                                <td><b><u>Rainbow Portal 2.0 Alpha 3.1 Install | Update</u></b>
+                                <td><b><u>Rainbow Portal 2.0 Beta 2 Install | Update</u></b>
                                     <p>
                                         Welcome to the portal update page. This page is shown automatically&nbsp;at first
                                         setup and when an update to the database is needed.

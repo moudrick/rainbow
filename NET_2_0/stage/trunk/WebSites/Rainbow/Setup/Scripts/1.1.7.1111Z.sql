@@ -220,7 +220,7 @@ GO
 --	@ModuleID, @TabID, @GeneralModDefID, @ModuleOrder, @PaneName, @ModuleTitle, @AuthorizedEditRoles, @AuthorizedViewRoles, @AuthorizedAddRoles, @AuthorizedDeleteRoles, @AuthorizedPropertiesRoles, @CacheTime, @ShowMobile, @AuthorizedPublishingRoles, @NewVersion, @SupportWorkflow, @AuthorizedApproveRoles, @WorkflowState, @LastModified, @LastEditor, @StagingLastModified, @StagingLastEditor, @SupportCollapsable, @ShowEveryWhere
 EXEC rb_Modules_IU 	1, 1, '{A0F1F62B-FDC7-4DE5-BBAD-A5DAF31D960A}', -1, N'LeftPane', N'Login', N'Admins;', N'Unauthenticated Users;Admins;', N'Admins;', N'Admins;', N'Admins;', 0, 0, NULL, 1, 0, NULL, 0, '', NULL, '', NULL, 0, 0, N'Admins;', N'Admins;'
 GO
-EXEC rb_Modules_IU 	2,	1,	'{0B113F51-FEA3-499A-98E7-7B83C192FDBB}', 1, N'ContentPane', N'Rainbow Portal 2.0 Beta 1 released!', N'Admins', N'All Users', N'Admins', N'Admins', N'Admins', 0, 0, NULL, 0, 0, NULL, NULL, '', NULL, '', NULL, 0, 0, N'Admins;', N'Admins;'
+EXEC rb_Modules_IU 	2,	1,	'{0B113F51-FEA3-499A-98E7-7B83C192FDBB}', 1, N'ContentPane', N'Rainbow Portal 2.0 Beta 2 released!', N'Admins', N'All Users', N'Admins', N'Admins', N'Admins', 0, 0, NULL, 0, 0, NULL, NULL, '', NULL, '', NULL, 0, 0, N'Admins;', N'Admins;'
 GO
 EXEC rb_Modules_IU 	3,	1,	'{25E3290E-3B9A-4302-9384-9CA01243C00F}', 2, N'LeftPane', N'Language', N'Admins', N'All Users', N'Admins', N'Admins', N'Admins', 0, 0, NULL, 0, 0, NULL, NULL, '', NULL, '', NULL, 0, 0, N'Admins;', N'Admins;'
 GO
@@ -432,7 +432,7 @@ GO
 
 INSERT rb_HtmlText_st
 (ModuleID, DesktopHtml, MobileSummary, MobileDetails)
-VALUES (2, 'Welcome to Rainbow Portal 2.0 Beta 1.<br>This is a beta version and should not be deployed in production.  <br>You can start immediately to add content to your site. Type on the login box on your left <pre>admin@rainbowportal.net</pre> as email and <pre>admin</pre> as password. Enjoy.', '', '')
+VALUES (2, 'Welcome to Rainbow Portal 2.0 Beta 2.<br>This is a beta version and should not be deployed in production.  <br>You can start immediately to add content to your site. Type on the login box on your left <pre>admin@rainbowportal.net</pre> as email and <pre>admin</pre> as password. Enjoy.', '', '')
 GO
 
 IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[rb_ModuleSettings_IU]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)

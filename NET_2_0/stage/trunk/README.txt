@@ -1,6 +1,22 @@
-Rainbow Portal 2.0 Beta 1 Developer Preview 
+Rainbow Portal 2.0 Beta 2 Developer Preview 
 
-Changes :
+Beta 2 Changes:
+
+Contributions by ghalib68:
+
+Issue 79:  	 Error when work with contents / add module to page ....
+Issue 78:  	 Error when working with user management after installation
+Issue 80:  	 Error when working with user management after installation - Part II
+
+
+Known issue:
+
+fix for Build error: the namespace 'Resources' already contains a definintion for 'Rainbow'
+see http://community.rainbowportal.net/forums/thread/14825.aspx
+see http://community.rainbowportal.net/forums/thread/14694.aspx
+
+
+Beta 1 Changes :
 
 Contributions by the MGF Team (Lead: José Arrarte) :
 
@@ -45,5 +61,5 @@ Please report new issues : http://code.google.com/p/rainbow/issues/list
 Make sure your issue isnt listed before you report.
 
 
-Released by : Eric Ramseur
-2-7-2007
+Released by : Alexey Moudrick
+2010-03-08
