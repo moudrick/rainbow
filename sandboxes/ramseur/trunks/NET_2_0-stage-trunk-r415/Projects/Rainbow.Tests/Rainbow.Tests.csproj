@@ -98,7 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="App.config.standard" />
     <None Include="Scripts\MembershipRoleProvidersData.sql" />
     <None Include="Scripts\SetUp.sql" />
     <None Include="Scripts\TearDown.sql" />
