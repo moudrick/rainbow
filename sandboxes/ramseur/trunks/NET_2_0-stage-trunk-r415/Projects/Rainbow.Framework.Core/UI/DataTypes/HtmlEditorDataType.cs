@@ -127,7 +127,7 @@ namespace Rainbow.Framework.DataTypes
         /// <value></value>
         public override object DataSource
         {
-            get { return "Plain Text;FCKEditor V2;FreeTextBox;ActiveUp HtmlTextBox".Split(';'); }
+            get { return "Plain Text;CK Editor;FreeTextBox;ActiveUp HtmlTextBox".Split(';'); }
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Rainbow.Framework.DataTypes
         public IHtmlEditor GetEditor(Control PlaceHolderHTMLEditor, int moduleID, bool showUpload,
                                      PortalSettings portalSettings)
         {
-            IHtmlEditor DesktopText;
+            IHtmlEditor DesktopText = null;
             string moduleImageFolder = ModuleSettings.GetModuleSettings(moduleID)["MODULE_IMAGE_FOLDER"].ToString();
 
             // Grabs ID from the place holder so that a unique editor is on the page if more than one
@@ -209,24 +209,25 @@ namespace Rainbow.Framework.DataTypes
 
             switch (Value)
             {
-                case "FCKEditor":  // return fck anyway
-                case "FCKEditor V2": // jviladiu@portalservices.net 2004/11/09.
+                case "CK Editor":
+
                     FCKTextBoxV2 fckv2 = new FCKTextBoxV2();
-                    fckv2.ImageFolder = moduleImageFolder;
-                    fckv2.BasePath = Path.WebPathCombine(Path.ApplicationRoot, "aspnet_client/FCKEditorV2/");
-                    fckv2.AutoDetectLanguage = false;
-                    fckv2.DefaultLanguage = portalSettings.PortalUILanguage.Name.Substring(0, 2);
-//					fckv2.EditorAreaCSS = portalSettings.GetCurrentTheme().CssFile;
-                    fckv2.ID = string.Concat("FCKTextBox", uniqueID);
-                    string conector = Path.ApplicationRootPath("/app_support/FCKconnectorV2.aspx");
-                    fckv2.ImageBrowserURL =
-                        Path.WebPathCombine(Path.ApplicationRoot,
-                                            "aspnet_client/FCKEditorV2/editor/filemanager/browser.html?Type=Image&Connector=" +
-                                            conector);
-                    fckv2.LinkBrowserURL =
-                        Path.WebPathCombine(Path.ApplicationRoot,
-                                            "aspnet_client/FCKEditorV2/editor/filemanager/browser.html?Connector=" +
-                                            conector);
+                    
+//                    fckv2.ImageFolder = moduleImageFolder;
+//                    fckv2.BasePath = Path.WebPathCombine(Path.ApplicationRoot, "aspnet_client/FCKEditorV2/");
+//                    fckv2.AutoDetectLanguage = false;
+//                    fckv2.DefaultLanguage = portalSettings.PortalUILanguage.Name.Substring(0, 2);
+////					fckv2.EditorAreaCSS = portalSettings.GetCurrentTheme().CssFile;
+//                    fckv2.ID = string.Concat("FCKTextBox", uniqueID);
+//                    string conector = Path.ApplicationRootPath("/app_support/FCKconnectorV2.aspx");
+//                    fckv2.ImageBrowserURL =
+//                        Path.WebPathCombine(Path.ApplicationRoot,
+//                                            "aspnet_client/FCKEditorV2/editor/filemanager/browser.html?Type=Image&Connector=" +
+//                                            conector);
+//                    fckv2.LinkBrowserURL =
+//                        Path.WebPathCombine(Path.ApplicationRoot,
+//                                            "aspnet_client/FCKEditorV2/editor/filemanager/browser.html?Connector=" +
+//                                            conector);
                     DesktopText = ((IHtmlEditor) fckv2);
                     break;
 

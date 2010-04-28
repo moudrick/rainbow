@@ -85,6 +85,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\SolpartWebControls.dll</HintPath>
     </Reference>
+    <Reference Include="SyrinxCkEditor">
+      <HintPath>..\..\Libs\SyrinxCkEditor.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -257,7 +260,9 @@
     <Compile Include="UI\WebControls\DesktopModuleTitle.cs" />
     <Compile Include="UI\WebControls\DesktopNavigation.cs" />
     <Compile Include="UI\WebControls\DesktopPanes.cs" />
-    <Compile Include="UI\WebControls\FCKTextBox.cs" />
+    <Compile Include="UI\WebControls\FCKTextBox.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="UI\WebControls\FlashMovie.cs" />
     <Compile Include="UI\WebControls\FreeTextBox.cs" />
     <Compile Include="UI\WebControls\HeaderImage.cs" />

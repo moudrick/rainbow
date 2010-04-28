@@ -5,20 +5,24 @@ using Rainbow.Framework.Site.Configuration;
 namespace Rainbow.Framework.Web.UI.WebControls
 {
     /// <summary>
-    /// FCKTextBoxV2 is a wrapper for FredCK.FCKeditorV2.
+    /// Syrinx is a wrapper for CkEditor.
     /// </summary>
     [History("jviladiu@portalservices.net", "2004/11/09", "Implementation of FCKEditor Version 2 in Rainbow")]
-    public class FCKTextBoxV2 : FCKeditor, IHtmlEditor
+    [History("ramseur@gmail.com", "2010/04/28", "Implementation of CKEditor  in Rainbow")]
+    public class FCKTextBoxV2 : Syrinx.Gui.AspNet.CkEditor, IHtmlEditor
     {
         /// <summary>
         /// Control Text
         /// </summary>
         /// <value></value>
-        public string Text
-        {
-            get { return Value; }
-            set { Value = value; }
-        }
+        //public string Text
+        //{
+        //    get { return Text; }
+        //    set {  = value; }
+
+        //}
+
+       
 
         private string _imageFolder = string.Empty;
 
