@@ -11,9 +11,9 @@
 
 <script runat="server">
 /**************************************************************
-Title: Rainbow Web Installer v.1.0
+Title: Rainbow Web Installer v.2.0
 Author: Rahul Singh (Anant), rahul.singh@anant.us
-Date: 9.8.2006
+Date: 4.28.2010
 
 Special thanks to the following projects from which I borrowed ideas from.
 1. CommunityServer.org - First ASP.NET Open Source project with a web based installer.
@@ -22,6 +22,7 @@ Special thanks to the following projects from which I borrowed ideas from.
 
 The original file for this installer came from CommunityServer.
 I later used a few functions from it to complete this installer. 
+
 
 
 ***************************************************************/
