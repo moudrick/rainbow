@@ -127,7 +127,7 @@ namespace Rainbow.Framework.DataTypes
         /// <value></value>
         public override object DataSource
         {
-            get { return "Plain Text;FCKEditor;FCKEditor V2;FreeTextBox;ActiveUp HtmlTextBox".Split(';'); }
+            get { return "Plain Text;FCKEditor V2;FreeTextBox;ActiveUp HtmlTextBox".Split(';'); }
         }
 
         /// <summary>
@@ -209,6 +209,7 @@ namespace Rainbow.Framework.DataTypes
 
             switch (Value)
             {
+                case "FCKEditor":  // return fck anyway
                 case "FCKEditor V2": // jviladiu@portalservices.net 2004/11/09.
                     FCKTextBoxV2 fckv2 = new FCKTextBoxV2();
                     fckv2.ImageFolder = moduleImageFolder;
@@ -231,14 +232,19 @@ namespace Rainbow.Framework.DataTypes
 
                 case "FreeTextBox":
                     FreeTextBox freeText = new FreeTextBox();
+                    // Update of FreeTextBox 04/28/2010
+                    freeText.JavaScriptLocation = FreeTextBoxControls.ResourceLocation.ExternalFile;
+                    freeText.ToolbarImagesLocation = FreeTextBoxControls.ResourceLocation.ExternalFile;
+                    freeText.ButtonImagesLocation = FreeTextBoxControls.ResourceLocation.ExternalFile;
+                    freeText.SupportFolder = Path.WebPathCombine( Path.ApplicationFullPath,"aspnet_client/FreeTextBox");
                     freeText.ToolbarLayout =
                         "ParagraphMenu,FontFacesMenu,FontSizesMenu,FontForeColorPicker,FontBackColorPicker,FontForeColorsMenu|Bold,Italic,Underline,Strikethrough;Superscript,Subscript,RemoveFormat;CreateLink,Unlink|JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent;InsertRule|Delete,Cut,Copy,Paste;Undo,Redo,Print;InsertTable,InsertTableColumnAfter,InsertTableColumnBefore,InsertTableRowAfter,InsertTableRowBefore,DeleteTableColumn,DeleteTableRow,InsertImageFromGallery";
-                    freeText.ImageGalleryUrl =
-                        Path.WebPathCombine(Path.ApplicationFullPath,
-                                            "app_support/ftb.imagegallery.aspx?rif={0}&cif={0}&mID=" +
-                                            moduleID.ToString());
-                    freeText.ImageFolder = moduleImageFolder;
-                    freeText.ImageGalleryPath = Path.WebPathCombine(portalSettings.PortalFullPath, freeText.ImageFolder);
+                    /** freeText.ImageGalleryUrl =
+                         Path.WebPathCombine(Path.ApplicationFullPath,
+                                             "app_support/ftb.imagegallery.aspx?rif={0}&cif={0}&mID=" +
+                                             moduleID.ToString());
+                     freeText.ImageFolder = moduleImageFolder;
+                     freeText.ImageGalleryPath = Path.WebPathCombine(portalSettings.PortalFullPath, freeText.ImageFolder);**/
                     freeText.ID = string.Concat("FreeText", uniqueID);
                     freeText.Language = getFtbLanguage(portalSettings.PortalUILanguage.Name);
                     DesktopText = ((IHtmlEditor) freeText);
