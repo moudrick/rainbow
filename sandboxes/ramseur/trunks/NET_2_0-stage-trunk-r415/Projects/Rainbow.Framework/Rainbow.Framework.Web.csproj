@@ -13,7 +13,7 @@
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -33,6 +33,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -110,9 +111,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAL\Modules\BooksDB.cs" />
     <Compile Include="DAL\Modules\AnnouncementsDB.cs" />
-    <Compile Include="DesktopModules\Articles\Articles.ascx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="DesktopModules\Articles\Articles.ascx.cs" />
     <Compile Include="DAL\Modules\ArticlesDB.cs" />
     <Compile Include="DAL\Modules\BlogDB.cs" />
     <Compile Include="DAL\Modules\ComponentModuleDB.cs" />
@@ -136,15 +135,11 @@
     <Compile Include="DAL\Modules\BlacklistDB.cs" />
     <Compile Include="DAL\Modules\NewsletterDB.cs" />
     <Compile Include="DAL\Modules\NewsletterHtmlTextDB.cs" />
-    <Compile Include="DesktopModules\OneFileModule\OneFileModule.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="DesktopModules\OneFileModule\OneFileModule.cs" />
     <Compile Include="DAL\Modules\PicturesDB.cs" />
     <Compile Include="DAL\Modules\SecureDocumentDB.cs" />
     <Compile Include="Content\Security\SpecialRoles.cs" />
-    <Compile Include="DesktopModules\Shortcut\Shortcut.ascx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="DesktopModules\Shortcut\Shortcut.ascx.cs" />
     <Compile Include="Content\Security\RandomPasswordLDAP.cs" />
     <Compile Include="Content\Security\RandomPassword.cs" />
     <Compile Include="DesktopModules\SimpleMenu\SimpleMenuType.cs">
@@ -159,27 +154,13 @@
     <Compile Include="DAL\Modules\UserDefinedTableDB.cs" />
     <Compile Include="DesktopModules\UserDefinedTable\UserDefinedTableType.cs" />
     <Compile Include="DesktopModules\UserDefinedTable\UserDefinedTableXSL.cs" />
-    <Compile Include="UI\AddEditItemPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\AddItemPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\EditItemPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\PropertyPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\PropertyPageCustom.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\SecurePage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\ViewItemPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="UI\AddEditItemPage.cs" />
+    <Compile Include="UI\AddItemPage.cs" />
+    <Compile Include="UI\EditItemPage.cs" />
+    <Compile Include="UI\PropertyPage.cs" />
+    <Compile Include="UI\PropertyPageCustom.cs" />
+    <Compile Include="UI\SecurePage.cs" />
+    <Compile Include="UI\ViewItemPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rainbow.Framework.Core\Rainbow.Framework.Core.csproj">
