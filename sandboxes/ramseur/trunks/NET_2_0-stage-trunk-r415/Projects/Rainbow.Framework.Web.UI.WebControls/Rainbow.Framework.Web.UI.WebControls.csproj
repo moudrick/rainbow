@@ -89,8 +89,12 @@
     <Compile Include="Modules\EmailForm.ascx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Modules\Pictures.ascx.cs" />
-    <Compile Include="Modules\RegisterFull.ascx.cs" />
+    <Compile Include="Modules\Pictures.ascx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Modules\RegisterFull.ascx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsTable.cs" />
   </ItemGroup>
