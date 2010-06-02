@@ -1,7 +1,7 @@
 -- see issue #78
 -- http://code.google.com/p/rainbow/issues/detail?id=78
 
-ALTER PROCEDURE [dbo].[aspnet_Membership_UpdateUser]
+ALTER PROCEDURE [aspnet_Membership_UpdateUser]
     @ApplicationName      nvarchar(256),
     @UserName             nvarchar(256),
     @Email                nvarchar(256),

@@ -1,7 +1,7 @@
 -- see issue #79
 -- http://code.google.com/p/rainbow/issues/detail?id=79
 
-ALTER PROCEDURE [dbo].[rb_ContentMgr_GetModuleInstances]
+ALTER PROCEDURE [rb_ContentMgr_GetModuleInstances]
 (
     @ItemID     int,
     @PortalID   int
@@ -27,7 +27,7 @@ AS
 GO
 
 
-ALTER PROCEDURE [dbo].[rb_ContentMgr_GetModuleInstancesExc]
+ALTER PROCEDURE [rb_ContentMgr_GetModuleInstancesExc]
 (
     @ItemID     int,
     @ExcludeItem  int,
