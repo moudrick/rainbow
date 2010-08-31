@@ -1,61 +1,86 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Rainbow.Framework.Data.Entities;
-using Rainbow.Framework.Data.DataSources;
-
-namespace Rainbow.Framework.Data
+﻿namespace Rainbow.Framework.Data
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Rainbow.Framework.Data.DataSources;
+    using Rainbow.Framework.Interfaces;
+
     /// <summary>
     /// Generic Pages Data Access Class
     /// </summary>
-    public sealed class Pages
+    public static class Pages
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Pages"/> class.
-        /// </summary>
-        private Pages() { }
+        #region Constants and Fields
 
         /// <summary>
-        /// source provider instance
+        ///     source provider instance
         /// </summary>
-        static PageProvider source = PageProvider.Instance();
+        private static readonly PageProvider Source = PageProvider.Instance();
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Add a Page to the data source.
         /// </summary>
-        /// <param name="Id">The page id.</param>
-        /// <param name="name">The name.</param>
-        public static void Add(Guid id, string name) //add params as appropriate
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        public static void Add(Guid id, string name)
         {
-            IPage record = source.CreateNew() as IPage;  //create new entity in memory
+            // add params as appropriate
+            var record = Source.CreateNew(); // create new entity in memory
 
-            //add values
+            // add values
             record.Id = id;
             record.Name = name;
 
-
-            source.Add(record);     //add record to data source in memory
-            source.CommitChanges();     //write changes back to data source
+            Source.Add(record); // add record to data source in memory
+            Source.CommitChanges(); // write changes back to data source
         }
 
-        public static void Remove(Guid id)
-        {
-            IPage record = source.GetById(id) as IPage;  //grab page from data source as IPage interface object
-
-            source.Remove(record);      //delete record from data source in memory
-            source.CommitChanges();     //write changes back to data source
-        }
-
+        /// <summary>
+        /// The load all.
+        /// </summary>
+        /// <returns>
+        /// </returns>
         public static List<IPage> LoadAll()
         {
-            return new List<IPage>(source.GetAll());
+            return new List<IPage>(Source.GetAll());
         }
 
+        /// <summary>
+        /// The load by id.
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <returns>
+        /// </returns>
         public static IPage LoadById(Guid id)
         {
-            return source.GetById(id);
+            return Source.GetById(id);
         }
+
+        /// <summary>
+        /// The remove.
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        public static void Remove(Guid id)
+        {
+            var record = Source.GetById(id); // grab page from data source as IPage interface object
+
+            Source.Remove(record); // delete record from data source in memory
+            Source.CommitChanges(); // write changes back to data source
+        }
+
+        #endregion
     }
 }

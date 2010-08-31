@@ -1,208 +1,246 @@
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Web;
-using System.Web.UI;
-
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+    using System.Web;
+    using System.Web.UI;
+
     /// <summary>
     /// New 'stub' class for backward compatibility. Modules that add the ModuleTitle in 
-    /// their init event will be adding this. New PortalModuleControl class pulls needed 
-    /// values from this class. New modules should not use this class at all, setting 
-    /// title properties directly on PortalModuleContol instead. Jes1111.
+    ///     their init event will be adding this. New PortalModuleControl class pulls needed 
+    ///     values from this class. New modules should not use this class at all, setting 
+    ///     title properties directly on PortalModuleContol instead. Jes1111.
     /// </summary>
-    [
-        DefaultProperty("Title"),
-            ToolboxData("<{0}:DesktopModuleTitle runat=server></{0}:DesktopModuleTitle>"),
-            Designer("Rainbow.Framework.UI.Design.DesktopModuleTitleDesigner")
-        ]
-    public class DesktopModuleTitle : Control // WebControl - only needs generic Control now
+    [DefaultProperty("Title")]
+    [ToolboxData("<{0}:DesktopModuleTitle runat=server></{0}:DesktopModuleTitle>")]
+    [Designer("Rainbow.Framework.UI.Design.DesktopModuleTitleDesigner")]
+    public class DesktopModuleTitle : Control
     {
+        // WebControl - only needs generic Control now
+        // GG: added 08/04/2004 by groskrg@versifit.com to support custom buttons in the title bar
+        #region Constants and Fields
+
         /// <summary>
-        /// Constructor
+        /// The edit text.
+        /// </summary>
+        private string editText = "EDIT";
+
+        /// <summary>
+        /// The edit url.
+        /// </summary>
+        private string editUrl = string.Empty;
+
+        /// <summary>
+        /// The properties text.
+        /// </summary>
+        private string propertiesText = "PROPERTIES";
+
+        /// <summary>
+        /// The properties url.
+        /// </summary>
+        private string propertiesUrl = "~/DesktopModules/CoreModules/Admin/PropertyPage.aspx";
+
+        /// <summary>
+        /// The tab id.
+        /// </summary>
+        private int tabId;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref = "DesktopModuleTitle" /> class. 
+        ///     Constructor
         /// </summary>
         [Obsolete("Use the corresponding properties in PortalModuleControl")]
         public DesktopModuleTitle()
         {
-            EnableViewState = false; // No need for viewstate
+            this.Title = string.Empty;
+            this.SecurityUrl = "~/DesktopModules/CoreModules/Admin/ModuleSettings.aspx";
+            this.SecurityText = "SECURITY";
+            this.SecurityTarget = string.Empty;
+            this.PropertiesTarget = string.Empty;
+            this.EditTarget = string.Empty;
+            this.CustomButtons = new ArrayList(3);
+            this.AddUrl = string.Empty;
+            this.AddText = "ADD";
+            this.AddTarget = string.Empty;
+            this.EnableViewState = false; // No need for viewstate
         }
 
-        /// <summary>
-        /// Init Event 
-        /// </summary>
-        protected override void OnInit(EventArgs e)
-        {
-            Visible = false;
-        }
+        #endregion
 
-        // GG: added 08/04/2004 by groskrg@versifit.com	to support custom buttons in the title bar
-        private ArrayList _CustomButtons = new ArrayList(3);
+        #region Properties
 
         /// <summary>
-        /// CustomButtons class allows modules to add their own buttons from Code.
+        ///     Gets or sets the add target.
         /// </summary>
-        public ArrayList CustomButtons
-        {
-            get { return _CustomButtons; }
-            set { _CustomButtons = value; }
-        }
-
-        private string _EditText = "EDIT";
-        private string _EditUrl = string.Empty;
-        private string _EditTarget = string.Empty;
+        /// <value>The add target.</value>
+        public string AddTarget { get; set; }
 
         /// <summary>
-        /// Text for Edit Link
+        ///     Gets or sets the add text.
         /// </summary>
+        /// <value>The add text.</value>
+        public string AddText { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the add URL.
+        /// </summary>
+        /// <value>The add URL.</value>
+        public string AddUrl { get; set; }
+
+        /// <summary>
+        ///     Gets or sets CustomButtons class allows modules to add their own buttons from Code.
+        /// </summary>
+        public ArrayList CustomButtons { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the edit target.
+        /// </summary>
+        /// <value>The edit target.</value>
+        public string EditTarget { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the edit text.
+        /// </summary>
+        /// <value>The edit text.</value>
         public string EditText
         {
-            get { return _EditText; }
-            set { _EditText = value; }
+            get
+            {
+                return this.editText;
+            }
+
+            set
+            {
+                this.editText = value;
+            }
         }
 
         /// <summary>
-        /// Url for Edit Link
+        ///     Gets or sets the edit URL.
         /// </summary>
+        /// <value>The edit URL.</value>
         public string EditUrl
         {
-            get { return _EditUrl; }
-            set { _EditUrl = value; }
+            get
+            {
+                return this.editUrl;
+            }
+
+            set
+            {
+                this.editUrl = value;
+            }
         }
 
         /// <summary>
-        /// Target frame/page for Edit Link
+        ///     Gets current linked module ID if applicable
         /// </summary>
-        public string EditTarget
-        {
-            get { return _EditTarget; }
-            set { _EditTarget = value; }
-        }
-
-        private string _AddText = "ADD";
-        private string _AddUrl = string.Empty;
-        private string _AddTarget = string.Empty;
-
-        /// <summary>
-        /// Text for Add Link
-        /// </summary>
-        public string AddText
-        {
-            get { return _AddText; }
-            set { _AddText = value; }
-        }
-
-        /// <summary>
-        /// Url for Add Link
-        /// </summary>
-        public string AddUrl
-        {
-            get { return _AddUrl; }
-            set { _AddUrl = value; }
-        }
-
-        /// <summary>
-        /// Target frame/page for Add Link
-        /// </summary>
-        public string AddTarget
-        {
-            get { return _AddTarget; }
-            set { _AddTarget = value; }
-        }
-
-        private string _PropertiesText = "PROPERTIES";
-        private string _PropertiesUrl = "~/DesktopModules/CoreModules/Admin/PropertyPage.aspx";
-        private string _PropertiesTarget = string.Empty;
-
-        /// <summary>
-        /// Text for Properties Link
-        /// </summary>
-        public string PropertiesText
-        {
-            get { return _PropertiesText; }
-            set { _PropertiesText = value; }
-        }
-
-        /// <summary>
-        /// Url for Properties Link
-        /// </summary>
-        public string PropertiesUrl
-        {
-            get { return _PropertiesUrl; }
-            set { _PropertiesUrl = value; }
-        }
-
-        /// <summary>
-        /// Target frame/page for Properties Link
-        /// </summary>
-        public string PropertiesTarget
-        {
-            get { return _PropertiesTarget; }
-            set { _PropertiesTarget = value; }
-        }
-
-        private string _SecurityText = "SECURITY";
-        private string _SecurityUrl = "~/DesktopModules/CoreModules/Admin/ModuleSettings.aspx";
-        private string _SecurityTarget = string.Empty;
-
-        /// <summary>
-        /// Text for Security Link
-        /// </summary>
-        public string SecurityText
-        {
-            get { return _SecurityText; }
-            set { _SecurityText = value; }
-        }
-
-        /// <summary>
-        /// Url for Security Link
-        /// </summary>
-        public string SecurityUrl
-        {
-            get { return _SecurityUrl; }
-            set { _SecurityUrl = value; }
-        }
-
-        /// <summary>
-        /// Target frame/page for Security Link
-        /// </summary>
-        public string SecurityTarget
-        {
-            get { return _SecurityTarget; }
-            set { _SecurityTarget = value; }
-        }
-
-
-        private string title = string.Empty;
-
-        /// <summary>
-        /// Title
-        /// </summary>
-        public string Title
-        {
-            get { return title; }
-            set { title = value; }
-        }
-
-        private int _tabID = 0;
-
-        /// <summary>
-        /// Stores current linked module ID if applicable
-        /// </summary>
+        /// <value>The page ID.</value>
         public int PageID
         {
             get
             {
-                if (_tabID == 0)
+                if (this.tabId == 0)
                 {
                     // Determine PageID if specified
                     if (HttpContext.Current != null && HttpContext.Current.Request.Params["PageID"] != null)
-                        _tabID = Int32.Parse(HttpContext.Current.Request.Params["PageID"]);
+                    {
+                        this.tabId = Int32.Parse(HttpContext.Current.Request.Params["PageID"]);
+                    }
                     else if (HttpContext.Current != null && HttpContext.Current.Request.Params["TabID"] != null)
-                        _tabID = Int32.Parse(HttpContext.Current.Request.Params["TabID"]);
+                    {
+                        this.tabId = Int32.Parse(HttpContext.Current.Request.Params["TabID"]);
+                    }
                 }
-                return _tabID;
+
+                return this.tabId;
             }
         }
+
+        /// <summary>
+        ///     Gets or sets the properties target.
+        /// </summary>
+        /// <value>The properties target.</value>
+        public string PropertiesTarget { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the properties text.
+        /// </summary>
+        /// <value>The properties text.</value>
+        public string PropertiesText
+        {
+            get
+            {
+                return this.propertiesText;
+            }
+
+            set
+            {
+                this.propertiesText = value;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the properties URL.
+        /// </summary>
+        /// <value>The properties URL.</value>
+        public string PropertiesUrl
+        {
+            get
+            {
+                return this.propertiesUrl;
+            }
+
+            set
+            {
+                this.propertiesUrl = value;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the security target.
+        /// </summary>
+        /// <value>The security target.</value>
+        public string SecurityTarget { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the security text.
+        /// </summary>
+        /// <value>The security text.</value>
+        public string SecurityText { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the security URL.
+        /// </summary>
+        /// <value>The security URL.</value>
+        public string SecurityUrl { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the title.
+        /// </summary>
+        /// <value>The title.</value>
+        public string Title { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
+        /// </summary>
+        /// <param name="e">
+        /// An <see cref="T:System.EventArgs"/> object that contains the event data.
+        /// </param>
+        protected override void OnInit(EventArgs e)
+        {
+            this.Visible = false;
+        }
+
+        #endregion
     }
 }

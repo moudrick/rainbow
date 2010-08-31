@@ -1,65 +1,46 @@
-using System;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-
 namespace Rainbow.Framework.Web.UI.WebControls
 {
-    // This is a control found on the web but unfortunately I've lost the site address. If found please add here to give credit.
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+
     /// <summary>
     /// You can place this control an an aspx page (DesktopDefault.aspx for example) and it will retain scroll position on postback
     /// </summary>
+    /// <remarks>
+    /// This is a control found on the web but unfortunately I've lost the site address. If found please add here to give credit.
+    /// </remarks>
     public class SmartScroller : Control
     {
-        private HtmlForm m_theForm = new HtmlForm();
+        #region Constants and Fields
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SmartScroller"/> class.
+        /// The html form.
         /// </summary>
-        public SmartScroller()
-        {
-        }
+        private HtmlForm theForm = new HtmlForm();
 
-        /// <summary>
-        /// Gets the server form.
-        /// </summary>
-        /// <param name="parent">The parent.</param>
-        /// <returns></returns>
-        private HtmlForm GetServerForm(ControlCollection parent)
-        {
-            foreach (Control child in parent)
-            {
-                Type t = child.GetType();
-                if (t == typeof (HtmlForm))
-                    return (HtmlForm) child;
+        #endregion
 
-                if (t == typeof (CustomForm))
-                    return (CustomForm) child;
-
-                if (child.HasControls())
-                    return GetServerForm(child.Controls);
-            }
-
-            return new HtmlForm();
-        }
+        #region Methods
 
         /// <summary>
         /// Raises the <see cref="E:System.Web.UI.Control.Init"></see> event.
         /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
+        /// <param name="e">
+        /// An <see cref="T:System.EventArgs"></see> object that contains the event data.
+        /// </param>
         protected override void OnInit(EventArgs e)
         {
-            m_theForm = GetServerForm(Page.Controls);
+            this.theForm = this.GetServerForm(this.Page.Controls);
 
-            HtmlInputHidden hidScrollLeft = new HtmlInputHidden();
-            hidScrollLeft.ID = "scrollLeft";
+            var hidScrollLeft = new HtmlInputHidden { ID = "scrollLeft" };
 
-            HtmlInputHidden hidScrollTop = new HtmlInputHidden();
-            hidScrollTop.ID = "scrollTop";
+            var hidScrollTop = new HtmlInputHidden { ID = "scrollTop" };
 
-            Controls.Add(hidScrollLeft);
-            Controls.Add(hidScrollTop);
+            this.Controls.Add(hidScrollLeft);
+            this.Controls.Add(hidScrollTop);
 
-            string scriptString =
+            var scriptString =
                 @"
 <script language = ""javascript"">
 <!--
@@ -84,9 +65,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
       scrollY = window.pageYOffset;
     }
     document.forms[""" +
-                m_theForm.ClientID + @"""]." + hidScrollLeft.ClientID + @".value = scrollX;
+                this.theForm.ClientID + @"""]." + hidScrollLeft.ClientID + @".value = scrollX;
     document.forms[""" +
-                m_theForm.ClientID + @"""]." + hidScrollTop.ClientID +
+                this.theForm.ClientID + @"""]." + hidScrollTop.ClientID +
                 @".value = scrollY;
   }
 
@@ -94,9 +75,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
   function smartScroller_Scroll()
   {
     var x = document.forms[""" +
-                m_theForm.ClientID + @"""]." + hidScrollLeft.ClientID + @".value;
+                this.theForm.ClientID + @"""]." + hidScrollLeft.ClientID + @".value;
     var y = document.forms[""" +
-                m_theForm.ClientID + @"""]." + hidScrollTop.ClientID +
+                this.theForm.ClientID + @"""]." + hidScrollTop.ClientID +
                 @".value;
     window.scrollTo(x, y);
   }
@@ -109,18 +90,50 @@ namespace Rainbow.Framework.Web.UI.WebControls
 // -->
 </script>";
 
-
-            Page.ClientScript.RegisterStartupScript(GetType(), "SmartScroller", scriptString);
+            this.Page.ClientScript.RegisterStartupScript(this.GetType(), "SmartScroller", scriptString);
         }
 
         /// <summary>
         /// Sends server control content to a provided <see cref="T:System.Web.UI.HtmlTextWriter"></see> object, which writes the content to be rendered on the client.
         /// </summary>
-        /// <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter"></see> object that receives the server control content.</param>
+        /// <param name="writer">
+        /// The <see cref="T:System.Web.UI.HtmlTextWriter"></see> object that receives the server control content.
+        /// </param>
         protected override void Render(HtmlTextWriter writer)
         {
-            Page.VerifyRenderingInServerForm(this);
+            this.Page.VerifyRenderingInServerForm(this);
             base.Render(writer);
         }
+
+        /// <summary>
+        /// Gets the server form.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <returns>The html form.</returns>
+        private HtmlForm GetServerForm(ControlCollection parent)
+        {
+            foreach (Control child in parent)
+            {
+                var t = child.GetType();
+                if (t == typeof(HtmlForm))
+                {
+                    return (HtmlForm)child;
+                }
+
+                if (t == typeof(CustomForm))
+                {
+                    return (CustomForm)child;
+                }
+
+                if (child.HasControls())
+                {
+                    return this.GetServerForm(child.Controls);
+                }
+            }
+
+            return new HtmlForm();
+        }
+
+        #endregion
     }
 }

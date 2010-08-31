@@ -14,6 +14,8 @@ using Rainbow.Framework.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    using System.Web.UI.WebControls;
+
     /// <summary>
     /// Menu navigation inherits from Menu Webcontrol
     /// and adds the 'glue' to link to tabs tree.
@@ -92,7 +94,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             Category("Data"),
                 PersistenceMode(PersistenceMode.Attribute)
             ]
-        public int ParentPageID
+        public int ParentPageId
         {
             get { return _definedParentTab; }
             set

@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBC370A1-8A28-4011-9197-9263BE5474F9}"
 	ProjectSection(SolutionItems) = preProject
 		Brief.Install.Instructions.txt = Brief.Install.Instructions.txt
@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Rainbow.vsmdi = Rainbow.vsmdi
 		README.txt = README.txt
 		VersionInfo.cs = VersionInfo.cs
-		VersionInfo.cs.standard = VersionInfo.cs.standard
+		VersionInfo.cs = VersionInfo.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSites", "WebSites", "{DCD8AFCE-7572-4A1D-AD78-0A6469A415C0}"
@@ -23,6 +23,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BaseProviders", "BaseProviders", "{49412FEE-758A-4C49-9280-FEB3E2D8870E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MsSql", "MsSql", "{19BF7B6E-893D-43A9-8D0D-887730547E5E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{B063DD3C-A3EC-407D-85A2-99BB7FF6D5BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Web.UI.WebControls", "Projects\Rainbow.Framework.Web.UI.WebControls\Rainbow.Framework.Web.UI.WebControls.csproj", "{38DA41AC-51C1-4E4D-9610-5370309C2C1E}"
 EndProject
@@ -48,7 +50,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.UrlRewrit
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Rainbow", "WebSites\Rainbow", "{F67D24F2-C7E6-4C2E-B7FC-BD99E5754E5D}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFramework = "3.5"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		ProjectReferences = "{552CCD6F-0A37-4366-9E3E-22B2A0221584}|Rainbow.Framework.Core.dll;{D3A33CF8-2AEB-4E6E-AC2E-01C676F33616}|Rainbow.Framework.dll;{10F33732-1ACA-492A-A737-DF8314CE7499}|Rainbow.Framework.UrlRewriting.dll;{2C0213D4-00E2-4AD6-B82A-0D42ADAB3FAA}|Rainbow.Framework.Providers.RainbowSqlRoleProvider.dll;{2F8EA798-5AD7-44BA-A062-8B5721D9CFD1}|Rainbow.Framework.Providers.RainbowSqlMembershipProvider.dll;{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF}|Rainbow.Framework.Providers.RainbowSqlSiteMapProvider.dll;{38DA41AC-51C1-4E4D-9610-5370309C2C1E}|Rainbow.Framework.Web.UI.WebControls.dll;{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}|Rainbow.Framework.Providers.RainbowMembershipProvider.dll;{599A82DE-6BBE-47D2-BB28-190ABD3CD702}|Rainbow.Framework.Providers.RainbowRoleProvider.dll;{C667C927-2E8B-44C6-BAC8-85EC9447C2C4}|Rainbow.Framework.Providers.RainbowSiteMapProvider.dll;{F3D1132B-139D-47FF-911E-10A950B572D0}|Rainbow.Framework.Data.MsSql.dll;{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}|Rainbow.Framework.Data.dll;{FCE09C4F-8A6A-43AE-9BF4-ECD60EBB6FF6}|Rainbow.Framework.Configuration.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/Rainbow"
 		Debug.AspNetCompiler.PhysicalPath = "WebSites\Rainbow\"
@@ -69,8 +71,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Rainbow", "WebSites\Rainbow
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Data.MsSql", "Projects\Rainbow.Framework.Data.MsSql\Rainbow.Framework.Data.MsSql.csproj", "{F3D1132B-139D-47FF-911E-10A950B572D0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{B063DD3C-A3EC-407D-85A2-99BB7FF6D5BF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Data", "Projects\Rainbow.Framework.Data\Rainbow.Framework.Data.csproj", "{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Helpers", "Projects\Rainbow.Framework.Helpers\Rainbow.Framework.Helpers.csproj", "{72C090B5-4EEE-4D04-80D6-DD59912B367F}"
@@ -80,6 +80,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Security", "Projects\Rainbow.Framework.Security\Rainbow.Framework.Security.csproj", "{C39465AB-102F-4F74-8A6C-8D87323185EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raibow.Framework.Data.MsSql.SS", "Raibow.Framework.Data.MsSql.SubSonic\Raibow.Framework.Data.MsSql.SS.csproj", "{828ADA27-4CB8-4316-97C1-01D96E84C2B3}"
+	GlobalSection(SpecExplorer.ActivityCompletionStatus) = preSolution
+		SpecExplorer.ActivityCompletionStatus = 
+	EndGlobalSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Data.Tests", "Rainbow.Framework.Data.Tests\Rainbow.Framework.Data.Tests.csproj", "{1492BF9E-CB0B-4892-8F03-50968F08DB81}"
 EndProject
@@ -310,10 +313,13 @@ Global
 		{19BF7B6E-893D-43A9-8D0D-887730547E5E} = {B063DD3C-A3EC-407D-85A2-99BB7FF6D5BF}
 		{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE} = {B063DD3C-A3EC-407D-85A2-99BB7FF6D5BF}
 		{1492BF9E-CB0B-4892-8F03-50968F08DB81} = {B063DD3C-A3EC-407D-85A2-99BB7FF6D5BF}
+		{2F8EA798-5AD7-44BA-A062-8B5721D9CFD1} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
 		{2C0213D4-00E2-4AD6-B82A-0D42ADAB3FAA} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
 		{82DF20C4-7B3D-476F-8AC5-4ADEE73FCCFF} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
 		{F3D1132B-139D-47FF-911E-10A950B572D0} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
-		{2F8EA798-5AD7-44BA-A062-8B5721D9CFD1} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
 		{828ADA27-4CB8-4316-97C1-01D96E84C2B3} = {19BF7B6E-893D-43A9-8D0D-887730547E5E}
+	EndGlobalSection
+	GlobalSection(SpecExplorer.ActivityCompletionStatus) = preSolution
+		SpecExplorer.ActivityCompletionStatus = 
 	EndGlobalSection
 EndGlobal

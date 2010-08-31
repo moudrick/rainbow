@@ -1,187 +1,250 @@
-using System;
-using System.Threading;
-using System.Web;
-using Rainbow.Framework.Configuration;
-//===============================================================================
-//
-//	Base Logic Layer
-//
-//	Rainbow.Framework.BLL.Utils
-//
-//
-//===============================================================================
+// ===============================================================================
+// Base Logic Layer
+// Rainbow.Framework.BLL.Utils
+// ===============================================================================
 // Cookie Utility
-//===============================================================================
+// ===============================================================================
+
 namespace Rainbow.Framework.BLL.Utils
 {
-	/// <summary>
-	/// This class manages cookies
-	/// </summary>
-	sealed class CookieUtil
-	{
-		//  minutes
-		static TimeSpan expire_ = new TimeSpan(0, 0, 25, 0);
-		/// <summary>
-		/// Initializes the <see cref="CookieUtil"/> class.
-		/// </summary>
-		static CookieUtil()
-		{
-		}
+    using System;
+    using System.Threading;
+    using System.Web;
 
-		#region Interface
+    /// <summary>
+    /// This class manages cookies
+    /// </summary>
+    internal sealed class CookieUtil
+    {
+        // minutes
+        #region Constants and Fields
 
-		/// <summary>
-		/// Cookie Expiration
-		/// </summary>
-		/// <value>The expiration.</value>
-		public static TimeSpan Expiration
-		{
-			get
-			{
-				return expire_;
-			}
-			set
-			{
-				Monitor.Enter(expire_);
-				expire_ = value;
-				Monitor.Exit(expire_);
-			}
-		} // end of Expiration
+        /// <summary>
+        /// The expire.
+        /// </summary>
+        private static TimeSpan expire = new TimeSpan(0, 0, 25, 0);
 
-		/// <summary>
-		/// Add the cookie
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="value">The value.</param>
-		public static void Add(string name, object value)
-		{
+        #endregion
 
-			// is it a string
-			if (value is string)
-				addImpl(name, (string)value);
-		} // end of Add
+        #region Properties
 
-		/// <summary>
-		/// Add the cookie
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="value">The value.</param>
-		public static void Add(int name, object value)
-		{
+        /// <summary>
+        ///     Gets or sets Cookie Expiration
+        /// </summary>
+        /// <value>The expiration.</value>
+        public static TimeSpan Expiration
+        {
+            get
+            {
+                return expire;
+            }
 
-			// is it a string
-			if (value != null && value is string)
-				addImpl(name.ToString(), (string)value);
-		} // end of Add
+            set
+            {
+                Monitor.Enter(expire);
+                expire = value;
+                Monitor.Exit(expire);
+            }
+        }
 
-		/// <summary>
-		/// Remove a cookie
-		/// </summary>
-		/// <param name="name">The name.</param>
-		public static void Remove(int name)
-		{
-			removeImpl(name.ToString());
-		} // end of Remove
+        #endregion
 
-		/// <summary>
-		/// Remove a Cookie
-		/// </summary>
-		/// <param name="name">The name.</param>
-		public static void Remove(string name)
-		{
-			removeImpl(name);
-		} // end of Remove
+        // end of Expiration
+        #region Public Methods
 
-		/// <summary>
-		/// Retrieve a cookie
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public static object Retrieve(int name)
-		{
-			return retrieveImpl(name.ToString());
-		} // end of Retrieve
+        /// <summary>
+        /// Add the cookie
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        public static void Add(string name, object value)
+        {
+            // is it a string
+            if (value is string)
+            {
+                AddImpl(name, (string)value);
+            }
+        }
 
-		/// <summary>
-		/// Retrieve a Cookie
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public static object Retrieve(string name)
-		{
-			return retrieveImpl(name);
-		} // end of Retrieve
+        // end of Add
 
-		#endregion
+        /// <summary>
+        /// Add the cookie
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        public static void Add(int name, object value)
+        {
+            // is it a string
+            if (value != null && value is string)
+            {
+                AddImpl(name.ToString(), (string)value);
+            }
+        }
 
-		#region Implementation
+        // end of Add
 
-		// Implementation
-		/// <summary>
-		/// Implemented the remove functionality
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		private static object retrieveImpl(string name)
-		{
-			return HttpContext.Current.Request.Cookies[name];
-		} // end of retrieveImpl
+        /// <summary>
+        /// Remove a cookie
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        public static void Remove(int name)
+        {
+            RemoveImpl(name.ToString());
+        }
 
-		/// <summary>
-		/// Implemented the remove functionality
-		/// </summary>
-		/// <param name="name">The name.</param>
-		private static void removeImpl(string name)
-		{
-			HttpCookie hcookie = HttpContext.Current.Response.Cookies[name];
+        // end of Remove
 
-			if (hcookie != null)
-				// clear the cookie
-				clearCookie(ref hcookie);
-		}
+        /// <summary>
+        /// Remove a Cookie
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        public static void Remove(string name)
+        {
+            RemoveImpl(name);
+        }
 
-		/// <summary>
-		/// Implementation of the add cookie
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="value">The value.</param>
-		private static void addImpl(string name, string value)
-		{
-			// create cookie
-			HttpCookie hcookie = new HttpCookie(name, value);
-			setCookie(ref hcookie);
-		} // end of addImpl
+        // end of Remove
 
-		/// <summary>
-		/// Set cookie
-		/// </summary>
-		/// <param name="cookie">The cookie.</param>
-		private static void setCookie(ref HttpCookie cookie)
-		{
-			// expire in timespan
-			cookie.Expires = DateTime.Now + expire_;
-			cookie.Path = Rainbow.Framework.Configuration.Properties.Resources.CookiePath;
+        /// <summary>
+        /// Retrieve a cookie
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <returns>
+        /// The retrieve.
+        /// </returns>
+        public static object Retrieve(int name)
+        {
+            return RetrieveImpl(name.ToString());
+        }
 
-			// see if cookie exists, otherwise create it
-			if (HttpContext.Current.Response.Cookies[cookie.Name] != null)
-				HttpContext.Current.Response.Cookies.Set(cookie);
+        // end of Retrieve
 
-			else
-				HttpContext.Current.Response.Cookies.Add(cookie);
-		} // end of setCookie
+        /// <summary>
+        /// Retrieve a Cookie
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <returns>
+        /// The retrieve.
+        /// </returns>
+        public static object Retrieve(string name)
+        {
+            return RetrieveImpl(name);
+        }
 
-		/// <summary>
-		/// Clear the cookie
-		/// </summary>
-		/// <param name="cookie">The cookie.</param>
-		private static void clearCookie(ref HttpCookie cookie)
-		{
-			cookie.Expires = new DateTime(1999, 10, 12);
-			cookie.Value = null;
-			//HttpContext.Current.Response.Cookies.Remove(cookie.Name);
-		} // end of clearCookie
+        #endregion
 
-		#endregion
+        // end of Retrieve
 
-	}
+        // Implementation
+        #region Methods
+
+        /// <summary>
+        /// Implementation of the add cookie
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        private static void AddImpl(string name, string value)
+        {
+            // create cookie
+            var hcookie = new HttpCookie(name, value);
+            SetCookie(ref hcookie);
+        }
+
+        // end of addImpl
+
+        // end of setCookie
+
+        /// <summary>
+        /// Clear the cookie
+        /// </summary>
+        /// <param name="cookie">
+        /// The cookie.
+        /// </param>
+        private static void ClearCookie(ref HttpCookie cookie)
+        {
+            cookie.Expires = new DateTime(1999, 10, 12);
+            cookie.Value = null;
+
+            // HttpContext.Current.Response.Cookies.Remove(cookie.Name);
+        }
+
+        /// <summary>
+        /// Implemented the remove functionality
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        private static void RemoveImpl(string name)
+        {
+            var hcookie = HttpContext.Current.Response.Cookies[name];
+
+            if (hcookie != null)
+            {
+                // clear the cookie
+                ClearCookie(ref hcookie);
+            }
+        }
+
+        /// <summary>
+        /// Implemented the remove functionality
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <returns>
+        /// The retrieve impl.
+        /// </returns>
+        private static object RetrieveImpl(string name)
+        {
+            return HttpContext.Current.Request.Cookies[name];
+        }
+
+        /// <summary>
+        /// Set cookie
+        /// </summary>
+        /// <param name="cookie">
+        /// The cookie.
+        /// </param>
+        private static void SetCookie(ref HttpCookie cookie)
+        {
+            // expire in timespan
+            cookie.Expires = DateTime.Now + expire;
+            cookie.Path = Configuration.Properties.Resources.CookiePath;
+
+            // see if cookie exists, otherwise create it
+            if (HttpContext.Current.Response.Cookies[cookie.Name] != null)
+            {
+                HttpContext.Current.Response.Cookies.Set(cookie);
+            }
+            else
+            {
+                HttpContext.Current.Response.Cookies.Add(cookie);
+            }
+        }
+
+        #endregion
+
+        // end of clearCookie
+    }
 }

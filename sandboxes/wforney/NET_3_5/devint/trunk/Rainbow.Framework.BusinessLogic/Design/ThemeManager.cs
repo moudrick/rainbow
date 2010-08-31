@@ -1,47 +1,181 @@
-using System;
-using System.Collections;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Web.Caching;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Diagnostics;
-
 namespace Rainbow.Framework.Design
 {
+    using System;
+    using System.Collections;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Text;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Xml;
+    using System.Xml.Serialization;
+
+    using Rainbow.Framework.Configuration.Cache;
+
     /// <summary>
     /// The ThemeManager class encapsulates all data logic necessary to
-    /// use differents themes across the entire portal.
-    /// Manages the Load and Save of the Themes.
-    /// Encapsulates a Theme object that contains all the settings
-    /// of the current Theme.
+    ///     use differents themes across the entire portal.
+    ///     Manages the Load and Save of the Themes.
+    ///     Encapsulates a Theme object that contains all the settings
+    ///     of the current Theme.
     /// </summary>
     public class ThemeManager
     {
+        #region Constants and Fields
+
         /// <summary>
-        ///     
+        /// The current theme.
         /// </summary>
         /// <remarks>
-        ///     
         /// </remarks>
         public Theme CurrentTheme = new Theme();
 
         /// <summary>
-        /// 
+        /// The portal path.
         /// </summary>
-        private string _portalPath;
+        private readonly string portalPath;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ThemeManager"/> class. 
         /// Initializes a new instance of the <see cref="T:ThemeManager"/> class.
         /// </summary>
-        /// <param name="portalPath">The portal path.</param>
+        /// <param name="portalPath">
+        /// The portal path.
+        /// </param>
         /// <returns>
         /// A void value...
         /// </returns>
         public ThemeManager(string portalPath)
         {
-            _portalPath = portalPath;
+            this.portalPath = portalPath;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     The path of the Theme dir (Phisical path)
+        ///     used ot load Themes
+        /// </summary>
+        /// <value>The path.</value>
+        public static string Path
+        {
+            get
+            {
+                return HttpContext.Current.Server.MapPath(WebPath);
+            }
+        }
+
+        /// <summary>
+        ///     The path of the Theme dir (Web side)
+        ///     used to reference images
+        /// </summary>
+        /// <value>The web path.</value>
+        public static string WebPath
+        {
+            get
+            {
+                return Configuration.Path.WebPathCombine(Configuration.Path.ApplicationRoot, "/Design/Themes");
+            }
+        }
+
+        /// <summary>
+        ///     The path of the current portal Theme dir (Phisical path)
+        ///     used to load Themes
+        /// </summary>
+        /// <value>The portal theme path.</value>
+        public string PortalThemePath
+        {
+            get
+            {
+                return HttpContext.Current.Server.MapPath(this.PortalWebPath);
+            }
+        }
+
+        /// <summary>
+        ///     The path of the current portal Theme dir (Web side)
+        ///     used to reference images
+        /// </summary>
+        /// <value>The portal web path.</value>
+        public string PortalWebPath
+        {
+            get
+            {
+                string myPortalWebPath = Configuration.Path.WebPathCombine(
+                    Configuration.Path.ApplicationRoot, this.portalPath, "/Themes");
+                return myPortalWebPath;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Read the Path dir and returns an ArrayList with all the Themes found.
+        ///     Static because the list is Always the same.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public static ArrayList GetPublicThemes()
+        {
+            ArrayList baseThemeList;
+
+            if (!CurrentCache.Exists(Key.ThemeList(Path)))
+            {
+                // Initialize array
+                baseThemeList = new ArrayList();
+
+                // Try to read directories from public theme path
+                var themes = Directory.Exists(Path) ? Directory.GetDirectories(Path) : new string[0];
+
+                foreach (var t1 in themes)
+                {
+                    var t = new ThemeItem();
+                    t.Name = t1.Substring(Path.Length + 1);
+
+                    if (t.Name != "CVS" && t.Name != "_svn")
+                    {
+                        // Ignore CVS and _svn folders
+                        baseThemeList.Add(t);
+                    }
+                }
+
+                CurrentCache.Insert(Key.ThemeList(Path), baseThemeList, new CacheDependency(Path));
+            }
+            else
+            {
+                baseThemeList = (ArrayList)CurrentCache.Get(Key.ThemeList(Path));
+            }
+
+            return baseThemeList;
+        }
+
+        /// <summary>
+        /// Called when [remove].
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="cacheItem">
+        /// The cache item.
+        /// </param>
+        /// <param name="reason">
+        /// The reason.
+        /// </param>
+        public static void OnRemove(string key, object cacheItem, CacheItemRemovedReason reason)
+        {
+            Trace.WriteLine(
+                string.Format("The cached value with key '{0}' was removed from the cache.  Reason: {1}", key, reason));
+
+            // ErrorHandler.Publish(LogLevel.Info,
+            // "The cached value with key '" + key + "' was removed from the cache.  Reason: " +
+            // reason.ToString());
         }
 
         /// <summary>
@@ -49,239 +183,208 @@ namespace Rainbow.Framework.Design
         /// </summary>
         public void ClearCacheList()
         {
-            //Clear cache
+            // Clear cache
             CurrentCache.Remove(Key.ThemeList(Path));
-            CurrentCache.Remove(Key.ThemeList(PortalThemePath));
-        }
-
-        /// <summary>
-        /// Read the Path dir and returns an ArrayList with all the Themes found.
-        /// Static because the list is Always the same.
-        /// </summary>
-        /// <returns></returns>
-        public static ArrayList GetPublicThemes()
-        {
-            ArrayList baseThemeList;
-
-            if (!CurrentCache.Exists(Key.ThemeList(Path)))
-            {
-                //Initialize array
-                baseThemeList = new ArrayList();
-                string[] themes;
-
-                // Try to read directories from public theme path
-                if (Directory.Exists(Path))
-                {
-                    themes = Directory.GetDirectories(Path);
-                }
-
-                else
-                {
-                    themes = new string[0];
-                }
-
-                for (int i = 0; i < themes.Length; i++)
-                {
-                    ThemeItem t = new ThemeItem();
-                    t.Name = themes[i].Substring(Path.Length + 1);
-
-                    if (t.Name != "CVS" && t.Name != "_svn") //Ignore CVS and _svn folders
-                        baseThemeList.Add(t);
-                }
-                CurrentCache.Insert(Key.ThemeList(Path), baseThemeList, new CacheDependency(Path));
-            }
-
-            else
-            {
-                baseThemeList = (ArrayList)CurrentCache.Get(Key.ThemeList(Path));
-            }
-            return baseThemeList;
+            CurrentCache.Remove(Key.ThemeList(this.PortalThemePath));
         }
 
         /// <summary>
         /// Read the Path dir and returns
-        /// an ArrayList with all the Themes found, public and privates
+        ///     an ArrayList with all the Themes found, public and privates
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// </returns>
         public ArrayList GetPrivateThemes()
         {
             ArrayList privateThemeList;
 
-            if (!CurrentCache.Exists(Key.ThemeList(PortalThemePath)))
+            if (!CurrentCache.Exists(Key.ThemeList(this.PortalThemePath)))
             {
                 privateThemeList = new ArrayList();
                 string[] themes;
 
                 // Try to read directories from private theme path
-                if (Directory.Exists(PortalThemePath))
-                {
-                    themes = Directory.GetDirectories(PortalThemePath);
-                }
+                themes = Directory.Exists(this.PortalThemePath)
+                             ? Directory.GetDirectories(this.PortalThemePath)
+                             : new string[0];
 
-                else
+                for (var i = 0; i <= themes.GetUpperBound(0); i++)
                 {
-                    themes = new string[0];
-                }
+                    var t = new ThemeItem();
+                    t.Name = themes[i].Substring(this.PortalThemePath.Length + 1);
 
-                for (int i = 0; i <= themes.GetUpperBound(0); i++)
-                {
-                    ThemeItem t = new ThemeItem();
-                    t.Name = themes[i].Substring(PortalThemePath.Length + 1);
-
-                    if (t.Name != "CVS" && t.Name != "_svn") //Ignore CVS
+                    if (t.Name != "CVS" && t.Name != "_svn")
+                    {
+                        // Ignore CVS
                         privateThemeList.Add(t);
+                    }
                 }
 
-                CurrentCache.Insert(Key.ThemeList(PortalThemePath), privateThemeList,
-                                    new CacheDependency(PortalThemePath));
-                //Debug.WriteLine("Storing privateThemeList in Cache: item count is " + privateThemeList.Count.ToString());
+                CurrentCache.Insert(
+                    Key.ThemeList(this.PortalThemePath), privateThemeList, new CacheDependency(this.PortalThemePath));
+
+                // Debug.WriteLine("Storing privateThemeList in Cache: item count is " + privateThemeList.Count.ToString());
             }
             else
             {
-                privateThemeList = (ArrayList)CurrentCache.Get(Key.ThemeList(PortalThemePath));
-                //Debug.WriteLine("Retrieving privateThemeList from Cache: item count is " + privateThemeList.Count.ToString());
+                privateThemeList = (ArrayList)CurrentCache.Get(Key.ThemeList(this.PortalThemePath));
+
+                // Debug.WriteLine("Retrieving privateThemeList from Cache: item count is " + privateThemeList.Count.ToString());
             }
+
             return privateThemeList;
         }
 
         /// <summary>
         /// Read the Path dir and returns
-        /// an ArrayList with all the Themes found, public and privates
+        ///     an ArrayList with all the Themes found, public and privates
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// </returns>
         public ArrayList GetThemes()
         {
             ArrayList themeList;
             ArrayList themeListPrivate;
 
             themeList = (ArrayList)GetPublicThemes().Clone();
-            themeListPrivate = GetPrivateThemes();
+            themeListPrivate = this.GetPrivateThemes();
 
             themeList.AddRange(themeListPrivate);
 
             return themeList;
         }
 
-
         /// <summary>
         /// Loads the specified theme name.
         /// </summary>
-        /// <param name="ThemeName">Name of the theme.</param>
+        /// <param name="ThemeName">
+        /// Name of the theme.
+        /// </param>
         public void Load(string ThemeName)
         {
-            CurrentTheme = new Theme();
-            CurrentTheme.Name = ThemeName;
+            this.CurrentTheme = new Theme();
+            this.CurrentTheme.Name = ThemeName;
 
-            //Try loading private theme first
-            if (LoadTheme(Configuration.Path.WebPathCombine(PortalWebPath, ThemeName)))
+            // Try loading private theme first
+            if (this.LoadTheme(Configuration.Path.WebPathCombine(this.PortalWebPath, ThemeName)))
+            {
                 return;
+            }
 
-            //Try loading public theme
-            if (LoadTheme(Configuration.Path.WebPathCombine(WebPath, ThemeName)))
+            // Try loading public theme
+            if (this.LoadTheme(Configuration.Path.WebPathCombine(WebPath, ThemeName)))
+            {
                 return;
-            //Try default
-            CurrentTheme.Name = "default";
+            }
 
-            if (LoadTheme(Configuration.Path.WebPathCombine(WebPath, "default")))
+            // Try default
+            this.CurrentTheme.Name = "default";
+
+            if (this.LoadTheme(Configuration.Path.WebPathCombine(WebPath, "default")))
+            {
                 return;
-            string errormsg = General.GetString("LOAD_THEME_ERROR");
-            throw new FileNotFoundException(errormsg.Replace("%1%", "'" + ThemeName + "'"), WebPath + "/" + ThemeName);
-        }
+            }
 
-        /// <summary>
-        /// Called when [remove].
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="cacheItem">The cache item.</param>
-        /// <param name="reason">The reason.</param>
-        public static void OnRemove(string key, object cacheItem, CacheItemRemovedReason reason)
-        {
-            Trace.WriteLine("The cached value with key '" + key + "' was removed from the cache.  Reason: " +
-                            reason.ToString());
-            //ErrorHandler.Publish(LogLevel.Info,
-            //                     "The cached value with key '" + key + "' was removed from the cache.  Reason: " +
-            //                     reason.ToString());
+            var errormsg = General.GetString("LOAD_THEME_ERROR");
+            throw new FileNotFoundException(
+                errormsg.Replace("%1%", string.Format("'{0}'", ThemeName)), string.Format("{0}/{1}", WebPath, ThemeName));
         }
 
         /// <summary>
         /// Saves the specified theme name.
         /// </summary>
-        /// <param name="ThemeName">Name of the theme.</param>
+        /// <param name="ThemeName">
+        /// Name of the theme.
+        /// </param>
         public void Save(string ThemeName)
         {
-            CurrentTheme.Name = ThemeName;
-            CurrentTheme.WebPath = Configuration.Path.WebPathCombine(WebPath, ThemeName);
-            XmlSerializer serializer = new XmlSerializer(typeof(Theme));
+            this.CurrentTheme.Name = ThemeName;
+            this.CurrentTheme.WebPath = Configuration.Path.WebPathCombine(WebPath, ThemeName);
+            var serializer = new XmlSerializer(typeof(Theme));
 
             // Create an XmlTextWriter using a FileStream.
-            using (Stream fs = new FileStream(CurrentTheme.ThemeFileName, FileMode.Create))
+            using (Stream fs = new FileStream(this.CurrentTheme.ThemeFileName, FileMode.Create))
             {
                 XmlWriter writer = new XmlTextWriter(fs, new UTF8Encoding());
+
                 // Serialize using the XmlTextWriter.
-                serializer.Serialize(writer, CurrentTheme);
+                serializer.Serialize(writer, this.CurrentTheme);
                 writer.Close();
-                //Release the file
+
+                // Release the file
                 writer = null;
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Loads the theme.
         /// </summary>
-        /// <param name="CurrentWebPath">The current web path.</param>
-        /// <returns>A bool value...</returns>
-        private bool LoadTheme(string CurrentWebPath)
+        /// <param name="currentWebPath">
+        /// The current web path.
+        /// </param>
+        /// <returns>
+        /// A bool value...
+        /// </returns>
+        private bool LoadTheme(Uri currentWebPath)
         {
-            CurrentTheme.WebPath = CurrentWebPath;
+            this.CurrentTheme.WebPath = currentWebPath;
 
-            //if (!Rainbow.Framework.Settings.Cache.CurrentCache.Exists (Rainbow.Framework.Settings.Cache.Key.CurrentTheme(CurrentWebPath)))
-            if (!CurrentCache.Exists(Key.CurrentTheme(CurrentTheme.Path)))
+            // if (!Rainbow.Framework.Settings.Cache.CurrentCache.Exists (Rainbow.Framework.Settings.Cache.Key.CurrentTheme(CurrentWebPath)))
+            if (!CurrentCache.Exists(Key.CurrentTheme(this.CurrentTheme.Path)))
             {
-                if (File.Exists(CurrentTheme.ThemeFileName))
+                if (File.Exists(this.CurrentTheme.ThemeFileName))
                 {
-                    if (LoadXml(CurrentTheme.ThemeFileName))
+                    if (this.LoadXml(this.CurrentTheme.ThemeFileName))
                     {
-                        //Rainbow.Framework.Settings.Cache.CurrentCache.Insert(Rainbow.Framework.Settings.Cache.Key.CurrentTheme(CurrentWebPath), CurrentTheme, new CacheDependency(CurrentTheme.ThemeFileName));
-                        CurrentCache.Insert(Key.CurrentTheme(CurrentTheme.Path), CurrentTheme,
-                                            new CacheDependency(CurrentTheme.Path));
+                        // Rainbow.Framework.Settings.Cache.CurrentCache.Insert(Rainbow.Framework.Settings.Cache.Key.CurrentTheme(CurrentWebPath), CurrentTheme, new CacheDependency(CurrentTheme.ThemeFileName));
+                        CurrentCache.Insert(
+                            Key.CurrentTheme(this.CurrentTheme.Path), 
+                            this.CurrentTheme, 
+                            new CacheDependency(this.CurrentTheme.Path));
                     }
-
                     else
                     {
                         // failed
                         return false;
                     }
                 }
-
                 else
                 {
-                    //Return fail
+                    // Return fail
                     return false;
                 }
             }
-
             else
             {
-                //CurrentTheme = (Theme) Rainbow.Framework.Settings.Cache.CurrentCache.Get (Rainbow.Framework.Settings.Cache.Key.CurrentTheme(CurrentWebPath));
-                CurrentTheme = (Theme)CurrentCache.Get(Key.CurrentTheme(CurrentTheme.Path));
+                // CurrentTheme = (Theme) Rainbow.Framework.Settings.Cache.CurrentCache.Get (Rainbow.Framework.Settings.Cache.Key.CurrentTheme(CurrentWebPath));
+                this.CurrentTheme = (Theme)CurrentCache.Get(Key.CurrentTheme(this.CurrentTheme.Path));
             }
-            CurrentTheme.WebPath = CurrentWebPath;
+
+            this.CurrentTheme.WebPath = currentWebPath;
             return true;
         }
 
         /// <summary>
         /// Loads the XML.
         /// </summary>
-        /// <param name="filename">The filename.</param>
-        /// <returns>A bool value...</returns>
+        /// <param name="filename">
+        /// The filename.
+        /// </param>
+        /// <returns>
+        /// A bool value...
+        /// </returns>
         private bool LoadXml(string filename)
         {
-            XmlTextReader _xtr = null;
-            NameTable _nt = new NameTable();
-            XmlNamespaceManager _nsm = new XmlNamespaceManager(_nt);
-            _nsm.AddNamespace(string.Empty, "http://www.w3.org/1999/xhtml");
-            XmlParserContext _context = new XmlParserContext(_nt, _nsm, string.Empty, XmlSpace.None);
-            bool returnValue = false;
+            XmlTextReader xtr;
+            var nt = new NameTable();
+            var nsm = new XmlNamespaceManager(nt);
+            nsm.AddNamespace(string.Empty, "http://www.w3.org/1999/xhtml");
+            var context = new XmlParserContext(nt, nsm, string.Empty, XmlSpace.None);
+            var returnValue = false;
 
             try
             {
@@ -290,171 +393,138 @@ namespace Rainbow.Framework.Design
                 {
                     try
                     {
-                        _xtr = new XmlTextReader(fs, XmlNodeType.Document, _context);
-                        _xtr.WhitespaceHandling = WhitespaceHandling.None;
-                        ThemeImage _myImage;
-                        ThemePart _myPart = new ThemePart();
-
-                        while (!_xtr.EOF)
-                        {
-                            if (_xtr.MoveToContent() == XmlNodeType.Element)
+                        xtr = new XmlTextReader(fs, XmlNodeType.Document, context)
                             {
-                                switch (_xtr.LocalName)
+                                WhitespaceHandling = WhitespaceHandling.None 
+                            };
+                        ThemeImage myImage;
+                        var myPart = new ThemePart();
+
+                        while (!xtr.EOF)
+                        {
+                            if (xtr.MoveToContent() == XmlNodeType.Element)
+                            {
+                                switch (xtr.LocalName)
                                 {
                                     case "Name":
-                                        CurrentTheme.Name = _xtr.ReadString();
+                                        this.CurrentTheme.Name = xtr.ReadString();
                                         break;
 
                                     case "Type":
-                                        CurrentTheme.Type = _xtr.ReadString();
+                                        this.CurrentTheme.Type = xtr.ReadString();
                                         break;
 
                                     case "Css":
-                                        CurrentTheme.Css = _xtr.ReadString();
+                                        this.CurrentTheme.Css = xtr.ReadString();
                                         break;
 
                                     case "MinimizeColor":
-                                        CurrentTheme.MinimizeColor = _xtr.ReadString();
+                                        this.CurrentTheme.MinimizeColor = System.Drawing.Color.FromName(xtr.ReadString());
                                         break;
 
                                     case "ThemeImage":
-                                        _myImage = new ThemeImage();
+                                        myImage = new ThemeImage();
 
-                                        while (_xtr.MoveToNextAttribute())
+                                        while (xtr.MoveToNextAttribute())
                                         {
-                                            switch (_xtr.LocalName)
+                                            switch (xtr.LocalName)
                                             {
                                                 case "Name":
-                                                    _myImage.Name = _xtr.Value;
+                                                    myImage.Name = xtr.Value;
                                                     break;
 
                                                 case "ImageUrl":
-                                                    _myImage.ImageUrl = _xtr.Value;
+                                                    myImage.ImageUrl = xtr.Value;
                                                     break;
 
                                                 case "Width":
-                                                    _myImage.Width = double.Parse(_xtr.Value);
+                                                    myImage.Width = double.Parse(xtr.Value);
                                                     break;
 
                                                 case "Height":
-                                                    _myImage.Height = double.Parse(_xtr.Value);
+                                                    myImage.Height = double.Parse(xtr.Value);
                                                     break;
                                                 default:
                                                     break;
                                             }
                                         }
-                                        CurrentTheme.ThemeImages.Add(_myImage.Name, _myImage);
-                                        _xtr.MoveToElement();
+
+                                        this.CurrentTheme.ThemeImages.Add(myImage.Name, myImage);
+                                        xtr.MoveToElement();
                                         break;
 
                                     case "ThemePart":
-                                        _myPart = new ThemePart();
+                                        myPart = new ThemePart();
 
-                                        while (_xtr.MoveToNextAttribute())
+                                        while (xtr.MoveToNextAttribute())
                                         {
-                                            switch (_xtr.LocalName)
+                                            switch (xtr.LocalName)
                                             {
                                                 case "Name":
-                                                    _myPart.Name = _xtr.Value;
+                                                    myPart.Name = xtr.Value;
                                                     break;
                                                 default:
                                                     break;
                                             }
                                         }
-                                        _xtr.MoveToElement();
+
+                                        xtr.MoveToElement();
                                         break;
 
                                     case "HTML":
 
-                                        if (_myPart.Name.Length != 0)
-                                            _myPart.Html = _xtr.ReadString();
-                                        //Moved here on load instead on retrival.
-                                        //by Manu
-                                        string w = string.Concat(CurrentTheme.WebPath, "/");
-                                        _myPart.Html = _myPart.Html.Replace("src='", string.Concat("src='", w));
-                                        _myPart.Html = _myPart.Html.Replace("src=\"", string.Concat("src=\"", w));
-                                        _myPart.Html =
-                                            _myPart.Html.Replace("background='", string.Concat("background='", w));
-                                        _myPart.Html =
-                                            _myPart.Html.Replace("background=\"", string.Concat("background=\"", w));
-                                        CurrentTheme.ThemeParts.Add(_myPart.Name, _myPart);
+                                        if (myPart.Name.Length != 0)
+                                        {
+                                            myPart.Html = xtr.ReadString();
+                                        }
+
+                                        // Moved here on load instead on retrival.
+                                        // by Manu
+                                        var w = string.Concat(this.CurrentTheme.WebPath, "/");
+                                        myPart.Html = myPart.Html.Replace("src='", string.Concat("src='", w));
+                                        myPart.Html = myPart.Html.Replace("src=\"", string.Concat("src=\"", w));
+                                        myPart.Html = myPart.Html.Replace(
+                                            "background='", string.Concat("background='", w));
+                                        myPart.Html = myPart.Html.Replace(
+                                            "background=\"", string.Concat("background=\"", w));
+                                        this.CurrentTheme.ThemeParts.Add(myPart.Name, myPart);
                                         break;
                                     default:
-                                        //Debug.WriteLine(" - unwanted");
+
+                                        // Debug.WriteLine(" - unwanted");
                                         break;
                                 }
                             }
-                            _xtr.Read();
+
+                            xtr.Read();
                         }
+
                         returnValue = true;
                     }
-
                     catch (Exception ex)
                     {
-                        Debug.WriteLine("Failed to Load XML Theme : " + filename + " Message was: " + ex.Message);
-                        //ErrorHandler.Publish(LogLevel.Error,
-                        //                     "Failed to Load XML Theme : " + filename + " Message was: " + ex.Message);
-                    }
+                        Debug.WriteLine(string.Format("Failed to Load XML Theme : {0} Message was: {1}", filename, ex.Message));
 
+                        // ErrorHandler.Publish(LogLevel.Error,
+                        // "Failed to Load XML Theme : " + filename + " Message was: " + ex.Message);
+                    }
                     finally
                     {
                         fs.Close();
                     }
                 }
             }
-
             catch (Exception ex)
             {
-                Debug.WriteLine("Failed to open XML Theme : " + filename + " Message was: " + ex.Message);
-                //ErrorHandler.Publish(LogLevel.Error,
-                //                     "Failed to open XML Theme : " + filename + " Message was: " + ex.Message);
+                Debug.WriteLine(string.Format("Failed to open XML Theme : {0} Message was: {1}", filename, ex.Message));
+
+                // ErrorHandler.Publish(LogLevel.Error,
+                // "Failed to open XML Theme : " + filename + " Message was: " + ex.Message);
             }
+
             return returnValue;
         }
 
-        /// <summary>
-        /// The path of the Theme dir (Phisical path)
-        /// used ot load Themes
-        /// </summary>
-        /// <value>The path.</value>
-        public static string Path
-        {
-            get { return (HttpContext.Current.Server.MapPath(WebPath)); }
-        }
-
-        /// <summary>
-        /// The path of the current portal Theme dir (Phisical path)
-        /// used to load Themes
-        /// </summary>
-        /// <value>The portal theme path.</value>
-        public string PortalThemePath
-        {
-            get { return (HttpContext.Current.Server.MapPath(PortalWebPath)); }
-        }
-
-        /// <summary>
-        /// The path of the current portal Theme dir (Web side)
-        /// used to reference images
-        /// </summary>
-        /// <value>The portal web path.</value>
-        public string PortalWebPath
-        {
-            get
-            {
-                string myPortalWebPath =
-                    Configuration.Path.WebPathCombine(Configuration.Path.ApplicationRoot, _portalPath, "/Themes");
-                return myPortalWebPath;
-            }
-        }
-
-        /// <summary>
-        /// The path of the Theme dir (Web side)
-        /// used to reference images
-        /// </summary>
-        /// <value>The web path.</value>
-        public static string WebPath
-        {
-            get { return Configuration.Path.WebPathCombine(Configuration.Path.ApplicationRoot, "/Design/Themes"); }
-        }
+        #endregion
     }
 }

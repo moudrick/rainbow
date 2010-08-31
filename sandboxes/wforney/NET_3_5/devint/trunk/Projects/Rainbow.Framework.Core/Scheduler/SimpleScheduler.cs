@@ -1,146 +1,216 @@
-using System;
-using System.Collections;
-using System.Data;
-using System.Threading;
-
 namespace Rainbow.Framework.Scheduler
 {
-    //Author: Federico Dal Maso
-    //e-mail: ifof@libero.it
-    //date: 2003-06-17
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Threading;
+
+    // Author: Federico Dal Maso
+    // e-mail: ifof@libero.it
+    // date: 2003-06-17
 
     /// <summary>
     /// SimpleScheduler, perform a select every call to Scheduler
-    /// Usefull only for long period timer.
+    ///     Usefull only for long period timer.
     /// </summary>
     public class SimpleScheduler : IScheduler
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        protected class TimerState
-        {
-            private int counter;
-
-            /// <summary>
-            /// 
-            /// </summary>
-            public int Counter
-            {
-                get { return counter; }
-                set { counter = value; }
-            }
-
-            // = 0;
-
-            private Timer timer;
-
-            /// <summary>
-            /// 
-            /// </summary>
-            public Timer Timer
-            {
-                get { return timer; }
-                set { timer = value; }
-            }
-        }
+        #region Constants and Fields
 
         /// <summary>
-        /// 
+        ///     The local sch db.
         /// </summary>
-        private static volatile SimpleScheduler _theScheduler = null;
+        internal SchedulerDB LocalSchDb;
 
         /// <summary>
-        /// 
+        ///     The local period.
         /// </summary>
-        internal SchedulerDB localSchDB;
+        protected long LocalPeriod;
 
         /// <summary>
-        /// 
+        ///     The local timer state.
         /// </summary>
-        protected TimerState localTimerState;
+        protected TimerState LocalTimerState;
 
         /// <summary>
-        /// 
+        ///     The scheduler.
         /// </summary>
-        protected long localPeriod;
+        private static volatile SimpleScheduler theScheduler;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="SimpleScheduler"/> class.
+        ///     The simple scheduler.
         /// </summary>
-        /// <param name="applicationMapPath"></param>
-        /// <param name="connection"></param>
-        /// <param name="period"></param>
+        /// <param name="applicationMapPath">
+        /// The application map path.
+        /// </param>
+        /// <param name="connection">
+        /// The connection.
+        /// </param>
+        /// <param name="period">
+        /// The period.
+        /// </param>
         protected SimpleScheduler(string applicationMapPath, IDbConnection connection, long period)
         {
-            localSchDB = new SchedulerDB(connection, applicationMapPath);
-            localPeriod = period;
+            this.LocalSchDb = new SchedulerDB(connection, applicationMapPath);
+            this.LocalPeriod = period;
 
-            localTimerState = new TimerState();
+            this.LocalTimerState = new TimerState();
 
-            Timer t = new Timer(
-                new TimerCallback(Schedule),
-                localTimerState,
-                Timeout.Infinite,
-                Timeout.Infinite);
+            var t = new Timer(this.Schedule, this.LocalTimerState, Timeout.Infinite, Timeout.Infinite);
 
-            localTimerState.Timer = t;
+            this.LocalTimerState.Timer = t;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// 
+        ///     Gets or sets the timer period.
         /// </summary>
-        /// <param name="applicationMapPath"></param>
-        /// <param name="connection"></param>
-        /// <param name="period"></param>
-        /// <returns></returns>
+        /// <value>The timer period.</value>
+        public virtual long Period
+        {
+            get
+            {
+                return this.LocalPeriod;
+            }
+
+            set
+            {
+                this.LocalPeriod = value;
+                this.LocalTimerState.Timer.Change(0L, this.LocalPeriod);
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The get scheduler.
+        /// </summary>
+        /// <param name="applicationMapPath">
+        /// The application map path.
+        /// </param>
+        /// <param name="connection">
+        /// The connection.
+        /// </param>
+        /// <param name="period">
+        /// The period.
+        /// </param>
+        /// <returns>
+        /// A Simple Scheduler.
+        /// </returns>
         public static SimpleScheduler GetScheduler(string applicationMapPath, IDbConnection connection, long period)
         {
-            //Sigleton
-            if (_theScheduler == null)
+            // Sigleton
+            if (theScheduler == null)
             {
-                lock (typeof (CachedScheduler))
+                lock (typeof(CachedScheduler))
                 {
-                    if (_theScheduler == null)
-                        _theScheduler = new SimpleScheduler(applicationMapPath, connection, period);
+                    if (theScheduler == null)
+                    {
+                        theScheduler = new SimpleScheduler(applicationMapPath, connection, period);
+                    }
                 }
             }
 
-            return _theScheduler;
+            return theScheduler;
+        }
+
+        #endregion
+
+        #region Implemented Interfaces
+
+        #region IScheduler
+
+        /// <summary>
+        /// Get an array of tasks of the specified module owner
+        /// </summary>
+        /// <param name="idModuleOwner">
+        /// The id module owner.
+        /// </param>
+        /// <returns>
+        /// An array of scheduler tasks.
+        /// </returns>
+        public virtual SchedulerTask[] GetTasksByOwner(int idModuleOwner)
+        {
+            var dr = this.LocalSchDb.GetTasksByOwner(idModuleOwner);
+            var ary = new ArrayList();
+            while (dr.Read())
+            {
+                ary.Add(new SchedulerTask(dr));
+            }
+
+            dr.Close();
+
+            return (SchedulerTask[])ary.ToArray(typeof(SchedulerTask));
         }
 
         /// <summary>
-        /// 
+        /// Get an array of tasks of the specified module target
         /// </summary>
-        /// <param name="timerState"></param>
-        protected virtual void Schedule(object timerState)
+        /// <param name="idModuleTarget">
+        /// The id module target.
+        /// </param>
+        /// <returns>
+        /// An array of scheduler tasks.
+        /// </returns>
+        public virtual SchedulerTask[] GetTasksByTarget(int idModuleTarget)
         {
-            lock (this)
+            var dr = this.LocalSchDb.GetTasksByOwner(idModuleTarget);
+            var ary = new ArrayList();
+            while (dr.Read())
             {
-                localTimerState.Counter++;
-
-                SchedulerTask[] tsks = localSchDB.GetExpiredTask();
-
-                Stop(); //Stop the timer while it works
-
-                foreach (SchedulerTask tsk in tsks)
-                {
-                    try
-                    {
-                        ExecuteTask(tsk);
-                    }
-                    catch
-                    {
-                        //TODO: We have to apply some policy here...
-                        //i.e. Move failed tasks on a log, call a Module feedback interface,....
-                        //now task is removed always
-                    }
-
-                    RemoveTask(tsk);
-                }
-
-                Start(); //restart the timer
+                ary.Add(new SchedulerTask(dr));
             }
+
+            dr.Close();
+
+            return (SchedulerTask[])ary.ToArray(typeof(SchedulerTask));
+        }
+
+        /// <summary>
+        /// Insert a new task
+        /// </summary>
+        /// <param name="task">
+        /// The scheduler task.
+        /// </param>
+        /// <returns>
+        /// A scheduler task.
+        /// </returns>
+        public virtual SchedulerTask InsertTask(SchedulerTask task)
+        {
+            if (task.IDTask != -1)
+            {
+                throw new SchedulerException("Could not insert an inserted task");
+            }
+
+            task.SetIdTask(this.LocalSchDb.InsertTask(task));
+            return task;
+        }
+
+        /// <summary>
+        /// Remove a task
+        /// </summary>
+        /// <param name="task">
+        /// The scheduler task.
+        /// </param>
+        public virtual void RemoveTask(SchedulerTask task)
+        {
+            if (task.IDTask == -1)
+            {
+                return;
+            }
+
+            this.LocalSchDb.RemoveTask(task.IDTask);
+            return;
         }
 
         /// <summary>
@@ -148,7 +218,7 @@ namespace Rainbow.Framework.Scheduler
         /// </summary>
         public virtual void Start()
         {
-            localTimerState.Timer.Change(localPeriod, localPeriod);
+            this.LocalTimerState.Timer.Change(this.LocalPeriod, this.LocalPeriod);
         }
 
         /// <summary>
@@ -156,94 +226,31 @@ namespace Rainbow.Framework.Scheduler
         /// </summary>
         public virtual void Stop()
         {
-            localTimerState.Timer.Change(Timeout.Infinite, Timeout.Infinite);
+            this.LocalTimerState.Timer.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
-        /// <summary>
-        /// Get or set the timer period.
-        /// </summary>
-        public virtual long Period
-        {
-            get { return localPeriod; }
-            set
-            {
-                localPeriod = value;
-                localTimerState.Timer.Change(0L, localPeriod);
-            }
-        }
+        #endregion
 
-        /// <summary>
-        /// Get an array of tasks of the specified module owner
-        /// </summary>
-        /// <param name="idModuleOwner"></param>
-        /// <returns></returns>
-        public virtual SchedulerTask[] GetTasksByOwner(int idModuleOwner)
-        {
-            IDataReader dr = localSchDB.GetTasksByOwner(idModuleOwner);
-            ArrayList ary = new ArrayList();
-            while (dr.Read())
-                ary.Add(new SchedulerTask(dr));
-            dr.Close();
+        #endregion
 
-            return (SchedulerTask[]) ary.ToArray(typeof (SchedulerTask));
-        }
-
-        /// <summary>
-        /// Get an array of tasks of the specified module target
-        /// </summary>
-        /// <param name="idModuleTarget"></param>
-        /// <returns></returns>
-        public virtual SchedulerTask[] GetTasksByTarget(int idModuleTarget)
-        {
-            IDataReader dr = localSchDB.GetTasksByOwner(idModuleTarget);
-            ArrayList ary = new ArrayList();
-            while (dr.Read())
-                ary.Add(new SchedulerTask(dr));
-            dr.Close();
-
-            return (SchedulerTask[]) ary.ToArray(typeof (SchedulerTask));
-        }
-
-        /// <summary>
-        /// Insert a new task
-        /// </summary>
-        /// <param name="task"></param>
-        /// <returns></returns>
-        public virtual SchedulerTask InsertTask(SchedulerTask task)
-        {
-            if (task.IDTask != -1)
-                throw new SchedulerException("Could not insert an inserted task");
-            task.SetIDTask(localSchDB.InsertTask(task));
-            return task;
-        }
-
-        /// <summary>
-        /// Remove a task
-        /// </summary>
-        /// <param name="task"></param>
-        public virtual void RemoveTask(SchedulerTask task)
-        {
-            if (task.IDTask == -1)
-                return;
-
-            localSchDB.RemoveTask(task.IDTask);
-            return;
-        }
+        #region Methods
 
         /// <summary>
         /// Call the correct ISchedulable methods of a target module assigned to the task.
         /// </summary>
-        /// <param name="task"></param>
+        /// <param name="task">
+        /// The scheduler task.
+        /// </param>
         protected void ExecuteTask(SchedulerTask task)
         {
             ISchedulable module;
             try
             {
-                module = localSchDB.GetModuleInstance(task.IDModuleTarget);
+                module = this.LocalSchDb.GetModuleInstance(task.IDModuleTarget);
             }
             catch
             {
-                //TODO:
+                // TODO:
                 return;
             }
 
@@ -261,6 +268,7 @@ namespace Rainbow.Framework.Scheduler
                 {
                     throw new SchedulerException("ScheduleDo fail. Rollback fails", ex2);
                 }
+
                 throw new SchedulerException("ScheduleDo fails. Rollback called successfully", ex);
             }
 
@@ -272,6 +280,66 @@ namespace Rainbow.Framework.Scheduler
             {
                 throw new SchedulerException("ScheduleDo called successfully. Commit fails", ex);
             }
+        }
+
+        /// <summary>
+        /// The schedule.
+        /// </summary>
+        /// <param name="timerState">
+        /// State of the timer.
+        /// </param>
+        protected virtual void Schedule(object timerState)
+        {
+            lock (this)
+            {
+                this.LocalTimerState.Counter++;
+
+                var tsks = this.LocalSchDb.GetExpiredTask();
+
+                this.Stop(); // Stop the timer while it works
+
+                foreach (var tsk in tsks)
+                {
+                    try
+                    {
+                        this.ExecuteTask(tsk);
+                    }
+                    catch
+                    {
+                        // TODO: We have to apply some policy here...
+                        // i.e. Move failed tasks on a log, call a Module feedback interface,....
+                        // now task is removed always
+                    }
+
+                    this.RemoveTask(tsk);
+                }
+
+                this.Start(); // restart the timer
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Timer State
+        /// </summary>
+        protected class TimerState
+        {
+            #region Properties
+
+            /// <summary>
+            ///     Gets or sets the counter.
+            /// </summary>
+            /// <value>The counter.</value>
+            public int Counter { get; set; }
+
+            /// <summary>
+            ///     Gets or sets the timer.
+            /// </summary>
+            /// <value>The timer.</value>
+            public Timer Timer { get; set; }
+
+            #endregion
         }
     }
 }

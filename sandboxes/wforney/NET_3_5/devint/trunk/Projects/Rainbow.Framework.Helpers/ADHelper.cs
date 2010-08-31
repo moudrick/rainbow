@@ -1,12 +1,13 @@
-using System;
-using System.Collections;
-using System.Data;
-using System.DirectoryServices;
-using System.Web.Caching;
-using Rainbow.Framework.Settings;
-
 namespace Rainbow.Framework.Helpers
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.DirectoryServices;
+    using System.Web.Caching;
+
+    using Rainbow.Framework.Settings;
+
     /// <summary>
     /// This class contains functions for Active Directory support
     /// </summary>

@@ -1,117 +1,126 @@
-using System;
-using System.Configuration;
 //===============================================================================
-//
 //	Base Logic Layer
-//
 //	Rainbow.Framework.BLL.Utils
-//
-//
 //===============================================================================
 // Encapsulate resources -- it can come from anywhere
 //===============================================================================
+
 namespace Rainbow.Framework.BLL.Utils
 {
-	/// <summary>
-	/// Summary description for GlobalResources.
-	/// </summary>
-	[Obsolete("use Rainbow.Framework.Settings.Config")]
-	public class GlobalResources
-	{
+    using System;
+    using System.Configuration;
 
-		// jes1111 - moved to GlobalInternalStrings
-		//		/// <summary>
-		//		/// non breakable html space character
-		//		/// </summary>
-		//		public  const string HTML_SPACE = "&nbsp;";
+    /// <summary>
+    /// Summary description for GlobalResources.
+    /// </summary>
+    [Obsolete("use Rainbow.Framework.Settings.Config")]
+    public class GlobalResources
+    {
+        // jes1111 - moved to GlobalInternalStrings
+        // 		/// <summary>
+        // 		/// non breakable html space character
+        // 		/// </summary>
+        // 		public  const string HTML_SPACE = "&nbsp;";
+        #region Properties
 
-		/// <summary>
-		/// Does the Portal support WIndow Mgmt Functions/Controls
-		/// </summary>
-		/// <value><c>true</c> if [support window MGMT]; otherwise, <c>false</c>.</value>
-		public static bool SupportWindowMgmt
-		{
-			get
-			{
-				return SafeBoolean("WindowMgmtControls", false);
-			}
-		} // end of SupportWindowMgmt
+        /// <summary>
+        ///     Gets a value indicating whether the Portal support WIndow Mgmt Functions/Controls
+        /// </summary>
+        /// <value><c>true</c> if [support window MGMT]; otherwise, <c>false</c>.</value>
+        public static bool SupportWindowMgmt
+        {
+            get
+            {
+                return SafeBoolean("WindowMgmtControls", false);
+            }
+        }
 
-		/// <summary>
-		/// Do we support the close button
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if [support window MGMT close]; otherwise, <c>false</c>.
-		/// </value>
-		public static bool SupportWindowMgmtClose
-		{
-			get
-			{
-				return SafeBoolean("WindowMgmtWantClose", false);
-			}
-		} // end of SupportWindowMgmtClose
+        // end of SupportWindowMgmt
 
-		/// <summary>
-		/// Get Boolean Resource
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="default_ret">if set to <c>true</c> [default_ret].</param>
-		/// <returns></returns>
-		public static bool SafeBoolean(string name, bool default_ret)
-		{
-			object obj = ConfigurationSettings.AppSettings[name];
+        /// <summary>
+        ///     Gets a value indicating whether we support the close button
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [support window MGMT close]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool SupportWindowMgmtClose
+        {
+            get
+            {
+                return SafeBoolean("WindowMgmtWantClose", false);
+            }
+        }
 
-			try
-			{
+        #endregion
 
-				if (obj != null)
-					return Convert.ToBoolean(obj);
-			}
+        // end of SupportWindowMgmtClose
+        #region Public Methods
 
-			catch { }
-			return default_ret;
-		} // end of SafeBoolean
+        /// <summary>
+        /// Get Boolean Resource
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="defaultRet">
+        /// if set to <c>true</c> [default_ret].
+        /// </param>
+        /// <returns>
+        /// The safe boolean.
+        /// </returns>
+        public static bool SafeBoolean(string name, bool defaultRet)
+        {
+            var obj = ConfigurationManager.AppSettings[name];
 
-		/// <summary>
-		/// Get Integer Resource
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="default_ret">The default_ret.</param>
-		/// <returns></returns>
-		public static int SafeInt(string name, int default_ret)
-		{
-			object obj = ConfigurationSettings.AppSettings[name];
+            bool returnvalue;
+            return bool.TryParse(obj, out returnvalue) ? returnvalue : defaultRet;
+        }
 
-			try
-			{
+        // end of SafeBoolean
 
-				if (obj != null)
-					return Int32.Parse((string)obj);
-			}
+        /// <summary>
+        /// Get Integer Resource
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="defaultRet">
+        /// The default_ret.
+        /// </param>
+        /// <returns>
+        /// The safe int.
+        /// </returns>
+        public static int SafeInt(string name, int defaultRet)
+        {
+            var obj = ConfigurationSettings.AppSettings[name];
 
-			catch { }
-			return default_ret;
-		} // end of SafeInt
+            int returnValue;
+            return int.TryParse(obj, out returnValue) ? returnValue : defaultRet;
+        }
 
-		/// <summary>
-		/// Get string Resource
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="default_ret">The default_ret.</param>
-		/// <returns></returns>
-		public static string SafeString(string name, string default_ret)
-		{
-			object obj = ConfigurationSettings.AppSettings[name];
+        // end of SafeInt
 
-			try
-			{
+        /// <summary>
+        /// Get string Resource
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="defaultRet">
+        /// The default_ret.
+        /// </param>
+        /// <returns>
+        /// The safe string.
+        /// </returns>
+        public static string SafeString(string name, string defaultRet)
+        {
+            var obj = ConfigurationSettings.AppSettings[name];
 
-				if (obj != null)
-					return (string)obj;
-			}
+            return string.IsNullOrEmpty(obj) ? defaultRet : obj;
+        }
 
-			catch { }
-			return default_ret;
-		} // end of SafeString
-	}
+        #endregion
+
+        // end of SafeString
+    }
 }

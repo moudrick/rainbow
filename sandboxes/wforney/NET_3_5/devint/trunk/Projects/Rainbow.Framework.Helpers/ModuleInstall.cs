@@ -1,17 +1,16 @@
-using System;
-using System.Data;
-using System.Data.Linq;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using Rainbow.Framework.Configuration;
-using Rainbow.Framework.Web.UI.WebControls;
-using Path = Rainbow.Framework.Configuration.Path;
-using System.Diagnostics;
-
 namespace Rainbow.Framework.Helpers
 {
+    using System;
+    using System.Data;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Web;
+    using System.Web.UI;
+
+    using Rainbow.Framework.Configuration;
+
+    using Path = Rainbow.Framework.Configuration.Path;
+
     /// <summary>
     /// ModuleInstall incapsulates all the logic for install, 
     /// uninstall modules on portal
@@ -132,7 +131,7 @@ namespace Rainbow.Framework.Helpers
             if (!(myControl is PortalModuleControl))
                 throw new Exception("Module '" + myControl.GetType().FullName + "' is not a PortalModule Control");
 
-            PortalModuleControl portalModule = (PortalModuleControl)myControl;
+            var portalModule = (PortalModuleControl)myControl;
 
             // Check mobile module
             if (mobileSource != null && mobileSource.Length != 0 && mobileSource.ToLower().EndsWith(".ascx"))
@@ -154,7 +153,7 @@ namespace Rainbow.Framework.Helpers
             string className = portalModule.GetType().BaseType.FullName;
 
             // Now we add the definition to module list 
-            ModulesDB modules = new ModulesDB();
+            var modules = new ModulesDB();
 
             if (install)
             {

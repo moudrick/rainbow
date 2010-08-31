@@ -1,185 +1,236 @@
-using System.Drawing;
-using System.Web.UI.WebControls;
-
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    using System.Drawing;
+    using System.Web.UI.WebControls;
+
     /// <summary>
     /// Power Grid
     /// </summary>
     public class PowerGrid : DataGrid
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        protected Label lblFooter;
-
-        private string m_PagerCurrentPageCssClass = string.Empty;
-
-        private string m_PagerOtherPageCssClass = string.Empty;
-
-        #region Public Properties
+        #region Constants and Fields
 
         /// <summary>
-        /// Gets or sets the sort expression.
+        /// The lbl footer.
         /// </summary>
-        /// <value>The sort expression.</value>
-        public string SortExpression
+        protected Label FooterLabel;
+
+        /// <summary>
+        /// The m_ pager current page css class.
+        /// </summary>
+        private string pagerCurrentPageCssClass = string.Empty;
+
+        /// <summary>
+        /// The m_ pager other page css class.
+        /// </summary>
+        private string pagerOtherPageCssClass = string.Empty;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref = "PowerGrid" /> class.
+        /// </summary>
+        public PowerGrid()
         {
-            get { return base.Attributes["SortExpression"]; }
+            this.FooterLabel = new Label();
+            this.PagerStyle.Mode = PagerMode.NumericPages;
+            this.PagerStyle.BackColor = Color.Gainsboro;
+            this.PagerStyle.PageButtonCount = 10;
+            this.PagerStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.FooterStyle.BackColor = Color.Gainsboro;
+            this.FooterStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.ShowFooter = true;
+            this.AutoGenerateColumns = false;
+            this.AllowPaging = true;
+            this.PageSize = 7;
+            this.CellSpacing = 2;
+            this.CellPadding = 2;
+            this.GridLines = GridLines.None;
+            this.BorderColor = Color.Black;
+            this.BorderStyle = BorderStyle.Solid;
+            this.BorderWidth = 1;
+            this.ForeColor = Color.Black;
+            this.Font.Size = FontUnit.XXSmall;
+            this.Font.Name = "Verdana";
+            this.ItemStyle.BackColor = Color.Beige;
+            this.AlternatingItemStyle.BackColor = Color.PaleGoldenrod;
+            this.HeaderStyle.Font.Bold = true;
+            this.HeaderStyle.BackColor = Color.Brown;
+            this.HeaderStyle.ForeColor = Color.White;
+            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.AllowSorting = true;
+            this.Attributes["SortedAscending"] = "yes";
+            this.ItemCreated += this.OnItemCreated;
+            this.SortCommand += this.OnSortCommand;
+            this.PageIndexChanged += this.OnPageIndexChanged;
+        }
 
-            set { base.Attributes["SortExpression"] = value; }
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets or sets the footer text.
+        /// </summary>
+        /// <value>The footer text.</value>
+        public string FooterText
+        {
+            get
+            {
+                return this.FooterLabel.Text;
+            }
+
+            set
+            {
+                this.FooterLabel.Text = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is sorted ascending.
+        ///     Gets or sets a value indicating whether this instance is sorted ascending.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if this instance is sorted ascending; otherwise, <c>false</c>.
+        ///     <c>true</c> if this instance is sorted ascending; otherwise, <c>false</c>.
         /// </value>
         public bool IsSortedAscending
         {
-            get { return base.Attributes["SortedAscending"].Equals("yes"); }
+            get
+            {
+                return this.Attributes["SortedAscending"].Equals("yes");
+            }
 
             set
             {
                 if (!value)
                 {
-                    base.Attributes["SortedAscending"] = "no";
+                    this.Attributes["SortedAscending"] = "no";
                     return;
                 }
-                base.Attributes["SortedAscending"] = "yes";
+
+                this.Attributes["SortedAscending"] = "yes";
             }
         }
 
         /// <summary>
-        /// Gets or sets the pager current page CSS class.
+        ///     Gets or sets the pager current page CSS class.
         /// </summary>
         /// <value>The pager current page CSS class.</value>
         public string PagerCurrentPageCssClass
         {
-            get { return m_PagerCurrentPageCssClass; }
+            get
+            {
+                return this.pagerCurrentPageCssClass;
+            }
 
-            set { m_PagerCurrentPageCssClass = value; }
+            set
+            {
+                this.pagerCurrentPageCssClass = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the pager other page CSS class.
+        ///     Gets or sets the pager other page CSS class.
         /// </summary>
         /// <value>The pager other page CSS class.</value>
         public string PagerOtherPageCssClass
         {
-            get { return m_PagerOtherPageCssClass; }
+            get
+            {
+                return this.pagerOtherPageCssClass;
+            }
 
-            set { m_PagerOtherPageCssClass = value; }
+            set
+            {
+                this.pagerOtherPageCssClass = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the footer text.
+        ///     Gets or sets the sort expression.
         /// </summary>
-        /// <value>The footer text.</value>
-        public string FooterText
+        /// <value>The sort expression.</value>
+        public string SortExpression
         {
-            get { return lblFooter.Text; }
+            get
+            {
+                return this.Attributes["SortExpression"];
+            }
 
-            set { lblFooter.Text = value; }
+            set
+            {
+                this.Attributes["SortExpression"] = value;
+            }
         }
 
         #endregion
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PowerGrid"/> class.
-        /// </summary>
-        public PowerGrid()
-        {
-            lblFooter = new Label();
-            PagerStyle.Mode = PagerMode.NumericPages;
-            PagerStyle.BackColor = Color.Gainsboro;
-            PagerStyle.PageButtonCount = 10;
-            PagerStyle.HorizontalAlign = HorizontalAlign.Center;
-            FooterStyle.BackColor = Color.Gainsboro;
-            FooterStyle.HorizontalAlign = HorizontalAlign.Center;
-            ShowFooter = true;
-            AutoGenerateColumns = false;
-            AllowPaging = true;
-            PageSize = 7;
-            CellSpacing = 2;
-            CellPadding = 2;
-            GridLines = GridLines.None;
-            BorderColor = Color.Black;
-            BorderStyle = BorderStyle.Solid;
-            BorderWidth = 1;
-            ForeColor = Color.Black;
-            Font.Size = FontUnit.XXSmall;
-            Font.Name = "Verdana";
-            ItemStyle.BackColor = Color.Beige;
-            AlternatingItemStyle.BackColor = Color.PaleGoldenrod;
-            HeaderStyle.Font.Bold = true;
-            HeaderStyle.BackColor = Color.Brown;
-            HeaderStyle.ForeColor = Color.White;
-            HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
-            AllowSorting = true;
-            Attributes["SortedAscending"] = "yes";
-            ItemCreated += new DataGridItemEventHandler(OnItemCreated);
-            SortCommand += new DataGridSortCommandEventHandler(OnSortCommand);
-            PageIndexChanged += new DataGridPageChangedEventHandler(OnPageIndexChanged);
-        }
+        #region Public Methods
 
         /// <summary>
         /// Called when [item created].
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Web.UI.WebControls.DataGridItemEventArgs"/> instance containing the event data.</param>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.Web.UI.WebControls.DataGridItemEventArgs"/> instance containing the event data.
+        /// </param>
         public void OnItemCreated(object sender, DataGridItemEventArgs e)
         {
-            ListItemType listItemType = e.Item.ItemType;
+            var listItemType = e.Item.ItemType;
             if (listItemType == ListItemType.Footer)
             {
-                int i1 = e.Item.Cells.Count;
-                for (int j = i1 - 1; j > 0; j--)
+                var i1 = e.Item.Cells.Count;
+                for (var j = i1 - 1; j > 0; j--)
                 {
                     e.Item.Cells.RemoveAt(j);
                 }
+
                 e.Item.Cells[0].ColumnSpan = i1;
-                e.Item.Cells[0].Controls.Add(lblFooter);
+                e.Item.Cells[0].Controls.Add(this.FooterLabel);
             }
+
             if (listItemType == ListItemType.Pager)
             {
-                TableCell tableCell1 = (TableCell) e.Item.Controls[0];
-                for (int k = 0; k < tableCell1.Controls.Count; k += 2)
+                var tableCell1 = (TableCell)e.Item.Controls[0];
+                for (var k = 0; k < tableCell1.Controls.Count; k += 2)
                 {
                     try
                     {
-                        LinkButton linkButton = (LinkButton) tableCell1.Controls[k];
+                        var linkButton = (LinkButton)tableCell1.Controls[k];
                         linkButton.Text = string.Concat("[ ", linkButton.Text, " ]");
-                        linkButton.CssClass = m_PagerOtherPageCssClass;
+                        linkButton.CssClass = this.pagerOtherPageCssClass;
                     }
                     catch
                     {
-                        Label label1 = (Label) tableCell1.Controls[k];
+                        var label1 = (Label)tableCell1.Controls[k];
                         label1.Text = string.Concat("Page ", label1.Text);
-                        if (m_PagerCurrentPageCssClass.Equals(string.Empty))
+                        if (this.pagerCurrentPageCssClass.Equals(string.Empty))
                         {
                             label1.ForeColor = Color.Blue;
                             label1.Font.Bold = true;
                         }
                         else
                         {
-                            label1.CssClass = m_PagerCurrentPageCssClass;
+                            label1.CssClass = this.pagerCurrentPageCssClass;
                         }
                     }
                 }
             }
-            //if (listItemType == ListItemType.Item)
+
+            // if (listItemType == ListItemType.Item)
             if (listItemType == ListItemType.Header)
             {
-                string str1 = base.Attributes["SortExpression"];
-                string str2 = !base.Attributes["SortedAscending"].Equals("yes") ? " 6" : " 5";
-                for (int i2 = 0; i2 < base.Columns.Count; i2++)
+                var str1 = this.Attributes["SortExpression"];
+                var str2 = !this.Attributes["SortedAscending"].Equals("yes") ? " 6" : " 5";
+                for (var i2 = 0; i2 < this.Columns.Count; i2++)
                 {
-                    if (str1 == base.Columns[i2].SortExpression)
+                    if (str1 == this.Columns[i2].SortExpression)
                     {
-                        TableCell tableCell2 = e.Item.Cells[i2];
-                        Label label2 = new Label();
+                        var tableCell2 = e.Item.Cells[i2];
+                        var label2 = new Label();
                         label2.Font.Name = "webdings";
                         label2.Font.Size = FontUnit.XXSmall;
                         label2.Text = str2;
@@ -190,36 +241,43 @@ namespace Rainbow.Framework.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Called when [sort command].
+        /// Called when [page index changed].
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Web.UI.WebControls.DataGridSortCommandEventArgs"/> instance containing the event data.</param>
-        public void OnSortCommand(object sender, DataGridSortCommandEventArgs e)
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.Web.UI.WebControls.DataGridPageChangedEventArgs"/> instance containing the event data.
+        /// </param>
+        public void OnPageIndexChanged(object sender, DataGridPageChangedEventArgs e)
         {
-            string _SortExpression;
-            string _SortedAscending;
-
-            _SortExpression = Attributes["SortExpression"];
-            _SortedAscending = Attributes["SortedAscending"];
-
-            Attributes["SortExpression"] = e.SortExpression;
-            Attributes["SortedAscending"] = "yes";
-
-            if (e.SortExpression == _SortExpression)
-            {
-                if (_SortedAscending == "yes")
-                    Attributes["SortedAscending"] = "no";
-            }
+            this.CurrentPageIndex = e.NewPageIndex;
         }
 
         /// <summary>
-        /// Called when [page index changed].
+        /// Called when [sort command].
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Web.UI.WebControls.DataGridPageChangedEventArgs"/> instance containing the event data.</param>
-        public void OnPageIndexChanged(object sender, DataGridPageChangedEventArgs e)
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.Web.UI.WebControls.DataGridSortCommandEventArgs"/> instance containing the event data.
+        /// </param>
+        public void OnSortCommand(object sender, DataGridSortCommandEventArgs e)
         {
-            CurrentPageIndex = e.NewPageIndex;
+            string sortExpression = this.Attributes["SortExpression"];
+            string sortedAscending = this.Attributes["SortedAscending"];
+
+            this.Attributes["SortExpression"] = e.SortExpression;
+            this.Attributes["SortedAscending"] = "yes";
+
+            if (e.SortExpression == sortExpression)
+            {
+                if (sortedAscending == "yes")
+                {
+                    this.Attributes["SortedAscending"] = "no";
+                }
+            }
         }
 
         /// <summary>
@@ -227,19 +285,21 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// </summary>
         public void SetGfwStyles()
         {
-            CellPadding = 3;
-            CellSpacing = 0;
-            BorderColor = Color.Black;
-            BackColor = Color.WhiteSmoke;
-            ForeColor = Color.Black;
-            GridLines = GridLines.Both;
-            ItemStyle.BackColor = Color.WhiteSmoke;
-            ItemStyle.VerticalAlign = VerticalAlign.Top;
-            AlternatingItemStyle.BackColor = Color.LightGray;
-            AlternatingItemStyle.VerticalAlign = VerticalAlign.Top;
-            HeaderStyle.ForeColor = Color.Black;
-            HeaderStyle.Font.Bold = true;
-            HeaderStyle.BackColor = Color.LightGray;
+            this.CellPadding = 3;
+            this.CellSpacing = 0;
+            this.BorderColor = Color.Black;
+            this.BackColor = Color.WhiteSmoke;
+            this.ForeColor = Color.Black;
+            this.GridLines = GridLines.Both;
+            this.ItemStyle.BackColor = Color.WhiteSmoke;
+            this.ItemStyle.VerticalAlign = VerticalAlign.Top;
+            this.AlternatingItemStyle.BackColor = Color.LightGray;
+            this.AlternatingItemStyle.VerticalAlign = VerticalAlign.Top;
+            this.HeaderStyle.ForeColor = Color.Black;
+            this.HeaderStyle.Font.Bold = true;
+            this.HeaderStyle.BackColor = Color.LightGray;
         }
+
+        #endregion
     }
 }

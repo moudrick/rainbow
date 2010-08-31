@@ -1,45 +1,63 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Configuration.Provider;
-
-namespace Rainbow.Framework.Providers.RainbowMembershipProvider {
+namespace Rainbow.Framework.Providers.RainbowMembershipProvider
+{
+    using System;
+    using System.Configuration.Provider;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// Rainbow-specific provider exception
     /// </summary>
-    [global::System.Serializable]
-    public class RainbowMembershipProviderException : ProviderException {
+    [Serializable]
+    public class RainbowMembershipProviderException : ProviderException
+    {
+        #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RainbowMembershipProviderException"/> class.
+        ///     Initializes a new instance of the <see cref = "RainbowMembershipProviderException" /> class.
         /// </summary>
-        public RainbowMembershipProviderException() {
+        public RainbowMembershipProviderException()
+        {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RainbowMembershipProviderException"/> class.
         /// </summary>
-        /// <param name="message">The message.</param>
-        public RainbowMembershipProviderException( string message )
-            : base( message ) {
+        /// <param name="message">
+        /// The message.
+        /// </param>
+        public RainbowMembershipProviderException(string message)
+            : base(message)
+        {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RainbowMembershipProviderException"/> class.
         /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="inner">The inner.</param>
-        public RainbowMembershipProviderException( string message, Exception inner )
-            : base( message, inner ) {
+        /// <param name="message">
+        /// The message.
+        /// </param>
+        /// <param name="inner">
+        /// The inner.
+        /// </param>
+        public RainbowMembershipProviderException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RainbowMembershipProviderException"/> class.
         /// </summary>
-        /// <param name="info">The object that holds the information to deserialize.</param>
-        /// <param name="context">Contextual information about the source or destination.</param>
-        protected RainbowMembershipProviderException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context ) : base( info, context ) {
+        /// <param name="info">
+        /// The object that holds the information to deserialize.
+        /// </param>
+        /// <param name="context">
+        /// Contextual information about the source or destination.
+        /// </param>
+        protected RainbowMembershipProviderException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
         }
+
+        #endregion
     }
 }

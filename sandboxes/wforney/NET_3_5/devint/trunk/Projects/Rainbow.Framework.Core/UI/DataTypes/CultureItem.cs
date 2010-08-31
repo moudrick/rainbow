@@ -1,67 +1,140 @@
-using System;
-using System.Globalization;
-
 namespace Rainbow.Framework
 {
+    using System;
+    using System.Globalization;
+
     /// <summary>
     /// Single item in list. Language culture pair.
     /// </summary>
     public class LanguageCultureItem
     {
-        private CultureInfo m_UICulture;
-        private CultureInfo m_culture;
+        #region Constants and Fields
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LanguageCultureItem"/> class.
+        /// The culture.
+        /// </summary>
+        private CultureInfo culture;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguageCultureItem"/> class.
         /// </summary>
         /// <param name="uiCulture">The ui culture.</param>
         /// <param name="culture">The culture.</param>
         public LanguageCultureItem(CultureInfo uiCulture, CultureInfo culture)
         {
-            if (uiCulture == null)
-                UICulture = CultureInfo.InvariantCulture;
-            else
-                UICulture = uiCulture;
-
-            if (culture == null)
-                Culture = CultureInfo.InvariantCulture;
-            else
-                Culture = culture;
+            this.UICulture = uiCulture ?? CultureInfo.InvariantCulture;
+            this.Culture = culture ?? CultureInfo.InvariantCulture;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LanguageCultureItem"/> class.
+        /// Initializes a new instance of the <see cref="LanguageCultureItem"/> class. 
+        ///     Initializes a new instance of the <see cref="T:LanguageCultureItem"/> class.
         /// </summary>
         public LanguageCultureItem()
         {
-            UICulture = CultureInfo.InvariantCulture;
-            Culture = CultureInfo.CreateSpecificCulture(CultureInfo.InvariantCulture.Name);
+            this.UICulture = CultureInfo.InvariantCulture;
+            this.Culture = CultureInfo.CreateSpecificCulture(CultureInfo.InvariantCulture.Name);
         }
 
-        /// <summary>
-        /// Gets or sets the UI culture.
-        /// </summary>
-        /// <value>The UI culture.</value>
-        public CultureInfo UICulture
-        {
-            get { return m_UICulture; }
-            set { m_UICulture = value; }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        /// Gets or sets the culture.
+        ///     Gets or sets the culture.
         /// </summary>
         /// <value>The culture.</value>
         public CultureInfo Culture
         {
-            get { return m_culture; }
+            get
+            {
+                return this.culture;
+            }
+
             set
             {
                 if (value.IsNeutralCulture)
-                    throw new ArgumentException("Culture value cannot be neutral", "Culture");
+                {
+                    throw new ArgumentException("Culture value cannot be neutral", "value");
+                }
 
-                m_culture = value;
+                this.culture = value;
             }
+        }
+
+        /// <summary>
+        ///     Gets or sets the UI culture.
+        /// </summary>
+        /// <value>The UI culture.</value>
+        public CultureInfo UICulture { get; set; }
+
+        #endregion
+
+        #region Operators
+
+        /// <summary>
+        ///     Implicit operators the specified item.
+        /// </summary>
+        /// <param name = "item">The item.</param>
+        /// <returns></returns>
+        public static implicit operator string(LanguageCultureItem item)
+        {
+            return item.ToString();
+        }
+
+        #endregion
+
+        // 		public static bool operator==(LanguageCultureItem a, LanguageCultureItem b) 
+        // 		{
+        // 			return LanguageCultureItem.Equals(a, b);
+        // 		}
+
+        // 		public static bool operator!=(LanguageCultureItem a, LanguageCultureItem b) 
+        // 		{
+        // 			return !LanguageCultureItem.Equals(a, b);
+        // 		}
+        #region Public Methods
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>.
+        /// </summary>
+        /// <param name="a">The <see cref="T:System.Object"></see> to compare with the current <see cref="T:System.Object"></see>.</param>
+        /// <param name="b">The <see cref="T:System.Object"></see> to compare with the current <see cref="T:System.Object"></see>.</param>
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>; otherwise, false.
+        /// </returns>
+        public static bool Equals(LanguageCultureItem a, LanguageCultureItem b)
+        {
+            return (a != null) && (b != null) && (a.ToString() == b.ToString() || a.Equals(b));
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>.
+        /// </summary>
+        /// <param name="obj">
+        /// The <see cref="T:System.Object"></see> to compare with the current <see cref="T:System.Object"></see>.
+        /// </param>
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>; otherwise, false.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            return obj.GetType() == typeof(LanguageCultureItem) && Equals(this, (LanguageCultureItem)obj);
+        }
+
+        /// <summary>
+        /// We must override GetHashCode when we override Equals
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"></see>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return (this.UICulture.LCID * 5000) + this.Culture.LCID;
         }
 
         /// <summary>
@@ -72,76 +145,9 @@ namespace Rainbow.Framework
         /// </returns>
         public override string ToString()
         {
-            return UICulture.Name + "/" + Culture.Name;
+            return string.Format("{0}/{1}", this.UICulture.Name, this.Culture.Name);
         }
 
-        /// <summary>
-        /// Implicit operators the specified item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <returns></returns>
-        public static implicit operator string(LanguageCultureItem item)
-        {
-            return item.ToString();
-        }
-
-        //		public static bool operator==(LanguageCultureItem a, LanguageCultureItem b) 
-        //		{
-        //			return LanguageCultureItem.Equals(a, b);
-        //		}
-
-        //		public static bool operator!=(LanguageCultureItem a, LanguageCultureItem b) 
-        //		{
-        //			return !LanguageCultureItem.Equals(a, b);
-        //		}
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>.
-        /// </summary>
-        /// <param name="obj">The <see cref="T:System.Object"></see> to compare with the current <see cref="T:System.Object"></see>.</param>
-        /// <returns>
-        /// true if the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>; otherwise, false.
-        /// </returns>
-        public override bool Equals(Object obj)
-        {
-            if (obj.GetType() == typeof (LanguageCultureItem))
-            {
-                return Equals(this, (LanguageCultureItem) obj);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Equalses the specified a.
-        /// </summary>
-        /// <param name="a">A.</param>
-        /// <param name="b">The b.</param>
-        /// <returns></returns>
-        public static bool Equals(LanguageCultureItem a, LanguageCultureItem b)
-        {
-            if ((a == null) || (b == null))
-            {
-                return false;
-            }
-            if (a.ToString() == b.ToString())
-            {
-                return true;
-            }
-            return a.Equals(b);
-        }
-
-        /// <summary>
-        /// We must override GetHashCode when we override Equals
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"></see>.
-        /// </returns>
-        public override Int32 GetHashCode()
-        {
-            return (Int32) ((UICulture.LCID*5000) + Culture.LCID);
-        }
+        #endregion
     }
 }

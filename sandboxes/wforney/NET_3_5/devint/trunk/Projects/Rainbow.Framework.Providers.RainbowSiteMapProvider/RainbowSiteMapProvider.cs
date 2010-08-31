@@ -1,21 +1,32 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
+namespace Rainbow.Framework.Providers.RainbowSiteMapProvider
+{
+    using System.Linq;
+    using System.Web;
 
-namespace Rainbow.Framework.Providers.RainbowSiteMapProvider {
-	
-	public abstract class RainbowSiteMapProvider : StaticSiteMapProvider {
+    /// <summary>
+    /// The rainbow site map provider.
+    /// </summary>
+    public abstract class RainbowSiteMapProvider : StaticSiteMapProvider
+    {
+        #region Public Methods
 
-        public abstract void ClearCache();
-
-        public static void ClearAllRainbowSiteMapCaches() {
+        /// <summary>
+        /// The clear all rainbow site map caches.
+        /// </summary>
+        public static void ClearAllRainbowSiteMapCaches()
+        {
             // Removing Sitemap Cache
-            foreach (SiteMapProvider siteMap in SiteMap.Providers) {
-                if (siteMap is RainbowSiteMapProvider) {
-                    ((RainbowSiteMapProvider)siteMap).ClearCache();
-                }
+            foreach (var siteMap in SiteMap.Providers.OfType<RainbowSiteMapProvider>())
+            {
+                siteMap.ClearCache();
             }
         }
+
+        /// <summary>
+        /// The clear cache.
+        /// </summary>
+        public abstract void ClearCache();
+
+        #endregion
     }
 }

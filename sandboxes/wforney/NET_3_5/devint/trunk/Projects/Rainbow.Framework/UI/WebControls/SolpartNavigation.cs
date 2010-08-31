@@ -173,7 +173,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             Category("Data"),
                 PersistenceMode(PersistenceMode.Attribute)
             ]
-        public int ParentPageID
+        public int ParentPageId
         {
             get { return _definedParentTab; }
             set
@@ -575,9 +575,9 @@ namespace Rainbow.Framework.Web.UI.WebControls
 
                         //MH: added 29/04/2003 by mario@hartmann.net
                     case BindOption.BindOptionDefinedParent:
-                        if (ParentPageID != -1)
+                        if (this.ParentPageId != -1)
                             authorizedTabs =
-                                GetTabs(ParentPageID, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
+                                GetTabs(this.ParentPageId, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
                         break;
                         //MH: end
                     default:

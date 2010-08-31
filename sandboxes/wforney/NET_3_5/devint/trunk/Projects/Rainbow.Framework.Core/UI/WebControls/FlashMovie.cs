@@ -12,14 +12,13 @@
  * licence text that comes with product.
 */
 
-
-namespace Rainbow.Framework.Web.UI.WebControls {
-	/// <summary>
-	/// Flash Movie Control.
-	/// </summary>
-	[History("mario@hartmann.net", "2004/06/04", "Added to Rainbow.")]
-	public class FlashMovie : Osmosis.Web.UI.Controls.FlashMovie
-	{
-	}
-	
+namespace Rainbow.Framework.Web.UI.WebControls
+{
+    /// <summary>
+    /// Flash Movie Control.
+    /// </summary>
+    [History("mario@hartmann.net", "2004/06/04", "Added to Rainbow.")]
+    public class FlashMovie : Osmosis.Web.UI.Controls.FlashMovie
+    {
+    }
 }

@@ -1,13 +1,10 @@
-//#define MyDEBUG
+// #define MyDEBUG
 
 // MergeEngine.cs
-//
 // This file contains the implementation of the functionality to compare
 // and merge two Html strings. 
-//
 // The comparison is word-wise, not character wise. Thus, the process 
 // consists of two steps. 
-//
 // The first step is to parse the html string into collection of English 
 // words(strong typed collection WordsCollection is defined for this) in 
 // such a way that:
@@ -21,7 +18,6 @@
 //       word field of Word class.
 //    4) Whitespaces immediately after or before Html tags are ignored.
 //      ( whitespaces == {' ', '\t', '\n'} )
-//
 // The second step is to compare and merge the two words collections by 
 // the algorithm proposed by [1]. The follwoing are the basic steps of 
 // the algorithm (read [1] for details):
@@ -48,108 +44,153 @@
 //       LCS / SES -- Longest Common Sequence and Shortest Edit Script. 
 //                Simple say, the shortest path between left-up and right-bottom
 //                corners of the edit graph. 
-// 
 // [1] Eugene W. Myers, "An O(ND) Difference Algorithm and Its Variations"
 //     A copy of the file can be found at:
 //     http://www.xmailserver.org/diff2.pdf
 // [2] http://cvs.sourceforge.net/viewcvs.py/*checkout*/cvsgui/cvsgui/cvs-1.10/diff/analyze.c?&rev=1.1.1.3     
-//
 // The file is created to be used inside Rainbow(www.Rainbowportal.net)
 // to compare the staging and production contents of HtmlDocument module
 // while working in Workflow mode. However, this file can be easily 
 // modified to be used in other senario.
-//
 // All of the code in this file are implemented from scratch by the 
 // author, with reference to the Unix Diff implementation in [2].
-//
 // This program is free and can be distributed or used for any purpose 
 // with no restriction.  
-// 
 // The author would like to thank Matt Cowan(mcowan@county.oxford.on.ca)
 // for pushing this work and undertaking lots of testings.
-//
 // Author: Hongwei Shen 
 // Email:  hongwei.shen@gmail.com
 // Date:   June 22, 2005
 
-using System;
-using System.Collections;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
-
 namespace Rainbow.Framework.BLL.MergeEngine
 {
+    using System;
+    using System.Collections;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
 
     #region Data types
 
     /// <summary>
     /// When we compare two files, we say we delete or add 
-    /// some sub sequences in the original file to result 
-    /// in the modified file. This is to define the strong 
-    /// type for identifying the status of a such sequence. 
+    ///     some sub sequences in the original file to result 
+    ///     in the modified file. This is to define the strong 
+    ///     type for identifying the status of a such sequence.
     /// </summary>
-    enum SequenceStatus
+    internal enum SequenceStatus
     {
         /// <summary>
-        /// The sequence is inside the original
-        /// file but not in the modified file 
+        ///     The sequence is inside the original
+        ///     file but not in the modified file
         /// </summary>
-        Deleted = 0,
+        Deleted = 0, 
 
         /// <summary>
-        /// The sequence is inside the modifed
-        /// file but not in the original file 
+        ///     The sequence is inside the modifed
+        ///     file but not in the original file
         /// </summary>
-        Inserted,
+        Inserted, 
 
         /// <summary>
-        /// The sequence is in both the origianl 
-        /// and the modified files
+        ///     The sequence is in both the origianl 
+        ///     and the modified files
         /// </summary>
         NoChange
     }
 
     /// <summary>
     /// The class defines the begining and end html tag 
-    /// for marking up the deleted words in the merged
-    /// file. 
+    ///     for marking up the deleted words in the merged
+    ///     file.
     /// </summary>
-    class CommentOff
+    internal class CommentOff
     {
-        static public string BeginTag = "<span style=\"text-decoration: line-through; color: red\">"; 
-        static public string EndTag = "</span>";
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes static members of the <see cref="CommentOff"/> class.
+        /// </summary>
+        static CommentOff()
+        {
+            BeginTag = "<span style=\"text-decoration: line-through; color: red\">";
+            EndTag = "</span>";
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets or sets the begin tag.
+        /// </summary>
+        public static string BeginTag { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the end tag.
+        /// </summary>
+        public static string EndTag { get; set; }
+
+        #endregion
     }
 
     /// <summary>
     /// The class defines the begining and end html tag 
-    /// for marking up the added words in the merged
-    /// file. 
+    ///     for marking up the added words in the merged
+    ///     file.
     /// </summary>
-    class Added
+    internal class Added
     {
-        static public string BeginTag = "<span style=\"background: SpringGreen\">"; 
-        static public string EndTag = "</span>";
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///     Initializes static members of the <see cref = "Added" /> class.
+        /// </summary>
+        static Added()
+        {
+            BeginTag = "<span style=\"background: SpringGreen\">";
+            EndTag = "</span>";
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets or sets the begin tag.
+        /// </summary>
+        public static string BeginTag { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the end tag.
+        /// </summary>
+        public static string EndTag { get; set; }
+
+        #endregion
     }
 
     /// <summary>
     /// Data structure for marking start and end indexes of a 
-    /// sequence
+    ///     sequence
     /// </summary>
-    class Sequence
+    internal class Sequence
     {
+        #region Constructors and Destructors
+
         /// <summary>
-        /// Default constructor
+        ///     Initializes a new instance of the <see cref = "Sequence" /> class. 
+        ///     Default constructor
         /// </summary>
         public Sequence()
         {
         }
 
         /// <summary>
-        /// Overloaded Constructor that takes the start
-        /// and end indexes of the sequence. Note that 
-        /// the interval is open on right hand side, say,
-        /// it is like [startIndex, endIndex).
+        /// Initializes a new instance of the <see cref="Sequence"/> class. 
+        ///     Overloaded Constructor that takes the start
+        ///     and end indexes of the sequence. Note that 
+        ///     the interval is open on right hand side, say,
+        ///     it is like [startIndex, endIndex).
         /// </summary>
         /// <param name="startIndex">
         /// The starting index of the sequence
@@ -162,216 +203,320 @@ namespace Rainbow.Framework.BLL.MergeEngine
             this.StartIndex = startIndex;
             this.EndIndex = endIndex;
         }
-        /// <summary>
-        /// The start index of the sequence
-        /// </summary>
-        public int StartIndex;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        /// The end index of the sequence. It is 
-        /// open end.
+        ///     Gets or sets the end index of the sequence. It is 
+        ///     open end.
         /// </summary>
-        public int EndIndex;
+        public int EndIndex { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the start index of the sequence
+        /// </summary>
+        public int StartIndex { get; set; }
+
+        #endregion
     }
 
     /// <summary>
     /// This class defines middle common sequence in the original 
-    /// file and the modified file. It is called middle in the 
-    /// sense that it is the common sequence when the furthest 
-    /// forward reaching path in the top-down seaching first overlaps 
-    /// the furthest backward reaching path in the bottom up search.
-    /// See the listed reference at the top for more details. 
+    ///     file and the modified file. It is called middle in the 
+    ///     sense that it is the common sequence when the furthest 
+    ///     forward reaching path in the top-down seaching first overlaps 
+    ///     the furthest backward reaching path in the bottom up search.
+    ///     See the listed reference at the top for more details.
     /// </summary>
-    class MiddleSnake
+    internal class MiddleSnake
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref = "MiddleSnake" /> class.
+        /// </summary>
         public MiddleSnake()
         {
-            Source = new Sequence();
-            Destination = new Sequence();
+            this.Source = new Sequence();
+            this.Destination = new Sequence();
         }
-        /// <summary>
-        /// The indexes of middle snake in source sequence
-        /// </summary>
-        public Sequence Source;
-        
-        /// <summary>
-        /// The indexes of middle snake in the destination 
-        /// sequence
-        /// </summary>
-        public Sequence Destination;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        /// The length of the Shortest Edit Script for the 
-        /// path this snake is found.
+        ///     Gets or sets the indexes of middle snake in the destination 
+        ///     sequence
         /// </summary>
-        public int SES_Length;
+        public Sequence Destination { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the length of the Shortest Edit Script for the 
+        ///     path this snake is found.
+        /// </summary>
+        public int SesLength { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the indexes of middle snake in source sequence
+        /// </summary>
+        public Sequence Source { get; set; }
+
+        #endregion
     }
-
 
     /// <summary>
     /// An array indexer class that maps the index of an integer 
-    /// array from -N ~ +N to 0 ~ 2N.
+    ///     array from -N ~ +N to 0 ~ 2N.
     /// </summary>
-    class IntVector
+    internal class IntVector
     {
-        private int [] data;
-        private int N;
-        
-        public IntVector(int N)
-        {
-            data = new int [2*N];
-            this.N = N;
-        }
-
-        public int this [int index]
-        {
-            get { return data[N + index]; }
-            set { data[N + index] = value;}
-        }
-    }
-
-
-    #endregion
-
-    #region Word and Words Collection
-
-	/// <summary>
-	/// This class defines the data type for representing a 
-	/// word. The word may have leading or tailing html tags 
-	/// or other special characters. Those prefix or suffix 
-	/// are not compared.
-	/// </summary>
-	internal class Word : IComparable
-	{
-        private string _word = string.Empty;
-        private string _prefix = string.Empty;
-        private string _suffix = string.Empty;
+        #region Constants and Fields
 
         /// <summary>
-        /// Default constructor
+        ///     The data.
         /// </summary>
-        public Word()
-        {
-            _word = string.Empty;
-            _prefix = string.Empty;
-            _suffix = string.Empty;
-        }
+        private readonly int[] data;
 
         /// <summary>
-        /// Overloaded constructor
+        ///     The n.
         /// </summary>
-        /// <param name="word">The word</param>
-        /// <param name="prefix">The prefix of the word, such as html tags</param>
-        /// <param name="suffix">The suffix of the word, such as spaces.</param>
-		public Word(string word, string prefix, string suffix)
-		{
-            _word = word;
-            _prefix = prefix;
-            _suffix = suffix;
-        }
+        private readonly int n;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         /// <summary>
-        /// The word itself
+        /// Initializes a new instance of the <see cref="IntVector"/> class.
         /// </summary>
-        /// <value>The word.</value>
-        public string word
+        /// <param name="n">
+        /// The integer.
+        /// </param>
+        public IntVector(int n)
         {
-            get { return _word;  }
-            set { _word = value; }
+            this.data = new int[2 * n];
+            this.n = n;
         }
 
-        /// <summary>
-        /// The prefix of the word
-        /// </summary>
-        /// <value>The prefix.</value>
-        public string Prefix
-        {
-            get { return _prefix;  }
-            set { _prefix = value; }
-        }
+        #endregion
+
+        #region Indexers
 
         /// <summary>
-        /// The suffix of the word
+        ///     The indexer.
         /// </summary>
-        /// <value>The suffix.</value>
-        public string Suffix
+        /// <param name = "index">
+        ///     The index.
+        /// </param>
+        public int this[int index]
         {
-            get { return _suffix;  }
-            set { _suffix = value; }
-        }
+            get
+            {
+                return this.data[this.n + index];
+            }
 
-        /// <summary>
-        /// Reconstruct the text string from the word
-        /// itself without any other decoration.
-        /// </summary>
-        /// <returns>Constructed string</returns>
-        public string reconstruct()
-        {
-            return _prefix + _word + _suffix;
-        }
-
-        /// <summary>
-        /// Overloaded function reconstructing the text
-        /// string with additional decoration around the
-        /// _word.
-        /// </summary>
-        /// <param name="beginTag">The begining html tag to mark the _word</param>
-        /// <param name="endTag">The end html tag to mark the _word</param>
-        /// <returns>The constructed string</returns>
-        public string reconstruct(string beginTag, string endTag)
-        {
-            return _prefix + beginTag + _word + endTag + _suffix;
-        }
-
-        #region IComparable Members
-
-        /// <summary>
-        /// Implementation of the CompareTo. It compares
-        /// the _word field.
-        /// </summary>
-        /// <param name="obj">An object to compare with this instance.</param>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This instance is less than obj. Zero This instance is equal to obj. Greater than zero This instance is greater than obj.
-        /// </returns>
-        /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance. </exception>
-        public int CompareTo(object obj)
-        {
-            if (obj is Word)
-                return _word.CompareTo(((Word)obj).word);
-            else 
-                throw new ArgumentException("The obj is not a Word", obj.ToString());
+            set
+            {
+                this.data[this.n + index] = value;
+            }
         }
 
         #endregion
     }
 
+    #endregion
+
+    #region Word and Words Collection
+
+    /// <summary>
+    /// This class defines the data type for representing a 
+    ///     word. The word may have leading or tailing html tags 
+    ///     or other special characters. Those prefix or suffix 
+    ///     are not compared.
+    /// </summary>
+    internal class Word : IComparable
+    {
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref = "Word" /> class. 
+        ///     Default constructor
+        /// </summary>
+        public Word()
+        {
+            this.TheWord = string.Empty;
+            this.Prefix = string.Empty;
+            this.Suffix = string.Empty;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Word"/> class. 
+        ///     Overloaded constructor
+        /// </summary>
+        /// <param name="word">
+        /// The word
+        /// </param>
+        /// <param name="prefix">
+        /// The prefix of the word, such as html tags
+        /// </param>
+        /// <param name="suffix">
+        /// The suffix of the word, such as spaces.
+        /// </param>
+        public Word(string word, string prefix, string suffix)
+        {
+            this.TheWord = word;
+            this.Prefix = prefix;
+            this.Suffix = suffix;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets or sets the prefix of the word
+        /// </summary>
+        /// <value>The prefix.</value>
+        public string Prefix { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the suffix of the word
+        /// </summary>
+        /// <value>The suffix.</value>
+        public string Suffix { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the word itself
+        /// </summary>
+        /// <value>The word itself.</value>
+        public string TheWord { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Reconstruct the text string from the word
+        ///     itself without any other decoration.
+        /// </summary>
+        /// <returns>
+        /// Constructed string
+        /// </returns>
+        public string Reconstruct()
+        {
+            return this.Prefix + this.TheWord + this.Suffix;
+        }
+
+        /// <summary>
+        /// Overloaded function reconstructing the text
+        ///     string with additional decoration around the
+        ///     _word.
+        /// </summary>
+        /// <param name="beginTag">
+        /// The begining html tag to mark the _word
+        /// </param>
+        /// <param name="endTag">
+        /// The end html tag to mark the _word
+        /// </param>
+        /// <returns>
+        /// The constructed string
+        /// </returns>
+        public string Reconstruct(string beginTag, string endTag)
+        {
+            return this.Prefix + beginTag + this.TheWord + endTag + this.Suffix;
+        }
+
+        #endregion
+
+        #region Implemented Interfaces
+
+        #region IComparable
+
+        /// <summary>
+        /// Implementation of the CompareTo. It compares
+        ///     the _word field.
+        /// </summary>
+        /// <param name="obj">
+        /// An object to compare with this instance.
+        /// </param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This instance is less than obj. Zero This instance is equal to obj. Greater than zero This instance is greater than obj.
+        /// </returns>
+        /// <exception cref="T:System.ArgumentException">
+        /// obj is not the same type as this instance. 
+        /// </exception>
+        public int CompareTo(object obj)
+        {
+            if (obj is Word)
+            {
+                return this.TheWord.CompareTo(((Word)obj).TheWord);
+            }
+
+            throw new ArgumentException("The obj is not a Word", obj.ToString());
+        }
+
+        #endregion
+
+        #endregion
+    }
 
     /// <summary>
     /// Strongly typed collection of Word object
     /// </summary>
     internal class WordsCollection : CollectionBase
     {
+        #region Constructors and Destructors
+
         /// <summary>
-        /// Default constructor
+        ///     Initializes a new instance of the <see cref = "WordsCollection" /> class. 
+        ///     Default constructor
         /// </summary>
         public WordsCollection()
         {
         }
 
         /// <summary>
-        /// Constructor to populate collection from an ArrayList
+        /// Initializes a new instance of the <see cref="WordsCollection"/> class. 
+        ///     Constructor to populate collection from an ArrayList
         /// </summary>
         /// <param name="list" type="ArrayList">
         /// ArrayList of Words
         /// </param>
         public WordsCollection(ArrayList list)
         {
-            foreach (object item in list)
+            foreach (var item in list.OfType<Word>())
             {
-                if (item is Word)
-                    List.Add(item);
+                this.List.Add(item);
             }
         }
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        ///     Array indexing operator -- get Word object at 
+        ///     the index
+        /// </summary>
+        public Word this[int index]
+        {
+            get
+            {
+                return (Word)this.List[index];
+            }
+
+            set
+            {
+                this.List[index] = value;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Add a Word object to the collection
@@ -381,36 +526,11 @@ namespace Rainbow.Framework.BLL.MergeEngine
         /// </param>
         /// <returns type="integer">
         /// Zero based index of the added Word object in 
-        /// the colleciton
+        ///     the colleciton
         /// </returns>
         public int Add(Word item)
         {
-            return List.Add(item);
-        }
-
-        /// <summary>
-        /// Add Word object to the collection at specified index
-        /// </summary>
-        /// <param name="index" type="integer">
-        /// Zero based index
-        /// </param>
-        /// <param name="item" type="Word">
-        /// Word object
-        /// </param>
-        public void Insert(int index, Word item)
-        {
-            List.Insert(index, item);
-        }
-
-        /// <summary>
-        /// Remove the Word object from collection
-        /// </summary>
-        /// <param name="item" type="Word">
-        /// Word object to be removed
-        /// </param>
-        public void Remove(Word item)
-        {
-            List.Remove(item);
+            return this.List.Add(item);
         }
 
         /// <summary>
@@ -424,37 +544,12 @@ namespace Rainbow.Framework.BLL.MergeEngine
         /// </returns>
         public bool Contains(Word item)
         {
-            return List.Contains(item);
-        }
-
-        /// <summary>
-        /// Returns zero based index of the Word object in 
-        /// the collection
-        /// </summary>
-        /// <param name="item" type="Word">
-        /// Word object to be checked for index
-        /// </param>
-        /// <returns type="integer">
-        /// Zero based index of Word object in the collection
-        /// </returns>
-        public int IndexOf(Word item)
-        {
-            return List.IndexOf(item);
-        }
-
-        /// <summary>
-        /// Array indexing operator -- get Word object at 
-        /// the index
-        /// </summary>
-        public Word this[int index]
-        {
-            get { return (Word) List[index]; }
-            set { List[index] = value; }
+            return this.List.Contains(item);
         }
 
         /// <summary>
         /// Copy this WordsCollection to another one 
-        /// starting at the specified index position
+        ///     starting at the specified index position
         /// </summary>
         /// <param name="col" type="WordsCollection">
         /// WordsCollection to be copied to
@@ -464,7 +559,7 @@ namespace Rainbow.Framework.BLL.MergeEngine
         /// </param>
         public void CopyTo(WordsCollection col, int index)
         {
-            for (int i=index; i < List.Count; i++)
+            for (var i = index; i < this.List.Count; i++)
             {
                 col.Add(this[i]);
             }
@@ -472,7 +567,7 @@ namespace Rainbow.Framework.BLL.MergeEngine
 
         /// <summary>
         /// Overloaded. Copy this WordsCollection to another one 
-        /// starting at the index zero
+        ///     starting at the index zero
         /// </summary>
         /// <param name="col" type="WordCollection">
         /// WordsCollection to copy to
@@ -481,83 +576,128 @@ namespace Rainbow.Framework.BLL.MergeEngine
         {
             this.CopyTo(col, 0);
         }
+
+        /// <summary>
+        /// Returns zero based index of the Word object in 
+        ///     the collection
+        /// </summary>
+        /// <param name="item" type="Word">
+        /// Word object to be checked for index
+        /// </param>
+        /// <returns type="integer">
+        /// Zero based index of Word object in the collection
+        /// </returns>
+        public int IndexOf(Word item)
+        {
+            return this.List.IndexOf(item);
+        }
+
+        /// <summary>
+        /// Add Word object to the collection at specified index
+        /// </summary>
+        /// <param name="index" type="integer">
+        /// Zero based index
+        /// </param>
+        /// <param name="item" type="Word">
+        /// Word object
+        /// </param>
+        public void Insert(int index, Word item)
+        {
+            this.List.Insert(index, item);
+        }
+
+        /// <summary>
+        /// Remove the Word object from collection
+        /// </summary>
+        /// <param name="item" type="Word">
+        /// Word object to be removed
+        /// </param>
+        public void Remove(Word item)
+        {
+            this.List.Remove(item);
+        }
+
+        #endregion
     }
+
     #endregion
 
     #region Html Text Paser
 
     /// <summary>
     /// The class defines static method that processes html text
-    /// string in such a way that the text is striped out into 
-    /// separate english words with html tags and some special 
-    /// characters as the prefix or suffix of the words. This way,
-    /// the original html text string can be reconstructed to 
-    /// retain the original appearance by concating each word 
-    /// object in the collection in such way as word.prefix + 
-    /// word.word + word.suffix.
-    ///  
-    /// The generated words collection will be used to compare
-    /// the difference with another html text string in such format.
+    ///     string in such a way that the text is striped out into 
+    ///     separate english words with html tags and some special 
+    ///     characters as the prefix or suffix of the words. This way,
+    ///     the original html text string can be reconstructed to 
+    ///     retain the original appearance by concating each word 
+    ///     object in the collection in such way as word.prefix + 
+    ///     word.word + word.suffix.
+    ///     The generated words collection will be used to compare
+    ///     the difference with another html text string in such format.
     /// </summary>
     internal class HtmlTextParser
     {
+        #region Public Methods
+
         /// <summary>
         /// Static method that parses the passed-in string into
-        /// Words collection
+        ///     Words collection
         /// </summary>
-        /// <param name="s">String</param>
-        /// <returns>Words Collection</returns>
-        static public WordsCollection parse(string s)
+        /// <param name="s">
+        /// String
+        /// </param>
+        /// <returns>
+        /// Words Collection
+        /// </returns>
+        public static WordsCollection Parse(string s)
         {
-            int curPos = 0;
-            int prevPos;
-            string prefix = string.Empty;
-            string suffix = string.Empty;
-            string word = string.Empty;
-            WordsCollection words = new WordsCollection();
+            var curPos = 0;
+            var prefix = string.Empty;
+            var suffix = string.Empty;
+            var words = new WordsCollection();
 
             while (curPos < s.Length)
             {
                 // eat the leading or tailing white spaces 
-                prevPos = curPos;
-				while ( curPos < s.Length  && 
-                   (char.IsControl(s[curPos]) ||
-                    char.IsWhiteSpace(s[curPos])))
+                var prevPos = curPos;
+                while (curPos < s.Length && (char.IsControl(s[curPos]) || char.IsWhiteSpace(s[curPos])))
                 {
                     curPos++;
                 }
-				prefix += s.Substring(prevPos, curPos - prevPos);
 
-                if ( curPos == s.Length)
+                prefix += s.Substring(prevPos, curPos - prevPos);
+
+                if (curPos == s.Length)
                 {
                     // it is possible that there are
                     // something in the prefix
                     if (prefix != string.Empty)
                     {
                         // report a empty word with prefix.
-                        words.Add(new Word("", prefix, ""));
+                        words.Add(new Word(string.Empty, prefix, string.Empty));
                     }
+
                     break;
                 }
 
                 // we have 3 different cases here, 
                 // 1) if the string starts with '<', we assume 
-                //    that it is a html tag which will be put 
-                //    into prefix.
+                // that it is a html tag which will be put 
+                // into prefix.
                 // 2) starts with '&', we need to check if it is 
-                //    "&nbsp;" or "&#xxx;". If it is the former, 
-                //    we treat it as prefix and if it is latter, 
-                //    we treat it as a word.
+                // "&nbsp;" or "&#xxx;". If it is the former, 
+                // we treat it as prefix and if it is latter, 
+                // we treat it as a word.
                 // 3) a string that may be a real word or a set 
-                //    of words separated by "&nbsp;" or may have
-                //    leading special character or tailing 
-                //    punctuation. 
-                // 
+                // of words separated by "&nbsp;" or may have
+                // leading special character or tailing 
+                // punctuation. 
                 // Another possible case that is too complicated
                 // or expensive to handle is that some special
                 // characters are embeded inside the word with 
                 // no space separation
-                if ( s[curPos] == '<' )
+                if (s[curPos] == '<')
                 {
                     // it is a html tag, consume it
                     // as prefix.
@@ -566,36 +706,40 @@ namespace Rainbow.Framework.BLL.MergeEngine
                     {
                         curPos++;
                     }
+
                     prefix += s.Substring(prevPos, curPos - prevPos + 1);
 
-                    if ( curPos == s.Length)
+                    if (curPos == s.Length)
                     {
                         // if we come to this point, it means
                         // the html tag is not closed. Anyway,
                         // we are not validating html, so just 
                         // report a empty word with prefix.
-                        words.Add(new Word("", prefix, ""));
+                        words.Add(new Word(string.Empty, prefix, string.Empty));
                         break;
                     }
+
                     // curPos is pointing to '>', move
                     // it to next.
                     curPos++;
-                    if ( curPos == s.Length)
+                    if (curPos == s.Length)
                     {
                         // the html tag is closed but nothing more 
                         // behind, so report a empty word with prefix.
-                        words.Add(new Word("", prefix, ""));
+                        words.Add(new Word(string.Empty, prefix, string.Empty));
                         break;
                     }
+
                     continue;
                 }
-                else if ( s[curPos] == '&' )
+
+                string word;
+                if (s[curPos] == '&')
                 {
                     prevPos = curPos;
 
                     // case for html whitespace
-                    if (curPos + 6 < s.Length &&
-                        s.Substring(prevPos, 6) == "&nbsp;")
+                    if (curPos + 6 < s.Length && s.Substring(prevPos, 6) == "&nbsp;")
                     {
                         prefix += "&nbsp;";
                         curPos += 6;
@@ -603,25 +747,23 @@ namespace Rainbow.Framework.BLL.MergeEngine
                     }
 
                     // case for special character like "&#123;" etc
-                    string pattern = @"&#[0-9]{3};";
-                    Regex r = new Regex(pattern);
-  
-                    if (curPos + 6 < s.Length &&
-                        r.IsMatch(s.Substring(prevPos, 6)))
+                    var pattern = @"&#[0-9]{3};";
+                    var r = new Regex(pattern);
+
+                    if (curPos + 6 < s.Length && r.IsMatch(s.Substring(prevPos, 6)))
                     {
-                        words.Add(new Word(s.Substring(prevPos, 6), prefix, ""));
+                        words.Add(new Word(s.Substring(prevPos, 6), prefix, string.Empty));
                         prefix = string.Empty;
                         curPos += 6;
                         continue;
                     }
-                    
+
                     // case for special character like "&#12;" etc
-                    pattern =  @"&#[0-9]{2};";
+                    pattern = @"&#[0-9]{2};";
                     r = new Regex(pattern);
-                    if (curPos + 5 < s.Length &&
-                        r.IsMatch(s.Substring(prevPos, 5)))
+                    if (curPos + 5 < s.Length && r.IsMatch(s.Substring(prevPos, 5)))
                     {
-                        words.Add(new Word(s.Substring(prevPos, 5), prefix, ""));
+                        words.Add(new Word(s.Substring(prevPos, 5), prefix, string.Empty));
                         prefix = string.Empty;
                         curPos += 5;
                         continue;
@@ -631,101 +773,110 @@ namespace Rainbow.Framework.BLL.MergeEngine
                     // have to treat it as a '&' leaded word. Hope 
                     // it is just single '&' for and in meaning.
                     prevPos = curPos;
-                    while (curPos < s.Length && 
-                        !char.IsControl(s[curPos]) &&
-                        !char.IsWhiteSpace(s[curPos]) &&
-                        s[curPos] != '<' )
+                    while (curPos < s.Length && !char.IsControl(s[curPos]) && !char.IsWhiteSpace(s[curPos]) &&
+                           s[curPos] != '<')
                     {
                         curPos++;
                     }
+
                     word = s.Substring(prevPos, curPos - prevPos);
 
-					// eat the following witespace as suffix
-					prevPos = curPos;
-					while ( curPos < s.Length  && 
-						(char.IsControl(s[curPos]) ||
-						char.IsWhiteSpace(s[curPos])))
-					{
-						curPos++;
-					}
-					suffix += s.Substring(prevPos, curPos - prevPos);
+                    // eat the following witespace as suffix
+                    prevPos = curPos;
+                    while (curPos < s.Length && (char.IsControl(s[curPos]) || char.IsWhiteSpace(s[curPos])))
+                    {
+                        curPos++;
+                    }
+
+                    suffix += s.Substring(prevPos, curPos - prevPos);
 
                     words.Add(new Word(word, prefix, suffix));
                     prefix = string.Empty;
-					suffix = string.Empty;
+                    suffix = string.Empty;
                 }
                 else
                 {
                     // eat the word
                     prevPos = curPos;
-                    while (curPos < s.Length && 
-                        !char.IsControl(s[curPos]) &&
-                        !char.IsWhiteSpace(s[curPos]) &&
-                        s[curPos] != '<' && 
-						s[curPos] != '&' )
+                    while (curPos < s.Length && !char.IsControl(s[curPos]) && !char.IsWhiteSpace(s[curPos]) &&
+                           s[curPos] != '<' && s[curPos] != '&')
                     {
                         curPos++;
                     }
+
                     word = s.Substring(prevPos, curPos - prevPos);
 
                     // if there are newlines or spaces follow
                     // the word, consume it as suffix
                     prevPos = curPos;
-                    while (curPos < s.Length  && 
-                        (char.IsControl(s[curPos]) ||
-                        char.IsWhiteSpace(s[curPos])))
+                    while (curPos < s.Length && (char.IsControl(s[curPos]) || char.IsWhiteSpace(s[curPos])))
                     {
                         curPos++;
                     }
+
                     suffix = s.Substring(prevPos, curPos - prevPos);
-                    processWord(words, prefix, word, suffix);
+                    ProcessWord(words, prefix, word, suffix);
                     prefix = string.Empty;
                     suffix = string.Empty;
                 }
             }
+
             return words;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Further processing of a string
         /// </summary>
-        /// <param name="words">Collection that new word(s) will be added in</param>
-        /// <param name="prefix">prefix come with the string</param>
-        /// <param name="word">A string that may be a real word or have leading or tailing
-        /// special character</param>
-        /// <param name="suffix">suffix comes with the string.</param>
-        private static void processWord(WordsCollection words, 
-            string prefix, string word, string suffix)
+        /// <param name="words">
+        /// Collection that new word(s) will be added in
+        /// </param>
+        /// <param name="prefix">
+        /// prefix come with the string
+        /// </param>
+        /// <param name="word">
+        /// A string that may be a real word or have leading or tailing
+        ///     special character
+        /// </param>
+        /// <param name="suffix">
+        /// suffix comes with the string.
+        /// </param>
+        private static void ProcessWord(WordsCollection words, string prefix, string word, string suffix)
         {
             // the passed in word may have leading special
             // characters such as '(', '"' etc or tailing 
             // punctuations. We need to sort this out.
-            int length = word.Length;
+            var length = word.Length;
 
-			if (length == 1)
-			{
-				words.Add(new Word(word, prefix, suffix));
-			}
-			else if (!char.IsLetterOrDigit(word[0])) 
-			{
-				// it is some kind of special character in the first place
-				// report it separately
-				words.Add(new Word(word[0].ToString(), prefix, ""));
-				words.Add(new Word(word.Substring(1), "", suffix));
-				return;
-			}
-			else if (char.IsPunctuation(word[length-1]))
-			{
-				// there is a end punctuation
-				words.Add(new Word(word.Substring(0, length-1), prefix, ""));
-				words.Add(new Word(word[length-1].ToString(), "", suffix));
-			}
-			else
-			{
-				// it is a real word(hope so)
-				words.Add(new Word(word, prefix, suffix));
-			}
+            if (length == 1)
+            {
+                words.Add(new Word(word, prefix, suffix));
+            }
+            else if (!char.IsLetterOrDigit(word[0]))
+            {
+                // it is some kind of special character in the first place
+                // report it separately
+                words.Add(new Word(word[0].ToString(), prefix, string.Empty));
+                words.Add(new Word(word.Substring(1), string.Empty, suffix));
+                return;
+            }
+            else if (char.IsPunctuation(word[length - 1]))
+            {
+                // there is a end punctuation
+                words.Add(new Word(word.Substring(0, length - 1), prefix, string.Empty));
+                words.Add(new Word(word[length - 1].ToString(), string.Empty, suffix));
+            }
+            else
+            {
+                // it is a real word(hope so)
+                words.Add(new Word(word, prefix, suffix));
+            }
         }
+
+        #endregion
     }
 
     #endregion
@@ -734,199 +885,523 @@ namespace Rainbow.Framework.BLL.MergeEngine
 
     /// <summary>
     /// The class provides functionality to compare two html 
-    /// files and merge them into a new file with differences
-    /// highlighted
+    ///     files and merge them into a new file with differences
+    ///     highlighted
     /// </summary>
     public class Merger
     {
-        private WordsCollection _original;
-        private WordsCollection _modified;
-        private IntVector fwdVector;
-        private IntVector bwdVector;
+        #region Constants and Fields
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Merger"/> class.
+        ///     The bwd vector.
         /// </summary>
-        /// <param name="original">The original.</param>
-        /// <param name="modified">The modified.</param>
+        private readonly IntVector bwdVector;
+
+        /// <summary>
+        ///     The fwd vector.
+        /// </summary>
+        private readonly IntVector fwdVector;
+
+        /// <summary>
+        ///     The modified.
+        /// </summary>
+        private readonly WordsCollection modified;
+
+        /// <summary>
+        ///     The original.
+        /// </summary>
+        private readonly WordsCollection original;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Merger"/> class.
+        /// </summary>
+        /// <param name="original">
+        /// The original.
+        /// </param>
+        /// <param name="modified">
+        /// The modified.
+        /// </param>
         public Merger(string original, string modified)
         {
             // parse the passed in string to words 
             // collections
-            _original = HtmlTextParser.parse(original);
-            _modified = HtmlTextParser.parse(modified);
+            this.original = HtmlTextParser.Parse(original);
+            this.modified = HtmlTextParser.Parse(modified);
 
             // for hold the forward searching front-line
             // in previous searching loop
-            fwdVector = new IntVector(_original.Count + _modified.Count);
+            this.fwdVector = new IntVector(this.original.Count + this.modified.Count);
 
             // for hold the backward searching front-line
             // in the previous seaching loop
-            bwdVector = new IntVector(_original.Count + _modified.Count);
+            this.bwdVector = new IntVector(this.original.Count + this.modified.Count);
         }
 
-        /// <summary>
-        /// Return the number of words in the parsed original file.
-        /// </summary>
-        /// <value>The words in original file.</value>
-        public int WordsInOriginalFile
-        {
-            get { return _original.Count; }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        /// Return the number of words in the parsed modified file
+        ///     Gets the number of words in the parsed modified file
         /// </summary>
         /// <value>The words in modified file.</value>
         public int WordsInModifiedFile
         {
-            get { return _modified.Count; }
+            get
+            {
+                return this.modified.Count;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the number of words in the parsed original file.
+        /// </summary>
+        /// <value>The words in original file.</value>
+        public int WordsInOriginalFile
+        {
+            get
+            {
+                return this.original.Count;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The public function merges the two copies of
+        ///     files stored inside this class. The html tags
+        ///     of the destination file is used in the merged
+        ///     file.
+        /// </summary>
+        /// <returns>
+        /// The merged file
+        /// </returns>
+        public string Merge()
+        {
+            var src = new Sequence(0, this.original.Count);
+            var des = new Sequence(0, this.modified.Count);
+
+            return this.DoMerge(src, des);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The function returns a html text string reconstructed
+        ///     from the sub collection of words its starting and ending
+        ///     indexes are marked by parameter seq and its collection is
+        ///     denoted by parameter status. If the status is "deleted",
+        ///     then the original collection is used, otherwise, modified
+        ///     is used.
+        /// </summary>
+        /// <param name="seq">
+        /// Sequence object that marks the start index and end
+        ///     index of the sub sequence
+        /// </param>
+        /// <param name="status">
+        /// Denoting the status of the sequence. When its value is
+        ///     Deleted or Added, some extra decoration will be added
+        ///     around the word.
+        /// </param>
+        /// <returns>
+        /// The html text string constructed
+        /// </returns>
+        private string ConstructText(Sequence seq, SequenceStatus status)
+        {
+            var result = new StringBuilder();
+
+            switch (status)
+            {
+                case SequenceStatus.Deleted:
+
+                    // the sequence exists in original and
+                    // will be marked as deleted in the merged
+                    // file.
+                    for (var i = seq.StartIndex; i < seq.EndIndex; i++)
+                    {
+                        result.Append(this.original[i].Reconstruct(CommentOff.BeginTag, CommentOff.EndTag));
+                    }
+
+                    break;
+                case SequenceStatus.Inserted:
+
+                    // the sequence exists in modified and
+                    // will be marked as added in the merged
+                    // file.
+                    for (var i = seq.StartIndex; i < seq.EndIndex; i++)
+                    {
+                        result.Append(this.modified[i].Reconstruct(Added.BeginTag, Added.EndTag));
+                    }
+
+                    break;
+                case SequenceStatus.NoChange:
+
+                    // the sequence exists in both original and
+                    // modified and will be left as what it is in
+                    // the merged file. We chose to reconstruct from 
+                    // modified collection
+                    for (var i = seq.StartIndex; i < seq.EndIndex; i++)
+                    {
+                        result.Append(this.modified[i].Reconstruct());
+                    }
+
+                    break;
+                default:
+
+                    // this will not happen (hope)
+                    break;
+            }
+
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// The function merges the two sequences and returns the merged
+        ///     html text string with deleted(exists in source sequence but
+        ///     not in destination sequence) and added(exists in destination
+        ///     but not in source) decorated extra html tags defined in class
+        ///     commentoff and class added.
+        /// </summary>
+        /// <param name="src">
+        /// The source sequence
+        /// </param>
+        /// <param name="des">
+        /// The DES.
+        /// </param>
+        /// <returns>
+        /// The merged html string
+        /// </returns>
+        private string DoMerge(Sequence src, Sequence des)
+        {
+            Sequence s;
+            var result = new StringBuilder();
+            var tail = string.Empty;
+
+            var y = des.StartIndex;
+
+            // strip off the leading common sequence
+            while (src.StartIndex < src.EndIndex && des.StartIndex < des.EndIndex &&
+                   this.original[src.StartIndex].CompareTo(this.modified[des.StartIndex]) == 0)
+            {
+                src.StartIndex++;
+                des.StartIndex++;
+            }
+
+            if (des.StartIndex > y)
+            {
+                s = new Sequence(y, des.StartIndex);
+                result.Append(this.ConstructText(s, SequenceStatus.NoChange));
+            }
+
+            y = des.EndIndex;
+
+            // strip off the tailing common sequence
+            while (src.StartIndex < src.EndIndex && des.StartIndex < des.EndIndex &&
+                   this.original[src.EndIndex - 1].CompareTo(this.modified[des.EndIndex - 1]) == 0)
+            {
+                src.EndIndex--;
+                des.EndIndex--;
+            }
+
+            if (des.EndIndex < y)
+            {
+                s = new Sequence(des.EndIndex, y);
+                tail = this.ConstructText(s, SequenceStatus.NoChange);
+            }
+
+            // length of the sequences
+            var n = src.EndIndex - src.StartIndex;
+            var m = des.EndIndex - des.StartIndex;
+
+            // Special cases
+            if (n < 1 && m < 1)
+            {
+                // both source and destination are 
+                // empty
+                return result.Append(tail).ToString();
+            }
+
+            if (n < 1)
+            {
+                // source is already empty, report
+                // destination as added
+                result.Append(this.ConstructText(des, SequenceStatus.Inserted));
+                result.Append(tail);
+                return result.ToString();
+            }
+
+            if (m < 1)
+            {
+                // destination is empty, report source as
+                // deleted
+                result.Append(this.ConstructText(src, SequenceStatus.Deleted));
+                result.Append(tail);
+                return result.ToString();
+            }
+
+            if (m == 1 && n == 1)
+            {
+                // each of source and destination has only 
+                // one word left. At this point, we are sure
+                // that they are not equal.
+                result.Append(this.ConstructText(src, SequenceStatus.Deleted));
+                result.Append(this.ConstructText(des, SequenceStatus.Inserted));
+                result.Append(tail);
+                return result.ToString();
+            }
+
+            // find the middle snake
+            var snake = this.FindMiddleSnake(src, des);
+
+            if (snake.SesLength > 1)
+            {
+                // prepare the parameters for recursion
+                var leftSrc = new Sequence(src.StartIndex, snake.Source.StartIndex);
+                var leftDes = new Sequence(des.StartIndex, snake.Destination.StartIndex);
+                var rightSrc = new Sequence(snake.Source.EndIndex, src.EndIndex);
+                var rightDes = new Sequence(snake.Destination.EndIndex, des.EndIndex);
+
+                result.Append(this.DoMerge(leftSrc, leftDes));
+                if (snake.Source.StartIndex < snake.Source.EndIndex)
+                {
+                    // the snake is not empty, report it as common 
+                    // sequence
+                    result.Append(this.ConstructText(snake.Destination, SequenceStatus.NoChange));
+                }
+
+                result.Append(this.DoMerge(rightSrc, rightDes));
+                result.Append(tail);
+                return result.ToString();
+            }
+
+            // Separating this case out can at least save one
+            // level of recursion.
+            // Only one edit edge suggests the 4 possible cases.
+            // if N > M, it will be either:
+            // -              or    \     
+            // \   (case 1)        \   (case 2)
+            // \                   -
+            // if N < M, it will be either:
+            // |              or    \     
+            // \    (case 3)        \   (case 4)
+            // \                    |
+            // N and M can't be equal!
+            if (n > m)
+            {
+                if (src.StartIndex != snake.Source.StartIndex)
+                {
+                    // case 1
+                    var leftSrc = new Sequence(src.StartIndex, snake.Source.StartIndex);
+                    result.Append(this.ConstructText(leftSrc, SequenceStatus.Deleted));
+                    result.Append(this.ConstructText(snake.Destination, SequenceStatus.NoChange));
+                }
+                else
+                {
+                    // case 2
+                    var rightSrc = new Sequence(snake.Source.StartIndex, src.EndIndex);
+                    result.Append(this.ConstructText(rightSrc, SequenceStatus.Deleted));
+                    result.Append(this.ConstructText(snake.Destination, SequenceStatus.NoChange));
+                }
+            }
+            else
+            {
+                if (des.StartIndex != snake.Destination.StartIndex)
+                {
+                    // case 3
+                    var upDes = new Sequence(des.StartIndex, snake.Destination.StartIndex);
+                    result.Append(this.ConstructText(upDes, SequenceStatus.Inserted));
+                    result.Append(this.ConstructText(snake.Destination, SequenceStatus.NoChange));
+                }
+                else
+                {
+                    // case 4
+                    var bottomDes = new Sequence(snake.Destination.EndIndex, des.EndIndex);
+                    result.Append(this.ConstructText(bottomDes, SequenceStatus.Inserted));
+                    result.Append(this.ConstructText(snake.Destination, SequenceStatus.NoChange));
+                }
+            }
+
+            result.Append(tail);
+            return result.ToString();
         }
 
         /// <summary>
         /// In the edit graph for the sequences src and des, search for the
-        /// optimal(shortest) path from (src.StartIndex, des.StartIndex) to
-        /// (src.EndIndex, des.EndIndex).
-        /// The searching starts from both ends of the graph and when the
-        /// furthest forward reaching overlaps with the furthest backward
-        /// reaching, the overlapped point is reported as the middle point
-        /// of the shortest path.
-        /// See the listed reference for the detailed description of the
-        /// algorithm
+        ///     optimal(shortest) path from (src.StartIndex, des.StartIndex) to
+        ///     (src.EndIndex, des.EndIndex).
+        ///     The searching starts from both ends of the graph and when the
+        ///     furthest forward reaching overlaps with the furthest backward
+        ///     reaching, the overlapped point is reported as the middle point
+        ///     of the shortest path.
+        ///     See the listed reference for the detailed description of the
+        ///     algorithm
         /// </summary>
-        /// <param name="src">Represents a (sub)sequence of _original</param>
-        /// <param name="des">The DES.</param>
-        /// <returns>The found middle snake</returns>
-        private MiddleSnake findMiddleSnake(Sequence src, Sequence des)
+        /// <param name="src">
+        /// Represents a (sub)sequence of original
+        /// </param>
+        /// <param name="des">
+        /// The DES.
+        /// </param>
+        /// <returns>
+        /// The found middle snake
+        /// </returns>
+        private MiddleSnake FindMiddleSnake(Sequence src, Sequence des)
         {
             int d, k;
             int x, y;
-            MiddleSnake midSnake = new MiddleSnake();
-            
+            var midSnake = new MiddleSnake();
+
             // the range of diagonal values
-            int minDiag = src.StartIndex - des.EndIndex;
-            int maxDiag = src.EndIndex - des.StartIndex;
+            var minDiag = src.StartIndex - des.EndIndex;
+            var maxDiag = src.EndIndex - des.StartIndex;
 
             // middle point of forward searching
-            int fwdMid = src.StartIndex - des.StartIndex;
+            var fwdMid = src.StartIndex - des.StartIndex;
+
             // middle point of backward searching
-            int bwdMid = src.EndIndex - des.EndIndex;
+            var bwdMid = src.EndIndex - des.EndIndex;
 
             // forward seaching range 
-            int fwdMin = fwdMid;
-            int fwdMax = fwdMid;
+            var fwdMin = fwdMid;
+            var fwdMax = fwdMid;
 
             // backward seaching range 
-            int bwdMin = bwdMid;
-            int bwdMax = bwdMid;
+            var bwdMin = bwdMid;
+            var bwdMax = bwdMid;
 
-            bool odd = ((fwdMin - bwdMid) & 1) == 1;          
+            var odd = ((fwdMin - bwdMid) & 1) == 1;
 
-            fwdVector[fwdMid] = src.StartIndex;
-            bwdVector[bwdMid] = src.EndIndex;
+            this.fwdVector[fwdMid] = src.StartIndex;
+            this.bwdVector[bwdMid] = src.EndIndex;
 
 #if (MyDEBUG) 
             Debug.WriteLine("-- Entering Function findMiddleSnake(src, des) --");
 #endif
-            for (d = 1; ; d++)
+            for (d = 1;; d++)
             {
                 // extend or shrink the search range
                 if (fwdMin > minDiag)
-                    fwdVector[--fwdMin -1] = -1;
+                {
+                    this.fwdVector[--fwdMin - 1] = -1;
+                }
                 else
+                {
                     ++fwdMin;
+                }
 
-                if(fwdMax < maxDiag)
-                    fwdVector[++fwdMax +1] = -1;
+                if (fwdMax < maxDiag)
+                {
+                    this.fwdVector[++fwdMax + 1] = -1;
+                }
                 else
+                {
                     --fwdMax;
+                }
+
 #if (MyDEBUG) 
                 Debug.WriteLine(d, "  D path");
 #endif
+
                 // top-down search
                 for (k = fwdMax; k >= fwdMin; k -= 2)
                 {
-                    if (fwdVector[k-1] < fwdVector[k+1])
+                    if (this.fwdVector[k - 1] < this.fwdVector[k + 1])
                     {
-                        x = fwdVector[k+1];
+                        x = this.fwdVector[k + 1];
                     }
                     else
                     {
-                        x = fwdVector[k-1] + 1;
+                        x = this.fwdVector[k - 1] + 1;
                     }
+
                     y = x - k;
                     midSnake.Source.StartIndex = x;
                     midSnake.Destination.StartIndex = y;
 
-                    while (x < src.EndIndex && 
-                        y < des.EndIndex &&
-                        _original[x].CompareTo(_modified[y]) == 0)
+                    while (x < src.EndIndex && y < des.EndIndex && this.original[x].CompareTo(this.modified[y]) == 0)
                     {
                         x++;
                         y++;
                     }
 
                     // update forward vector
-                    fwdVector[k] = x;
+                    this.fwdVector[k] = x;
 #if (MyDEBUG)
                     Debug.WriteLine("    Inside forward loop");
                     Debug.WriteLine(k, "    Diagonal value");
                     Debug.WriteLine(x, "    X value");
                     Debug.WriteLine(y, "    Y value");
 #endif
-                    if (odd && k >= bwdMin && k <= bwdMax && x >= bwdVector[k])
+                    if (odd && k >= bwdMin && k <= bwdMax && x >= this.bwdVector[k])
                     {
                         // this is the snake we are looking for
                         // and set the end indeses of the snake 
                         midSnake.Source.EndIndex = x;
                         midSnake.Destination.EndIndex = y;
-                        midSnake.SES_Length = 2 * d -1;
+                        midSnake.SesLength = (2 * d) - 1;
 #if (MyDEBUG)      
                         Debug.WriteLine("!!!Report snake from forward search");
                         Debug.WriteLine(midSnake.Source.StartIndex, "  middle snake source start index");
                         Debug.WriteLine(midSnake.Source.EndIndex, "  middle snake source end index");
                         Debug.WriteLine(midSnake.Destination.StartIndex, "  middle snake destination start index");
                         Debug.WriteLine(midSnake.Destination.EndIndex, "  middle snake destination end index");
-#endif                        
+#endif
                         return midSnake;
                     }
                 }
 
                 // extend the search range
                 if (bwdMin > minDiag)
-                    bwdVector[--bwdMin -1] = int.MaxValue;
+                {
+                    this.bwdVector[--bwdMin - 1] = int.MaxValue;
+                }
                 else
+                {
                     ++bwdMin;
+                }
 
-                if(bwdMax < maxDiag)
-                    bwdVector[++bwdMax +1] = int.MaxValue;
+                if (bwdMax < maxDiag)
+                {
+                    this.bwdVector[++bwdMax + 1] = int.MaxValue;
+                }
                 else
+                {
                     --bwdMax;
-                
+                }
+
                 // bottom-up search
                 for (k = bwdMax; k >= bwdMin; k -= 2)
                 {
-                    if (bwdVector[k - 1] < bwdVector[k + 1])
+                    if (this.bwdVector[k - 1] < this.bwdVector[k + 1])
                     {
-                        x = bwdVector[k - 1];
+                        x = this.bwdVector[k - 1];
                     }
                     else
                     {
-                        x = bwdVector[k + 1] - 1;
+                        x = this.bwdVector[k + 1] - 1;
                     }
+
                     y = x - k;
                     midSnake.Source.EndIndex = x;
                     midSnake.Destination.EndIndex = y;
 
-                    while (x > src.StartIndex && 
-                        y > des.StartIndex &&
-                        _original[x-1].CompareTo(_modified[y-1]) == 0)
+                    while (x > src.StartIndex && y > des.StartIndex &&
+                           this.original[x - 1].CompareTo(this.modified[y - 1]) == 0)
                     {
                         x--;
                         y--;
                     }
+
                     // update backward Vector
-                    bwdVector[k] = x;
+                    this.bwdVector[k] = x;
 
 #if (MyDEBUG)
                     Debug.WriteLine("     Inside backward loop");
@@ -934,13 +1409,13 @@ namespace Rainbow.Framework.BLL.MergeEngine
                     Debug.WriteLine(x, "    X value");
                     Debug.WriteLine(y, "    Y value");
 #endif
-                    if (!odd && k >= fwdMin && k <= fwdMax && x <= fwdVector[k])
+                    if (!odd && k >= fwdMin && k <= fwdMax && x <= this.fwdVector[k])
                     {
                         // this is the snake we are looking for
                         // and set the start indexes of the snake 
                         midSnake.Source.StartIndex = x;
                         midSnake.Destination.StartIndex = y;
-                        midSnake.SES_Length = 2 * d;
+                        midSnake.SesLength = 2 * d;
 #if (MyDEBUG)
                         Debug.WriteLine("!!!Report snake from backward search");
                         Debug.WriteLine(midSnake.Source.StartIndex, "  middle snake source start index");
@@ -954,242 +1429,8 @@ namespace Rainbow.Framework.BLL.MergeEngine
             }
         }
 
-        /// <summary>
-        /// The function merges the two sequences and returns the merged
-        /// html text string with deleted(exists in source sequence but
-        /// not in destination sequence) and added(exists in destination
-        /// but not in source) decorated extra html tags defined in class
-        /// commentoff and class added.
-        /// </summary>
-        /// <param name="src">The source sequence</param>
-        /// <param name="des">The DES.</param>
-        /// <returns>The merged html string</returns>
-        private string doMerge(Sequence src, Sequence des)
-        {
-            MiddleSnake snake;
-            Sequence s;
-            StringBuilder result = new StringBuilder();
-            string tail = string.Empty;
-            
-            int y = des.StartIndex;
-
-            // strip off the leading common sequence
-            while(src.StartIndex < src.EndIndex && 
-                des.StartIndex < des.EndIndex &&
-                _original[src.StartIndex].CompareTo(_modified[des.StartIndex]) == 0)
-            {
-                src.StartIndex++;
-                des.StartIndex++;
-            }
-
-            if (des.StartIndex > y)
-            {
-                s = new Sequence(y, des.StartIndex);
-                result.Append(constructText(s, SequenceStatus.NoChange));
-            }
-
-            y = des.EndIndex;
-
-            // strip off the tailing common sequence
-            while(src.StartIndex < src.EndIndex && 
-                des.StartIndex < des.EndIndex &&
-                _original[src.EndIndex-1].CompareTo(_modified[des.EndIndex-1]) == 0)
-            {
-                src.EndIndex--;
-                des.EndIndex--;
-            }
-
-            if (des.EndIndex < y)
-            {
-                s = new Sequence(des.EndIndex, y);
-                tail = constructText(s, SequenceStatus.NoChange);
-            }
-
-            // length of the sequences
-            int N = src.EndIndex - src.StartIndex;
-            int M = des.EndIndex - des.StartIndex;
-
-            // Special cases
-            if (N < 1 && M < 1)
-            {
-                // both source and destination are 
-                // empty
-                return (result.Append(tail)).ToString();
-            }
-            else if (N < 1)
-            {
-                // source is already empty, report
-                // destination as added
-                result.Append(constructText(des, SequenceStatus.Inserted));
-                result.Append(tail);
-                return result.ToString();
-            }
-            else if (M < 1)
-            {
-                // destination is empty, report source as
-                // deleted
-                result.Append(constructText(src, SequenceStatus.Deleted));
-                result.Append(tail);
-                return result.ToString();
-            }
-            else if (M == 1 && N ==1)
-            {
-                // each of source and destination has only 
-                // one word left. At this point, we are sure
-                // that they are not equal.
-                result.Append(constructText(src, SequenceStatus.Deleted));
-                result.Append(constructText(des, SequenceStatus.Inserted));
-                result.Append(tail);
-                return result.ToString();
-            }
-            else
-            {
-                // find the middle snake
-                snake = findMiddleSnake(src, des);
-
-                if (snake.SES_Length > 1)
-                {
-                    // prepare the parameters for recursion
-                    Sequence leftSrc = new Sequence(src.StartIndex, snake.Source.StartIndex);
-                    Sequence leftDes = new Sequence(des.StartIndex, snake.Destination.StartIndex);
-                    Sequence rightSrc = new Sequence(snake.Source.EndIndex, src.EndIndex);
-                    Sequence rightDes = new Sequence(snake.Destination.EndIndex, des.EndIndex);
-
-                    result.Append(doMerge(leftSrc, leftDes));
-                    if (snake.Source.StartIndex < snake.Source.EndIndex)
-                    {
-                        // the snake is not empty, report it as common 
-                        // sequence
-                        result.Append(constructText(snake.Destination, SequenceStatus.NoChange));
-                    }
-                    result.Append(doMerge(rightSrc, rightDes));
-                    result.Append(tail);
-                    return result.ToString();
-                }
-                else
-                {
-                    // Separating this case out can at least save one
-                    // level of recursion.
-                    //
-                    // Only one edit edge suggests the 4 possible cases.
-                    // if N > M, it will be either:
-                    //    -              or    \     
-                    //      \   (case 1)        \   (case 2)
-                    //       \                   -
-                    // if N < M, it will be either:
-                    //    |              or    \     
-                    //     \    (case 3)        \   (case 4)
-                    //      \                    |
-                    // N and M can't be equal!
-                    if ( N > M)
-                    {
-                        if ( src.StartIndex != snake.Source.StartIndex )
-                        {
-                            // case 1
-                            Sequence leftSrc = new Sequence(src.StartIndex, snake.Source.StartIndex);
-                            result.Append(constructText(leftSrc, SequenceStatus.Deleted));
-                            result.Append(constructText(snake.Destination, SequenceStatus.NoChange));
-                        }
-                        else
-                        {
-                            // case 2
-                            Sequence rightSrc = new Sequence(snake.Source.StartIndex, src.EndIndex);
-                            result.Append(constructText(rightSrc, SequenceStatus.Deleted));
-                            result.Append(constructText(snake.Destination, SequenceStatus.NoChange));
-                        }   
-                    }
-                    else
-                    {
-                        if ( des.StartIndex != snake.Destination.StartIndex )
-                        {
-                            // case 3
-                            Sequence upDes = new Sequence(des.StartIndex, snake.Destination.StartIndex);
-                            result.Append(constructText(upDes, SequenceStatus.Inserted));
-                            result.Append(constructText(snake.Destination, SequenceStatus.NoChange));
-                        }
-                        else
-                        {
-                            // case 4
-                            Sequence bottomDes = new Sequence(snake.Destination.EndIndex, des.EndIndex);
-                            result.Append(constructText(bottomDes, SequenceStatus.Inserted));
-                            result.Append(constructText(snake.Destination, SequenceStatus.NoChange));
-                        }   
-                    }
-                    result.Append(tail);
-                    return result.ToString();
-                }
-            }
-        }
-
-        /// <summary>
-        /// The function returns a html text string reconstructed
-        /// from the sub collection of words its starting and ending
-        /// indexes are marked by parameter seq and its collection is
-        /// denoted by parameter status. If the status is "deleted",
-        /// then the _original collection is used, otherwise, _modified
-        /// is used.
-        /// </summary>
-        /// <param name="seq">Sequence object that marks the start index and end
-        /// index of the sub sequence</param>
-        /// <param name="status">Denoting the status of the sequence. When its value is
-        /// Deleted or Added, some extra decoration will be added
-        /// around the word.</param>
-        /// <returns>The html text string constructed</returns>
-        private string constructText(Sequence seq, SequenceStatus status)
-        {
-            StringBuilder result = new StringBuilder();
-
-            switch(status)
-            {
-                case SequenceStatus.Deleted:
-                    // the sequence exists in _original and
-                    // will be marked as deleted in the merged
-                    // file.
-                    for (int i= seq.StartIndex; i < seq.EndIndex; i++)
-                    {
-                        result.Append(_original[i].reconstruct(CommentOff.BeginTag, CommentOff.EndTag));
-                    }
-                    break;
-                case SequenceStatus.Inserted:
-                    // the sequence exists in _modified and
-                    // will be marked as added in the merged
-                    // file.
-                    for (int i= seq.StartIndex; i < seq.EndIndex; i++)
-                    {
-                        result.Append(_modified[i].reconstruct(Added.BeginTag, Added.EndTag));
-                    }
-                    break;
-                case SequenceStatus.NoChange:
-                    // the sequence exists in both _original and
-                    // _modified and will be left as what it is in
-                    // the merged file. We chose to reconstruct from 
-                    // _modified collection
-                    for (int i= seq.StartIndex; i < seq.EndIndex; i++)
-                    {
-                        result.Append(_modified[i].reconstruct());
-                    }
-                    break;
-                default:
-                    // this will not happen (hope)
-                    break;
-            }
-            return result.ToString();
-        }
-
-        /// <summary>
-        /// The public function merges the two copies of
-        /// files stored inside this class. The html tags
-        /// of the destination file is used in the merged
-        /// file.
-        /// </summary>
-        /// <returns>The merged file</returns>
-        public string merge()
-        {
-            Sequence src = new Sequence(0, _original.Count);
-            Sequence des = new Sequence(0, _modified.Count);
-
-            return doMerge(src, des);
-        }
+        #endregion
     }
+
     #endregion
 }

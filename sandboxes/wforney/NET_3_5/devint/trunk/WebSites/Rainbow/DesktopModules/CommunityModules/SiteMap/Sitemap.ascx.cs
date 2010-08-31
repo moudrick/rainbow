@@ -15,6 +15,9 @@ using History=Rainbow.Framework.History;
 
 namespace Rainbow.Content.Web.Modules
 {
+    using Rainbow.Framework.Configuration;
+    using Rainbow.Framework.Data.Types;
+
     /// <summary>
     ///	Summary description for Sitemap.
     /// </summary>
@@ -148,7 +151,7 @@ namespace Rainbow.Content.Web.Modules
             Category("Data"),
                 PersistenceMode(PersistenceMode.Attribute)
             ]
-        public int ParentPageID
+        public int ParentPageId
         {
             get { return _definedParentTab; }
             set

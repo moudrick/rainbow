@@ -1,172 +1,252 @@
-using System;
-using System.Data;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-
 namespace Rainbow.Framework.Scheduler
 {
-    //Author: Federico Dal Maso
-    //e-mail: ifof@libero.it
-    //date: 2003-06-17
+    using System;
+    using System.Data;
+    using System.IO;
+    using System.Runtime.Serialization.Formatters.Binary;
+
+    // Author: Federico Dal Maso
+    // e-mail: ifof@libero.it
+    // date: 2003-06-17
 
     /// <summary>
     /// Describe a Task
     /// </summary>
     public class SchedulerTask
     {
-        private int _idOwner;
-        private int _idTarget;
-        private object _arg;
-        private string _description;
-        private DateTime _dueTime;
-        private int _idTask;
-
-        private const int MAX_DESCRIPTION_LENGTH = 150; //see db
+        #region Constants and Fields
 
         /// <summary>
-        /// 
+        /// The max description length.
         /// </summary>
-        /// <param name="idModuleOwner"></param>
-        /// <param name="idModuleTarget"></param>
-        /// <param name="dueTime"></param>
+        private const int MaxDescriptionLength = 150; // see db
+
+        /// <summary>
+        /// The argument.
+        /// </summary>
+        private object arg;
+
+        /// <summary>
+        /// The description.
+        /// </summary>
+        private string description;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SchedulerTask"/> class. 
+        /// The scheduler task.
+        /// </summary>
+        /// <param name="idModuleOwner">
+        /// </param>
+        /// <param name="idModuleTarget">
+        /// </param>
+        /// <param name="dueTime">
+        /// </param>
         public SchedulerTask(int idModuleOwner, int idModuleTarget, DateTime dueTime)
         {
-            _idOwner = idModuleOwner;
-            _idTarget = idModuleTarget;
-            _dueTime = dueTime;
-            _idTask = -1;
+            this.IDModuleOwner = idModuleOwner;
+            this.IDModuleTarget = idModuleTarget;
+            this.DueTime = dueTime;
+            this.IDTask = -1;
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="SchedulerTask"/> class. 
+        /// The scheduler task.
         /// </summary>
-        /// <param name="idModuleOwner"></param>
-        /// <param name="idModuleTarget"></param>
-        /// <param name="dueTime"></param>
-        /// <param name="description"></param>
+        /// <param name="idModuleOwner">
+        /// </param>
+        /// <param name="idModuleTarget">
+        /// </param>
+        /// <param name="dueTime">
+        /// </param>
+        /// <param name="description">
+        /// </param>
         public SchedulerTask(int idModuleOwner, int idModuleTarget, DateTime dueTime, string description)
             : this(idModuleOwner, idModuleTarget, dueTime)
         {
-            _description = description;
+            this.description = description;
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="SchedulerTask"/> class. 
+        /// The scheduler task.
         /// </summary>
-        /// <param name="idModuleOwner"></param>
-        /// <param name="idModuleTarget"></param>
-        /// <param name="dueTime"></param>
-        /// <param name="argument"></param>
+        /// <param name="idModuleOwner">
+        /// </param>
+        /// <param name="idModuleTarget">
+        /// </param>
+        /// <param name="dueTime">
+        /// </param>
+        /// <param name="argument">
+        /// </param>
         public SchedulerTask(int idModuleOwner, int idModuleTarget, DateTime dueTime, object argument)
             : this(idModuleOwner, idModuleTarget, dueTime)
         {
             if (!argument.GetType().IsSerializable)
+            {
                 throw new ApplicationException("argument parameter must be a serializable type");
-            _arg = argument;
+            }
+
+            this.arg = argument;
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="SchedulerTask"/> class. 
+        /// The scheduler task.
         /// </summary>
-        /// <param name="idModuleOwner"></param>
-        /// <param name="idModuleTarget"></param>
-        /// <param name="dueTime"></param>
-        /// <param name="description"></param>
-        /// <param name="argument"></param>
-        public SchedulerTask(int idModuleOwner, int idModuleTarget, DateTime dueTime, string description,
-                             object argument) : this(idModuleOwner, idModuleTarget, dueTime, description)
+        /// <param name="idModuleOwner">
+        /// </param>
+        /// <param name="idModuleTarget">
+        /// </param>
+        /// <param name="dueTime">
+        /// </param>
+        /// <param name="description">
+        /// </param>
+        /// <param name="argument">
+        /// </param>
+        public SchedulerTask(
+            int idModuleOwner, int idModuleTarget, DateTime dueTime, string description, object argument)
+            : this(idModuleOwner, idModuleTarget, dueTime, description)
         {
             if (!argument.GetType().IsSerializable)
+            {
                 throw new ApplicationException("argument parameter must be a serializable type");
-            _arg = argument;
-        }
+            }
 
-        internal SchedulerTask(int iDTask, int idModuleOwner, int idModuleTarget, DateTime dueTime, string description,
-                               object argument) : this(idModuleOwner, idModuleTarget, dueTime, description, argument)
-        {
-            _idTask = iDTask;
+            this.arg = argument;
         }
-
-        internal SchedulerTask(IDataReader dr)
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ss = new MemoryStream((byte[]) dr["Argument"]);
-            _arg = bf.Deserialize(ss);
-            ss.Close();
-            _idTask = (int) dr["IDTask"];
-            _idOwner = (int) dr["IDModuleOwner"];
-            _idTarget = (int) dr["IDModuleTarget"];
-            _dueTime = (DateTime) dr["DueTime"];
-            _description = (string) dr["Description"];
-        }
-
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="SchedulerTask"/> class.
+        /// </summary>
+        /// <param name="iDTask">
+        /// The i d task.
+        /// </param>
+        /// <param name="idModuleOwner">
+        /// The id module owner.
+        /// </param>
+        /// <param name="idModuleTarget">
+        /// The id module target.
+        /// </param>
+        /// <param name="dueTime">
+        /// The due time.
+        /// </param>
+        /// <param name="description">
+        /// The description.
+        /// </param>
+        /// <param name="argument">
+        /// The argument.
+        /// </param>
+        internal SchedulerTask(
+            int iDTask, int idModuleOwner, int idModuleTarget, DateTime dueTime, string description, object argument)
+            : this(idModuleOwner, idModuleTarget, dueTime, description, argument)
+        {
+            this.IDTask = iDTask;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SchedulerTask"/> class.
+        /// </summary>
+        /// <param name="dr">
+        /// The data reader.
+        /// </param>
+        internal SchedulerTask(IDataRecord dr)
+        {
+            var bf = new BinaryFormatter();
+            var ss = new MemoryStream((byte[])dr["Argument"]);
+            this.arg = bf.Deserialize(ss);
+            ss.Close();
+            this.IDTask = (int)dr["IDTask"];
+            this.IDModuleOwner = (int)dr["IDModuleOwner"];
+            this.IDModuleTarget = (int)dr["IDModuleTarget"];
+            this.DueTime = (DateTime)dr["DueTime"];
+            this.description = (string)dr["Description"];
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the argument.
         /// </summary>
         public object Argument
         {
-            get { return _arg; }
+            get
+            {
+                return this.arg;
+            }
+
             set
             {
                 if (!value.GetType().IsSerializable)
+                {
                     throw new ApplicationException("argument parameter must be a serializable type");
-                _arg = value;
+                }
+
+                this.arg = value;
             }
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public DateTime DueTime
-        {
-            get { return _dueTime; }
-            set { _dueTime = value; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public int IDModuleOwner
-        {
-            get { return _idOwner; }
-            set { _idOwner = value; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public int IDModuleTarget
-        {
-            get { return _idTarget; }
-            set { _idTarget = value; }
-        }
-
-        /// <summary>
-        /// 
+        /// Gets or sets the description.
         /// </summary>
         public string Description
         {
-            get { return _description; }
+            get
+            {
+                return this.description;
+            }
+
             set
             {
-                _description = value;
-                if (_description.Length > MAX_DESCRIPTION_LENGTH)
-                    _description = _description.Substring(0, MAX_DESCRIPTION_LENGTH);
+                this.description = value;
+                if (this.description.Length > MaxDescriptionLength)
+                {
+                    this.description = this.description.Substring(0, MaxDescriptionLength);
+                }
             }
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets the due time.
         /// </summary>
-        public int IDTask
+        public DateTime DueTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the id module owner.
+        /// </summary>
+        public int IDModuleOwner { get; set; }
+
+        /// <summary>
+        /// Gets or sets the id module target.
+        /// </summary>
+        public int IDModuleTarget { get; set; }
+
+        /// <summary>
+        /// Gets or sets the id task.
+        /// </summary>
+        public int IDTask { get; private set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The set id task.
+        /// </summary>
+        /// <param name="id">
+        /// The task id.
+        /// </param>
+        internal void SetIdTask(int id)
         {
-            get { return _idTask; }
+            this.IDTask = id;
         }
 
-        internal void SetIDTask(int id)
-        {
-            _idTask = id;
-        }
+        #endregion
     }
 }

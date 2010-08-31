@@ -1,128 +1,187 @@
-using System;
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     /// <summary>
     /// Paging class, Rainbow special edition
     /// </summary>
-    [
-        DefaultProperty("PageNumber"),
-            ToolboxData("<{0}:Paging TextKey='' runat=server></{0}:Paging>"),
-            Designer("Rainbow.Framework.UI.Design.PagingDesigner")
-        ]
+    [DefaultProperty("PageNumber")]
+    [ToolboxData("<{0}:Paging TextKey='' runat=server></{0}:Paging>")]
+    [Designer("Rainbow.Framework.UI.Design.PagingDesigner")]
     public class Paging : WebControl, IPaging
     {
-        /// <summary>
-        /// Page number
-        /// </summary>
-        protected TextBox tbPageNumber;
+        #region Constants and Fields
 
         /// <summary>
-        /// Total page count
-        /// </summary>
-        protected Label lblPageCount;
-
-        /// <summary>
-        /// Label containg text 'of'
-        /// </summary>
-        protected Label lblof;
-
-        /// <summary>
-        /// Button 'First'
+        ///     Button 'First'
         /// </summary>
         protected Button btnFirst;
 
         /// <summary>
-        /// Button 'Previous'
-        /// </summary>
-        protected Button btnPrev;
-
-        /// <summary>
-        /// Button 'Next'
-        /// </summary>
-        protected Button btnNext;
-
-        /// <summary>
-        /// Button 'Last'
+        ///     Button 'Last'
         /// </summary>
         protected Button btnLast;
 
         /// <summary>
-        /// Move event raised when a move is performed
+        ///     Button 'Next'
+        /// </summary>
+        protected Button btnNext;
+
+        /// <summary>
+        ///     Button 'Previous'
+        /// </summary>
+        protected Button btnPrev;
+
+        /// <summary>
+        ///     Total page count
+        /// </summary>
+        protected Label lblPageCount;
+
+        /// <summary>
+        ///     Label containg text 'of'
+        /// </summary>
+        protected Label lblof;
+
+        /// <summary>
+        ///     Page number
+        /// </summary>
+        protected TextBox tbPageNumber;
+
+        #endregion
+
+        // variables we use to manage state
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref = "Paging" /> class. 
+        ///     Main class manging pages
+        /// </summary>
+        public Paging()
+        {
+            this.RecordsPerPage = 10;
+
+            // Construct controls
+            this.btnFirst = new Button
+                {
+                   CommandArgument = "first", Width = new Unit("25px"), EnableViewState = false, Text = @" |< " 
+                };
+            this.btnFirst.Font.Bold = true;
+            this.Controls.Add(this.btnFirst);
+
+            this.btnPrev = new Button
+                {
+                   EnableViewState = false, Width = new Unit("25px"), Text = @" < ", CommandArgument = "prev" 
+                };
+            this.btnPrev.Font.Bold = true;
+            this.Controls.Add(this.btnPrev);
+
+            this.Controls.Add(new LiteralControl("&#160;"));
+
+            this.tbPageNumber = new TextBox { AutoPostBack = true, Width = new Unit("30px"), EnableViewState = true };
+            this.Controls.Add(this.tbPageNumber);
+
+            this.Controls.Add(new LiteralControl("&#160;"));
+
+            this.btnNext = new Button
+                {
+                   Width = new Unit("25px"), EnableViewState = false, CommandArgument = "next", Text = @" > " 
+                };
+            this.btnNext.Font.Bold = true;
+            this.Controls.Add(this.btnNext);
+
+            this.btnLast = new Button
+                {
+                   Width = new Unit("25px"), Text = @" >| ", CommandArgument = "last", EnableViewState = false 
+                };
+            this.btnLast.Font.Bold = true;
+            this.Controls.Add(this.btnLast);
+
+            this.lblof = new Label { EnableViewState = false, Text = @"&#160;/&#160;" };
+            this.Controls.Add(this.lblof);
+
+            this.lblPageCount = new Label { EnableViewState = false };
+            this.Controls.Add(this.lblPageCount);
+
+            // Set defaults
+            if (this.ViewState["PageNumber"] == null)
+            {
+                this.PageNumber = 1;
+            }
+
+            if (this.ViewState["RecordCount"] == null)
+            {
+                this.RecordCount = 1;
+            }
+
+            if (this.ViewState["HideOnSinglePage"] == null)
+            {
+                this.HideOnSinglePage = true;
+            }
+
+            // Add handlers
+            this.tbPageNumber.TextChanged += this.NavigationTbClick;
+            this.btnFirst.Click += this.NavigationButtonClick;
+            this.btnPrev.Click += this.NavigationButtonClick;
+            this.btnNext.Click += this.NavigationButtonClick;
+            this.btnLast.Click += this.NavigationButtonClick;
+        }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        ///     Move event raised when a move is performed
         /// </summary>
         public event EventHandler OnMove;
 
-        // variables we use to manage state
+        #endregion
 
-        private int m_recordsPerPage = 10;
-
-        /// <summary>
-        /// Number of records per page
-        /// </summary>
-        /// <value>The records per page.</value>
-        public int RecordsPerPage
-        {
-            get { return m_recordsPerPage; }
-            set { m_recordsPerPage = value; }
-        }
+        #region Properties
 
         /// <summary>
-        /// Hide when on single page hides controls when
-        /// there is only one page
-        /// </summary>
-        /// <value><c>true</c> if [hide on single page]; otherwise, <c>false</c>.</value>
-        public bool HideOnSinglePage
-        {
-            get { return Convert.ToBoolean(ViewState["HideOnSinglePage"]); }
-            set { ViewState["HideOnSinglePage"] = value.ToString(); }
-        }
-
-        /// <summary>
-        /// Current page number
-        /// </summary>
-        /// <value>The page number.</value>
-        public int PageNumber
-        {
-            get { return Convert.ToInt32(tbPageNumber.Text); }
-            set { tbPageNumber.Text = value.ToString(); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether validation is performed when the control buttons are clicked.
+        ///     Gets or sets a value indicating whether validation is performed when the control buttons are clicked.
         /// </summary>
         /// <value><c>true</c> if [causes validation]; otherwise, <c>false</c>.</value>
-        [
-            Description(
-                "Gets or sets a value indicating whether validation is performed when the control buttons are clicked.")
-            ]
+        [Description(
+            "Gets or sets a value indicating whether validation is performed when the control buttons are clicked.")]
         public bool CausesValidation
         {
             get
             {
-                object causesValidation = ViewState["CausesValidation"];
-                if (causesValidation != null)
-                    return (bool) causesValidation;
-                else
-                    return true;
+                var causesValidation = this.ViewState["CausesValidation"];
+                return causesValidation == null || (bool)causesValidation;
             }
-            set { ViewState["CausesValidation"] = value; }
+
+            set
+            {
+                this.ViewState["CausesValidation"] = value;
+            }
         }
 
         /// <summary>
-        /// Total Record Count
+        ///     Gets or sets a value indicating whether to hide when on single page hides controls when
+        ///     there is only one page
         /// </summary>
-        /// <value>The record count.</value>
-        public int RecordCount
+        /// <value><c>true</c> if [hide on single page]; otherwise, <c>false</c>.</value>
+        public bool HideOnSinglePage
         {
-            get { return Convert.ToInt32(ViewState["RecordCount"]); }
-            set { ViewState["RecordCount"] = value.ToString(); }
+            get
+            {
+                return Convert.ToBoolean(this.ViewState["HideOnSinglePage"]);
+            }
+
+            set
+            {
+                this.ViewState["HideOnSinglePage"] = value.ToString();
+            }
         }
 
         /// <summary>
-        /// Total pages count
+        ///     Gets the page count.
         /// </summary>
         /// <value>The page count.</value>
         public int PageCount
@@ -130,30 +189,66 @@ namespace Rainbow.Framework.Web.UI.WebControls
             get
             {
                 // Calculate page count
-                int _PageCount = RecordCount/RecordsPerPage;
+                var pageCount = this.RecordCount / this.RecordsPerPage;
 
                 // adjust for spillover
-                if (RecordCount%RecordsPerPage > 0)
-                    _PageCount++;
+                if (this.RecordCount % this.RecordsPerPage > 0)
+                {
+                    pageCount++;
+                }
 
-                if (_PageCount < 1)
-                    _PageCount = 1;
+                if (pageCount < 1)
+                {
+                    pageCount = 1;
+                }
 
-                return _PageCount;
+                return pageCount;
             }
         }
 
         /// <summary>
-        /// Used by OnMove event
+        ///     Gets or sets the page number.
         /// </summary>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected virtual void OnMoveHandler(EventArgs e)
+        /// <value>The page number.</value>
+        public int PageNumber
         {
-            if (OnMove != null)
+            get
             {
-                OnMove(this, e);
+                return Convert.ToInt32(this.tbPageNumber.Text);
+            }
+
+            set
+            {
+                this.tbPageNumber.Text = value.ToString();
             }
         }
+
+        /// <summary>
+        ///     Gets or sets the record count.
+        /// </summary>
+        /// <value>The record count.</value>
+        public int RecordCount
+        {
+            get
+            {
+                return Convert.ToInt32(this.ViewState["RecordCount"]);
+            }
+
+            set
+            {
+                this.ViewState["RecordCount"] = value.ToString();
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the records per page.
+        /// </summary>
+        /// <value>The records per page.</value>
+        public int RecordsPerPage { get; set; }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Enable/disable the nav controls based on the current context, update labels
@@ -162,182 +257,144 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             // enable/disable the nav controls based on the current context
             // we should only show the first button if we're NOT on the first page already
-            btnFirst.Enabled = (PageNumber != 1);
-            btnPrev.Enabled = (PageNumber > 1);
-            btnNext.Enabled = (PageNumber < PageCount);
-            btnLast.Enabled = (PageNumber != PageCount);
+            this.btnFirst.Enabled = this.PageNumber != 1;
+            this.btnPrev.Enabled = this.PageNumber > 1;
+            this.btnNext.Enabled = this.PageNumber < this.PageCount;
+            this.btnLast.Enabled = this.PageNumber != this.PageCount;
 
-            //Update labels
-            lblPageCount.Text = PageCount.ToString();
+            // Update labels
+            this.lblPageCount.Text = this.PageCount.ToString();
 
-            if (PageCount <= 1 && HideOnSinglePage)
+            if (this.PageCount <= 1 && this.HideOnSinglePage)
             {
-                btnFirst.Visible = false;
-                btnPrev.Visible = false;
-                btnNext.Visible = false;
-                btnLast.Visible = false;
-                lblof.Visible = false;
-                lblPageCount.Visible = false;
-                tbPageNumber.Visible = false;
+                this.btnFirst.Visible = false;
+                this.btnPrev.Visible = false;
+                this.btnNext.Visible = false;
+                this.btnLast.Visible = false;
+                this.lblof.Visible = false;
+                this.lblPageCount.Visible = false;
+                this.tbPageNumber.Visible = false;
             }
             else
             {
-                btnFirst.Visible = true;
-                btnPrev.Visible = true;
-                btnNext.Visible = true;
-                btnLast.Visible = true;
-                lblof.Visible = true;
-                lblPageCount.Visible = true;
-                tbPageNumber.Visible = true;
+                this.btnFirst.Visible = true;
+                this.btnPrev.Visible = true;
+                this.btnNext.Visible = true;
+                this.btnLast.Visible = true;
+                this.lblof.Visible = true;
+                this.lblPageCount.Visible = true;
+                this.tbPageNumber.Visible = true;
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Handles the Load event of the Page control.
+        /// Raises the <see cref="E:System.Web.UI.Control.Load"/> event.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
+        /// <param name="e">
+        /// The <see cref="T:System.EventArgs"/> object that contains the event data.
+        /// </param>
+        protected override void OnLoad(EventArgs e)
         {
-            RefreshButtons();
+            base.OnLoad(e);
+
+            this.RefreshButtons();
         }
 
         /// <summary>
-        /// Main class manging pages
+        /// Used by OnMove event
         /// </summary>
-        public Paging()
+        /// <param name="e">
+        /// The <see cref="System.EventArgs"/> instance containing the event data.
+        /// </param>
+        protected virtual void OnMoveHandler(EventArgs e)
         {
-            //Construct controls
-            btnFirst = new Button();
-            btnFirst.Width = new Unit("25px");
-            btnFirst.Font.Bold = true;
-            btnFirst.Text = " |< ";
-            btnFirst.CommandArgument = "first";
-            btnFirst.EnableViewState = false;
-            Controls.Add(btnFirst);
-
-            btnPrev = new Button();
-            btnPrev.Width = new Unit("25px");
-            btnPrev.Font.Bold = true;
-            btnPrev.Text = " < ";
-            btnPrev.CommandArgument = "prev";
-            btnPrev.EnableViewState = false;
-            Controls.Add(btnPrev);
-
-            Controls.Add(new LiteralControl("&#160;"));
-
-            tbPageNumber = new TextBox();
-            tbPageNumber.Width = new Unit("30px");
-            tbPageNumber.EnableViewState = true;
-            tbPageNumber.AutoPostBack = true;
-            Controls.Add(tbPageNumber);
-
-            Controls.Add(new LiteralControl("&#160;"));
-
-            btnNext = new Button();
-            btnNext.Width = new Unit("25px");
-            btnNext.Font.Bold = true;
-            btnNext.Text = " > ";
-            btnNext.CommandArgument = "next";
-            btnNext.EnableViewState = false;
-            Controls.Add(btnNext);
-
-            btnLast = new Button();
-            btnLast.Width = new Unit("25px");
-            btnLast.Font.Bold = true;
-            btnLast.Text = " >| ";
-            btnLast.CommandArgument = "last";
-            btnLast.EnableViewState = false;
-            Controls.Add(btnLast);
-
-            lblof = new Label();
-            lblof.EnableViewState = false;
-            lblof.Text = "&#160;/&#160;";
-            Controls.Add(lblof);
-
-            lblPageCount = new Label();
-            lblPageCount.EnableViewState = false;
-            Controls.Add(lblPageCount);
-
-            //Set defaults
-            if (ViewState["PageNumber"] == null)
-                PageNumber = 1;
-
-            if (ViewState["RecordCount"] == null)
-                RecordCount = 1;
-
-            if (ViewState["HideOnSinglePage"] == null)
-                HideOnSinglePage = true;
-
-            //Add handlers
-            Load += new EventHandler(Page_Load);
-            tbPageNumber.TextChanged += new EventHandler(NavigationTbClick);
-            btnFirst.Click += new EventHandler(NavigationButtonClick);
-            btnPrev.Click += new EventHandler(NavigationButtonClick);
-            btnNext.Click += new EventHandler(NavigationButtonClick);
-            btnLast.Click += new EventHandler(NavigationButtonClick);
+            if (this.OnMove != null)
+            {
+                this.OnMove(this, e);
+            }
         }
 
         /// <summary>
         /// Navigations the button click.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void NavigationButtonClick(Object sender, EventArgs e)
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.EventArgs"/> instance containing the event data.
+        /// </param>
+        private void NavigationButtonClick(object sender, EventArgs e)
         {
             // get the command
-            string arg = ((Button) sender).CommandArgument;
+            var arg = ((Button)sender).CommandArgument;
+
             // do the command
             switch (arg)
             {
-                case ("next"):
-                    if (PageNumber < PageCount)
-                        PageNumber++;
+                case "next":
+                    if (this.PageNumber < this.PageCount)
+                    {
+                        this.PageNumber++;
+                    }
+
                     break;
-                case ("prev"):
-                    if (PageNumber > 1)
-                        PageNumber--;
+                case "prev":
+                    if (this.PageNumber > 1)
+                    {
+                        this.PageNumber--;
+                    }
+
                     break;
-                case ("last"):
-                    PageNumber = PageCount;
+                case "last":
+                    this.PageNumber = this.PageCount;
                     break;
-                case ("first"):
-                    PageNumber = 1;
+                case "first":
+                    this.PageNumber = 1;
                     break;
             }
 
-            RefreshButtons();
+            this.RefreshButtons();
 
-            //Raise the event OnMove
-            OnMoveHandler(new EventArgs());
+            // Raise the event OnMove
+            this.OnMoveHandler(new EventArgs());
         }
 
         /// <summary>
         /// Navigations the tb click.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void NavigationTbClick(Object sender, EventArgs e)
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.EventArgs"/> instance containing the event data.
+        /// </param>
+        private void NavigationTbClick(object sender, EventArgs e)
         {
-            int _PageNumber = Convert.ToInt32(tbPageNumber.Text);
+            var pageNumber = Convert.ToInt32(this.tbPageNumber.Text);
 
-            if (_PageNumber > PageCount)
+            if (pageNumber > this.PageCount)
             {
-                PageNumber = PageCount;
+                this.PageNumber = this.PageCount;
             }
-            else if (_PageNumber < 1)
+            else if (pageNumber < 1)
             {
-                PageNumber = 1;
+                this.PageNumber = 1;
             }
             else
             {
-                PageNumber = _PageNumber;
+                this.PageNumber = pageNumber;
             }
 
-            RefreshButtons();
+            this.RefreshButtons();
 
-            //Raise the event OnMove
-            OnMoveHandler(new EventArgs());
+            // Raise the event OnMove
+            this.OnMoveHandler(new EventArgs());
         }
+
+        #endregion
     }
 }

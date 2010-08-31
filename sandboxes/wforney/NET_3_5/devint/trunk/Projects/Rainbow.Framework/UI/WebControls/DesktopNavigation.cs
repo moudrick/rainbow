@@ -9,6 +9,11 @@ using Rainbow.Framework.Configuration;
 
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Rainbow.Framework.Data.Providers;
+
     /// <summary>
     /// Represents a flat navigation bar. 
     /// One dimension. 
@@ -67,7 +72,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             foreach (char c in tab)
                 if (char.IsLetterOrDigit(c)) auxtab += c;
                 else auxtab += "_";
-            return HttpUrlBuilder.BuildUrl("~/" + auxtab + ".aspx", id);
+            return HttpUrlBuilder.BuildUrl(string.Format("~/{0}.aspx", auxtab), id);
         }
 
         #region INavigation implementation
@@ -133,7 +138,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             Category("Data"),
                 PersistenceMode(PersistenceMode.Attribute)
             ]
-        public int ParentPageID
+        public int ParentPageId
         {
             get { return _definedParentTab; }
             set
@@ -162,7 +167,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
             if (HttpContext.Current != null)
             {
                 // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
 
                 switch (Bind)
                 {
@@ -194,29 +199,29 @@ namespace Rainbow.Framework.Web.UI.WebControls
                             authorizedTabs =
                                 GetTabs(currentTabRoot, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
                             break;
-//						int tmpPageID = 0;
-//
-//						if(portalSettings.ActivePage.ParentPageID == 0)
-//						{
-//							tmpPageID = portalSettings.ActivePage.PageID;
-//						}
-//						else
-//						{
-//							tmpPageID = portalSettings.ActivePage.ParentPageID;
-//						}
-//						ArrayList parentTabs = GetTabs(tmpPageID, portalSettings.DesktopPages);
-//						try
-//						{
-//							if (parentTabs.Count > 0)
-//							{
-//								PageStripDetails currentParentTab = (PageStripDetails) parentTabs[this.SelectedIndex];
-//								this.SelectedIndex = -1;
-//								authorizedTabs = GetTabs(portalSettings.ActivePage.PageID, currentParentTab.Pages);
-//							}
-//						}
-//						catch
-//						{}
-//						break;
+                            //						int tmpPageID = 0;
+                            //
+                            //						if(portalSettings.ActivePage.ParentPageID == 0)
+                            //						{
+                            //							tmpPageID = portalSettings.ActivePage.PageID;
+                            //						}
+                            //						else
+                            //						{
+                            //							tmpPageID = portalSettings.ActivePage.ParentPageID;
+                            //						}
+                            //						ArrayList parentTabs = GetTabs(tmpPageID, portalSettings.DesktopPages);
+                            //						try
+                            //						{
+                            //							if (parentTabs.Count > 0)
+                            //							{
+                            //								PageStripDetails currentParentTab = (PageStripDetails) parentTabs[this.SelectedIndex];
+                            //								this.SelectedIndex = -1;
+                            //								authorizedTabs = GetTabs(portalSettings.ActivePage.PageID, currentParentTab.Pages);
+                            //							}
+                            //						}
+                            //						catch
+                            //						{}
+                            //						break;
                         }
                     case BindOption.BindOptionChildren:
                         {
@@ -235,7 +240,7 @@ namespace Rainbow.Framework.Web.UI.WebControls
                             break;
                         }
 
-                        //MH: added 19/09/2003 by mario@hartmann.net
+                    //MH: added 19/09/2003 by mario@hartmann.net
                     case BindOption.BindOptionTabSibling:
                         {
                             authorizedTabs =
@@ -250,13 +255,13 @@ namespace Rainbow.Framework.Web.UI.WebControls
                             break;
                         }
 
-                        //MH: added 29/04/2003 by mario@hartmann.net
+                    //MH: added 29/04/2003 by mario@hartmann.net
                     case BindOption.BindOptionDefinedParent:
-                        if (ParentPageID != -1)
+                        if (this.ParentPageId != -1)
                             authorizedTabs =
-                                GetTabs(ParentPageID, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
+                                GetTabs(this.ParentPageId, portalSettings.ActivePage.PageID, portalSettings.DesktopPages);
                         break;
-                        //MH: end
+                    //MH: end
                     default:
                         {
                             break;
@@ -269,29 +274,24 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <summary>
         /// Gets the selected tab.
         /// </summary>
-        /// <param name="parentPageID">The parent page ID.</param>
-        /// <param name="activePageID">The active page ID.</param>
+        /// <param name="parentPageId">The parent page ID.</param>
+        /// <param name="activePageId">The active page ID.</param>
         /// <param name="allTabs">All tabs.</param>
         /// <returns></returns>
-        private int GetSelectedTab(int parentPageID, int activePageID, IList allTabs)
+        private int GetSelectedTab(int parentPageId, int activePageId, IList allTabs)
         {
-            for (int i = 0; i < allTabs.Count; i++)
+            foreach (var t in allTabs.Cast<PageStripDetails>().Where(t => t.PageID == activePageId))
             {
-                PageStripDetails tmpTab = (PageStripDetails) allTabs[i];
-                if (tmpTab.PageID == activePageID)
+                var selectedPageId = activePageId;
+                if (t.ParentPageID != parentPageId)
                 {
-                    int selectedPageID = activePageID;
-                    if (tmpTab.ParentPageID != parentPageID)
-                    {
-                        selectedPageID = GetSelectedTab(parentPageID, tmpTab.ParentPageID, allTabs);
-                        return selectedPageID;
-                    }
-                    else
-                    {
-                        return selectedPageID;
-                    }
+                    selectedPageId = this.GetSelectedTab(parentPageId, t.ParentPageID, allTabs);
+                    return selectedPageId;
                 }
+
+                return selectedPageId;
             }
+
             return 0;
         }
 
@@ -304,48 +304,42 @@ namespace Rainbow.Framework.Web.UI.WebControls
         /// <returns></returns>
         private ArrayList GetTabs(int parentID, int tabID, IList Tabs)
         {
-            ArrayList authorizedTabs = new ArrayList();
-            int index = -1;
+            var authorizedTabs = new List<PageStripDetails>();
 
-            //MH:get the selected tab for this 
-            int selectedPageID = GetSelectedTab(parentID, tabID, Tabs);
-
-
+            // MH:get the selected tab for this 
+            int selectedPageId = this.GetSelectedTab(parentID, tabID, Tabs);
+            
             // Populate Tab List with authorized tabs
-            for (int i = 0; i < Tabs.Count; i++)
+            // Get selected row only
+            foreach (var tab in Tabs.Cast<PageStripDetails>().Where(tab => tab.ParentPageID == parentID).Where(tab => PortalSecurity.IsInRoles(tab.AuthorizedRoles)))
             {
-                PageStripDetails tab = (PageStripDetails) Tabs[i];
+                int index = authorizedTabs.Add(tab);
 
-                if (tab.ParentPageID == parentID) // Get selected row only
+                // MH:if (tab.PageID == tabID)
+                // MH:added to support the selected menutab in each level
+                if (tab.PageID == selectedPageId)
                 {
-                    if (PortalSecurity.IsInRoles(tab.AuthorizedRoles))
-                    {
-                        index = authorizedTabs.Add(tab);
-
-                        //MH:if (tab.PageID == tabID)
-                        //MH:added to support the selected menutab in each level
-                        if (tab.PageID == selectedPageID)
-                            SelectedIndex = index;
-                    }
+                    this.SelectedIndex = index;
                 }
             }
+
             return authorizedTabs;
         }
 
         /// <summary>
-        /// DataSource
+        /// Data Source
         /// </summary>
         public override object DataSource
         {
             get
             {
-                if (innerDataSource == null)
-                {
-                    innerDataSource = GetInnerDataSource();
-                }
-                return innerDataSource;
+                return this.innerDataSource ?? (this.innerDataSource = this.GetInnerDataSource());
             }
-            set { innerDataSource = value; }
+
+            set
+            {
+                this.innerDataSource = value;
+            }
         }
     }
 }

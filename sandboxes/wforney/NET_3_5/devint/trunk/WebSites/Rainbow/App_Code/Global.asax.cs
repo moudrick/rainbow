@@ -1,29 +1,35 @@
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Security.Principal;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Security;
-using Rainbow.Context;
-using Rainbow.Framework;
-using Rainbow.Framework.BLL.Utils;
-using Rainbow.Framework.Exceptions;
-using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Scheduler;
-using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Site.Configuration;
-using History=Rainbow.Framework.History;
-using Path=System.IO.Path;
-using Reader=Rainbow.Context.Reader;
-using System.Configuration;
-
 namespace Rainbow
 {
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Net;
+    using System.Reflection;
+    using System.Security.Principal;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Security;
+
+    using Rainbow.Context;
+    using Rainbow.Framework;
+    using Rainbow.Framework.BLL.Utils;
+    using Rainbow.Framework.Configuration;
+    using Rainbow.Framework.Configuration.Web;
+    using Rainbow.Framework.Data.MsSql;
+    using Rainbow.Framework.Exceptions;
+    using Rainbow.Framework.Helpers;
+    using Rainbow.Framework.Scheduler;
+    using Rainbow.Framework.Security;
+    using Rainbow.Framework.Settings;
+    using Rainbow.Framework.Site.Configuration;
+
+    using History=Rainbow.Framework.History;
+    using Path=System.IO.Path;
+    using Reader=Rainbow.Context.Reader;
+
+    using System.Configuration;
+
     /// <summary>
     /// Defines the methods, properties, and events common to all application 
     /// objects within an ASP.NET application. This class is the base class for 
@@ -112,37 +118,43 @@ FROM         rb_Portals INNER JOIN
                       rb_Tabs ON rb_Portals.PortalID = rb_Tabs.PortalID
 WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.TabName LIKE N'%' + @PageName + N'%')
              */
-            string currentURL = context.Request.Path.ToLower();
+            string currentUrl = context.Request.Path.ToLower();
 
 
 #if DEBUG
             if (currentURL.Contains("trace.axd"))
                 return;
 #endif
-            context.Trace.Warn("Application_BeginRequest :: " + currentURL);
+            context.Trace.Warn(string.Format("Application_BeginRequest :: {0}", currentUrl));
             if (Portal.PageID > 0)
             {
-                //Creates the physical path on the server 
-                string physicalPath = context.Server.MapPath(currentURL.Substring(currentURL.LastIndexOf("/") + 1));
+                // Creates the physical path on the server 
+                string physicalPath = context.Server.MapPath(currentUrl.Substring(currentUrl.LastIndexOf("/") + 1));
 
                 // TODO: Can we enhance performance here by checking to see if it is a friedly url page
                 // name instead of doing an IO check for exists?
                 // checks to see if the file does not exsists.
-                if (!File.Exists(physicalPath)) // Rewrites the path
-                    context.RewritePath("~/default.aspx?" + context.Request.ServerVariables["QUERY_STRING"]);
+                if (!File.Exists(physicalPath))
+                {
+                    // Rewrites the path
+                    context.RewritePath(
+                        string.Format("~/default.aspx?{0}", context.Request.ServerVariables["QUERY_STRING"]));
+                }
             }
             else
             {
-                string pname = currentURL.Substring(currentURL.LastIndexOf("/") + 1);
+                string pname = currentUrl.Substring(currentUrl.LastIndexOf("/") + 1);
                 pname = pname.Substring(0, (pname.Length - 5));
                 if (Regex.IsMatch(pname, @"^\d+$"))
-                    context.RewritePath("~/default.aspx?pageid=" + pname +
-                                        context.Request.ServerVariables["QUERY_STRING"]);
+                {
+                    context.RewritePath(
+                        "~/default.aspx?pageid=" + pname + context.Request.ServerVariables["QUERY_STRING"]);
+                }
             }
 
 
             // 1st Check: is it a dangerously malformed request?
-            //Important patch http://support.microsoft.com/?kbid=887459
+            // Important patch http://support.microsoft.com/?kbid=887459
             if (context.Request.Path.IndexOf('\\') >= 0 ||
                 Path.GetFullPath(context.Request.PhysicalPath) != context.Request.PhysicalPath)
                 throw new RainbowRedirect(LogLevels.Warn, HttpStatusCode.NotFound, "Malformed request", null);
@@ -275,14 +287,16 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                 int testsCounter = 1;
                 while (testsCounter <= testsToRun)
                 {
-                    //try with current values from arrays
+                    // try with current values from arrays
                     portalSettings = new PortalSettings(testPageID[testsCounter - 1], testAlias[testsCounter - 1]);
 
                     // test returned result
                     if (portalSettings.PortalAlias != null)
+                    {
                         break; // successful hit
-                    else
-                        testsCounter++; // increment the test counter and continue
+                    }
+
+                    testsCounter++; // increment the test counter and continue
                 }
 
                 if (portalSettings.PortalAlias == null)
@@ -302,10 +316,12 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                     context.Items.Add("PortalSettings", portalSettings);
                     context.Items.Add("PortalID", portalSettings.PortalID); // jes1111
                 }
-                else // need to redirect
+                else 
                 {
-                    if (portalSettings.PortalAlias != portalAlias) // we didn't get the portal we asked for
+                    // need to redirect
+                    if (portalSettings.PortalAlias != portalAlias) 
                     {
+                        // we didn't get the portal we asked for
                         throw new RainbowRedirect(
                             Config.InvalidAliasRedirect,
                             LogLevels.Info,
@@ -314,8 +330,9 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                             null);
                     }
 
-                    if (portalSettings.ActivePage.PageID != pageID) // we didn't get the page we asked for
+                    if (portalSettings.ActivePage.PageID != pageID)
                     {
+                        // we didn't get the page we asked for
                         throw new RainbowRedirect(
                             Config.InvalidPageIdRedirect,
                             LogLevels.Info,
@@ -334,10 +351,10 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                 context.Response.Cookies["PortalAlias"].Value = portalSettings.PortalAlias;
                 //}
 
-                //Try to get alias from cookie to determine if alias has been changed
+                // Try to get alias from cookie to determine if alias has been changed
                 bool refreshSite = false;
                 if (context.Request.Cookies["PortalAlias"] != null &&
-                    context.Request.Cookies["PortalAlias"].Value.ToLower() != Portal.UniqueID)
+                    context.Request.Cookies["PortalAlias"].Value.ToLower() != Portal.UniqueID) 
                     refreshSite = true; //Portal has changed since last page request
                 // if switching portals then clean parameters [TipTopWeb]
                 // Must be the last instruction in this method 
@@ -396,91 +413,91 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
         /// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)
         {
-            Reader contextReader = new Reader(new WebContextReader());
+            var contextReader = new Reader(new WebContextReader());
             HttpContext context = contextReader.Current;
 
-            if (context.Items["PortalSettings"] != null)
+            if (context.Items["PortalSettings"] == null)
             {
-                // Obtain PortalSettings from Current Context
-                PortalSettings portalSettings = (PortalSettings) context.Items["PortalSettings"];
-
-                // Auto-login a user who has a portal Alias login cookie
-                // Try to authenticate the user with the cookie value
-                if (!context.Request.IsAuthenticated &&
-                    (context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias] != null))
-                {
-                    if (context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias].Expires > DateTime.Now)
-                    {
-                        string user;
-                        user = context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias.ToLower()].Value;
-
-                        //jminond - option to kill cookie after certain time always
-                        int minuteAdd = Config.CookieExpire;
-
-                        // Create the FormsAuthentication cookie
-                        FormsAuthentication.SetAuthCookie(user, true);
-
-                        // Create a FormsAuthentication ticket.
-                        FormsAuthenticationTicket cTicket = new FormsAuthenticationTicket
-                            (
-                            1, // version
-                            user, // user name
-                            DateTime.Now, // issue time
-                            DateTime.Now.AddMinutes(minuteAdd),
-                            false, // don't persist cookie
-                            string.Empty // roles
-                            );
-
-                        // Set the current User Security to the FormsAuthenticated User
-                        context.User = new RainbowPrincipal(new FormsIdentity(cTicket), null);
-                    }
-                }
-                else
-                {
-                    // jminond - if user asked to persist, he should have a cookie
-                    if ((context.Request.IsAuthenticated) &&
-                        (context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias] == null))
-                        PortalSecurity.KillSession();
-                }
-
-                //if (context.Request.IsAuthenticated && !(context.User is WindowsPrincipal))
-                //{
-                //    // added by Jonathan Fong 22/07/2004 to support LDAP 
-                //    //string[] names = Context.User.Identity.Name.Split("|".ToCharArray());
-                //    string[] names = context.User.Identity.Name.Split('|');
-                //    if (names.Length == 3 && names[2].StartsWith("cn="))
-                //    {
-                //        context.User = new RainbowPrincipal(
-                //            new User(context.User.Identity.Name, "LDAP"), LDAPHelper.GetRoles(names[2]));
-                //    }
-                //    else
-                //    {
-                //        // Add our own custom principal to the request containing the roles in the auth ticket
-                //        context.User = new RainbowPrincipal(context.User.Identity, PortalSecurity.GetRoles());
-                //    }
-                //    // Remove Windows specific custom settings
-                //    if (portalSettings.CustomSettings != null)
-                //        portalSettings.CustomSettings.Remove("WindowsAdmins");
-                //}
-                //    // bja@reedtek.com - need to get a unique id for user
-                //else if (Config.WindowMgmtControls)
-                //{
-                //    // Need a uid, even for annoymous users
-                //    string annoyUser;
-                //    // cookie bag
-                //    IWebBagHolder abag = BagFactory.instance.create(BagFactory.BagFactoryType.CookieType);
-                //    // user data already set
-                //    annoyUser = (string) abag[GlobalInternalStrings.UserWinMgmtIndex];
-                //    // if no cookie then let's get one
-                //    if (annoyUser == null)
-                //    {
-                //        // new uid for window mgmt
-                //        Guid guid = Guid.NewGuid();
-                //        // save the data into a cookie bag
-                //        abag[GlobalInternalStrings.UserWinMgmtIndex] = guid.ToString();
-                //    }
-                //}
+                return;
             }
+
+            // Obtain PortalSettings from Current Context
+            var portalSettings = (PortalSettings) context.Items["PortalSettings"];
+
+            // Auto-login a user who has a portal Alias login cookie
+            // Try to authenticate the user with the cookie value
+            if (!context.Request.IsAuthenticated &&
+                (context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias] != null))
+            {
+                if (context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias].Expires > DateTime.Now)
+                {
+                    string user = context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias.ToLower()].Value;
+
+                    // jminond - option to kill cookie after certain time always
+                    int minuteAdd = Config.CookieExpire;
+
+                    // Create the FormsAuthentication cookie
+                    FormsAuthentication.SetAuthCookie(user, true);
+
+                    // Create a FormsAuthentication ticket.
+                    var cTicket = new FormsAuthenticationTicket(
+                        1, // version
+                        user, // user name
+                        DateTime.Now, // issue time
+                        DateTime.Now.AddMinutes(minuteAdd),
+                        false, // don't persist cookie
+                        string.Empty // roles
+                        );
+
+                    // Set the current User Security to the FormsAuthenticated User
+                    context.User = new RainbowPrincipal(new FormsIdentity(cTicket), null);
+                }
+            }
+            else
+            {
+                // jminond - if user asked to persist, he should have a cookie
+                if ((context.Request.IsAuthenticated) &&
+                    (context.Request.Cookies["Rainbow_" + portalSettings.PortalAlias] == null))
+                    PortalSecurity.KillSession();
+            }
+
+            //if (context.Request.IsAuthenticated && !(context.User is WindowsPrincipal))
+            //{
+            //    // added by Jonathan Fong 22/07/2004 to support LDAP 
+            //    //string[] names = Context.User.Identity.Name.Split("|".ToCharArray());
+            //    string[] names = context.User.Identity.Name.Split('|');
+            //    if (names.Length == 3 && names[2].StartsWith("cn="))
+            //    {
+            //        context.User = new RainbowPrincipal(
+            //            new User(context.User.Identity.Name, "LDAP"), LDAPHelper.GetRoles(names[2]));
+            //    }
+            //    else
+            //    {
+            //        // Add our own custom principal to the request containing the roles in the auth ticket
+            //        context.User = new RainbowPrincipal(context.User.Identity, PortalSecurity.GetRoles());
+            //    }
+            //    // Remove Windows specific custom settings
+            //    if (portalSettings.CustomSettings != null)
+            //        portalSettings.CustomSettings.Remove("WindowsAdmins");
+            //}
+            //    // bja@reedtek.com - need to get a unique id for user
+            //else if (Config.WindowMgmtControls)
+            //{
+            //    // Need a uid, even for annoymous users
+            //    string annoyUser;
+            //    // cookie bag
+            //    IWebBagHolder abag = BagFactory.instance.create(BagFactory.BagFactoryType.CookieType);
+            //    // user data already set
+            //    annoyUser = (string) abag[GlobalInternalStrings.UserWinMgmtIndex];
+            //    // if no cookie then let's get one
+            //    if (annoyUser == null)
+            //    {
+            //        // new uid for window mgmt
+            //        Guid guid = Guid.NewGuid();
+            //        // save the data into a cookie bag
+            //        abag[GlobalInternalStrings.UserWinMgmtIndex] = guid.ToString();
+            //    }
+            //}
         } // end of Application_AuthenticateRequest
 
         /// <summary>
@@ -501,11 +518,12 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
         /// </summary>
         protected void Application_Start()
         {
-            //HttpContext context = ContextReader.Current;
-            HttpContext context = HttpContext.Current;
+            // HttpContext context = ContextReader.Current;
+            var context = HttpContext.Current;
 
             // moved from PortalSettings
-            FileVersionInfo f = FileVersionInfo.GetVersionInfo(Assembly.GetAssembly( typeof( Rainbow.Framework.Settings.Portal ) ).Location);
+            var f =
+                FileVersionInfo.GetVersionInfo(Assembly.GetAssembly(typeof(Framework.Settings.Portal)).Location);
             HttpContext.Current.Application.Lock();
             HttpContext.Current.Application["CodeVersion"] = f.FilePrivatePart;
             HttpContext.Current.Application.UnLock();
@@ -519,15 +537,22 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
                     string myNewDir = Path.Combine(Framework.Settings.Path.ApplicationPhysicalPath, "_createnewdir");
 
                     if (!Directory.Exists(myNewDir))
+                    {
                         Directory.CreateDirectory(myNewDir);
+                    }
 
                     if (Directory.Exists(myNewDir))
+                    {
                         Directory.Delete(myNewDir);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    throw new RainbowException(LogLevels.Fatal, HttpStatusCode.ServiceUnavailable,
-                                               "ASPNET Account does not have rights to the filesystem", ex); // Jes1111
+                    throw new RainbowException(
+                        LogLevels.Fatal,
+                        HttpStatusCode.ServiceUnavailable,
+                        "ASPNET Account does not have rights to the filesystem",
+                        ex); // Jes1111
                 }
             }
 
@@ -594,7 +619,7 @@ WHERE     (rb_Portals.PortalAlias LIKE '%' + @portalAlias + '%') AND (rb_Tabs.Ta
 			}
              */
 
-            //Start scheduler
+            // Start scheduler
             if (Config.SchedulerEnable)
             {
                 PortalSettings.Scheduler = CachedScheduler.GetScheduler(

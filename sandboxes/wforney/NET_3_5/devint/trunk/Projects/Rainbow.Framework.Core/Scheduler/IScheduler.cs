@@ -1,13 +1,54 @@
 namespace Rainbow.Framework.Scheduler
 {
-    //Author: Federico Dal Maso
-    //e-mail: ifof@libero.it
-    //date: 2003-06-17
+    // Author: Federico Dal Maso
+    // e-mail: ifof@libero.it
+    // date: 2003-06-17
+
     /// <summary>
     /// Standard interface for a scheduler
     /// </summary>
     public interface IScheduler
     {
+        #region Properties
+
+        /// <summary>
+        ///     Gets or sets the scheduler timer period
+        /// </summary>
+        long Period { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Gets an array of tasks of the specified module target
+        /// </summary>
+        /// <param name="moduleOwnerId">
+        /// The module Owner Id.
+        /// </param>
+        /// <returns>An array of scheduler tasks.</returns>
+        SchedulerTask[] GetTasksByOwner(int moduleOwnerId);
+
+        /// <summary>
+        /// Gets an array of tasks of the specified module owner
+        /// </summary>
+        /// <param name="moduleTargetId">The module Target Id.</param>
+        /// <returns>An array of scheduler tasks.</returns>
+        SchedulerTask[] GetTasksByTarget(int moduleTargetId);
+
+        /// <summary>
+        /// Inserts a new task
+        /// </summary>
+        /// <param name="task">The scheduler task.</param>
+        /// <returns>A scheduler task.</returns>
+        SchedulerTask InsertTask(SchedulerTask task);
+
+        /// <summary>
+        /// Removes a task
+        /// </summary>
+        /// <param name="task">The scheduler task.</param>
+        void RemoveTask(SchedulerTask task);
+
         /// <summary>
         /// Start the scheduler
         /// </summary>
@@ -18,30 +59,6 @@ namespace Rainbow.Framework.Scheduler
         /// </summary>
         void Stop();
 
-        /// <summary>
-        /// Get or set the scheduler timer period
-        /// </summary>
-        long Period { get; set; }
-
-        /// <summary>
-        /// Get an array of tasks of the specified module owner
-        /// </summary>
-        SchedulerTask[] GetTasksByTarget(int moduleTargetId);
-
-        /// <summary>
-        /// Get an array of tasks of the specified module target
-        /// </summary>
-        SchedulerTask[] GetTasksByOwner(int moduleOwnerId);
-
-        /// <summary>
-        /// Insert a new task
-        /// </summary>
-        SchedulerTask InsertTask(SchedulerTask task);
-
-        /// <summary>
-        /// Remove a task
-        /// </summary>
-        /// <param name="task"></param>
-        void RemoveTask(SchedulerTask task);
+        #endregion
     }
 }

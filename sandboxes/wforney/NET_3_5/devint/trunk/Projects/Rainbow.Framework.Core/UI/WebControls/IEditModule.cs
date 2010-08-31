@@ -1,8 +1,9 @@
-using System;
-using Rainbow.KickStarter.CommonClasses;
-
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    using System;
+
+    using Rainbow.KickStarter.CommonClasses;
+
     /// <summary>
     /// Default interface for edit modules
     /// </summary>
@@ -11,54 +12,56 @@ namespace Rainbow.Framework.Web.UI.WebControls
         #region Events
 
         /// <summary>
-        /// Purpose: Property to Allow Control to add records.
+        ///     Purpose: Notify when Editing has been canceled.
         /// </summary>
-        /// <value><c>true</c> if [allow add]; otherwise, <c>false</c>.</value>
-        bool AllowAdd { set; get; }
+        /// <delegate>EventHandler</delegate>
+        event EventHandler CancelEdit;
 
         /// <summary>
-        /// Purpose: Property to Allow Control to update records.
-        /// </summary>
-        /// <value><c>true</c> if [allow update]; otherwise, <c>false</c>.</value>
-        bool AllowUpdate { set; get; }
-
-        /// <summary>
-        /// Purpose: Property to Allow Control to delete records.
-        /// </summary>
-        /// <value><c>true</c> if [allow delete]; otherwise, <c>false</c>.</value>
-        bool AllowDelete { set; get; }
-
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        /// Purpose: Notify when Record has been Selected, Inserted, Updated or Deleted.
-        /// </summary>
-        /// <delegate>DataChangeStartedEventHandler</delegate>
-        event DataChangeEventHandler DataActionStart;
-
-        /// <summary>
-        /// Purpose: Notify when Record has been Selected, Inserted, Updated or Deleted.
+        ///     Purpose: Notify when Record has been Selected, Inserted, Updated or Deleted.
         /// </summary>
         /// <delegate>DataChangeEndedEventHandler</delegate>
         event DataChangeEventHandler DataActionEnd;
 
         /// <summary>
-        /// Purpose: Notify when Editing has been canceled.
+        ///     Purpose: Notify when Record has been Selected, Inserted, Updated or Deleted.
         /// </summary>
-        /// <delegate>EventHandler</delegate>
-        event EventHandler CancelEdit;
+        /// <delegate>DataChangeStartedEventHandler</delegate>
+        event DataChangeEventHandler DataActionStart;
 
         #endregion
 
-        #region Methods
+        #region Properties
 
         /// <summary>
-        /// The module select the requested item and starts editing the module.
+        ///     Gets or sets whether to Allow Control to add records.
         /// </summary>
-        /// <param name="itemID">The param is string to be more general. Usually it contains a number.</param>
-        void StartEdit(string itemID);
+        /// <value><c>true</c> if [allow add]; otherwise, <c>false</c>.</value>
+        bool AllowAdd { get; set; }
+
+        /// <summary>
+        ///     Gets or sets whether to Allow Control to delete records.
+        /// </summary>
+        /// <value><c>true</c> if [allow delete]; otherwise, <c>false</c>.</value>
+        bool AllowDelete { get; set; }
+
+        /// <summary>
+        ///     Gets or sets whether to Allow Control to update records.
+        /// </summary>
+        /// <value><c>true</c> if [allow update]; otherwise, <c>false</c>.</value>
+        bool AllowUpdate { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Purpose: Displays any error messages.
+        /// </summary>
+        /// <param name="e">
+        /// The Exception to display.
+        /// </param>
+        void HandleError(Exception e);
 
         /// <summary>
         /// Purpose: Method the List control after data has been updated by the Edit control.
@@ -66,10 +69,12 @@ namespace Rainbow.Framework.Web.UI.WebControls
         void Reset();
 
         /// <summary>
-        /// Purpose: Displays any error messages.
+        /// The module select the requested item and starts editing the module.
         /// </summary>
-        /// <param name="e">The Exception to display.</param>
-        void HandleError(Exception e);
+        /// <param name="itemId">
+        /// The param is string to be more general. Usually it contains a number.
+        /// </param>
+        void StartEdit(string itemId);
 
         #endregion
     }

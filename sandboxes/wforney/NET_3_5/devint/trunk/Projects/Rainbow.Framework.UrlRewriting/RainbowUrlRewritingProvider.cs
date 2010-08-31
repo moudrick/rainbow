@@ -1,16 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using UrlRewritingNet.Configuration.Provider;
+namespace Rainbow.Framework.UrlRewriting
+{
+    using UrlRewritingNet.Configuration.Provider;
+    using UrlRewritingNet.Web;
 
-namespace Rainbow.Framework.UrlRewriting {
+    /// <summary>
+    /// The rainbow url rewriting provider.
+    /// </summary>
+    public class RainbowUrlRewritingProvider : UrlRewritingProvider
+    {
+        #region Public Methods
 
-    public class RainbowUrlRewritingProvider : UrlRewritingProvider {
-
-
-        public override UrlRewritingNet.Web.RewriteRule CreateRewriteRule() {
+        /// <summary>
+        /// The create rewrite rule.
+        /// </summary>
+        /// <returns>
+        /// A rewrite rule.
+        /// </returns>
+        public override RewriteRule CreateRewriteRule()
+        {
             return new RainbowUrlRewritingRule();
         }
+
+        #endregion
     }
 }
-

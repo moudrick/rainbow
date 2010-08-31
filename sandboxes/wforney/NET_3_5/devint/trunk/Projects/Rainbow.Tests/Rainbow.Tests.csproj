@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -42,6 +43,7 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <DocumentationFile>
     </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,6 +54,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.2.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -83,6 +86,18 @@
       <Project>{552CCD6F-0A37-4366-9E3E-22B2A0221584}</Project>
       <Name>Rainbow.Framework.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Rainbow.Framework.Data.MsSql\Rainbow.Framework.Data.MsSql.csproj">
+      <Project>{F3D1132B-139D-47FF-911E-10A950B572D0}</Project>
+      <Name>Rainbow.Framework.Data.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rainbow.Framework.Data\Rainbow.Framework.Data.csproj">
+      <Project>{235DF5E0-BC25-4FF5-9DB1-BFDFC4F569EE}</Project>
+      <Name>Rainbow.Framework.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rainbow.Framework.Helpers\Rainbow.Framework.Helpers.csproj">
+      <Project>{72C090B5-4EEE-4D04-80D6-DD59912B367F}</Project>
+      <Name>Rainbow.Framework.Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rainbow.Framework.Providers.RainbowMembershipProvider\Rainbow.Framework.Providers.RainbowMembershipProvider.csproj">
       <Project>{6BC1E6D4-1DD7-4CDB-B362-F390D40DDFFC}</Project>
       <Name>Rainbow.Framework.Providers.RainbowMembershipProvider</Name>
@@ -112,6 +127,11 @@
     <Content Include="Scripts\SqlDataScriptsDefinition.xml" />
   </ItemGroup>
   <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
@@ -125,6 +145,11 @@
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>

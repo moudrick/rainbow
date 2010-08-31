@@ -1,312 +1,592 @@
-using System;
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     // *********************************************************************
-    //  Paging
-    //
+    // Paging
+
     /// <summary>
     /// The paging control is used to display paging options for controls that
-    /// page through data. This control is necessary since some data rendering 
-    /// controls, such as the DataList, do not support paging and it must be 
-    /// a custom implementation.
+    ///     page through data. This control is necessary since some data rendering 
+    ///     controls, such as the DataList, do not support paging and it must be 
+    ///     a custom implementation.
     /// </summary>
-    /// 
-    // ********************************************************************/
     public class PagingNumbers : WebControl, INamingContainer, IPaging
     {
         // TODO: Upgrade to comosite control... :-)
 
         // Paging defaults
-        private int m_pageNumber = 0;
-        private int totalPages = 0;
-        private const int defaultRecordCount = 0;
-        private int pageSize = -1;
+        #region Constants and Fields
+
+        /// <summary>
+        /// The default record count.
+        /// </summary>
+        private const int DefaultRecordCount = 0;
 
         // Controls
+
+        /// <summary>
+        /// The current page.
+        /// </summary>
         private System.Web.UI.WebControls.Label currentPage;
-        private PlaceHolder previousButton;
-        private PlaceHolder nextButton;
-        private LinkButton prev;
+
+        /// <summary>
+        /// The page number.
+        /// </summary>
+        private int pageNumber;
+
+        /// <summary>
+        /// The next link button.
+        /// </summary>
         private LinkButton next;
+
+        /// <summary>
+        /// The next button.
+        /// </summary>
+        private PlaceHolder nextButton;
+
+        /// <summary>
+        /// The numerical link buttons.
+        /// </summary>
         private System.Web.UI.WebControls.LinkButton[] numericalLinkButtons;
+
+        /// <summary>
+        /// The numerical paging.
+        /// </summary>
         private PlaceHolder numericalPaging;
 
+        /// <summary>
+        /// The page size.
+        /// </summary>
+        private int pageSize = -1;
+
+        /// <summary>
+        /// The prev.
+        /// </summary>
+        private LinkButton prev;
+
+        /// <summary>
+        /// The previous button.
+        /// </summary>
+        private PlaceHolder previousButton;
+
+        /// <summary>
+        /// The total pages.
+        /// </summary>
+        private int totalPages;
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        ///     Event raised when a an index has been selected by the end user
+        /// </summary>
+        public event EventHandler OnMove;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets or sets the current page number.
+        /// </summary>
+        /// <value>The page number.</value>
+        [Description("Specifies the current page in the index.")]
+        public int PageNumber
+        {
+            get
+            {
+                // Internal is 0 based, external is 1 based
+                return this.PageIndex + 1;
+            }
+
+            set
+            {
+                this.PageIndex = value - 1;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the record count
+        /// </summary>
+        /// <value>The record count.</value>
+        public int RecordCount
+        {
+            get
+            {
+                // the RecordCount is stuffed in the ViewState so that
+                // it is persisted across postbacks.
+                if (this.ViewState["totalRecords"] == null)
+                {
+                    return DefaultRecordCount; // if it's not found in the ViewState, return the default value
+                }
+
+                return Convert.ToInt32(this.ViewState["totalRecords"].ToString());
+            }
+
+            set
+            {
+                this.TotalPages = CalculateTotalPages(value, this.RecordsPerPage);
+
+                // set the viewstate
+                this.ViewState["totalRecords"] = value;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the page size used in paging.
+        /// </summary>
+        /// <value>The records per page.</value>
+        [Category("Required")]
+        [Description("Specifies the page size used in paging.")]
+        public int RecordsPerPage
+        {
+            get
+            {
+                return this.pageSize == -1 ? 10 : this.pageSize;
+            }
+
+            set
+            {
+                this.pageSize = value;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the Forum's posts you want to view.
+        /// </summary>
+        /// <value>The total pages.</value>
+        public int TotalPages
+        {
+            get
+            {
+                return this.totalPages + 1;
+            }
+
+            set
+            {
+                this.totalPages = value - 1;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the current page in the index.
+        /// </summary>
+        /// <value>The index of the page.</value>
+        [Description("Specifies the current page in the index.")]
+        private int PageIndex
+        {
+            get
+            {
+                return this.ViewState["PageIndex"] == null ? this.pageNumber : Convert.ToInt32(this.ViewState["PageIndex"]);
+            }
+
+            set
+            {
+                this.ViewState["PageIndex"] = value;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Static that caculates the total pages available.
+        /// </summary>
+        /// <param name="totalRecords">
+        /// The total records.
+        /// </param>
+        /// <param name="pageSize">
+        /// Size of the page.
+        /// </param>
+        /// <returns>
+        /// The calculate total pages.
+        /// </returns>
+        public static int CalculateTotalPages(int totalRecords, int pageSize)
+        {
+            // First calculate the division
+            var totalPagesAvailable = totalRecords / pageSize;
+
+            // Now do a mod for any remainder
+            if ((totalRecords % pageSize) > 0)
+            {
+                totalPagesAvailable++;
+            }
+
+            return totalPagesAvailable;
+        }
+
+        #endregion
+
         // *********************************************************************
-        //  CreateChildControls
-        //
+        // CreateChildControls
+        #region Methods
+
         /// <summary>
         /// This event handler adds the children controls and is resonsible
-        /// for determining the template type used for the control.
+        ///     for determining the template type used for the control.
         /// </summary>
-        // ********************************************************************/ 
         protected override void CreateChildControls()
         {
             // If the total number of records is less than the
             // number of records we display in a page, we'll display page 1 of 1.
-            if ((RecordCount <= RecordsPerPage) && (RecordCount != 0))
+            if ((this.RecordCount <= this.RecordsPerPage) && (this.RecordCount != 0))
             {
-                Controls.Add(NavigationDisplay(true));
-                DisplayCurrentPage();
+                this.Controls.Add(this.NavigationDisplay(true));
+                this.DisplayCurrentPage();
                 return;
             }
 
             // Quick check to ensure the PageIndex is not greater than the Page Size
-            if ((PageIndex > RecordsPerPage) || (PageIndex < 0))
-                PageIndex = 0;
+            if ((this.PageIndex > this.RecordsPerPage) || (this.PageIndex < 0))
+            {
+                this.PageIndex = 0;
+            }
 
             // How many link buttons do we need?
-            numericalLinkButtons = new System.Web.UI.WebControls.LinkButton[TotalPages];
+            this.numericalLinkButtons = new System.Web.UI.WebControls.LinkButton[this.TotalPages];
 
             // Add the control to display navigation
-            Controls.Add(NavigationDisplay(false));
+            this.Controls.Add(this.NavigationDisplay(false));
         }
 
-        // *********************************************************************
-        //  DisplayPager
-        //
         /// <summary>
-        /// Used to display the pager. Is public so that the parent control can
-        /// reset the pager when a post back occurs that the pager did not raise.
+        /// Override OnPreRender and databind
         /// </summary>
-        // ********************************************************************/ 
-        private void DisplayPager()
+        /// <param name="e">
+        /// An <see cref="T:System.EventArgs"></see> object that contains the event data.
+        /// </param>
+        protected override void OnPreRender(EventArgs e)
         {
-            DisplayCurrentPage();
-            DisplayNumericalPaging();
-            DisplayPrevNext();
+            // If the total number of records is less than the
+            // number of records we display in a page, we'll simply
+            // return.
+            if (this.RecordCount <= this.RecordsPerPage)
+            {
+                return;
+            }
+
+            // Control what gets displayed
+            this.DisplayPager();
+        }
+
+        /// <summary>
+        /// Display the page n of n+1 text
+        /// </summary>
+        /// <returns>
+        /// A label control.
+        /// </returns>
+        private Control CreateCurrentPage()
+        {
+            this.currentPage = new System.Web.UI.WebControls.Label { CssClass = "normalTextSmallBold" };
+
+            return this.currentPage;
         }
 
         // *********************************************************************
-        //  DisplayCurrentPage
-        //
+        // CreateNumericalNavigation
+
+        /// <summary>
+        /// Creates numerical navigation link buttons
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        private Control CreateNumericalNavigation()
+        {
+            this.numericalPaging = new PlaceHolder();
+
+            var linkButtonsToCreate = this.TotalPages > this.numericalLinkButtons.Length ? this.numericalLinkButtons.Length : this.TotalPages;
+
+            // Create all the link buttons
+            for (var i = 0; i < linkButtonsToCreate; i++)
+            {
+                this.numericalLinkButtons[i] = new System.Web.UI.WebControls.LinkButton
+                    {
+                        CssClass = "normalTextSmallBold", Text = (i + 1).ToString("n0"), CommandArgument = i.ToString() 
+                    };
+                this.numericalLinkButtons[i].Click += this.PageIndex_Click;
+                this.numericalPaging.Controls.Add(this.numericalLinkButtons[i]);
+            }
+
+            return this.numericalPaging;
+        }
+
+        // *********************************************************************
+        // CreatePrevNextNavigation
+
+        /// <summary>
+        /// Creates previous/next navigation link buttons
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        private Control CreatePrevNextNavigation()
+        {
+            var prevNext = new PlaceHolder();
+
+            // Create the previous button
+            this.previousButton = new PlaceHolder();
+            var whitespace = new System.Web.UI.WebControls.Label { CssClass = "normalTextSmallBold", Text = "&nbsp;" };
+            this.prev = new LinkButton
+                {
+                    CssClass = "normalTextSmallBold", TextKey = "PREVIOUS", Text = "Prev", ID = "Prev" 
+                };
+            this.prev.Click += this.PrevNext_Click;
+            this.previousButton.Controls.Add(whitespace);
+            this.previousButton.Controls.Add(this.prev);
+            prevNext.Controls.Add(this.previousButton);
+
+            // Create the next button
+            this.nextButton = new PlaceHolder();
+            whitespace = new System.Web.UI.WebControls.Label { CssClass = "normalTextSmallBold", Text = "&nbsp;" };
+            this.next = new LinkButton
+                {
+                    CssClass = "normalTextSmallBold", TextKey = "NEXT", Text = "Next", ID = "Next" 
+                };
+            this.next.Click += this.PrevNext_Click;
+            this.nextButton.Controls.Add(whitespace);
+            this.nextButton.Controls.Add(this.next);
+            prevNext.Controls.Add(this.nextButton);
+
+            return prevNext;
+        }
+
+        // *********************************************************************
+        // DisplayPager
+
+        // *********************************************************************
+        // DisplayCurrentPage
+
         /// <summary>
         /// Displays the current page that the user is viewing
         /// </summary>
-        // ********************************************************************/ 
         private void DisplayCurrentPage()
         {
-            currentPage.Text = General.GetString("PAGE", "Page", null) + " " + (PageIndex + 1).ToString("n0") + " " +
-                               General.GetString("OF", "of", null) + " " + TotalPages.ToString("n0");
+            this.currentPage.Text = string.Format("{0} {1} {2} {3}", General.GetString("PAGE", "Page", null), (this.PageIndex + 1).ToString("n0"), General.GetString("OF", "of", null), this.TotalPages.ToString("n0"));
         }
 
-
         // *********************************************************************
-        //  DisplayNumericalPaging
-        //
+        // DisplayNumericalPaging
+
         /// <summary>
         /// Controls how the numerical link buttons get rendered
         /// </summary>
-        // ********************************************************************/ 
         private void DisplayNumericalPaging()
         {
-            int itemsToDisplay = 30;
-            int lowerBoundPosition = 1;
-            int upperBoundPosition = (TotalPages - 1);
+            var itemsToDisplay = 30;
+            const int LowerBoundPosition = 1;
+            var upperBoundPosition = this.TotalPages - 1;
             System.Web.UI.WebControls.Label label;
 
             // Clear out the controls
-            numericalPaging.Controls.Clear();
+            this.numericalPaging.Controls.Clear();
 
             // If we have less than 6 items we don't need the fancier paging display
             if ((upperBoundPosition + 1) < (itemsToDisplay + 3))
             {
-                for (int i = 0; i < (upperBoundPosition + 1); i++)
+                for (var i = 0; i < (upperBoundPosition + 1); i++)
                 {
                     // Don't display a link button for the existing page
-                    if (i == PageIndex)
+                    if (i == this.PageIndex)
                     {
-                        label = new System.Web.UI.WebControls.Label();
-                        label.CssClass = "normalTextSmallBold";
-                        label.Text = "[" + (PageIndex + 1).ToString("n0") + "]";
-                        numericalPaging.Controls.Add(label);
+                        label = new System.Web.UI.WebControls.Label
+                            {
+                                CssClass = "normalTextSmallBold", Text = string.Format("[{0}]", (this.PageIndex + 1).ToString("n0")) 
+                            };
+                        this.numericalPaging.Controls.Add(label);
                     }
                     else
                     {
-                        numericalPaging.Controls.Add(numericalLinkButtons[i]);
+                        this.numericalPaging.Controls.Add(this.numericalLinkButtons[i]);
                     }
 
-                    if (i + 1 != numericalLinkButtons.Length)
+                    if (i + 1 == this.numericalLinkButtons.Length)
                     {
-                        label = new System.Web.UI.WebControls.Label();
-                        label.CssClass = "normalTextSmallBold";
-                        label.Text = ", ";
-
-                        numericalPaging.Controls.Add(label);
+                        continue;
                     }
+
+                    label = new System.Web.UI.WebControls.Label { CssClass = "normalTextSmallBold", Text = ", " };
+
+                    this.numericalPaging.Controls.Add(label);
                 }
 
                 return;
             }
 
             // Always display the first 3 if available
-            if (numericalLinkButtons.Length < itemsToDisplay)
-                itemsToDisplay = numericalLinkButtons.Length;
-
-            for (int i = 0; i < itemsToDisplay; i++)
+            if (this.numericalLinkButtons.Length < itemsToDisplay)
             {
-                numericalPaging.Controls.Add(numericalLinkButtons[i]);
+                itemsToDisplay = this.numericalLinkButtons.Length;
+            }
 
-                if (i + (itemsToDisplay/2) != itemsToDisplay)
+            for (var i = 0; i < itemsToDisplay; i++)
+            {
+                this.numericalPaging.Controls.Add(this.numericalLinkButtons[i]);
+
+                if (i + (itemsToDisplay / 2) == itemsToDisplay)
                 {
-                    label = new System.Web.UI.WebControls.Label();
-                    label.CssClass = "normalTextSmallBold";
-                    label.Text = ", ";
-
-                    numericalPaging.Controls.Add(label);
+                    continue;
                 }
+
+                label = new System.Web.UI.WebControls.Label { CssClass = "normalTextSmallBold", Text = ", " };
+
+                this.numericalPaging.Controls.Add(label);
             }
 
             // Handle the lower end first
-            if ((PageIndex - lowerBoundPosition) <= (upperBoundPosition - PageIndex))
+            if ((this.PageIndex - LowerBoundPosition) <= (upperBoundPosition - this.PageIndex))
             {
-                for (int i = itemsToDisplay; i < PageIndex + 2; i++)
+                for (var i = itemsToDisplay; i < this.PageIndex + 2; i++)
                 {
-                    label = new System.Web.UI.WebControls.Label();
-                    label.CssClass = "normalTextSmallBold";
-                    label.Text = ", ";
+                    label = new System.Web.UI.WebControls.Label { CssClass = "normalTextSmallBold", Text = ", " };
 
-                    numericalPaging.Controls.Add(label);
-                    numericalPaging.Controls.Add(numericalLinkButtons[i]);
+                    this.numericalPaging.Controls.Add(label);
+                    this.numericalPaging.Controls.Add(this.numericalLinkButtons[i]);
                 }
             }
 
             // Insert the ellipses or a trailing comma if necessary
-            label = new System.Web.UI.WebControls.Label();
-            label.CssClass = "normalTextSmallBold";
+            label = new System.Web.UI.WebControls.Label { CssClass = "normalTextSmallBold" };
             if (upperBoundPosition == 3)
             {
                 label.Text = ", ";
             }
             else if (upperBoundPosition >= 4)
             {
-                label = new System.Web.UI.WebControls.Label();
-                label.CssClass = "normalTextSmallBold";
-                label.Text = " ... ";
+                label = new System.Web.UI.WebControls.Label { CssClass = "normalTextSmallBold", Text = " ... " };
             }
-            numericalPaging.Controls.Add(label);
+
+            this.numericalPaging.Controls.Add(label);
 
             // Handle the upper end
-            if ((PageIndex - lowerBoundPosition) > (upperBoundPosition - PageIndex))
+            if ((this.PageIndex - LowerBoundPosition) > (upperBoundPosition - this.PageIndex))
             {
-                for (int i = PageIndex - 1; i < upperBoundPosition; i++)
+                for (var i = this.PageIndex - 1; i < upperBoundPosition; i++)
                 {
-                    label = new System.Web.UI.WebControls.Label();
-                    label.CssClass = "normalTextSmallBold";
-                    label.Text = ", ";
+                    label = new System.Web.UI.WebControls.Label { CssClass = "normalTextSmallBold", Text = ", " };
 
-                    if (i > PageIndex - 1)
-                        numericalPaging.Controls.Add(label);
+                    if (i > this.PageIndex - 1)
+                    {
+                        this.numericalPaging.Controls.Add(label);
+                    }
 
-                    numericalPaging.Controls.Add(numericalLinkButtons[i]);
+                    this.numericalPaging.Controls.Add(this.numericalLinkButtons[i]);
                 }
             }
 
             // Always display the last 2 if available
-            if ((numericalLinkButtons.Length > 3) && (TotalPages > 5))
+            if ((this.numericalLinkButtons.Length <= 3) || (this.TotalPages <= 5))
             {
-                itemsToDisplay = 2;
+                return;
+            }
 
-                for (int i = itemsToDisplay; i > 0; i--)
+            itemsToDisplay = 2;
+
+            for (var i = itemsToDisplay; i > 0; i--)
+            {
+                this.numericalPaging.Controls.Add(this.numericalLinkButtons[(upperBoundPosition + 1) - i]);
+
+                if (i + 1 == itemsToDisplay)
                 {
-                    numericalPaging.Controls.Add(numericalLinkButtons[(upperBoundPosition + 1) - i]);
-
-                    if (i + 1 != itemsToDisplay)
-                    {
-                        System.Web.UI.WebControls.Label tmp = new System.Web.UI.WebControls.Label();
-                        tmp.CssClass = "normalTextSmallBold";
-                        tmp.Text = ", ";
-                        numericalPaging.Controls.Add(tmp);
-                    }
+                    continue;
                 }
+
+                var tmp = new System.Web.UI.WebControls.Label { CssClass = "normalTextSmallBold", Text = ", " };
+                this.numericalPaging.Controls.Add(tmp);
             }
         }
 
+        /// <summary>
+        /// Used to display the pager. Is public so that the parent control can
+        ///     reset the pager when a post back occurs that the pager did not raise.
+        /// </summary>
+        private void DisplayPager()
+        {
+            this.DisplayCurrentPage();
+            this.DisplayNumericalPaging();
+            this.DisplayPrevNext();
+        }
+
         // *********************************************************************
-        //  DisplayPrevNext
-        //
+        // DisplayPrevNext
+
         /// <summary>
         /// Controls how the previous next link buttons get rendered
         /// </summary>
-        // ********************************************************************/ 
         private void DisplayPrevNext()
         {
-            prev.CommandArgument = (PageIndex - 1).ToString();
-            next.CommandArgument = (PageIndex + 1).ToString();
+            this.prev.CommandArgument = (this.PageIndex - 1).ToString();
+            this.next.CommandArgument = (this.PageIndex + 1).ToString();
 
             // Control what gets displayed
-            if ((PageIndex > 0) && ((PageIndex + 1) < TotalPages))
+            if ((this.PageIndex > 0) && ((this.PageIndex + 1) < this.TotalPages))
             {
-                nextButton.Visible = true;
-                previousButton.Visible = true;
+                this.nextButton.Visible = true;
+                this.previousButton.Visible = true;
             }
-            else if (PageIndex == 0)
+            else if (this.PageIndex == 0)
             {
-                nextButton.Visible = true;
-                previousButton.Visible = false;
+                this.nextButton.Visible = true;
+                this.previousButton.Visible = false;
             }
-            else if ((PageIndex + 1) == TotalPages)
+            else if ((this.PageIndex + 1) == this.TotalPages)
             {
-                nextButton.Visible = false;
-                previousButton.Visible = true;
+                this.nextButton.Visible = false;
+                this.previousButton.Visible = true;
             }
         }
 
         // *********************************************************************
-        //  NavigationDisplay
-        //
+        // NavigationDisplay
+
         /// <summary>
         /// Control that contains all the navigation display details.
         /// </summary>
-        /// <param name="singlePage">if set to <c>true</c> [single page].</param>
-        /// <returns></returns>
-        // ********************************************************************/ 
+        /// <param name="singlePage">
+        /// if set to <c>true</c> [single page].
+        /// </param>
+        /// <returns>
+        /// </returns>
         private Control NavigationDisplay(bool singlePage)
         {
-            Table table;
-            TableRow tr;
-            TableCell td;
             System.Web.UI.WebControls.Label navigation;
             Label navigationText;
 
             // Create a new table
-            table = new Table();
-            table.CellPadding = 0;
-            table.CellSpacing = 0;
-            table.Width = Unit.Percentage(100);
+            var table = new Table { CellPadding = 0, CellSpacing = 0, Width = Unit.Percentage(100) };
 
             // We only have a single row
-            tr = new TableRow();
+            var tr = new TableRow();
 
             // Two columns. One for the current page and one for navigation
-            td = new TableCell();
+            var td = new TableCell();
 
             // Display the current page
-            td.Controls.Add(CreateCurrentPage());
+            td.Controls.Add(this.CreateCurrentPage());
             tr.Controls.Add(td);
 
             // Do we have multiple pages to display?
             if (!singlePage)
             {
                 // Create page navigation
-                td = new TableCell();
-                td.HorizontalAlign = HorizontalAlign.Right;
+                td = new TableCell { HorizontalAlign = HorizontalAlign.Right };
                 navigation = new System.Web.UI.WebControls.Label();
-                navigationText = new Label();
-                navigationText.CssClass = "normalTextSmallBold";
-                navigationText.TextKey = "GOTO_PAGE";
-                navigationText.Text = "Goto to page: ";
+                navigationText = new Label
+                    {
+                        CssClass = "normalTextSmallBold", TextKey = "GOTO_PAGE", Text = "Goto to page: " 
+                    };
 
                 navigation.Controls.Add(navigationText);
 
                 // Numerical Paging
-                navigation.Controls.Add(CreateNumericalNavigation());
+                navigation.Controls.Add(this.CreateNumericalNavigation());
 
                 // Prev Next Paging
-                navigation.Controls.Add(CreatePrevNextNavigation());
+                navigation.Controls.Add(this.CreatePrevNextNavigation());
 
                 td.Controls.Add(navigation);
                 tr.Controls.Add(td);
@@ -318,286 +598,67 @@ namespace Rainbow.Framework.Web.UI.WebControls
         }
 
         // *********************************************************************
-        //  CreateCurrentPage
-        //
-        /// <summary>
-        /// Display the page n of n+1 text
-        /// </summary>
-        /// <returns></returns>
-        // ********************************************************************/ 
-        private Control CreateCurrentPage()
-        {
-            currentPage = new System.Web.UI.WebControls.Label();
-
-            currentPage.CssClass = "normalTextSmallBold";
-
-            return currentPage;
-        }
+        // CreateCurrentPage
 
         // *********************************************************************
-        //  CreateNumericalNavigation
-        //
-        /// <summary>
-        /// Creates numerical navigation link buttons
-        /// </summary>
-        /// <returns></returns>
-        // ********************************************************************/ 
-        private Control CreateNumericalNavigation()
-        {
-            numericalPaging = new PlaceHolder();
-            int linkButtonsToCreate;
+        // PageIndex_Click
 
-            if (TotalPages > numericalLinkButtons.Length)
-                linkButtonsToCreate = numericalLinkButtons.Length;
-            else
-                linkButtonsToCreate = TotalPages;
-
-            // Create all the link buttons
-            for (int i = 0; i < linkButtonsToCreate; i++)
-            {
-                numericalLinkButtons[i] = new System.Web.UI.WebControls.LinkButton();
-                numericalLinkButtons[i].CssClass = "normalTextSmallBold";
-                numericalLinkButtons[i].Click += new EventHandler(PageIndex_Click);
-                numericalLinkButtons[i].Text = (i + 1).ToString("n0");
-                numericalLinkButtons[i].CommandArgument = i.ToString();
-                numericalPaging.Controls.Add(numericalLinkButtons[i]);
-            }
-
-            return numericalPaging;
-        }
-
-        // *********************************************************************
-        //  CreatePrevNextNavigation
-        //
-        /// <summary>
-        /// Creates previous/next navigation link buttons
-        /// </summary>
-        /// <returns></returns>
-        // ********************************************************************/ 
-        private Control CreatePrevNextNavigation()
-        {
-            PlaceHolder prevNext = new PlaceHolder();
-            System.Web.UI.WebControls.Label whitespace;
-
-            // Create the previous button
-            previousButton = new PlaceHolder();
-            whitespace = new System.Web.UI.WebControls.Label();
-            whitespace.CssClass = "normalTextSmallBold";
-            whitespace.Text = "&nbsp;";
-            prev = new LinkButton();
-            prev.CssClass = "normalTextSmallBold";
-            prev.TextKey = "PREVIOUS";
-            prev.Text = "Prev";
-            prev.ID = "Prev";
-            prev.Click += new EventHandler(PrevNext_Click);
-            previousButton.Controls.Add(whitespace);
-            previousButton.Controls.Add(prev);
-            prevNext.Controls.Add(previousButton);
-
-            // Create the next button
-            nextButton = new PlaceHolder();
-            whitespace = new System.Web.UI.WebControls.Label();
-            whitespace.CssClass = "normalTextSmallBold";
-            whitespace.Text = "&nbsp;";
-            next = new LinkButton();
-            next.CssClass = "normalTextSmallBold";
-            next.TextKey = "NEXT";
-            next.Text = "Next";
-            next.ID = "Next";
-            next.Click += new EventHandler(PrevNext_Click);
-            nextButton.Controls.Add(whitespace);
-            nextButton.Controls.Add(next);
-            prevNext.Controls.Add(nextButton);
-
-            return prevNext;
-        }
-
-        // *********************************************************************
-        //  PageIndex_Changed
-        //
-        /// <summary>
-        /// Event raised when a an index has been selected by the end user
-        /// </summary>
-        /// 
-        // ********************************************************************/
-        public event EventHandler OnMove;
-
-        // *********************************************************************
-        //  PageIndex_Click
-        //
         /// <summary>
         /// Event raised when a new index is selected from the paging control
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        // ********************************************************************/
-        private void PageIndex_Click(Object sender, EventArgs e)
+        /// <param name="sender">
+        /// The source of the event.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.EventArgs"/> instance containing the event data.
+        /// </param>
+        private void PageIndex_Click(object sender, EventArgs e)
         {
-            string requestedPage = ((System.Web.UI.WebControls.LinkButton) sender).CommandArgument;
+            var requestedPage = ((System.Web.UI.WebControls.LinkButton)sender).CommandArgument;
 
             if (requestedPage.Length > 0)
             {
-                PageIndex = Convert.ToInt32(requestedPage);
+                this.PageIndex = Convert.ToInt32(requestedPage);
 
-                if (null != OnMove)
-                    OnMove(sender, e);
+                if (null != this.OnMove)
+                {
+                    this.OnMove(sender, e);
+                }
             }
         }
 
         // *********************************************************************
-        //  PrevNext_Click
-        //
+        // PrevNext_Click
+
         /// <summary>
         /// Event raised when a new index is selected from the paging control
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        // ********************************************************************/
-        private void PrevNext_Click(Object sender, EventArgs e)
+        /// <param name="sender">
+        /// The source of the event.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.EventArgs"/> instance containing the event data.
+        /// </param>
+        private void PrevNext_Click(object sender, EventArgs e)
         {
-            string requestedPage = ((System.Web.UI.WebControls.LinkButton) sender).CommandArgument;
+            var requestedPage = ((System.Web.UI.WebControls.LinkButton)sender).CommandArgument;
 
-            if (requestedPage.Length > 0)
+            if (requestedPage.Length <= 0)
             {
-                PageIndex = Convert.ToInt32(requestedPage);
-
-                if (null != OnMove)
-                    OnMove(sender, e);
-            }
-        }
-
-        // *********************************************************************
-        //  OnPreRender
-        //
-        /// <summary>
-        /// Override OnPreRender and databind
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
-        // ********************************************************************/ 
-        protected override void OnPreRender(EventArgs e)
-        {
-            // If the total number of records is less than the
-            // number of records we display in a page, we'll simply
-            // return.
-            if (RecordCount <= RecordsPerPage)
                 return;
-
-            // Control what gets displayed
-            DisplayPager();
-        }
-
-        /// <summary>
-        /// Specifies the page size used in paging.
-        /// </summary>
-        /// <value>The records per page.</value>
-        [
-            Category("Required"),
-                Description("Specifies the page size used in paging.")
-            ]
-        public int RecordsPerPage
-        {
-            get
-            {
-                if (pageSize == -1)
-                    return 10; //default
-
-                return pageSize;
             }
-            set { pageSize = value; }
-        }
 
-        /// <summary>
-        /// Specifies the current page in the index.
-        /// </summary>
-        /// <value>The index of the page.</value>
-        [
-            Description("Specifies the current page in the index.")
-            ]
-        private int PageIndex
-        {
-            get
+            this.PageIndex = Convert.ToInt32(requestedPage);
+
+            if (null != this.OnMove)
             {
-                if (ViewState["PageIndex"] == null)
-                    return m_pageNumber;
-
-                return Convert.ToInt32(ViewState["PageIndex"]);
-            }
-            set { ViewState["PageIndex"] = value; }
-        }
-
-        /// <summary>
-        /// Specifies the current page number.
-        /// </summary>
-        /// <value>The page number.</value>
-        [
-            Description("Specifies the current page in the index.")
-            ]
-        public int PageNumber
-        {
-            get
-            {
-                //Internal is 0 based, external is 1 based
-                return PageIndex + 1;
-            }
-            set { PageIndex = value - 1; }
-        }
-
-        /// <summary>
-        /// Specifies the Forum's posts you want to view.
-        /// </summary>
-        /// <value>The total pages.</value>
-        public int TotalPages
-        {
-            get { return totalPages + 1; }
-            set { totalPages = value - 1; }
-        }
-
-        /// <summary>
-        /// RecordCount
-        /// </summary>
-        /// <value>The record count.</value>
-        public int RecordCount
-        {
-            get
-            {
-                // the RecordCount is stuffed in the ViewState so that
-                // it is persisted across postbacks.
-                if (ViewState["totalRecords"] == null)
-                    return defaultRecordCount; // if it's not found in the ViewState, return the default value
-
-                return Convert.ToInt32(ViewState["totalRecords"].ToString());
-            }
-            set
-            {
-                TotalPages = CalculateTotalPages(value, RecordsPerPage);
-
-                // set the viewstate
-                ViewState["totalRecords"] = value;
+                this.OnMove(sender, e);
             }
         }
+
+        #endregion
 
         // *********************************************************************
-        //  CalculateTotalPages
-        //
-        /// <summary>
-        /// Static that caculates the total pages available.
-        /// </summary>
-        /// <param name="totalRecords">The total records.</param>
-        /// <param name="pageSize">Size of the page.</param>
-        /// <returns></returns>
-        // ********************************************************************/
-        public static int CalculateTotalPages(int totalRecords, int pageSize)
-        {
-            int totalPagesAvailable;
-
-            // First calculate the division
-            totalPagesAvailable = totalRecords/pageSize;
-
-            // Now do a mod for any remainder
-            if ((totalRecords%pageSize) > 0)
-                totalPagesAvailable++;
-
-            return totalPagesAvailable;
-        }
+        // OnPreRender
     }
 }
