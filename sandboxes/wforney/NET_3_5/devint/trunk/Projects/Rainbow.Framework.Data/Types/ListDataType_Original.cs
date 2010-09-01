@@ -55,13 +55,13 @@ namespace Rainbow.Framework.Data.Types
             using (DropDownList dd = new DropDownList())
             {
                 dd.CssClass = "NormalTextBox";
-                dd.Width = new Unit(controlWidth);
+                dd.Width = new Unit(this.ControlWidth);
                 dd.DataSource = DataSource;
                 dd.DataValueField = DataValueField;
                 dd.DataTextField = DataTextField;
                 dd.DataBind();
 
-                innerControl = dd;
+                this.InnerControl = dd;
             }
         }
 
@@ -115,10 +115,10 @@ namespace Rainbow.Framework.Data.Types
         /// <value>The value.</value>
         public override string Value
         {
-            get { return (innerValue); }
+            get { return (this.InnerValue); }
             set
             {
-                innerValue = value;
+                this.InnerValue = value;
 
                 //				DropDownList dd = (DropDownList) innerControl;
                 //				if (dd.Items.FindByValue(value) != null)
@@ -143,24 +143,24 @@ namespace Rainbow.Framework.Data.Types
         {
             get
             {
-                if (innerControl == null)
+                if (this.InnerControl == null)
                     InitializeComponents();
 
                 //Update value in control
-                DropDownList dd = (DropDownList) innerControl;
+                DropDownList dd = (DropDownList) this.InnerControl;
                 dd.ClearSelection();
                 if (dd.Items.FindByValue(Value) != null)
                     dd.Items.FindByValue(Value).Selected = true;
                 //Return control
-                return innerControl;
+                return this.InnerControl;
             }
             set
             {
                 if (value.GetType().Name == "DropDownList")
                 {
-                    innerControl = value;
+                    this.InnerControl = value;
                     //Update value from control
-                    DropDownList dd = (DropDownList) innerControl;
+                    DropDownList dd = (DropDownList) this.InnerControl;
                     if (dd.SelectedItem != null)
                         Value = dd.SelectedItem.Value;
                     else

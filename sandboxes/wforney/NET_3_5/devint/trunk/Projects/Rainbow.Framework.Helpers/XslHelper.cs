@@ -1,15 +1,13 @@
-using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Xml;
-using System.Xml.XPath;
-using Rainbow.Framework.Security;
-using Rainbow.Framework.Configuration;
-using System.Web.Security;
-
 namespace Rainbow.Framework.Helpers
 {
+    using System;
+    using System.Globalization;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Security;
+    using System.Xml;
+    using System.Xml.XPath;
+
     /// <summary>
     /// XslHelper object, designed to be imported into an XSLT transform
     /// via XsltArgumentList.AddExtensionObject(...). Provides transform with 

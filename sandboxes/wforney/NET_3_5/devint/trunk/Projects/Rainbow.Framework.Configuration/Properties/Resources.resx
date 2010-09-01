@@ -165,4 +165,7 @@
   <data name="UserWinMgmtIndex" xml:space="preserve">
     <value>Rainbow_WinMgmt</value>
   </data>
+	<data name="Path_WebPathCombine_Path_cannot_be_null">
+		<value xml:space="preserve">Path cannot be null!</value>
+	</data>
 </root>

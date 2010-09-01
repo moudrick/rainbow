@@ -45,10 +45,10 @@ namespace Rainbow.Framework.Data.Types
             using (UploadDialogTextBox upload = new UploadDialogTextBox())
             {
                 upload.AllowEditTextBox = true;
-                upload.Width = new Unit(controlWidth);
+                upload.Width = new Unit(this.ControlWidth);
                 upload.CssClass = "NormalTextBox";
 
-                innerControl = upload;
+                this.InnerControl = upload;
             }
         }
 
@@ -60,24 +60,24 @@ namespace Rainbow.Framework.Data.Types
         {
             get
             {
-                if (innerControl == null)
+                if (this.InnerControl == null)
                     InitializeComponents();
 
                 //Update value in control
-                UploadDialogTextBox upload = (UploadDialogTextBox) innerControl;
+                UploadDialogTextBox upload = (UploadDialogTextBox) this.InnerControl;
                 upload.UploadDirectory = PortalPathPrefix;
                 upload.Text = Value;
 
                 //Return control
-                return innerControl;
+                return this.InnerControl;
             }
             set
             {
                 if (value.GetType().Name == "UploadDialogTextBox")
                 {
-                    innerControl = value;
+                    this.InnerControl = value;
                     //Update value from control
-                    UploadDialogTextBox upload = (UploadDialogTextBox) innerControl;
+                    UploadDialogTextBox upload = (UploadDialogTextBox) this.InnerControl;
                     Value = upload.Text;
                 }
                 else
@@ -93,16 +93,16 @@ namespace Rainbow.Framework.Data.Types
         /// <value>The value.</value>
         public override string Value
         {
-            get { return (innerValue); }
+            get { return (this.InnerValue); }
             set
             {
                 //Remove portal path if present
                 if (value.StartsWith(PortalPathPrefix))
-                    innerValue = value.Substring(PortalPathPrefix.Length);
+                    this.InnerValue = value.Substring(PortalPathPrefix.Length);
                 else
-                    innerValue = value;
+                    this.InnerValue = value;
 
-                innerValue = innerValue.TrimStart('/');
+                this.InnerValue = this.InnerValue.TrimStart('/');
             }
         }
     }

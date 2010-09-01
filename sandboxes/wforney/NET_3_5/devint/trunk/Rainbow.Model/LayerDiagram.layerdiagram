@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="bf971268-94d3-4f1f-bd8f-5d18862e6ac5" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/LayerDesigner">
+  <layers>
+    <layer Id="c531b4bb-cea8-403a-8db6-fb06348e43e6" name="Rainbow.Framework.Data">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="ed11f5cf-2926-48e6-9916-fffd5e899d5b" direction="Forward">
+          <layerMoniker Id="c38edaa6-245d-4df4-8e65-991c9a86c5b8" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="da2e4b54-1d3a-4d20-863c-130f40305009" name="Rainbow.Framework.Data">
+          <ArtifactNode Label="Rainbow.Framework.Data" Category="CodeSchema_Project" Id="(Assembly=../Projects/Rainbow.Framework.Data/Rainbow.Framework.Data.csproj)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=Rainbow.Framework.Data)" Label="Rainbow.Framework.Data.dll" Category="FileSystem.Category.FileOfType.dll">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="3709c64c-d119-4f9d-b897-9fd4fd1d40a2" name="Rainbow.Framework.Data.MsSql">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="0ca13590-948f-4b60-ad6b-2cb881c6ee51" direction="Forward">
+          <layerMoniker Id="c531b4bb-cea8-403a-8db6-fb06348e43e6" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="f285b628-da54-4175-a4a3-f8015b5875d0" name="Rainbow.Framework.Data.MsSql">
+          <ArtifactNode Label="Rainbow.Framework.Data.MsSql" Category="CodeSchema_Project" Id="(Assembly=../Projects/Rainbow.Framework.Data.MsSql/Rainbow.Framework.Data.MsSql.csproj)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=Rainbow.Framework.Data.MsSql)" Label="Rainbow.Framework.Data.MsSql.dll" Category="FileSystem.Category.FileOfType.dll">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="a9e28171-49ba-419f-a011-826586a190cd" name="C:\Sources\rainbow\sandboxes\wforney\NET_3_5\devint\trunk\WebSites\Rainbow\">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="92c342ad-f805-4988-85cb-871f15ba678b" direction="Forward">
+          <layerMoniker Id="feed3d87-53bf-4951-9468-5d4ec2e43272" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="46fc9dfe-e5e6-4594-9f5f-9415c7797aff" direction="Forward">
+          <layerMoniker Id="2e999583-f7da-4be2-b41a-1f7b397a7971" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="03ab8aaf-7e47-41ab-a44a-96878ba44681" direction="Forward">
+          <layerMoniker Id="7ef8b6b7-828c-4eb4-88b5-dbbf32f2142d" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="c03aa806-a50b-41eb-9a08-cbdb6bdbf489" direction="Forward">
+          <layerMoniker Id="800d3392-16a0-4d8d-b85e-79036955bf9a" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="02023bf9-187d-42e1-971e-7deb13b5a3e9" name="C:\Sources\rainbow\sandboxes\wforney\NET_3_5\devint\trunk\WebSites\Rainbow\">
+          <ArtifactNode Label="C:\Sources\rainbow\sandboxes\wforney\NET_3_5\devint\trunk\WebSites\Rainbow\" Category="CodeSchema_Project" Id="(Assembly=../WebSites/Rainbow/)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="800d3392-16a0-4d8d-b85e-79036955bf9a" name="Rainbow.Framework.BusinessLogic">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="04c274eb-79d7-4b64-be4c-f288685972d8" direction="Forward">
+          <layerMoniker Id="c531b4bb-cea8-403a-8db6-fb06348e43e6" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="fda87838-c815-44ae-a451-fa83a73171e7" direction="Forward">
+          <layerMoniker Id="11d3369d-4045-483c-92ef-abe53694e902" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="130636e9-4e9d-4629-a8a4-83634d25d5e2" direction="Forward">
+          <layerMoniker Id="84266497-a1b3-43cd-8fea-c4d5c38f9782" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="df13cb0b-ef29-429a-9993-b7fa361cb510" name="Rainbow.Framework.BusinessLogic">
+          <ArtifactNode Label="Rainbow.Framework.BusinessLogic" Category="CodeSchema_Project" Id="(Assembly=../Rainbow.Framework.BusinessLogic/Rainbow.Framework.BusinessLogic.csproj)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=Rainbow.Framework.BusinessLogic)" Label="Rainbow.Framework.BusinessLogic.dll" Category="FileSystem.Category.FileOfType.dll">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="c38edaa6-245d-4df4-8e65-991c9a86c5b8" name="Rainbow.Framework.Configuration">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="e42c9ca2-93bc-47be-bf9c-e0556c114860" direction="Forward">
+          <layerMoniker Id="5bb30c54-db27-4407-ba64-ed731068d110" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="d6bfe165-10b3-422c-8538-82839dde52a4" name="Rainbow.Framework.Configuration">
+          <ArtifactNode Label="Rainbow.Framework.Configuration" Category="CodeSchema_Project" Id="(Assembly=../Projects/Rainbow.Framework.Configuration/Rainbow.Framework.Configuration.csproj)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=Rainbow.Framework.Configuration)" Label="Rainbow.Framework.Configuration.dll" Category="FileSystem.Category.FileOfType.dll">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="5bb30c54-db27-4407-ba64-ed731068d110" name="Rainbow.Framework.Core">
+      <references>
+        <reference Id="39c8441d-2b07-455a-a14b-b579b231191e" name="Rainbow.Framework.Core">
+          <ArtifactNode Label="Rainbow.Framework.Core" Category="CodeSchema_Project" Id="(Assembly=../Projects/Rainbow.Framework.Core/Rainbow.Framework.Core.csproj)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=Rainbow.Framework.Core)" Label="Rainbow.Framework.Core.dll" Category="FileSystem.Category.FileOfType.dll">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="11d3369d-4045-483c-92ef-abe53694e902" name="Rainbow.Framework.Helpers">
+      <references>
+        <reference Id="26943a4f-0af1-4d60-8450-1d2d734e61e6" name="Rainbow.Framework.Helpers">
+          <ArtifactNode Label="Rainbow.Framework.Helpers" Category="CodeSchema_Project" Id="(Assembly=../Projects/Rainbow.Framework.Helpers/Rainbow.Framework.Helpers.csproj)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=Rainbow.Framework.Helpers)" Label="Rainbow.Framework.Helpers.dll" Category="FileSystem.Category.FileOfType.dll">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="84266497-a1b3-43cd-8fea-c4d5c38f9782" name="Rainbow.Framework.Security">
+      <references>
+        <reference Id="38c158f1-786e-4fac-bd6c-73f345dfc631" name="Rainbow.Framework.Security">
+          <ArtifactNode Label="Rainbow.Framework.Security" Category="CodeSchema_Project" Id="(Assembly=../Projects/Rainbow.Framework.Security/Rainbow.Framework.Security.csproj)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=Rainbow.Framework.Security)" Label="Rainbow.Framework.Security.dll" Category="FileSystem.Category.FileOfType.dll">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="7ef8b6b7-828c-4eb4-88b5-dbbf32f2142d" name="Rainbow.Framework.UrlRewriting">
+      <references>
+        <reference Id="b4ae9a82-bdee-4617-9366-97365e2fbf84" name="Rainbow.Framework.UrlRewriting">
+          <ArtifactNode Label="Rainbow.Framework.UrlRewriting" Category="CodeSchema_Project" Id="(Assembly=../Projects/Rainbow.Framework.UrlRewriting/Rainbow.Framework.UrlRewriting.csproj)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=Rainbow.Framework.UrlRewriting)" Label="Rainbow.Framework.UrlRewriting.dll" Category="FileSystem.Category.FileOfType.dll">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="2e999583-f7da-4be2-b41a-1f7b397a7971" name="Rainbow.Framework.Web">
+      <references>
+        <reference Id="878a8021-97c1-4c5a-9c16-0d17c37d9199" name="Rainbow.Framework.Web">
+          <ArtifactNode Label="Rainbow.Framework.Web" Category="CodeSchema_Project" Id="(Assembly=../Projects/Rainbow.Framework/Rainbow.Framework.Web.csproj)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=Rainbow.Framework)" Label="Rainbow.Framework.dll" Category="FileSystem.Category.FileOfType.dll">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="feed3d87-53bf-4951-9468-5d4ec2e43272" name="Rainbow.Framework.Web.UI.WebControls">
+      <references>
+        <reference Id="b8d236d2-67b7-466e-ab78-daf0686da982" name="Rainbow.Framework.Web.UI.WebControls">
+          <ArtifactNode Label="Rainbow.Framework.Web.UI.WebControls" Category="CodeSchema_Project" Id="(Assembly=../Projects/Rainbow.Framework.Web.UI.WebControls/Rainbow.Framework.Web.UI.WebControls.csproj)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=Rainbow.Framework.Web.UI.WebControls)" Label="Rainbow.Framework.Web.UI.WebControls.dll" Category="FileSystem.Category.FileOfType.dll">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+  </layers>
+</layerModel>

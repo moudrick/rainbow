@@ -5,38 +5,40 @@ namespace Rainbow.Framework.Data.Types
     /// </summary>
     public struct SettingOption
     {
-        private int val;
-        private string name;
+        #region Constants and Fields
+
+        #endregion
+
+        #region Constructors and Destructors
 
         /// <summary>
-        /// Gets or sets the val.
+        /// Initializes a new instance of the <see cref="SettingOption"/> struct.
         /// </summary>
-        /// <value>The val.</value>
-        public int Val
+        /// <param name="value">The value of the setting.</param>
+        /// <param name="name">The name of the setting.</param>
+        public SettingOption(int value, string name)
+            : this()
         {
-            get { return val; }
-            set { val = value; }
+            this.Value = value;
+            this.Name = name;
         }
 
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>The name.</value>
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SettingOption"/> class.
+        ///     Gets or sets the name.
         /// </summary>
-        /// <param name="aVal">A val.</param>
-        /// <param name="aName">A name.</param>
-        public SettingOption(int aVal, string aName)
-        {
-            val = aVal;
-            name = aName;
-        }
+        /// <value>The name of the setting.</value>
+        public string Name { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the value.
+        /// </summary>
+        /// <value>The value of the setting.</value>
+        public int Value { get; set; }
+
+        #endregion
     }
 }

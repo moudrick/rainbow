@@ -26,7 +26,7 @@ namespace Rainbow.Framework.Configuration.Web
         #region Properties
 
         /// <summary>
-        ///     web current context
+        ///     Gets web current context
         /// </summary>
         /// <value></value>
         public HttpContext Current

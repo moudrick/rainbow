@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Web;
-using Rainbow.Framework.Site.Configuration;
 using System;
 
 namespace Rainbow.Framework.Web.UI.WebControls
@@ -11,22 +10,21 @@ namespace Rainbow.Framework.Web.UI.WebControls
     /// </summary>
     public class PortalModuleControlCustom : PortalModuleControl
     {
-        // provide a custom Hashtable that will store user-specific settings for this instance
-        // of the module.  
         /// <summary>
-        /// 
+        /// provide a custom Hashtable that will store user-specific settings for this instance
+        /// of the module.  
         /// </summary>
-        protected Hashtable _customUserSettings;
+        protected Hashtable CustomUserSettings;
 
         /// <summary>
         /// Gets a value indicating whether this instance has customizeable settings.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if this instance has customizeable settings; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance has customizeable settings; otherwise, <c>false</c>.
         /// </value>
         public bool HasCustomizeableSettings
         {
-            get { return CustomizedUserSettings.Count > 0; }
+            get { return this.CustomizedUserSettings.Count > 0; }
         }
 
 
@@ -38,37 +36,34 @@ namespace Rainbow.Framework.Web.UI.WebControls
         {
             get
             {
-                if (_customUserSettings != null)
+                if (this.CustomUserSettings != null)
                 {
-                    return _customUserSettings;
+                    return this.CustomUserSettings;
                 }
-                else
+                var tempSettings = new Hashtable();
+
+                SettingItem default;
+
+                //refresh this module's settings on every call in case they logged off, so it will
+                //retrieve the 'default' settings from the database.
+                //Invalidate cache
+                CurrentCache.Remove(Key.ModuleSettings(ModuleID));
+                //this._baseSettings = ModuleSettings.GetModuleSettings(this.ModuleID, this._baseSettings);
+
+                foreach (string str in this.Settings.Keys)
                 {
-                    Hashtable tempSettings = new Hashtable();
-
-                    SettingItem _default;
-
-                    //refresh this module's settings on every call in case they logged off, so it will
-                    //retrieve the 'default' settings from the database.
-                    //Invalidate cache
-                    CurrentCache.Remove(Key.ModuleSettings(ModuleID));
-                    //this._baseSettings = ModuleSettings.GetModuleSettings(this.ModuleID, this._baseSettings);
-
-                    foreach (string str in Settings.Keys)
+                    default = (SettingItem) this.Settings[str];
+                    if (default.Group == SettingItemGroup.CUSTOM_USER_SETTINGS) //It's one we want to customize
                     {
-                        _default = (SettingItem) Settings[str];
-                        if (_default.Group == SettingItemGroup.CUSTOM_USER_SETTINGS) //It's one we want to customize
-                        {
-                            tempSettings.Add(str, _default); //insert the 'default' value
-                        }
+                        tempSettings.Add(str, default); //insert the 'default' value
                     }
-
-                    //Now, replace the default settings with the custom settings for this user from the database.
-                    return
-                        ModuleSettingsCustom.GetModuleUserSettings(ModuleConfiguration.ModuleID,
-                                                                   (Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey,
-                                                                   tempSettings);
                 }
+
+                //Now, replace the default settings with the custom settings for this user from the database.
+                return
+                    ModuleSettingsCustom.GetModuleUserSettings(this.ModuleConfiguration.ModuleID,
+                        (Guid)PortalSettings.CurrentUser.Identity.ProviderUserKey,
+                        tempSettings);
             }
         }
 

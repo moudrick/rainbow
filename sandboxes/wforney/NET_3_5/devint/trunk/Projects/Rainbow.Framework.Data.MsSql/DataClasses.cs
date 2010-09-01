@@ -5,7 +5,7 @@ namespace Rainbow.Framework.Data.MsSql
     using System.Linq;
     using Rainbow.Framework.Data.MsSql.Debugger;
 
-    partial class DataClassesDataContext
+    public partial class DataClassesDataContext
     {
         /// <summary>
         /// Get All Membership Users For Application with paging support

@@ -3,7 +3,7 @@ namespace Rainbow.Framework.Exceptions
     using System;
     using System.Net;
 
-    using Rainbow.Framework.Data;
+    using Rainbow.Framework.Configuration;
 
     /// <summary>
     /// Custom Exception class for Rainbow.

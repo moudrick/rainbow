@@ -24,7 +24,7 @@ namespace Rainbow.Framework.Data.MsSql
 	
 	
 	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Rainbow")]
-	internal partial class DataClassesDataContext : System.Data.Linq.DataContext
+	public partial class DataClassesDataContext : System.Data.Linq.DataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();

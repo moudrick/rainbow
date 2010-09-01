@@ -1,0 +1,564 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Rainbow.Framework.General" Collapsed="true">
+    <Position X="54.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>General.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.LanguageCultureItem" Collapsed="true">
+    <Position X="45.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAABAAEgAABAAAAAQAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\DataTypes\CultureItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.History" Collapsed="true">
+    <Position X="43.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAEACAAAAAAAAAAAAQAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Attributes\History.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.CustomForm" Collapsed="true">
+    <Position X="45.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgBAEAAAAAACAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>UI\WebControls\CustomForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.DesktopModuleTitle" Collapsed="true">
+    <Position X="49" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABADAAAQAAAAEEIBAgACABIBAAAQEAUAABABAAAAAAA=</HashCode>
+      <FileName>UI\WebControls\DesktopModuleTitle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.FlashMovie" Collapsed="true">
+    <Position X="52.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\WebControls\FlashMovie.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.Paging" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="47.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AISQgAACAAAAACAAAUgkAAASAAAAAAMAAAIAAAAAAEA=</HashCode>
+      <FileName>UI\WebControls\Paging.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.PowerGrid" Collapsed="true">
+    <Position X="49" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgAAgABBAAAAAAAAQAAABAAAgAACCABAAAAAAAEAAAA=</HashCode>
+      <FileName>UI\WebControls\PowerGrid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.SmartScroller" Collapsed="true">
+    <Position X="49" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAABAAAAAAgAA=</HashCode>
+      <FileName>UI\WebControls\SmartScroller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.TextEditor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="52.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\WebControls\TextEditor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.UploadDialogTextBox" Collapsed="true">
+    <Position X="45.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgABAgAAEEGQYAAIAAAAQ0AAAAGAEgEIEDg8ZAAAMFA=</HashCode>
+      <FileName>UI\WebControls\UploadDialogTextBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.LanguageCultureCollection" Collapsed="true">
+    <Position X="54.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABABHAAAAAAAAAAAAAAAAAAAAQAIAAAA=</HashCode>
+      <FileName>Localization\LanguageCultureCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.LanguageCultureItem" Collapsed="true">
+    <Position X="43.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAABAAEkAAAAAAAAQCAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Localization\LanguageCultureItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.LanguageGrid" Collapsed="true">
+    <Position X="47.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Localization\LanguageGrid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.LanguagesTemplateDropDown" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="49" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAACEAA=</HashCode>
+      <FileName>Localization\LanguagesTemplateDropDown.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.LanguagesWebDataGrid" Collapsed="true">
+    <Position X="50.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Localization\LanguagesWebDataGrid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.LanguageSwitcher" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="52.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIwALAAgEAAAABAwABAwIIQQgAAEAgCACQAAAAAwBAE=</HashCode>
+      <FileName>Localization\LanguageSwitcher.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.LanguageSwitcherDesigner" Collapsed="true">
+    <Position X="54.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Localization\LanguageSwitcherDesigner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.LanguageSwitcherEventArgs" Collapsed="true">
+    <Position X="43.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Localization\LanguageSwitcherEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Web.UI.WebControls.TypeConverterLanguageCultureCollection" Collapsed="true">
+    <Position X="43.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgAAAAAAAAAABAAAAAAAAAAAAACAAAAIAQAAAAAA=</HashCode>
+      <FileName>Localization\TypeConvertLanguageCultureCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Design.Layout" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="45.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAYAAAAgAAUEAAAAQAQGAAACAAIgANgAowYQAAI=</HashCode>
+      <FileName>Design\Layout.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Rainbow.Framework.Design.Theme" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="54.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAACgAYAAABAAAcEwJAEQMQWEAACABIgA9gAowbYAII=</HashCode>
+      <FileName>Design\Theme.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Rainbow.Framework.Helpers.HttpHelper" Collapsed="true">
+    <Position X="45.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\HttpHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Helpers.IOHelper" Collapsed="true">
+    <Position X="47.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAQA=</HashCode>
+      <FileName>Helpers\IOHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Helpers.IPList" Collapsed="true">
+    <Position X="50.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAAAAAAAUIAAAAAAAAAAAIAAAAEAAAABEAAA=</HashCode>
+      <FileName>Helpers\IPList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Helpers.IPArrayList" Collapsed="true">
+    <Position X="49" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAgAAAAAAAAEAAAAAAAIAAIAAAAAAACAAABAAAA=</HashCode>
+      <FileName>Helpers\IPList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Helpers.JavaScriptBuilder" Collapsed="true">
+    <Position X="52.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAQAEAAAGAIAADAAAAIAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\JavaScriptBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Helpers.Utilities" Collapsed="true">
+    <Position X="47.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAQAAIAA=</HashCode>
+      <FileName>Helpers\Utilities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Helpers.WebPart" Collapsed="true">
+    <Position X="49" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAgASAAABgQgkEBAABiAA0CCQQAAIAAAAAAQAIAIQAA=</HashCode>
+      <FileName>Helpers\WebPartHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Helpers.WebPartParser" Collapsed="true">
+    <Position X="50.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\WebPartHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.KickStarter.CommonClasses.DataChangeEventArgs" Collapsed="true">
+    <Position X="47.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>KickStarter\CommonClasses\DataChangeEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.KickStarter.CommonClasses.Error" Collapsed="true">
+    <Position X="50.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>KickStarter\CommonClasses\Error.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.KickStarter.CommonClasses.SqlHelper" Collapsed="true">
+    <Position X="50.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAABAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>KickStarter\CommonClasses\SQLHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Scheduler.CachedScheduler" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAgAAAAAAIAAABAAAQAAEAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Scheduler\CachedScheduler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Scheduler.SchedulerDB" Collapsed="true">
+    <Position X="50.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAARAgAAAAAAAAAAAACQAAAAASAAAAAAAAABABAAAA=</HashCode>
+      <FileName>Scheduler\SchedulerDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Scheduler.SchedulerException" Collapsed="true">
+    <Position X="52.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Scheduler\SchedulerException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Scheduler.SchedulerTask" Collapsed="true">
+    <Position X="54.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAASAAAAAAAgAAAAIAABAAAggAAAAAAAIACAAAAAAAA=</HashCode>
+      <FileName>Scheduler\SchedulerTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Scheduler.SimpleScheduler" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAABAAABiAAAAAAAAFAQAQAAECAAAAAIAAAAABAAAI=</HashCode>
+      <FileName>Scheduler\SimpleScheduler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Rainbow.Framework.Services.Client.communityService" Collapsed="true">
+    <Position X="43.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAgAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Service\Client\communityService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Services.ServiceRequestInfo" Collapsed="true">
+    <Position X="43.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAIAkAAAAABAwAgAAAAoAAAAACQAQECKAAIA=</HashCode>
+      <FileName>Service\ServiceClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Services.ServiceResponseInfo" Collapsed="true">
+    <Position X="45.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIgAAEAAAAAACAAEAAAAIAAAAAAAAAAAAACAAAAAGAA=</HashCode>
+      <FileName>Service\ServiceClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rainbow.Framework.Services.ServiceResponseInfoItem" Collapsed="true">
+    <Position X="47.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACCQAABACAgAEAAgAAAAAAAAAAAAABAAgAQQAAAAAA=</HashCode>
+      <FileName>Service\ServiceClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Rainbow.Framework.Helpers.HTMLText" Collapsed="true">
+    <Position X="43.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQIAICAAQA4gAAAAAECAAAAgCAAAIAAAgABAgAEIA=</HashCode>
+      <FileName>Helpers\HTMLText.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Rainbow.Framework.Web.UI.WebControls.IEditModule" Collapsed="true">
+    <Position X="43.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIAAAAAIAAAABAAAAAAAAAAAAAAAAEAAACAAABAoAAA=</HashCode>
+      <FileName>UI\WebControls\IEditModule.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Web.UI.WebControls.IHtmlEditor" Collapsed="true">
+    <Position X="45.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAABAAAAAAAAAAAAEAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>UI\WebControls\IHtmlEditor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Web.UI.WebControls.INavigation" Collapsed="true">
+    <Position X="49" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\WebControls\INavigation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Web.UI.WebControls.IPaging" Collapsed="true">
+    <Position X="50.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAEA=</HashCode>
+      <FileName>UI\WebControls\IPaging.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Web.UI.WebControls.ISearchable" Collapsed="true">
+    <Position X="43.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>UI\WebControls\ISearchable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IEntity" Collapsed="true">
+    <Position X="8" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAQAAAAAAAAAAAAAAAACAAACAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Interfaces\IEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IItem" Collapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.ILayout" Collapsed="true">
+    <Position X="5.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ILayout.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IModule" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAACAAAAACEAAAEAAAAAAACAACoAAiAACAAAAAAA=</HashCode>
+      <FileName>Interfaces\IModule.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IModuleInstance" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAEAAAABAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IModuleInstance.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IModuleInstanceSetting" Collapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IModuleInstanceSetting.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IModuleSetting" Collapsed="true">
+    <Position X="12.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IModuleSetting.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IPage" Collapsed="true">
+    <Position X="8" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAEAAAAEAACgAIAQAAAAQCQQEAAEAAAICAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IPage.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IPageSetting" Collapsed="true">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IPageSetting.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IPermission" Collapsed="true">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IPermission.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IPermissionMembership" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Interfaces\IPermissionMembership.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IPortal" Collapsed="true">
+    <Position X="2.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAgAAIoAEQgAAAAAAABAAAAAAAJgAQAAAAAAQA=</HashCode>
+      <FileName>Interfaces\IPortal.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.IPortalSetting" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IPortalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.ISecuredEntity" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISecuredEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.ISetting" Collapsed="true">
+    <Position X="10.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAEAAAAoAAAgAAAAAAAQiAAAAAAAAAQAgAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISetting.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.ISettingGroup" Collapsed="true">
+    <Position X="10.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISettingGroup.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.ISettingType" Collapsed="true">
+    <Position X="10.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISettingType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Interfaces.ITheme" Collapsed="true">
+    <Position X="10.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAIAQBAEAIQAAAAAABIAAwAAAADAAIA=</HashCode>
+      <FileName>Interfaces\ITheme.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Scheduler.ISchedulable" Collapsed="true">
+    <Position X="52.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAgAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Scheduler\ISchedulable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Scheduler.IScheduler" Collapsed="true">
+    <Position X="54.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAACAAAAAAAAAAQAAAAACAAAAAIAAAAABAAAI=</HashCode>
+      <FileName>Scheduler\IScheduler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Rainbow.Framework.Setup.IInstaller" Collapsed="true">
+    <Position X="47.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Setup\IInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Rainbow.Framework.Web.UI.WebControls.BindOption" Collapsed="true">
+    <Position X="45.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAEAAAIAEAAAAAABAACAAAABAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>UI\WebControls\BindEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Rainbow.Framework.Web.UI.WebControls.LanguageSwitcherType" Collapsed="true">
+    <Position X="52.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAEAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Localization\LanguageSwitcherTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Rainbow.Framework.Web.UI.WebControls.LanguageSwitcherName" Collapsed="true">
+    <Position X="50.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAQAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Localization\LanguageSwitcherTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Rainbow.Framework.Web.UI.WebControls.LanguageSwitcherAction" Collapsed="true">
+    <Position X="47.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Localization\LanguageSwitcherTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Rainbow.Framework.Web.UI.WebControls.LanguageSwitcherDisplay" Collapsed="true">
+    <Position X="49" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Localization\LanguageSwitcherTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Rainbow.KickStarter.CommonClasses.Action" Collapsed="true">
+    <Position X="43.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAEAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>KickStarter\CommonClasses\DataChangeEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Rainbow.Framework.Services.ServiceType" Collapsed="true">
+    <Position X="43.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAQAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Service\ServiceClasses.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Rainbow.Framework.Services.ServiceListType" Collapsed="true">
+    <Position X="54.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAEAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Service\ServiceClasses.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Rainbow.Framework.Web.UI.WebControls.LanguageSwitcherEventHandler" Collapsed="true">
+    <Position X="45.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Localization\LanguageSwitcherEventHandler.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Rainbow.KickStarter.CommonClasses.DataChangeEventHandler" Collapsed="true">
+    <Position X="43.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>KickStarter\CommonClasses\DataChangeEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

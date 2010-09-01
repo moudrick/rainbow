@@ -47,7 +47,7 @@ namespace Rainbow.Framework.Data.Types
                 cbl.DataTextField = DataTextField;
                 cbl.DataBind();
 
-                innerControl = cbl;
+                this.InnerControl = cbl;
             }
         }
 
@@ -89,10 +89,10 @@ namespace Rainbow.Framework.Data.Types
         /// <value>The value.</value>
         public override string Value
         {
-            get { return (innerValue); }
+            get { return (this.InnerValue); }
             set
             {
-                innerValue = value.TrimEnd(new char[] {';'}); //Remove trailing ';'
+                this.InnerValue = value.TrimEnd(new char[] {';'}); //Remove trailing ';'
             }
         }
 
@@ -105,30 +105,30 @@ namespace Rainbow.Framework.Data.Types
         {
             get
             {
-                if (innerControl == null)
+                if (this.InnerControl == null)
                     InitializeComponents();
 
                 //Update value in control
-                CheckBoxList cbl = (CheckBoxList) innerControl;
+                CheckBoxList cbl = (CheckBoxList) this.InnerControl;
                 cbl.ClearSelection();
                 // Store in string array
-                string[] values = innerValue.Split(new char[] {';'});
+                string[] values = this.InnerValue.Split(new char[] {';'});
                 foreach (string _value in values)
                 {
                     if (cbl.Items.FindByValue(_value) != null)
                         cbl.Items.FindByValue(_value).Selected = true;
                 }
                 //Return control
-                return innerControl;
+                return this.InnerControl;
             }
             set
             {
                 if (value.GetType().Name == "CheckBoxList")
                 {
-                    innerControl = value;
+                    this.InnerControl = value;
 
                     //Update value from control
-                    CheckBoxList cbl = (CheckBoxList) innerControl;
+                    CheckBoxList cbl = (CheckBoxList) this.InnerControl;
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < cbl.Items.Count; i++)
                     {

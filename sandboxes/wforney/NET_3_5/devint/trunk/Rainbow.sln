@@ -15,7 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Rainbow.vsmdi = Rainbow.vsmdi
 		README.txt = README.txt
 		VersionInfo.cs = VersionInfo.cs
-		VersionInfo.cs = VersionInfo.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSites", "WebSites", "{DCD8AFCE-7572-4A1D-AD78-0A6469A415C0}"
@@ -87,6 +86,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.Data.Tests", "Rainbow.Framework.Data.Tests\Rainbow.Framework.Data.Tests.csproj", "{1492BF9E-CB0B-4892-8F03-50968F08DB81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainbow.Framework.BusinessLogic", "Rainbow.Framework.BusinessLogic\Rainbow.Framework.BusinessLogic.csproj", "{1AD45029-9C58-44DE-904B-1F0E7372EBE4}"
+EndProject
+Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "Rainbow.Model", "Rainbow.Model\Rainbow.Model.modelproj", "{1F5AE6F4-7708-46FC-B578-95A9CB6A2905}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -301,6 +302,16 @@ Global
 		{1AD45029-9C58-44DE-904B-1F0E7372EBE4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1AD45029-9C58-44DE-904B-1F0E7372EBE4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1AD45029-9C58-44DE-904B-1F0E7372EBE4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1F5AE6F4-7708-46FC-B578-95A9CB6A2905}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{1F5AE6F4-7708-46FC-B578-95A9CB6A2905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F5AE6F4-7708-46FC-B578-95A9CB6A2905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F5AE6F4-7708-46FC-B578-95A9CB6A2905}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1F5AE6F4-7708-46FC-B578-95A9CB6A2905}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1F5AE6F4-7708-46FC-B578-95A9CB6A2905}.Release|.NET.ActiveCfg = Release|Any CPU
+		{1F5AE6F4-7708-46FC-B578-95A9CB6A2905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F5AE6F4-7708-46FC-B578-95A9CB6A2905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F5AE6F4-7708-46FC-B578-95A9CB6A2905}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1F5AE6F4-7708-46FC-B578-95A9CB6A2905}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

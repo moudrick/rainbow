@@ -157,7 +157,17 @@ namespace Rainbow.Framework.Configuration
         }
 
         /// <summary>
-        /// Gets value from configyred Reader for specified key, returning string.
+        /// Gets the string.
+        /// </summary>
+        /// <param name="key">The collection key.</param>
+        /// <returns>setting value or empty string</returns>
+        public static string GetString(string key)
+        {
+            return GetString(key, true);
+        }
+
+        /// <summary>
+        /// Gets value from configured Reader for specified key, returning string.
         ///     If key is not present, returns defaultValue. Empty string is an allowable value.
         /// </summary>
         /// <param name="key">
@@ -172,6 +182,17 @@ namespace Rainbow.Framework.Configuration
         public static string GetString(string key, string defaultValue)
         {
             return GetString(key, defaultValue, true);
+        }
+
+        /// <summary>
+        /// Gets the string.
+        /// </summary>
+        /// <param name="key">The collection key.</param>
+        /// <param name="allowEmpty">if set to <c>true</c> [allow empty].</param>
+        /// <returns>setting value or empty string</returns>
+        public static string GetString(string key, bool allowEmpty)
+        {
+            return GetString(key, String.Empty, allowEmpty);
         }
 
         /// <summary>

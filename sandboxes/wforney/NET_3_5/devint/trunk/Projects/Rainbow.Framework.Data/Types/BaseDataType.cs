@@ -1,180 +1,207 @@
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
 namespace Rainbow.Framework.Data.Types
 {
-	/// <summary>
-	/// BaseDataType
-	/// </summary>
-	public abstract class BaseDataType
-	{
-		/// <summary>
-		/// Holds the value
-		/// </summary>
-		protected PropertiesDataType InnerDataType;
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    /// <summary>
+    /// Base Data Type
+    /// </summary>
+    public abstract class BaseDataType
+    {
+        #region Constants and Fields
+
         /// <summary>
-        /// 
+        /// The inner data source.
         /// </summary>
-		protected object InnerDataSource;
+        protected object InnerDataSource;
+
         /// <summary>
-        /// 
+        ///     Holds the value.
         /// </summary>
-		protected int controlWidth = 350;
+        protected PropertiesDataType InnerDataType;
+
         /// <summary>
-        /// 
+        /// The control width.
         /// </summary>
-		protected Control innerControl;
+        protected int ControlWidth = 350;
+
         /// <summary>
-        /// 
+        /// The inner control.
         /// </summary>
-		protected string innerValue = string.Empty;
+        protected Control InnerControl;
+
+        /// <summary>
+        /// The inner value.
+        /// </summary>
+        protected string InnerValue = string.Empty;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets or sets DataSource
+        ///     Should be overrided from inherited classes
+        /// </summary>
+        /// <value>The data source.</value>
+        public virtual object DataSource
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the data text field.
+        /// </summary>
+        /// <value>The data text field.</value>
+        public virtual string DataTextField
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the data value field.
+        /// </summary>
+        /// <value>The data value field.</value>
+        public virtual string DataValueField
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        ///     Gets the description.
+        /// </summary>
+        /// <value>The description.</value>
+        public virtual string Description
+        {
+            get
+            {
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        ///     Gets EditControl
+        /// </summary>
+        /// <value>The edit control.</value>
+        public virtual Control EditControl
+        {
+            get
+            {
+                if (this.InnerControl == null)
+                {
+                    this.InitializeComponents();
+                }
+
+                // Update value in control
+                ((TextBox)this.InnerControl).Text = this.Value;
+
+                // Return control
+                return this.InnerControl;
+            }
+
+            set
+            {
+                if (value.GetType().Name != "TextBox")
+                {
+                    throw new ArgumentException(
+                        string.Format("A TextBox values is required, a '{0}' is given.", value.GetType().Name),
+                        "EditControl");
+                }
+                
+                this.InnerControl = value;
+
+                // Update value from control
+                this.Value = ((TextBox)this.InnerControl).Text;
+            }
+        }
+
+        /// <summary>
+        ///     Not Implemented
+        /// </summary>
+        /// <value>The full path.</value>
+        public virtual string FullPath
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        ///     Gets the type.
+        /// </summary>
+        /// <value>The type.</value>
+        public virtual PropertiesDataType Type
+        {
+            get
+            {
+                return this.InnerDataType;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the value.
+        /// </summary>
+        /// <value>The value.</value>
+        public virtual string Value
+        {
+            get
+            {
+                return this.InnerValue;
+            }
+
+            set
+            {
+                this.InnerValue = value;
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Initializes the components.
         /// </summary>
-		protected virtual void InitializeComponents()
-		{
-			//Text box
-			using (TextBox tx = new TextBox())
-			{
-				tx.CssClass = "NormalTextBox";
-				tx.Columns = 30;
-				tx.Width = new Unit(controlWidth);
-				tx.MaxLength = 1500; //changed max value to 1500 since most of settings are string
+        protected virtual void InitializeComponents()
+        {
+            // Text box
+            using (var tx = new TextBox())
+            {
+                tx.CssClass = "NormalTextBox";
+                tx.Columns = 30;
+                tx.Width = new Unit(this.ControlWidth);
+                tx.MaxLength = 1500; // changed max value to 1500 since most of settings are string
 
-				innerControl = tx;
-			}
-		}
+                this.InnerControl = tx;
+            }
+        }
 
-        /// <summary>
-        /// Gets DataSource
-        /// Should be overrided from inherited classes
-        /// </summary>
-        /// <value>The data source.</value>
-		public virtual object DataSource
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-        /// <summary>
-        /// Gets or sets the data value field.
-        /// </summary>
-        /// <value>The data value field.</value>
-		public virtual string DataValueField
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-        /// <summary>
-        /// Gets or sets the data text field.
-        /// </summary>
-        /// <value>The data text field.</value>
-		public virtual string DataTextField
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-        /// <summary>
-        /// Not Implemented
-        /// </summary>
-        /// <value>The full path.</value>
-		public virtual string FullPath
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-        /// <summary>
-        /// EditControl
-        /// </summary>
-        /// <value>The edit control.</value>
-		public virtual Control EditControl
-		{
-			get
-			{
-				if (innerControl == null)
-					InitializeComponents();
-
-				//Update value in control
-				((TextBox)innerControl).Text = Value;
-				//Return control
-				return innerControl;
-			}
-			set
-			{
-				if (value.GetType().Name == "TextBox")
-				{
-					innerControl = value;
-					//Update value from control
-					Value = ((TextBox)innerControl).Text;
-				}
-				else
-					throw new ArgumentException("A TextBox values is required, a '" + value.GetType().Name + "' is given.", "EditControl");
-			}
-		}
-
-        /// <summary>
-        /// Gets the type.
-        /// </summary>
-        /// <value>The type.</value>
-		public virtual PropertiesDataType Type
-		{
-			get
-			{
-				return InnerDataType;
-			}
-		}
-
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        /// <value>The value.</value>
-		public virtual string Value
-		{
-			get
-			{
-				return (innerValue);
-			}
-			set
-			{
-				innerValue = value;
-			}
-		}
-
-        /// <summary>
-        /// Gets the description.
-        /// </summary>
-        /// <value>The description.</value>
-		public virtual string Description
-		{
-			get
-			{
-				return string.Empty;
-			}
-		}
-	}
+        #endregion
+    }
 }

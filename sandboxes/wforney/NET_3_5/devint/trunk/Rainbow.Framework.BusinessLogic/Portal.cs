@@ -1,4 +1,4 @@
-namespace Rainbow.Framework.Configuration
+namespace Rainbow.Framework.BusinessLogic
 {
     using System;
     using System.Collections;
@@ -8,6 +8,8 @@ namespace Rainbow.Framework.Configuration
     using System.Reflection;
     using System.Web;
 
+    using Rainbow.Framework.Configuration;
+    using Rainbow.Framework.Configuration.Properties;
     using Rainbow.Framework.Configuration.Web;
 
     /// <summary>
@@ -20,7 +22,7 @@ namespace Rainbow.Framework.Configuration
         /// <summary>
         /// The context.
         /// </summary>
-        private static Reader context = new Reader(new WebContextReader());
+        private static WebContextReader context = new WebContextReader();
 
         #endregion
 
@@ -92,7 +94,7 @@ namespace Rainbow.Framework.Configuration
                 if (context.Current.Items["PortalAlias"] == null)
                 {
                     // not already in context
-                    string uniquePortalId = Config.DefaultPortal; // set default value
+                    string uniquePortalId = Settings.DefaultPortal; // set default value
 
                     FindAlias(context.Current.Request, ref uniquePortalId); // will change uniquePortalID if it can
 
@@ -276,13 +278,13 @@ namespace Rainbow.Framework.Configuration
         /// <param name="queryString">
         /// The query string.
         /// </param>
-        /// <param name="pageID">
+        /// <param name="pageId">
         /// The page ID.
         /// </param>
         /// <returns>
         /// The find page id from query string.
         /// </returns>
-        public static bool FindPageIdFromQueryString(NameValueCollection queryString, ref string pageID)
+        public static bool FindPageIdFromQueryString(NameValueCollection queryString, ref string pageId)
         {
             string[] queryStringValues;
 
@@ -292,13 +294,15 @@ namespace Rainbow.Framework.Configuration
                 return false;
             }
             
-            if (queryString[Properties.Resources.str_PageID] != null)
+            if (queryString["pageId"] != null)
             {
-                queryStringValues = queryString.GetValues(Properties.Resources.str_PageID);
+                // Properties.Resources.str_PageID
+                queryStringValues = queryString.GetValues(Resources.str_PageID);
             }
-            else if (queryString[Properties.Resources.str_TabID] != null)
+            else if (queryString["tabId"] != null)
             {
-                queryStringValues = queryString.GetValues(Properties.Resources.str_TabID);
+                // Properties.Resources.str_TabID
+                queryStringValues = queryString.GetValues(Resources.str_TabID);
             }
             else
             {
@@ -318,7 +322,7 @@ namespace Rainbow.Framework.Configuration
                 return false;
             }
             
-            pageID = queryStringValue;
+            pageId = queryStringValue;
             return true;
         }
 
@@ -336,7 +340,9 @@ namespace Rainbow.Framework.Configuration
             var webProxy = new WebProxy();
             var networkCredential = new NetworkCredential
                 {
-                    Domain = Config.ProxyDomain, UserName = Config.ProxyUserID, Password = Config.ProxyPassword 
+                    Domain = Settings.ProxyDomain,
+                    UserName = Settings.ProxyUserId,
+                    Password = Settings.ProxyPassword 
                 };
 
             // myCredential.Domain = ConfigurationSettings.AppSettings["ProxyDomain"]; 
@@ -345,7 +351,7 @@ namespace Rainbow.Framework.Configuration
             webProxy.Credentials = networkCredential;
 
             // myProxy.Address = new Uri(ConfigurationSettings.AppSettings["ProxyServer"]); 
-            webProxy.Address = new Uri(Config.ProxyServer);
+            webProxy.Address = new Uri(Settings.ProxyServer);
             return webProxy;
 
             // } 
@@ -362,7 +368,7 @@ namespace Rainbow.Framework.Configuration
         /// <param name="reader">
         /// an instance of a Concrete Strategy Reader
         /// </param>
-        public static void SetReader(Reader reader)
+        public static void SetReader(WebContextReader reader)
         {
             context = reader;
         }
@@ -395,10 +401,10 @@ namespace Rainbow.Framework.Configuration
             FindAliasFromUri(
                 request.Url, 
                 ref alias, 
-                Config.DefaultPortal, 
-                Config.RemoveWWW, 
-                Config.RemoveTLD, 
-                Config.SecondLevelDomains);
+                Settings.DefaultPortal,
+                Settings.RemoveWWW,
+                Settings.RemoveTLD,
+                Settings.SecondLevelDomains);
             return;
         }
 

@@ -2,6 +2,8 @@ namespace Rainbow.Framework.Configuration.Cache
 {
     using System.Globalization;
 
+    using Rainbow.Framework.BusinessLogic;
+
     /// <summary>
     /// This class return the cache keys used in Rainbow.
     /// </summary>

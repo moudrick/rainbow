@@ -64,12 +64,12 @@ namespace Rainbow.Framework.Data.Types
                 using (DropDownList dd = new DropDownList())
                 {
                     dd.CssClass = "NormalTextBox";
-                    dd.Width = new Unit(controlWidth);
+                    dd.Width = new Unit(this.ControlWidth);
                     dd.DataSource = DataSource;
                     dd.DataValueField = DataValueField;
                     dd.DataTextField = DataTextField;
                     dd.DataBind();
-                    dd.Width = (base.controlWidth/2 - 1);
+                    dd.Width = (base.ControlWidth/2 - 1);
                     dd.ID = panel.ID + "dd";
 
                     panel.Controls.Add(dd);
@@ -80,14 +80,14 @@ namespace Rainbow.Framework.Data.Types
                     tb.CssClass = "NormalTextBox";
                     tb.Text = General.GetString("NEW_FOLDER", "New Folder ?");
                     tb.Columns = 30;
-                    tb.Width = (base.controlWidth/2 - 1);
+                    tb.Width = (base.ControlWidth/2 - 1);
                     tb.ID = panel.ID + "tb";
                     tb.MaxLength = 1500;
 
                     panel.Controls.Add(tb);
                 }
 
-                innerControl = panel;
+                this.InnerControl = panel;
             }
         }
 
@@ -133,8 +133,8 @@ namespace Rainbow.Framework.Data.Types
         /// <value>The value.</value>
         public override string Value
         {
-            get { return (innerValue); }
-            set { innerValue = value; }
+            get { return (this.InnerValue); }
+            set { this.InnerValue = value; }
         }
 
         /// <summary>
@@ -145,9 +145,9 @@ namespace Rainbow.Framework.Data.Types
         {
             get
             {
-                if (innerControl == null)
+                if (this.InnerControl == null)
                     InitializeComponents();
-                Panel panel = (Panel) innerControl;
+                Panel panel = (Panel) this.InnerControl;
                 DropDownList dd = null;
                 foreach (Control c in panel.Controls)
                 {
@@ -161,13 +161,13 @@ namespace Rainbow.Framework.Data.Types
                     }
                 }
                 //Return control
-                return innerControl;
+                return this.InnerControl;
             }
             set
             {
                 if (value is Panel)
                 {
-                    innerControl = value;
+                    this.InnerControl = value;
                     //Update value from control
                     DropDownList dd = null;
                     foreach (Control c in value.Controls)

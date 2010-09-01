@@ -7,6 +7,8 @@ namespace Rainbow.Framework.Configuration.Cache
     using System.Web;
     using System.Web.Caching;
 
+    using Rainbow.Framework.BusinessLogic;
+
     /// <summary>
     /// Class used by Rainbow for manage current cache
     /// </summary>

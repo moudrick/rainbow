@@ -28,7 +28,7 @@ namespace Rainbow.Framework.Data.Types
 		protected override void InitializeComponents()
 		{
 			//Checkbox
-			innerControl = new CheckBox();
+			this.InnerControl = new CheckBox();
 		}
 
 		/// <summary>
@@ -55,21 +55,21 @@ namespace Rainbow.Framework.Data.Types
 		{
 			get
 			{
-				if (innerControl == null)
+				if (this.InnerControl == null)
 					InitializeComponents();
 
 				//Update value in control
-				((CheckBox) innerControl).Checked =  bool.Parse(Value);
+				((CheckBox) this.InnerControl).Checked =  bool.Parse(Value);
 				//Return control
-				return innerControl;
+				return this.InnerControl;
 			}
 			set
 			{
 				if(value.GetType().Name == "CheckBox")
 				{
-					innerControl = value;
+					this.InnerControl = value;
 					//Update value from control
-					Value = ((CheckBox) innerControl).Checked.ToString();
+					Value = ((CheckBox) this.InnerControl).Checked.ToString();
 				}
 				else
 					throw new ArgumentException("A CheckBox values is required, a '" + value.GetType().Name + "' is given.", "EditControl");

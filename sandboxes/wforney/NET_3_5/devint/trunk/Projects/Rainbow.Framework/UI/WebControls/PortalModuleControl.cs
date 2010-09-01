@@ -1,35 +1,26 @@
 // [START] Added for window mgmt. support (bja@reedtek.com)
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data.Linq;
-using System.Linq;
-using System.Data;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Xml;
-using Rainbow.Framework.BLL.Utils;
-using Rainbow.Framework.DataTypes;
-using Rainbow.Framework.Design;
-using Rainbow.Framework.Helpers;
-using Rainbow.Framework.Security;
-using Rainbow.Framework.Settings;
-using Rainbow.Framework.Setup;
-using Rainbow.Framework.Site.Configuration;
-using Rainbow.Framework.Site.Data;
-using Path = Rainbow.Framework.Settings.Path;
-using Rainbow.Framework.Data.MsSql;
-using System.Collections.Generic;
-
 namespace Rainbow.Framework.Web.UI.WebControls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+
+    using Rainbow.Framework.Data.MsSql;
+    using Rainbow.Framework.Design;
+    using Rainbow.Framework.Setup;
+
     /// <summary>
     /// The PortalModuleControl class defines a custom 
     /// base class inherited by all
@@ -4260,38 +4251,39 @@ end of modification
         /// <returns></returns>
         public static List<ModuleSetting> GetModuleSettings(int moduleId, Rainbow.Framework.Web.UI.Page page)
         {
-            string ControlPath = Path.ApplicationRoot + "/";
+            string controlPath = string.Format("{0}/", Path.ApplicationRoot);
 
             try
             {
-                DataClassesDataContext db = new DataClassesDataContext(Config.Config.ConnectionString);
+                var db = new DataClassesDataContext(Config.Config.ConnectionString);
 
                 var q = (from gmd in db.GeneralModuleDefinitions
                          join md in db.ModuleDefinitions on gmd.GeneralModDefId equals md.GeneralModDefId
                          join m in db.Modules on md.ModuleDefId equals m.ModuleDefId
-                         where m.moduleId == moduleId
+                         where m.ModuleId == moduleId
                          select gmd).Single();
 
-                ControlPath += q.DesktopSource;
+                controlPath += q.DesktopSource;
             }
             catch (Exception ex)
             {
-                throw new Exception("There was a problem in the database for: '" + ControlPath + "'", ex);
+                throw new Exception(string.Format("There was a problem in the database for: '{0}'", controlPath), ex);
             }
 
             PortalModuleControl portalModule;
             Hashtable setting;
             try
             {
-                portalModule = (PortalModuleControl)page.LoadControl(ControlPath);
+                portalModule = (PortalModuleControl)page.LoadControl(controlPath);
                 setting = GetModuleSettings(moduleId, portalModule.BaseSettings);
             }
             catch (Exception ex)
             {
-                throw new Exception("There was a problem loading: '" + ControlPath + "'", ex); // Jes1111
-                //Rainbow.Framework.Configuration.ErrorHandler.HandleException("There was a problem loading: '" + ControlPath + "'", ex);
-                //throw;
+                throw new Exception(string.Format("There was a problem loading: '{0}'", controlPath), ex); // Jes1111
+                // Rainbow.Framework.Configuration.ErrorHandler.HandleException("There was a problem loading: '" + ControlPath + "'", ex);
+                // throw;
             }
+
             return setting;
         }
     }

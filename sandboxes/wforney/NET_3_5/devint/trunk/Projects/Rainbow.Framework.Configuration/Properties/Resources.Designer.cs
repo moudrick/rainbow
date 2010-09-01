@@ -151,6 +151,15 @@ namespace Rainbow.Framework.Configuration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Path cannot be null!.
+        /// </summary>
+        public static string Path_WebPathCombine_Path_cannot_be_null {
+            get {
+                return ResourceManager.GetString("Path_WebPathCombine_Path_cannot_be_null", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rainbow_.
         /// </summary>
         public static string PortalPrefix {

@@ -42,7 +42,7 @@ namespace Rainbow.Framework.Data.Types
             {
                 lb.CssClass = "NormalTextBox";
                 lb.SelectionMode = ListSelectionMode.Multiple;
-                lb.Width = new Unit(controlWidth);
+                lb.Width = new Unit(this.ControlWidth);
                 lb.DataSource = DataSource;
                 lb.DataValueField = DataValueField;
                 lb.DataTextField = DataTextField;
@@ -56,7 +56,7 @@ namespace Rainbow.Framework.Data.Types
                 if (lb.Items.Count > 20)
                     lb.Rows = 15;
 
-                innerControl = lb;
+                this.InnerControl = lb;
             }
         }
 
@@ -104,10 +104,10 @@ namespace Rainbow.Framework.Data.Types
         /// <value>The value.</value>
         public override string Value
         {
-            get { return (innerValue); }
+            get { return (this.InnerValue); }
             set
             {
-                innerValue = value.TrimEnd(new char[] {';'}); //Remove trailing ';'
+                this.InnerValue = value.TrimEnd(new char[] {';'}); //Remove trailing ';'
 
                 ////				//Fix by manu          
                 ////				ListBox lb = (ListBox) innerControl;
@@ -142,30 +142,30 @@ namespace Rainbow.Framework.Data.Types
         {
             get
             {
-                if (innerControl == null)
+                if (this.InnerControl == null)
                     InitializeComponents();
 
                 //Update value in control
-                ListBox lb = (ListBox) innerControl;
+                ListBox lb = (ListBox) this.InnerControl;
                 lb.ClearSelection();
                 // Store in string array
-                string[] values = innerValue.Split(new char[] {';'});
+                string[] values = this.InnerValue.Split(new char[] {';'});
                 foreach (string _value in values)
                 {
                     if (lb.Items.FindByValue(_value) != null)
                         lb.Items.FindByValue(_value).Selected = true;
                 }
                 //Return control
-                return innerControl;
+                return this.InnerControl;
             }
             set
             {
                 if (value.GetType().Name == "ListBox")
                 {
-                    innerControl = value;
+                    this.InnerControl = value;
 
                     //Update value from control
-                    ListBox lb = (ListBox) innerControl;
+                    ListBox lb = (ListBox) this.InnerControl;
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < lb.Items.Count; i++)
                     {

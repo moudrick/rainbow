@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="Provider\NotSupportedByProviderException.cs" />
     <Compile Include="Provider\ProviderFeatureSection.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Web\ContextReader.cs" />
     <Compile Include="GlobalEnums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Migrated rules for Rainbow.Framework.Configuration.ruleset" />
+    <None Include="Rainbow.Framework.Configuration.cd" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

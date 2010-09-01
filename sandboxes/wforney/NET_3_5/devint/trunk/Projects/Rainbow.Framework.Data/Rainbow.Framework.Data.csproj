@@ -102,7 +102,6 @@
     <Compile Include="Providers\Geographic\State.cs" />
     <Compile Include="Providers\Geographic\StateNotFoundException.cs" />
     <Compile Include="Providers\UrlBuilderProvider.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="Types\ApplicationUrlDataType.cs" />
     <Compile Include="Types\BaseDataType.cs" />
     <Compile Include="Types\BooleanDataType.cs" />
